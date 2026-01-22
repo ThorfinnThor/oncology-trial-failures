@@ -5,11 +5,11 @@ then classify whyStopped reasons to focus on biological failure (efficacy/safety
 and exclude operational failures (recruitment/funding/admin).
 
 Hardening features:
-- Clause-aware negation (prevents "not due to safety; ... lack of efficacy" bugs)
+- Clause-aware negation (prevents cross-clause negation bleed)
 - Clause-based explicit denial flags (safety vs efficacy handled separately)
-- Adds "safety profile/risk-benefit unchanged" as explicit denial of safety-causality
+- Weighted phrase scoring (fixes short reasons like "Efficacy concerns." and "lack of efficacy")
 - Causal-cue scoring (due to/because of/futility/endpoint not met)
-- Confidence scoring + matched evidence for transparency
+- Confidence + evidence columns for transparency
 - Overrides from overrides.csv
 
 Outputs:
@@ -69,32 +69,40 @@ def normalize_text(s: Optional[str]) -> str:
 
 
 # -----------------------------
-# Keyword banks (tune over time)
+# Keyword banks (expanded)
 # -----------------------------
 
 SAFETY_TERMS = [
     "safety",
+    "safety concern", "safety concerns",
+    "safety issue", "safety issues",
     "adverse event", "adverse events",
+    "adverse effect", "adverse effects",  # NEW (fixes your example like gastritis adverse effect)
     "serious adverse",
     "sae", "saes",
     "toxicity", "toxic",
+    "unacceptable toxicity",
     "dose limiting", "dlt", "dlts",
     "intolerable",
     "unacceptable risk",
     "risk/benefit", "risk benefit", "risk-benefit",
     "safety profile",
-    "hepatic", "cardiac",
 ]
 
 EFFICACY_TERMS = [
+    "efficacy concern", "efficacy concerns",     # NEW (fixes NCT05419479)
     "lack of efficacy",
     "insufficient efficacy",
     "no efficacy",
     "ineffective",
     "no benefit",
+    "no signal of activity",                     # NEW (oncology phrasing)
+    "no signal of efficacy",                     # NEW
+    "no activity",                               # NEW (use phrase-level, not single word)
+    "unmet primary endpoint",                    # NEW
+    "unmet endpoint",                            # NEW
     "failed to meet",
     "did not meet",
-    "not meet",
     "primary endpoint",
     "endpoint not met",
     "end point not met",
@@ -104,6 +112,8 @@ EFFICACY_TERMS = [
     "futility analysis",
     "interim analysis",
     "stopping for futility",
+    "unmet primary",                             # NEW (some write "unmet primary endpoint" without full phrase)
+    "unmet endpoint(s)",                         # NEW (parenthesis gets normalized away sometimes)
 ]
 
 OPERATIONAL_TERMS = [
@@ -126,11 +136,55 @@ OPERATIONAL_TERMS = [
     "strategic reasons",
     "portfolio prioritization", "prioritization decision",
     "commercial reasons",
-    "external environment",
-    "changes in the external environment",
+    "external environment", "changes in the external environment",
+
+    # Program stopped/halted language (common in your dataset)
+    "development has been halted",
+    "development was halted",
+    "program halted",
+    "programme halted",
+    "development halted",
+    "industrial development",
+    "no longer pursuing",
 
     "covid", "pandemic",
 ]
+
+# Weighted phrases: these should trigger BIO failure even when short
+EFFICACY_WEIGHTS: Dict[str, int] = {
+    "efficacy concerns": 2,
+    "efficacy concern": 2,
+    "lack of efficacy": 3,
+    "unmet primary endpoint": 3,
+    "unmet endpoint": 2,
+    "endpoint not met": 3,
+    "did not meet": 3,
+    "failed to meet": 3,
+    "futility": 3,
+    "futility analysis": 3,
+    "no signal of activity": 3,
+    "no signal of efficacy": 3,
+    "no activity": 2,
+}
+
+SAFETY_WEIGHTS: Dict[str, int] = {
+    "safety concerns": 2,
+    "safety concern": 2,
+    "safety issues": 2,
+    "safety issue": 2,
+    "adverse event": 2,
+    "adverse events": 2,
+    "adverse effect": 2,
+    "adverse effects": 2,
+    "serious adverse": 3,
+    "toxicity": 2,
+    "unacceptable toxicity": 3,
+    "unacceptable risk": 3,
+    "risk/benefit": 2,
+    "risk benefit": 2,
+    "risk-benefit": 2,
+    "safety profile": 2,
+}
 
 CAUSAL_CUES = [
     r"\bdue to\b",
@@ -208,14 +262,10 @@ def iter_studies_for_term(session: requests.Session, term: str) -> Iterable[Dict
 
 
 # -----------------------------
-# Clause-aware NLP helpers
+# Clause-aware helpers
 # -----------------------------
 
 def _clause_start(text: str, idx: int) -> int:
-    """
-    Start index of clause by last delimiter before idx.
-    Delimiters: . ; :
-    """
     last_dot = text.rfind(".", 0, idx)
     last_semi = text.rfind(";", 0, idx)
     last_colon = text.rfind(":", 0, idx)
@@ -224,9 +274,6 @@ def _clause_start(text: str, idx: int) -> int:
 
 
 def _negated_near(text: str, idx: int, window: int = 50) -> bool:
-    """
-    Negation cues near idx, but only within same clause.
-    """
     clause_start = _clause_start(text, idx)
     start = max(clause_start, idx - window)
     context = text[start:idx]
@@ -258,9 +305,14 @@ def _find_terms(text: str, terms: List[str]) -> List[str]:
 
 def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
     """
-    Returns (denies_safety, denies_efficacy) based on clause-level matching.
-    Adds special handling for "safety profile / risk-benefit ... unchanged"
-    meaning the stop was NOT due to safety.
+    (denies_safety, denies_efficacy) evaluated per clause to avoid cross-clause bleed.
+
+    Includes denial phrases that show BIO reasons are NOT driving the stop:
+      - "not prompted by any safety or efficacy concerns"
+      - "no safety concerns"
+      - "no safety signal"
+      - "safety profile ... unchanged"
+      - "risk-benefit ... unchanged"
     """
     clauses = [c.strip() for c in re.split(r"[.;:]", text) if c.strip()]
 
@@ -270,33 +322,27 @@ def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
     for clause in clauses:
         # Combined denial in same clause
         if ("not" in clause or "no " in clause or "without" in clause or "unrelated" in clause):
-            if ("safety" in clause and "efficacy" in clause and "concern" in clause):
+            if ("safety" in clause and "efficacy" in clause and ("concern" in clause or "signal" in clause)):
                 denies_safety = True
                 denies_efficacy = True
 
         # Safety denial cues
         if "safety" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause:
-            if (("no " in clause and "concern" in clause) or
+            if (("no " in clause and ("concern" in clause or "signal" in clause)) or
                 ("without" in clause and "concern" in clause) or
                 ("not due to" in clause) or
                 ("not prompted by" in clause) or
                 ("unrelated to" in clause)):
                 denies_safety = True
 
-            # NEW: "safety profile ... remained unchanged" is effectively a denial of safety causality
+            # Safety/risk-benefit unchanged => denial of safety causality
             if ("safety profile" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause):
                 if ("unchanged" in clause or "remained unchanged" in clause or "no change" in clause):
                     denies_safety = True
 
-            # NEW: also treat "remained acceptable" or "remained favorable" as denial of safety causality
-            if ("safety profile" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause):
-                if ("remained acceptable" in clause or "remained favorable" in clause or "acceptable" in clause):
-                    # This is weaker than "unchanged" but still a good denial signal
-                    denies_safety = True
-
         # Efficacy denial cues
         if "efficacy" in clause or "endpoint" in clause:
-            if (("no " in clause and "concern" in clause) or
+            if (("no " in clause and ("concern" in clause or "signal" in clause)) or
                 ("without" in clause and "concern" in clause) or
                 ("not due to" in clause) or
                 ("not prompted by" in clause) or
@@ -307,9 +353,6 @@ def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
 
 
 def _causal_near(text: str, idx: int, window: int = 90) -> bool:
-    """
-    Causal cue within same clause near term.
-    """
     clause_start = _clause_start(text, idx)
     start = max(clause_start, idx - window)
     end = min(len(text), idx + window)
@@ -326,7 +369,13 @@ def _causal_near(text: str, idx: int, window: int = 90) -> bool:
     return False
 
 
-def _score_dimension(text: str, terms: List[str], denies_dim: bool, dim_name: str) -> Tuple[int, List[str]]:
+def _score_dimension(
+    text: str,
+    terms: List[str],
+    denies_dim: bool,
+    dim_name: str,
+    weights: Dict[str, int],
+) -> Tuple[int, List[str]]:
     score = 0
     evidence: List[str] = []
 
@@ -337,15 +386,17 @@ def _score_dimension(text: str, terms: List[str], denies_dim: bool, dim_name: st
     for t in terms:
         if t not in text:
             continue
+        weight = weights.get(t, 1)
         for idx in _term_positions(text, t):
             if _negated_near(text, idx):
                 continue
-            score += 1
-            evidence.append(f"{dim_name}:term:{t}")
+            score += weight
+            evidence.append(f"{dim_name}:term:{t}(w={weight})")
             if _causal_near(text, idx):
                 score += 2
                 evidence.append(f"{dim_name}:causal_near:{t}")
 
+    # Strong efficacy patterns beyond simple terms
     if dim_name == "eff":
         if "primary endpoint" in text and ("not met" in text or "failed" in text or "did not meet" in text):
             if not denies_dim:
@@ -369,9 +420,10 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     operational_hits = _find_terms(txt, OPERATIONAL_TERMS)
     operational_present = len(operational_hits) > 0
 
-    safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf")
-    efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff")
+    safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf", SAFETY_WEIGHTS)
+    efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff", EFFICACY_WEIGHTS)
 
+    # Operational reduces weak biological inference
     if operational_present:
         safety_score -= 1
         efficacy_score -= 1
@@ -380,7 +432,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     best_score = max(safety_score, efficacy_score)
     best_ev = safety_ev if best_dim == "SAFETY" else efficacy_ev
 
-    # If operational present and BOTH safety/efficacy explicitly denied, it is clearly non-biological.
+    # If operational present and BOTH safety/efficacy explicitly denied => NON_BIOLOGICAL
     if operational_present and denies_safety and denies_efficacy:
         return Classification(
             "NON_BIOLOGICAL",
@@ -389,9 +441,8 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             "operational:" + "|".join(operational_hits) + ";denial:both"
         )
 
-    # NEW: If operational present and SAFETY explicitly denied and SAFETY would otherwise win weakly, force NON_BIOLOGICAL.
-    # This catches: "ended for strategic reasons... safety profile remained unchanged"
-    if operational_present and denies_safety and best_score < 4 and best_dim == "SAFETY":
+    # If operational present and SAFETY explicitly denied, do not allow weak safety wins
+    if operational_present and denies_safety and best_dim == "SAFETY" and best_score < 5:
         return Classification(
             "NON_BIOLOGICAL",
             "OPERATIONAL",
@@ -399,7 +450,10 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             "operational:" + "|".join(operational_hits) + ";denial:safety"
         )
 
-    if best_score >= 4:
+    # Confidence thresholds (tuned for weighted phrases)
+    # - HIGH: strong, typically causal or multiple strong phrases
+    # - MEDIUM: a single strong phrase like "lack of efficacy" or "efficacy concerns"
+    if best_score >= 6:
         return Classification(
             "BIOLOGICAL_FAILURE",
             best_dim,
@@ -590,6 +644,7 @@ def main() -> None:
             if not is_drug_or_biologic(record):
                 continue
 
+            # Apply override if present
             if nct in overrides:
                 ov = overrides[nct]
                 record["classification_label"] = ov.label
@@ -607,6 +662,7 @@ def main() -> None:
 
     all_records.sort(key=lambda r: r.get("last_update_post_date") or "", reverse=True)
 
+    # Keep HIGH/MEDIUM biological failures in the "biological" export
     biological_only = [
         r for r in all_records
         if r.get("classification_label") == "BIOLOGICAL_FAILURE"
