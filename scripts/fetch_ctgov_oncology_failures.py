@@ -7,10 +7,10 @@ and exclude operational failures (recruitment/funding/admin).
 Hardening features:
 - Clause-aware negation (prevents "not due to safety; ... lack of efficacy" bugs)
 - Clause-based explicit denial flags (safety vs efficacy handled separately)
+- Adds "safety profile/risk-benefit unchanged" as explicit denial of safety-causality
 - Causal-cue scoring (due to/because of/futility/endpoint not met)
 - Confidence scoring + matched evidence for transparency
 - Overrides from overrides.csv
-- Golden tests (separate script) to prevent regressions
 
 Outputs:
 - data/all_oncology_stopped_trials.csv
@@ -81,7 +81,8 @@ SAFETY_TERMS = [
     "dose limiting", "dlt", "dlts",
     "intolerable",
     "unacceptable risk",
-    "risk/benefit", "risk benefit",
+    "risk/benefit", "risk benefit", "risk-benefit",
+    "safety profile",
     "hepatic", "cardiac",
 ]
 
@@ -122,13 +123,15 @@ OPERATIONAL_TERMS = [
     "sponsor request", "per sponsor request", "at sponsor request",
     "sponsor-initiated", "sponsor initiated",
     "company decision", "business decision", "strategic decision",
+    "strategic reasons",
     "portfolio prioritization", "prioritization decision",
     "commercial reasons",
+    "external environment",
+    "changes in the external environment",
 
     "covid", "pandemic",
 ]
 
-# Causal cue patterns: if these appear near a term, confidence increases
 CAUSAL_CUES = [
     r"\bdue to\b",
     r"\bbecause of\b",
@@ -140,7 +143,6 @@ CAUSAL_CUES = [
     r"\brelated to\b",
 ]
 
-# Negation cues
 NEGATION_CUES = [
     "no ",
     "not ",
@@ -211,8 +213,8 @@ def iter_studies_for_term(session: requests.Session, term: str) -> Iterable[Dict
 
 def _clause_start(text: str, idx: int) -> int:
     """
-    Returns start index of the current clause by finding the last major delimiter before idx.
-    Clause delimiters: . ; :
+    Start index of clause by last delimiter before idx.
+    Delimiters: . ; :
     """
     last_dot = text.rfind(".", 0, idx)
     last_semi = text.rfind(";", 0, idx)
@@ -223,8 +225,7 @@ def _clause_start(text: str, idx: int) -> int:
 
 def _negated_near(text: str, idx: int, window: int = 50) -> bool:
     """
-    True if a negation cue appears near idx, but ONLY within the same clause.
-    This prevents negation in an earlier clause from negating a later clause.
+    Negation cues near idx, but only within same clause.
     """
     clause_start = _clause_start(text, idx)
     start = max(clause_start, idx - window)
@@ -258,7 +259,8 @@ def _find_terms(text: str, terms: List[str]) -> List[str]:
 def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
     """
     Returns (denies_safety, denies_efficacy) based on clause-level matching.
-    This avoids a denial in one clause incorrectly applying to another clause.
+    Adds special handling for "safety profile / risk-benefit ... unchanged"
+    meaning the stop was NOT due to safety.
     """
     clauses = [c.strip() for c in re.split(r"[.;:]", text) if c.strip()]
 
@@ -266,14 +268,14 @@ def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
     denies_efficacy = False
 
     for clause in clauses:
-        # Combined denial in the same clause
+        # Combined denial in same clause
         if ("not" in clause or "no " in clause or "without" in clause or "unrelated" in clause):
             if ("safety" in clause and "efficacy" in clause and "concern" in clause):
                 denies_safety = True
                 denies_efficacy = True
 
-        # Safety denial in clause
-        if "safety" in clause:
+        # Safety denial cues
+        if "safety" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause:
             if (("no " in clause and "concern" in clause) or
                 ("without" in clause and "concern" in clause) or
                 ("not due to" in clause) or
@@ -281,7 +283,18 @@ def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
                 ("unrelated to" in clause)):
                 denies_safety = True
 
-        # Efficacy denial in clause
+            # NEW: "safety profile ... remained unchanged" is effectively a denial of safety causality
+            if ("safety profile" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause):
+                if ("unchanged" in clause or "remained unchanged" in clause or "no change" in clause):
+                    denies_safety = True
+
+            # NEW: also treat "remained acceptable" or "remained favorable" as denial of safety causality
+            if ("safety profile" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause):
+                if ("remained acceptable" in clause or "remained favorable" in clause or "acceptable" in clause):
+                    # This is weaker than "unchanged" but still a good denial signal
+                    denies_safety = True
+
+        # Efficacy denial cues
         if "efficacy" in clause or "endpoint" in clause:
             if (("no " in clause and "concern" in clause) or
                 ("without" in clause and "concern" in clause) or
@@ -295,12 +308,9 @@ def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
 
 def _causal_near(text: str, idx: int, window: int = 90) -> bool:
     """
-    True if a causal cue appears within a window around the term position.
-    Also guards against negated causal phrases like "not due to".
-    The cue must be in the same clause as the term.
+    Causal cue within same clause near term.
     """
     clause_start = _clause_start(text, idx)
-
     start = max(clause_start, idx - window)
     end = min(len(text), idx + window)
     context = text[start:end]
@@ -317,10 +327,6 @@ def _causal_near(text: str, idx: int, window: int = 90) -> bool:
 
 
 def _score_dimension(text: str, terms: List[str], denies_dim: bool, dim_name: str) -> Tuple[int, List[str]]:
-    """
-    Scores a dimension (safety or efficacy).
-    Returns (score, evidence_tokens).
-    """
     score = 0
     evidence: List[str] = []
 
@@ -336,14 +342,11 @@ def _score_dimension(text: str, terms: List[str], denies_dim: bool, dim_name: st
                 continue
             score += 1
             evidence.append(f"{dim_name}:term:{t}")
-
             if _causal_near(text, idx):
                 score += 2
                 evidence.append(f"{dim_name}:causal_near:{t}")
 
-    # Strong efficacy patterns
     if dim_name == "eff":
-        # If the clause includes primary endpoint AND not met/failed language
         if "primary endpoint" in text and ("not met" in text or "failed" in text or "did not meet" in text):
             if not denies_dim:
                 score += 3
@@ -369,7 +372,6 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf")
     efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff")
 
-    # Operational reduces weak biological inference
     if operational_present:
         safety_score -= 1
         efficacy_score -= 1
@@ -378,7 +380,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     best_score = max(safety_score, efficacy_score)
     best_ev = safety_ev if best_dim == "SAFETY" else efficacy_ev
 
-    # If both dimensions explicitly denied AND operational present => NON_BIOLOGICAL
+    # If operational present and BOTH safety/efficacy explicitly denied, it is clearly non-biological.
     if operational_present and denies_safety and denies_efficacy:
         return Classification(
             "NON_BIOLOGICAL",
@@ -387,7 +389,16 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             "operational:" + "|".join(operational_hits) + ";denial:both"
         )
 
-    # High confidence biological failure
+    # NEW: If operational present and SAFETY explicitly denied and SAFETY would otherwise win weakly, force NON_BIOLOGICAL.
+    # This catches: "ended for strategic reasons... safety profile remained unchanged"
+    if operational_present and denies_safety and best_score < 4 and best_dim == "SAFETY":
+        return Classification(
+            "NON_BIOLOGICAL",
+            "OPERATIONAL",
+            "HIGH",
+            "operational:" + "|".join(operational_hits) + ";denial:safety"
+        )
+
     if best_score >= 4:
         return Classification(
             "BIOLOGICAL_FAILURE",
@@ -396,7 +407,6 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             f"score={best_score};" + ",".join(best_ev[:14])
         )
 
-    # Medium confidence biological failure only if not operational
     if best_score >= 2 and not operational_present:
         return Classification(
             "BIOLOGICAL_FAILURE",
@@ -405,7 +415,6 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             f"score={best_score};" + ",".join(best_ev[:14])
         )
 
-    # Operational dominates if present and no strong bio signal
     if operational_present:
         return Classification(
             "NON_BIOLOGICAL",
@@ -581,7 +590,6 @@ def main() -> None:
             if not is_drug_or_biologic(record):
                 continue
 
-            # Apply override if present
             if nct in overrides:
                 ov = overrides[nct]
                 record["classification_label"] = ov.label
@@ -599,7 +607,6 @@ def main() -> None:
 
     all_records.sort(key=lambda r: r.get("last_update_post_date") or "", reverse=True)
 
-    # For MVP, only keep HIGH and MEDIUM confidence biological failures
     biological_only = [
         r for r in all_records
         if r.get("classification_label") == "BIOLOGICAL_FAILURE"
