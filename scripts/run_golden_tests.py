@@ -8,12 +8,16 @@ Run:
 """
 
 import csv
+import os
 import sys
-from typing import List, Tuple
+from typing import List
 
-# Import classify_why_stopped from the fetch script (keeps dependencies minimal)
-from scripts.fetch_ctgov_oncology_failures import classify_why_stopped, normalize_text
+# Ensure repo root is on sys.path so "scripts" is importable
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
+from scripts.fetch_ctgov_oncology_failures import classify_why_stopped
 
 GOLDEN_PATH = "tests/golden_why_stopped.csv"
 
