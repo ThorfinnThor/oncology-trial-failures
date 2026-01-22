@@ -8,3 +8,4 @@ why_stopped,expected_label,expected_reason
 "Not due to safety concerns; terminated due to lack of efficacy.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
 "Not due to efficacy; stopped because of safety concerns and adverse events.",BIOLOGICAL_FAILURE,SAFETY
 "Reason not provided.",UNCLEAR,OTHER/UNKNOWN
+"The study was ended for strategic reasons and changes in the external environment. The safety profile and risk benefit ratio remained unchanged.",NON_BIOLOGICAL,OPERATIONAL
