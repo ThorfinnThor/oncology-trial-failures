@@ -10,3 +10,24 @@ why_stopped,expected_label,expected_reason
 "Reason not provided.",UNCLEAR,OTHER/UNKNOWN
 "The study was ended for strategic reasons and changes in the external environment. The safety profile and risk benefit ratio remained unchanged.",NON_BIOLOGICAL,OPERATIONAL
 "Efficacy concerns.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Efficacy concerns.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Efficacy concern.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Safety concerns.",BIOLOGICAL_FAILURE,SAFETY
+"Safety concern.",BIOLOGICAL_FAILURE,SAFETY
+"Lack of efficacy.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Insufficient efficacy.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Terminated due to lack of efficacy.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Stopped for futility.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Futility analysis.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Did not meet the primary endpoint.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Primary endpoint not met.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Unmet primary endpoint.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Unacceptable toxicity.",BIOLOGICAL_FAILURE,SAFETY
+"Serious adverse events.",BIOLOGICAL_FAILURE,SAFETY
+"Adverse effects.",BIOLOGICAL_FAILURE,SAFETY
+"Adverse events.",BIOLOGICAL_FAILURE,SAFETY
+"Terminated due to slow accrual.",NON_BIOLOGICAL,OPERATIONAL
+"Per sponsor request. Premature closure was not prompted by any safety or efficacy concerns.",NON_BIOLOGICAL,OPERATIONAL
+"Ended for strategic reasons; safety profile remained unchanged.",NON_BIOLOGICAL,OPERATIONAL
+"Not due to safety concerns; terminated due to lack of efficacy.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Not due to efficacy; stopped because of safety concerns.",BIOLOGICAL_FAILURE,SAFETY
