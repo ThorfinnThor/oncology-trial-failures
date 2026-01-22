@@ -1,0 +1,10 @@
+why_stopped,expected_label,expected_reason
+"Per sponsor request. Premature closure was not prompted by any safety or efficacy concerns.",NON_BIOLOGICAL,OPERATIONAL
+"Terminated due to lack of efficacy in interim analysis.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Study stopped because of unacceptable toxicity and serious adverse events.",BIOLOGICAL_FAILURE,SAFETY
+"Terminated due to slow accrual and difficulty recruiting participants.",NON_BIOLOGICAL,OPERATIONAL
+"Terminated due to business decision and portfolio prioritization; not related to safety.",NON_BIOLOGICAL,OPERATIONAL
+"Stopped for futility after interim analysis showed no benefit.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Not due to safety concerns; terminated due to lack of efficacy.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
+"Not due to efficacy; stopped because of safety concerns and adverse events.",BIOLOGICAL_FAILURE,SAFETY
+"Reason not provided.",UNCLEAR,OTHER/UNKNOWN
