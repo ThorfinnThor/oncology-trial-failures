@@ -4,59 +4,95 @@ import os
 import shutil
 from datetime import datetime, timezone
 
-ROOT_JSON = "data/biological_failure_oncology_trials.json"
-ROOT_CSV = "data/biological_failure_oncology_trials.csv"
+ROOT_ALL_JSON = "data/all_stopped_trials.json"
+ROOT_ALL_CSV = "data/all_stopped_trials.csv"
+
+ROOT_BIO_JSON = "data/biological_failure_trials.json"
+ROOT_BIO_CSV = "data/biological_failure_trials.csv"
 
 PUBLIC_DIR = os.path.join("web", "public")
-PUBLIC_JSON = os.path.join(PUBLIC_DIR, "biological_failure_oncology_trials.json")
-PUBLIC_CSV = os.path.join(PUBLIC_DIR, "biological_failure_oncology_trials.csv")
+
+PUBLIC_ALL_JSON = os.path.join(PUBLIC_DIR, "all_stopped_trials.json")
+PUBLIC_ALL_CSV = os.path.join(PUBLIC_DIR, "all_stopped_trials.csv")
+
+PUBLIC_BIO_JSON = os.path.join(PUBLIC_DIR, "biological_failure_trials.json")
+PUBLIC_BIO_CSV = os.path.join(PUBLIC_DIR, "biological_failure_trials.csv")
+
 PUBLIC_META = os.path.join(PUBLIC_DIR, "dataset_meta.json")
 
 
+def _load_json(path: str):
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
 def main() -> None:
-    if not os.path.exists(ROOT_JSON):
-        raise FileNotFoundError(f"Missing {ROOT_JSON}. Run the data pipeline first.")
+    for p in [ROOT_ALL_JSON, ROOT_BIO_JSON]:
+        if not os.path.exists(p):
+            raise FileNotFoundError(f"Missing {p}. Run the data pipeline first.")
 
     os.makedirs(PUBLIC_DIR, exist_ok=True)
 
-    with open(ROOT_JSON, "r", encoding="utf-8") as f:
-        rows = json.load(f)
+    all_rows = _load_json(ROOT_ALL_JSON)
+    bio_rows = _load_json(ROOT_BIO_JSON)
 
-    # Compute simple metadata
-    record_count = len(rows)
-    max_last_update = ""
-    for r in rows:
-        d = (r.get("last_update_post_date") or "").strip()
-        if d and d > max_last_update:
-            max_last_update = d
+    def max_date(rows):
+        m = ""
+        for r in rows:
+            d = (r.get("last_update_post_date") or "").strip()
+            if d and d > m:
+                m = d
+        return m
+
+    all_max = max_date(all_rows)
+    bio_max = max_date(bio_rows)
 
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    # Version: stable and meaningful for cache invalidation
-    # If max_last_update is empty, fall back to generated_at.
-    version = max_last_update or generated_at
+    # Version is for web cache invalidation; changes when underlying data changes.
+    version = all_max or generated_at
+
+    # Compute top 10 disease areas from ALL rows
+    counts = {}
+    for r in all_rows:
+        a = (r.get("disease_area") or "Other").strip() or "Other"
+        counts[a] = counts.get(a, 0) + 1
+    top_10 = sorted(counts.items(), key=lambda x: (-x[1], x[0]))[:10]
+    top_areas = [{"area": a, "count": c} for a, c in top_10]
 
     meta = {
         "version": version,
         "generated_at_utc": generated_at,
-        "record_count": record_count,
-        "max_last_update_post_date": max_last_update,
         "source": "ClinicalTrials.gov API v2",
-        "notes": "Static export for the webapp; version changes when dataset updates.",
+        "all": {
+            "record_count": len(all_rows),
+            "max_last_update_post_date": all_max,
+        },
+        "biological_failure": {
+            "record_count": len(bio_rows),
+            "max_last_update_post_date": bio_max,
+        },
+        "top_areas": top_areas,
+        "notes": "Static exports for the webapp. Disease areas are keyword-based taxonomy derived from conditions/MeSH terms.",
     }
 
-    # Copy JSON (pretty large) and optional CSV
-    shutil.copyfile(ROOT_JSON, PUBLIC_JSON)
+    shutil.copyfile(ROOT_ALL_JSON, PUBLIC_ALL_JSON)
+    shutil.copyfile(ROOT_BIO_JSON, PUBLIC_BIO_JSON)
 
-    if os.path.exists(ROOT_CSV):
-        shutil.copyfile(ROOT_CSV, PUBLIC_CSV)
+    if os.path.exists(ROOT_ALL_CSV):
+        shutil.copyfile(ROOT_ALL_CSV, PUBLIC_ALL_CSV)
+    if os.path.exists(ROOT_BIO_CSV):
+        shutil.copyfile(ROOT_BIO_CSV, PUBLIC_BIO_CSV)
 
     with open(PUBLIC_META, "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
-    print(f"Wrote: {PUBLIC_JSON}")
-    if os.path.exists(PUBLIC_CSV):
-        print(f"Wrote: {PUBLIC_CSV}")
+    print(f"Wrote: {PUBLIC_ALL_JSON}")
+    print(f"Wrote: {PUBLIC_BIO_JSON}")
+    if os.path.exists(ROOT_ALL_CSV):
+        print(f"Wrote: {PUBLIC_ALL_CSV}")
+    if os.path.exists(ROOT_BIO_CSV):
+        print(f"Wrote: {PUBLIC_BIO_CSV}")
     print(f"Wrote: {PUBLIC_META}")
 
 
