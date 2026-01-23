@@ -10,6 +10,7 @@ Hardening features:
 - Weighted phrase scoring (fixes short reasons like "Efficacy concerns." and "Insufficient efficacy.")
 - Causal-cue scoring (due to/because of/futility/endpoint not met)
 - Handles "no benefit-risk impact" as NON_BIOLOGICAL (prevents false "no benefit" efficacy hits)
+- Handles "non-safety reasons" and similar (prevents "safety" substring false hits)
 - Confidence + evidence columns for transparency
 - Overrides from overrides.csv
 
@@ -152,6 +153,13 @@ OPERATIONAL_TERMS = [
     "industrial development",
     "no longer pursuing",
 
+    # NEW: common business-context phrases
+    "competitive landscape",
+    "competitive",
+    "market dynamics",
+    "market",
+    "portfolio",
+
     "covid", "pandemic",
 ]
 
@@ -164,7 +172,7 @@ EFFICACY_WEIGHTS: Dict[str, int] = {
     "insufficient efficacy": 3,
     "no efficacy": 3,
     "ineffective": 2,
-    "no benefit": 2,  # NOTE: we will protect against the "no benefit-risk impact" false match
+    "no benefit": 2,  # protected against "no benefit-risk impact"
 
     "unmet primary endpoint": 3,
     "unmet endpoint": 2,
@@ -229,7 +237,6 @@ NEGATION_CUES = [
 ]
 
 # Special phrase that should NOT be treated as "no benefit" efficacy failure
-# but rather as "no impact on benefit-risk" (operational / strategic)
 NO_BENEFIT_RISK_IMPACT_PATTERNS = [
     "no benefit-risk impact",
     "no benefit risk impact",
@@ -237,6 +244,20 @@ NO_BENEFIT_RISK_IMPACT_PATTERNS = [
     "no impact on benefit risk",
     "no impact to benefit-risk",
     "no impact to benefit risk",
+]
+
+# NEW: protect "non-safety" / "non-efficacy" so substring scoring does not fire on "safety"/"efficacy"
+NON_SAFETY_PATTERNS = [
+    "non-safety",
+    "non safety",
+    "non–safety",
+    "nonsafety",
+]
+NON_EFFICACY_PATTERNS = [
+    "non-efficacy",
+    "non efficacy",
+    "non–efficacy",
+    "nonefficacy",
 ]
 
 
@@ -328,8 +349,8 @@ def _find_terms(text: str, terms: List[str]) -> List[str]:
     return [t for t in terms if t in text]
 
 
-def _contains_no_benefit_risk_impact(text: str) -> bool:
-    return any(p in text for p in NO_BENEFIT_RISK_IMPACT_PATTERNS)
+def _contains_any(text: str, patterns: List[str]) -> bool:
+    return any(p in text for p in patterns)
 
 
 def _protect_no_benefit_risk_impact(text: str) -> str:
@@ -343,17 +364,38 @@ def _protect_no_benefit_risk_impact(text: str) -> str:
     return out
 
 
-def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
+def _protect_non_safety_efficacy(text: str) -> str:
+    """
+    Prevents scoring terms like 'safety' from matching inside 'non-safety'.
+    Also prevents 'efficacy' from matching inside 'non-efficacy'.
+    """
+    out = text
+    for p in NON_SAFETY_PATTERNS:
+        out = out.replace(p, "non_safety")
+    for p in NON_EFFICACY_PATTERNS:
+        out = out.replace(p, "non_efficacy")
+    return out
+
+
+def _explicit_denial_flags(text_raw: str) -> Tuple[bool, bool]:
     """
     (denies_safety, denies_efficacy) evaluated per clause to avoid cross-clause bleed.
     Includes denial patterns that indicate BIO reasons are NOT driving the stop.
     """
-    clauses = [c.strip() for c in re.split(r"[.;:]", text) if c.strip()]
+    clauses = [c.strip() for c in re.split(r"[.;:]", text_raw) if c.strip()]
 
     denies_safety = False
     denies_efficacy = False
 
     for clause in clauses:
+        # Special: "non-safety reasons" => explicit safety denial (and usually not bio-causal)
+        if _contains_any(clause, NON_SAFETY_PATTERNS):
+            denies_safety = True
+
+        # Special: "non-efficacy reasons"
+        if _contains_any(clause, NON_EFFICACY_PATTERNS):
+            denies_efficacy = True
+
         # Combined denial in same clause
         if ("not" in clause or "no " in clause or "without" in clause or "unrelated" in clause):
             if ("safety" in clause and "efficacy" in clause and ("concern" in clause or "signal" in clause)):
@@ -361,7 +403,7 @@ def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
                 denies_efficacy = True
 
         # Special: "no impact on benefit-risk" => denial of safety causality (and often efficacy causality too)
-        if _contains_no_benefit_risk_impact(clause):
+        if _contains_any(clause, NO_BENEFIT_RISK_IMPACT_PATTERNS):
             denies_safety = True
             denies_efficacy = True
 
@@ -453,19 +495,29 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     if not txt_raw:
         return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", "")
 
-    # Protect special phrase so "no benefit" does not trigger efficacy failure when it means benefit-risk impact.
-    txt = _protect_no_benefit_risk_impact(txt_raw)
+    denies_safety, denies_efficacy = _explicit_denial_flags(txt_raw)
 
-    denies_safety, denies_efficacy = _explicit_denial_flags(txt_raw)  # use raw for clause semantics
+    # Protect phrases before substring scoring
+    txt = _protect_no_benefit_risk_impact(txt_raw)
+    txt = _protect_non_safety_efficacy(txt)
 
     operational_hits = _find_terms(txt, OPERATIONAL_TERMS)
     operational_present = len(operational_hits) > 0
 
+    # NEW: if "non-safety" appears and there is any business/operational context, classify as NON_BIOLOGICAL
+    if _contains_any(txt_raw, NON_SAFETY_PATTERNS) and operational_present:
+        return Classification(
+            "NON_BIOLOGICAL",
+            "OPERATIONAL",
+            "HIGH",
+            "special:non_safety_reason;operational:" + "|".join(operational_hits)
+        )
+
     safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf", SAFETY_WEIGHTS)
     efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff", EFFICACY_WEIGHTS)
 
-    # If the special phrase exists, force operational classification when there is strategic/dev context.
-    if _contains_no_benefit_risk_impact(txt_raw) and operational_present:
+    # If the special benefit-risk phrase exists, force operational classification when there is strategic/dev context.
+    if _contains_any(txt_raw, NO_BENEFIT_RISK_IMPACT_PATTERNS) and operational_present:
         return Classification(
             "NON_BIOLOGICAL",
             "OPERATIONAL",
