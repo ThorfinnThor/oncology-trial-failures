@@ -9,6 +9,7 @@ Hardening features:
 - Clause-based explicit denial flags (safety vs efficacy handled separately)
 - Weighted phrase scoring (fixes short reasons like "Efficacy concerns." and "Insufficient efficacy.")
 - Causal-cue scoring (due to/because of/futility/endpoint not met)
+- Handles "no benefit-risk impact" as NON_BIOLOGICAL (prevents false "no benefit" efficacy hits)
 - Confidence + evidence columns for transparency
 - Overrides from overrides.csv
 
@@ -69,7 +70,7 @@ def normalize_text(s: Optional[str]) -> str:
 
 
 # -----------------------------
-# Keyword banks (expanded)
+# Keyword banks
 # -----------------------------
 
 SAFETY_TERMS = [
@@ -132,8 +133,13 @@ OPERATIONAL_TERMS = [
     "sponsor decision",
     "sponsor request", "per sponsor request", "at sponsor request",
     "sponsor-initiated", "sponsor initiated",
+
     "company decision", "business decision", "strategic decision",
     "strategic reasons",
+    "strategic prioritisation", "strategic prioritization",
+    "prioritisation", "prioritization",
+    "broader development",
+
     "portfolio prioritization", "prioritization decision",
     "commercial reasons",
     "external environment", "changes in the external environment",
@@ -149,17 +155,16 @@ OPERATIONAL_TERMS = [
     "covid", "pandemic",
 ]
 
-# Weighted phrases: these should trigger BIO failure even when short.
-# UPDATED: added "insufficient efficacy" and a few similar phrases so they pass the MEDIUM threshold.
+# Weighted phrases (boost short reasons to cross MEDIUM threshold)
 EFFICACY_WEIGHTS: Dict[str, int] = {
     "efficacy concerns": 2,
     "efficacy concern": 2,
 
     "lack of efficacy": 3,
-    "insufficient efficacy": 3,   # NEW FIX
-    "no efficacy": 3,             # sensible
-    "ineffective": 2,             # sensible
-    "no benefit": 2,              # sensible
+    "insufficient efficacy": 3,
+    "no efficacy": 3,
+    "ineffective": 2,
+    "no benefit": 2,  # NOTE: we will protect against the "no benefit-risk impact" false match
 
     "unmet primary endpoint": 3,
     "unmet endpoint": 2,
@@ -221,6 +226,17 @@ NEGATION_CUES = [
     "not attributable to",
     "unrelated to",
     "not caused by",
+]
+
+# Special phrase that should NOT be treated as "no benefit" efficacy failure
+# but rather as "no impact on benefit-risk" (operational / strategic)
+NO_BENEFIT_RISK_IMPACT_PATTERNS = [
+    "no benefit-risk impact",
+    "no benefit risk impact",
+    "no impact on benefit-risk",
+    "no impact on benefit risk",
+    "no impact to benefit-risk",
+    "no impact to benefit risk",
 ]
 
 
@@ -312,7 +328,26 @@ def _find_terms(text: str, terms: List[str]) -> List[str]:
     return [t for t in terms if t in text]
 
 
+def _contains_no_benefit_risk_impact(text: str) -> bool:
+    return any(p in text for p in NO_BENEFIT_RISK_IMPACT_PATTERNS)
+
+
+def _protect_no_benefit_risk_impact(text: str) -> str:
+    """
+    Prevents 'no benefit' from matching inside 'no benefit-risk impact' variants.
+    We replace the special phrase with a token.
+    """
+    out = text
+    for p in NO_BENEFIT_RISK_IMPACT_PATTERNS:
+        out = out.replace(p, "no_benefit_risk_impact")
+    return out
+
+
 def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
+    """
+    (denies_safety, denies_efficacy) evaluated per clause to avoid cross-clause bleed.
+    Includes denial patterns that indicate BIO reasons are NOT driving the stop.
+    """
     clauses = [c.strip() for c in re.split(r"[.;:]", text) if c.strip()]
 
     denies_safety = False
@@ -324,6 +359,11 @@ def _explicit_denial_flags(text: str) -> Tuple[bool, bool]:
             if ("safety" in clause and "efficacy" in clause and ("concern" in clause or "signal" in clause)):
                 denies_safety = True
                 denies_efficacy = True
+
+        # Special: "no impact on benefit-risk" => denial of safety causality (and often efficacy causality too)
+        if _contains_no_benefit_risk_impact(clause):
+            denies_safety = True
+            denies_efficacy = True
 
         # Safety denial cues
         if "safety" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause:
@@ -409,17 +449,29 @@ def _score_dimension(
 
 
 def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
-    txt = normalize_text(why_stopped)
-    if not txt:
+    txt_raw = normalize_text(why_stopped)
+    if not txt_raw:
         return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", "")
 
-    denies_safety, denies_efficacy = _explicit_denial_flags(txt)
+    # Protect special phrase so "no benefit" does not trigger efficacy failure when it means benefit-risk impact.
+    txt = _protect_no_benefit_risk_impact(txt_raw)
+
+    denies_safety, denies_efficacy = _explicit_denial_flags(txt_raw)  # use raw for clause semantics
 
     operational_hits = _find_terms(txt, OPERATIONAL_TERMS)
     operational_present = len(operational_hits) > 0
 
     safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf", SAFETY_WEIGHTS)
     efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff", EFFICACY_WEIGHTS)
+
+    # If the special phrase exists, force operational classification when there is strategic/dev context.
+    if _contains_no_benefit_risk_impact(txt_raw) and operational_present:
+        return Classification(
+            "NON_BIOLOGICAL",
+            "OPERATIONAL",
+            "HIGH",
+            "special:no_benefit_risk_impact;operational:" + "|".join(operational_hits)
+        )
 
     if operational_present:
         safety_score -= 1
@@ -445,9 +497,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             "operational:" + "|".join(operational_hits) + ";denial:safety"
         )
 
-    # With weighted phrases, these thresholds behave well:
-    # - HIGH >= 6
-    # - MEDIUM >= 2 (no operational present)
+    # Thresholds with weighted phrases
     if best_score >= 6:
         return Classification(
             "BIOLOGICAL_FAILURE",
