@@ -1,9 +1,8 @@
-name: Update oncology trial failure data
+name: Update trial failure data
 
 on:
   schedule:
-    # Runs every Monday at 06:15 UTC (free). Change anytime.
-    - cron: "15 6 * * 1"
+    - cron: "15 6 * * 1" # Monday 06:15 UTC
   workflow_dispatch: {}
 
 permissions:
@@ -37,10 +36,10 @@ jobs:
         run: |
           python scripts/fetch_ctgov_oncology_failures.py
         env:
-          MAX_STUDIES_TOTAL: "20000"
+          MAX_STUDIES_TOTAL: "50000"
           LAST_UPDATE_FROM: "2015-01-01"
           PAGE_SIZE: "100"
-          SLEEP_SECONDS: "1.3"
+          SLEEP_SECONDS: "1.2"
           OVERRIDES_PATH: "overrides.csv"
 
       - name: Publish dataset to web/public
@@ -52,12 +51,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          # data outputs
           git add data/*.csv data/*.json overrides.csv || true
-
-          # web/public outputs for the deployed webapp
           git add web/public/*.json web/public/*.csv || true
 
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "Update oncology trial failure dataset"
+          git commit -m "Update trial dataset"
           git push
