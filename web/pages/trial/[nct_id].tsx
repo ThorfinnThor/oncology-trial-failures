@@ -2,8 +2,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { loadTrialsClient, DatasetMeta } from "@/lib/data";
-import { TrialRow } from "@/lib/types";
+import { loadDatasetClient } from "@/lib/data";
+import { DatasetMeta, TrialRow } from "@/lib/types";
 
 function Field({ label, value }: { label: string; value?: string }) {
   return (
@@ -28,7 +28,8 @@ export default function TrialPage() {
     (async () => {
       try {
         setLoading(true);
-        const { meta, trials } = await loadTrialsClient();
+        // Use ALL dataset for detail page to maximize chance the trial exists
+        const { meta, trials } = await loadDatasetClient("all");
         if (!alive) return;
         setMeta(meta);
         setTrials(trials);
@@ -52,7 +53,7 @@ export default function TrialPage() {
   return (
     <>
       <Head>
-        <title>{nct_id ? `${nct_id} • Oncology Trial Stop Reasons` : "Oncology Trial Stop Reasons"}</title>
+        <title>{nct_id ? `${nct_id} • Stopped Trials Explorer` : "Stopped Trials Explorer"}</title>
       </Head>
 
       <div className="min-h-screen bg-gray-50">
@@ -67,11 +68,11 @@ export default function TrialPage() {
             <div className="mt-2 text-xs text-gray-500">
               {meta ? (
                 <>
-                  Dataset version: <span className="font-medium">{meta.version}</span> • Records:{" "}
-                  <span className="font-medium">{meta.record_count}</span>
+                  Dataset version: <span className="font-medium">{meta.version}</span> • Generated:{" "}
+                  <span className="font-medium">{meta.generated_at_utc}</span>
                 </>
               ) : (
-                <>Dataset metadata loading…</>
+                <>Loading metadata…</>
               )}
             </div>
 
@@ -81,28 +82,28 @@ export default function TrialPage() {
 
         <main className="mx-auto max-w-4xl px-4 py-6 space-y-4">
           {loading && (
-            <div className="rounded-xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
+            <div className="rounded-2xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
               Loading trial…
             </div>
           )}
 
           {err && (
-            <div className="rounded-xl border border-red-200 bg-white p-4 text-sm text-red-700 shadow-sm">
+            <div className="rounded-2xl border border-red-200 bg-white p-4 text-sm text-red-700 shadow-sm">
               {err}
             </div>
           )}
 
           {!loading && !err && !trial && (
-            <div className="rounded-xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
+            <div className="rounded-2xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
               Trial not found in the current dataset version.
             </div>
           )}
 
           {!loading && !err && trial && (
             <>
-              <div className="rounded-xl border bg-white p-4 shadow-sm">
+              <div className="rounded-2xl border bg-white p-4 shadow-sm">
                 <h2 className="text-lg font-semibold text-gray-900">{trial.brief_title}</h2>
-                <div className="mt-3 text-sm text-gray-600">
+                <div className="mt-2 text-sm text-gray-600">
                   <a className="text-blue-700 hover:underline" href={trial.url} target="_blank" rel="noreferrer">
                     Open on ClinicalTrials.gov
                   </a>
@@ -110,23 +111,29 @@ export default function TrialPage() {
 
                 <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
                   <Field label="Status" value={trial.overall_status} />
+                  <Field label="Disease area" value={trial.disease_area} />
                   <Field label="Reason" value={trial.classification_reason} />
-                  <Field label="Confidence" value={trial.classification_confidence} />
+                </div>
+
+                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Field label="Sponsor" value={trial.lead_sponsor} />
+                  <Field label="Collaborators" value={trial.collaborators} />
                 </div>
 
                 <div className="mt-4">
                   <Field label="Why stopped (raw)" value={trial.why_stopped} />
                 </div>
-                <div className="mt-4">
+
+                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                  <Field label="Confidence (rule-based)" value={trial.classification_confidence} />
                   <Field label="Classifier evidence" value={trial.classification_evidence} />
                 </div>
               </div>
 
-              <div className="rounded-xl border bg-white p-4 shadow-sm">
+              <div className="rounded-2xl border bg-white p-4 shadow-sm">
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <Field label="Lead sponsor" value={trial.lead_sponsor} />
-                  <Field label="Collaborators" value={trial.collaborators} />
                   <Field label="Conditions" value={trial.conditions} />
+                  <Field label="MeSH terms" value={trial.mesh_terms} />
                   <Field label="Interventions" value={trial.intervention_names} />
                   <Field label="Intervention types" value={trial.intervention_types} />
                   <Field label="Phase(s)" value={trial.phases} />
@@ -136,14 +143,6 @@ export default function TrialPage() {
                   <Field label="Primary completion" value={trial.primary_completion_date} />
                   <Field label="Completion" value={trial.completion_date} />
                 </div>
-              </div>
-
-              <div className="rounded-xl border bg-white p-4 text-xs text-gray-600 shadow-sm">
-                <div className="font-medium text-gray-900">Important</div>
-                <p className="mt-1">
-                  This page loads from a cached static dataset. The registry may change after dataset generation.
-                  Always verify on ClinicalTrials.gov.
-                </p>
               </div>
             </>
           )}
