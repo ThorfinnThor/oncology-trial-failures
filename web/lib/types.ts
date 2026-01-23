@@ -9,6 +9,10 @@ export type TrialRow = {
   classification_confidence: "HIGH" | "MEDIUM" | "LOW" | string;
   classification_evidence: string;
 
+  disease_area: string;
+  disease_areas_matched: string;
+  mesh_terms: string;
+
   study_type: string;
   phases: string;
   lead_sponsor: string;
@@ -23,4 +27,20 @@ export type TrialRow = {
   last_update_post_date: string;
 
   url: string;
+};
+
+export type DatasetMeta = {
+  version: string;
+  generated_at_utc: string;
+  source: string;
+  all: {
+    record_count: number;
+    max_last_update_post_date: string;
+  };
+  biological_failure: {
+    record_count: number;
+    max_last_update_post_date: string;
+  };
+  top_areas: { area: string; count: number }[];
+  notes?: string;
 };
