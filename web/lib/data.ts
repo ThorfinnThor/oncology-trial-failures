@@ -1,60 +1,58 @@
-import { TrialRow } from "./types";
-
-export type DatasetMeta = {
-  version: string;
-  generated_at_utc: string;
-  record_count: number;
-  max_last_update_post_date: string;
-  source: string;
-  notes?: string;
-};
+import { DatasetMeta, TrialRow } from "./types";
 
 const META_URL = "/dataset_meta.json";
-const DATA_URL = "/biological_failure_oncology_trials.json";
+const ALL_URL = "/all_stopped_trials.json";
+const BIO_URL = "/biological_failure_trials.json";
 
-const LS_META_KEY = "otf_meta_v1";
-const LS_DATA_KEY = "otf_data_v1";
+const LS_META_KEY = "tt_meta_v1";
+const LS_ALL_KEY = "tt_all_v1";
+const LS_BIO_KEY = "tt_bio_v1";
 
-/**
- * Load trials in the browser with caching + invalidation.
- * - Fetch meta first (tiny file)
- * - If meta.version matches localStorage, use cached dataset
- * - Else fetch dataset and refresh cache
- */
-export async function loadTrialsClient(): Promise<{ meta: DatasetMeta; trials: TrialRow[] }> {
-  const metaResp = await fetch(META_URL, { cache: "no-cache" });
-  if (!metaResp.ok) throw new Error(`Failed to load ${META_URL}: ${metaResp.status}`);
-  const meta = (await metaResp.json()) as DatasetMeta;
+export async function loadMeta(): Promise<DatasetMeta> {
+  const r = await fetch(META_URL, { cache: "no-cache" });
+  if (!r.ok) throw new Error(`Failed to load ${META_URL}: ${r.status}`);
+  return (await r.json()) as DatasetMeta;
+}
+
+function normalize(rows: TrialRow[]): TrialRow[] {
+  return (rows || [])
+    .filter((r) => r && typeof r.nct_id === "string" && r.nct_id.length > 0)
+    .sort((a, b) => (b.last_update_post_date || "").localeCompare(a.last_update_post_date || ""));
+}
+
+async function fetchJson<T>(url: string): Promise<T> {
+  const r = await fetch(url, { cache: "force-cache" });
+  if (!r.ok) throw new Error(`Failed to load ${url}: ${r.status}`);
+  return (await r.json()) as T;
+}
+
+export async function loadDatasetClient(mode: "all" | "bio"): Promise<{ meta: DatasetMeta; trials: TrialRow[] }> {
+  const meta = await loadMeta();
+  const dataKey = mode === "all" ? LS_ALL_KEY : LS_BIO_KEY;
+  const url = mode === "all" ? ALL_URL : BIO_URL;
 
   try {
     const cachedMetaRaw = localStorage.getItem(LS_META_KEY);
-    const cachedDataRaw = localStorage.getItem(LS_DATA_KEY);
-
+    const cachedDataRaw = localStorage.getItem(dataKey);
     if (cachedMetaRaw && cachedDataRaw) {
       const cachedMeta = JSON.parse(cachedMetaRaw) as DatasetMeta;
       if (cachedMeta?.version && cachedMeta.version === meta.version) {
-        const cachedTrials = JSON.parse(cachedDataRaw) as TrialRow[];
-        return { meta, trials: cachedTrials };
+        const cached = JSON.parse(cachedDataRaw) as TrialRow[];
+        return { meta, trials: cached };
       }
     }
   } catch {
-    // Ignore cache read/parse errors and refetch
+    // ignore cache errors
   }
 
-  const dataResp = await fetch(DATA_URL, { cache: "force-cache" });
-  if (!dataResp.ok) throw new Error(`Failed to load ${DATA_URL}: ${dataResp.status}`);
-  const trials = (await dataResp.json()) as TrialRow[];
-
-  // Normalize/sort client-side
-  const cleaned = (trials || [])
-    .filter((r) => r && typeof r.nct_id === "string" && r.nct_id.length > 0)
-    .sort((a, b) => (b.last_update_post_date || "").localeCompare(a.last_update_post_date || ""));
+  const rows = await fetchJson<TrialRow[]>(url);
+  const cleaned = normalize(rows);
 
   try {
     localStorage.setItem(LS_META_KEY, JSON.stringify(meta));
-    localStorage.setItem(LS_DATA_KEY, JSON.stringify(cleaned));
+    localStorage.setItem(dataKey, JSON.stringify(cleaned));
   } catch {
-    // If storage is full, skip caching; site still works.
+    // ignore storage quota
   }
 
   return { meta, trials: cleaned };
