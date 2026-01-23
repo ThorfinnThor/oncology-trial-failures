@@ -30,6 +30,31 @@ type Props = {
   confidences: string[];
 };
 
+function Select({
+  label,
+  value,
+  onChange,
+  children,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <div>
+      <label className="block text-[11px] font-semibold tracking-wide text-gray-600 uppercase">{label}</label>
+      <select
+        className="mt-1 w-full rounded-xl border px-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      >
+        {children}
+      </select>
+    </div>
+  );
+}
+
 export function Filters(props: Props) {
   const {
     q, setQ,
@@ -46,66 +71,60 @@ export function Filters(props: Props) {
 
   return (
     <div className="rounded-2xl border bg-white p-4 shadow-sm">
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <label className="block text-xs font-medium text-gray-600">Search</label>
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+        {/* Search */}
+        <div className="lg:col-span-6">
+          <label className="block text-[11px] font-semibold tracking-wide text-gray-600 uppercase">Search</label>
           <input
-            className="mt-1 w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-            placeholder="Title, sponsor, collaborator, drug, condition, why stopped, NCT…"
+            className="mt-1 w-full rounded-xl border px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            placeholder="Search trials, sponsors, collaborators, drugs, conditions, NCT…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
+          <div className="mt-1 text-xs text-gray-500">
+            Tip: try a drug name, company, NCT ID, or a disease keyword.
+          </div>
         </div>
 
+        {/* Primary filters */}
         <div className="lg:col-span-3">
-          <label className="block text-xs font-medium text-gray-600">Disease area</label>
-          <select
-            className="mt-1 w-full rounded-lg border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-          >
+          <Select label="Disease area" value={area} onChange={setArea}>
             <option value="">All areas</option>
             {areas.map((a) => (
               <option key={a} value={a}>{a}</option>
             ))}
-          </select>
-        </div>
-
-        <div className="lg:col-span-2">
-          <label className="block text-xs font-medium text-gray-600">Reason</label>
-          <select
-            className="mt-1 w-full rounded-lg border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-            value={reason}
-            onChange={(e) => setReason(e.target.value)}
-          >
-            <option value="">All</option>
-            {reasons.map((r) => (
-              <option key={r} value={r}>{r}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="lg:col-span-2">
-          <label className="block text-xs font-medium text-gray-600">Status</label>
-          <select
-            className="mt-1 w-full rounded-lg border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option value="">All</option>
-            {statuses.map((s) => (
-              <option key={s} value={s}>{s}</option>
-            ))}
-          </select>
+          </Select>
         </div>
 
         <div className="lg:col-span-3">
-          <label className="block text-xs font-medium text-gray-600">Sort</label>
-          <select
-            className="mt-1 w-full rounded-lg border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-          >
+          <Select label="Stop reason" value={reason} onChange={setReason}>
+            <option value="">All reasons</option>
+            {reasons.map((r) => (
+              <option key={r} value={r}>{r}</option>
+            ))}
+          </Select>
+        </div>
+
+        <div className="lg:col-span-3">
+          <Select label="Status" value={status} onChange={setStatus}>
+            <option value="">All statuses</option>
+            {statuses.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </Select>
+        </div>
+
+        <div className="lg:col-span-3">
+          <Select label="Phase" value={phase} onChange={setPhase}>
+            <option value="">All phases</option>
+            {phases.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
+          </Select>
+        </div>
+
+        <div className="lg:col-span-3">
+          <Select label="Sort" value={sort} onChange={setSort}>
             <option value="updated_desc">Last update (newest)</option>
             <option value="updated_asc">Last update (oldest)</option>
             <option value="title_asc">Title (A→Z)</option>
@@ -114,48 +133,30 @@ export function Filters(props: Props) {
             <option value="sponsor_desc">Sponsor (Z→A)</option>
             <option value="area_asc">Disease area (A→Z)</option>
             <option value="area_desc">Disease area (Z→A)</option>
-          </select>
+          </Select>
         </div>
 
-        <div className="lg:col-span-2">
-          <label className="block text-xs font-medium text-gray-600">Phase</label>
-          <select
-            className="mt-1 w-full rounded-lg border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-            value={phase}
-            onChange={(e) => setPhase(e.target.value)}
-          >
-            <option value="">All</option>
-            {phases.map((p) => (
-              <option key={p} value={p}>{p}</option>
-            ))}
-          </select>
-        </div>
-
+        {/* Advanced */}
         <div className="lg:col-span-12">
           <button
             type="button"
-            className="mt-1 inline-flex items-center gap-2 rounded-lg border bg-white px-3 py-2 text-xs font-medium text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center rounded-xl border bg-white px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50"
             onClick={() => setAdvancedOpen((v) => !v)}
           >
-            {advancedOpen ? "Hide advanced" : "Show advanced"}
+            {advancedOpen ? "Hide advanced options" : "Show advanced options"}
           </button>
 
           {advancedOpen && (
-            <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div className="mt-3 grid grid-cols-1 gap-4 md:grid-cols-3">
               <div>
-                <label className="block text-xs font-medium text-gray-600">Confidence (advanced)</label>
-                <select
-                  className="mt-1 w-full rounded-lg border px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-200"
-                  value={confidence}
-                  onChange={(e) => setConfidence(e.target.value)}
-                >
+                <Select label="Confidence (advanced)" value={confidence} onChange={setConfidence}>
                   <option value="">All</option>
                   {confidences.map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
-                </select>
+                </Select>
                 <div className="mt-1 text-xs text-gray-500">
-                  Confidence is derived from rule-based scoring of the “why stopped” text (evidence and negations).
+                  Confidence indicates how strongly the stop-reason text supports the label.
                 </div>
               </div>
             </div>
