@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -26,7 +29,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # --- NEW: Golden tests step ---
       - name: Run golden tests
         run: |
           python scripts/run_golden_tests.py
@@ -41,11 +43,21 @@ jobs:
           SLEEP_SECONDS: "1.3"
           OVERRIDES_PATH: "overrides.csv"
 
+      - name: Publish dataset to web/public
+        run: |
+          python scripts/publish_public_assets.py
+
       - name: Commit updated data
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # data outputs
           git add data/*.csv data/*.json overrides.csv || true
+
+          # web/public outputs for the deployed webapp
+          git add web/public/*.json web/public/*.csv || true
+
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "Update oncology trial failure dataset"
           git push
