@@ -1,55 +1,22 @@
-import { GetStaticProps } from "next";
 import Head from "next/head";
-import { useMemo, useState } from "react";
-import { TRIALS, splitSemicolonValues } from "@/lib/data";
+import { useEffect, useMemo, useState } from "react";
+import { loadTrialsClient, splitSemicolonValues, DatasetMeta } from "@/lib/data";
 import { TrialRow } from "@/lib/types";
 import { Filters } from "@/components/Filters";
 import { TrialTable } from "@/components/TrialTable";
 import { Pagination } from "@/components/Pagination";
 
-type Props = {
-  trials: TrialRow[];
-  facets: {
-    reasons: string[];
-    confidences: string[];
-    statuses: string[];
-    phases: string[];
-  };
-  meta: {
-    total: number;
-    maxLastUpdate: string;
-  };
-};
-
-export const getStaticProps: GetStaticProps<Props> = async () => {
-  const trials = TRIALS;
-
-  const reasons = Array.from(new Set(trials.map((t) => t.classification_reason).filter(Boolean))).sort();
-  const confidences = Array.from(new Set(trials.map((t) => t.classification_confidence).filter(Boolean))).sort();
-  const statuses = Array.from(new Set(trials.map((t) => t.overall_status).filter(Boolean))).sort();
-
-  const phaseSet = new Set<string>();
-  for (const t of trials) {
-    for (const p of splitSemicolonValues(t.phases || "")) phaseSet.add(p);
-  }
-  const phases = Array.from(phaseSet).sort();
-
-  const maxLastUpdate = trials.reduce((acc, t) => (t.last_update_post_date > acc ? t.last_update_post_date : acc), "");
-
-  return {
-    props: {
-      trials,
-      facets: { reasons, confidences, statuses, phases },
-      meta: { total: trials.length, maxLastUpdate },
-    },
-  };
-};
-
 function includesAny(haystack: string, needle: string) {
   return haystack.toLowerCase().includes(needle.toLowerCase());
 }
 
-export default function Home({ trials, facets, meta }: Props) {
+export default function Home() {
+  const [trials, setTrials] = useState<TrialRow[]>([]);
+  const [meta, setMeta] = useState<DatasetMeta | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState<string | null>(null);
+
+  // Filters
   const [q, setQ] = useState("");
   const [reason, setReason] = useState("");
   const [confidence, setConfidence] = useState("");
@@ -59,6 +26,43 @@ export default function Home({ trials, facets, meta }: Props) {
 
   const [page, setPage] = useState(1);
   const pageSize = 50;
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        setLoading(true);
+        const { meta, trials } = await loadTrialsClient();
+        if (!alive) return;
+        setMeta(meta);
+        setTrials(trials);
+        setErr(null);
+      } catch (e: any) {
+        if (!alive) return;
+        setErr(e?.message || "Failed to load dataset.");
+      } finally {
+        if (!alive) return;
+        setLoading(false);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const facets = useMemo(() => {
+    const reasons = Array.from(new Set(trials.map((t) => t.classification_reason).filter(Boolean))).sort();
+    const confidences = Array.from(new Set(trials.map((t) => t.classification_confidence).filter(Boolean))).sort();
+    const statuses = Array.from(new Set(trials.map((t) => t.overall_status).filter(Boolean))).sort();
+
+    const phaseSet = new Set<string>();
+    for (const t of trials) {
+      for (const p of splitSemicolonValues(t.phases || "")) phaseSet.add(p);
+    }
+    const phases = Array.from(phaseSet).sort();
+
+    return { reasons, confidences, statuses, phases };
+  }, [trials]);
 
   const filtered = useMemo(() => {
     let rows = trials;
@@ -142,46 +146,105 @@ export default function Home({ trials, facets, meta }: Props) {
               Static dataset of interventional oncology drug/biologic trials (SUSPENDED/TERMINATED) classified from{" "}
               <span className="font-medium">why stopped</span> text. Always verify via the linked registry page.
             </p>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <a
+                className="rounded-md border bg-white px-3 py-1.5 text-sm hover:bg-gray-50"
+                href="/biological_failure_oncology_trials.csv"
+              >
+                Download CSV
+              </a>
+              <a
+                className="rounded-md border bg-white px-3 py-1.5 text-sm hover:bg-gray-50"
+                href="/biological_failure_oncology_trials.json"
+              >
+                Download JSON
+              </a>
+              <a
+                className="rounded-md border bg-white px-3 py-1.5 text-sm hover:bg-gray-50"
+                href="/dataset_meta.json"
+              >
+                Dataset metadata
+              </a>
+            </div>
+
             <div className="mt-2 text-xs text-gray-500">
-              Total records: <span className="font-medium">{meta.total}</span> • Latest update in dataset:{" "}
-              <span className="font-medium">{meta.maxLastUpdate || "—"}</span>
+              {meta ? (
+                <>
+                  Records: <span className="font-medium">{meta.record_count}</span> • Latest update in dataset:{" "}
+                  <span className="font-medium">{meta.max_last_update_post_date || "—"}</span> • Generated:{" "}
+                  <span className="font-medium">{meta.generated_at_utc}</span>
+                </>
+              ) : (
+                <>Dataset metadata loading…</>
+              )}
             </div>
           </div>
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 space-y-4">
-          <Filters
-            q={q}
-            setQ={(v) => { setQ(v); setPage(1); }}
-            reason={reason}
-            setReason={(v) => { setReason(v); setPage(1); }}
-            confidence={confidence}
-            setConfidence={(v) => { setConfidence(v); setPage(1); }}
-            status={status}
-            setStatus={(v) => { setStatus(v); setPage(1); }}
-            phase={phase}
-            setPhase={(v) => { setPhase(v); setPage(1); }}
-            sort={sort}
-            setSort={(v) => { setSort(v); setPage(1); }}
-            reasons={facets.reasons}
-            confidences={facets.confidences}
-            statuses={facets.statuses}
-            phases={facets.phases}
-          />
-
-          <Pagination page={safePage} pageSize={pageSize} total={total} onPageChange={setPage} />
-
-          <TrialTable rows={pageRows} />
-
-          <Pagination page={safePage} pageSize={pageSize} total={total} onPageChange={setPage} />
-
-          <div className="rounded-xl border bg-white p-4 text-xs text-gray-600 shadow-sm">
-            <div className="font-medium text-gray-900">Disclosure</div>
-            <p className="mt-1">
-              “Biological failure” here is an automated heuristic based on registry text fields. Some terminations are operational,
-              strategic, or ambiguous. Use the ClinicalTrials.gov link to confirm details.
+          <div className="rounded-xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
+            <div className="text-base font-semibold text-gray-900">About</div>
+            <p className="mt-2">
+              This site tracks interventional oncology drug/biologic trials that are SUSPENDED or TERMINATED on ClinicalTrials.gov
+              and classifies the stated stop reason using transparent heuristic rules. The “biological failure” label is an
+              automated interpretation of registry text, not a definitive clinical conclusion.
             </p>
+            <ul className="mt-2 list-disc pl-5 text-gray-700">
+              <li>Always verify by opening the ClinicalTrials.gov record for the trial.</li>
+              <li>Some terminations are strategic/operational rather than efficacy or safety failures.</li>
+              <li>Classifier evidence is shown per row/detail page for auditability.</li>
+            </ul>
           </div>
+
+          {loading && (
+            <div className="rounded-xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
+              Loading dataset…
+            </div>
+          )}
+
+          {err && (
+            <div className="rounded-xl border border-red-200 bg-white p-4 text-sm text-red-700 shadow-sm">
+              {err}
+            </div>
+          )}
+
+          {!loading && !err && (
+            <>
+              <Filters
+                q={q}
+                setQ={(v) => { setQ(v); setPage(1); }}
+                reason={reason}
+                setReason={(v) => { setReason(v); setPage(1); }}
+                confidence={confidence}
+                setConfidence={(v) => { setConfidence(v); setPage(1); }}
+                status={status}
+                setStatus={(v) => { setStatus(v); setPage(1); }}
+                phase={phase}
+                setPhase={(v) => { setPhase(v); setPage(1); }}
+                sort={sort}
+                setSort={(v) => { setSort(v); setPage(1); }}
+                reasons={facets.reasons}
+                confidences={facets.confidences}
+                statuses={facets.statuses}
+                phases={facets.phases}
+              />
+
+              <Pagination page={safePage} pageSize={pageSize} total={total} onPageChange={setPage} />
+
+              <TrialTable rows={pageRows} />
+
+              <Pagination page={safePage} pageSize={pageSize} total={total} onPageChange={setPage} />
+
+              <div className="rounded-xl border bg-white p-4 text-xs text-gray-600 shadow-sm">
+                <div className="font-medium text-gray-900">Disclosure</div>
+                <p className="mt-1">
+                  “Biological failure” here is an automated heuristic based on registry text fields. Some terminations are
+                  operational, strategic, or ambiguous. Use the ClinicalTrials.gov link to confirm details.
+                </p>
+              </div>
+            </>
+          )}
         </main>
       </div>
     </>
