@@ -1,8 +1,56 @@
 {
   "version": "2026-01-23",
-  "generated_at_utc": "2026-01-23T22:18:55Z",
-  "record_count": 474,
-  "max_last_update_post_date": "2026-01-23",
+  "generated_at_utc": "2026-01-23T22:39:40Z",
   "source": "ClinicalTrials.gov API v2",
-  "notes": "Static export for the webapp; version changes when dataset updates."
+  "all": {
+    "record_count": 16019,
+    "max_last_update_post_date": "2026-01-23"
+  },
+  "biological_failure": {
+    "record_count": 1201,
+    "max_last_update_post_date": "2026-01-23"
+  },
+  "top_areas": [
+    {
+      "area": "Oncology",
+      "count": 5737
+    },
+    {
+      "area": "Other",
+      "count": 3625
+    },
+    {
+      "area": "Infectious Disease",
+      "count": 1082
+    },
+    {
+      "area": "Gastroenterology & Hepatology",
+      "count": 1048
+    },
+    {
+      "area": "Cardiovascular",
+      "count": 892
+    },
+    {
+      "area": "Neurology",
+      "count": 736
+    },
+    {
+      "area": "Endocrine & Metabolic",
+      "count": 529
+    },
+    {
+      "area": "Respiratory",
+      "count": 433
+    },
+    {
+      "area": "Immunology & Autoimmune",
+      "count": 427
+    },
+    {
+      "area": "Psychiatry & Mental Health",
+      "count": 411
+    }
+  ],
+  "notes": "Static exports for the webapp. Disease areas are keyword-based taxonomy derived from conditions/MeSH terms."
 }
