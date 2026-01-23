@@ -1,24 +1,20 @@
 #!/usr/bin/env python3
 """
-Fetch broad oncology trials (ClinicalTrials.gov API v2) that were SUSPENDED or TERMINATED,
-then classify whyStopped reasons to focus on biological failure (efficacy/safety/futility)
-and exclude operational failures (recruitment/funding/admin).
+Fetch ClinicalTrials.gov (API v2) studies that are SUSPENDED or TERMINATED
+and are interventional with DRUG/BIOLOGICAL interventions.
 
-Hardening features:
-- Clause-aware negation (prevents cross-clause negation bleed)
-- Clause-based explicit denial flags (safety vs efficacy handled separately)
-- Weighted phrase scoring (fixes short reasons like "Efficacy concerns." and "Insufficient efficacy.")
-- Causal-cue scoring (due to/because of/futility/endpoint not met)
-- Handles "no benefit-risk impact" as NON_BIOLOGICAL (prevents false "no benefit" efficacy hits)
-- Handles "non-safety reasons" and similar (prevents "safety" substring false hits)
-- Confidence + evidence columns for transparency
-- Overrides from overrides.csv
+Then classify whyStopped into:
+- BIOLOGICAL_FAILURE (SAFETY or EFFICACY/FUTILITY)
+- NON_BIOLOGICAL (OPERATIONAL)
+- UNCLEAR
+
+Additionally assigns disease areas (taxonomy-based) and computes top 10 areas by count.
 
 Outputs:
-- data/all_oncology_stopped_trials.csv
-- data/biological_failure_oncology_trials.csv
-- data/all_oncology_stopped_trials.json
-- data/biological_failure_oncology_trials.json
+- data/all_stopped_trials.csv
+- data/biological_failure_trials.csv
+- data/all_stopped_trials.json
+- data/biological_failure_trials.json
 """
 
 from __future__ import annotations
@@ -36,12 +32,10 @@ import requests
 
 BASE_URL = "https://clinicaltrials.gov/api/v2/studies"
 
-ONCOLOGY_TERMS = ["cancer", "neoplasm", "tumor", "malignancy", "oncology"]
-
-MAX_STUDIES_TOTAL = int(os.getenv("MAX_STUDIES_TOTAL", "20000"))
+MAX_STUDIES_TOTAL = int(os.getenv("MAX_STUDIES_TOTAL", "50000"))
 LAST_UPDATE_FROM = os.getenv("LAST_UPDATE_FROM", "2015-01-01")
 PAGE_SIZE = int(os.getenv("PAGE_SIZE", "100"))
-SLEEP_SECONDS = float(os.getenv("SLEEP_SECONDS", "1.3"))
+SLEEP_SECONDS = float(os.getenv("SLEEP_SECONDS", "1.2"))
 TIMEOUT = 60
 
 OVERRIDES_PATH = os.getenv("OVERRIDES_PATH", "overrides.csv")
@@ -71,12 +65,101 @@ def normalize_text(s: Optional[str]) -> str:
 
 
 # -----------------------------
-# Keyword banks
+# Disease area taxonomy
+# -----------------------------
+
+# NOTE: This is a pragmatic keyword taxonomy. It is not perfect, but it is reliable enough
+# to create a "primary area" filter and top-10 ranking.
+DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
+    ("Oncology", [
+        "cancer", "oncology", "neoplasm", "tumor", "tumour", "malign", "carcinoma", "sarcoma", "lymphoma", "leukemia",
+        "myeloma", "metast", "melanoma", "glioma",
+    ]),
+    ("Cardiovascular", [
+        "cardio", "heart", "myocard", "coronary", "atrial", "ventric", "hypertension", "stroke", "ischemi",
+        "thromb", "embol", "heart failure", "arrhythm", "angina",
+    ]),
+    ("Infectious Disease", [
+        "infection", "infectious", "virus", "viral", "bacterial", "fungal", "hiv", "aids", "hepatitis", "influenza",
+        "covid", "sars", "tuberc", "malaria", "pneumonia", "sepsis",
+    ]),
+    ("Neurology", [
+        "alzheimer", "parkinson", "multiple sclerosis", "ms ", "epilep", "seizure", "migraine", "neuro", "dementia",
+        "amyotrophic", "als", "stroke", "neuropath",
+    ]),
+    ("Psychiatry & Mental Health", [
+        "depress", "bipolar", "schiz", "anxiety", "ptsd", "autism", "adhd", "mental", "psychiatr", "substance use",
+        "addiction",
+    ]),
+    ("Endocrine & Metabolic", [
+        "diabetes", "obesity", "metabolic", "thyroid", "hyperthy", "hypothy", "insulin", "dyslip", "cholesterol",
+        "hyperlip", "metabolic syndrome",
+    ]),
+    ("Immunology & Autoimmune", [
+        "autoimmune", "lupus", "rheumatoid", "arthritis", "psoriasis", "crohn", "ulcerative colitis", "ibd",
+        "inflamm", "immun", "ankylosing", "vasculitis",
+    ]),
+    ("Respiratory", [
+        "asthma", "copd", "pulmonary", "lung", "respiratory", "bronch", "pneumon", "fibrosis",
+    ]),
+    ("Gastroenterology & Hepatology", [
+        "gastro", "hepatic", "hepat", "liver", "cirrhos", "pancrea", "colitis", "crohn", "ulcer", "gi ",
+        "intestinal", "bowel", "nash", "nafld",
+    ]),
+    ("Renal & Urology", [
+        "renal", "kidney", "nephro", "urology", "bladder", "prostate", "urinary",
+    ]),
+    ("Dermatology", [
+        "dermat", "skin", "eczema", "atopic", "psoriasis", "acne",
+    ]),
+    ("Ophthalmology", [
+        "ocular", "eye", "retina", "macular", "glaucoma", "ophthalm",
+    ]),
+    ("Hematology (non-onc)", [
+        "hemoph", "sickle", "thalassem", "anemia", "anaemia", "hematolog", "haematolog",
+    ]),
+    ("Musculoskeletal", [
+        "osteo", "bone", "fracture", "muscle", "tendon", "ligament", "orthopedic", "orthopaedic",
+    ]),
+]
+
+
+def assign_disease_areas(conditions: List[str], mesh_terms: List[str]) -> Tuple[str, str]:
+    """
+    Returns:
+      - primary_area: best matching area or "Other"
+      - matched_areas: semicolon list of matched areas (may include multiple)
+    """
+    text = normalize_text(" ; ".join(conditions + mesh_terms))
+    if not text:
+        return "Other", ""
+
+    scores: Dict[str, int] = {}
+    matched: Set[str] = set()
+
+    for area, kws in DISEASE_AREA_TAXONOMY:
+        score = 0
+        for kw in kws:
+            if kw in text:
+                score += 1
+        if score > 0:
+            scores[area] = score
+            matched.add(area)
+
+    if not scores:
+        return "Other", ""
+
+    primary = sorted(scores.items(), key=lambda x: (-x[1], x[0]))[0][0]
+    matched_areas = "; ".join(sorted(matched))
+    return primary, matched_areas
+
+
+# -----------------------------
+# Keyword banks for whyStopped classification
 # -----------------------------
 
 SAFETY_TERMS = [
-    "safety",
-    "safety concern", "safety concerns",
+    "safety", "safety concern", "safety concerns",
     "safety issue", "safety issues",
     "adverse event", "adverse events",
     "adverse effect", "adverse effects",
@@ -114,76 +197,42 @@ EFFICACY_TERMS = [
     "futility analysis",
     "interim analysis",
     "stopping for futility",
-    "unmet primary",
-    "unmet endpoint(s)",
 ]
 
 OPERATIONAL_TERMS = [
-    "recruit", "recruitment",
-    "enrollment", "enrolment",
-    "accrual",
-    "insufficient accrual",
-    "slow accrual", "low accrual", "poor accrual",
+    "recruit", "recruitment", "enrollment", "enrolment", "accrual",
+    "insufficient accrual", "slow accrual", "low accrual", "poor accrual",
     "unable to enroll", "unable to enrol",
-
     "funding", "budget", "financial",
-    "administrative", "logistical",
-    "site closure", "staffing",
+    "administrative", "logistical", "site closure", "staffing",
     "regulatory delay", "protocol deviation",
-
-    "sponsor decision",
-    "sponsor request", "per sponsor request", "at sponsor request",
+    "sponsor decision", "sponsor request", "per sponsor request", "at sponsor request",
     "sponsor-initiated", "sponsor initiated",
-
-    "company decision", "business decision", "strategic decision",
-    "strategic reasons",
-    "strategic prioritisation", "strategic prioritization",
+    "company decision", "business decision", "strategic decision", "strategic reasons",
     "prioritisation", "prioritization",
-    "broader development",
-
-    "portfolio prioritization", "prioritization decision",
-    "commercial reasons",
+    "portfolio", "commercial reasons",
     "external environment", "changes in the external environment",
-
-    "development has been halted",
-    "development was halted",
-    "program halted",
-    "programme halted",
-    "development halted",
-    "industrial development",
+    "development halted", "development has been halted", "programme halted", "program halted",
     "no longer pursuing",
-
-    # NEW: common business-context phrases
-    "competitive landscape",
-    "competitive",
-    "market dynamics",
-    "market",
-    "portfolio",
-
+    "competitive landscape", "competitive", "market dynamics", "market",
     "covid", "pandemic",
 ]
 
-# Weighted phrases (boost short reasons to cross MEDIUM threshold)
 EFFICACY_WEIGHTS: Dict[str, int] = {
     "efficacy concerns": 2,
     "efficacy concern": 2,
-
     "lack of efficacy": 3,
     "insufficient efficacy": 3,
     "no efficacy": 3,
     "ineffective": 2,
-    "no benefit": 2,  # protected against "no benefit-risk impact"
-
+    "no benefit": 2,
     "unmet primary endpoint": 3,
     "unmet endpoint": 2,
-
     "endpoint not met": 3,
     "did not meet": 3,
     "failed to meet": 3,
-
     "futility": 3,
     "futility analysis": 3,
-
     "no signal of activity": 3,
     "no signal of efficacy": 3,
     "no activity": 2,
@@ -196,8 +245,6 @@ SAFETY_WEIGHTS: Dict[str, int] = {
     "safety issue": 2,
     "adverse event": 2,
     "adverse events": 2,
-    "adverse effect": 2,
-    "adverse effects": 2,
     "serious adverse": 3,
     "toxicity": 2,
     "unacceptable toxicity": 3,
@@ -209,34 +256,16 @@ SAFETY_WEIGHTS: Dict[str, int] = {
 }
 
 CAUSAL_CUES = [
-    r"\bdue to\b",
-    r"\bbecause of\b",
-    r"\bsecondary to\b",
-    r"\bas a result of\b",
-    r"\bresulting from\b",
-    r"\bprompted by\b",
-    r"\bdriven by\b",
-    r"\brelated to\b",
+    r"\bdue to\b", r"\bbecause of\b", r"\bsecondary to\b", r"\bas a result of\b",
+    r"\bresulting from\b", r"\bprompted by\b", r"\bdriven by\b", r"\brelated to\b",
 ]
 
 NEGATION_CUES = [
-    "no ",
-    "not ",
-    "without ",
-    "none ",
-    "neither ",
-    "nor ",
-    "not due to",
-    "not because of",
-    "not prompted by",
-    "not related to",
-    "not associated with",
-    "not attributable to",
-    "unrelated to",
-    "not caused by",
+    "no ", "not ", "without ", "none ", "neither ", "nor ",
+    "not due to", "not because of", "not prompted by", "not related to",
+    "unrelated to", "not caused by", "not attributable to",
 ]
 
-# Special phrase that should NOT be treated as "no benefit" efficacy failure
 NO_BENEFIT_RISK_IMPACT_PATTERNS = [
     "no benefit-risk impact",
     "no benefit risk impact",
@@ -246,19 +275,8 @@ NO_BENEFIT_RISK_IMPACT_PATTERNS = [
     "no impact to benefit risk",
 ]
 
-# NEW: protect "non-safety" / "non-efficacy" so substring scoring does not fire on "safety"/"efficacy"
-NON_SAFETY_PATTERNS = [
-    "non-safety",
-    "non safety",
-    "non–safety",
-    "nonsafety",
-]
-NON_EFFICACY_PATTERNS = [
-    "non-efficacy",
-    "non efficacy",
-    "non–efficacy",
-    "nonefficacy",
-]
+NON_SAFETY_PATTERNS = ["non-safety", "non safety", "non–safety", "nonsafety"]
+NON_EFFICACY_PATTERNS = ["non-efficacy", "non efficacy", "non–efficacy", "nonefficacy"]
 
 
 # -----------------------------
@@ -279,9 +297,12 @@ def request_with_retries(session: requests.Session, url: str, params: Dict[str, 
     raise RuntimeError("Exceeded retries due to repeated throttling or server errors.")
 
 
-def iter_studies_for_term(session: requests.Session, term: str) -> Iterable[Dict[str, Any]]:
+def iter_all_studies(session: requests.Session) -> Iterable[Dict[str, Any]]:
+    """
+    Fetch all SUSPENDED/TERMINATED studies updated since LAST_UPDATE_FROM.
+    NOTE: This can be large, so MAX_STUDIES_TOTAL is your safety cap.
+    """
     params: Dict[str, Any] = {
-        "query.cond": term,
         "filter.overallStatus": "TERMINATED,SUSPENDED",
         "query.term": f"AREA[LastUpdatePostDate]RANGE[{LAST_UPDATE_FROM},MAX]",
         "sort": "LastUpdatePostDate:desc",
@@ -308,7 +329,7 @@ def iter_studies_for_term(session: requests.Session, term: str) -> Iterable[Dict
 
 
 # -----------------------------
-# Clause-aware helpers
+# Clause-aware helpers for whyStopped classification
 # -----------------------------
 
 def _clause_start(text: str, idx: int) -> int:
@@ -354,10 +375,6 @@ def _contains_any(text: str, patterns: List[str]) -> bool:
 
 
 def _protect_no_benefit_risk_impact(text: str) -> str:
-    """
-    Prevents 'no benefit' from matching inside 'no benefit-risk impact' variants.
-    We replace the special phrase with a token.
-    """
     out = text
     for p in NO_BENEFIT_RISK_IMPACT_PATTERNS:
         out = out.replace(p, "no_benefit_risk_impact")
@@ -365,10 +382,6 @@ def _protect_no_benefit_risk_impact(text: str) -> str:
 
 
 def _protect_non_safety_efficacy(text: str) -> str:
-    """
-    Prevents scoring terms like 'safety' from matching inside 'non-safety'.
-    Also prevents 'efficacy' from matching inside 'non-efficacy'.
-    """
     out = text
     for p in NON_SAFETY_PATTERNS:
         out = out.replace(p, "non_safety")
@@ -378,36 +391,20 @@ def _protect_non_safety_efficacy(text: str) -> str:
 
 
 def _explicit_denial_flags(text_raw: str) -> Tuple[bool, bool]:
-    """
-    (denies_safety, denies_efficacy) evaluated per clause to avoid cross-clause bleed.
-    Includes denial patterns that indicate BIO reasons are NOT driving the stop.
-    """
     clauses = [c.strip() for c in re.split(r"[.;:]", text_raw) if c.strip()]
-
     denies_safety = False
     denies_efficacy = False
 
     for clause in clauses:
-        # Special: "non-safety reasons" => explicit safety denial (and usually not bio-causal)
         if _contains_any(clause, NON_SAFETY_PATTERNS):
             denies_safety = True
-
-        # Special: "non-efficacy reasons"
         if _contains_any(clause, NON_EFFICACY_PATTERNS):
             denies_efficacy = True
 
-        # Combined denial in same clause
-        if ("not" in clause or "no " in clause or "without" in clause or "unrelated" in clause):
-            if ("safety" in clause and "efficacy" in clause and ("concern" in clause or "signal" in clause)):
-                denies_safety = True
-                denies_efficacy = True
-
-        # Special: "no impact on benefit-risk" => denial of safety causality (and often efficacy causality too)
         if _contains_any(clause, NO_BENEFIT_RISK_IMPACT_PATTERNS):
             denies_safety = True
             denies_efficacy = True
 
-        # Safety denial cues
         if "safety" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause:
             if (("no " in clause and ("concern" in clause or "signal" in clause)) or
                 ("without" in clause and "concern" in clause) or
@@ -415,13 +412,9 @@ def _explicit_denial_flags(text_raw: str) -> Tuple[bool, bool]:
                 ("not prompted by" in clause) or
                 ("unrelated to" in clause)):
                 denies_safety = True
+            if ("unchanged" in clause or "remained unchanged" in clause or "no change" in clause):
+                denies_safety = True
 
-            # Safety/risk-benefit unchanged => denial of safety causality
-            if ("safety profile" in clause or "risk benefit" in clause or "risk/benefit" in clause or "risk-benefit" in clause):
-                if ("unchanged" in clause or "remained unchanged" in clause or "no change" in clause):
-                    denies_safety = True
-
-        # Efficacy denial cues
         if "efficacy" in clause or "endpoint" in clause:
             if (("no " in clause and ("concern" in clause or "signal" in clause)) or
                 ("without" in clause and "concern" in clause) or
@@ -497,14 +490,13 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
 
     denies_safety, denies_efficacy = _explicit_denial_flags(txt_raw)
 
-    # Protect phrases before substring scoring
     txt = _protect_no_benefit_risk_impact(txt_raw)
     txt = _protect_non_safety_efficacy(txt)
 
     operational_hits = _find_terms(txt, OPERATIONAL_TERMS)
     operational_present = len(operational_hits) > 0
 
-    # NEW: if "non-safety" appears and there is any business/operational context, classify as NON_BIOLOGICAL
+    # Key fix: "non-safety reasons" + business context => OPERATIONAL (not SAFETY)
     if _contains_any(txt_raw, NON_SAFETY_PATTERNS) and operational_present:
         return Classification(
             "NON_BIOLOGICAL",
@@ -516,7 +508,6 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf", SAFETY_WEIGHTS)
     efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff", EFFICACY_WEIGHTS)
 
-    # If the special benefit-risk phrase exists, force operational classification when there is strategic/dev context.
     if _contains_any(txt_raw, NO_BENEFIT_RISK_IMPACT_PATTERNS) and operational_present:
         return Classification(
             "NON_BIOLOGICAL",
@@ -541,45 +532,16 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             "operational:" + "|".join(operational_hits) + ";denial:both"
         )
 
-    if operational_present and denies_safety and best_dim == "SAFETY" and best_score < 5:
-        return Classification(
-            "NON_BIOLOGICAL",
-            "OPERATIONAL",
-            "HIGH",
-            "operational:" + "|".join(operational_hits) + ";denial:safety"
-        )
-
-    # Thresholds with weighted phrases
     if best_score >= 6:
-        return Classification(
-            "BIOLOGICAL_FAILURE",
-            best_dim,
-            "HIGH",
-            f"score={best_score};" + ",".join(best_ev[:14])
-        )
+        return Classification("BIOLOGICAL_FAILURE", best_dim, "HIGH", f"score={best_score};" + ",".join(best_ev[:14]))
 
     if best_score >= 2 and not operational_present:
-        return Classification(
-            "BIOLOGICAL_FAILURE",
-            best_dim,
-            "MEDIUM",
-            f"score={best_score};" + ",".join(best_ev[:14])
-        )
+        return Classification("BIOLOGICAL_FAILURE", best_dim, "MEDIUM", f"score={best_score};" + ",".join(best_ev[:14]))
 
     if operational_present:
-        return Classification(
-            "NON_BIOLOGICAL",
-            "OPERATIONAL",
-            "HIGH",
-            "operational:" + "|".join(operational_hits)
-        )
+        return Classification("NON_BIOLOGICAL", "OPERATIONAL", "HIGH", "operational:" + "|".join(operational_hits))
 
-    return Classification(
-        "UNCLEAR",
-        "OTHER/UNKNOWN",
-        "LOW",
-        f"safety_score={safety_score};efficacy_score={efficacy_score}"
-    )
+    return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score}")
 
 
 # -----------------------------
@@ -609,6 +571,22 @@ def load_overrides(path: str) -> Dict[str, Classification]:
 # Extraction & output
 # -----------------------------
 
+def extract_mesh_terms(protocol: Dict[str, Any]) -> List[str]:
+    """
+    ClinicalTrials.gov v2 often provides:
+      protocolSection.conditionBrowseModule.meshes[].term
+    We extract those terms when present.
+    """
+    out: List[str] = []
+    cb = protocol.get("conditionBrowseModule") or {}
+    meshes = cb.get("meshes") or []
+    if isinstance(meshes, list):
+        for m in meshes:
+            if isinstance(m, dict) and m.get("term"):
+                out.append(str(m["term"]))
+    return out
+
+
 def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
     protocol = study.get("protocolSection", {}) or {}
 
@@ -623,9 +601,11 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(conditions, list):
         conditions = []
 
+    mesh_terms = extract_mesh_terms(protocol)
+
     sponsor = get_nested(protocol, ["sponsorCollaboratorsModule", "leadSponsor", "name"], "")
     collaborators = get_nested(protocol, ["sponsorCollaboratorsModule", "collaborators"], []) or []
-    collaborator_names = []
+    collaborator_names: List[str] = []
     if isinstance(collaborators, list):
         for c in collaborators:
             if isinstance(c, dict) and c.get("name"):
@@ -662,6 +642,8 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
 
     cls = classify_why_stopped(why_stopped)
 
+    primary_area, matched_areas = assign_disease_areas([str(c) for c in conditions if c], [str(m) for m in mesh_terms if m])
+
     return {
         "nct_id": nct_id,
         "brief_title": brief_title,
@@ -672,6 +654,10 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
         "classification_reason": cls.reason,
         "classification_confidence": cls.confidence,
         "classification_evidence": cls.matched_evidence,
+
+        "disease_area": primary_area,
+        "disease_areas_matched": matched_areas,
+        "mesh_terms": "; ".join(mesh_terms),
 
         "study_type": study_type,
         "phases": "; ".join([p for p in phases if p]),
@@ -717,6 +703,15 @@ def write_json(path: str, rows: List[Dict[str, Any]]) -> None:
         json.dump(rows, f, ensure_ascii=False, indent=2)
 
 
+def compute_top_areas(rows: List[Dict[str, Any]], top_n: int = 10) -> List[Dict[str, Any]]:
+    counts: Dict[str, int] = {}
+    for r in rows:
+        area = (r.get("disease_area") or "Other").strip() or "Other"
+        counts[area] = counts.get(area, 0) + 1
+    top = sorted(counts.items(), key=lambda x: (-x[1], x[0]))[:top_n]
+    return [{"area": a, "count": c} for a, c in top]
+
+
 def main() -> None:
     overrides = load_overrides(OVERRIDES_PATH)
 
@@ -724,30 +719,26 @@ def main() -> None:
     seen: Set[str] = set()
     all_records: List[Dict[str, Any]] = []
 
-    for term in ONCOLOGY_TERMS:
-        for study in iter_studies_for_term(session, term):
-            record = extract_record(study)
-            nct = record.get("nct_id") or ""
-            if not nct or nct in seen:
-                continue
-            seen.add(nct)
+    for study in iter_all_studies(session):
+        record = extract_record(study)
+        nct = record.get("nct_id") or ""
+        if not nct or nct in seen:
+            continue
+        seen.add(nct)
 
-            if not is_interventional(record):
-                continue
-            if not is_drug_or_biologic(record):
-                continue
+        if not is_interventional(record):
+            continue
+        if not is_drug_or_biologic(record):
+            continue
 
-            if nct in overrides:
-                ov = overrides[nct]
-                record["classification_label"] = ov.label
-                record["classification_reason"] = ov.reason
-                record["classification_confidence"] = ov.confidence
-                record["classification_evidence"] = ov.matched_evidence
+        if nct in overrides:
+            ov = overrides[nct]
+            record["classification_label"] = ov.label
+            record["classification_reason"] = ov.reason
+            record["classification_confidence"] = ov.confidence
+            record["classification_evidence"] = ov.matched_evidence
 
-            all_records.append(record)
-
-            if len(all_records) >= MAX_STUDIES_TOTAL:
-                break
+        all_records.append(record)
 
         if len(all_records) >= MAX_STUDIES_TOTAL:
             break
@@ -760,12 +751,17 @@ def main() -> None:
         and r.get("classification_confidence") in ("HIGH", "MEDIUM")
     ]
 
-    write_csv("data/all_oncology_stopped_trials.csv", all_records)
-    write_csv("data/biological_failure_oncology_trials.csv", biological_only)
-    write_json("data/all_oncology_stopped_trials.json", all_records)
-    write_json("data/biological_failure_oncology_trials.json", biological_only)
+    write_csv("data/all_stopped_trials.csv", all_records)
+    write_csv("data/biological_failure_trials.csv", biological_only)
+    write_json("data/all_stopped_trials.json", all_records)
+    write_json("data/biological_failure_trials.json", biological_only)
 
-    print(f"Total interventional drug/biologic stopped oncology trials: {len(all_records)}")
+    top_10 = compute_top_areas(all_records, top_n=10)
+    print("Top 10 disease areas in fetched stopped trials:")
+    for t in top_10:
+        print(f"  {t['area']}: {t['count']}")
+
+    print(f"Total interventional DRUG/BIOLOGICAL stopped trials: {len(all_records)}")
     print(f"Biological failures (HIGH/MEDIUM): {len(biological_only)}")
 
 
