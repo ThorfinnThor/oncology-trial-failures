@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-Fetch ClinicalTrials.gov (API v2) studies that are SUSPENDED or TERMINATED
+Fetch ClinicalTrials.gov (API v2) studies that are SUSPENDED/TERMINATED/WITHDRAWN
 and are interventional with DRUG/BIOLOGICAL interventions.
 
-Then classify whyStopped into:
+Classify whyStopped into:
 - BIOLOGICAL_FAILURE (SAFETY or EFFICACY/FUTILITY)
 - NON_BIOLOGICAL (OPERATIONAL)
 - UNCLEAR
 
-Additionally assigns disease areas (taxonomy-based) and computes top 10 areas by count.
+Assign disease areas (keyword taxonomy) and extract trial site countries.
 
 Outputs:
 - data/all_stopped_trials.csv
@@ -28,7 +28,6 @@ from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 import requests
-
 
 BASE_URL = "https://clinicaltrials.gov/api/v2/studies"
 
@@ -65,46 +64,44 @@ def normalize_text(s: Optional[str]) -> str:
 
 
 # -----------------------------
-# Disease area taxonomy
+# Disease area taxonomy (primary + matched list)
 # -----------------------------
 
-# NOTE: This is a pragmatic keyword taxonomy. It is not perfect, but it is reliable enough
-# to create a "primary area" filter and top-10 ranking.
 DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
     ("Oncology", [
         "cancer", "oncology", "neoplasm", "tumor", "tumour", "malign", "carcinoma", "sarcoma", "lymphoma", "leukemia",
         "myeloma", "metast", "melanoma", "glioma",
     ]),
     ("Cardiovascular", [
-        "cardio", "heart", "myocard", "coronary", "atrial", "ventric", "hypertension", "stroke", "ischemi",
+        "cardio", "heart", "myocard", "coronary", "atrial", "ventric", "hypertension", "ischemi",
         "thromb", "embol", "heart failure", "arrhythm", "angina",
+    ]),
+    ("Neurology", [
+        "alzheimer", "parkinson", "multiple sclerosis", "epilep", "seizure", "migraine", "neuro", "dementia",
+        "amyotrophic", "als", "neuropath",
     ]),
     ("Infectious Disease", [
         "infection", "infectious", "virus", "viral", "bacterial", "fungal", "hiv", "aids", "hepatitis", "influenza",
         "covid", "sars", "tuberc", "malaria", "pneumonia", "sepsis",
     ]),
-    ("Neurology", [
-        "alzheimer", "parkinson", "multiple sclerosis", "ms ", "epilep", "seizure", "migraine", "neuro", "dementia",
-        "amyotrophic", "als", "stroke", "neuropath",
+    ("Immunology & Autoimmune", [
+        "autoimmune", "lupus", "rheumatoid", "arthritis", "psoriasis", "crohn", "ulcerative colitis", "ibd",
+        "inflamm", "immun", "ankylosing", "vasculitis",
+    ]),
+    ("Endocrine & Metabolic", [
+        "diabetes", "obesity", "metabolic", "thyroid", "insulin", "dyslip", "cholesterol",
+        "hyperlip", "metabolic syndrome",
     ]),
     ("Psychiatry & Mental Health", [
         "depress", "bipolar", "schiz", "anxiety", "ptsd", "autism", "adhd", "mental", "psychiatr", "substance use",
         "addiction",
     ]),
-    ("Endocrine & Metabolic", [
-        "diabetes", "obesity", "metabolic", "thyroid", "hyperthy", "hypothy", "insulin", "dyslip", "cholesterol",
-        "hyperlip", "metabolic syndrome",
-    ]),
-    ("Immunology & Autoimmune", [
-        "autoimmune", "lupus", "rheumatoid", "arthritis", "psoriasis", "crohn", "ulcerative colitis", "ibd",
-        "inflamm", "immun", "ankylosing", "vasculitis",
-    ]),
     ("Respiratory", [
         "asthma", "copd", "pulmonary", "lung", "respiratory", "bronch", "pneumon", "fibrosis",
     ]),
     ("Gastroenterology & Hepatology", [
-        "gastro", "hepatic", "hepat", "liver", "cirrhos", "pancrea", "colitis", "crohn", "ulcer", "gi ",
-        "intestinal", "bowel", "nash", "nafld",
+        "gastro", "hepatic", "hepat", "liver", "cirrhos", "pancrea", "colitis", "crohn", "ulcer", "intestinal",
+        "bowel", "nash", "nafld",
     ]),
     ("Renal & Urology", [
         "renal", "kidney", "nephro", "urology", "bladder", "prostate", "urinary",
@@ -125,11 +122,6 @@ DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
 
 
 def assign_disease_areas(conditions: List[str], mesh_terms: List[str]) -> Tuple[str, str]:
-    """
-    Returns:
-      - primary_area: best matching area or "Other"
-      - matched_areas: semicolon list of matched areas (may include multiple)
-    """
     text = normalize_text(" ; ".join(conditions + mesh_terms))
     if not text:
         return "Other", ""
@@ -150,12 +142,11 @@ def assign_disease_areas(conditions: List[str], mesh_terms: List[str]) -> Tuple[
         return "Other", ""
 
     primary = sorted(scores.items(), key=lambda x: (-x[1], x[0]))[0][0]
-    matched_areas = "; ".join(sorted(matched))
-    return primary, matched_areas
+    return primary, "; ".join(sorted(matched))
 
 
 # -----------------------------
-# Keyword banks for whyStopped classification
+# whyStopped classification (rule-based)
 # -----------------------------
 
 SAFETY_TERMS = [
@@ -279,10 +270,6 @@ NON_SAFETY_PATTERNS = ["non-safety", "non safety", "non–safety", "nonsafety"]
 NON_EFFICACY_PATTERNS = ["non-efficacy", "non efficacy", "non–efficacy", "nonefficacy"]
 
 
-# -----------------------------
-# HTTP helpers
-# -----------------------------
-
 def request_with_retries(session: requests.Session, url: str, params: Dict[str, Any]) -> Dict[str, Any]:
     backoff = 2.0
     for _ in range(1, 7):
@@ -298,12 +285,8 @@ def request_with_retries(session: requests.Session, url: str, params: Dict[str, 
 
 
 def iter_all_studies(session: requests.Session) -> Iterable[Dict[str, Any]]:
-    """
-    Fetch all SUSPENDED/TERMINATED studies updated since LAST_UPDATE_FROM.
-    NOTE: This can be large, so MAX_STUDIES_TOTAL is your safety cap.
-    """
     params: Dict[str, Any] = {
-        "filter.overallStatus": "TERMINATED,SUSPENDED",
+        "filter.overallStatus": "TERMINATED,SUSPENDED,WITHDRAWN",
         "query.term": f"AREA[LastUpdatePostDate]RANGE[{LAST_UPDATE_FROM},MAX]",
         "sort": "LastUpdatePostDate:desc",
         "pageSize": str(PAGE_SIZE),
@@ -327,10 +310,6 @@ def iter_all_studies(session: requests.Session) -> Iterable[Dict[str, Any]]:
             break
         time.sleep(SLEEP_SECONDS)
 
-
-# -----------------------------
-# Clause-aware helpers for whyStopped classification
-# -----------------------------
 
 def _clause_start(text: str, idx: int) -> int:
     last_dot = text.rfind(".", 0, idx)
@@ -496,7 +475,6 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     operational_hits = _find_terms(txt, OPERATIONAL_TERMS)
     operational_present = len(operational_hits) > 0
 
-    # Key fix: "non-safety reasons" + business context => OPERATIONAL (not SAFETY)
     if _contains_any(txt_raw, NON_SAFETY_PATTERNS) and operational_present:
         return Classification(
             "NON_BIOLOGICAL",
@@ -525,12 +503,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     best_ev = safety_ev if best_dim == "SAFETY" else efficacy_ev
 
     if operational_present and denies_safety and denies_efficacy:
-        return Classification(
-            "NON_BIOLOGICAL",
-            "OPERATIONAL",
-            "HIGH",
-            "operational:" + "|".join(operational_hits) + ";denial:both"
-        )
+        return Classification("NON_BIOLOGICAL", "OPERATIONAL", "HIGH", "operational:" + "|".join(operational_hits) + ";denial:both")
 
     if best_score >= 6:
         return Classification("BIOLOGICAL_FAILURE", best_dim, "HIGH", f"score={best_score};" + ",".join(best_ev[:14]))
@@ -543,10 +516,6 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
 
     return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score}")
 
-
-# -----------------------------
-# Overrides
-# -----------------------------
 
 def load_overrides(path: str) -> Dict[str, Classification]:
     overrides: Dict[str, Classification] = {}
@@ -567,16 +536,7 @@ def load_overrides(path: str) -> Dict[str, Classification]:
     return overrides
 
 
-# -----------------------------
-# Extraction & output
-# -----------------------------
-
 def extract_mesh_terms(protocol: Dict[str, Any]) -> List[str]:
-    """
-    ClinicalTrials.gov v2 often provides:
-      protocolSection.conditionBrowseModule.meshes[].term
-    We extract those terms when present.
-    """
     out: List[str] = []
     cb = protocol.get("conditionBrowseModule") or {}
     meshes = cb.get("meshes") or []
@@ -585,6 +545,22 @@ def extract_mesh_terms(protocol: Dict[str, Any]) -> List[str]:
             if isinstance(m, dict) and m.get("term"):
                 out.append(str(m["term"]))
     return out
+
+
+def extract_countries(protocol: Dict[str, Any]) -> List[str]:
+    """
+    Extract trial site countries from contactsLocationsModule.locations[].locationCountry
+    """
+    out: Set[str] = set()
+    cl = protocol.get("contactsLocationsModule") or {}
+    locs = cl.get("locations") or []
+    if isinstance(locs, list):
+        for loc in locs:
+            if isinstance(loc, dict):
+                c = loc.get("locationCountry")
+                if c and isinstance(c, str):
+                    out.add(c.strip())
+    return sorted(out)
 
 
 def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
@@ -602,6 +578,7 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
         conditions = []
 
     mesh_terms = extract_mesh_terms(protocol)
+    countries = extract_countries(protocol)
 
     sponsor = get_nested(protocol, ["sponsorCollaboratorsModule", "leadSponsor", "name"], "")
     collaborators = get_nested(protocol, ["sponsorCollaboratorsModule", "collaborators"], []) or []
@@ -641,7 +618,6 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
     url = f"https://clinicaltrials.gov/study/{nct_id}" if nct_id else ""
 
     cls = classify_why_stopped(why_stopped)
-
     primary_area, matched_areas = assign_disease_areas([str(c) for c in conditions if c], [str(m) for m in mesh_terms if m])
 
     return {
@@ -658,6 +634,8 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
         "disease_area": primary_area,
         "disease_areas_matched": matched_areas,
         "mesh_terms": "; ".join(mesh_terms),
+
+        "countries": "; ".join(countries),
 
         "study_type": study_type,
         "phases": "; ".join([p for p in phases if p]),
@@ -739,7 +717,6 @@ def main() -> None:
             record["classification_evidence"] = ov.matched_evidence
 
         all_records.append(record)
-
         if len(all_records) >= MAX_STUDIES_TOTAL:
             break
 
@@ -757,11 +734,11 @@ def main() -> None:
     write_json("data/biological_failure_trials.json", biological_only)
 
     top_10 = compute_top_areas(all_records, top_n=10)
-    print("Top 10 disease areas in fetched stopped trials:")
+    print("Top 10 disease areas:")
     for t in top_10:
         print(f"  {t['area']}: {t['count']}")
 
-    print(f"Total interventional DRUG/BIOLOGICAL stopped trials: {len(all_records)}")
+    print(f"Total records (all stopped): {len(all_records)}")
     print(f"Biological failures (HIGH/MEDIUM): {len(biological_only)}")
 
 
