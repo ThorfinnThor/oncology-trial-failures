@@ -5,6 +5,7 @@ import { DatasetMeta, TrialRow } from "@/lib/types";
 import { Filters } from "@/components/Filters";
 import { TrialTable } from "@/components/TrialTable";
 import { Pagination } from "@/components/Pagination";
+import { DownloadMenu } from "@/components/DownloadMenu";
 
 function includesAny(haystack: string, needle: string) {
   return haystack.toLowerCase().includes(needle.toLowerCase());
@@ -40,6 +41,9 @@ export default function Home() {
         setMeta(meta);
         setTrials(trials);
         setErr(null);
+
+        // Reset pagination when mode changes
+        setPage(1);
       } catch (e: any) {
         if (!alive) return;
         setErr(e?.message || "Failed to load dataset.");
@@ -140,140 +144,195 @@ export default function Home() {
 
   const resetToFirstPage = () => setPage(1);
 
+  // For "top 10 chips" UX shortcut
+  const topAreas = meta?.top_areas || [];
+
+  // totalAll for download menu: depends on mode (bio/all)
+  const totalAll =
+    mode === "bio" ? (meta?.biological_failure?.record_count ?? trials.length) : (meta?.all?.record_count ?? trials.length);
+
   return (
     <>
       <Head>
-        <title>Stopped Trials Explorer</title>
-        <meta
-          name="description"
-          content="Explore suspended/terminated drug and biologic trials and classify stop reasons from registry text."
-        />
+        <title>Clinical trial failures</title>
+        <meta name="description" content="Browse stopped clinical trials and explore why they were stopped." />
       </Head>
 
       <div className="min-h-screen bg-gray-50">
         <header className="border-b bg-white">
           <div className="mx-auto max-w-6xl px-4 py-6">
-            <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-              <div>
-                <h1 className="text-2xl font-semibold text-gray-900">Stopped Trials Explorer</h1>
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div className="max-w-3xl">
+                <h1 className="text-2xl font-semibold text-gray-900">Clinical trial failures</h1>
                 <p className="mt-1 text-sm text-gray-600">
-                  Interventional DRUG/BIOLOGICAL trials with status <span className="font-medium">SUSPENDED</span> or{" "}
-                  <span className="font-medium">TERMINATED</span>, with stop-reason classification from “why stopped”.
+                  This site lists clinical trials that were suspended or terminated.
+                  You can search and filter to understand the stated reason and who sponsored the study.
                 </p>
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
                 <button
-                  className={`rounded-lg border px-3 py-2 text-sm ${
-                    mode === "bio" ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-700 hover:bg-gray-50"
+                  className={`rounded-xl border px-3 py-2 text-sm font-semibold ${
+                    mode === "bio"
+                      ? "bg-gray-900 text-white border-gray-900"
+                      : "bg-white text-gray-800 hover:bg-gray-50"
                   }`}
-                  onClick={() => { setMode("bio"); resetToFirstPage(); }}
+                  onClick={() => {
+                    setMode("bio");
+                    resetToFirstPage();
+                  }}
+                  type="button"
+                  title="Trials with stronger signals suggesting efficacy/safety-related stops"
                 >
-                  Biological failures (recommended)
+                  Focus: likely biological failures
                 </button>
-                <button
-                  className={`rounded-lg border px-3 py-2 text-sm ${
-                    mode === "all" ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-700 hover:bg-gray-50"
-                  }`}
-                  onClick={() => { setMode("all"); resetToFirstPage(); }}
-                >
-                  All stopped trials
-                </button>
-              </div>
-            </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <a className="rounded-lg border bg-white px-3 py-2 text-sm hover:bg-gray-50" href="/biological_failure_trials.csv">
-                Download bio CSV
-              </a>
-              <a className="rounded-lg border bg-white px-3 py-2 text-sm hover:bg-gray-50" href="/biological_failure_trials.json">
-                Download bio JSON
-              </a>
-              <a className="rounded-lg border bg-white px-3 py-2 text-sm hover:bg-gray-50" href="/all_stopped_trials.csv">
-                Download all CSV
-              </a>
-              <a className="rounded-lg border bg-white px-3 py-2 text-sm hover:bg-gray-50" href="/all_stopped_trials.json">
-                Download all JSON
-              </a>
-              <a className="rounded-lg border bg-white px-3 py-2 text-sm hover:bg-gray-50" href="/dataset_meta.json">
-                Metadata
-              </a>
+                <button
+                  className={`rounded-xl border px-3 py-2 text-sm font-semibold ${
+                    mode === "all"
+                      ? "bg-gray-900 text-white border-gray-900"
+                      : "bg-white text-gray-800 hover:bg-gray-50"
+                  }`}
+                  onClick={() => {
+                    setMode("all");
+                    resetToFirstPage();
+                  }}
+                  type="button"
+                  title="All suspended/terminated trials in the dataset"
+                >
+                  Show all stopped trials
+                </button>
+
+                <DownloadMenu
+                  mode={mode}
+                  totalAll={totalAll}
+                  totalFiltered={total}
+                  filteredRows={filtered}
+                  currentArea={area}
+                />
+              </div>
             </div>
 
             <div className="mt-3 text-xs text-gray-500">
               {meta ? (
                 <>
-                  Dataset version: <span className="font-medium">{meta.version}</span> • Generated:{" "}
-                  <span className="font-medium">{meta.generated_at_utc}</span> • Records (all):{" "}
-                  <span className="font-medium">{meta.all.record_count}</span> • Records (bio):{" "}
-                  <span className="font-medium">{meta.biological_failure.record_count}</span>
+                  Updated: <span className="font-medium">{meta.generated_at_utc}</span> • Records:{" "}
+                  <span className="font-medium">
+                    {mode === "bio" ? meta.biological_failure.record_count : meta.all.record_count}
+                  </span>
+                  {area ? (
+                    <>
+                      {" "}
+                      • Area filter: <span className="font-medium">{area}</span>
+                    </>
+                  ) : null}
                 </>
               ) : (
-                <>Loading metadata…</>
+                <>Loading dataset information…</>
               )}
             </div>
 
-            {meta?.top_areas?.length ? (
+            {/* Top 10 shortcut chips */}
+            {topAreas.length > 0 && (
               <div className="mt-4 rounded-2xl border bg-white p-4 shadow-sm">
-                <div className="text-sm font-semibold text-gray-900">Top 10 disease areas in the fetched dataset</div>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {meta.top_areas.map((t) => (
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                  <div className="text-sm font-semibold text-gray-900">Popular disease areas</div>
+                  <div className="text-xs text-gray-500">Quick filters (dropdown includes all areas)</div>
+                </div>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {topAreas.map((t) => (
                     <button
                       key={t.area}
-                      className={`rounded-full border px-3 py-1 text-xs ${
-                        area === t.area ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-700 hover:bg-gray-50"
+                      className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                        area === t.area
+                          ? "bg-gray-900 text-white border-gray-900"
+                          : "bg-white text-gray-800 hover:bg-gray-50"
                       }`}
-                      onClick={() => { setArea(area === t.area ? "" : t.area); resetToFirstPage(); }}
+                      onClick={() => {
+                        setArea(area === t.area ? "" : t.area);
+                        resetToFirstPage();
+                      }}
+                      type="button"
                       title="Click to filter"
                     >
-                      {t.area} <span className="text-gray-400">{t.count}</span>
+                      {t.area} <span className="ml-1 text-gray-400">{t.count}</span>
                     </button>
                   ))}
+
+                  {/* Helpful shortcut */}
+                  <button
+                    className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+                      area === "Other"
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "bg-white text-gray-800 hover:bg-gray-50"
+                    }`}
+                    onClick={() => {
+                      setArea(area === "Other" ? "" : "Other");
+                      resetToFirstPage();
+                    }}
+                    type="button"
+                    title="Trials that do not strongly match a disease area keyword"
+                  >
+                    Other
+                  </button>
                 </div>
               </div>
-            ) : null}
+            )}
           </div>
         </header>
 
         <main className="mx-auto max-w-6xl px-4 py-6 space-y-4">
-          <div className="rounded-2xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
-            <div className="text-base font-semibold text-gray-900">About</div>
-            <p className="mt-2">
-              This project classifies stop reasons using transparent, rule-based scoring of the registry’s “why stopped” text.
-              The classifier looks for weighted safety/efficacy signals, accounts for explicit negations (e.g., “not due to safety”),
-              and down-weights common operational/business reasons (e.g., recruitment, funding, strategic prioritization).
-            </p>
-            <p className="mt-2">
-              The <span className="font-medium">Confidence</span> field reflects the strength and consistency of matched signals in the text.
-              It is not a clinical conclusion and should be interpreted as “how strongly the registry text supports this label”.
-            </p>
-          </div>
-
           {loading && (
-            <div className="rounded-2xl border bg-white p-4 text-sm text-gray-700 shadow-sm">Loading dataset…</div>
+            <div className="rounded-2xl border bg-white p-4 text-sm text-gray-700 shadow-sm">
+              Loading data…
+            </div>
           )}
 
           {err && (
-            <div className="rounded-2xl border border-red-200 bg-white p-4 text-sm text-red-700 shadow-sm">{err}</div>
+            <div className="rounded-2xl border border-red-200 bg-white p-4 text-sm text-red-700 shadow-sm">
+              {err}
+            </div>
           )}
 
           {!loading && !err && (
             <>
               <Filters
                 q={q}
-                setQ={(v) => { setQ(v); resetToFirstPage(); }}
+                setQ={(v) => {
+                  setQ(v);
+                  resetToFirstPage();
+                }}
                 area={area}
-                setArea={(v) => { setArea(v); resetToFirstPage(); }}
+                setArea={(v) => {
+                  setArea(v);
+                  resetToFirstPage();
+                }}
                 reason={reason}
-                setReason={(v) => { setReason(v); resetToFirstPage(); }}
+                setReason={(v) => {
+                  setReason(v);
+                  resetToFirstPage();
+                }}
                 status={status}
-                setStatus={(v) => { setStatus(v); resetToFirstPage(); }}
+                setStatus={(v) => {
+                  setStatus(v);
+                  resetToFirstPage();
+                }}
                 phase={phase}
-                setPhase={(v) => { setPhase(v); resetToFirstPage(); }}
+                setPhase={(v) => {
+                  setPhase(v);
+                  resetToFirstPage();
+                }}
                 confidence={confidence}
-                setConfidence={(v) => { setConfidence(v); resetToFirstPage(); }}
+                setConfidence={(v) => {
+                  setConfidence(v);
+                  resetToFirstPage();
+                }}
                 sort={sort}
-                setSort={(v) => { setSort(v); resetToFirstPage(); }}
+                setSort={(v) => {
+                  setSort(v);
+                  resetToFirstPage();
+                }}
                 areas={facets.areas}
                 reasons={facets.reasons}
                 statuses={facets.statuses}
@@ -286,6 +345,14 @@ export default function Home() {
               <TrialTable rows={pageRows} />
 
               <Pagination page={safePage} pageSize={pageSize} total={total} onPageChange={setPage} />
+
+              <div className="rounded-2xl border bg-white p-4 text-xs text-gray-600 shadow-sm">
+                <div className="font-semibold text-gray-900">Notes</div>
+                <ul className="mt-2 list-disc pl-5 space-y-1">
+                  <li>“Reason” is derived from the trial’s stated stop text. Always confirm using the official trial page.</li>
+                  <li>Confidence is shown as a small badge and reflects how strongly the stop text supports the label.</li>
+                </ul>
+              </div>
             </>
           )}
         </main>
