@@ -49,10 +49,9 @@ def main() -> None:
 
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    # Version is for web cache invalidation; changes when underlying data changes.
     version = all_max or generated_at
 
-    # Compute top 10 disease areas from ALL rows
+    # Top 10 disease areas (UX shortcut)
     counts = {}
     for r in all_rows:
         a = (r.get("disease_area") or "Other").strip() or "Other"
@@ -73,7 +72,7 @@ def main() -> None:
             "max_last_update_post_date": bio_max,
         },
         "top_areas": top_areas,
-        "notes": "Static exports for the webapp. Disease areas are keyword-based taxonomy derived from conditions/MeSH terms.",
+        "notes": "Disease areas are keyword-based mappings from conditions/MeSH terms; countries are trial site countries.",
     }
 
     shutil.copyfile(ROOT_ALL_JSON, PUBLIC_ALL_JSON)
