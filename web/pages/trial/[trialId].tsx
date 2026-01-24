@@ -1,3 +1,5 @@
+// web/pages/trial/[trialId].tsx
+
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,8 +9,39 @@ import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
+function phaseChipClass(phaseKey: string) {
+  const p = (phaseKey || "").toUpperCase();
+  if (p === "EARLY_PHASE1" || p === "PHASE1") return "chip chip-phase-1";
+  if (p === "PHASE1/PHASE2" || p === "PHASE2") return "chip chip-phase-2";
+  if (p === "PHASE2/PHASE3" || p === "PHASE3") return "chip chip-phase-3";
+  if (p === "PHASE4") return "chip chip-phase-4";
+  return "chip chip-neutral";
+}
+
+function bucketChipClass(bucket: string) {
+  const b = (bucket || "").toUpperCase();
+  if (b === "SAFETY") return "chip chip-bucket-safety";
+  if (b === "EFFICACY/FUTILITY") return "chip chip-bucket-efficacy";
+  if (b === "ENROLLMENT") return "chip chip-bucket-enrollment";
+  if (b === "FUNDING") return "chip chip-bucket-funding";
+  if (b === "REGULATORY") return "chip chip-bucket-regulatory";
+  if (b === "STRATEGIC") return "chip chip-bucket-strategic";
+  if (b === "OPERATIONAL") return "chip chip-bucket-operational";
+  return "chip chip-neutral";
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="card p-4" style={{ marginTop: 14 }}>
+      <div className="facet-title">{title}</div>
+      {children}
+    </div>
+  );
+}
+
 export default function TrialPage() {
   const router = useRouter();
+
   const trialId = useMemo(() => (router.query.trialId ? String(router.query.trialId) : ""), [router.query.trialId]);
   const from = useMemo(() => (router.query.from ? String(router.query.from) : "/explore"), [router.query.from]);
 
@@ -36,7 +69,7 @@ export default function TrialPage() {
     };
   }, [trialId]);
 
-  const phase = useMemo(() => (trial ? parsePhases(trial.phases || "")[0] || "UNKNOWN" : "UNKNOWN"), [trial]);
+  const phaseKey = useMemo(() => (trial ? parsePhases(trial.phases || "")[0] || "UNKNOWN" : "UNKNOWN"), [trial]);
   const bucket = useMemo(() => (trial ? reasonBucket(trial) : "OTHER/UNKNOWN"), [trial]);
 
   return (
@@ -46,108 +79,95 @@ export default function TrialPage() {
       </Head>
 
       <div className="min-h-screen">
-        <header className="border-b" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
-          <div className="mx-auto max-w-[1100px] px-4 py-4 flex items-center justify-between gap-3">
-            <Link href={from} className="btn">
-              ← Back
-            </Link>
+        <header className="topbar">
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <Link href="/explore" className="brand">Clinical trial failures</Link>
+              <nav className="nav">
+                <Link className="navlink" href="/explore">Explore</Link>
+                <Link className="navlink" href="/methods">Methods</Link>
+              </nav>
+            </div>
 
-            <Link href="/explore" className="text-sm font-semibold" style={{ color: "var(--text)" }}>
-              Clinical trial failures
-            </Link>
-
-            <div className="w-[80px]" />
+            <div className="topbar-right">
+              <Link href={from} className="btn">Back</Link>
+            </div>
           </div>
         </header>
 
-        <main className="mx-auto max-w-[1100px] px-4 py-8">
-          {err && <div className="card p-4 text-rose-700">{err}</div>}
-          {!trial && !err && <div className="card p-4" style={{ color: "var(--text-muted)" }}>Loading…</div>}
+        <main className="page">
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            {err && <div className="card p-4 error">{err}</div>}
+            {!trial && !err && <div className="card p-4 muted">Loading…</div>}
 
-          {trial && (
-            <>
-              <div className="card p-6">
-                <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-                  Trial
-                </div>
-                <div className="text-2xl font-semibold mt-1">{trial.nct_id}</div>
-                <div className="text-lg font-semibold mt-3 leading-snug">{trial.brief_title || "—"}</div>
-
-                <div className="mt-3 flex flex-wrap gap-2">
-                  <span className="chip">{phaseLabel(phase as any)}</span>
-                  <span className="chip">{(trial.overall_status || "UNKNOWN").toUpperCase()}</span>
-                  <span className="chip">{bucket}</span>
-                  {trial.classification_confidence ? (
-                    <span className="chip">Confidence: {trial.classification_confidence}</span>
-                  ) : null}
-                </div>
-
-                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                      Sponsor
-                    </div>
-                    <div className="mt-1">{trial.lead_sponsor || "—"}</div>
+            {trial && (
+              <>
+                <div className="card p-4">
+                  <div className="muted" style={{ fontSize: 12 }}>Trial</div>
+                  <div style={{ fontSize: 22, fontWeight: 900, marginTop: 4 }}>{trial.nct_id}</div>
+                  <div style={{ fontSize: 18, fontWeight: 800, marginTop: 10, lineHeight: 1.25 }}>
+                    {trial.brief_title || "—"}
                   </div>
 
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                      Collaborators
-                    </div>
-                    <div className="mt-1">{trial.collaborators || "—"}</div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
+                    <span className={phaseChipClass(phaseKey)}>{phaseLabel(phaseKey)}</span>
+                    <span className="chip chip-neutral">{(trial.overall_status || "UNKNOWN").toUpperCase()}</span>
+                    <span className={bucketChipClass(bucket)}>{bucket}</span>
+                    {trial.classification_confidence ? (
+                      <span className="chip chip-neutral">Confidence: {trial.classification_confidence}</span>
+                    ) : null}
                   </div>
 
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                      Condition
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 14 }}>
+                    <div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>Sponsor</div>
+                      <div style={{ fontSize: 14 }}>{trial.lead_sponsor || "—"}</div>
                     </div>
-                    <div className="mt-1">{trial.conditions || trial.condition_first || "—"}</div>
+                    <div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>Collaborators</div>
+                      <div style={{ fontSize: 14 }}>{trial.collaborators || "—"}</div>
+                    </div>
+                    <div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>Condition</div>
+                      <div style={{ fontSize: 14 }}>{trial.conditions || trial.condition_first || "—"}</div>
+                    </div>
+                    <div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>Intervention</div>
+                      <div style={{ fontSize: 14 }}>{trial.intervention_names || trial.intervention_first || "—"}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <Section title="Why stopped">
+                  <div style={{ fontSize: 14, lineHeight: 1.55, whiteSpace: "normal", wordBreak: "break-word" }}>
+                    {(trial.why_stopped || trial.why_stopped_short || "—").trim()}
+                  </div>
+                </Section>
+
+                <Section title="Provenance">
+                  <div className="muted" style={{ fontSize: 13, lineHeight: 1.5 }}>
+                    Dataset: <span style={{ color: "var(--text)", fontWeight: 700 }}>{meta?.version || "—"}</span>
+                    {meta?.source ? (
+                      <>
+                        {" "}• Source: <span style={{ color: "var(--text)", fontWeight: 700 }}>{meta.source}</span>
+                      </>
+                    ) : null}
+                    {trial.last_update_post_date ? (
+                      <>
+                        {" "}• Last update: <span style={{ color: "var(--text)", fontWeight: 700 }}>{trial.last_update_post_date}</span>
+                      </>
+                    ) : null}
                   </div>
 
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                      Intervention
-                    </div>
-                    <div className="mt-1">{trial.intervention_names || trial.intervention_first || "—"}</div>
+                  <div style={{ marginTop: 12 }}>
+                    <a className="btn" href={trial.url} target="_blank" rel="noreferrer">
+                      View on ClinicalTrials.gov
+                    </a>
                   </div>
-                </div>
-              </div>
-
-              <div className="mt-4 card p-6">
-                <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                  Why stopped
-                </div>
-                <div className="mt-2 text-sm leading-relaxed whitespace-normal break-words">
-                  {(trial.why_stopped || trial.why_stopped_short || "—").trim()}
-                </div>
-              </div>
-
-              <div className="mt-4 card p-6">
-                <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
-                  Provenance
-                </div>
-                <div className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
-                  Dataset: <span className="font-medium" style={{ color: "var(--text)" }}>{meta?.version || "—"}</span>
-                  {meta?.source ? (
-                    <>
-                      {" "}• Source: <span className="font-medium" style={{ color: "var(--text)" }}>{meta.source}</span>
-                    </>
-                  ) : null}
-                  {trial.last_update_post_date ? (
-                    <>
-                      {" "}• Last update: <span className="font-medium" style={{ color: "var(--text)" }}>{trial.last_update_post_date}</span>
-                    </>
-                  ) : null}
-                </div>
-
-                <div className="mt-3">
-                  <a className="btn" href={trial.url} target="_blank" rel="noreferrer">
-                    View on ClinicalTrials.gov
-                  </a>
-                </div>
-              </div>
-            </>
-          )}
+                </Section>
+              </>
+            )}
+          </div>
         </main>
       </div>
     </>
