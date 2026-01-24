@@ -23,6 +23,7 @@ import { TableSkeleton } from "@/components/Skeleton";
 import { MobileToolbar } from "@/components/MobileToolbar";
 import { ResultsList } from "@/components/ResultsList";
 import { Sheet } from "@/components/Sheet";
+import { ResizablePanel } from "@/components/ResizablePanel";
 
 function clampCompare(ids: string[]) {
   const uniq = Array.from(new Set(ids));
@@ -32,19 +33,15 @@ function clampCompare(ids: string[]) {
 export default function Explore() {
   const router = useRouter();
 
-  // breakpoints
   const isXL = useMediaQuery("(min-width: 1280px)");
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
-
   const [bioTrials, setBioTrials] = useState<TrialRow[] | null>(null);
   const [allTrials, setAllTrials] = useState<TrialRow[] | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // UI sheets/modals
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [detailsOpenMobile, setDetailsOpenMobile] = useState(false);
 
@@ -53,9 +50,9 @@ export default function Explore() {
   const [citeOpen, setCiteOpen] = useState(false);
   const [citeText, setCiteText] = useState("");
 
-  // URL state
   const state: UrlState = useMemo(() => parseUrlState(router.query), [router.query]);
 
+  // Load dataset: if scientific_failure filter is ON, bio dataset suffices; otherwise use all dataset.
   const needsAll = state.bio === false;
 
   useEffect(() => {
@@ -83,9 +80,7 @@ export default function Explore() {
         setLoading(false);
       }
     })();
-    return () => {
-      alive = false;
-    };
+    return () => { alive = false; };
   }, [needsAll]);
 
   const baseTrials = needsAll ? allTrials : bioTrials;
@@ -111,6 +106,8 @@ export default function Explore() {
     const src = baseTrials || [];
     return compareIds.map((id) => src.find((t) => t.nct_id === id)).filter(Boolean) as TrialRow[];
   }, [compareIds, baseTrials]);
+
+  const exploreReturnPath = useMemo(() => router.asPath, [router.asPath]);
 
   const setState = (next: UrlState) => {
     const query = stateToQuery(next);
@@ -141,7 +138,7 @@ export default function Explore() {
   const onReset = () => {
     setState({
       q: "",
-      bio: true,
+      bio: false, // default OFF per spec
       status: [],
       phase: [],
       area: [],
@@ -222,11 +219,11 @@ export default function Explore() {
         {loading && <TableSkeleton rows={10} />}
 
         {err && (
-          <div className="rounded-2xl border border-red-200 bg-white p-4 text-sm text-red-700 shadow-sm">
+          <div className="rounded-2xl border border-[var(--error)]/30 bg-[var(--surface)] p-4 text-sm text-[var(--error)] shadow-sm">
             {err}
             <div className="mt-2">
               <button
-                className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
+                className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]"
                 onClick={() => router.reload()}
                 type="button"
               >
@@ -238,9 +235,8 @@ export default function Explore() {
 
         {!loading && !err && baseTrials && facets && (
           <>
-            {/* Desktop: 3-pane */}
             {isXL ? (
-              <div className="grid gap-4 xl:grid-cols-[320px_1fr_420px]">
+              <div className="grid gap-4" style={{ gridTemplateColumns: "320px 1fr auto" }}>
                 <FacetRail
                   status={facets.status}
                   phase={facets.phase}
@@ -285,12 +281,13 @@ export default function Explore() {
                   />
 
                   <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray-600">
-                      Dataset: <span className="font-semibold">{meta ? meta.version : "—"}</span>
+                    <div className="text-xs text-[var(--text-muted)]">
+                      Dataset: <span className="font-semibold text-[var(--text)]">{meta ? meta.version : "—"}</span>
                     </div>
+
                     <div className="flex items-center gap-2">
                       <button
-                        className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
+                        className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]"
                         onClick={() => setCompareOpen(true)}
                         disabled={compareIds.length < 2}
                         type="button"
@@ -299,7 +296,7 @@ export default function Explore() {
                       </button>
 
                       <button
-                        className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
+                        className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]"
                         onClick={onCite}
                         type="button"
                       >
@@ -314,20 +311,24 @@ export default function Explore() {
                     onOpen={openTrialById}
                     compare={compareIds}
                     setCompare={setCompare}
+                    exploreReturnPath={exploreReturnPath}
                   />
                 </div>
 
-                <DetailsDrawer
-                  meta={meta}
-                  allTrials={baseTrials}
-                  trial={openTrial}
-                  onClose={closeTrial}
-                  compare={compareIds}
-                  setCompare={setCompare}
-                />
+                {/* Resizable right panel */}
+                <ResizablePanel storageKey="tf_panel_width_v1" defaultWidth={440} minWidth={380} maxWidth={680}>
+                  <DetailsDrawer
+                    meta={meta}
+                    allTrials={baseTrials}
+                    trial={openTrial}
+                    onClose={closeTrial}
+                    compare={compareIds}
+                    setCompare={setCompare}
+                    exploreReturnPath={exploreReturnPath}
+                  />
+                </ResizablePanel>
               </div>
             ) : (
-              /* Mobile/tablet: list + sheets */
               <div className="space-y-4">
                 <QuerySummaryBar
                   state={state}
@@ -345,6 +346,7 @@ export default function Explore() {
                   onOpen={openTrialById}
                   compare={compareIds}
                   setCompare={setCompare}
+                  exploreReturnPath={exploreReturnPath}
                 />
               </div>
             )}
@@ -388,12 +390,7 @@ export default function Explore() {
         </Sheet>
 
         {/* Details sheet (mobile/tablet) */}
-        <Sheet
-          title="Trial details"
-          open={!isXL && detailsOpenMobile && !!openTrial}
-          onClose={closeTrial}
-          side="bottom"
-        >
+        <Sheet title="Trial details" open={!isXL && detailsOpenMobile && !!openTrial} onClose={closeTrial} side="bottom">
           <DetailsDrawer
             meta={meta}
             allTrials={baseTrials || []}
@@ -401,6 +398,7 @@ export default function Explore() {
             onClose={closeTrial}
             compare={compareIds}
             setCompare={setCompare}
+            exploreReturnPath={exploreReturnPath}
           />
         </Sheet>
 
@@ -413,50 +411,50 @@ export default function Explore() {
 
         <Modal title="Export" open={exportOpen} onClose={() => setExportOpen(false)}>
           <div className="space-y-4">
-            <div className="text-sm text-gray-700">
+            <div className="text-sm text-[var(--text)]">
               Exports include metadata (timestamp, dataset version, filters, sort, and URL state).
             </div>
 
             <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-              <div className="rounded-2xl border p-3">
-                <div className="text-sm font-semibold text-gray-900">Current filtered results</div>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                <div className="text-sm font-semibold text-[var(--text)]">Current filtered results</div>
                 <div className="mt-2 flex flex-col gap-2">
-                  <button className="rounded-xl bg-gray-900 px-3 py-2 text-sm font-semibold text-white" onClick={() => doExport("csv", "filtered")}>
+                  <button className="rounded-xl bg-[var(--accent-primary)] px-3 py-2 text-sm font-semibold text-white" onClick={() => doExport("csv", "filtered")}>
                     CSV
                   </button>
-                  <button className="rounded-xl border px-3 py-2 text-sm font-semibold" onClick={() => doExport("json", "filtered")}>
+                  <button className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]" onClick={() => doExport("json", "filtered")}>
                     JSON
                   </button>
                 </div>
               </div>
 
-              <div className="rounded-2xl border p-3">
-                <div className="text-sm font-semibold text-gray-900">Current page</div>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                <div className="text-sm font-semibold text-[var(--text)]">Current page</div>
                 <div className="mt-2 flex flex-col gap-2">
-                  <button className="rounded-xl bg-gray-900 px-3 py-2 text-sm font-semibold text-white" onClick={() => doExport("csv", "page")}>
+                  <button className="rounded-xl bg-[var(--accent-primary)] px-3 py-2 text-sm font-semibold text-white" onClick={() => doExport("csv", "page")}>
                     CSV
                   </button>
-                  <button className="rounded-xl border px-3 py-2 text-sm font-semibold" onClick={() => doExport("json", "page")}>
+                  <button className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]" onClick={() => doExport("json", "page")}>
                     JSON
                   </button>
                 </div>
               </div>
 
-              <div className="rounded-2xl border p-3">
-                <div className="text-sm font-semibold text-gray-900">Compare set</div>
-                <div className="mt-1 text-xs text-gray-600">2–5 selected</div>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3">
+                <div className="text-sm font-semibold text-[var(--text)]">Compare set</div>
+                <div className="mt-1 text-xs text-[var(--text-muted)]">2–5 selected</div>
                 <div className="mt-2 flex flex-col gap-2">
-                  <button className="rounded-xl bg-gray-900 px-3 py-2 text-sm font-semibold text-white" onClick={() => doExport("csv", "compare")} disabled={compareTrials.length < 2}>
+                  <button className="rounded-xl bg-[var(--accent-primary)] px-3 py-2 text-sm font-semibold text-white" onClick={() => doExport("csv", "compare")} disabled={compareTrials.length < 2}>
                     CSV
                   </button>
-                  <button className="rounded-xl border px-3 py-2 text-sm font-semibold" onClick={() => doExport("json", "compare")} disabled={compareTrials.length < 2}>
+                  <button className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]" onClick={() => doExport("json", "compare")} disabled={compareTrials.length < 2}>
                     JSON
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-[var(--text-muted)]">
               CSV prepends metadata as “# …” comment lines. JSON wraps records with a metadata object.
             </div>
           </div>
@@ -464,15 +462,15 @@ export default function Explore() {
 
         <Modal title="Cite this view" open={citeOpen} onClose={() => setCiteOpen(false)}>
           <div className="space-y-3">
-            <div className="text-sm text-gray-700">
+            <div className="text-sm text-[var(--text)]">
               Copy and paste the citation below. It includes the dataset version and a shareable URL that reproduces this view.
             </div>
 
-            <textarea className="w-full min-h-[200px] rounded-xl border p-3 text-sm font-mono" readOnly value={citeText} />
+            <textarea className="w-full min-h-[200px] rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-sm font-mono text-[var(--text)]" readOnly value={citeText} />
 
             <div className="flex gap-2">
               <button
-                className="rounded-xl bg-gray-900 px-3 py-2 text-sm font-semibold text-white"
+                className="rounded-xl bg-[var(--accent-primary)] px-3 py-2 text-sm font-semibold text-white"
                 onClick={async () => {
                   try {
                     await navigator.clipboard.writeText(citeText);
@@ -484,7 +482,7 @@ export default function Explore() {
               >
                 Copy citation
               </button>
-              <button className="rounded-xl border px-3 py-2 text-sm font-semibold" onClick={() => setCiteOpen(false)} type="button">
+              <button className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-3 py-2 text-sm font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]" onClick={() => setCiteOpen(false)} type="button">
                 Done
               </button>
             </div>
