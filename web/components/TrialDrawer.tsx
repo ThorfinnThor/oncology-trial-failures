@@ -1,224 +1,170 @@
-import { useMemo, useState } from "react";
-import { splitSemicolonValues } from "@/lib/data";
-import { mapReasonBucket } from "@/lib/workbench";
-import { DatasetMeta, TrialRow } from "@/lib/types";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { loadDetail } from "@/lib/data";
+import { DatasetMeta, TrialDetail } from "@/lib/types";
+import { parsePhases, phaseLabel } from "@/lib/filtering";
 
-type Props = {
-  meta: DatasetMeta;
-  rows: TrialRow[];
-  trialId: string | null;
-  onClose: () => void;
-  onAddCompare: (id: string) => void;
-};
-
-function KV({ k, v }: { k: string; v?: string }) {
+function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="grid grid-cols-3 gap-2 py-1">
-      <div className="text-xs font-semibold text-gray-600">{k}</div>
-      <div className="col-span-2 text-sm text-gray-900 whitespace-pre-wrap">{v || "—"}</div>
+    <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]">
+      {children}
+    </span>
+  );
+}
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-2">
+      <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">{title}</div>
+      <div className="rounded-2xl border border-[var(--border)] bg-white p-4">{children}</div>
     </div>
   );
 }
 
-export function TrialDrawer({ meta, rows, trialId, onClose, onAddCompare }: Props) {
-  const [tab, setTab] = useState<"overview" | "rationale" | "timeline" | "sources">("overview");
+/**
+ * TrialDrawer (compat)
+ * - Updated: no splitSemicolonValues / workbench / TrialRow
+ * - Loads TrialDetail lazily from chunked JSON via loadDetail()
+ */
+export default function TrialDrawer({
+  open,
+  onClose,
+  nctId,
+  meta,
+  fromHref,
+}: {
+  open: boolean;
+  onClose: () => void;
+  nctId: string | null;
+  meta: DatasetMeta | null;
+  fromHref?: string;
+}) {
+  const id = useMemo(() => (nctId || "").trim(), [nctId]);
 
-  const trial = useMemo(() => {
-    if (!trialId) return null;
-    return rows.find((r) => r.nct_id === trialId) || null;
-  }, [rows, trialId]);
+  const [detail, setDetail] = useState<TrialDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
 
-  const related = useMemo(() => {
-    if (!trial) return { sponsor: [], intervention: [], condition: [] as TrialRow[] };
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      if (!open || !id) {
+        setDetail(null);
+        setErr(null);
+        return;
+      }
+      try {
+        setLoading(true);
+        setErr(null);
+        const d = await loadDetail(id);
+        if (!alive) return;
+        setDetail(d);
+        if (!d) setErr("Trial not found in dataset.");
+      } catch (e: any) {
+        if (!alive) return;
+        setErr(e?.message || "Failed to load trial details.");
+      } finally {
+        if (!alive) return;
+        setLoading(false);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, [open, id]);
 
-    const sponsor = trial.lead_sponsor;
-    const intr = splitSemicolonValues(trial.intervention_names || "")[0];
-    const cond = splitSemicolonValues(trial.conditions || "")[0];
+  if (!open) return null;
 
-    const bySponsor = sponsor ? rows.filter((r) => r.nct_id !== trial.nct_id && r.lead_sponsor === sponsor).slice(0, 5) : [];
-    const byIntr = intr ? rows.filter((r) => r.nct_id !== trial.nct_id && (r.intervention_names || "").includes(intr)).slice(0, 5) : [];
-    const byCond = cond ? rows.filter((r) => r.nct_id !== trial.nct_id && (r.conditions || "").includes(cond)).slice(0, 5) : [];
-
-    return { sponsor: bySponsor, intervention: byIntr, condition: byCond };
-  }, [trial, rows]);
-
-  if (!trialId) return null;
+  const ph = detail ? (parsePhases(detail.phases || "")[0] || "Unknown") : "Unknown";
 
   return (
-    <aside className="h-full w-full border-l bg-white">
-      <div className="flex h-full flex-col">
-        <div className="border-b p-4">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Trial</div>
-              <div className="mt-1 text-lg font-semibold text-gray-900">
-                {trial?.brief_title || trialId}
-              </div>
-              <div className="mt-1 font-mono text-xs text-gray-600">{trialId}</div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                <span className="rounded-full border px-2 py-0.5 text-[11px] font-semibold">{(trial?.overall_status || "—").toUpperCase()}</span>
-                <span className="rounded-full border px-2 py-0.5 text-[11px] font-semibold">{trial?.phases || "—"}</span>
-                <span className="rounded-full border px-2 py-0.5 text-[11px] font-semibold">{mapReasonBucket(trial as any)}</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <button className="rounded-xl border px-3 py-2 text-sm font-medium hover:bg-gray-50" onClick={onClose} type="button">
-                Close
-              </button>
-              <button
-                className="rounded-xl bg-gray-900 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-800"
-                onClick={() => onAddCompare(trialId)}
-                type="button"
-              >
-                Add to compare
-              </button>
-              {trial?.url ? (
-                <a className="rounded-xl border px-3 py-2 text-sm font-medium hover:bg-gray-50 text-center" href={trial.url} target="_blank" rel="noreferrer">
-                  Open source
-                </a>
-              ) : null}
+    <div className="fixed inset-0 z-40" role="dialog" aria-modal="true" aria-label="Trial drawer">
+      <div className="absolute inset-0 bg-black/20" onClick={onClose} />
+      <div className="absolute right-0 top-0 h-full w-full sm:w-[560px] bg-white border-l border-[var(--border)] shadow-[var(--shadow)] flex flex-col">
+        <div className="p-4 border-b border-[var(--border)] flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <div className="text-xs text-[var(--text-muted)]">Trial</div>
+            <div className="mt-1 text-sm font-semibold truncate">{id || "—"}</div>
+            <div className="mt-1 text-xs text-[var(--text-muted)]">
+              Dataset version: <span className="font-semibold text-[var(--text)]">{meta?.version || "—"}</span>
             </div>
           </div>
 
-          <div className="mt-3 flex gap-2">
-            {(["overview","rationale","timeline","sources"] as const).map((t) => (
-              <button
-                key={t}
-                type="button"
-                className={`rounded-xl border px-3 py-2 text-xs font-semibold ${
-                  tab === t ? "bg-gray-900 text-white border-gray-900" : "bg-white text-gray-700 hover:bg-gray-50"
-                }`}
-                onClick={() => setTab(t)}
+          <div className="flex items-center gap-2">
+            {id && (
+              <Link
+                className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:bg-[var(--surface-2)]"
+                href={`/trial/${encodeURIComponent(id)}${fromHref ? `?from=${encodeURIComponent(fromHref)}` : ""}`}
               >
-                {t === "overview" ? "Overview" : t === "rationale" ? "Stop rationale" : t === "timeline" ? "Timeline" : "Sources"}
-              </button>
-            ))}
+                Open full page
+              </Link>
+            )}
+            <button
+              className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:bg-[var(--surface-2)]"
+              onClick={onClose}
+              type="button"
+            >
+              Close
+            </button>
           </div>
         </div>
 
-        <div className="flex-1 overflow-auto p-4">
-          {!trial ? (
-            <div className="text-sm text-gray-700">Trial not found in the current dataset.</div>
-          ) : (
+        <div className="p-4 overflow-auto space-y-4">
+          {loading && <div className="text-sm text-[var(--text-muted)]">Loading…</div>}
+          {err && <div className="text-sm text-rose-700">{err}</div>}
+
+          {!loading && !err && detail && (
             <>
-              {tab === "overview" && (
-                <div className="space-y-4">
-                  <div className="rounded-2xl border p-3">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Key fields</div>
-                    <div className="mt-2">
-                      <KV k="Disease area" v={trial.disease_area} />
-                      <KV k="Countries" v={trial.countries} />
-                      <KV k="Conditions" v={trial.conditions} />
-                      <KV k="Interventions" v={trial.intervention_names} />
-                      <KV k="Sponsor" v={trial.lead_sponsor} />
-                      <KV k="Collaborators" v={trial.collaborators} />
-                    </div>
+              <div className="space-y-2">
+                <div className="text-lg font-semibold leading-snug">{detail.brief_title || "—"}</div>
+                <div className="flex flex-wrap gap-2">
+                  <Pill>{(detail.overall_status || "—").toUpperCase()}</Pill>
+                  <Pill>{phaseLabel(ph as any)}</Pill>
+                  <Pill>{detail.disease_area || "Other"}</Pill>
+                </div>
+              </div>
+
+              <Section title="Stated stop reason (full)">
+                <div className="whitespace-pre-wrap text-sm leading-relaxed">{detail.why_stopped || "—"}</div>
+              </Section>
+
+              <Section title="Overview">
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <span className="font-semibold">Sponsor:</span> {detail.lead_sponsor || "—"}
                   </div>
+                  <div>
+                    <span className="font-semibold">Collaborators:</span> {detail.collaborators || "—"}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Last update:</span> {detail.last_update_post_date || "—"}
+                  </div>
+                  <div className="text-xs text-[var(--text-muted)]">
+                    Labels are inferred from registry text and may be incomplete. Verify using primary sources.
+                  </div>
+                  <a className="text-sm font-semibold" href={detail.url} target="_blank" rel="noreferrer">
+                    Open primary source
+                  </a>
+                </div>
+              </Section>
 
-                  <div className="rounded-2xl border p-3">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Related trials</div>
-                    <div className="mt-2 space-y-2 text-sm">
-                      <div>
-                        <div className="text-xs font-semibold text-gray-600">Same sponsor</div>
-                        {related.sponsor.length ? (
-                          <ul className="mt-1 list-disc pl-5">
-                            {related.sponsor.map((r) => <li key={r.nct_id}>{r.nct_id} — {r.brief_title}</li>)}
-                          </ul>
-                        ) : <div className="text-gray-500">None found.</div>}
-                      </div>
-
-                      <div>
-                        <div className="text-xs font-semibold text-gray-600">Same intervention</div>
-                        {related.intervention.length ? (
-                          <ul className="mt-1 list-disc pl-5">
-                            {related.intervention.map((r) => <li key={r.nct_id}>{r.nct_id} — {r.brief_title}</li>)}
-                          </ul>
-                        ) : <div className="text-gray-500">None found.</div>}
-                      </div>
-
-                      <div>
-                        <div className="text-xs font-semibold text-gray-600">Same condition</div>
-                        {related.condition.length ? (
-                          <ul className="mt-1 list-disc pl-5">
-                            {related.condition.map((r) => <li key={r.nct_id}>{r.nct_id} — {r.brief_title}</li>)}
-                          </ul>
-                        ) : <div className="text-gray-500">None found.</div>}
-                      </div>
-                    </div>
+              <Section title="Key fields">
+                <div className="space-y-2 text-sm">
+                  <div>
+                    <span className="font-semibold">Conditions:</span> {detail.conditions || "—"}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Interventions:</span> {detail.intervention_names || "—"}
+                  </div>
+                  <div>
+                    <span className="font-semibold">MeSH terms:</span> {detail.mesh_terms || "—"}
                   </div>
                 </div>
-              )}
-
-              {tab === "rationale" && (
-                <div className="space-y-4">
-                  <div className="rounded-2xl border p-3">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Structured label</div>
-                    <div className="mt-2 space-y-2">
-                      <KV k="Reason bucket" v={mapReasonBucket(trial)} />
-                      <KV k="Classifier reason" v={trial.classification_reason} />
-                      <KV k="Confidence" v={trial.classification_confidence} />
-                      <div className="text-xs text-gray-500">
-                        Confidence reflects how strongly the stop text supports the label (matched signals and negations). It is not medical certainty.
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="rounded-2xl border p-3">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Recorded stop text</div>
-                    <div className="mt-2 text-sm text-gray-900 whitespace-pre-wrap">{trial.why_stopped || "—"}</div>
-                  </div>
-
-                  <div className="rounded-2xl border p-3">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Explainability</div>
-                    <div className="mt-2 text-sm text-gray-900 whitespace-pre-wrap">{trial.classification_evidence || "—"}</div>
-                    <a href="/methods#reason-buckets" className="mt-2 inline-block text-xs font-semibold text-blue-700 hover:underline">
-                      How buckets are defined
-                    </a>
-                  </div>
-                </div>
-              )}
-
-              {tab === "timeline" && (
-                <div className="rounded-2xl border p-3">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Timeline</div>
-                  <div className="mt-2">
-                    <KV k="Start date" v={trial.start_date} />
-                    <KV k="Primary completion" v={trial.primary_completion_date} />
-                    <KV k="Completion" v={trial.completion_date} />
-                    <KV k="Last update" v={trial.last_update_post_date} />
-                  </div>
-                  <div className="mt-2 text-xs text-gray-500">
-                    Date filters are currently based on “last update” (registry update date).
-                  </div>
-                </div>
-              )}
-
-              {tab === "sources" && (
-                <div className="space-y-4">
-                  <div className="rounded-2xl border p-3">
-                    <div className="text-xs font-semibold uppercase tracking-wide text-gray-600">Provenance</div>
-                    <div className="mt-2">
-                      <KV k="Primary ID" v={trial.nct_id} />
-                      <KV k="Source" v={meta.source} />
-                      <KV k="Dataset version" v={meta.version} />
-                      <KV k="Dataset generated" v={meta.generated_at_utc} />
-                      <KV k="Registry last update (field)" v={trial.last_update_post_date} />
-                    </div>
-                  </div>
-
-                  <details className="rounded-2xl border p-3">
-                    <summary className="cursor-pointer text-sm font-semibold text-gray-900">View raw record</summary>
-                    <pre className="mt-3 overflow-auto rounded-xl bg-gray-50 p-3 text-xs text-gray-800">
-{JSON.stringify(trial, null, 2)}
-                    </pre>
-                  </details>
-                </div>
-              )}
+              </Section>
             </>
           )}
         </div>
       </div>
-    </aside>
+    </div>
   );
 }
