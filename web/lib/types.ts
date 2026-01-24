@@ -6,6 +6,18 @@ export type DatasetMeta = {
 };
 
 /**
+ * Sorting keys used by the Explore UI and filtering utilities.
+ * Keep union broad to avoid brittle builds when UI adds new options.
+ */
+export type SortKey =
+  | "relevance"
+  | "date_desc"
+  | "date_asc"
+  | "title_asc"
+  | "title_desc"
+  | string;
+
+/**
  * URL-driven state (query params) used across explore/download/export.
  * Kept permissive because different pages/components may add fields over time.
  */
@@ -24,10 +36,10 @@ export type UrlState = {
   scientificFailureOnly?: boolean;
 
   // Sorting / pagination / view
-  sort?: string;         // e.g. "relevance" | "date_desc" | "date_asc"
+  sort?: SortKey;
   page?: number;
   pageSize?: number;
-  view?: string;         // e.g. "table" | "grid" | "list"
+  view?: "table" | "grid" | "list" | string;
 
   // Allow forward-compat extra keys without breaking builds
   [key: string]: any;
@@ -68,8 +80,6 @@ export type TrialIndexRow = {
 
   // Dates
   last_update_post_date?: string;
-
-  // Some code paths may refer to a generic "date" field; keep optional for compatibility
   date?: string;
 
   // External link
