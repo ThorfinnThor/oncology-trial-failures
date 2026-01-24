@@ -1,117 +1,168 @@
-import { shortExcerpt, splitSemicolonValues } from "@/lib/data";
-import { mapReasonBucket } from "@/lib/workbench";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { splitSemicolonValues } from "@/lib/data";
 import { TrialRow } from "@/lib/types";
+import { normalizePhase, reasonBucket } from "@/lib/filtering";
+import { ConfidencePill, ReasonPill, Pill } from "./Badges";
 
 type Props = {
   rows: TrialRow[];
-  selectedIds: Set<string>;
-  onToggleSelect: (id: string) => void;
+  openTrialId?: string;
+
   onOpen: (id: string) => void;
-  focusedId: string | null;
-  setFocusedId: (id: string) => void;
+  compare: string[];
+  setCompare: (ids: string[]) => void;
 };
 
-function badge(text: string) {
-  return <span className="inline-flex items-center rounded-full border bg-white px-2 py-0.5 text-[11px] font-semibold text-gray-700">{text}</span>;
+function toggle(list: string[], v: string) {
+  return list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
 }
 
-function confBadge(c: string) {
-  const v = (c || "").toUpperCase();
-  const base = "inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold";
-  if (v === "HIGH") return <span className={`${base} border-green-200 bg-green-50 text-green-800`}>High</span>;
-  if (v === "MEDIUM") return <span className={`${base} border-yellow-200 bg-yellow-50 text-yellow-800`}>Med</span>;
-  if (v === "LOW") return <span className={`${base} border-gray-200 bg-gray-50 text-gray-700`}>Low</span>;
-  return <span className={`${base} border-gray-200 bg-gray-50 text-gray-700`}>{v || "—"}</span>;
+function clampCompare(ids: string[]) {
+  const uniq = Array.from(new Set(ids));
+  return uniq.slice(0, 5);
 }
 
-export function ResultsGrid({ rows, selectedIds, onToggleSelect, onOpen, focusedId, setFocusedId }: Props) {
+function excerpt(s: string, n = 110) {
+  const t = (s || "").trim();
+  if (t.length <= n) return t;
+  return t.slice(0, n - 1) + "…";
+}
+
+export function ResultsGrid({ rows, onOpen, compare, setCompare, openTrialId }: Props) {
+  const [focused, setFocused] = useState(0);
+  const rowRefs = useRef<Array<HTMLTableRowElement | null>>([]);
+
+  useEffect(() => {
+    // keep focused row in bounds when rows change
+    setFocused((f) => Math.min(f, Math.max(0, rows.length - 1)));
+  }, [rows.length]);
+
+  useEffect(() => {
+    const el = rowRefs.current[focused];
+    el?.focus?.();
+  }, [focused]);
+
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setFocused((f) => Math.min(rows.length - 1, f + 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setFocused((f) => Math.max(0, f - 1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const r = rows[focused];
+      if (r?.nct_id) onOpen(r.nct_id);
+    }
+  };
+
   return (
-    <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
-      <div className="overflow-auto">
-        <table className="min-w-[1200px] w-full text-left text-sm">
+    <div className="rounded-2xl border bg-white shadow-sm overflow-hidden">
+      <div className="overflow-auto" onKeyDown={onKeyDown}>
+        <table className="min-w-[1400px] w-full text-left text-sm">
           <thead className="sticky top-0 bg-gray-50 text-[11px] uppercase tracking-wide text-gray-600">
             <tr>
-              <th className="px-3 py-3 w-10"></th>
-              <th className="px-3 py-3">Trial</th>
-              <th className="px-3 py-3">Title</th>
-              <th className="px-3 py-3">Phase</th>
-              <th className="px-3 py-3">Condition</th>
-              <th className="px-3 py-3">Intervention</th>
-              <th className="px-3 py-3">Sponsor</th>
-              <th className="px-3 py-3">Status</th>
-              <th className="px-3 py-3">Reason</th>
-              <th className="px-3 py-3">Date</th>
-              <th className="px-3 py-3">Conf.</th>
+              <th className="px-4 py-3 w-10">Sel</th>
+              <th className="px-4 py-3 w-28">Trial</th>
+              <th className="px-4 py-3">Title</th>
+              <th className="px-4 py-3 w-24">Phase</th>
+              <th className="px-4 py-3 w-220">Condition</th>
+              <th className="px-4 py-3 w-220">Intervention</th>
+              <th className="px-4 py-3 w-240">Sponsor</th>
+              <th className="px-4 py-3 w-140">Status</th>
+              <th className="px-4 py-3 w-220">Reason</th>
+              <th className="px-4 py-3 w-140">Date</th>
+              <th className="px-4 py-3 w-160">Flags</th>
             </tr>
           </thead>
 
           <tbody className="divide-y">
-            {rows.map((r) => {
-              const id = r.nct_id;
-              const selected = selectedIds.has(id);
-              const isFocused = focusedId === id;
-
-              const phase = splitSemicolonValues(r.phases || "")[0] || "—";
-              const cond = splitSemicolonValues(r.conditions || "")[0] || "—";
-              const intr = splitSemicolonValues(r.intervention_names || "")[0] || "—";
-              const reasonBucket = mapReasonBucket(r);
+            {rows.map((r, idx) => {
+              const firstCond = splitSemicolonValues(r.conditions || "")[0] || "—";
+              const firstInt = splitSemicolonValues(r.intervention_names || "")[0] || "—";
+              const ph = normalizePhase(r.phases || "")[0] || "Unknown";
+              const bucket = reasonBucket(r);
+              const isOpen = openTrialId === r.nct_id;
 
               return (
                 <tr
-                  key={id}
+                  key={r.nct_id}
+                  ref={(el) => { rowRefs.current[idx] = el; }}
                   tabIndex={0}
-                  className={`hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300 ${isFocused ? "bg-gray-50" : ""}`}
-                  onFocus={() => setFocusedId(id)}
-                  onClick={() => onOpen(id)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") onOpen(id);
-                    if (e.key === " ") {
-                      e.preventDefault();
-                      onToggleSelect(id);
-                    }
-                  }}
-                  aria-label={`Trial ${id}`}
+                  className={`hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 ${isOpen ? "bg-gray-50" : ""}`}
+                  onClick={() => onOpen(r.nct_id)}
                 >
-                  <td className="px-3 py-3" onClick={(e) => e.stopPropagation()}>
+                  <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
                     <input
                       type="checkbox"
-                      checked={selected}
-                      onChange={() => onToggleSelect(id)}
-                      aria-label={`Select ${id} for compare`}
+                      aria-label={`Select ${r.nct_id} for compare`}
+                      checked={compare.includes(r.nct_id)}
+                      onChange={() => setCompare(clampCompare(toggle(compare, r.nct_id)))}
                     />
                   </td>
 
-                  <td className="px-3 py-3 font-mono text-xs text-blue-700">
-                    {id}
+                  <td className="px-4 py-3 font-mono text-xs">
+                    <Link className="text-blue-700 hover:underline" href={r.url || "#"} onClick={(e) => e.stopPropagation()} target="_blank">
+                      {r.nct_id}
+                    </Link>
                   </td>
 
-                  <td className="px-3 py-3">
-                    <div className="font-medium text-gray-900 line-clamp-2" title={r.brief_title}>
-                      {r.brief_title || "—"}
+                  <td className="px-4 py-3">
+                    <div className="font-semibold text-gray-900 line-clamp-2" title={r.brief_title || ""}>{r.brief_title || "—"}</div>
+                    <div className="mt-1 text-xs text-gray-500" title={r.why_stopped || ""}>
+                      {excerpt(r.why_stopped || "", 120) || "—"}
                     </div>
-                    <div className="mt-1 text-xs text-gray-500" title={r.why_stopped}>
-                      {shortExcerpt(r.why_stopped || "", 120) || "—"}
+                  </td>
+
+                  <td className="px-4 py-3">
+                    <Pill>{ph}</Pill>
+                  </td>
+
+                  <td className="px-4 py-3" title={r.conditions || ""}>
+                    {excerpt(firstCond, 70)}
+                  </td>
+
+                  <td className="px-4 py-3" title={r.intervention_names || ""}>
+                    {excerpt(firstInt, 70)}
+                  </td>
+
+                  <td className="px-4 py-3" title={r.lead_sponsor || ""}>
+                    {excerpt(r.lead_sponsor || "—", 80)}
+                    {r.collaborators ? (
+                      <div className="mt-1 text-xs text-gray-500" title={r.collaborators}>
+                        Collab: {excerpt(r.collaborators, 80)}
+                      </div>
+                    ) : null}
+                  </td>
+
+                  <td className="px-4 py-3">
+                    <Pill>{(r.overall_status || "—").toUpperCase()}</Pill>
+                  </td>
+
+                  <td className="px-4 py-3">
+                    <ReasonPill value={bucket} />
+                    <div className="mt-1 text-xs text-gray-500" title={r.why_stopped || ""}>
+                      {excerpt(r.why_stopped || "", 90)}
                     </div>
                   </td>
 
-                  <td className="px-3 py-3">{badge(phase)}</td>
-                  <td className="px-3 py-3" title={r.conditions}>{cond}</td>
-                  <td className="px-3 py-3" title={r.intervention_names}>{intr}</td>
-                  <td className="px-3 py-3" title={`${r.lead_sponsor || ""}\n${r.collaborators || ""}`}>
-                    <div className="line-clamp-1">{r.lead_sponsor || "—"}</div>
-                    {r.collaborators ? <div className="mt-1 text-xs text-gray-500 line-clamp-1">{r.collaborators}</div> : null}
+                  <td className="px-4 py-3 font-mono text-xs">
+                    {r.last_update_post_date || "—"}
                   </td>
 
-                  <td className="px-3 py-3">{badge((r.overall_status || "—").toUpperCase())}</td>
-
-                  <td className="px-3 py-3">
-                    {badge(reasonBucket)}
-                  </td>
-
-                  <td className="px-3 py-3 font-mono text-xs">{r.last_update_post_date || "—"}</td>
-
-                  <td className="px-3 py-3" title={r.classification_evidence || ""}>
-                    {confBadge(r.classification_confidence)}
+                  <td className="px-4 py-3">
+                    {r.classification_label === "BIOLOGICAL_FAILURE" ? (
+                      <div className="flex flex-col gap-1">
+                        <Pill>Likely bio</Pill>
+                        <ConfidencePill value={r.classification_confidence || "—"} />
+                      </div>
+                    ) : (
+                      <div className="flex flex-col gap-1">
+                        <Pill>—</Pill>
+                        <ConfidencePill value={r.classification_confidence || "—"} />
+                      </div>
+                    )}
                   </td>
                 </tr>
               );
@@ -119,13 +170,17 @@ export function ResultsGrid({ rows, selectedIds, onToggleSelect, onOpen, focused
 
             {rows.length === 0 && (
               <tr>
-                <td className="px-4 py-8 text-center text-gray-600" colSpan={11}>
-                  No results for the current filters. Try clearing some filters.
+                <td colSpan={11} className="px-4 py-10 text-center text-sm text-gray-600">
+                  No results. Try clearing some filters.
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="border-t bg-white px-4 py-3 text-xs text-gray-600">
+        Tip: Use ↑/↓ to move, Enter to open details. Select 2–5 trials to compare.
       </div>
     </div>
   );
