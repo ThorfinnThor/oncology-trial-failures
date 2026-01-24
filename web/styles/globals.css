@@ -2,49 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Option 3: Editorial + Trust Marks design tokens */
+/* -------------------------------------------------------
+   TrialFailures — Modern Sleek Theme (v1)
+   - Clean, high-contrast typography
+   - Subtle gradient background (recognizable)
+   - Crisp borders, modern accent
+   ------------------------------------------------------- */
+
 :root {
-  --bg: #fbf7f1;          /* warm paper */
-  --surface: #fffdf9;     /* warm white */
-  --surface-2: #f7f1e8;   /* tinted surface */
-  --border: #e6ddcf;      /* warm gray border */
-  --text: #1f1b16;        /* deep brown-charcoal */
-  --text-muted: #6b5f55;  /* warm muted text */
+  /* Surfaces */
+  --bg: #0b1220;            /* deep navy canvas */
+  --bg-2: #0a1020;          /* slightly deeper for gradients */
+  --surface: rgba(255, 255, 255, 0.06);   /* glass surface */
+  --surface-2: rgba(255, 255, 255, 0.10); /* elevated glass */
+  --border: rgba(255, 255, 255, 0.10);
 
-  --accent-primary: #4b2f6b; /* muted aubergine */
-  --accent-secondary: #2c7a78; /* soft teal */
+  /* Text */
+  --text: rgba(255, 255, 255, 0.92);
+  --text-muted: rgba(255, 255, 255, 0.62);
 
-  --success: #2c7a78;
-  --warning: #a6761d;
-  --error: #9b2c2c;
+  /* Accents (recognizable) */
+  --accent-primary: #7c5cff;     /* electric violet */
+  --accent-secondary: #22d3ee;   /* cyan */
 
-  --row-hover: rgba(75, 47, 107, 0.06);
+  /* Semantic */
+  --success: #34d399;  /* emerald */
+  --warning: #fbbf24;  /* amber */
+  --error: #fb7185;    /* rose */
+
+  /* Interaction */
+  --row-hover: rgba(124, 92, 255, 0.10);
+  --shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  --shadow-soft: 0 10px 20px rgba(0, 0, 0, 0.22);
 }
 
+/* Background “brand” treatment */
 html, body {
   padding: 0;
   margin: 0;
-  background: var(--bg);
   color: var(--text);
+  background:
+    radial-gradient(1200px 500px at 20% 0%, rgba(124, 92, 255, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 80% 10%, rgba(34, 211, 238, 0.12), transparent 55%),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+  min-height: 100%;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-/* Improve text rendering */
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Ensure focus is visible (a11y) */
+/* A11y focus */
 :focus-visible {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--accent-secondary);
   outline-offset: 2px;
 }
 
-/* If Tailwind line-clamp plugin isn't enabled, keep a fallback */
+/* --- Make “glass” surfaces look premium --- */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(10px);
+}
+
+.glass-strong {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+/* Improve default link style */
+a {
+  color: var(--accent-secondary);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Table readability on dark */
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* Optional fallback for line clamp if plugin not enabled */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
