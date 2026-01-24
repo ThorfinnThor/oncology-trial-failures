@@ -11,11 +11,10 @@ export function ScientificFailureToggle({
     <div className="card p-4">
       <div className="facet-title">Likely scientific failure</div>
 
-      <label className="row" onClick={(e) => e.stopPropagation()}>
+      <label className="row">
         <input
           type="checkbox"
           checked={checked}
-          onClick={(e) => e.stopPropagation()}
           onChange={(e) => onChange(e.target.checked)}
         />
         <div className="row-text">
@@ -48,7 +47,11 @@ export function Facet({
   const filtered = useMemo(() => {
     const qq = q.trim().toLowerCase();
     if (!qq) return options;
-    return options.filter((o) => o.label.toLowerCase().includes(qq) || o.value.toLowerCase().includes(qq));
+    return options.filter(
+      (o) =>
+        o.label.toLowerCase().includes(qq) ||
+        o.value.toLowerCase().includes(qq)
+    );
   }, [options, q]);
 
   const selectedSet = useMemo(() => new Set(selected), [selected]);
@@ -58,18 +61,22 @@ export function Facet({
       <div className="facet-title">{title}</div>
 
       {searchable ? (
-        <input className="input mt-10" placeholder={`Search ${title.toLowerCase()}…`} value={q} onChange={(e) => setQ(e.target.value)} />
+        <input
+          className="input mt-10"
+          placeholder={`Search ${title.toLowerCase()}…`}
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+        />
       ) : null}
 
       <div className="facet-list">
         {filtered.map((o) => {
           const isChecked = selectedSet.has(o.value);
           return (
-            <label key={o.value} className="facet-item" onClick={(e) => e.stopPropagation()}>
+            <label key={o.value} className="facet-item">
               <input
                 type="checkbox"
                 checked={isChecked}
-                onClick={(e) => e.stopPropagation()}
                 onChange={() => onToggle(o.value)}
               />
               <div className="facet-label">{o.label}</div>
