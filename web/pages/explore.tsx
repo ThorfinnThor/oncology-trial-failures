@@ -25,7 +25,6 @@ function uniq(arr: string[]) {
 export default function ExplorePage() {
   const router = useRouter();
 
-  // Derived from URL
   const state: UrlState = useMemo(() => decodeState(router.asPath), [router.asPath]);
 
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
@@ -33,11 +32,9 @@ export default function ExplorePage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // Local search input (debounced into URL)
   const [qInput, setQInput] = useState(state.q || "");
   useEffect(() => setQInput(state.q || ""), [state.q]);
 
-  // Load dataset once
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -75,23 +72,16 @@ export default function ExplorePage() {
 
   const [compareOpen, setCompareOpen] = useState(false);
 
-  /**
-   * CRITICAL FIX:
-   * Always base updates on the *latest URL state*, not the captured `state` from render.
-   * This prevents debounced search / other updates from wiping `trial` or `compare`.
-   */
   function updateState(patch: Partial<UrlState>) {
     const base: UrlState = decodeState(router.asPath);
     const next: UrlState = { ...base, ...patch };
 
-    // normalize
     next.status = next.status ? uniq(next.status) : undefined;
     next.phase = next.phase ? uniq(next.phase) : undefined;
     next.area = next.area ? uniq(next.area) : undefined;
     next.bucket = next.bucket ? uniq(next.bucket) : undefined;
     next.compare = next.compare ? uniq(next.compare) : undefined;
 
-    // remove empties
     (["status", "phase", "area", "bucket", "compare"] as const).forEach((k) => {
       const v = (next as any)[k];
       if (Array.isArray(v) && v.length === 0) (next as any)[k] = undefined;
@@ -142,7 +132,6 @@ export default function ExplorePage() {
     navigator.clipboard.writeText(url);
   }
 
-  // write q to URL with debounce
   useEffect(() => {
     const t = setTimeout(() => {
       const base = decodeState(router.asPath);
@@ -195,14 +184,8 @@ export default function ExplorePage() {
                 Copy link
               </button>
 
-              {/* Always-visible Compare button (fixes “no compare button” UX issue) */}
-              <button
-                className="btn"
-                type="button"
-                onClick={() => setCompareOpen(true)}
-                disabled={compareCount < 2}
-                title={compareCount < 2 ? "Select at least 2 trials to compare" : "Compare selected trials"}
-              >
+              {/* Always opens; modal will tell you if <2 selected */}
+              <button className="btn" type="button" onClick={() => setCompareOpen(true)}>
                 Compare ({compareCount})
               </button>
 
@@ -221,19 +204,8 @@ export default function ExplorePage() {
               <div className="rail-scroll">
                 <ScientificFailureToggle checked={!!state.bio} onChange={(v) => updateState({ bio: v || undefined })} />
 
-                <Facet
-                  title="Status"
-                  options={facets.status}
-                  selected={state.status || []}
-                  onToggle={(v) => toggleMulti("status", v)}
-                />
-
-                <Facet
-                  title="Phase"
-                  options={facets.phase}
-                  selected={state.phase || []}
-                  onToggle={(v) => toggleMulti("phase", v)}
-                />
+                <Facet title="Status" options={facets.status} selected={state.status || []} onToggle={(v) => toggleMulti("status", v)} />
+                <Facet title="Phase" options={facets.phase} selected={state.phase || []} onToggle={(v) => toggleMulti("phase", v)} />
 
                 <Facet
                   title="Disease area (Top 10)"
@@ -243,12 +215,7 @@ export default function ExplorePage() {
                   searchable
                 />
 
-                <Facet
-                  title="Reason bucket"
-                  options={facets.bucket}
-                  selected={state.bucket || []}
-                  onToggle={(v) => toggleMulti("bucket", v)}
-                />
+                <Facet title="Reason bucket" options={facets.bucket} selected={state.bucket || []} onToggle={(v) => toggleMulti("bucket", v)} />
               </div>
             </aside>
 
@@ -293,13 +260,6 @@ export default function ExplorePage() {
                     onOpenPanel={(id) => updateState({ trial: id })}
                     fromHref={fromHref}
                   />
-                </div>
-
-                {/* Keep the bottom compare button as secondary (optional), but now top bar is primary */}
-                <div className="below-actions">
-                  <button className="btn" type="button" onClick={() => setCompareOpen(true)} disabled={(state.compare || []).length < 2}>
-                    Compare ({(state.compare || []).length})
-                  </button>
                 </div>
               </div>
             </section>
