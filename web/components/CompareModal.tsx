@@ -32,14 +32,16 @@ function bucketChipClass(bucket: string) {
   return "chip chip-neutral";
 }
 
+const PAD = 10; // tighter spacing than before
+
 function fieldRow(label: string, renderCells: React.ReactNode[]) {
   return (
     <tr>
       <td
         style={{
-          padding: "12px",
+          padding: `${PAD}px`,
           verticalAlign: "top",
-          width: 180,
+          width: 160, // slightly narrower for better column room
           fontSize: 12,
           fontWeight: 900,
           textTransform: "uppercase",
@@ -55,7 +57,7 @@ function fieldRow(label: string, renderCells: React.ReactNode[]) {
         <td
           key={i}
           style={{
-            padding: "12px",
+            padding: `${PAD}px`,
             verticalAlign: "top",
             fontSize: 13,
             color: "var(--text)",
@@ -138,8 +140,11 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
             </div>
           ) : (
             <>
-              <div className="card p-4" style={{ marginBottom: 14 }}>
-                <div className="facet-title">Selected</div>
+              {/* tighter Selected block */}
+              <div className="card" style={{ padding: 12, marginBottom: 10 }}>
+                <div className="facet-title" style={{ marginBottom: 8 }}>
+                  Selected
+                </div>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
                   {cols.map((t) => (
                     <div key={t.nct_id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -171,21 +176,20 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                 </div>
               </div>
 
-              {/* Key change: remove sticky header to prevent overlap/overlay while scrolling */}
-              <div className="card" style={{ overflow: "auto", maxHeight: "62vh" }}>
+              <div className="card" style={{ overflow: "auto", maxHeight: "64vh" }}>
                 <table style={{ minWidth: 1100, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
                   <thead style={{ background: "var(--surface-2)" }}>
                     <tr>
                       <th
                         style={{
-                          padding: "12px",
+                          padding: `${PAD}px`,
                           textAlign: "left",
                           fontSize: 12,
                           fontWeight: 900,
                           textTransform: "uppercase",
                           letterSpacing: ".06em",
                           color: "var(--text-muted)",
-                          width: 180,
+                          width: 160,
                           borderBottom: "1px solid var(--border)",
                           verticalAlign: "top"
                         }}
@@ -197,7 +201,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                         <th
                           key={t.nct_id}
                           style={{
-                            padding: "12px",
+                            padding: `${PAD}px`,
                             textAlign: "left",
                             borderBottom: "1px solid var(--border)",
                             verticalAlign: "top",
@@ -207,7 +211,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                         >
                           <div style={{ fontSize: 13, fontWeight: 900 }}>{t.nct_id}</div>
 
-                          {/* Clamp the title to avoid extreme header height */}
+                          {/* clamp to 2 lines to reduce header height */}
                           <div
                             className="muted"
                             style={{
@@ -215,7 +219,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                               marginTop: 6,
                               lineHeight: 1.25,
                               display: "-webkit-box",
-                              WebkitLineClamp: 3,
+                              WebkitLineClamp: 2,
                               WebkitBoxOrient: "vertical",
                               overflow: "hidden"
                             }}
