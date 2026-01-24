@@ -717,7 +717,7 @@ def main() -> None:
             record["classification_evidence"] = ov.matched_evidence
 
         all_records.append(record)
-        if len(all_records) >= MAX_STUDIES_TOTAL:
+        if MAX_STUDIES_TOTAL > 0 and len(all_records) >= MAX_STUDIES_TOTAL:
             break
 
     all_records.sort(key=lambda r: r.get("last_update_post_date") or "", reverse=True)
