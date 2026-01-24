@@ -16,15 +16,6 @@ import CompareModal from "@/components/CompareModal";
 import DownloadMenu from "@/components/DownloadMenu";
 import { Facet, ScientificFailureToggle } from "@/components/FacetRail";
 
-function useDebounced<T>(value: T, ms: number) {
-  const [v, setV] = useState(value);
-  useEffect(() => {
-    const t = setTimeout(() => setV(value), ms);
-    return () => clearTimeout(t);
-  }, [value, ms]);
-  return v;
-}
-
 function uniq(arr: string[]) {
   return Array.from(new Set(arr)).filter(Boolean);
 }
@@ -32,7 +23,7 @@ function uniq(arr: string[]) {
 export default function ExplorePage() {
   const router = useRouter();
 
-  // URL is the single source of truth.
+  // URL-driven state (shareable), but we avoid event-bubbling issues via stopPropagation in components.
   const state: UrlState = useMemo(() => decodeState(router.asPath), [router.asPath]);
 
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
@@ -40,7 +31,11 @@ export default function ExplorePage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // Load data once.
+  // Local search input; we only write to URL on change.
+  const [qInput, setQInput] = useState(state.q || "");
+  useEffect(() => setQInput(state.q || ""), [state.q]);
+
+  // Load dataset once
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -65,12 +60,10 @@ export default function ExplorePage() {
   }, []);
 
   const facets = useMemo(() => computeFacets(allRows), [allRows]);
-  const filtered = useMemo(() => filterRows(allRows, state), [allRows, state]);
 
+  const filtered = useMemo(() => filterRows(allRows, state), [allRows, state]);
   const sortKey: SortKey = (state.sort || "date_desc") as SortKey;
   const rows = useMemo(() => sortRows(filtered, sortKey), [filtered, sortKey]);
-
-  const railOpen = state.rail ?? true;
 
   const compareIds = state.compare || [];
   const compareRows = useMemo(() => {
@@ -80,34 +73,17 @@ export default function ExplorePage() {
 
   const [compareOpen, setCompareOpen] = useState(false);
 
-  // Search input is local, but writes into URL after debounce.
-  const [qInput, setQInput] = useState(state.q || "");
-  useEffect(() => setQInput(state.q || ""), [state.q]);
-  const qDebounced = useDebounced(qInput, 250);
-
-  // When debounced query changes, update URL state.
-  useEffect(() => {
-    const current = (state.q || "").trim();
-    const next = (qDebounced || "").trim();
-    if (current === next) return;
-    updateState({ q: next || undefined });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qDebounced]);
-
   function updateState(patch: Partial<UrlState>) {
-    const next: UrlState = {
-      ...state,
-      ...patch
-    };
+    const next: UrlState = { ...state, ...patch };
 
-    // Normalize multi-select arrays
+    // normalize
     next.status = next.status ? uniq(next.status) : undefined;
     next.phase = next.phase ? uniq(next.phase) : undefined;
     next.area = next.area ? uniq(next.area) : undefined;
     next.bucket = next.bucket ? uniq(next.bucket) : undefined;
     next.compare = next.compare ? uniq(next.compare) : undefined;
 
-    // Clean empty arrays from URL
+    // remove empties
     (["status", "phase", "area", "bucket", "compare"] as const).forEach((k) => {
       const v = (next as any)[k];
       if (Array.isArray(v) && v.length === 0) (next as any)[k] = undefined;
@@ -115,8 +91,7 @@ export default function ExplorePage() {
 
     if (!next.q) next.q = undefined;
 
-    const qs = encodeState(next);
-    router.replace(`/explore${qs}`, undefined, { shallow: true });
+    router.replace(`/explore${encodeState(next)}`, undefined, { shallow: true });
   }
 
   function toggleMulti(key: keyof UrlState, value: string) {
@@ -130,7 +105,7 @@ export default function ExplorePage() {
     const s = new Set(state.compare || []);
     if (s.has(id)) s.delete(id);
     else {
-      if (s.size >= 5) return; // limit
+      if (s.size >= 5) return;
       s.add(id);
     }
     updateState({ compare: Array.from(s) });
@@ -148,8 +123,7 @@ export default function ExplorePage() {
       date_to: undefined,
       sort: "date_desc",
       trial: undefined,
-      compare: undefined,
-      rail: true
+      compare: undefined
     });
   }
 
@@ -158,16 +132,16 @@ export default function ExplorePage() {
     navigator.clipboard.writeText(url);
   }
 
-  function citeView() {
-    const url = `${window.location.origin}/explore${encodeState(state)}`;
-    const txt = [
-      "Clinical trial failures — filtered view",
-      `Accessed: ${new Date().toISOString()}`,
-      `Dataset: ${meta?.version || "Unknown"}`,
-      url
-    ].join("\n");
-    navigator.clipboard.writeText(txt);
-  }
+  // write q to URL with debounce
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const cur = (state.q || "").trim();
+      const nxt = (qInput || "").trim();
+      if (cur !== nxt) updateState({ q: nxt || undefined });
+    }, 250);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qInput]);
 
   const fromHref = useMemo(() => `/explore${encodeState(state)}`, [state]);
 
@@ -178,24 +152,24 @@ export default function ExplorePage() {
       </Head>
 
       <div className="min-h-screen">
-        <header className="sticky top-0 z-30 border-b" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
-          <div className="mx-auto max-w-[1400px] px-4 py-3 flex items-center gap-3">
-            <Link href="/explore" className="text-sm font-semibold" style={{ color: "var(--text)" }}>
-              Clinical trial failures
-            </Link>
-
-            <nav className="ml-2 hidden sm:flex items-center gap-3 text-sm">
-              <Link href="/explore" className="text-[var(--text-muted)] hover:text-[var(--text)]">
-                Explore
+        {/* Top bar — keep same layout */}
+        <header className="topbar">
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <Link href="/explore" className="brand">
+                Clinical trial failures
               </Link>
-              <Link href="/methods" className="text-[var(--text-muted)] hover:text-[var(--text)]">
-                Methods
-              </Link>
-            </nav>
+              <nav className="nav">
+                <Link className="navlink" href="/explore">
+                  Explore
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
+                </Link>
+              </nav>
+            </div>
 
-            <div className="flex-1" />
-
-            <div className="hidden md:block w-[420px]">
+            <div className="topbar-center">
               <input
                 className="input"
                 placeholder="Search trials, sponsors, drugs, indications…"
@@ -205,17 +179,11 @@ export default function ExplorePage() {
               />
             </div>
 
-            <div className="flex items-center gap-2">
-              <button className="btn md:hidden" onClick={() => updateState({ rail: !(state.rail ?? true) })} type="button">
-                Filters
-              </button>
-
+            <div className="topbar-right">
               <button className="btn" onClick={copyLink} type="button">
                 Copy link
               </button>
-
               <DownloadMenu meta={meta} state={state} allRows={allRows} filteredRows={rows} selectedRows={compareRows} />
-
               <button className="btn" onClick={resetAll} type="button">
                 Reset
               </button>
@@ -223,68 +191,20 @@ export default function ExplorePage() {
           </div>
         </header>
 
-        <div className="mx-auto max-w-[1400px] px-4 pt-8 pb-4">
-          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight" style={{ color: "var(--text)" }}>
-            Clinical trial failures
-          </h1>
-          <p className="mt-2 text-sm sm:text-base" style={{ color: "var(--text-muted)" }}>
-            Browse stopped trials and the recorded stop reasons. Use filters to narrow to the subset you care about.
-          </p>
-
-          <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="chip">
-              Dataset: <span className="font-semibold">{meta?.version || "…"}</span>
-            </span>
-
-            <button className="btn" type="button" onClick={() => updateState({ rail: !railOpen })}>
-              {railOpen ? "Hide filters" : "Show filters"}
-            </button>
-
-            <button className="btn" type="button" onClick={() => setCompareOpen(true)} disabled={(state.compare || []).length < 2}>
-              Compare ({(state.compare || []).length})
-            </button>
-
-            <button className="btn" type="button" onClick={citeView}>
-              Cite this view
-            </button>
-          </div>
-
-          <div className="md:hidden mt-4">
-            <input
-              className="input"
-              placeholder="Search trials, sponsors, drugs, indications…"
-              value={qInput}
-              onChange={(e) => setQInput(e.target.value)}
-              aria-label="Search"
-            />
-          </div>
-        </div>
-
-        <main className="mx-auto max-w-[1400px] px-4 pb-10">
-          <div className="grid grid-cols-12 gap-4">
-            {/* FILTER RAIL */}
-            <aside className={["col-span-12 lg:col-span-3", railOpen ? "" : "hidden lg:block"].join(" ")}>
-              {/* Make rail scrollable */}
-              <div
-                className="sticky top-[72px] space-y-4 pr-1"
-                style={{
-                  maxHeight: "calc(100vh - 88px)",
-                  overflowY: "auto"
-                }}
-              >
+        <main className="page">
+          {/* Layout matches screenshot: left rail + center table */}
+          <div className="layout">
+            {/* LEFT FILTER RAIL — NOW SCROLLABLE */}
+            <aside className="rail">
+              <div className="rail-scroll">
                 <ScientificFailureToggle
                   checked={!!state.bio}
                   onChange={(v) => updateState({ bio: v || undefined })}
-                  onInfo={() =>
-                    alert(
-                      "Likely scientific failure means the stop reason suggests the intervention did not work as intended (e.g., lack of efficacy/futility). This is inferred from registry text and may be incomplete."
-                    )
-                  }
                 />
 
-                <Facet title="Status" options={facets.status} selected={state.status || []} onToggle={(v) => toggleMulti("status", v)} maxVisible={8} />
+                <Facet title="Status" options={facets.status} selected={state.status || []} onToggle={(v) => toggleMulti("status", v)} />
 
-                <Facet title="Phase" options={facets.phase} selected={state.phase || []} onToggle={(v) => toggleMulti("phase", v)} maxVisible={10} />
+                <Facet title="Phase" options={facets.phase} selected={state.phase || []} onToggle={(v) => toggleMulti("phase", v)} />
 
                 <Facet
                   title="Disease area (Top 10)"
@@ -292,71 +212,82 @@ export default function ExplorePage() {
                   selected={state.area || []}
                   onToggle={(v) => toggleMulti("area", v)}
                   searchable
-                  maxVisible={10}
                 />
 
-                <Facet title="Reason bucket" options={facets.bucket} selected={state.bucket || []} onToggle={(v) => toggleMulti("bucket", v)} maxVisible={10} />
+                <Facet title="Reason bucket" options={facets.bucket} selected={state.bucket || []} onToggle={(v) => toggleMulti("bucket", v)} />
               </div>
             </aside>
 
-            {/* RESULTS */}
-            <section className={railOpen ? "col-span-12 lg:col-span-9" : "col-span-12"}>
-              <div className="card">
-                <div className="p-4 border-b" style={{ borderColor: "var(--border)" }}>
-                  <div className="flex flex-wrap items-center gap-3 justify-between">
-                    <div className="text-sm" style={{ color: "var(--text-muted)" }}>
-                      <span className="font-semibold" style={{ color: "var(--text)" }}>
-                        {rows.length.toLocaleString()}
-                      </span>{" "}
-                      results
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm" style={{ color: "var(--text-muted)" }}>
-                        Sort
-                      </label>
-                      <select className="input !w-[190px]" value={sortKey} onChange={(e) => updateState({ sort: e.target.value as SortKey })}>
-                        <option value="date_desc">Date (newest)</option>
-                        <option value="date_asc">Date (oldest)</option>
-                        <option value="sponsor_asc">Sponsor (A–Z)</option>
-                        <option value="sponsor_desc">Sponsor (Z–A)</option>
-                        <option value="confidence_desc">Confidence (high–low)</option>
-                        <option value="confidence_asc">Confidence (low–high)</option>
-                      </select>
-                    </div>
+            {/* CENTER RESULTS */}
+            <section className="content">
+              <div className="card pad-16">
+                <div className="results-header">
+                  <div className="results-count">
+                    <span className="count">{rows.length.toLocaleString()}</span> results
                   </div>
 
-                  {err && <div className="mt-3 text-sm text-rose-700">{err}</div>}
-                  {loading && <div className="mt-3 text-sm" style={{ color: "var(--text-muted)" }}>Loading dataset…</div>}
+                  <div className="results-controls">
+                    <label className="muted">Sort</label>
+                    <select
+                      className="input select"
+                      value={sortKey}
+                      onChange={(e) => updateState({ sort: e.target.value as SortKey })}
+                    >
+                      <option value="date_desc">Date (newest)</option>
+                      <option value="date_asc">Date (oldest)</option>
+                      <option value="sponsor_asc">Sponsor (A–Z)</option>
+                      <option value="sponsor_desc">Sponsor (Z–A)</option>
+                      <option value="confidence_desc">Confidence (high–low)</option>
+                      <option value="confidence_asc">Confidence (low–high)</option>
+                    </select>
+                  </div>
                 </div>
 
-                <div className="p-2 sm:p-3">
-                  <div className="hidden lg:block">
-                    <ResultsGrid
-                      rows={rows}
-                      selectedIds={state.compare || []}
-                      onToggleSelect={toggleCompare}
-                      onOpenPanel={(id) => updateState({ trial: id })}
-                      fromHref={fromHref}
-                    />
-                  </div>
+                {err && <div className="error">{err}</div>}
+                {loading && <div className="muted">Loading dataset…</div>}
 
-                  <div className="lg:hidden">
-                    <ResultsList
-                      rows={rows}
-                      selectedIds={state.compare || []}
-                      onToggleSelect={toggleCompare}
-                      onOpenPanel={(id) => updateState({ trial: id })}
-                      fromHref={fromHref}
-                    />
-                  </div>
+                <div className="table-wrap desktop-only">
+                  <ResultsGrid
+                    rows={rows}
+                    selectedIds={state.compare || []}
+                    onToggleSelect={toggleCompare}
+                    onOpenPanel={(id) => updateState({ trial: id })}
+                    fromHref={fromHref}
+                  />
+                </div>
+
+                <div className="mobile-only">
+                  <ResultsList
+                    rows={rows}
+                    selectedIds={state.compare || []}
+                    onToggleSelect={toggleCompare}
+                    onOpenPanel={(id) => updateState({ trial: id })}
+                    fromHref={fromHref}
+                  />
+                </div>
+
+                <div className="below-actions">
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={() => setCompareOpen(true)}
+                    disabled={(state.compare || []).length < 2}
+                  >
+                    Compare ({(state.compare || []).length})
+                  </button>
                 </div>
               </div>
             </section>
           </div>
         </main>
 
-        <DetailsDrawer open={!!state.trial} trialId={state.trial || null} onClose={() => updateState({ trial: undefined })} meta={meta} fromHref={fromHref} />
+        <DetailsDrawer
+          open={!!state.trial}
+          trialId={state.trial || null}
+          onClose={() => updateState({ trial: undefined })}
+          meta={meta}
+          fromHref={fromHref}
+        />
 
         <CompareModal
           open={compareOpen}
