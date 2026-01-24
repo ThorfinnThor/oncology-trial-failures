@@ -1,68 +1,9 @@
-import { UrlState, TrialRow } from "./types";
-import { stateToQuery } from "./urlState";
+import { DatasetMeta, TrialIndexRow, UrlState } from "./types";
+import { encodeState } from "./urlState";
 
 export type ExportScope = "filtered" | "page" | "compare";
 
-export type ExportMetadata = {
-  exported_at_iso: string;
-  dataset_version: string;
-  scope: ExportScope;
-  total_records_in_scope: number;
-  url_query: Record<string, string>;
-  filters: UrlState;
-};
-
-function escapeCsvCell(v: any) {
-  const s = v === null || v === undefined ? "" : String(v);
-  const needsQuotes = /[",\n\r]/.test(s);
-  const escaped = s.replace(/"/g, '""');
-  return needsQuotes ? `"${escaped}"` : escaped;
-}
-
-export function exportJSON(
-  records: TrialRow[],
-  meta: ExportMetadata
-): string {
-  return JSON.stringify({ metadata: meta, records }, null, 2);
-}
-
-export function exportCSV(
-  records: TrialRow[],
-  meta: ExportMetadata
-): string {
-  const columns: { key: keyof TrialRow; header: string }[] = [
-    { key: "nct_id", header: "nct_id" },
-    { key: "brief_title", header: "brief_title" },
-    { key: "overall_status", header: "overall_status" },
-    { key: "disease_area", header: "disease_area" },
-    { key: "phases", header: "phases" },
-    { key: "lead_sponsor", header: "lead_sponsor" },
-    { key: "collaborators", header: "collaborators" },
-    { key: "conditions", header: "conditions" },
-    { key: "intervention_names", header: "intervention_names" },
-    { key: "classification_label", header: "classification_label" },
-    { key: "classification_reason", header: "classification_reason" },
-    { key: "classification_confidence", header: "classification_confidence" },
-    { key: "why_stopped", header: "why_stopped" },
-    { key: "last_update_post_date", header: "last_update_post_date" },
-    { key: "url", header: "url" },
-  ];
-
-  const metaLines = [
-    `# exported_at_iso: ${meta.exported_at_iso}`,
-    `# dataset_version: ${meta.dataset_version}`,
-    `# scope: ${meta.scope}`,
-    `# total_records_in_scope: ${meta.total_records_in_scope}`,
-    `# url_query: ${JSON.stringify(meta.url_query)}`,
-  ];
-
-  const header = columns.map((c) => escapeCsvCell(c.header)).join(",");
-  const lines = records.map((r) => columns.map((c) => escapeCsvCell((r as any)[c.key])).join(","));
-
-  return [...metaLines, header, ...lines].join("\n");
-}
-
-export function downloadFile(filename: string, content: string, mime: string) {
+function downloadBlob(filename: string, content: string, mime: string) {
   const blob = new Blob([content], { type: mime });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -74,15 +15,80 @@ export function downloadFile(filename: string, content: string, mime: string) {
   URL.revokeObjectURL(url);
 }
 
-export function buildExportMetadata(datasetVersion: string, state: UrlState, scope: ExportScope, count: number): ExportMetadata {
-  const exported_at_iso = new Date().toISOString();
-  const url_query = stateToQuery(state);
-  return {
-    exported_at_iso,
-    dataset_version: datasetVersion,
-    scope,
-    total_records_in_scope: count,
-    url_query,
-    filters: state,
+export function buildViewTitle(state: UrlState): string {
+  const parts: string[] = ["Clinical trial failures"];
+  if (state.bio) parts.push("Likely scientific failure");
+  if (state.bucket?.length) parts.push(`Reason: ${state.bucket.length > 2 ? `${state.bucket.length} selected` : state.bucket.join(", ")}`);
+  if (state.area?.length) parts.push(`Area: ${state.area.length > 2 ? `${state.area.length} selected` : state.area.join(", ")}`);
+  if (state.phase?.length) parts.push(`Phase: ${state.phase.join(", ")}`);
+  if (state.status?.length) parts.push(`Status: ${state.status.join(", ")}`);
+  if (state.q) parts.push(`Query: "${state.q}"`);
+  return parts.join(" — ");
+}
+
+export function buildShareUrl(state: UrlState, baseUrl: string, path = "/explore"): string {
+  const qs = encodeState(state);
+  if (!baseUrl) return `${path}${qs}`;
+  return `${baseUrl}${path}${qs}`;
+}
+
+export function exportCSV(meta: DatasetMeta | null, state: UrlState, rows: TrialIndexRow[], filename = "trialfailures_export.csv") {
+  const headerMeta = [
+    `# exported_at_utc=${new Date().toISOString()}`,
+    `# dataset_version=${meta?.version || "unknown"}`,
+    `# filters=${JSON.stringify(state)}`,
+    `# total_rows=${rows.length}`,
+  ].join("\n");
+
+  const cols = [
+    "nct_id",
+    "brief_title",
+    "overall_status",
+    "phases",
+    "disease_area",
+    "lead_sponsor",
+    "collaborators",
+    "condition_first",
+    "intervention_first",
+    "why_stopped_short",
+    "classification_label",
+    "classification_reason",
+    "classification_confidence",
+    "classification_evidence",
+    "last_update_post_date",
+    "url",
+  ];
+
+  const esc = (v: any) => {
+    const s = String(v ?? "");
+    const needs = s.includes(",") || s.includes('"') || s.includes("\n");
+    const out = s.replaceAll('"', '""');
+    return needs ? `"${out}"` : out;
   };
+
+  const body = [cols.join(",")]
+    .concat(rows.map((r) => cols.map((c) => esc((r as any)[c])).join(",")))
+    .join("\n");
+
+  downloadBlob(filename, `${headerMeta}\n${body}`, "text/csv;charset=utf-8");
+}
+
+export function exportJSON(meta: DatasetMeta | null, state: UrlState, rows: TrialIndexRow[], filename = "trialfailures_export.json") {
+  const payload = {
+    metadata: {
+      exported_at_utc: new Date().toISOString(),
+      dataset_version: meta?.version || "unknown",
+      filters: state,
+      total_rows: rows.length,
+    },
+    records: rows,
+  };
+  downloadBlob(filename, JSON.stringify(payload, null, 2), "application/json");
+}
+
+export function buildCitation(meta: DatasetMeta | null, state: UrlState, shareUrl: string): string {
+  const title = buildViewTitle(state);
+  const accessed = new Date().toISOString();
+  const version = meta?.version || "unknown";
+  return `${title}\nAccessed: ${accessed}\nDataset version: ${version}\nURL: ${shareUrl}`;
 }
