@@ -1,8 +1,16 @@
 // web/lib/types.ts
 
 export type DatasetMeta = {
+  // A short human-readable version string (often a date like "2026-01-23")
   version: string;
+
+  // Optional metadata shown on /methods
+  generated_at_utc?: string;
   source?: string;
+
+  // Allow additional non-breaking metadata fields from dataset_meta.json
+  // without falling back to `any` in other types.
+  [k: `meta_${string}`]?: string | number | boolean | null;
 };
 
 /**
@@ -23,7 +31,7 @@ export type SortKey =
 
 /**
  * URL-driven state (query params) used across explore/download/export.
- * IMPORTANT: no `[key: string]: any` — that causes implicit-any cascades during builds.
+ * IMPORTANT: do not add `[key: string]: any` — it causes implicit-any cascades.
  */
 export type UrlState = {
   q?: string;
