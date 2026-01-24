@@ -1,5 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Option 3: Editorial + Trust Marks design tokens */
 :root {
-  /* Option 3: Editorial + Trust Marks */
   --bg: #fbf7f1;          /* warm paper */
   --surface: #fffdf9;     /* warm white */
   --surface-2: #f7f1e8;   /* tinted surface */
@@ -34,7 +38,13 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Optional utility: make line-clamp work (Tailwind usually includes it, but keep safe) */
+/* Ensure focus is visible (a11y) */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+
+/* If Tailwind line-clamp plugin isn't enabled, keep a fallback */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
