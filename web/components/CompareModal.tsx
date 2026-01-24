@@ -1,27 +1,36 @@
 import Link from "next/link";
-import { TrialRow } from "@/lib/types";
-import { Modal } from "./Modal";
+import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
-import { splitSemicolonValues } from "@/lib/data";
-import { ConfidencePill, ReasonPill, Pill } from "./Badges";
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  trials: TrialRow[];
+  trials: TrialIndexRow[];
   onRemove: (id: string) => void;
 };
 
-function firstOfSemi(s: string) {
-  return splitSemicolonValues(s || "")[0] || "—";
+function clsx(...xs: Array<string | false | null | undefined>) {
+  return xs.filter(Boolean).join(" ");
 }
 
-function labelOrDash(s?: string) {
-  const t = (s || "").trim();
-  return t ? t : "—";
+function Pill({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]">
+      {children}
+    </span>
+  );
 }
 
-function compareRow(label: string, values: string[]) {
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-2">
+      <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">{title}</div>
+      {children}
+    </div>
+  );
+}
+
+function fieldRow(label: string, values: string[]) {
   return (
     <tr className="border-t border-[var(--border)]">
       <td className="p-3 align-top text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
@@ -29,147 +38,118 @@ function compareRow(label: string, values: string[]) {
       </td>
       {values.map((v, i) => (
         <td key={i} className="p-3 align-top text-sm text-[var(--text)]">
-          {v}
+          {v || "—"}
         </td>
       ))}
     </tr>
   );
 }
 
-export function CompareModal({ open, onClose, trials, onRemove }: Props) {
-  const cols = trials.slice(0, 5); // safety
-  const n = cols.length;
+export default function CompareModal({ open, onClose, trials, onRemove }: Props) {
+  if (!open) return null;
+  const cols = trials.slice(0, 5);
 
-  const phaseVals = cols.map((t) => {
+  const phases = cols.map((t) => {
     const p = parsePhases(t.phases || "")[0] || "Unknown";
     return phaseLabel(p as any);
   });
 
-  const statusVals = cols.map((t) => (t.overall_status || "—").toUpperCase());
-  const sponsorVals = cols.map((t) => labelOrDash(t.lead_sponsor));
-  const collabVals = cols.map((t) => labelOrDash(t.collaborators));
-  const conditionVals = cols.map((t) => firstOfSemi(t.conditions || ""));
-  const interventionVals = cols.map((t) => firstOfSemi(t.intervention_names || ""));
-  const dateVals = cols.map((t) => labelOrDash(t.last_update_post_date));
-
-  const bucketVals = cols.map((t) => reasonBucket(t));
-  const whyVals = cols.map((t) => labelOrDash(t.why_stopped));
-  const confVals = cols.map((t) => labelOrDash(t.classification_confidence));
+  const status = cols.map((t) => (t.overall_status || "—").toUpperCase());
+  const sponsor = cols.map((t) => t.lead_sponsor || "—");
+  const collab = cols.map((t) => t.collaborators || "—");
+  const condition = cols.map((t) => t.condition_first || "—");
+  const intervention = cols.map((t) => t.intervention_first || "—");
+  const area = cols.map((t) => t.disease_area || "Other");
+  const date = cols.map((t) => t.last_update_post_date || "—");
+  const bucket = cols.map((t) => reasonBucket(t));
+  const conf = cols.map((t) => t.classification_confidence || "—");
+  const why = cols.map((t) => t.why_stopped_short || "—");
 
   return (
-    <Modal title={`Compare (${n}/5)`} open={open} onClose={onClose}>
-      <div className="space-y-3">
-        {n < 2 ? (
-          <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 text-sm text-[var(--text-muted)]">
-            Select 2–5 trials to compare.
+    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Compare trials">
+      <div className="absolute inset-0 bg-black/30" onClick={onClose} />
+      <div className="absolute left-1/2 top-1/2 w-[96vw] max-w-5xl -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-[var(--border)] bg-white shadow-[var(--shadow)]">
+        <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] p-4">
+          <div>
+            <div className="text-xs text-[var(--text-muted)]">Compare</div>
+            <div className="mt-1 text-lg font-semibold">Compare selected trials</div>
+            <div className="mt-1 text-sm text-[var(--text-muted)]">
+              Side-by-side comparison uses the lightweight index view. Open a full page for complete detail text.
+            </div>
           </div>
-        ) : (
-          <>
-            <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] overflow-auto">
-              <table className="min-w-[900px] w-full">
-                <thead className="bg-[var(--surface-2)]">
-                  <tr>
-                    <th className="p-3 text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
-                      Field
+          <button
+            className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:bg-[var(--surface-2)]"
+            onClick={onClose}
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+
+        <div className="p-4 space-y-4">
+          <Section title="Selected">
+            <div className="flex flex-wrap gap-2">
+              {cols.map((t) => (
+                <div key={t.nct_id} className="flex items-center gap-2">
+                  <Pill>{t.nct_id}</Pill>
+                  <Link
+                    className="text-xs font-semibold text-[var(--accent)] hover:underline"
+                    href={`/trial/${encodeURIComponent(t.nct_id)}`}
+                    target="_blank"
+                  >
+                    Open full page
+                  </Link>
+                  <button
+                    className="text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)]"
+                    onClick={() => onRemove(t.nct_id)}
+                    type="button"
+                    aria-label={`Remove ${t.nct_id} from compare`}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <div className="overflow-auto rounded-2xl border border-[var(--border)]">
+            <table className="min-w-[1000px] w-full bg-white">
+              <thead className="bg-[var(--surface-2)]">
+                <tr>
+                  <th className="p-3 text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
+                    Field
+                  </th>
+                  {cols.map((t) => (
+                    <th key={t.nct_id} className="p-3 text-left">
+                      <div className="space-y-1">
+                        <div className="text-sm font-semibold">{t.nct_id}</div>
+                        <div className="text-xs text-[var(--text-muted)] line-clamp-2">{t.brief_title || "—"}</div>
+                      </div>
                     </th>
-                    {cols.map((t) => (
-                      <th key={t.nct_id} className="p-3 text-left">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="min-w-0">
-                            <div className="flex flex-wrap items-center gap-2">
-                              <Pill>{t.nct_id}</Pill>
-                              <ReasonPill value={reasonBucket(t)} />
-                              <ConfidencePill value={t.classification_confidence || "—"} />
-                            </div>
-                            <div className="mt-2 text-sm font-semibold text-[var(--text)] line-clamp-2">
-                              {t.brief_title || "—"}
-                            </div>
-                            <div className="mt-2 flex flex-wrap items-center gap-2">
-                              <a
-                                className="text-xs font-semibold text-[var(--accent-primary)] hover:underline"
-                                href={t.url}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                Source
-                              </a>
-                              <span className="text-xs text-[var(--text-muted)]">•</span>
-                              <Link
-                                className="text-xs font-semibold text-[var(--accent-primary)] hover:underline"
-                                href={`/trial/${encodeURIComponent(t.nct_id)}`}
-                              >
-                                Open full page
-                              </Link>
-                            </div>
-                          </div>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {fieldRow("Phase", phases)}
+                {fieldRow("Status", status)}
+                {fieldRow("Disease area", area)}
+                {fieldRow("Sponsor", sponsor)}
+                {fieldRow("Collaborators", collab)}
+                {fieldRow("Condition", condition)}
+                {fieldRow("Intervention", intervention)}
+                {fieldRow("Last update", date)}
+                {fieldRow("Reason bucket", bucket)}
+                {fieldRow("Confidence", conf)}
+                {fieldRow("Why stopped (short)", why)}
+              </tbody>
+            </table>
+          </div>
 
-                          <button
-                            type="button"
-                            className="rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2 py-1 text-xs font-semibold text-[var(--text)] hover:bg-[var(--surface-2)]"
-                            onClick={() => onRemove(t.nct_id)}
-                            aria-label={`Remove ${t.nct_id} from compare`}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {compareRow("Phase", phaseVals)}
-                  {compareRow("Status", statusVals)}
-                  {compareRow("Sponsor", sponsorVals)}
-                  {compareRow("Collaborators", collabVals)}
-                  {compareRow("Condition", conditionVals)}
-                  {compareRow("Intervention", interventionVals)}
-                  {compareRow("Last update", dateVals)}
-
-                  <tr className="border-t border-[var(--border)]">
-                    <td className="p-3 align-top text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
-                      Reason bucket
-                    </td>
-                    {bucketVals.map((b, i) => (
-                      <td key={i} className="p-3 align-top">
-                        <ReasonPill value={b as any} />
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr className="border-t border-[var(--border)]">
-                    <td className="p-3 align-top text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
-                      Confidence
-                    </td>
-                    {confVals.map((c, i) => (
-                      <td key={i} className="p-3 align-top">
-                        <ConfidencePill value={c} />
-                      </td>
-                    ))}
-                  </tr>
-
-                  <tr className="border-t border-[var(--border)]">
-                    <td className="p-3 align-top text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
-                      Stated stop reason
-                    </td>
-                    {whyVals.map((w, i) => (
-                      <td key={i} className="p-3 align-top text-sm text-[var(--text)]">
-                        <div className="max-h-56 overflow-auto whitespace-pre-wrap leading-relaxed">
-                          {w}
-                        </div>
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div className="text-xs text-[var(--text-muted)]">
-              Differences are shown as side-by-side values. “Likely scientific failure” is inferred from registry text; verify using primary sources.
-            </div>
-          </>
-        )}
+          <div className="text-xs text-[var(--text-muted)]">
+            “Likely scientific failure” and reason buckets are inferred from registry text and may be incomplete. Verify via the primary source link.
+          </div>
+        </div>
       </div>
-    </Modal>
+    </div>
   );
 }
