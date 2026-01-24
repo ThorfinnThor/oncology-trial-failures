@@ -2,16 +2,15 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+
 import { loadDetail, loadMeta } from "@/lib/data";
-import { TrialDetail, DatasetMeta } from "@/lib/types";
+import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
-export default function TrialDetailPage() {
+export default function TrialPage() {
   const router = useRouter();
-  const { trialId, from } = router.query;
-
-  const id = useMemo(() => (typeof trialId === "string" ? trialId : ""), [trialId]);
-  const backHref = useMemo(() => (typeof from === "string" && from ? from : "/"), [from]);
+  const trialId = useMemo(() => (router.query.trialId ? String(router.query.trialId) : ""), [router.query.trialId]);
+  const from = useMemo(() => (router.query.from ? String(router.query.from) : "/explore"), [router.query.from]);
 
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
   const [trial, setTrial] = useState<TrialDetail | null>(null);
@@ -20,101 +19,134 @@ export default function TrialDetailPage() {
   useEffect(() => {
     let alive = true;
     (async () => {
-      if (!id) return;
+      if (!trialId) return;
       try {
         setErr(null);
-        const m = await loadMeta();
+        const [m, t] = await Promise.all([loadMeta(), loadDetail(trialId)]);
         if (!alive) return;
         setMeta(m);
-
-        const t = await loadDetail(id);
-        if (!alive) return;
         setTrial(t);
-        if (!t) setErr("Trial not found in dataset.");
       } catch (e: any) {
         if (!alive) return;
-        setErr(e?.message || "Failed to load trial details.");
+        setErr(e?.message || "Failed to load trial.");
       }
     })();
-    return () => { alive = false; };
-  }, [id]);
+    return () => {
+      alive = false;
+    };
+  }, [trialId]);
 
-  const phKey = trial ? (parsePhases(trial.phases || "")[0] || "Unknown") : "Unknown";
+  const phase = useMemo(() => (trial ? parsePhases(trial.phases || "")[0] || "UNKNOWN" : "UNKNOWN"), [trial]);
+  const bucket = useMemo(() => (trial ? reasonBucket(trial) : "OTHER/UNKNOWN"), [trial]);
 
   return (
     <>
       <Head>
-        <title>{id ? `${id} • Clinical trial failures` : "Trial • Clinical trial failures"}</title>
+        <title>{trialId ? `${trialId} — Clinical trial failures` : "Trial — Clinical trial failures"}</title>
       </Head>
 
       <div className="min-h-screen">
-        <header className="sticky top-0 z-20 border-b border-[var(--border)] bg-white/80 backdrop-blur">
-          <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
-            <div className="font-semibold">Clinical trial failures</div>
-            <Link className="rounded-xl bg-[var(--accent)] px-3 py-2 text-sm font-semibold text-white" href={backHref}>
-              Back to Explore
+        <header className="border-b" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
+          <div className="mx-auto max-w-[1100px] px-4 py-4 flex items-center justify-between gap-3">
+            <Link href={from} className="btn">
+              ← Back
             </Link>
+
+            <Link href="/explore" className="text-sm font-semibold" style={{ color: "var(--text)" }}>
+              Clinical trial failures
+            </Link>
+
+            <div className="w-[80px]" />
           </div>
         </header>
 
-        <main className="mx-auto max-w-4xl px-4 py-6">
-          {err && (
-            <div className="rounded-2xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-soft)] text-sm">
-              {err}
-            </div>
-          )}
-
-          {!err && !trial && (
-            <div className="rounded-2xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-soft)] text-sm text-[var(--text-muted)]">
-              Loading…
-            </div>
-          )}
+        <main className="mx-auto max-w-[1100px] px-4 py-8">
+          {err && <div className="card p-4 text-rose-700">{err}</div>}
+          {!trial && !err && <div className="card p-4" style={{ color: "var(--text-muted)" }}>Loading…</div>}
 
           {trial && (
-            <div className="space-y-4">
-              <div className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow)]">
-                <div className="text-xs text-[var(--text-muted)]">
-                  Dataset version: <span className="font-semibold text-[var(--text)]">{meta?.version || "—"}</span>
+            <>
+              <div className="card p-6">
+                <div className="text-xs" style={{ color: "var(--text-muted)" }}>
+                  Trial
+                </div>
+                <div className="text-2xl font-semibold mt-1">{trial.nct_id}</div>
+                <div className="text-lg font-semibold mt-3 leading-snug">{trial.brief_title || "—"}</div>
+
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="chip">{phaseLabel(phase as any)}</span>
+                  <span className="chip">{(trial.overall_status || "UNKNOWN").toUpperCase()}</span>
+                  <span className="chip">{bucket}</span>
+                  {trial.classification_confidence ? (
+                    <span className="chip">Confidence: {trial.classification_confidence}</span>
+                  ) : null}
                 </div>
 
-                <h1 className="mt-2 text-xl font-semibold">{trial.brief_title || "—"}</h1>
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                      Sponsor
+                    </div>
+                    <div className="mt-1">{trial.lead_sponsor || "—"}</div>
+                  </div>
 
-                <div className="mt-3 flex flex-wrap gap-2 text-sm">
-                  <span className="rounded-full bg-[var(--surface-2)] px-3 py-1">{trial.nct_id}</span>
-                  <span className="rounded-full bg-[var(--surface-2)] px-3 py-1">{phaseLabel(phKey as any)}</span>
-                  <span className="rounded-full bg-[var(--surface-2)] px-3 py-1">{(trial.overall_status || "—").toUpperCase()}</span>
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                      Collaborators
+                    </div>
+                    <div className="mt-1">{trial.collaborators || "—"}</div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                      Condition
+                    </div>
+                    <div className="mt-1">{trial.conditions || trial.condition_first || "—"}</div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                      Intervention
+                    </div>
+                    <div className="mt-1">{trial.intervention_names || trial.intervention_first || "—"}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 card p-6">
+                <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                  Why stopped
+                </div>
+                <div className="mt-2 text-sm leading-relaxed whitespace-normal break-words">
+                  {(trial.why_stopped || trial.why_stopped_short || "—").trim()}
+                </div>
+              </div>
+
+              <div className="mt-4 card p-6">
+                <div className="text-xs font-semibold uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+                  Provenance
+                </div>
+                <div className="mt-2 text-sm" style={{ color: "var(--text-muted)" }}>
+                  Dataset: <span className="font-medium" style={{ color: "var(--text)" }}>{meta?.version || "—"}</span>
+                  {meta?.source ? (
+                    <>
+                      {" "}• Source: <span className="font-medium" style={{ color: "var(--text)" }}>{meta.source}</span>
+                    </>
+                  ) : null}
+                  {trial.last_update_post_date ? (
+                    <>
+                      {" "}• Last update: <span className="font-medium" style={{ color: "var(--text)" }}>{trial.last_update_post_date}</span>
+                    </>
+                  ) : null}
                 </div>
 
-                <div className="mt-4 grid gap-2 text-sm">
-                  <div><span className="font-semibold">Sponsor:</span> {trial.lead_sponsor || "—"}</div>
-                  <div><span className="font-semibold">Collaborators:</span> {trial.collaborators || "—"}</div>
-                  <div><span className="font-semibold">Disease area:</span> {trial.disease_area || "Other"}</div>
-                  <div><span className="font-semibold">Last update:</span> {trial.last_update_post_date || "—"}</div>
-                </div>
-
-                <div className="mt-4">
-                  <a className="text-sm font-semibold" href={trial.url} target="_blank" rel="noreferrer">
-                    Open primary source
+                <div className="mt-3">
+                  <a className="btn" href={trial.url} target="_blank" rel="noreferrer">
+                    View on ClinicalTrials.gov
                   </a>
                 </div>
               </div>
-
-              <div className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)]">
-                <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Stated stop reason (full)</div>
-                <div className="mt-2 whitespace-pre-wrap text-sm leading-relaxed">
-                  {trial.why_stopped || "—"}
-                </div>
-              </div>
-
-              <div className="rounded-2xl border border-[var(--border)] bg-white p-5 shadow-[var(--shadow-soft)]">
-                <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">Key fields</div>
-                <div className="mt-2 text-sm space-y-2">
-                  <div><span className="font-semibold">Conditions:</span> {trial.conditions || "—"}</div>
-                  <div><span className="font-semibold">Interventions:</span> {trial.intervention_names || "—"}</div>
-                  <div><span className="font-semibold">MeSH terms:</span> {trial.mesh_terms || "—"}</div>
-                </div>
-              </div>
-            </div>
+            </>
           )}
         </main>
       </div>
