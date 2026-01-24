@@ -9,6 +9,14 @@ async function fetchJSON<T>(url: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+async function tryFetchJSON<T>(url: string): Promise<T | null> {
+  try {
+    return await fetchJSON<T>(url);
+  } catch {
+    return null;
+  }
+}
+
 function asString(x: any): string {
   if (x == null) return "";
   if (Array.isArray(x)) return x.filter(Boolean).join("; ");
@@ -22,15 +30,24 @@ function firstFromSemicolon(s: string): string {
 }
 
 /**
- * Your pipeline files (you confirmed):
- * - /data/all_stopped_trials.json
- * - /data/biological_failure_trials.json
- * - oncology variants too (optional)
+ * Prefer the "root" published assets (web/public/*.json) which include:
+ * - /all_stopped_trials.json (full)
+ * - /dataset_meta.json
  *
- * We'll use all_stopped_trials.json as the base dataset.
+ * Fall back to /data/all_stopped_trials.json for compatibility.
  */
 export async function loadMeta(): Promise<DatasetMeta> {
   if (_meta) return _meta;
+
+  const m = await tryFetchJSON<any>("/dataset_meta.json");
+  if (m) {
+    _meta = {
+      version: m.version || m.generated_at_utc || "Dataset",
+      source: m.source || "ClinicalTrials.gov"
+    };
+    return _meta;
+  }
+
   _meta = {
     version: "All stopped trials",
     source: "ClinicalTrials.gov"
@@ -41,7 +58,10 @@ export async function loadMeta(): Promise<DatasetMeta> {
 export async function loadIndex(): Promise<TrialIndexRow[]> {
   if (_index) return _index;
 
-  const raw = await fetchJSON<any[]>("/data/all_stopped_trials.json");
+  // Prefer full dataset at root
+  const raw =
+    (await tryFetchJSON<any[]>("/all_stopped_trials.json")) ??
+    (await fetchJSON<any[]>("/data/all_stopped_trials.json"));
 
   _index = raw.map((r: any) => {
     const phasesRaw =
@@ -84,7 +104,9 @@ export async function loadIndex(): Promise<TrialIndexRow[]> {
       r.therapeutic_area ??
       "Other";
 
-    const url = r.url || (r.nct_id ? `https://clinicaltrials.gov/study/${encodeURIComponent(r.nct_id)}` : "");
+    const url =
+      r.url ||
+      (r.nct_id ? `https://clinicaltrials.gov/study/${encodeURIComponent(r.nct_id)}` : "");
 
     return {
       nct_id: asString(r.nct_id).trim(),
@@ -114,15 +136,10 @@ export async function loadIndex(): Promise<TrialIndexRow[]> {
     } as TrialIndexRow;
   });
 
-  // Drop any empty IDs (defensive)
   _index = _index.filter((x) => x.nct_id);
-
   return _index;
 }
 
-/**
- * No per-trial JSON exists in your current file list, so detail is derived from the same dataset row.
- */
 export async function loadDetail(nctId: string): Promise<TrialDetail | null> {
   const rows = await loadIndex();
   const row = rows.find((x) => x.nct_id === nctId);
