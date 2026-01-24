@@ -1,141 +1,149 @@
 import Link from "next/link";
-import { useRef } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
+import { useMemo, useState } from "react";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
-function clsx(...xs: Array<string | false | null | undefined>) {
-  return xs.filter(Boolean).join(" ");
+function clamp2Style(): React.CSSProperties {
+  return {
+    display: "-webkit-box",
+    WebkitBoxOrient: "vertical",
+    WebkitLineClamp: 2,
+    overflow: "hidden"
+  } as any;
 }
 
-function Pill({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]">
-      {children}
-    </span>
-  );
-}
-
-/**
- * ResultsGrid (compat wrapper)
- * - Updated to new data model (TrialIndexRow)
- * - No dependency on splitSemicolonValues / TrialRow
- * - Virtualized for performance
- */
 export default function ResultsGrid({
   rows,
   selectedIds,
   onToggleSelect,
   onOpenPanel,
-  fromHref,
+  fromHref
 }: {
   rows: TrialIndexRow[];
   selectedIds: string[];
   onToggleSelect: (id: string) => void;
   onOpenPanel: (id: string) => void;
-  fromHref?: string;
+  fromHref: string;
 }) {
-  const parentRef = useRef<HTMLDivElement | null>(null);
+  const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
+  const [hoverId, setHoverId] = useState<string | null>(null);
 
-  const rowVirtualizer = useVirtualizer({
-    count: rows.length,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => 74,
-    overscan: 10,
-  });
-
-  const items = rowVirtualizer.getVirtualItems();
+  // hard cap for perf (still fast enough)
+  const shown = rows.slice(0, 2000);
 
   return (
-    <div ref={parentRef} className="h-[72vh] overflow-auto">
-      <div style={{ height: rowVirtualizer.getTotalSize(), position: "relative" }}>
-        <div className="sticky top-0 z-10 border-b border-[var(--border)] bg-white">
-          <div className="grid grid-cols-[44px_130px_1.6fr_140px_160px_160px_140px_120px] gap-3 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
-            <div>Sel</div>
-            <div>Trial</div>
-            <div>Title</div>
-            <div>Phase</div>
-            <div>Condition</div>
-            <div>Intervention</div>
-            <div>Status</div>
-            <div>Date</div>
-          </div>
-        </div>
+    <div className="overflow-auto">
+      <table className="w-full table-fixed text-sm">
+        <thead className="sticky top-0 z-10 bg-white border-b" style={{ borderColor: "var(--border)" }}>
+          <tr className="text-xs uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
+            <th className="p-3 text-left w-[52px]">Sel</th>
+            <th className="p-3 text-left w-[140px]">Trial</th>
+            <th className="p-3 text-left w-[420px]">Title</th>
+            <th className="p-3 text-left w-[140px]">Phase</th>
+            <th className="p-3 text-left w-[240px]">Condition</th>
+            <th className="p-3 text-left w-[240px]">Intervention</th>
+            <th className="p-3 text-left w-[160px]">Status</th>
+            <th className="p-3 text-left w-[210px]">Why stopped</th>
+            <th className="p-3 text-left w-[110px]">Date</th>
+          </tr>
+        </thead>
 
-        {items.map((vi) => {
-          const r = rows[vi.index];
-          const ph = parsePhases(r.phases || "")[0] || "Unknown";
-          const checked = selectedIds.includes(r.nct_id);
+        <tbody>
+          {shown.map((r) => {
+            const checked = selected.has(r.nct_id);
+            const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
+            const why = (r.why_stopped_short || "").trim();
 
-          return (
-            <div
-              key={r.nct_id}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                width: "100%",
-                transform: `translateY(${vi.start}px)`,
-              }}
-              className={clsx("border-b border-[var(--border)] hover:bg-[var(--surface-2)]")}
-            >
-              <div className="grid grid-cols-[44px_130px_1.6fr_140px_160px_160px_140px_120px] gap-3 px-4 py-3 items-start">
-                <div className="pt-1">
+            return (
+              <tr
+                key={r.nct_id}
+                className="border-b hover:bg-slate-50"
+                style={{ borderColor: "var(--border)" }}
+              >
+                <td className="p-3 align-top">
                   <input
                     type="checkbox"
                     checked={checked}
                     onChange={() => onToggleSelect(r.nct_id)}
-                    className="h-4 w-4 rounded border-[var(--border)]"
-                    aria-label={`Select ${r.nct_id} for compare`}
+                    aria-label={`Select ${r.nct_id}`}
                   />
-                </div>
+                </td>
 
-                <div className="text-sm font-semibold">
+                <td className="p-3 align-top">
                   <Link
-                    href={`/trial/${encodeURIComponent(r.nct_id)}${fromHref ? `?from=${encodeURIComponent(fromHref)}` : ""}`}
-                    className="text-[var(--accent)]"
+                    href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
+                    className="font-semibold"
                   >
                     {r.nct_id}
                   </Link>
                   <div className="mt-1">
                     <button
-                      className="text-xs text-[var(--text-muted)] hover:text-[var(--text)]"
+                      className="text-xs text-[var(--accent)] hover:underline"
                       onClick={() => onOpenPanel(r.nct_id)}
                       type="button"
                     >
                       Open panel
                     </button>
                   </div>
-                </div>
+                </td>
 
-                <div className="min-w-0">
-                  <div className="text-sm font-semibold leading-snug">{r.brief_title || "—"}</div>
-                  <div className="mt-1 text-xs text-[var(--text-muted)]">{r.lead_sponsor || "—"}</div>
+                <td className="p-3 align-top">
+                  <div className="font-medium leading-snug whitespace-normal break-words">
+                    {r.brief_title || "—"}
+                  </div>
+                  <div className="mt-1 text-xs leading-snug whitespace-normal break-words" style={{ color: "var(--text-muted)" }}>
+                    {r.lead_sponsor || "—"}
+                  </div>
+                </td>
 
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    <Pill>{reasonBucket(r)}</Pill>
-                    {r.classification_label === "BIOLOGICAL_FAILURE" && <Pill>Likely scientific failure</Pill>}
-                    <span className="text-xs text-[var(--text-muted)]">
-                      Confidence: {r.classification_confidence || "—"}
-                    </span>
+                <td className="p-3 align-top">
+                  <span className="chip">{phaseLabel(p as any)}</span>
+                </td>
+
+                <td className="p-3 align-top whitespace-normal break-words">{r.condition_first || "—"}</td>
+                <td className="p-3 align-top whitespace-normal break-words">{r.intervention_first || "—"}</td>
+
+                <td className="p-3 align-top">
+                  <span className="chip">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
+                </td>
+
+                <td
+                  className="p-3 align-top relative"
+                  onMouseEnter={() => setHoverId(r.nct_id)}
+                  onMouseLeave={() => setHoverId((x) => (x === r.nct_id ? null : x))}
+                >
+                  <div style={clamp2Style()} className="text-sm leading-snug" style={{ color: "var(--text-muted)" }}>
+                    {why || "—"}
                   </div>
 
-                  <div className="mt-2 text-xs text-[var(--text-muted)]">
-                    <span className="font-semibold">Why stopped:</span>{" "}
-                    <span title={r.why_stopped_short || ""}>{r.why_stopped_short || "—"}</span>
-                  </div>
-                </div>
+                  {why && hoverId === r.nct_id && (
+                    <div
+                      className="absolute right-0 mt-2 w-[420px] max-w-[90vw] rounded-xl border bg-white p-3 shadow-lg z-20"
+                      style={{ borderColor: "var(--border)" }}
+                      role="tooltip"
+                    >
+                      <div className="text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>
+                        Why stopped
+                      </div>
+                      <div className="text-sm leading-relaxed whitespace-normal break-words">{why}</div>
+                    </div>
+                  )}
+                </td>
 
-                <div className="text-sm">{phaseLabel(ph as any)}</div>
-                <div className="text-sm">{r.condition_first || "—"}</div>
-                <div className="text-sm">{r.intervention_first || "—"}</div>
-                <div className="text-sm">{(r.overall_status || "—").toUpperCase()}</div>
-                <div className="text-sm">{r.last_update_post_date || "—"}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                <td className="p-3 align-top text-sm tabular-nums" style={{ color: "var(--text-muted)" }}>
+                  {r.last_update_post_date || "—"}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      {rows.length > 2000 && (
+        <div className="p-3 text-xs" style={{ color: "var(--text-muted)" }}>
+          Showing first 2,000 rows for performance. Use filters/search to narrow further.
+        </div>
+      )}
     </div>
   );
 }
