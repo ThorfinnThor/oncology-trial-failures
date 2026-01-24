@@ -53,11 +53,15 @@ export default function DownloadMenu({
         gap: 10,
         width: "100%",
         cursor: "pointer",
-        userSelect: "none"
+        userSelect: "none",
+        padding: "8px 10px",
+        borderRadius: 12
       }}
+      onMouseEnter={(e) => ((e.currentTarget.style.background = "rgba(15,23,42,.03)"))}
+      onMouseLeave={(e) => ((e.currentTarget.style.background = "transparent"))}
     >
       <input type="radio" checked={checked} onChange={onChange} />
-      <span style={{ minWidth: 0 }}>{label}</span>
+      <span style={{ minWidth: 0, fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>{label}</span>
       <span style={{ fontSize: 12, color: "var(--text-muted)", whiteSpace: "nowrap" }}>
         {count.toLocaleString()}
       </span>
@@ -65,88 +69,120 @@ export default function DownloadMenu({
   );
 
   return (
-    <div className="relative">
-      <button className="btn" type="button" onClick={() => setOpen((x) => !x)}>
+    <>
+      <button className="btn" type="button" onClick={() => setOpen(true)}>
         Download
       </button>
 
       {open && (
-        <div
-          className="absolute right-0 mt-2 card p-3 z-50"
-          style={{ width: 420 }} // wider so options never collide
-          role="dialog"
-          aria-label="Download menu"
-        >
-          <div style={{ fontSize: 14, fontWeight: 800 }}>Download</div>
-          <div className="muted" style={{ marginTop: 4, fontSize: 13 }}>
-            Choose scope and format. ({rows.length.toLocaleString()} rows)
-          </div>
+        <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Download dataset">
+          <div className="overlay" onClick={() => setOpen(false)} />
 
-          <div style={{ marginTop: 12 }}>
-            <div className="facet-title" style={{ marginBottom: 8 }}>
-              Scope
-            </div>
-
-            <OptionRow
-              checked={scope === "filtered"}
-              onChange={() => setScope("filtered")}
-              label="Current filtered view"
-              count={filteredRows.length}
-            />
-
-            <div style={{ height: 8 }} />
-
-            <OptionRow
-              checked={scope === "selected"}
-              onChange={() => setScope("selected")}
-              label="Selected (compare)"
-              count={selectedRows.length}
-            />
-
-            <div style={{ height: 8 }} />
-
-            <OptionRow
-              checked={scope === "all"}
-              onChange={() => setScope("all")}
-              label="Everything"
-              count={allRows.length}
-            />
-
-            {scope === "selected" && selectedRows.length === 0 && (
-              <div style={{ marginTop: 8, fontSize: 12, color: "#b45309" }}>
-                Select 1+ rows using the checkbox column to enable “Selected”.
+          <div className="drawer-panel">
+            <div className="drawer-hd">
+              <div style={{ minWidth: 0 }}>
+                <div className="muted" style={{ fontSize: 12 }}>
+                  Download
+                </div>
+                <div style={{ fontSize: 18, fontWeight: 900, marginTop: 4 }}>
+                  Export trials
+                </div>
+                <div className="muted" style={{ fontSize: 13, marginTop: 6 }}>
+                  Choose scope and format. <span style={{ fontWeight: 800 }}>{rows.length.toLocaleString()}</span> rows.
+                </div>
               </div>
-            )}
-          </div>
 
-          <div style={{ marginTop: 14 }}>
-            <div className="facet-title" style={{ marginBottom: 8 }}>
-              Format
+              <button className="btn" type="button" onClick={() => setOpen(false)}>
+                Close
+              </button>
             </div>
 
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-              <input type="radio" checked={format === "csv"} onChange={() => setFormat("csv")} />
-              <span>CSV</span>
-            </label>
+            <div className="drawer-bd">
+              <div className="card p-4">
+                <div className="facet-title">Scope</div>
 
-            <div style={{ height: 8 }} />
+                <OptionRow
+                  checked={scope === "filtered"}
+                  onChange={() => setScope("filtered")}
+                  label="Current filtered view"
+                  count={filteredRows.length}
+                />
 
-            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-              <input type="radio" checked={format === "json"} onChange={() => setFormat("json")} />
-              <span>JSON</span>
-            </label>
-          </div>
+                <OptionRow
+                  checked={scope === "selected"}
+                  onChange={() => setScope("selected")}
+                  label="Selected (compare)"
+                  count={selectedRows.length}
+                />
 
-          <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-            <button className="btn-primary" type="button" onClick={doDownload} disabled={scopeDisabled} style={{ flex: 1 }}>
-              Download
-            </button>
-            <button className="btn" type="button" onClick={() => setOpen(false)}>
-              Close
-            </button>
+                <OptionRow
+                  checked={scope === "all"}
+                  onChange={() => setScope("all")}
+                  label="Everything"
+                  count={allRows.length}
+                />
+
+                {scope === "selected" && selectedRows.length === 0 && (
+                  <div style={{ marginTop: 10, fontSize: 12, color: "#b45309" }}>
+                    Select 1+ rows using the “Sel” checkbox column to enable “Selected”.
+                  </div>
+                )}
+              </div>
+
+              <div style={{ height: 14 }} />
+
+              <div className="card p-4">
+                <div className="facet-title">Format</div>
+
+                <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
+                  <input type="radio" checked={format === "csv"} onChange={() => setFormat("csv")} />
+                  <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>CSV</span>
+                </label>
+
+                <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
+                  <input type="radio" checked={format === "json"} onChange={() => setFormat("json")} />
+                  <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>JSON</span>
+                </label>
+              </div>
+
+              <div style={{ height: 14 }} />
+
+              <div className="card p-4">
+                <div className="facet-title">What you will get</div>
+                <div className="muted" style={{ fontSize: 13, lineHeight: 1.45 }}>
+                  Exports include the displayed fields (title, phase, sponsor, disease area, inferred reason bucket, and stop reason).
+                  For “Selected”, the export uses your checkbox selection.
+                </div>
+                {meta?.version ? (
+                  <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
+                    Dataset version: <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.version}</span>
+                    {meta.source ? (
+                      <>
+                        {" "}• Source: <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.source}</span>
+                      </>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+
+              <div style={{ height: 14 }} />
+
+              <div style={{ display: "flex", gap: 10 }}>
+                <button className="btn-primary" type="button" onClick={doDownload} disabled={scopeDisabled} style={{ flex: 1 }}>
+                  Download
+                </button>
+                <button className="btn" type="button" onClick={() => setOpen(false)}>
+                  Cancel
+                </button>
+              </div>
+
+              <div className="note">
+                Tip: “Everything” exports all {allRows.length.toLocaleString()} trials and may be a large download.
+              </div>
+            </div>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
