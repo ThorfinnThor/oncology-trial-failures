@@ -6,15 +6,16 @@ import { useRouter } from "next/router";
 import { loadIndex, loadMeta } from "@/lib/data";
 import { TrialIndexRow, UrlState, DatasetMeta, SortKey } from "@/lib/types";
 import { decodeState, encodeState } from "@/lib/urlState";
-import { filterRows, sortRows, phaseLabel, parsePhases, reasonBucket } from "@/lib/filtering";
+import { filterRows, sortRows } from "@/lib/filtering";
 import { computeFacets } from "@/lib/facets";
-import { exportCSV, exportJSON, buildShareUrl, buildCitation } from "@/lib/exporting";
 
 import ResultsGrid from "@/components/ResultsGrid";
 import ResultsList from "@/components/ResultsList";
 import DetailsDrawer from "@/components/DetailsDrawer";
 import CompareModal from "@/components/CompareModal";
+import DownloadMenu from "@/components/DownloadMenu";
 import { Facet, ScientificFailureToggle } from "@/components/FacetRail";
+import { buildShareUrl, buildCitation } from "@/lib/exporting";
 
 function useDebounced<T>(value: T, ms: number) {
   const [v, setV] = useState(value);
@@ -39,10 +40,8 @@ export default function ExplorePage() {
   // URL-driven state
   const stateFromUrl = useMemo<UrlState>(() => decodeState(router.asPath), [router.asPath]);
   const [state, setState] = useState<UrlState>(stateFromUrl);
-
   useEffect(() => setState(stateFromUrl), [stateFromUrl]);
 
-  // Load data once
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -66,12 +65,10 @@ export default function ExplorePage() {
     };
   }, []);
 
-  // Search input local state (debounced into URL state)
   const [qInput, setQInput] = useState(state.q || "");
   useEffect(() => setQInput(state.q || ""), [state.q]);
   const qDebounced = useDebounced(qInput, 250);
 
-  // Apply debounced search into state + URL
   useEffect(() => {
     if ((state.q || "") === qDebounced) return;
     updateState({ q: qDebounced || undefined });
@@ -79,15 +76,9 @@ export default function ExplorePage() {
   }, [qDebounced]);
 
   const facets = useMemo(() => computeFacets(allRows), [allRows]);
-
   const filtered = useMemo(() => filterRows(allRows, state), [allRows, state]);
   const sortKey: SortKey = (state.sort || "date_desc") as SortKey;
   const rows = useMemo(() => sortRows(filtered, sortKey), [filtered, sortKey]);
-
-  const isMobile = useMemo(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(max-width: 900px)").matches;
-  }, []);
 
   const railOpen = state.rail ?? true;
 
@@ -95,24 +86,18 @@ export default function ExplorePage() {
     const next: UrlState = {
       ...state,
       ...patch,
-      // normalize arrays
       status: clampArray(patch.status ?? state.status),
       phase: clampArray(patch.phase ?? state.phase),
       area: clampArray(patch.area ?? state.area),
       bucket: clampArray(patch.bucket ?? state.bucket),
-      sponsor: clampArray(patch.sponsor ?? state.sponsor),
-      condition: clampArray(patch.condition ?? state.condition),
-      intervention: clampArray(patch.intervention ?? state.intervention),
-      compare: clampArray(patch.compare ?? state.compare),
+      compare: clampArray(patch.compare ?? state.compare)
     };
 
-    // strip empty arrays
-    (["status", "phase", "area", "bucket", "sponsor", "condition", "intervention", "compare"] as const).forEach((k) => {
+    (["status", "phase", "area", "bucket", "compare"] as const).forEach((k) => {
       const v = (next as any)[k];
       if (Array.isArray(v) && v.length === 0) (next as any)[k] = undefined;
     });
 
-    // clean empty string q
     if (!next.q) next.q = undefined;
 
     setState(next);
@@ -134,16 +119,13 @@ export default function ExplorePage() {
       phase: undefined,
       area: undefined,
       bucket: undefined,
-      sponsor: undefined,
-      condition: undefined,
-      intervention: undefined,
       bio: undefined,
       date_from: undefined,
       date_to: undefined,
       sort: "date_desc",
       trial: undefined,
       compare: undefined,
-      rail: true,
+      rail: true
     });
   }
 
@@ -168,6 +150,8 @@ export default function ExplorePage() {
 
   const fromHref = useMemo(() => `/explore${encodeState(state)}`, [state]);
 
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
+
   return (
     <>
       <Head>
@@ -175,7 +159,6 @@ export default function ExplorePage() {
       </Head>
 
       <div className="min-h-screen">
-        {/* Top bar */}
         <header className="sticky top-0 z-30 border-b" style={{ borderColor: "var(--border)", background: "var(--surface)" }}>
           <div className="mx-auto max-w-[1400px] px-4 py-3 flex items-center gap-3">
             <Link href="/explore" className="text-sm font-semibold" style={{ color: "var(--text)" }}>
@@ -205,14 +188,20 @@ export default function ExplorePage() {
               </button>
 
               <button className="btn" onClick={copyLink} type="button">Copy link</button>
-              <button className="btn" onClick={() => exportCSV(meta, state, rows)} type="button">Export CSV</button>
-              <button className="btn" onClick={() => exportJSON(meta, state, rows)} type="button">Export JSON</button>
+
+              <DownloadMenu
+                meta={meta}
+                state={state}
+                allRows={allRows}
+                filteredRows={rows}
+                selectedRows={compareRows}
+              />
+
               <button className="btn" onClick={resetAll} type="button">Reset</button>
             </div>
           </div>
         </header>
 
-        {/* Title block */}
         <div className="mx-auto max-w-[1400px] px-4 pt-8 pb-4">
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight" style={{ color: "var(--text)" }}>
             Clinical trial failures
@@ -226,14 +215,10 @@ export default function ExplorePage() {
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="chip">
-              Dataset: <span className="font-semibold">{meta?.version === "all_stopped_trials" ? "All stopped trials" : (meta?.version || "…")}</span>
+              Dataset: <span className="font-semibold">{meta?.version || "…"}</span>
             </span>
 
-            <button
-              className="btn"
-              type="button"
-              onClick={() => updateState({ rail: !railOpen })}
-            >
+            <button className="btn" type="button" onClick={() => updateState({ rail: !railOpen })}>
               {railOpen ? "Hide filters" : "Show filters"}
             </button>
 
@@ -252,7 +237,6 @@ export default function ExplorePage() {
             </button>
           </div>
 
-          {/* Mobile search */}
           <div className="md:hidden mt-4">
             <input
               className="input"
@@ -264,69 +248,55 @@ export default function ExplorePage() {
           </div>
         </div>
 
-        {/* Main workbench */}
         <main className="mx-auto max-w-[1400px] px-4 pb-10">
           <div className="grid grid-cols-12 gap-4">
-            {/* Filter rail */}
-            <aside
-              className={[
-                "col-span-12 lg:col-span-3",
-                railOpen ? "" : "hidden lg:block"
-              ].join(" ")}
-            >
-              <div className="card p-4 sticky top-[72px]">
-                <div className="space-y-5">
-                  <ScientificFailureToggle
-                    checked={!!state.bio}
-                    onChange={(v) => updateState({ bio: v || undefined })}
-                    onInfo={() => alert(
+            <aside className={["col-span-12 lg:col-span-3", railOpen ? "" : "hidden lg:block"].join(" ")}>
+              <div className="sticky top-[72px] space-y-4">
+                <ScientificFailureToggle
+                  checked={!!state.bio}
+                  onChange={(v) => updateState({ bio: v || undefined })}
+                  onInfo={() =>
+                    alert(
                       "Likely scientific failure means the stop reason suggests the intervention did not work as intended (e.g., lack of efficacy/futility). This is inferred from registry text and may be incomplete."
-                    )}
-                  />
+                    )
+                  }
+                />
 
-                  <Facet
-                    title="Status"
-                    options={facets.status}
-                    selected={state.status || []}
-                    onToggle={(v) => toggleMulti("status", v)}
-                    maxVisible={8}
-                  />
+                <Facet
+                  title="Status"
+                  options={facets.status}
+                  selected={state.status || []}
+                  onToggle={(v) => toggleMulti("status", v)}
+                  maxVisible={8}
+                />
 
-                  <Facet
-                    title="Phase"
-                    options={facets.phase}
-                    selected={state.phase || []}
-                    onToggle={(v) => toggleMulti("phase", v)}
-                    maxVisible={10}
-                  />
+                <Facet
+                  title="Phase"
+                  options={facets.phase}
+                  selected={state.phase || []}
+                  onToggle={(v) => toggleMulti("phase", v)}
+                  maxVisible={10}
+                />
 
-                  <Facet
-                    title="Disease area (Top 10)"
-                    options={facets.area.slice(0, 10)}
-                    selected={state.area || []}
-                    onToggle={(v) => toggleMulti("area", v)}
-                    searchable
-                    maxVisible={10}
-                  />
+                <Facet
+                  title="Disease area (Top 10)"
+                  options={facets.area.slice(0, 10)}
+                  selected={state.area || []}
+                  onToggle={(v) => toggleMulti("area", v)}
+                  searchable
+                  maxVisible={10}
+                />
 
-                  <Facet
-                    title="Reason bucket"
-                    options={facets.bucket}
-                    selected={state.bucket || []}
-                    onToggle={(v) => toggleMulti("bucket", v)}
-                    maxVisible={8}
-                  />
-
-                  <div className="pt-2">
-                    <button className="btn w-full" type="button" onClick={resetAll}>
-                      Clear all filters
-                    </button>
-                  </div>
-                </div>
+                <Facet
+                  title="Reason bucket"
+                  options={facets.bucket}
+                  selected={state.bucket || []}
+                  onToggle={(v) => toggleMulti("bucket", v)}
+                  maxVisible={8}
+                />
               </div>
             </aside>
 
-            {/* Results */}
             <section className={railOpen ? "col-span-12 lg:col-span-9" : "col-span-12"}>
               <div className="card">
                 <div className="p-4 border-b" style={{ borderColor: "var(--border)" }}>
@@ -363,7 +333,6 @@ export default function ExplorePage() {
                 </div>
 
                 <div className="p-2 sm:p-3">
-                  {/* Desktop table */}
                   <div className="hidden lg:block">
                     <ResultsGrid
                       rows={rows}
@@ -382,7 +351,6 @@ export default function ExplorePage() {
                     />
                   </div>
 
-                  {/* Mobile cards */}
                   <div className="lg:hidden">
                     <ResultsList
                       rows={rows}
@@ -406,7 +374,6 @@ export default function ExplorePage() {
           </div>
         </main>
 
-        {/* Drawer (kept) */}
         <DetailsDrawer
           open={!!state.trial}
           trialId={state.trial || null}
@@ -415,7 +382,6 @@ export default function ExplorePage() {
           fromHref={fromHref}
         />
 
-        {/* Compare modal */}
         <CompareModal
           open={compareOpen}
           onClose={() => setCompareOpen(false)}
