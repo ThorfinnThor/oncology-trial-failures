@@ -1,51 +1,63 @@
 import { TrialIndexRow } from "./types";
-import { parsePhases, PHASE_ORDER, phaseLabel, reasonBucket } from "./filtering";
+import { parsePhases, phaseLabel, reasonBucket } from "./filtering";
 
 export type FacetOption = { value: string; label: string; count: number };
 
-function topN(map: Map<string, number>, n = 50): FacetOption[] {
-  return Array.from(map.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, n)
-    .map(([value, count]) => ({ value, label: value, count }));
+function addCount(map: Map<string, number>, key: string) {
+  map.set(key, (map.get(key) || 0) + 1);
 }
 
-export function computeFacets(rows: TrialIndexRow[]) {
-  const status = new Map<string, number>();
-  const phase = new Map<string, number>();
-  const area = new Map<string, number>();
-  const bucket = new Map<string, number>();
+const PHASE_ORDER = [
+  "EARLY_PHASE1",
+  "PHASE1",
+  "PHASE1/PHASE2",
+  "PHASE2",
+  "PHASE2/PHASE3",
+  "PHASE3",
+  "PHASE4",
+  "UNKNOWN"
+];
+
+export function computeFacets(rows: TrialIndexRow[]): {
+  status: FacetOption[];
+  phase: FacetOption[];
+  area: FacetOption[];
+  bucket: FacetOption[];
+} {
+  const statusM = new Map<string, number>();
+  const phaseM = new Map<string, number>();
+  const areaM = new Map<string, number>();
+  const bucketM = new Map<string, number>();
 
   for (const r of rows) {
-    const st = (r.overall_status || "UNKNOWN").toUpperCase();
-    status.set(st, (status.get(st) || 0) + 1);
+    addCount(statusM, (r.overall_status || "UNKNOWN").toUpperCase());
 
-    const phases = parsePhases(r.phases || "");
-    for (const p of phases) phase.set(p, (phase.get(p) || 0) + 1);
+    const ps = parsePhases(r.phases || "");
+    if (!ps.length) addCount(phaseM, "UNKNOWN");
+    else for (const p of ps) addCount(phaseM, p);
 
-    const a = (r.disease_area || "Other").trim() || "Other";
-    area.set(a, (area.get(a) || 0) + 1);
+    addCount(areaM, (r.disease_area || "Other").trim());
 
-    const b = reasonBucket(r);
-    bucket.set(b, (bucket.get(b) || 0) + 1);
+    addCount(bucketM, reasonBucket(r).toUpperCase());
   }
 
-  const statusOptions = topN(status, 30);
+  const status = Array.from(statusM.entries())
+    .map(([value, count]) => ({ value, label: value, count }))
+    .sort((a, b) => b.count - a.count);
 
-  // Phase: canonical order, never by count
-  const phaseOptions: FacetOption[] = PHASE_ORDER.map((p) => ({
-    value: p,
-    label: phaseLabel(p),
-    count: phase.get(p) || 0
-  })).filter((x) => x.count > 0);
+  const phase = PHASE_ORDER.filter((p) => phaseM.has(p)).map((value) => ({
+    value,
+    label: phaseLabel(value),
+    count: phaseM.get(value) || 0
+  }));
 
-  const areaOptions = topN(area, 200);
-  const bucketOptions = topN(bucket, 50);
+  const area = Array.from(areaM.entries())
+    .map(([value, count]) => ({ value, label: value, count }))
+    .sort((a, b) => b.count - a.count);
 
-  return {
-    status: statusOptions,
-    phase: phaseOptions,
-    area: areaOptions,
-    bucket: bucketOptions
-  };
+  const bucket = Array.from(bucketM.entries())
+    .map(([value, count]) => ({ value, label: value, count }))
+    .sort((a, b) => b.count - a.count);
+
+  return { status, phase, area, bucket };
 }
