@@ -1,66 +1,84 @@
-import { splitSemicolonValues } from "./data";
-import { TrialRow } from "./types";
-import { parsePhases, PHASE_ORDER, phaseLabel, reasonBucket } from "./filtering";
+import { TrialIndexRow } from "./types";
+import { parsePhases, PHASE_ORDER, reasonBucket } from "./filtering";
 
-export type FacetOption = { value: string; count: number; label?: string };
+export type FacetCounts = Array<[string, number]>;
 
-function topOptions(map: Map<string, number>, limit: number): FacetOption[] {
-  const arr: FacetOption[] = Array.from(map.entries()).map(([value, count]) => ({ value, count }));
-  arr.sort((a, b) => b.count - a.count || a.value.localeCompare(b.value));
-  return arr.slice(0, limit);
+export type Facets = {
+  status: FacetCounts;
+  phase: FacetCounts; // ordered by PHASE_ORDER
+  area: FacetCounts;
+  bucket: FacetCounts;
+
+  sponsor_top10: FacetCounts;
+  condition_top10: FacetCounts;
+  intervention_top10: FacetCounts;
+
+  // full lists if needed (can be large)
+  sponsor_all: FacetCounts;
+  condition_all: FacetCounts;
+  intervention_all: FacetCounts;
+};
+
+function inc(map: Map<string, number>, key: string) {
+  if (!key) return;
+  map.set(key, (map.get(key) || 0) + 1);
 }
 
-export function buildFacets(trials: TrialRow[]) {
+function sortDesc(map: Map<string, number>): FacetCounts {
+  return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
+}
+
+function topN(map: Map<string, number>, n: number): FacetCounts {
+  return sortDesc(map).slice(0, n);
+}
+
+/**
+ * Compute facets from TrialIndexRow (fast).
+ * Uses only already-normalized index fields (first condition/intervention),
+ * plus computed phase and bucket.
+ */
+export function computeFacets(rows: TrialIndexRow[]): Facets {
   const status = new Map<string, number>();
-  const phase = new Map<string, number>(); // PhaseKey values
+  const phase = new Map<string, number>();
   const area = new Map<string, number>();
   const bucket = new Map<string, number>();
+
   const sponsor = new Map<string, number>();
-  const intervention = new Map<string, number>();
   const condition = new Map<string, number>();
+  const intervention = new Map<string, number>();
 
-  for (const t of trials) {
-    const s = (t.overall_status || "").toUpperCase() || "UNKNOWN";
-    status.set(s, (status.get(s) || 0) + 1);
+  for (const r of rows) {
+    inc(status, (r.overall_status || "").toUpperCase());
+    inc(area, (r.disease_area || "Other") || "Other");
 
-    for (const p of parsePhases(t.phases || "")) phase.set(p, (phase.get(p) || 0) + 1);
+    const ph = parsePhases(r.phases || "")[0] || "Unknown";
+    inc(phase, ph);
 
-    const a = (t.disease_area || "Other") || "Other";
-    area.set(a, (area.get(a) || 0) + 1);
+    inc(bucket, reasonBucket(r));
 
-    const b = reasonBucket(t);
-    bucket.set(b, (bucket.get(b) || 0) + 1);
+    const s = (r.lead_sponsor || "").trim();
+    if (s) inc(sponsor, s);
 
-    const sp = (t.lead_sponsor || "").trim();
-    if (sp) sponsor.set(sp, (sponsor.get(sp) || 0) + 1);
-
-    for (const i of splitSemicolonValues(t.intervention_names || "")) {
-      intervention.set(i, (intervention.get(i) || 0) + 1);
-    }
-
-    for (const c of splitSemicolonValues(t.conditions || "")) {
-      condition.set(c, (condition.get(c) || 0) + 1);
-    }
+    if (r.condition_first) inc(condition, r.condition_first);
+    if (r.intervention_first) inc(intervention, r.intervention_first);
   }
 
-  // Phase options in canonical order (not by count)
-  const phaseOptions: FacetOption[] = PHASE_ORDER
-    .filter((p) => phase.has(p))
-    .map((p) => ({ value: p, label: phaseLabel(p as any), count: phase.get(p) || 0 }));
+  const phaseOrdered: FacetCounts = PHASE_ORDER
+    .map((p) => [p, phase.get(p) || 0] as [string, number])
+    .filter(([, c]) => c > 0);
 
   return {
-    status: topOptions(status, 50),
-    phase: phaseOptions,
-    area: topOptions(area, 250),
-    bucket: topOptions(bucket, 50),
-    sponsor: topOptions(sponsor, 250),
-    intervention: topOptions(intervention, 400),
-    condition: topOptions(condition, 400),
-    counts: {
-      sponsors: sponsor.size,
-      interventions: intervention.size,
-      conditions: condition.size,
-      areas: area.size,
-    },
+    status: sortDesc(status),
+    phase: phaseOrdered,
+    area: sortDesc(area),
+    bucket: sortDesc(bucket),
+
+    sponsor_top10: topN(sponsor, 10),
+    condition_top10: topN(condition, 10),
+    intervention_top10: topN(intervention, 10),
+
+    sponsor_all: sortDesc(sponsor),
+    condition_all: sortDesc(condition),
+    intervention_all: sortDesc(intervention),
   };
 }
