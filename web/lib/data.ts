@@ -8,12 +8,6 @@ const LS_META_KEY = "tf_meta_v2";
 const LS_ALL_KEY = "tf_all_v2";
 const LS_BIO_KEY = "tf_bio_v2";
 
-function normalize(rows: TrialRow[]): TrialRow[] {
-  return (rows || [])
-    .filter((r) => r && typeof r.nct_id === "string" && r.nct_id.length > 0)
-    .sort((a, b) => (b.last_update_post_date || "").localeCompare(a.last_update_post_date || ""));
-}
-
 async function fetchJson<T>(url: string, cache: RequestCache): Promise<T> {
   const r = await fetch(url, { cache });
   if (!r.ok) throw new Error(`Failed to load ${url}: ${r.status}`);
@@ -21,14 +15,25 @@ async function fetchJson<T>(url: string, cache: RequestCache): Promise<T> {
 }
 
 export async function loadMeta(): Promise<DatasetMeta> {
-  return fetchJson<DatasetMeta>(META_URL, "no-cache");
+  // meta should be fresh so clients see new version fast
+  const meta = await fetchJson<DatasetMeta>(META_URL, "no-cache");
+  return meta;
 }
 
-export async function loadDatasetClient(mode: "all" | "bio"): Promise<{ meta: DatasetMeta; trials: TrialRow[] }> {
-  const meta = await loadMeta();
-  const dataKey = mode === "all" ? LS_ALL_KEY : LS_BIO_KEY;
-  const url = mode === "all" ? ALL_URL : BIO_URL;
+function normalize(rows: TrialRow[]): TrialRow[] {
+  return (rows || [])
+    .filter((r) => r && typeof r.nct_id === "string" && r.nct_id.length > 0)
+    .sort((a, b) => (b.last_update_post_date || "").localeCompare(a.last_update_post_date || ""));
+}
 
+export type DatasetMode = "bio" | "all";
+
+export async function loadDatasetClient(mode: DatasetMode): Promise<{ meta: DatasetMeta; trials: TrialRow[] }> {
+  const meta = await loadMeta();
+  const dataKey = mode === "bio" ? LS_BIO_KEY : LS_ALL_KEY;
+  const url = mode === "bio" ? BIO_URL : ALL_URL;
+
+  // Cache keying by meta.version
   try {
     const cachedMetaRaw = localStorage.getItem(LS_META_KEY);
     const cachedDataRaw = localStorage.getItem(dataKey);
@@ -50,7 +55,7 @@ export async function loadDatasetClient(mode: "all" | "bio"): Promise<{ meta: Da
     localStorage.setItem(LS_META_KEY, JSON.stringify(meta));
     localStorage.setItem(dataKey, JSON.stringify(cleaned));
   } catch {
-    // ignore quota
+    // ignore
   }
 
   return { meta, trials: cleaned };
@@ -61,10 +66,4 @@ export function splitSemicolonValues(v: string): string[] {
     .split(";")
     .map((x) => x.trim())
     .filter(Boolean);
-}
-
-export function shortExcerpt(s: string, max = 110): string {
-  const t = (s || "").trim();
-  if (t.length <= max) return t;
-  return t.slice(0, max - 1).trimEnd() + "…";
 }
