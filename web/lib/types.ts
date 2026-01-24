@@ -4,21 +4,21 @@ export type TrialRow = {
   overall_status: string;
   why_stopped: string;
 
-  classification_label: string;
-  classification_reason: string;
-  classification_confidence: string;
+  classification_label: string; // BIOLOGICAL_FAILURE | NON_BIOLOGICAL | UNCLEAR
+  classification_reason: string; // SAFETY | EFFICACY/FUTILITY | OPERATIONAL | OTHER/UNKNOWN
+  classification_confidence: string; // HIGH | MEDIUM | LOW
   classification_evidence: string;
 
   disease_area: string;
   disease_areas_matched: string;
   mesh_terms: string;
 
-  countries: string;
-
   study_type: string;
   phases: string;
+
   lead_sponsor: string;
   collaborators: string;
+
   conditions: string;
   intervention_names: string;
   intervention_types: string;
@@ -29,17 +29,30 @@ export type TrialRow = {
   last_update_post_date: string;
 
   url: string;
+
+  // Keep extra fields flexible
+  [key: string]: any;
 };
 
 export type DatasetMeta = {
   version: string;
   generated_at_utc: string;
   source: string;
+  notes?: string;
+  top_areas: { area: string; count: number }[];
   all: { record_count: number; max_last_update_post_date: string };
   biological_failure: { record_count: number; max_last_update_post_date: string };
-  top_areas: { area: string; count: number }[];
-  notes?: string;
 };
+
+export type ReasonBucket =
+  | "Efficacy"
+  | "Safety"
+  | "Enrollment"
+  | "Funding"
+  | "Strategic"
+  | "Regulatory"
+  | "Operational"
+  | "Other/Unknown";
 
 export type SortKey =
   | "date_desc"
@@ -51,29 +64,28 @@ export type SortKey =
   | "confidence_desc"
   | "confidence_asc";
 
-export type ReasonBucket = "efficacy" | "safety" | "operational" | "other";
-
-export type WorkbenchState = {
+export type UrlState = {
   q?: string;
 
-  bio?: boolean;
+  // Multi-select facets (comma-separated in URL)
+  status?: string[]; // TERMINATED/SUSPENDED/WITHDRAWN if present
+  phase?: string[]; // I, II, III, IV, Unknown
+  area?: string[]; // disease_area
+  bucket?: ReasonBucket[]; // structured bucket
+  sponsor?: string[]; // lead sponsor values
+  intervention?: string[]; // intervention values
+  condition?: string[]; // condition values
 
-  phase?: string[];     // e.g. ["PHASE1","PHASE2"]
-  status?: string[];    // e.g. ["TERMINATED","WITHDRAWN","SUSPENDED"]
-  area?: string[];      // disease_area
-  country?: string[];
+  bio?: boolean; // likely biological failures toggle
 
-  reason?: ReasonBucket[];
-
-  condition?: string[];     // derived tokens
-  intervention?: string[];
-  sponsor?: string[];
-
-  date_from?: string;   // YYYY-MM-DD (last_update_post_date)
-  date_to?: string;     // YYYY-MM-DD (last_update_post_date)
+  date_from?: string; // YYYY-MM-DD
+  date_to?: string;   // YYYY-MM-DD
 
   sort?: SortKey;
 
-  trial?: string;       // nct_id for drawer
-  compare?: string[];   // list of nct_ids
+  trial?: string; // drawer open
+  compare?: string[]; // compare set
+
+  // UI only (not necessarily in URL by default)
+  rail?: boolean; // left rail collapsed/expanded
 };
