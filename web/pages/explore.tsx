@@ -226,7 +226,7 @@ export default function ExplorePage() {
 
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <span className="chip">
-              Dataset: <span className="font-semibold">{meta?.version || "…"}</span>
+              Dataset: <span className="font-semibold">{meta?.version === "all_stopped_trials" ? "All stopped trials" : (meta?.version || "…")}</span>
             </span>
 
             <button
