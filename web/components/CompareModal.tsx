@@ -1,3 +1,5 @@
+// web/components/CompareModal.tsx
+
 import Link from "next/link";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
@@ -9,35 +11,35 @@ type Props = {
   onRemove: (id: string) => void;
 };
 
-function clsx(...xs: Array<string | false | null | undefined>) {
-  return xs.filter(Boolean).join(" ");
-}
-
-function Pill({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]">
-      {children}
-    </span>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <div className="space-y-2">
-      <div className="text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">{title}</div>
-      {children}
-    </div>
-  );
-}
-
 function fieldRow(label: string, values: string[]) {
   return (
-    <tr className="border-t border-[var(--border)]">
-      <td className="p-3 align-top text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
+    <tr>
+      <td
+        style={{
+          padding: "12px",
+          verticalAlign: "top",
+          width: 180,
+          fontSize: 12,
+          fontWeight: 900,
+          textTransform: "uppercase",
+          letterSpacing: ".06em",
+          color: "var(--text-muted)",
+          borderTop: "1px solid var(--border)"
+        }}
+      >
         {label}
       </td>
       {values.map((v, i) => (
-        <td key={i} className="p-3 align-top text-sm text-[var(--text)]">
+        <td
+          key={i}
+          style={{
+            padding: "12px",
+            verticalAlign: "top",
+            fontSize: 13,
+            color: "var(--text)",
+            borderTop: "1px solid var(--border)"
+          }}
+        >
           {v || "—"}
         </td>
       ))}
@@ -47,6 +49,7 @@ function fieldRow(label: string, values: string[]) {
 
 export default function CompareModal({ open, onClose, trials, onRemove }: Props) {
   if (!open) return null;
+
   const cols = trials.slice(0, 5);
 
   const phases = cols.map((t) => {
@@ -66,88 +69,121 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
   const why = cols.map((t) => t.why_stopped_short || "—");
 
   return (
-    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Compare trials">
-      <div className="absolute inset-0 bg-black/30" onClick={onClose} />
-      <div className="absolute left-1/2 top-1/2 w-[96vw] max-w-5xl -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-[var(--border)] bg-white shadow-[var(--shadow)]">
-        <div className="flex items-start justify-between gap-3 border-b border-[var(--border)] p-4">
-          <div>
-            <div className="text-xs text-[var(--text-muted)]">Compare</div>
-            <div className="mt-1 text-lg font-semibold">Compare selected trials</div>
-            <div className="mt-1 text-sm text-[var(--text-muted)]">
-              Side-by-side comparison uses the lightweight index view. Open a full page for complete detail text.
+    <div className="modal-wrap" role="dialog" aria-modal="true" aria-label="Compare selected trials">
+      <div className="overlay" onClick={onClose} />
+
+      <div className="modal">
+        <div className="modal-hd">
+          <div style={{ minWidth: 0 }}>
+            <div className="muted" style={{ fontSize: 12 }}>Compare</div>
+            <div style={{ marginTop: 4, fontSize: 18, fontWeight: 900 }}>Compare selected trials</div>
+            <div className="muted" style={{ marginTop: 6, fontSize: 13 }}>
+              Select 2–5 trials using the checkbox column, then compare side-by-side.
             </div>
           </div>
-          <button
-            className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:bg-[var(--surface-2)]"
-            onClick={onClose}
-            type="button"
-          >
+
+          <button className="btn" type="button" onClick={onClose}>
             Close
           </button>
         </div>
 
-        <div className="p-4 space-y-4">
-          <Section title="Selected">
-            <div className="flex flex-wrap gap-2">
-              {cols.map((t) => (
-                <div key={t.nct_id} className="flex items-center gap-2">
-                  <Pill>{t.nct_id}</Pill>
-                  <Link
-                    className="text-xs font-semibold text-[var(--accent)] hover:underline"
-                    href={`/trial/${encodeURIComponent(t.nct_id)}`}
-                    target="_blank"
-                  >
-                    Open full page
-                  </Link>
-                  <button
-                    className="text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)]"
-                    onClick={() => onRemove(t.nct_id)}
-                    type="button"
-                    aria-label={`Remove ${t.nct_id} from compare`}
-                  >
-                    Remove
-                  </button>
-                </div>
-              ))}
+        <div className="modal-bd">
+          {cols.length < 2 ? (
+            <div className="card p-4">
+              <div style={{ fontWeight: 900, marginBottom: 6 }}>Nothing to compare yet</div>
+              <div className="muted" style={{ fontSize: 13 }}>
+                Select at least 2 trials via the “Sel” checkbox column.
+              </div>
             </div>
-          </Section>
-
-          <div className="overflow-auto rounded-2xl border border-[var(--border)]">
-            <table className="min-w-[1000px] w-full bg-white">
-              <thead className="bg-[var(--surface-2)]">
-                <tr>
-                  <th className="p-3 text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)] w-[180px]">
-                    Field
-                  </th>
+          ) : (
+            <>
+              <div className="card p-4" style={{ marginBottom: 14 }}>
+                <div className="facet-title">Selected</div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
                   {cols.map((t) => (
-                    <th key={t.nct_id} className="p-3 text-left">
-                      <div className="space-y-1">
-                        <div className="text-sm font-semibold">{t.nct_id}</div>
-                        <div className="text-xs text-[var(--text-muted)] line-clamp-2">{t.brief_title || "—"}</div>
-                      </div>
-                    </th>
+                    <div key={t.nct_id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span className="chip">{t.nct_id}</span>
+                      <Link
+                        href={`/trial/${encodeURIComponent(t.nct_id)}`}
+                        target="_blank"
+                        style={{ fontSize: 12, fontWeight: 900, color: "var(--accent)" }}
+                      >
+                        Open full page
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => onRemove(t.nct_id)}
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 900,
+                          color: "var(--text-muted)",
+                          background: "transparent",
+                          border: 0,
+                          cursor: "pointer"
+                        }}
+                        aria-label={`Remove ${t.nct_id} from compare`}
+                      >
+                        Remove
+                      </button>
+                    </div>
                   ))}
-                </tr>
-              </thead>
-              <tbody>
-                {fieldRow("Phase", phases)}
-                {fieldRow("Status", status)}
-                {fieldRow("Disease area", area)}
-                {fieldRow("Sponsor", sponsor)}
-                {fieldRow("Collaborators", collab)}
-                {fieldRow("Condition", condition)}
-                {fieldRow("Intervention", intervention)}
-                {fieldRow("Last update", date)}
-                {fieldRow("Reason bucket", bucket)}
-                {fieldRow("Confidence", conf)}
-                {fieldRow("Why stopped (short)", why)}
-              </tbody>
-            </table>
-          </div>
+                </div>
+              </div>
 
-          <div className="text-xs text-[var(--text-muted)]">
-            “Likely scientific failure” and reason buckets are inferred from registry text and may be incomplete. Verify via the primary source link.
-          </div>
+              <div className="card" style={{ overflow: "auto" }}>
+                <table style={{ minWidth: 1000, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
+                  <thead style={{ background: "var(--surface-2)" }}>
+                    <tr>
+                      <th
+                        style={{
+                          padding: "12px",
+                          textAlign: "left",
+                          fontSize: 12,
+                          fontWeight: 900,
+                          textTransform: "uppercase",
+                          letterSpacing: ".06em",
+                          color: "var(--text-muted)",
+                          width: 180,
+                          borderBottom: "1px solid var(--border)"
+                        }}
+                      >
+                        Field
+                      </th>
+                      {cols.map((t) => (
+                        <th
+                          key={t.nct_id}
+                          style={{ padding: "12px", textAlign: "left", borderBottom: "1px solid var(--border)" }}
+                        >
+                          <div style={{ fontSize: 13, fontWeight: 900 }}>{t.nct_id}</div>
+                          <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>
+                            {(t.brief_title || "—").slice(0, 120)}
+                            {(t.brief_title || "").length > 120 ? "…" : ""}
+                          </div>
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {fieldRow("Phase", phases)}
+                    {fieldRow("Status", status)}
+                    {fieldRow("Disease area", area)}
+                    {fieldRow("Sponsor", sponsor)}
+                    {fieldRow("Collaborators", collab)}
+                    {fieldRow("Condition", condition)}
+                    {fieldRow("Intervention", intervention)}
+                    {fieldRow("Last update", date)}
+                    {fieldRow("Reason bucket", bucket)}
+                    {fieldRow("Confidence", conf)}
+                    {fieldRow("Why stopped (short)", why)}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
+                Buckets/labels are inferred from registry text and may be incomplete.
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
