@@ -7,7 +7,7 @@ export type DatasetMeta = {
 
 /**
  * Sorting keys used by the Explore UI and filtering utilities.
- * Keep union broad to avoid brittle builds when UI adds new options.
+ * Keep union broad to tolerate future additions without breaking builds.
  */
 export type SortKey =
   | "relevance"
@@ -15,11 +15,15 @@ export type SortKey =
   | "date_asc"
   | "title_asc"
   | "title_desc"
+  | "sponsor_asc"
+  | "sponsor_desc"
+  | "confidence_desc"
+  | "confidence_asc"
   | string;
 
 /**
  * URL-driven state (query params) used across explore/download/export.
- * Kept permissive because different pages/components may add fields over time.
+ * IMPORTANT: no `[key: string]: any` — that causes implicit-any cascades during builds.
  */
 export type UrlState = {
   q?: string;
@@ -28,12 +32,17 @@ export type UrlState = {
   status?: string[];
   phase?: string[];
   area?: string[];
-  sponsor?: string[];
   bucket?: string[];
+  sponsor?: string[];
+  intervention?: string[];
+  condition?: string[];
   country?: string[];
 
-  // Toggle
-  scientificFailureOnly?: boolean;
+  // Compare selection
+  compare?: string[];
+
+  // Toggle (called "bio" in URL, meaning likely scientific failure)
+  bio?: boolean;
 
   // Sorting / pagination / view
   sort?: SortKey;
@@ -41,8 +50,12 @@ export type UrlState = {
   pageSize?: number;
   view?: "table" | "grid" | "list" | string;
 
-  // Allow forward-compat extra keys without breaking builds
-  [key: string]: any;
+  // Date range (YYYY-MM-DD)
+  date_from?: string;
+  date_to?: string;
+
+  // Open trial details drawer
+  trial?: string;
 };
 
 export type TrialIndexRow = {
@@ -69,17 +82,19 @@ export type TrialIndexRow = {
   why_stopped_short?: string;
 
   // Canonical pipeline classification fields
-  classification_label?: string;        // e.g., BIOLOGICAL_FAILURE
-  classification_reason?: string;       // e.g., EFFICACY/FUTILITY
-  classification_confidence?: string;   // LOW/MED/HIGH
+  classification_label?: string; // e.g., BIOLOGICAL_FAILURE
+  classification_reason?: string; // e.g., EFFICACY/FUTILITY
+  classification_confidence?: string; // LOW/MED/HIGH
   classification_evidence?: string;
 
-  // Backwards-compat / older naming referenced by filtering.ts and potentially older datasets
+  // Backwards-compat / older naming referenced by filtering.ts / legacy datasets
   failure_label?: string;
   failure_type?: string;
 
   // Dates
   last_update_post_date?: string;
+
+  // Some code paths refer to a generic "date" field; keep optional for compatibility
   date?: string;
 
   // External link
