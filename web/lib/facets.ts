@@ -1,22 +1,25 @@
 import { TrialIndexRow } from "./types";
-import { parsePhases, PHASE_ORDER, reasonBucket } from "./filtering";
+import { parsePhases, PHASE_ORDER, reasonBucket, phaseLabel } from "./filtering";
 
-export type FacetCounts = Array<[string, number]>;
+export type FacetOption = {
+  value: string;
+  label: string;
+  count: number;
+};
 
 export type Facets = {
-  status: FacetCounts;
-  phase: FacetCounts; // ordered by PHASE_ORDER
-  area: FacetCounts;
-  bucket: FacetCounts;
+  status: FacetOption[];
+  phase: FacetOption[]; // ordered by PHASE_ORDER
+  area: FacetOption[];
+  bucket: FacetOption[];
 
-  sponsor_top10: FacetCounts;
-  condition_top10: FacetCounts;
-  intervention_top10: FacetCounts;
+  sponsor_top10: FacetOption[];
+  condition_top10: FacetOption[];
+  intervention_top10: FacetOption[];
 
-  // full lists if needed (can be large)
-  sponsor_all: FacetCounts;
-  condition_all: FacetCounts;
-  intervention_all: FacetCounts;
+  sponsor_all: FacetOption[];
+  condition_all: FacetOption[];
+  intervention_all: FacetOption[];
 };
 
 function inc(map: Map<string, number>, key: string) {
@@ -24,18 +27,24 @@ function inc(map: Map<string, number>, key: string) {
   map.set(key, (map.get(key) || 0) + 1);
 }
 
-function sortDesc(map: Map<string, number>): FacetCounts {
+function sortDesc(map: Map<string, number>): Array<[string, number]> {
   return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
 }
 
-function topN(map: Map<string, number>, n: number): FacetCounts {
+function topN(map: Map<string, number>, n: number): Array<[string, number]> {
   return sortDesc(map).slice(0, n);
+}
+
+function toOptions(pairs: Array<[string, number]>, labelFn?: (v: string) => string): FacetOption[] {
+  return pairs.map(([value, count]) => ({
+    value,
+    count,
+    label: labelFn ? labelFn(value) : value,
+  }));
 }
 
 /**
  * Compute facets from TrialIndexRow (fast).
- * Uses only already-normalized index fields (first condition/intervention),
- * plus computed phase and bucket.
  */
 export function computeFacets(rows: TrialIndexRow[]): Facets {
   const status = new Map<string, number>();
@@ -63,22 +72,22 @@ export function computeFacets(rows: TrialIndexRow[]): Facets {
     if (r.intervention_first) inc(intervention, r.intervention_first);
   }
 
-  const phaseOrdered: FacetCounts = PHASE_ORDER
+  const phasePairs: Array<[string, number]> = PHASE_ORDER
     .map((p) => [p, phase.get(p) || 0] as [string, number])
     .filter(([, c]) => c > 0);
 
   return {
-    status: sortDesc(status),
-    phase: phaseOrdered,
-    area: sortDesc(area),
-    bucket: sortDesc(bucket),
+    status: toOptions(sortDesc(status)),
+    phase: toOptions(phasePairs, (v) => phaseLabel(v as any)),
+    area: toOptions(sortDesc(area)),
+    bucket: toOptions(sortDesc(bucket)),
 
-    sponsor_top10: topN(sponsor, 10),
-    condition_top10: topN(condition, 10),
-    intervention_top10: topN(intervention, 10),
+    sponsor_top10: toOptions(topN(sponsor, 10)),
+    condition_top10: toOptions(topN(condition, 10)),
+    intervention_top10: toOptions(topN(intervention, 10)),
 
-    sponsor_all: sortDesc(sponsor),
-    condition_all: sortDesc(condition),
-    intervention_all: sortDesc(intervention),
+    sponsor_all: toOptions(sortDesc(sponsor)),
+    condition_all: toOptions(sortDesc(condition)),
+    intervention_all: toOptions(sortDesc(intervention)),
   };
 }
