@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { TrialIndexRow } from "@/lib/types";
-import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { parsePhases, phaseLabel } from "@/lib/filtering";
 
-function clamp2Style(): React.CSSProperties {
+function clamp2Style(color: string): React.CSSProperties {
   return {
     display: "-webkit-box",
     WebkitBoxOrient: "vertical",
     WebkitLineClamp: 2,
-    overflow: "hidden"
+    overflow: "hidden",
+    color
   } as any;
 }
 
@@ -28,7 +29,6 @@ export default function ResultsGrid({
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
   const [hoverId, setHoverId] = useState<string | null>(null);
 
-  // hard cap for perf (still fast enough)
   const shown = rows.slice(0, 2000);
 
   return (
@@ -112,7 +112,7 @@ export default function ResultsGrid({
                   onMouseEnter={() => setHoverId(r.nct_id)}
                   onMouseLeave={() => setHoverId((x) => (x === r.nct_id ? null : x))}
                 >
-                  <div style={clamp2Style()} className="text-sm leading-snug" style={{ color: "var(--text-muted)" }}>
+                  <div style={clamp2Style("var(--text-muted)")} className="text-sm leading-snug">
                     {why || "—"}
                   </div>
 
