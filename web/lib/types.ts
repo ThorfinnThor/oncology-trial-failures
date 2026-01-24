@@ -30,7 +30,6 @@ export type TrialRow = {
 
   url: string;
 
-  // Keep extra fields flexible
   [key: string]: any;
 };
 
@@ -64,28 +63,35 @@ export type SortKey =
   | "confidence_desc"
   | "confidence_asc";
 
+/**
+ * URL-driven state for the analyst workbench.
+ * This is the canonical state type in the redesign.
+ */
 export type UrlState = {
   q?: string;
 
-  // Multi-select facets (comma-separated in URL)
-  status?: string[]; // TERMINATED/SUSPENDED/WITHDRAWN if present
-  phase?: string[]; // I, II, III, IV, Unknown
-  area?: string[]; // disease_area
-  bucket?: ReasonBucket[]; // structured bucket
-  sponsor?: string[]; // lead sponsor values
-  intervention?: string[]; // intervention values
-  condition?: string[]; // condition values
+  status?: string[];
+  phase?: string[];
+  area?: string[];
+  bucket?: ReasonBucket[];
+  sponsor?: string[];
+  intervention?: string[];
+  condition?: string[];
 
-  bio?: boolean; // likely biological failures toggle
+  bio?: boolean;
 
   date_from?: string; // YYYY-MM-DD
   date_to?: string;   // YYYY-MM-DD
 
   sort?: SortKey;
 
-  trial?: string; // drawer open
-  compare?: string[]; // compare set
+  trial?: string;
+  compare?: string[];
 
-  // UI only (not necessarily in URL by default)
-  rail?: boolean; // left rail collapsed/expanded
+  rail?: boolean;
 };
+
+/**
+ * Backwards-compatible alias (some earlier files may still refer to WorkbenchState).
+ */
+export type WorkbenchState = UrlState;
