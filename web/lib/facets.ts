@@ -1,93 +1,51 @@
 import { TrialIndexRow } from "./types";
-import { parsePhases, PHASE_ORDER, reasonBucket, phaseLabel } from "./filtering";
+import { parsePhases, PHASE_ORDER, phaseLabel, reasonBucket } from "./filtering";
 
-export type FacetOption = {
-  value: string;
-  label: string;
-  count: number;
-};
+export type FacetOption = { value: string; label: string; count: number };
 
-export type Facets = {
-  status: FacetOption[];
-  phase: FacetOption[]; // ordered by PHASE_ORDER
-  area: FacetOption[];
-  bucket: FacetOption[];
-
-  sponsor_top10: FacetOption[];
-  condition_top10: FacetOption[];
-  intervention_top10: FacetOption[];
-
-  sponsor_all: FacetOption[];
-  condition_all: FacetOption[];
-  intervention_all: FacetOption[];
-};
-
-function inc(map: Map<string, number>, key: string) {
-  if (!key) return;
-  map.set(key, (map.get(key) || 0) + 1);
+function topN(map: Map<string, number>, n = 50): FacetOption[] {
+  return Array.from(map.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, n)
+    .map(([value, count]) => ({ value, label: value, count }));
 }
 
-function sortDesc(map: Map<string, number>): Array<[string, number]> {
-  return Array.from(map.entries()).sort((a, b) => b[1] - a[1]);
-}
-
-function topN(map: Map<string, number>, n: number): Array<[string, number]> {
-  return sortDesc(map).slice(0, n);
-}
-
-function toOptions(pairs: Array<[string, number]>, labelFn?: (v: string) => string): FacetOption[] {
-  return pairs.map(([value, count]) => ({
-    value,
-    count,
-    label: labelFn ? labelFn(value) : value,
-  }));
-}
-
-/**
- * Compute facets from TrialIndexRow (fast).
- */
-export function computeFacets(rows: TrialIndexRow[]): Facets {
+export function computeFacets(rows: TrialIndexRow[]) {
   const status = new Map<string, number>();
   const phase = new Map<string, number>();
   const area = new Map<string, number>();
   const bucket = new Map<string, number>();
 
-  const sponsor = new Map<string, number>();
-  const condition = new Map<string, number>();
-  const intervention = new Map<string, number>();
-
   for (const r of rows) {
-    inc(status, (r.overall_status || "").toUpperCase());
-    inc(area, (r.disease_area || "Other") || "Other");
+    const st = (r.overall_status || "UNKNOWN").toUpperCase();
+    status.set(st, (status.get(st) || 0) + 1);
 
-    const ph = parsePhases(r.phases || "")[0] || "Unknown";
-    inc(phase, ph);
+    const phases = parsePhases(r.phases || "");
+    for (const p of phases) phase.set(p, (phase.get(p) || 0) + 1);
 
-    inc(bucket, reasonBucket(r));
+    const a = (r.disease_area || "Other").trim() || "Other";
+    area.set(a, (area.get(a) || 0) + 1);
 
-    const s = (r.lead_sponsor || "").trim();
-    if (s) inc(sponsor, s);
-
-    if (r.condition_first) inc(condition, r.condition_first);
-    if (r.intervention_first) inc(intervention, r.intervention_first);
+    const b = reasonBucket(r);
+    bucket.set(b, (bucket.get(b) || 0) + 1);
   }
 
-  const phasePairs: Array<[string, number]> = PHASE_ORDER
-    .map((p) => [p, phase.get(p) || 0] as [string, number])
-    .filter(([, c]) => c > 0);
+  const statusOptions = topN(status, 30);
+
+  // Phase: canonical order, never by count
+  const phaseOptions: FacetOption[] = PHASE_ORDER.map((p) => ({
+    value: p,
+    label: phaseLabel(p),
+    count: phase.get(p) || 0
+  })).filter((x) => x.count > 0);
+
+  const areaOptions = topN(area, 200);
+  const bucketOptions = topN(bucket, 50);
 
   return {
-    status: toOptions(sortDesc(status)),
-    phase: toOptions(phasePairs, (v) => phaseLabel(v as any)),
-    area: toOptions(sortDesc(area)),
-    bucket: toOptions(sortDesc(bucket)),
-
-    sponsor_top10: toOptions(topN(sponsor, 10)),
-    condition_top10: toOptions(topN(condition, 10)),
-    intervention_top10: toOptions(topN(intervention, 10)),
-
-    sponsor_all: toOptions(sortDesc(sponsor)),
-    condition_all: toOptions(sortDesc(condition)),
-    intervention_all: toOptions(sortDesc(intervention)),
+    status: statusOptions,
+    phase: phaseOptions,
+    area: areaOptions,
+    bucket: bucketOptions
   };
 }
