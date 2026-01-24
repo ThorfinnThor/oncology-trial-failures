@@ -8,6 +8,27 @@ function clamp(s: string, n: number) {
   return t.slice(0, n - 1) + "…";
 }
 
+function phaseClass(phaseKey: string) {
+  const p = (phaseKey || "").toUpperCase();
+  if (p === "EARLY_PHASE1" || p === "PHASE1") return "chip-phase-1";
+  if (p === "PHASE1/PHASE2" || p === "PHASE2") return "chip-phase-2";
+  if (p === "PHASE2/PHASE3" || p === "PHASE3") return "chip-phase-3";
+  if (p === "PHASE4") return "chip-phase-4";
+  return "chip-neutral";
+}
+
+function bucketClass(bucket: string) {
+  const b = (bucket || "").toUpperCase();
+  if (b === "SAFETY") return "chip-bucket-safety";
+  if (b === "EFFICACY/FUTILITY") return "chip-bucket-efficacy";
+  if (b === "ENROLLMENT") return "chip-bucket-enrollment";
+  if (b === "FUNDING") return "chip-bucket-funding";
+  if (b === "REGULATORY") return "chip-bucket-regulatory";
+  if (b === "STRATEGIC") return "chip-bucket-strategic";
+  if (b === "OPERATIONAL") return "chip-bucket-operational";
+  return "chip-neutral";
+}
+
 export default function ResultsList({
   rows,
   selectedIds,
@@ -30,15 +51,13 @@ export default function ResultsList({
         const checked = selected.has(r.nct_id);
         const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
         const why = (r.why_stopped_short || "").trim();
+        const bucket = reasonBucket(r);
 
         return (
           <div key={r.nct_id} className="card p-4">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <Link
-                  href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
-                  className="font-semibold"
-                >
+                <Link href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`} className="font-semibold">
                   {r.nct_id}
                 </Link>
                 <div className="mt-1 font-medium leading-snug break-words">{r.brief_title || "—"}</div>
@@ -56,9 +75,10 @@ export default function ResultsList({
             </div>
 
             <div className="mt-3 flex flex-wrap gap-2">
-              <span className="chip">{phaseLabel(p as any)}</span>
-              <span className="chip">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
-              <span className="chip">{reasonBucket(r)}</span>
+              <span className={`chip ${phaseClass(String(p))}`}>{phaseLabel(p as any)}</span>
+              <span className="chip chip-neutral">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
+              <span className={`chip ${bucketClass(bucket)}`}>{bucket}</span>
+              <span className="chip chip-neutral">{r.disease_area || "Other"}</span>
             </div>
 
             <div className="mt-3 text-sm" style={{ color: "var(--text-muted)" }}>
