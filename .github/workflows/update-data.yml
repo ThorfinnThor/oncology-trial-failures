@@ -39,7 +39,6 @@ jobs:
           SLEEP_SECONDS: "1.3"
           OVERRIDES_PATH: "overrides.csv"
 
-      # NEW: Copy generated data into the Next.js public folder so Vercel can serve it.
       - name: Sync dataset into web/public/data
         run: |
           mkdir -p web/public/data
