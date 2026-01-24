@@ -2,49 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Modern, sleek theme tokens */
 :root {
-  --bg: #0b1220;
-  --bg2: #0f1a2e;
-  --surface: #0f172a;
-  --surface-2: #111c33;
-  --card: #ffffff;
-  --card2: #f7f8fb;
-  --border: rgba(15, 23, 42, 0.12);
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #f1f4fb;
+  --border: rgba(15, 23, 42, 0.10);
 
   --text: #0b1220;
   --text-muted: rgba(11, 18, 32, 0.62);
 
-  --accent: #2563eb; /* modern blue */
-  --accent-2: #7c3aed; /* violet */
-  --shadow: 0 22px 60px rgba(0, 0, 0, 0.16);
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --accent: #2563eb;
+  --accent-2: #7c3aed;
+
+  --shadow: 0 22px 60px rgba(2, 8, 23, 0.10);
+  --shadow-soft: 0 10px 30px rgba(2, 8, 23, 0.06);
 }
 
-html,
-body {
-  height: 100%;
-}
+html, body { height: 100%; }
 
 body {
-  background: radial-gradient(1200px 600px at 20% 0%, rgba(37, 99, 235, 0.18), transparent 50%),
-    radial-gradient(1000px 500px at 80% 10%, rgba(124, 58, 237, 0.14), transparent 55%),
-    linear-gradient(180deg, var(--bg), var(--bg2));
+  background:
+    radial-gradient(900px 420px at 12% 0%, rgba(37, 99, 235, 0.10), transparent 55%),
+    radial-gradient(900px 420px at 88% 5%, rgba(124, 58, 237, 0.08), transparent 55%),
+    var(--bg);
   color: var(--text);
 }
 
-/* Make inputs look consistent */
-input,
-select,
-button {
-  font: inherit;
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+* { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.55);
+  outline-offset: 2px;
 }
 
-a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-a:hover {
-  text-decoration: underline;
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-semibold transition;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+  .btn:hover { background: var(--surface-2); }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-semibold transition text-white;
+    background: var(--accent);
+    border: 1px solid rgba(37, 99, 235, 0.35);
+  }
+  .btn-primary:hover { filter: brightness(0.97); }
+  .input {
+    @apply w-full rounded-xl px-3 py-2 text-sm;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
 }
