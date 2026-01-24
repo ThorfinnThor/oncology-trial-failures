@@ -20,6 +20,10 @@ import { CompareModal } from "@/components/CompareModal";
 import { Modal } from "@/components/Modal";
 import { TableSkeleton } from "@/components/Skeleton";
 
+import { MobileToolbar } from "@/components/MobileToolbar";
+import { ResultsList } from "@/components/ResultsList";
+import { Sheet } from "@/components/Sheet";
+
 function clampCompare(ids: string[]) {
   const uniq = Array.from(new Set(ids));
   return uniq.slice(0, 5);
@@ -27,18 +31,23 @@ function clampCompare(ids: string[]) {
 
 export default function Explore() {
   const router = useRouter();
+
+  // breakpoints
   const isXL = useMediaQuery("(min-width: 1280px)");
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
 
-  // We keep two datasets: bio (small) and all (large). Load bio first.
   const [bioTrials, setBioTrials] = useState<TrialRow[] | null>(null);
   const [allTrials, setAllTrials] = useState<TrialRow[] | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // Modals
+  // UI sheets/modals
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [detailsOpenMobile, setDetailsOpenMobile] = useState(false);
+
   const [compareOpen, setCompareOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
   const [citeOpen, setCiteOpen] = useState(false);
@@ -47,10 +56,8 @@ export default function Explore() {
   // URL state
   const state: UrlState = useMemo(() => parseUrlState(router.query), [router.query]);
 
-  // Decide which dataset is needed
   const needsAll = state.bio === false;
 
-  // Load datasets
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -76,48 +83,48 @@ export default function Explore() {
         setLoading(false);
       }
     })();
-    return () => { alive = false; };
+    return () => {
+      alive = false;
+    };
   }, [needsAll]);
 
   const baseTrials = needsAll ? allTrials : bioTrials;
 
-  // Build facets on the *currently loaded dataset* (bio or all)
   const facets = useMemo(() => {
     if (!baseTrials) return null;
     return buildFacets(baseTrials);
   }, [baseTrials]);
 
-  // Filter + sort
   const filteredSorted = useMemo(() => {
     if (!baseTrials) return [];
     const filtered = filterTrials(baseTrials, state);
-    const sorted = sortTrials(filtered, state.sort!);
-    return sorted;
+    return sortTrials(filtered, state.sort!);
   }, [baseTrials, state]);
 
-  // Drawer trial
   const openTrial = useMemo(() => {
     if (!state.trial || !baseTrials) return null;
     return baseTrials.find((t) => t.nct_id === state.trial) || null;
   }, [state.trial, baseTrials]);
 
-  // Compare set from URL
   const compareIds = clampCompare(state.compare || []);
   const compareTrials = useMemo(() => {
     const src = baseTrials || [];
     return compareIds.map((id) => src.find((t) => t.nct_id === id)).filter(Boolean) as TrialRow[];
   }, [compareIds, baseTrials]);
 
-  // Helpers to update URL (shallow)
   const setState = (next: UrlState) => {
     const query = stateToQuery(next);
     router.replace({ pathname: router.pathname, query }, undefined, { shallow: true });
   };
 
-  const openTrialById = (id: string) => setState({ ...state, trial: id });
+  const openTrialById = (id: string) => {
+    setState({ ...state, trial: id });
+    if (!isXL) setDetailsOpenMobile(true);
+  };
+
   const closeTrial = () => {
-    const { trial, ...rest } = state;
-    setState({ ...rest, trial: "" });
+    setState({ ...state, trial: "" });
+    setDetailsOpenMobile(false);
   };
 
   const setCompare = (ids: string[]) => setState({ ...state, compare: clampCompare(ids) });
@@ -127,7 +134,6 @@ export default function Explore() {
     try {
       await navigator.clipboard.writeText(url);
     } catch {
-      // fallback
       prompt("Copy this link:", url);
     }
   };
@@ -152,14 +158,11 @@ export default function Explore() {
     });
   };
 
-  const onExport = () => setExportOpen(true);
-
   const doExport = (format: "csv" | "json", scope: "filtered" | "page" | "compare") => {
     if (!meta) return;
 
     const pageSize = 50;
-    const page = 1; // v1: export “filtered” is full; “page” uses first page (extend later if needed)
-    const pageRecords = filteredSorted.slice((page - 1) * pageSize, page * pageSize);
+    const pageRecords = filteredSorted.slice(0, pageSize);
 
     const records =
       scope === "filtered" ? filteredSorted :
@@ -172,15 +175,12 @@ export default function Explore() {
     const yyyy = now.getFullYear();
     const mm = String(now.getMonth() + 1).padStart(2, "0");
     const dd = String(now.getDate()).padStart(2, "0");
-
     const fnameBase = `clinical_trial_failures_${yyyy}-${mm}-${dd}_${scope}`;
 
     if (format === "csv") {
-      const content = exportCSV(records, exportMeta);
-      downloadFile(`${fnameBase}.csv`, content, "text/csv;charset=utf-8");
+      downloadFile(`${fnameBase}.csv`, exportCSV(records, exportMeta), "text/csv;charset=utf-8");
     } else {
-      const content = exportJSON(records, exportMeta);
-      downloadFile(`${fnameBase}.json`, content, "application/json;charset=utf-8");
+      downloadFile(`${fnameBase}.json`, exportJSON(records, exportMeta), "application/json;charset=utf-8");
     }
 
     setExportOpen(false);
@@ -193,11 +193,6 @@ export default function Explore() {
     setCiteOpen(true);
   };
 
-  // Responsive behavior:
-  // - Desktop XL: 3-pane.
-  // - Smaller: drawer is modal when open, rail can still be shown but we keep it in-flow (v1)
-  const drawerAsModal = !isXL && !!openTrial;
-
   return (
     <>
       <Head>
@@ -208,9 +203,20 @@ export default function Explore() {
         q={state.q || ""}
         setQ={(v) => setState({ ...state, q: v })}
         onCopyLink={onCopyLink}
-        onExport={onExport}
+        onExport={() => setExportOpen(true)}
         onReset={onReset}
       />
+
+      {/* Mobile/tablet toolbar */}
+      {!isXL && !loading && !err && baseTrials && facets && (
+        <MobileToolbar
+          resultsCount={filteredSorted.length}
+          compareCount={compareIds.length}
+          onOpenFilters={() => setFiltersOpen(true)}
+          onOpenExport={() => setExportOpen(true)}
+          onOpenCompare={() => setCompareOpen(true)}
+        />
+      )}
 
       <main className="mx-auto max-w-[1600px] px-4 py-5">
         {loading && <TableSkeleton rows={10} />}
@@ -219,7 +225,11 @@ export default function Explore() {
           <div className="rounded-2xl border border-red-200 bg-white p-4 text-sm text-red-700 shadow-sm">
             {err}
             <div className="mt-2">
-              <button className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50" onClick={() => router.reload()}>
+              <button
+                className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
+                onClick={() => router.reload()}
+                type="button"
+              >
                 Retry
               </button>
             </div>
@@ -227,107 +237,162 @@ export default function Explore() {
         )}
 
         {!loading && !err && baseTrials && facets && (
-          <div className="grid gap-4 xl:grid-cols-[320px_1fr_420px]">
-            {/* Left rail */}
-            <div className="hidden xl:block">
-              <FacetRail
-                status={facets.status}
-                phase={facets.phase}
-                area={facets.area}
-                bucket={facets.bucket}
-                sponsor={facets.sponsor}
-                intervention={facets.intervention}
-                condition={facets.condition}
-                uniqueCounts={facets.counts}
-                selStatus={state.status || []}
-                setSelStatus={(v) => setState({ ...state, status: v })}
-                selPhase={state.phase || []}
-                setSelPhase={(v) => setState({ ...state, phase: v })}
-                selArea={state.area || []}
-                setSelArea={(v) => setState({ ...state, area: v })}
-                selBucket={(state.bucket as unknown as string[]) || []}
-                setSelBucket={(v) => setState({ ...state, bucket: v as any })}
-                selSponsor={state.sponsor || []}
-                setSelSponsor={(v) => setState({ ...state, sponsor: v })}
-                selIntervention={state.intervention || []}
-                setSelIntervention={(v) => setState({ ...state, intervention: v })}
-                selCondition={state.condition || []}
-                setSelCondition={(v) => setState({ ...state, condition: v })}
-                bio={!!state.bio}
-                setBio={(v) => setState({ ...state, bio: v })}
-                dateFrom={state.date_from || ""}
-                setDateFrom={(v) => setState({ ...state, date_from: v })}
-                dateTo={state.date_to || ""}
-                setDateTo={(v) => setState({ ...state, date_to: v })}
-              />
-            </div>
+          <>
+            {/* Desktop: 3-pane */}
+            {isXL ? (
+              <div className="grid gap-4 xl:grid-cols-[320px_1fr_420px]">
+                <FacetRail
+                  status={facets.status}
+                  phase={facets.phase}
+                  area={facets.area}
+                  bucket={facets.bucket}
+                  sponsor={facets.sponsor}
+                  intervention={facets.intervention}
+                  condition={facets.condition}
+                  uniqueCounts={facets.counts}
+                  selStatus={state.status || []}
+                  setSelStatus={(v) => setState({ ...state, status: v })}
+                  selPhase={state.phase || []}
+                  setSelPhase={(v) => setState({ ...state, phase: v })}
+                  selArea={state.area || []}
+                  setSelArea={(v) => setState({ ...state, area: v })}
+                  selBucket={(state.bucket as unknown as string[]) || []}
+                  setSelBucket={(v) => setState({ ...state, bucket: v as any })}
+                  selSponsor={state.sponsor || []}
+                  setSelSponsor={(v) => setState({ ...state, sponsor: v })}
+                  selIntervention={state.intervention || []}
+                  setSelIntervention={(v) => setState({ ...state, intervention: v })}
+                  selCondition={state.condition || []}
+                  setSelCondition={(v) => setState({ ...state, condition: v })}
+                  bio={!!state.bio}
+                  setBio={(v) => setState({ ...state, bio: v })}
+                  dateFrom={state.date_from || ""}
+                  setDateFrom={(v) => setState({ ...state, date_from: v })}
+                  dateTo={state.date_to || ""}
+                  setDateTo={(v) => setState({ ...state, date_to: v })}
+                />
 
-            {/* Center pane */}
-            <div className="space-y-4">
-              <QuerySummaryBar
-                state={state}
-                setState={setState}
-                resultsCount={filteredSorted.length}
-                sort={state.sort!}
-                setSort={(s) => setState({ ...state, sort: s })}
-                onCopyLink={onCopyLink}
-                onExport={onExport}
-                onReset={onReset}
-              />
+                <div className="space-y-4">
+                  <QuerySummaryBar
+                    state={state}
+                    setState={setState}
+                    resultsCount={filteredSorted.length}
+                    sort={state.sort!}
+                    setSort={(s) => setState({ ...state, sort: s })}
+                    onCopyLink={onCopyLink}
+                    onExport={() => setExportOpen(true)}
+                    onReset={onReset}
+                  />
 
-              <div className="flex items-center justify-between">
-                <div className="text-xs text-gray-600">
-                  Dataset: <span className="font-semibold">{meta ? meta.version : "—"}</span>
+                  <div className="flex items-center justify-between">
+                    <div className="text-xs text-gray-600">
+                      Dataset: <span className="font-semibold">{meta ? meta.version : "—"}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
+                        onClick={() => setCompareOpen(true)}
+                        disabled={compareIds.length < 2}
+                        type="button"
+                      >
+                        Compare ({compareIds.length})
+                      </button>
+
+                      <button
+                        className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
+                        onClick={onCite}
+                        type="button"
+                      >
+                        Cite this view
+                      </button>
+                    </div>
+                  </div>
+
+                  <ResultsGrid
+                    rows={filteredSorted}
+                    openTrialId={state.trial}
+                    onOpen={openTrialById}
+                    compare={compareIds}
+                    setCompare={setCompare}
+                  />
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <button
-                    className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
-                    onClick={() => setCompareOpen(true)}
-                    disabled={compareIds.length < 2}
-                    type="button"
-                  >
-                    Compare ({compareIds.length})
-                  </button>
-
-                  <button
-                    className="rounded-xl border px-3 py-2 text-sm font-semibold hover:bg-gray-50"
-                    onClick={onCite}
-                    type="button"
-                  >
-                    Cite this view
-                  </button>
-                </div>
+                <DetailsDrawer
+                  meta={meta}
+                  allTrials={baseTrials}
+                  trial={openTrial}
+                  onClose={closeTrial}
+                  compare={compareIds}
+                  setCompare={setCompare}
+                />
               </div>
+            ) : (
+              /* Mobile/tablet: list + sheets */
+              <div className="space-y-4">
+                <QuerySummaryBar
+                  state={state}
+                  setState={setState}
+                  resultsCount={filteredSorted.length}
+                  sort={state.sort!}
+                  setSort={(s) => setState({ ...state, sort: s })}
+                  onCopyLink={onCopyLink}
+                  onExport={() => setExportOpen(true)}
+                  onReset={onReset}
+                />
 
-              <ResultsGrid
-                rows={filteredSorted}
-                openTrialId={state.trial}
-                onOpen={openTrialById}
-                compare={compareIds}
-                setCompare={setCompare}
-              />
-            </div>
-
-            {/* Right pane (desktop) */}
-            <div className="hidden xl:block">
-              <DetailsDrawer
-                meta={meta}
-                allTrials={baseTrials}
-                trial={openTrial}
-                onClose={closeTrial}
-                compare={compareIds}
-                setCompare={setCompare}
-              />
-            </div>
-          </div>
+                <ResultsList
+                  rows={filteredSorted}
+                  onOpen={openTrialById}
+                  compare={compareIds}
+                  setCompare={setCompare}
+                />
+              </div>
+            )}
+          </>
         )}
 
-        {/* Drawer as modal on smaller screens */}
-        <Modal
+        {/* Filters sheet (mobile/tablet) */}
+        <Sheet title="Filters" open={filtersOpen} onClose={() => setFiltersOpen(false)} side="left" widthClass="w-[360px]">
+          {facets && (
+            <FacetRail
+              status={facets.status}
+              phase={facets.phase}
+              area={facets.area}
+              bucket={facets.bucket}
+              sponsor={facets.sponsor}
+              intervention={facets.intervention}
+              condition={facets.condition}
+              uniqueCounts={facets.counts}
+              selStatus={state.status || []}
+              setSelStatus={(v) => setState({ ...state, status: v })}
+              selPhase={state.phase || []}
+              setSelPhase={(v) => setState({ ...state, phase: v })}
+              selArea={state.area || []}
+              setSelArea={(v) => setState({ ...state, area: v })}
+              selBucket={(state.bucket as unknown as string[]) || []}
+              setSelBucket={(v) => setState({ ...state, bucket: v as any })}
+              selSponsor={state.sponsor || []}
+              setSelSponsor={(v) => setState({ ...state, sponsor: v })}
+              selIntervention={state.intervention || []}
+              setSelIntervention={(v) => setState({ ...state, intervention: v })}
+              selCondition={state.condition || []}
+              setSelCondition={(v) => setState({ ...state, condition: v })}
+              bio={!!state.bio}
+              setBio={(v) => setState({ ...state, bio: v })}
+              dateFrom={state.date_from || ""}
+              setDateFrom={(v) => setState({ ...state, date_from: v })}
+              dateTo={state.date_to || ""}
+              setDateTo={(v) => setState({ ...state, date_to: v })}
+            />
+          )}
+        </Sheet>
+
+        {/* Details sheet (mobile/tablet) */}
+        <Sheet
           title="Trial details"
-          open={drawerAsModal}
+          open={!isXL && detailsOpenMobile && !!openTrial}
           onClose={closeTrial}
+          side="bottom"
         >
           <DetailsDrawer
             meta={meta}
@@ -337,7 +402,7 @@ export default function Explore() {
             compare={compareIds}
             setCompare={setCompare}
           />
-        </Modal>
+        </Sheet>
 
         <CompareModal
           open={compareOpen}
@@ -346,11 +411,7 @@ export default function Explore() {
           onRemove={(id) => setCompare(compareIds.filter((x) => x !== id))}
         />
 
-        <Modal
-          title="Export"
-          open={exportOpen}
-          onClose={() => setExportOpen(false)}
-        >
+        <Modal title="Export" open={exportOpen} onClose={() => setExportOpen(false)}>
           <div className="space-y-4">
             <div className="text-sm text-gray-700">
               Exports include metadata (timestamp, dataset version, filters, sort, and URL state).
@@ -396,26 +457,18 @@ export default function Explore() {
             </div>
 
             <div className="text-xs text-gray-500">
-              Note: CSV includes metadata as comment lines beginning with “#”. JSON wraps records with a metadata object.
+              CSV prepends metadata as “# …” comment lines. JSON wraps records with a metadata object.
             </div>
           </div>
         </Modal>
 
-        <Modal
-          title="Cite this view"
-          open={citeOpen}
-          onClose={() => setCiteOpen(false)}
-        >
+        <Modal title="Cite this view" open={citeOpen} onClose={() => setCiteOpen(false)}>
           <div className="space-y-3">
             <div className="text-sm text-gray-700">
               Copy and paste the citation below. It includes the dataset version and a shareable URL that reproduces this view.
             </div>
 
-            <textarea
-              className="w-full min-h-[200px] rounded-xl border p-3 text-sm font-mono"
-              readOnly
-              value={citeText}
-            />
+            <textarea className="w-full min-h-[200px] rounded-xl border p-3 text-sm font-mono" readOnly value={citeText} />
 
             <div className="flex gap-2">
               <button
@@ -424,7 +477,6 @@ export default function Explore() {
                   try {
                     await navigator.clipboard.writeText(citeText);
                   } catch {
-                    // fallback
                     alert("Copy failed. Please select and copy manually.");
                   }
                 }}
