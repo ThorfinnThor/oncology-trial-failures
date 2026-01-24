@@ -98,13 +98,7 @@ a{color:inherit;text-decoration:none}
 .chip-bucket-funding{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.22);color:rgba(154,52,18,.95)}
 .chip-bucket-regulatory{background:rgba(14,165,233,.12);border-color:rgba(14,165,233,.22);color:rgba(7,89,133,.95)}
 .chip-bucket-strategic{background:rgba(217,70,239,.12);border-color:rgba(217,70,239,.22);color:rgba(134,25,143,.95)}
-
-/* UPDATED: OPERATIONAL now has a distinct teal color */
-.chip-bucket-operational{
-  background:rgba(20,184,166,.12);
-  border-color:rgba(20,184,166,.24);
-  color:rgba(15,118,110,.98);
-}
+.chip-bucket-operational{background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.24);color:rgba(15,118,110,.98)}
 
 /* Topbar + layout */
 .topbar{
@@ -138,7 +132,6 @@ a{color:inherit;text-decoration:none}
   align-items:start;
 }
 
-/* Reverted rail spacing */
 .rail{position:relative}
 .rail-scroll{
   position:sticky;
@@ -194,7 +187,7 @@ a{color:inherit;text-decoration:none}
 .row-main{font-size:13px;line-height:1.35;color:rgba(15,23,42,.92)}
 .row-sub{margin-top:4px;font-size:12px;line-height:1.25;color:var(--text-muted)}
 
-/* Table scrolling + sizing */
+/* Table */
 .table-scroller{
   width:100%;
   overflow-x:auto;
@@ -209,8 +202,6 @@ a{color:inherit;text-decoration:none}
   font-size:14px;
   table-layout:fixed;
 }
-
-/* Column widths (widen WHY STOPPED) */
 .th.sel,.td.sel{width:56px}
 .th.trial,.td.trial{width:140px}
 .th.title,.td.title{width:360px}
@@ -267,7 +258,7 @@ a{color:inherit;text-decoration:none}
   white-space:normal;
 }
 
-/* Tooltip shouldn't block clicks */
+/* Tooltip */
 .td.why{position:relative}
 .tooltip{
   position:absolute;
@@ -289,13 +280,15 @@ a{color:inherit;text-decoration:none}
 .note{margin-top:10px;font-size:12px;color:var(--text-muted)}
 
 /* Modal + Drawer */
+
+/* UPDATED: lighter backdrop so modal remains high contrast */
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.30);
+  background:rgba(0,0,0,.22);
 }
 
-/* UPDATED: align to top, add padding, and prevent “bottom cut” feel */
+/* IMPORTANT: pointer-events handling prevents weird “dim modal” artifacts */
 .modal-wrap{
   position:fixed;
   inset:0;
@@ -304,16 +297,23 @@ a{color:inherit;text-decoration:none}
   align-items:flex-start;
   justify-content:center;
   padding:72px 18px 42px;
+  pointer-events:none;
 }
 
 .modal{
   width:min(1100px, 96vw);
-  max-height:92vh;           /* slightly larger */
+  max-height:92vh;
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:18px;
   box-shadow:var(--shadow);
   overflow:hidden;
+
+  /* Force full opacity and isolate blend/alpha from backdrop */
+  opacity:1;
+  isolation:isolate;
+
+  pointer-events:auto;
 }
 
 .modal-hd{
@@ -323,13 +323,14 @@ a{color:inherit;text-decoration:none}
   align-items:flex-start;
   justify-content:space-between;
   gap:12px;
+  background:var(--surface);
 }
 
-/* UPDATED: always scroll + bottom padding so last row is never “under” rounded edge */
 .modal-bd{
   padding:16px 16px 28px;
   overflow:auto;
   max-height:calc(92vh - 64px);
+  background:var(--surface);
 }
 
 .drawer-wrap{
@@ -356,9 +357,11 @@ a{color:inherit;text-decoration:none}
   align-items:flex-start;
   justify-content:space-between;
   gap:12px;
+  background:var(--surface);
 }
 .drawer-bd{
   padding:16px;
   overflow:auto;
   flex:1;
+  background:var(--surface);
 }
