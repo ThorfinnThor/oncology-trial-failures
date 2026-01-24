@@ -5,6 +5,34 @@ export type DatasetMeta = {
   source?: string;
 };
 
+/**
+ * URL-driven state (query params) used across explore/download/export.
+ * Kept permissive because different pages/components may add fields over time.
+ */
+export type UrlState = {
+  q?: string;
+
+  // Facets / filters
+  status?: string[];
+  phase?: string[];
+  area?: string[];
+  sponsor?: string[];
+  bucket?: string[];
+  country?: string[];
+
+  // Toggle
+  scientificFailureOnly?: boolean;
+
+  // Sorting / pagination / view
+  sort?: string;         // e.g. "relevance" | "date_desc" | "date_asc"
+  page?: number;
+  pageSize?: number;
+  view?: string;         // e.g. "table" | "grid" | "list"
+
+  // Allow forward-compat extra keys without breaking builds
+  [key: string]: any;
+};
+
 export type TrialIndexRow = {
   // Primary identifier
   nct_id: string;
