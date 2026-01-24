@@ -1,68 +1,46 @@
-import { SortKey, UrlState } from "./types";
+import { UrlState } from "./types";
 
-function splitCsv(v: string | null): string[] {
-  if (!v) return [];
-  return v
+function splitCsv(v?: string | null): string[] | undefined {
+  if (!v) return undefined;
+  const out = v
     .split(",")
-    .map((x) => decodeURIComponent(x.trim()))
+    .map((s) => s.trim())
     .filter(Boolean);
+  return out.length ? out : undefined;
 }
 
-function joinCsv(values: string[]): string {
-  return values.map((x) => encodeURIComponent(x)).join(",");
-}
+export function decodeState(asPath: string): UrlState {
+  // asPath may be "/explore?status=TERMINATED"
+  const base = "http://localhost";
+  const u = new URL(asPath.startsWith("http") ? asPath : base + asPath);
 
-export function decodeState(search: string): UrlState {
-  const sp = new URLSearchParams(search.startsWith("?") ? search : `?${search}`);
+  const q = u.searchParams.get("q") || undefined;
+  const status = splitCsv(u.searchParams.get("status"));
+  const phase = splitCsv(u.searchParams.get("phase"));
+  const area = splitCsv(u.searchParams.get("area"));
+  const bucket = splitCsv(u.searchParams.get("bucket"));
+  const compare = splitCsv(u.searchParams.get("compare"));
 
-  const state: UrlState = {};
+  const bio = u.searchParams.get("bio") === "1" ? true : undefined;
+  const sort = u.searchParams.get("sort") || undefined;
+  const trial = u.searchParams.get("trial") || undefined;
 
-  const q = sp.get("q");
-  if (q) state.q = q;
+  const date_from = u.searchParams.get("date_from") || undefined;
+  const date_to = u.searchParams.get("date_to") || undefined;
 
-  const sort = sp.get("sort") as SortKey | null;
-  if (sort) state.sort = sort;
-
-  const status = splitCsv(sp.get("status"));
-  if (status.length) state.status = status;
-
-  const phase = splitCsv(sp.get("phase"));
-  if (phase.length) state.phase = phase;
-
-  const area = splitCsv(sp.get("area"));
-  if (area.length) state.area = area;
-
-  const bucket = splitCsv(sp.get("bucket"));
-  if (bucket.length) state.bucket = bucket;
-
-  const sponsor = splitCsv(sp.get("sponsor"));
-  if (sponsor.length) state.sponsor = sponsor;
-
-  const condition = splitCsv(sp.get("condition"));
-  if (condition.length) state.condition = condition;
-
-  const intervention = splitCsv(sp.get("intervention"));
-  if (intervention.length) state.intervention = intervention;
-
-  const bio = sp.get("scientific_failure");
-  if (bio === "1") state.bio = true;
-
-  const dateFrom = sp.get("date_from");
-  if (dateFrom) state.date_from = dateFrom;
-
-  const dateTo = sp.get("date_to");
-  if (dateTo) state.date_to = dateTo;
-
-  const trial = sp.get("trial");
-  if (trial) state.trial = trial;
-
-  const compare = splitCsv(sp.get("compare"));
-  if (compare.length) state.compare = compare.slice(0, 5);
-
-  const rail = sp.get("rail");
-  if (rail === "0") state.rail = false;
-
-  return state;
+  return {
+    q,
+    status,
+    phase,
+    area,
+    bucket,
+    bio,
+    sort,
+    trial,
+    compare,
+    date_from,
+    date_to
+  };
 }
 
 export function encodeState(state: UrlState): string {
@@ -70,27 +48,19 @@ export function encodeState(state: UrlState): string {
 
   if (state.q) sp.set("q", state.q);
 
+  if (state.status?.length) sp.set("status", state.status.join(","));
+  if (state.phase?.length) sp.set("phase", state.phase.join(","));
+  if (state.area?.length) sp.set("area", state.area.join(","));
+  if (state.bucket?.length) sp.set("bucket", state.bucket.join(","));
+  if (state.compare?.length) sp.set("compare", state.compare.join(","));
+
+  if (state.bio) sp.set("bio", "1");
   if (state.sort) sp.set("sort", state.sort);
-
-  if (state.status?.length) sp.set("status", joinCsv(state.status));
-  if (state.phase?.length) sp.set("phase", joinCsv(state.phase));
-  if (state.area?.length) sp.set("area", joinCsv(state.area));
-  if (state.bucket?.length) sp.set("bucket", joinCsv(state.bucket));
-  if (state.sponsor?.length) sp.set("sponsor", joinCsv(state.sponsor));
-  if (state.condition?.length) sp.set("condition", joinCsv(state.condition));
-  if (state.intervention?.length) sp.set("intervention", joinCsv(state.intervention));
-
-  if (state.bio) sp.set("scientific_failure", "1");
+  if (state.trial) sp.set("trial", state.trial);
 
   if (state.date_from) sp.set("date_from", state.date_from);
   if (state.date_to) sp.set("date_to", state.date_to);
 
-  if (state.trial) sp.set("trial", state.trial);
-
-  if (state.compare?.length) sp.set("compare", joinCsv(state.compare.slice(0, 5)));
-
-  if (state.rail === false) sp.set("rail", "0");
-
-  const s = sp.toString();
-  return s ? `?${s}` : "";
+  const qs = sp.toString();
+  return qs ? `?${qs}` : "";
 }
