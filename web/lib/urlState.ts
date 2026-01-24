@@ -1,126 +1,110 @@
 import { ParsedUrlQuery } from "querystring";
-import { ReasonBucket, SortKey, WorkbenchState } from "./types";
+import { ReasonBucket, SortKey, UrlState } from "./types";
 
 const DEFAULT_SORT: SortKey = "date_desc";
 
-function asString(v: any): string | undefined {
-  if (typeof v === "string") return v;
-  return undefined;
+function asString(v: string | string[] | undefined): string | undefined {
+  if (Array.isArray(v)) return v[0];
+  return v;
 }
 
-function asList(v: any): string[] | undefined {
+function asList(v: string | string[] | undefined): string[] | undefined {
   const s = asString(v);
   if (!s) return undefined;
   const parts = s.split(",").map((x) => x.trim()).filter(Boolean);
   return parts.length ? parts : undefined;
 }
 
-function cleanList(v?: string[]): string[] | undefined {
-  const a = (v || []).map((x) => x.trim()).filter(Boolean);
-  return a.length ? Array.from(new Set(a)) : undefined;
+function asBool(v: string | string[] | undefined): boolean | undefined {
+  const s = asString(v);
+  if (s === undefined) return undefined;
+  if (s === "1" || s === "true") return true;
+  if (s === "0" || s === "false") return false;
+  return undefined;
 }
 
-function isISODate(d?: string): boolean {
-  if (!d) return false;
-  return /^\d{4}-\d{2}-\d{2}$/.test(d);
+function cleanList(list?: string[]) {
+  if (!list || !list.length) return undefined;
+  const uniq = Array.from(new Set(list.map((x) => x.trim()).filter(Boolean)));
+  return uniq.length ? uniq : undefined;
 }
 
-export function decodeState(query: ParsedUrlQuery): WorkbenchState {
-  const q = asString(query.q);
+export function parseUrlState(q: ParsedUrlQuery): UrlState {
+  const state: UrlState = {
+    q: asString(q.q) || undefined,
 
-  const bio = asString(query.bio) === "1";
+    phase: asList(q.phase),
+    status: asList(q.status),
+    area: asList(q.area),
+    bucket: (asList(q.bucket) as ReasonBucket[] | undefined) || undefined,
+    sponsor: asList(q.sponsor),
+    intervention: asList(q.intervention),
+    condition: asList(q.condition),
 
-  const phase = asList(query.phase);
-  const status = asList(query.status);
-  const area = asList(query.area);
-  const country = asList(query.country);
+    bio: asBool(q.bio),
 
-  const condition = asList(query.condition);
-  const intervention = asList(query.intervention);
-  const sponsor = asList(query.sponsor);
+    date_from: asString(q.date_from) || undefined,
+    date_to: asString(q.date_to) || undefined,
 
-  const reasonRaw = asList(query.reason);
-  const reason = reasonRaw
-    ? (reasonRaw.filter((r) => ["efficacy", "safety", "operational", "other"].includes(r)) as ReasonBucket[])
-    : undefined;
+    sort: (asString(q.sort) as SortKey | undefined) || undefined,
 
-  const date_from = asString(query.date_from);
-  const date_to = asString(query.date_to);
+    trial: asString(q.trial) || undefined,
+    compare: asList(q.compare),
 
-  const sortRaw = asString(query.sort) as SortKey | undefined;
-  const sort: SortKey = (sortRaw && [
-    "date_desc","date_asc","sponsor_asc","sponsor_desc","phase_asc","phase_desc","confidence_desc","confidence_asc"
-  ].includes(sortRaw)) ? sortRaw : DEFAULT_SORT;
-
-  const trial = asString(query.trial);
-  const compare = asList(query.compare);
-
-  const st: WorkbenchState = {
-    q: q || undefined,
-    bio: bio || undefined,
-
-    phase,
-    status,
-    area,
-    country,
-
-    condition,
-    intervention,
-    sponsor,
-    reason,
-
-    date_from: isISODate(date_from) ? date_from : undefined,
-    date_to: isISODate(date_to) ? date_to : undefined,
-
-    sort,
-    trial: trial || undefined,
-    compare,
+    rail: asBool(q.rail),
   };
 
-  // cleanup duplicates
-  st.phase = cleanList(st.phase);
-  st.status = cleanList(st.status);
-  st.area = cleanList(st.area);
-  st.country = cleanList(st.country);
-  st.condition = cleanList(st.condition);
-  st.intervention = cleanList(st.intervention);
-  st.sponsor = cleanList(st.sponsor);
-  st.compare = cleanList(st.compare);
+  // Defaults: bio defaults to true on initial load
+  if (state.bio === undefined) state.bio = true;
+  if (!state.sort) state.sort = DEFAULT_SORT;
 
-  return st;
+  return state;
 }
 
-export function encodeState(state: WorkbenchState): Record<string, string> {
-  const q: Record<string, string> = {};
+export function stateToQuery(state: UrlState): Record<string, string> {
+  const out: Record<string, string> = {};
 
-  if (state.q) q.q = state.q;
-  if (state.bio) q.bio = "1";
+  const set = (k: string, v?: string) => {
+    if (v === undefined || v === "") return;
+    out[k] = v;
+  };
+  const setList = (k: string, v?: string[]) => {
+    const cleaned = cleanList(v);
+    if (!cleaned) return;
+    out[k] = cleaned.join(",");
+  };
 
-  if (state.phase?.length) q.phase = state.phase.join(",");
-  if (state.status?.length) q.status = state.status.join(",");
-  if (state.area?.length) q.area = state.area.join(",");
-  if (state.country?.length) q.country = state.country.join(",");
+  set("q", state.q || undefined);
 
-  if (state.condition?.length) q.condition = state.condition.join(",");
-  if (state.intervention?.length) q.intervention = state.intervention.join(",");
-  if (state.sponsor?.length) q.sponsor = state.sponsor.join(",");
+  setList("phase", state.phase);
+  setList("status", state.status);
+  setList("area", state.area);
+  setList("bucket", state.bucket as unknown as string[] | undefined);
+  setList("sponsor", state.sponsor);
+  setList("intervention", state.intervention);
+  setList("condition", state.condition);
 
-  if (state.reason?.length) q.reason = state.reason.join(",");
+  // bio is default true; omit it if true to keep URLs clean
+  if (state.bio === false) set("bio", "0");
 
-  if (state.date_from) q.date_from = state.date_from;
-  if (state.date_to) q.date_to = state.date_to;
+  set("date_from", state.date_from);
+  set("date_to", state.date_to);
 
-  if (state.sort && state.sort !== DEFAULT_SORT) q.sort = state.sort;
+  if (state.sort && state.sort !== DEFAULT_SORT) set("sort", state.sort);
 
-  if (state.trial) q.trial = state.trial;
-  if (state.compare?.length) q.compare = state.compare.join(",");
+  set("trial", state.trial);
+  setList("compare", state.compare);
 
-  return q;
+  // rail default: open; omit if true
+  if (state.rail === false) set("rail", "0");
+
+  return out;
 }
 
-export function buildShareURL(pathname: string, state: WorkbenchState): string {
-  const qs = encodeState(state);
-  const params = new URLSearchParams(qs);
-  const s = params.toString();
-  return s ? `${pathname}?${s}` : pathname;
+export function buildShareUrl(baseUrl: string, state: UrlState): string {
+  const q = stateToQuery(state);
+  const params = new URLSearchParams(q);
+  const u = new URL(baseUrl);
+  u.search = params.toString();
+  return u.toString();
 }
