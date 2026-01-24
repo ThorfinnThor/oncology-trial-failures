@@ -1,133 +1,147 @@
 import Link from "next/link";
-import { TrialRow } from "@/lib/types";
-import { splitSemicolonValues } from "@/lib/data";
+import { useRef } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
-import { ConfidencePill, ReasonPill, Pill } from "./Badges";
-import { Tooltip } from "./Tooltip";
 
-function excerpt(s: string, n = 140) {
-  const t = (s || "").trim();
-  if (t.length <= n) return t;
-  return t.slice(0, n - 1) + "…";
+function clsx(...xs: Array<string | false | null | undefined>) {
+  return xs.filter(Boolean).join(" ");
 }
 
-function toggle(list: string[], v: string) {
-  return list.includes(v) ? list.filter((x) => x !== v) : [...list, v];
-}
-
-function clampCompare(ids: string[]) {
-  const uniq = Array.from(new Set(ids));
-  return uniq.slice(0, 5);
-}
-
-type Props = {
-  rows: TrialRow[];
-  onOpen: (id: string) => void;
-
-  compare: string[];
-  setCompare: (ids: string[]) => void;
-
-  exploreReturnPath: string;
-};
-
-export function ResultsList({ rows, onOpen, compare, setCompare, exploreReturnPath }: Props) {
+function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="space-y-3">
-      {rows.map((r) => {
-        const phKey = parsePhases(r.phases || "")[0] || "Unknown";
-        const bucket = reasonBucket(r);
-        const cond = splitSemicolonValues(r.conditions || "")[0] || "—";
-        const intv = splitSemicolonValues(r.intervention_names || "")[0] || "—";
-        const trialHref = `/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(exploreReturnPath)}`;
+    <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]">
+      {children}
+    </span>
+  );
+}
 
-        return (
-          <div key={r.nct_id} className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-4 shadow-sm">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <Link className="text-[var(--accent-primary)] hover:underline font-mono text-xs" href={trialHref}>
-                    {r.nct_id}
-                  </Link>
-                  <Pill>{phaseLabel(phKey as any)}</Pill>
-                  <Pill>{(r.overall_status || "—").toUpperCase()}</Pill>
-                  <ReasonPill value={bucket} />
+/**
+ * ResultsList (compat wrapper)
+ * - Updated to TrialIndexRow
+ * - Virtualized for performance
+ * - Designed for mobile/narrow layouts (card style)
+ */
+export default function ResultsList({
+  rows,
+  selectedIds,
+  onToggleSelect,
+  onOpenPanel,
+  fromHref,
+}: {
+  rows: TrialIndexRow[];
+  selectedIds: string[];
+  onToggleSelect: (id: string) => void;
+  onOpenPanel: (id: string) => void;
+  fromHref?: string;
+}) {
+  const parentRef = useRef<HTMLDivElement | null>(null);
+
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 132,
+    overscan: 10,
+  });
+
+  const items = rowVirtualizer.getVirtualItems();
+
+  return (
+    <div ref={parentRef} className="h-[72vh] overflow-auto">
+      <div style={{ height: rowVirtualizer.getTotalSize(), position: "relative" }}>
+        {items.map((vi) => {
+          const r = rows[vi.index];
+          const ph = parsePhases(r.phases || "")[0] || "Unknown";
+          const checked = selectedIds.includes(r.nct_id);
+
+          return (
+            <div
+              key={r.nct_id}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                transform: `translateY(${vi.start}px)`,
+              }}
+              className="px-3 py-2"
+            >
+              <div
+                className={clsx(
+                  "rounded-2xl border border-[var(--border)] bg-white shadow-[var(--shadow-soft)] p-4",
+                  "hover:bg-[var(--surface-2)] transition"
+                )}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => onToggleSelect(r.nct_id)}
+                        className="h-4 w-4 rounded border-[var(--border)]"
+                        aria-label={`Select ${r.nct_id} for compare`}
+                      />
+                      <Link
+                        href={`/trial/${encodeURIComponent(r.nct_id)}${fromHref ? `?from=${encodeURIComponent(fromHref)}` : ""}`}
+                        className="text-sm font-semibold text-[var(--accent)]"
+                      >
+                        {r.nct_id}
+                      </Link>
+                      <button
+                        className="text-xs text-[var(--text-muted)] hover:text-[var(--text)]"
+                        onClick={() => onOpenPanel(r.nct_id)}
+                        type="button"
+                      >
+                        Open panel
+                      </button>
+                    </div>
+
+                    <div className="mt-2 text-sm font-semibold leading-snug line-clamp-2">
+                      {r.brief_title || "—"}
+                    </div>
+
+                    <div className="mt-1 text-xs text-[var(--text-muted)]">
+                      {r.lead_sponsor || "—"}
+                    </div>
+                  </div>
+
+                  <div className="text-right text-xs text-[var(--text-muted)]">
+                    <div>{(r.overall_status || "—").toUpperCase()}</div>
+                    <div className="mt-1">{r.last_update_post_date || "—"}</div>
+                  </div>
                 </div>
 
-                <div className="mt-2 text-sm font-semibold text-[var(--text)] line-clamp-2">
-                  {r.brief_title || "—"}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <Pill>{phaseLabel(ph as any)}</Pill>
+                  <Pill>{reasonBucket(r)}</Pill>
+                  {r.classification_label === "BIOLOGICAL_FAILURE" && <Pill>Likely scientific failure</Pill>}
                 </div>
 
-                <div className="mt-2 text-xs text-[var(--text)]">
-                  <div><span className="font-semibold">Sponsor:</span> {r.lead_sponsor || "—"}</div>
-                  {r.collaborators ? (
-                    <div className="mt-1"><span className="font-semibold">Collaborators:</span> {excerpt(r.collaborators, 120)}</div>
-                  ) : null}
+                <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <div className="text-xs text-[var(--text-muted)]">Condition</div>
+                    <div className="font-semibold">{r.condition_first || "—"}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-[var(--text-muted)]">Intervention</div>
+                    <div className="font-semibold">{r.intervention_first || "—"}</div>
+                  </div>
                 </div>
 
-                <div className="mt-2 text-xs text-[var(--text)]">
-                  <div><span className="font-semibold">Condition:</span> {excerpt(cond, 120)}</div>
-                  <div className="mt-1"><span className="font-semibold">Intervention:</span> {excerpt(intv, 120)}</div>
+                <div className="mt-3 text-xs text-[var(--text-muted)]">
+                  <span className="font-semibold text-[var(--text-muted)]">Why stopped:</span>{" "}
+                  <span title={r.why_stopped_short || ""}>{r.why_stopped_short || "—"}</span>
                 </div>
 
                 <div className="mt-2 text-xs text-[var(--text-muted)]">
-                  {r.last_update_post_date || "—"}
+                  Confidence: {r.classification_confidence || "—"}
                 </div>
-
-                <div className="mt-2">
-                  <Tooltip label="Full stated stop reason" content={r.why_stopped || ""}>
-                    <div className="text-xs text-[var(--text)] leading-relaxed line-clamp-2">
-                      {r.why_stopped || "—"}
-                      {r.why_stopped && r.why_stopped.length > 140 ? (
-                        <span className="ml-2 text-[11px] font-semibold text-[var(--accent-primary)]">More</span>
-                      ) : null}
-                    </div>
-                  </Tooltip>
-                </div>
-
-                <div className="mt-3 flex flex-wrap items-center gap-2">
-                  {r.classification_label === "BIOLOGICAL_FAILURE" ? <Pill>Likely scientific failure</Pill> : <Pill>—</Pill>}
-                  <ConfidencePill value={r.classification_confidence || "—"} />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 items-end">
-                <label className="flex items-center gap-2 text-xs font-semibold text-[var(--text)]">
-                  <input
-                    type="checkbox"
-                    checked={compare.includes(r.nct_id)}
-                    onChange={() => setCompare(clampCompare(toggle(compare, r.nct_id)))}
-                    aria-label={`Select ${r.nct_id} for compare`}
-                    className="accent-[var(--accent-primary)]"
-                  />
-                  Compare
-                </label>
-
-                <button
-                  className="rounded-xl bg-[var(--accent-primary)] px-3 py-2 text-xs font-semibold text-white"
-                  onClick={() => onOpen(r.nct_id)}
-                  type="button"
-                >
-                  View details
-                </button>
-
-                <Link className="text-xs font-semibold text-[var(--accent-primary)] hover:underline" href={trialHref}>
-                  Open full page
-                </Link>
-
-                <Link className="text-xs font-semibold text-[var(--accent-primary)] hover:underline" href={r.url || "#"} target="_blank">
-                  Open source
-                </Link>
               </div>
             </div>
-          </div>
-        );
-      })}
-
-      {rows.length === 0 && (
-        <div className="rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-6 text-center text-sm text-[var(--text-muted)] shadow-sm">
-          No results. Try clearing some filters.
-        </div>
-      )}
+          );
+        })}
+      </div>
     </div>
   );
 }
