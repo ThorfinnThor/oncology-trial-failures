@@ -67,8 +67,20 @@ export default function ResultsList({
               </div>
 
               <div className="flex flex-col items-end gap-2">
-                <input type="checkbox" checked={checked} onChange={() => onToggleSelect(r.nct_id)} />
-                <button className="text-xs text-[var(--accent)] hover:underline" onClick={() => onOpenPanel(r.nct_id)} type="button">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={() => onToggleSelect(r.nct_id)}
+                />
+                <button
+                  className="text-xs text-[var(--accent)] hover:underline"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onOpenPanel(r.nct_id);
+                  }}
+                  type="button"
+                >
                   Open panel
                 </button>
               </div>
