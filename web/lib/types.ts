@@ -1,70 +1,55 @@
-export type SortKey =
-  | "date_desc"
-  | "date_asc"
-  | "sponsor_asc"
-  | "sponsor_desc"
-  | "confidence_desc"
-  | "confidence_asc";
+// web/lib/types.ts
 
 export type DatasetMeta = {
   version: string;
-  generated_at_utc?: string;
   source?: string;
 };
 
-export type UrlState = {
-  q?: string;
-
-  status?: string[];
-  phase?: string[]; // uses PhaseKey values from filtering.ts
-  area?: string[];
-  bucket?: string[];
-
-  sponsor?: string[];
-  condition?: string[];
-  intervention?: string[];
-
-  bio?: boolean;
-
-  date_from?: string;
-  date_to?: string;
-
-  sort?: SortKey;
-
-  trial?: string; // open drawer trial id
-  compare?: string[]; // 2-5 ids
-
-  rail?: boolean; // show/hide filter rail
-};
-
 export type TrialIndexRow = {
+  // Primary identifier
   nct_id: string;
 
+  // Display / summary fields
   brief_title?: string;
   overall_status?: string;
 
-  phases?: string; // raw value from pipeline
+  // Phase / therapeutic area
+  phases?: string;
   disease_area?: string;
 
+  // Sponsor info
   lead_sponsor?: string;
   collaborators?: string;
 
+  // First condition / intervention (for table compact display)
   condition_first?: string;
   intervention_first?: string;
 
+  // Stopping reason (short)
   why_stopped_short?: string;
 
-  classification_label?: string; // e.g., BIOLOGICAL_FAILURE
-  classification_reason?: string; // e.g., EFFICACY/FUTILITY
-  classification_confidence?: string; // LOW/MED/HIGH
+  // Canonical pipeline classification fields
+  classification_label?: string;        // e.g., BIOLOGICAL_FAILURE
+  classification_reason?: string;       // e.g., EFFICACY/FUTILITY
+  classification_confidence?: string;   // LOW/MED/HIGH
   classification_evidence?: string;
 
+  // Backwards-compat / older naming referenced by filtering.ts and potentially older datasets
+  failure_label?: string;
+  failure_type?: string;
+
+  // Dates
   last_update_post_date?: string;
 
+  // Some code paths may refer to a generic "date" field; keep optional for compatibility
+  date?: string;
+
+  // External link
   url?: string;
 };
 
 export type TrialDetail = TrialIndexRow & {
+  // The detail page expects these (some code maps from the compact fields)
   why_stopped?: string;
   conditions?: string;
   intervention_names?: string;
