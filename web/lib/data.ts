@@ -1,33 +1,46 @@
 import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
 
-async function fetchJson<T>(url: string): Promise<T> {
-  const r = await fetch(url, { cache: "force-cache" });
-  if (!r.ok) throw new Error(`Failed to load ${url}`);
-  return (await r.json()) as T;
+let _meta: DatasetMeta | null = null;
+let _index: TrialIndexRow[] | null = null;
+
+async function fetchJSON<T>(url: string): Promise<T> {
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to load ${url} (${res.status})`);
+  return res.json() as Promise<T>;
 }
 
 export async function loadMeta(): Promise<DatasetMeta> {
-  return fetchJson<DatasetMeta>("/data/meta.json");
+  if (_meta) return _meta;
+  _meta = await fetchJSON<DatasetMeta>("/data/meta.json");
+  return _meta;
 }
 
 export async function loadIndex(): Promise<TrialIndexRow[]> {
-  return fetchJson<TrialIndexRow[]>("/data/trials_index.json");
+  if (_index) return _index;
+  _index = await fetchJSON<TrialIndexRow[]>("/data/index.json");
+  return _index;
 }
 
 /**
- * Detail chunking: last digit of NCT -> trials_details_{d}.json
- * Only fetch the chunk you need, cache in-memory.
+ * Detail loader:
+ * tries /data/trials/<NCT>.json first.
+ * If your pipeline uses a different folder name, add fallback paths here.
  */
-const detailChunkCache: Record<string, Record<string, TrialDetail>> = {};
-
 export async function loadDetail(nctId: string): Promise<TrialDetail | null> {
-  const last = nctId && /\d$/.test(nctId) ? nctId[nctId.length - 1] : "0";
-  const key = `d${last}`;
+  const id = nctId.trim();
+  if (!id) return null;
 
-  if (!detailChunkCache[key]) {
-    const chunk = await fetchJson<Record<string, TrialDetail>>(`/data/trials_details_${last}.json`);
-    detailChunkCache[key] = chunk;
+  const candidates = [
+    `/data/trials/${encodeURIComponent(id)}.json`,
+    `/data/details/${encodeURIComponent(id)}.json`
+  ];
+
+  for (const url of candidates) {
+    try {
+      return await fetchJSON<TrialDetail>(url);
+    } catch {
+      // try next
+    }
   }
-
-  return detailChunkCache[key][nctId] || null;
+  return null;
 }
