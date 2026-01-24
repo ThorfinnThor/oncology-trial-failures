@@ -1,15 +1,5 @@
 import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
 
-/**
- * Your pipeline produces these files in /data (served from web/public/data):
- * - all_stopped_trials.json
- * - biological_failure_trials.json
- * - all_oncology_stopped_trials.json (optional UX shortcut)
- * - biological_failure_oncology_trials.json (optional)
- *
- * We will use all_stopped_trials.json as the main dataset.
- */
-
 let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
 
@@ -19,66 +9,119 @@ async function fetchJSON<T>(url: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
+function asString(x: any): string {
+  if (x == null) return "";
+  if (Array.isArray(x)) return x.filter(Boolean).join("; ");
+  if (typeof x === "string") return x;
+  return String(x);
+}
+
+function firstFromSemicolon(s: string): string {
+  const t = (s || "").split(";").map((z) => z.trim()).filter(Boolean);
+  return t[0] || "";
+}
+
 /**
- * Minimal meta (since you don't have meta.json).
- * We generate a light meta object client-side.
+ * Your pipeline files (you confirmed):
+ * - /data/all_stopped_trials.json
+ * - /data/biological_failure_trials.json
+ * - oncology variants too (optional)
+ *
+ * We'll use all_stopped_trials.json as the base dataset.
  */
 export async function loadMeta(): Promise<DatasetMeta> {
   if (_meta) return _meta;
   _meta = {
-    version: "all_stopped_trials",
-    generated_at_utc: undefined,
+    version: "All stopped trials",
     source: "ClinicalTrials.gov"
   };
   return _meta;
 }
 
-/**
- * Main dataset: all stopped trials
- */
 export async function loadIndex(): Promise<TrialIndexRow[]> {
   if (_index) return _index;
 
-  // Primary file you said you want to use:
   const raw = await fetchJSON<any[]>("/data/all_stopped_trials.json");
 
-  // Ensure it matches TrialIndexRow shape (your pipeline already mostly does).
-  _index = raw.map((r: any) => ({
-    nct_id: r.nct_id,
-    brief_title: r.brief_title,
-    overall_status: r.overall_status,
-    phases: r.phases || r.phase || "",
-    disease_area: r.disease_area || r.condition_area || r.area || "Other",
-    lead_sponsor: r.lead_sponsor,
-    collaborators: r.collaborators,
+  _index = raw.map((r: any) => {
+    const phasesRaw =
+      r.phases ??
+      r.phase ??
+      r.phase_list ??
+      r.phase_raw ??
+      r.phases_raw ??
+      "";
 
-    condition_first:
-      r.condition_first ||
-      (typeof r.conditions === "string" ? r.conditions.split(";")[0]?.trim() : undefined) ||
-      undefined,
+    const conditionsRaw =
+      r.conditions ??
+      r.condition ??
+      r.condition_list ??
+      r.condition_name ??
+      r.condition_names ??
+      r.condition_terms ??
+      "";
 
-    intervention_first:
-      r.intervention_first ||
-      (typeof r.intervention_names === "string" ? r.intervention_names.split(";")[0]?.trim() : undefined) ||
-      undefined,
+    const interventionsRaw =
+      r.intervention_names ??
+      r.interventions ??
+      r.intervention ??
+      r.intervention_list ??
+      r.intervention_name ??
+      "";
 
-    why_stopped_short: r.why_stopped_short || r.why_stopped || r.why_stopped_reason || "",
-    classification_label: r.classification_label,
-    classification_reason: r.classification_reason,
-    classification_confidence: r.classification_confidence,
-    classification_evidence: r.classification_evidence,
+    const whyRaw =
+      r.why_stopped ??
+      r.why_stopped_reason ??
+      r.why_stopped_text ??
+      r.reason_stopped ??
+      r.reason ??
+      "";
 
-    last_update_post_date: r.last_update_post_date || r.last_update || r.updated || "",
-    url: r.url || `https://clinicaltrials.gov/study/${encodeURIComponent(r.nct_id)}`
-  }));
+    const diseaseArea =
+      r.disease_area ??
+      r.area ??
+      r.condition_area ??
+      r.therapeutic_area ??
+      "Other";
+
+    const url = r.url || (r.nct_id ? `https://clinicaltrials.gov/study/${encodeURIComponent(r.nct_id)}` : "");
+
+    return {
+      nct_id: asString(r.nct_id).trim(),
+
+      brief_title: asString(r.brief_title || r.title || r.official_title || "").trim(),
+      overall_status: asString(r.overall_status || r.status || "").trim(),
+
+      phases: asString(phasesRaw).trim(),
+      disease_area: asString(diseaseArea).trim(),
+
+      lead_sponsor: asString(r.lead_sponsor || r.sponsor || r.organization || "").trim(),
+      collaborators: asString(r.collaborators || r.collab || "").trim(),
+
+      condition_first: firstFromSemicolon(asString(conditionsRaw)),
+      intervention_first: firstFromSemicolon(asString(interventionsRaw)),
+
+      why_stopped_short: asString(whyRaw).trim(),
+
+      classification_label: asString(r.classification_label || r.label || "").trim(),
+      classification_reason: asString(r.classification_reason || r.reason_bucket || "").trim(),
+      classification_confidence: asString(r.classification_confidence || r.confidence || "").trim(),
+      classification_evidence: asString(r.classification_evidence || r.evidence || "").trim(),
+
+      last_update_post_date: asString(r.last_update_post_date || r.last_update || r.updated || "").trim(),
+
+      url
+    } as TrialIndexRow;
+  });
+
+  // Drop any empty IDs (defensive)
+  _index = _index.filter((x) => x.nct_id);
 
   return _index;
 }
 
 /**
- * Detail:
- * We do NOT have per-trial JSON files.
- * So we derive "detail" from the same row.
+ * No per-trial JSON exists in your current file list, so detail is derived from the same dataset row.
  */
 export async function loadDetail(nctId: string): Promise<TrialDetail | null> {
   const rows = await loadIndex();
