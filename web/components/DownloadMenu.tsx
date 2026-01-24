@@ -34,6 +34,36 @@ export default function DownloadMenu({
 
   const scopeDisabled = scope === "selected" && selectedRows.length === 0;
 
+  const OptionRow = ({
+    checked,
+    onChange,
+    label,
+    count
+  }: {
+    checked: boolean;
+    onChange: () => void;
+    label: string;
+    count: number;
+  }) => (
+    <label
+      style={{
+        display: "grid",
+        gridTemplateColumns: "18px 1fr auto",
+        alignItems: "center",
+        gap: 10,
+        width: "100%",
+        cursor: "pointer",
+        userSelect: "none"
+      }}
+    >
+      <input type="radio" checked={checked} onChange={onChange} />
+      <span style={{ minWidth: 0 }}>{label}</span>
+      <span style={{ fontSize: 12, color: "var(--text-muted)", whiteSpace: "nowrap" }}>
+        {count.toLocaleString()}
+      </span>
+    </label>
+  );
+
   return (
     <div className="relative">
       <button className="btn" type="button" onClick={() => setOpen((x) => !x)}>
@@ -41,79 +71,79 @@ export default function DownloadMenu({
       </button>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-[360px] card p-3 z-50" role="dialog" aria-label="Download menu">
-          <div className="text-sm font-semibold">Download</div>
-          <div className="mt-1 text-xs" style={{ color: "var(--text-muted)" }}>
+        <div
+          className="absolute right-0 mt-2 card p-3 z-50"
+          style={{ width: 420 }} // wider so options never collide
+          role="dialog"
+          aria-label="Download menu"
+        >
+          <div style={{ fontSize: 14, fontWeight: 800 }}>Download</div>
+          <div className="muted" style={{ marginTop: 4, fontSize: 13 }}>
             Choose scope and format. ({rows.length.toLocaleString()} rows)
           </div>
 
-          <div className="mt-3 space-y-3 text-sm">
-            <div>
-              <div
-                className="text-xs font-semibold uppercase tracking-wide mb-2"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Scope
+          <div style={{ marginTop: 12 }}>
+            <div className="facet-title" style={{ marginBottom: 8 }}>
+              Scope
+            </div>
+
+            <OptionRow
+              checked={scope === "filtered"}
+              onChange={() => setScope("filtered")}
+              label="Current filtered view"
+              count={filteredRows.length}
+            />
+
+            <div style={{ height: 8 }} />
+
+            <OptionRow
+              checked={scope === "selected"}
+              onChange={() => setScope("selected")}
+              label="Selected (compare)"
+              count={selectedRows.length}
+            />
+
+            <div style={{ height: 8 }} />
+
+            <OptionRow
+              checked={scope === "all"}
+              onChange={() => setScope("all")}
+              label="Everything"
+              count={allRows.length}
+            />
+
+            {scope === "selected" && selectedRows.length === 0 && (
+              <div style={{ marginTop: 8, fontSize: 12, color: "#b45309" }}>
+                Select 1+ rows using the checkbox column to enable “Selected”.
               </div>
+            )}
+          </div>
 
-              <label className="flex w-full items-center gap-2">
-                <input type="radio" name="scope" checked={scope === "filtered"} onChange={() => setScope("filtered")} />
-                <span className="min-w-0">Current filtered view</span>
-                <span className="ml-auto text-xs" style={{ color: "var(--text-muted)" }}>
-                  {filteredRows.length.toLocaleString()}
-                </span>
-              </label>
-
-              <label className="flex w-full items-center gap-2 mt-2">
-                <input type="radio" name="scope" checked={scope === "selected"} onChange={() => setScope("selected")} />
-                <span className="min-w-0">Selected (compare)</span>
-                <span className="ml-auto text-xs" style={{ color: "var(--text-muted)" }}>
-                  {selectedRows.length.toLocaleString()}
-                </span>
-              </label>
-
-              <label className="flex w-full items-center gap-2 mt-2">
-                <input type="radio" name="scope" checked={scope === "all"} onChange={() => setScope("all")} />
-                <span className="min-w-0">Everything</span>
-                <span className="ml-auto text-xs" style={{ color: "var(--text-muted)" }}>
-                  {allRows.length.toLocaleString()}
-                </span>
-              </label>
-
-              {scope === "selected" && selectedRows.length === 0 && (
-                <div className="mt-2 text-xs text-amber-700">
-                  Select 1+ rows using the checkbox column to enable “Selected”.
-                </div>
-              )}
+          <div style={{ marginTop: 14 }}>
+            <div className="facet-title" style={{ marginBottom: 8 }}>
+              Format
             </div>
 
-            <div>
-              <div
-                className="text-xs font-semibold uppercase tracking-wide mb-2"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Format
-              </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+              <input type="radio" checked={format === "csv"} onChange={() => setFormat("csv")} />
+              <span>CSV</span>
+            </label>
 
-              <label className="flex w-full items-center gap-2">
-                <input type="radio" name="format" checked={format === "csv"} onChange={() => setFormat("csv")} />
-                <span>CSV</span>
-              </label>
+            <div style={{ height: 8 }} />
 
-              <label className="flex w-full items-center gap-2 mt-2">
-                <input type="radio" name="format" checked={format === "json"} onChange={() => setFormat("json")} />
-                <span>JSON</span>
-              </label>
-            </div>
+            <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+              <input type="radio" checked={format === "json"} onChange={() => setFormat("json")} />
+              <span>JSON</span>
+            </label>
+          </div>
 
-            <div className="flex items-center gap-2 pt-2">
-              <button className="btn-primary flex-1" type="button" onClick={doDownload} disabled={scopeDisabled}>
-                Download
-              </button>
-              <button className="btn" type="button" onClick={() => setOpen(false)}>
-                Close
-              </button>
-            </div>
+          <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+            <button className="btn-primary" type="button" onClick={doDownload} disabled={scopeDisabled} style={{ flex: 1 }}>
+              Download
+            </button>
+            <button className="btn" type="button" onClick={() => setOpen(false)}>
+              Close
+            </button>
           </div>
         </div>
       )}
