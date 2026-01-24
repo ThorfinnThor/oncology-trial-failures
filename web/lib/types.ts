@@ -7,10 +7,6 @@ export type DatasetMeta = {
   // Optional metadata shown on /methods
   generated_at_utc?: string;
   source?: string;
-
-  // Allow additional non-breaking metadata fields from dataset_meta.json
-  // without falling back to `any` in other types.
-  [k: `meta_${string}`]?: string | number | boolean | null;
 };
 
 /**
