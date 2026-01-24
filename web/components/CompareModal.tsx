@@ -32,7 +32,9 @@ function bucketChipClass(bucket: string) {
   return "chip chip-neutral";
 }
 
-const PAD = 10; // tighter spacing than before
+const PAD = 10;
+const FIELD_W = 160;
+const MIN_COL_W = 210; // prevents NCT IDs from wrapping/splitting
 
 function fieldRow(label: string, renderCells: React.ReactNode[]) {
   return (
@@ -41,7 +43,7 @@ function fieldRow(label: string, renderCells: React.ReactNode[]) {
         style={{
           padding: `${PAD}px`,
           verticalAlign: "top",
-          width: 160, // slightly narrower for better column room
+          width: FIELD_W,
           fontSize: 12,
           fontWeight: 900,
           textTransform: "uppercase",
@@ -65,7 +67,8 @@ function fieldRow(label: string, renderCells: React.ReactNode[]) {
             whiteSpace: "normal",
             wordBreak: "break-word",
             lineHeight: 1.35,
-            background: "var(--surface)"
+            background: "var(--surface)",
+            minWidth: MIN_COL_W
           }}
         >
           {node}
@@ -140,7 +143,6 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
             </div>
           ) : (
             <>
-              {/* tighter Selected block */}
               <div className="card" style={{ padding: 12, marginBottom: 10 }}>
                 <div className="facet-title" style={{ marginBottom: 8 }}>
                   Selected
@@ -177,7 +179,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
               </div>
 
               <div className="card" style={{ overflow: "auto", maxHeight: "64vh" }}>
-                <table style={{ minWidth: 1100, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
+                <table style={{ minWidth: FIELD_W + cols.length * MIN_COL_W, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
                   <thead style={{ background: "var(--surface-2)" }}>
                     <tr>
                       <th
@@ -189,7 +191,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                           textTransform: "uppercase",
                           letterSpacing: ".06em",
                           color: "var(--text-muted)",
-                          width: 160,
+                          width: FIELD_W,
                           borderBottom: "1px solid var(--border)",
                           verticalAlign: "top"
                         }}
@@ -205,13 +207,25 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                             textAlign: "left",
                             borderBottom: "1px solid var(--border)",
                             verticalAlign: "top",
-                            whiteSpace: "normal",
-                            wordBreak: "break-word"
+                            minWidth: MIN_COL_W
                           }}
                         >
-                          <div style={{ fontSize: 13, fontWeight: 900 }}>{t.nct_id}</div>
+                          {/* IMPORTANT: never wrap the NCT id */}
+                          <div
+                            style={{
+                              fontSize: 13,
+                              fontWeight: 900,
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              maxWidth: "100%"
+                            }}
+                            title={t.nct_id}
+                          >
+                            {t.nct_id}
+                          </div>
 
-                          {/* clamp to 2 lines to reduce header height */}
+                          {/* title can wrap/clamp */}
                           <div
                             className="muted"
                             style={{
