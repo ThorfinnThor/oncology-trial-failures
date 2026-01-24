@@ -11,7 +11,28 @@ type Props = {
   onRemove: (id: string) => void;
 };
 
-function fieldRow(label: string, values: string[]) {
+function phaseChipClass(phaseKey: string) {
+  const p = (phaseKey || "").toUpperCase();
+  if (p === "EARLY_PHASE1" || p === "PHASE1") return "chip chip-phase-1";
+  if (p === "PHASE1/PHASE2" || p === "PHASE2") return "chip chip-phase-2";
+  if (p === "PHASE2/PHASE3" || p === "PHASE3") return "chip chip-phase-3";
+  if (p === "PHASE4") return "chip chip-phase-4";
+  return "chip chip-neutral";
+}
+
+function bucketChipClass(bucket: string) {
+  const b = (bucket || "").toUpperCase();
+  if (b === "SAFETY") return "chip chip-bucket-safety";
+  if (b === "EFFICACY/FUTILITY") return "chip chip-bucket-efficacy";
+  if (b === "ENROLLMENT") return "chip chip-bucket-enrollment";
+  if (b === "FUNDING") return "chip chip-bucket-funding";
+  if (b === "REGULATORY") return "chip chip-bucket-regulatory";
+  if (b === "STRATEGIC") return "chip chip-bucket-strategic";
+  if (b === "OPERATIONAL") return "chip chip-bucket-operational";
+  return "chip chip-neutral";
+}
+
+function fieldRow(label: string, renderCells: React.ReactNode[]) {
   return (
     <tr>
       <td
@@ -29,7 +50,7 @@ function fieldRow(label: string, values: string[]) {
       >
         {label}
       </td>
-      {values.map((v, i) => (
+      {renderCells.map((node, i) => (
         <td
           key={i}
           style={{
@@ -40,7 +61,7 @@ function fieldRow(label: string, values: string[]) {
             borderTop: "1px solid var(--border)"
           }}
         >
-          {v || "—"}
+          {node}
         </td>
       ))}
     </tr>
@@ -52,21 +73,26 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
 
   const cols = trials.slice(0, 5);
 
-  const phases = cols.map((t) => {
-    const p = parsePhases(t.phases || "")[0] || "Unknown";
-    return phaseLabel(p as any);
+  const phaseCells = cols.map((t) => {
+    const p = parsePhases(t.phases || "")[0] || "UNKNOWN";
+    return <span className={phaseChipClass(p)}>{phaseLabel(p)}</span>;
   });
 
-  const status = cols.map((t) => (t.overall_status || "—").toUpperCase());
-  const sponsor = cols.map((t) => t.lead_sponsor || "—");
-  const collab = cols.map((t) => t.collaborators || "—");
-  const condition = cols.map((t) => t.condition_first || "—");
-  const intervention = cols.map((t) => t.intervention_first || "—");
-  const area = cols.map((t) => t.disease_area || "Other");
-  const date = cols.map((t) => t.last_update_post_date || "—");
-  const bucket = cols.map((t) => reasonBucket(t));
-  const conf = cols.map((t) => t.classification_confidence || "—");
-  const why = cols.map((t) => t.why_stopped_short || "—");
+  const statusCells = cols.map((t) => <span className="chip chip-neutral">{(t.overall_status || "—").toUpperCase()}</span>);
+  const areaCells = cols.map((t) => <span>{t.disease_area || "Other"}</span>);
+  const sponsorCells = cols.map((t) => <span>{t.lead_sponsor || "—"}</span>);
+  const collabCells = cols.map((t) => <span>{t.collaborators || "—"}</span>);
+  const conditionCells = cols.map((t) => <span>{t.condition_first || "—"}</span>);
+  const interventionCells = cols.map((t) => <span>{t.intervention_first || "—"}</span>);
+  const dateCells = cols.map((t) => <span>{t.last_update_post_date || "—"}</span>);
+
+  const bucketCells = cols.map((t) => {
+    const b = reasonBucket(t);
+    return <span className={bucketChipClass(b)}>{b}</span>;
+  });
+
+  const confCells = cols.map((t) => <span className="chip chip-neutral">{t.classification_confidence || "—"}</span>);
+  const whyCells = cols.map((t) => <span style={{ color: "var(--text-muted)", lineHeight: 1.35 }}>{t.why_stopped_short || "—"}</span>);
 
   return (
     <div className="modal-wrap" role="dialog" aria-modal="true" aria-label="Compare selected trials">
@@ -130,9 +156,10 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                 </div>
               </div>
 
-              <div className="card" style={{ overflow: "auto" }}>
+              {/* Key fix: constrain the table area so the modal body scroll behaves predictably */}
+              <div className="card" style={{ overflow: "auto", maxHeight: "58vh" }}>
                 <table style={{ minWidth: 1000, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
-                  <thead style={{ background: "var(--surface-2)" }}>
+                  <thead style={{ background: "var(--surface-2)", position: "sticky", top: 0, zIndex: 1 }}>
                     <tr>
                       <th
                         style={{
@@ -163,18 +190,19 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                       ))}
                     </tr>
                   </thead>
+
                   <tbody>
-                    {fieldRow("Phase", phases)}
-                    {fieldRow("Status", status)}
-                    {fieldRow("Disease area", area)}
-                    {fieldRow("Sponsor", sponsor)}
-                    {fieldRow("Collaborators", collab)}
-                    {fieldRow("Condition", condition)}
-                    {fieldRow("Intervention", intervention)}
-                    {fieldRow("Last update", date)}
-                    {fieldRow("Reason bucket", bucket)}
-                    {fieldRow("Confidence", conf)}
-                    {fieldRow("Why stopped (short)", why)}
+                    {fieldRow("Phase", phaseCells)}
+                    {fieldRow("Status", statusCells)}
+                    {fieldRow("Disease area", areaCells)}
+                    {fieldRow("Sponsor", sponsorCells)}
+                    {fieldRow("Collaborators", collabCells)}
+                    {fieldRow("Condition", conditionCells)}
+                    {fieldRow("Intervention", interventionCells)}
+                    {fieldRow("Last update", dateCells)}
+                    {fieldRow("Reason bucket", bucketCells)}
+                    {fieldRow("Confidence", confCells)}
+                    {fieldRow("Why stopped (short)", whyCells)}
                   </tbody>
                 </table>
               </div>
