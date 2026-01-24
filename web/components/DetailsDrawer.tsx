@@ -1,3 +1,5 @@
+// web/components/DetailsDrawer.tsx
+
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { loadDetail } from "@/lib/data";
@@ -7,9 +9,7 @@ import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="card p-4">
-      <div className="text-xs font-semibold uppercase tracking-wide mb-2" style={{ color: "var(--text-muted)" }}>
-        {title}
-      </div>
+      <div className="facet-title">{title}</div>
       {children}
     </div>
   );
@@ -64,22 +64,21 @@ export default function DetailsDrawer({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-40">
-      <div className="absolute inset-0 bg-black/20" onClick={onClose} />
+    <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Trial details">
+      <div className="overlay" onClick={onClose} />
 
-      <div
-        className="absolute right-0 top-0 h-full w-full sm:w-[560px] bg-white shadow-2xl border-l"
-        style={{ borderColor: "var(--border)" }}
-      >
-        <div className="p-4 border-b flex items-start justify-between gap-3" style={{ borderColor: "var(--border)" }}>
-          <div className="min-w-0">
-            <div className="text-xs" style={{ color: "var(--text-muted)" }}>
+      <div className="drawer-panel">
+        <div className="drawer-hd">
+          <div style={{ minWidth: 0 }}>
+            <div className="muted" style={{ fontSize: 12 }}>
               Trial
             </div>
-            <div className="text-lg font-semibold truncate">{trialId}</div>
+            <div style={{ fontSize: 18, fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              {trialId}
+            </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
             {trialId && (
               <Link className="btn" href={`/trial/${encodeURIComponent(trialId)}?from=${encodeURIComponent(fromHref)}`}>
                 Open full page
@@ -91,68 +90,72 @@ export default function DetailsDrawer({
           </div>
         </div>
 
-        <div className="p-5 overflow-auto h-[calc(100%-64px)] space-y-4">
-          {err && <div className="text-sm text-rose-700">{err}</div>}
-          {!detail && !err && <div className="text-sm" style={{ color: "var(--text-muted)" }}>Loading…</div>}
+        <div className="drawer-bd">
+          {err && <div className="error">{err}</div>}
+          {!detail && !err && <div className="muted">Loading…</div>}
 
           {detail && (
             <>
-              <div>
-                <div className="text-xl font-semibold leading-snug">{detail.brief_title || "—"}</div>
-                <div className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
-                  Sponsor: <span className="font-medium" style={{ color: "var(--text)" }}>{detail.lead_sponsor || "—"}</span>
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ fontSize: 18, fontWeight: 800, lineHeight: 1.25 }}>
+                  {detail.brief_title || "—"}
+                </div>
+                <div className="muted" style={{ marginTop: 6, fontSize: 13 }}>
+                  Sponsor: <span style={{ color: "var(--text)", fontWeight: 650 }}>{detail.lead_sponsor || "—"}</span>
                 </div>
                 {detail.collaborators ? (
-                  <div className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
-                    Collaborators: <span className="font-medium" style={{ color: "var(--text)" }}>{detail.collaborators}</span>
+                  <div className="muted" style={{ marginTop: 4, fontSize: 13 }}>
+                    Collaborators: <span style={{ color: "var(--text)", fontWeight: 650 }}>{detail.collaborators}</span>
                   </div>
                 ) : null}
 
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div style={{ marginTop: 10, display: "flex", flexWrap: "wrap", gap: 8 }}>
                   <span className="chip">{phaseLabel(phase as any)}</span>
                   <span className="chip">{(detail.overall_status || "UNKNOWN").toUpperCase()}</span>
                   <span className="chip">{bucket}</span>
-                  {detail.classification_confidence ? (
-                    <span className="chip">Confidence: {detail.classification_confidence}</span>
-                  ) : null}
+                  {detail.classification_confidence ? <span className="chip">Confidence: {detail.classification_confidence}</span> : null}
                 </div>
               </div>
 
               <Section title="Why stopped">
-                <div className="text-sm leading-relaxed whitespace-normal break-words">
+                <div style={{ fontSize: 14, lineHeight: 1.55, whiteSpace: "normal", wordBreak: "break-word" }}>
                   {(detail.why_stopped || detail.why_stopped_short || "—").trim()}
                 </div>
               </Section>
 
+              <div style={{ height: 12 }} />
+
               <Section title="Key fields">
-                <div className="grid grid-cols-1 gap-2 text-sm">
+                <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 8, fontSize: 14 }}>
                   <div>
-                    <span className="font-semibold">Condition:</span> {detail.condition_first || "—"}
+                    <span style={{ fontWeight: 800 }}>Condition:</span> {detail.condition_first || "—"}
                   </div>
                   <div>
-                    <span className="font-semibold">Intervention:</span> {detail.intervention_first || "—"}
+                    <span style={{ fontWeight: 800 }}>Intervention:</span> {detail.intervention_first || "—"}
                   </div>
                   <div>
-                    <span className="font-semibold">Disease area:</span> {detail.disease_area || "Other"}
+                    <span style={{ fontWeight: 800 }}>Disease area:</span> {detail.disease_area || "Other"}
                   </div>
                   <div>
-                    <span className="font-semibold">Last update:</span> {detail.last_update_post_date || "—"}
+                    <span style={{ fontWeight: 800 }}>Last update:</span> {detail.last_update_post_date || "—"}
                   </div>
                 </div>
               </Section>
 
+              <div style={{ height: 12 }} />
+
               <Section title="Provenance">
-                <div className="text-sm" style={{ color: "var(--text-muted)" }}>
-                  Dataset: <span className="font-medium" style={{ color: "var(--text)" }}>{meta?.version || "—"}</span>
+                <div className="muted" style={{ fontSize: 13 }}>
+                  Dataset: <span style={{ color: "var(--text)", fontWeight: 650 }}>{meta?.version || "—"}</span>
                   {meta?.source ? (
                     <>
-                      {" "}• Source: <span className="font-medium" style={{ color: "var(--text)" }}>{meta.source}</span>
+                      {" "}• Source: <span style={{ color: "var(--text)", fontWeight: 650 }}>{meta.source}</span>
                     </>
                   ) : null}
                 </div>
 
-                <div className="mt-2">
-                  <a className="text-sm font-semibold" href={detail.url} target="_blank" rel="noreferrer">
+                <div style={{ marginTop: 10 }}>
+                  <a style={{ fontSize: 13, fontWeight: 800, color: "var(--accent)" }} href={detail.url} target="_blank" rel="noreferrer">
                     View on ClinicalTrials.gov
                   </a>
                 </div>
