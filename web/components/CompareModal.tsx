@@ -45,7 +45,8 @@ function fieldRow(label: string, renderCells: React.ReactNode[]) {
           textTransform: "uppercase",
           letterSpacing: ".06em",
           color: "var(--text-muted)",
-          borderTop: "1px solid var(--border)"
+          borderTop: "1px solid var(--border)",
+          background: "var(--surface)"
         }}
       >
         {label}
@@ -58,7 +59,11 @@ function fieldRow(label: string, renderCells: React.ReactNode[]) {
             verticalAlign: "top",
             fontSize: 13,
             color: "var(--text)",
-            borderTop: "1px solid var(--border)"
+            borderTop: "1px solid var(--border)",
+            whiteSpace: "normal",
+            wordBreak: "break-word",
+            lineHeight: 1.35,
+            background: "var(--surface)"
           }}
         >
           {node}
@@ -78,7 +83,9 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
     return <span className={phaseChipClass(p)}>{phaseLabel(p)}</span>;
   });
 
-  const statusCells = cols.map((t) => <span className="chip chip-neutral">{(t.overall_status || "—").toUpperCase()}</span>);
+  const statusCells = cols.map((t) => (
+    <span className="chip chip-neutral">{(t.overall_status || "—").toUpperCase()}</span>
+  ));
   const areaCells = cols.map((t) => <span>{t.disease_area || "Other"}</span>);
   const sponsorCells = cols.map((t) => <span>{t.lead_sponsor || "—"}</span>);
   const collabCells = cols.map((t) => <span>{t.collaborators || "—"}</span>);
@@ -91,8 +98,12 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
     return <span className={bucketChipClass(b)}>{b}</span>;
   });
 
-  const confCells = cols.map((t) => <span className="chip chip-neutral">{t.classification_confidence || "—"}</span>);
-  const whyCells = cols.map((t) => <span style={{ color: "var(--text-muted)", lineHeight: 1.35 }}>{t.why_stopped_short || "—"}</span>);
+  const confCells = cols.map((t) => (
+    <span className="chip chip-neutral">{t.classification_confidence || "—"}</span>
+  ));
+  const whyCells = cols.map((t) => (
+    <span style={{ color: "var(--text-muted)", lineHeight: 1.35 }}>{t.why_stopped_short || "—"}</span>
+  ));
 
   return (
     <div className="modal-wrap" role="dialog" aria-modal="true" aria-label="Compare selected trials">
@@ -101,8 +112,12 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
       <div className="modal">
         <div className="modal-hd">
           <div style={{ minWidth: 0 }}>
-            <div className="muted" style={{ fontSize: 12 }}>Compare</div>
-            <div style={{ marginTop: 4, fontSize: 18, fontWeight: 900 }}>Compare selected trials</div>
+            <div className="muted" style={{ fontSize: 12 }}>
+              Compare
+            </div>
+            <div style={{ marginTop: 4, fontSize: 18, fontWeight: 900 }}>
+              Compare selected trials
+            </div>
             <div className="muted" style={{ marginTop: 6, fontSize: 13 }}>
               Select 2–5 trials using the checkbox column, then compare side-by-side.
             </div>
@@ -156,10 +171,10 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                 </div>
               </div>
 
-              {/* Key fix: constrain the table area so the modal body scroll behaves predictably */}
-              <div className="card" style={{ overflow: "auto", maxHeight: "58vh" }}>
-                <table style={{ minWidth: 1000, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
-                  <thead style={{ background: "var(--surface-2)", position: "sticky", top: 0, zIndex: 1 }}>
+              {/* Key change: remove sticky header to prevent overlap/overlay while scrolling */}
+              <div className="card" style={{ overflow: "auto", maxHeight: "62vh" }}>
+                <table style={{ minWidth: 1100, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
+                  <thead style={{ background: "var(--surface-2)" }}>
                     <tr>
                       <th
                         style={{
@@ -171,20 +186,41 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                           letterSpacing: ".06em",
                           color: "var(--text-muted)",
                           width: 180,
-                          borderBottom: "1px solid var(--border)"
+                          borderBottom: "1px solid var(--border)",
+                          verticalAlign: "top"
                         }}
                       >
                         Field
                       </th>
+
                       {cols.map((t) => (
                         <th
                           key={t.nct_id}
-                          style={{ padding: "12px", textAlign: "left", borderBottom: "1px solid var(--border)" }}
+                          style={{
+                            padding: "12px",
+                            textAlign: "left",
+                            borderBottom: "1px solid var(--border)",
+                            verticalAlign: "top",
+                            whiteSpace: "normal",
+                            wordBreak: "break-word"
+                          }}
                         >
                           <div style={{ fontSize: 13, fontWeight: 900 }}>{t.nct_id}</div>
-                          <div className="muted" style={{ fontSize: 12, marginTop: 4 }}>
-                            {(t.brief_title || "—").slice(0, 120)}
-                            {(t.brief_title || "").length > 120 ? "…" : ""}
+
+                          {/* Clamp the title to avoid extreme header height */}
+                          <div
+                            className="muted"
+                            style={{
+                              fontSize: 12,
+                              marginTop: 6,
+                              lineHeight: 1.25,
+                              display: "-webkit-box",
+                              WebkitLineClamp: 3,
+                              WebkitBoxOrient: "vertical",
+                              overflow: "hidden"
+                            }}
+                          >
+                            {t.brief_title || "—"}
                           </div>
                         </th>
                       ))}
