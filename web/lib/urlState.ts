@@ -1,5 +1,5 @@
 import { ParsedUrlQuery } from "querystring";
-import { ReasonBucket, SortKey, UrlState } from "./types";
+import { SortKey, UrlState } from "./types";
 
 const DEFAULT_SORT: SortKey = "date_desc";
 
@@ -15,7 +15,7 @@ function asList(v: string | string[] | undefined): string[] | undefined {
   return parts.length ? parts : undefined;
 }
 
-function asBool(v: string | string[] | undefined): boolean | undefined {
+function asBool01(v: string | string[] | undefined): boolean | undefined {
   const s = asString(v);
   if (s === undefined) return undefined;
   if (s === "1" || s === "true") return true;
@@ -29,34 +29,46 @@ function cleanList(list?: string[]) {
   return uniq.length ? uniq : undefined;
 }
 
+/**
+ * URL contract:
+ * - scientific_failure=1 enables the “Likely scientific failure” filter.
+ * Back-compat: bio=1 also enables it (older links).
+ */
 export function parseUrlState(q: ParsedUrlQuery): UrlState {
+  // new key
+  const scientific_failure = asBool01(q.scientific_failure);
+
+  // legacy key: bio
+  const legacyBio = asBool01(q.bio);
+
   const state: UrlState = {
     q: asString(q.q) || undefined,
 
     phase: asList(q.phase),
     status: asList(q.status),
     area: asList(q.area),
-    bucket: (asList(q.bucket) as ReasonBucket[] | undefined) || undefined,
+    bucket: asList(q.bucket) as any,
     sponsor: asList(q.sponsor),
     intervention: asList(q.intervention),
     condition: asList(q.condition),
 
-    bio: asBool(q.bio),
+    // default OFF; enable only if explicitly requested
+    bio: scientific_failure ?? legacyBio ?? false,
 
     date_from: asString(q.date_from) || undefined,
     date_to: asString(q.date_to) || undefined,
 
-    sort: (asString(q.sort) as SortKey | undefined) || undefined,
+    sort: (asString(q.sort) as SortKey | undefined) || DEFAULT_SORT,
 
     trial: asString(q.trial) || undefined,
     compare: asList(q.compare),
 
-    rail: asBool(q.rail),
+    rail: asBool01(q.rail),
   };
 
-  // Defaults: bio defaults to true on initial load
-  if (state.bio === undefined) state.bio = true;
+  // defaults
   if (!state.sort) state.sort = DEFAULT_SORT;
+  if (state.rail === undefined) state.rail = true;
 
   return state;
 }
@@ -84,8 +96,8 @@ export function stateToQuery(state: UrlState): Record<string, string> {
   setList("intervention", state.intervention);
   setList("condition", state.condition);
 
-  // bio is default true; omit it if true to keep URLs clean
-  if (state.bio === false) set("bio", "0");
+  // New canonical key. Omit when OFF for clean URLs.
+  if (state.bio) set("scientific_failure", "1");
 
   set("date_from", state.date_from);
   set("date_to", state.date_to);
@@ -95,7 +107,7 @@ export function stateToQuery(state: UrlState): Record<string, string> {
   set("trial", state.trial);
   setList("compare", state.compare);
 
-  // rail default: open; omit if true
+  // rail default true; omit if true
   if (state.rail === false) set("rail", "0");
 
   return out;
