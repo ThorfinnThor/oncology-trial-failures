@@ -1,122 +1,96 @@
-import { ParsedUrlQuery } from "querystring";
 import { SortKey, UrlState } from "./types";
 
-const DEFAULT_SORT: SortKey = "date_desc";
-
-function asString(v: string | string[] | undefined): string | undefined {
-  if (Array.isArray(v)) return v[0];
-  return v;
+function splitCsv(v: string | null): string[] {
+  if (!v) return [];
+  return v
+    .split(",")
+    .map((x) => decodeURIComponent(x.trim()))
+    .filter(Boolean);
 }
 
-function asList(v: string | string[] | undefined): string[] | undefined {
-  const s = asString(v);
-  if (!s) return undefined;
-  const parts = s.split(",").map((x) => x.trim()).filter(Boolean);
-  return parts.length ? parts : undefined;
+function joinCsv(values: string[]): string {
+  return values.map((x) => encodeURIComponent(x)).join(",");
 }
 
-function asBool01(v: string | string[] | undefined): boolean | undefined {
-  const s = asString(v);
-  if (s === undefined) return undefined;
-  if (s === "1" || s === "true") return true;
-  if (s === "0" || s === "false") return false;
-  return undefined;
-}
+export function decodeState(search: string): UrlState {
+  const sp = new URLSearchParams(search.startsWith("?") ? search : `?${search}`);
 
-function cleanList(list?: string[]) {
-  if (!list || !list.length) return undefined;
-  const uniq = Array.from(new Set(list.map((x) => x.trim()).filter(Boolean)));
-  return uniq.length ? uniq : undefined;
-}
+  const state: UrlState = {};
 
-/**
- * URL contract:
- * - scientific_failure=1 enables the “Likely scientific failure” filter.
- * Back-compat: bio=1 also enables it (older links).
- */
-export function parseUrlState(q: ParsedUrlQuery): UrlState {
-  // new key
-  const scientific_failure = asBool01(q.scientific_failure);
+  const q = sp.get("q");
+  if (q) state.q = q;
 
-  // legacy key: bio
-  const legacyBio = asBool01(q.bio);
+  const sort = sp.get("sort") as SortKey | null;
+  if (sort) state.sort = sort;
 
-  const state: UrlState = {
-    q: asString(q.q) || undefined,
+  const status = splitCsv(sp.get("status"));
+  if (status.length) state.status = status;
 
-    phase: asList(q.phase),
-    status: asList(q.status),
-    area: asList(q.area),
-    bucket: asList(q.bucket) as any,
-    sponsor: asList(q.sponsor),
-    intervention: asList(q.intervention),
-    condition: asList(q.condition),
+  const phase = splitCsv(sp.get("phase"));
+  if (phase.length) state.phase = phase;
 
-    // default OFF; enable only if explicitly requested
-    bio: scientific_failure ?? legacyBio ?? false,
+  const area = splitCsv(sp.get("area"));
+  if (area.length) state.area = area;
 
-    date_from: asString(q.date_from) || undefined,
-    date_to: asString(q.date_to) || undefined,
+  const bucket = splitCsv(sp.get("bucket"));
+  if (bucket.length) state.bucket = bucket;
 
-    sort: (asString(q.sort) as SortKey | undefined) || DEFAULT_SORT,
+  const sponsor = splitCsv(sp.get("sponsor"));
+  if (sponsor.length) state.sponsor = sponsor;
 
-    trial: asString(q.trial) || undefined,
-    compare: asList(q.compare),
+  const condition = splitCsv(sp.get("condition"));
+  if (condition.length) state.condition = condition;
 
-    rail: asBool01(q.rail),
-  };
+  const intervention = splitCsv(sp.get("intervention"));
+  if (intervention.length) state.intervention = intervention;
 
-  // defaults
-  if (!state.sort) state.sort = DEFAULT_SORT;
-  if (state.rail === undefined) state.rail = true;
+  const bio = sp.get("scientific_failure");
+  if (bio === "1") state.bio = true;
+
+  const dateFrom = sp.get("date_from");
+  if (dateFrom) state.date_from = dateFrom;
+
+  const dateTo = sp.get("date_to");
+  if (dateTo) state.date_to = dateTo;
+
+  const trial = sp.get("trial");
+  if (trial) state.trial = trial;
+
+  const compare = splitCsv(sp.get("compare"));
+  if (compare.length) state.compare = compare.slice(0, 5);
+
+  const rail = sp.get("rail");
+  if (rail === "0") state.rail = false;
 
   return state;
 }
 
-export function stateToQuery(state: UrlState): Record<string, string> {
-  const out: Record<string, string> = {};
+export function encodeState(state: UrlState): string {
+  const sp = new URLSearchParams();
 
-  const set = (k: string, v?: string) => {
-    if (v === undefined || v === "") return;
-    out[k] = v;
-  };
-  const setList = (k: string, v?: string[]) => {
-    const cleaned = cleanList(v);
-    if (!cleaned) return;
-    out[k] = cleaned.join(",");
-  };
+  if (state.q) sp.set("q", state.q);
 
-  set("q", state.q || undefined);
+  if (state.sort) sp.set("sort", state.sort);
 
-  setList("phase", state.phase);
-  setList("status", state.status);
-  setList("area", state.area);
-  setList("bucket", state.bucket as unknown as string[] | undefined);
-  setList("sponsor", state.sponsor);
-  setList("intervention", state.intervention);
-  setList("condition", state.condition);
+  if (state.status?.length) sp.set("status", joinCsv(state.status));
+  if (state.phase?.length) sp.set("phase", joinCsv(state.phase));
+  if (state.area?.length) sp.set("area", joinCsv(state.area));
+  if (state.bucket?.length) sp.set("bucket", joinCsv(state.bucket));
+  if (state.sponsor?.length) sp.set("sponsor", joinCsv(state.sponsor));
+  if (state.condition?.length) sp.set("condition", joinCsv(state.condition));
+  if (state.intervention?.length) sp.set("intervention", joinCsv(state.intervention));
 
-  // New canonical key. Omit when OFF for clean URLs.
-  if (state.bio) set("scientific_failure", "1");
+  if (state.bio) sp.set("scientific_failure", "1");
 
-  set("date_from", state.date_from);
-  set("date_to", state.date_to);
+  if (state.date_from) sp.set("date_from", state.date_from);
+  if (state.date_to) sp.set("date_to", state.date_to);
 
-  if (state.sort && state.sort !== DEFAULT_SORT) set("sort", state.sort);
+  if (state.trial) sp.set("trial", state.trial);
 
-  set("trial", state.trial);
-  setList("compare", state.compare);
+  if (state.compare?.length) sp.set("compare", joinCsv(state.compare.slice(0, 5)));
 
-  // rail default true; omit if true
-  if (state.rail === false) set("rail", "0");
+  if (state.rail === false) sp.set("rail", "0");
 
-  return out;
-}
-
-export function buildShareUrl(baseUrl: string, state: UrlState): string {
-  const q = stateToQuery(state);
-  const params = new URLSearchParams(q);
-  const u = new URL(baseUrl);
-  u.search = params.toString();
-  return u.toString();
+  const s = sp.toString();
+  return s ? `?${s}` : "";
 }
