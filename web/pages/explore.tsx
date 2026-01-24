@@ -1,3 +1,5 @@
+// web/pages/explore.tsx
+
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -23,7 +25,7 @@ function uniq(arr: string[]) {
 export default function ExplorePage() {
   const router = useRouter();
 
-  // URL-driven state (shareable), but we avoid event-bubbling issues via stopPropagation in components.
+  // Derived from URL
   const state: UrlState = useMemo(() => decodeState(router.asPath), [router.asPath]);
 
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
@@ -31,7 +33,7 @@ export default function ExplorePage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  // Local search input; we only write to URL on change.
+  // Local search input (debounced into URL)
   const [qInput, setQInput] = useState(state.q || "");
   useEffect(() => setQInput(state.q || ""), [state.q]);
 
@@ -73,8 +75,14 @@ export default function ExplorePage() {
 
   const [compareOpen, setCompareOpen] = useState(false);
 
+  /**
+   * CRITICAL FIX:
+   * Always base updates on the *latest URL state*, not the captured `state` from render.
+   * This prevents debounced search / other updates from wiping `trial` or `compare`.
+   */
   function updateState(patch: Partial<UrlState>) {
-    const next: UrlState = { ...state, ...patch };
+    const base: UrlState = decodeState(router.asPath);
+    const next: UrlState = { ...base, ...patch };
 
     // normalize
     next.status = next.status ? uniq(next.status) : undefined;
@@ -95,14 +103,16 @@ export default function ExplorePage() {
   }
 
   function toggleMulti(key: keyof UrlState, value: string) {
-    const current = new Set(((state as any)[key] as string[] | undefined) || []);
+    const base: UrlState = decodeState(router.asPath);
+    const current = new Set(((base as any)[key] as string[] | undefined) || []);
     if (current.has(value)) current.delete(value);
     else current.add(value);
     updateState({ [key]: Array.from(current) } as any);
   }
 
   function toggleCompare(id: string) {
-    const s = new Set(state.compare || []);
+    const base: UrlState = decodeState(router.asPath);
+    const s = new Set(base.compare || []);
     if (s.has(id)) s.delete(id);
     else {
       if (s.size >= 5) return;
@@ -128,22 +138,24 @@ export default function ExplorePage() {
   }
 
   function copyLink() {
-    const url = `${window.location.origin}/explore${encodeState(state)}`;
+    const url = `${window.location.origin}/explore${encodeState(decodeState(router.asPath))}`;
     navigator.clipboard.writeText(url);
   }
 
   // write q to URL with debounce
   useEffect(() => {
     const t = setTimeout(() => {
-      const cur = (state.q || "").trim();
+      const base = decodeState(router.asPath);
+      const cur = (base.q || "").trim();
       const nxt = (qInput || "").trim();
       if (cur !== nxt) updateState({ q: nxt || undefined });
     }, 250);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [qInput]);
+  }, [qInput, router.asPath]);
 
   const fromHref = useMemo(() => `/explore${encodeState(state)}`, [state]);
+  const compareCount = (state.compare || []).length;
 
   return (
     <>
@@ -152,7 +164,6 @@ export default function ExplorePage() {
       </Head>
 
       <div className="min-h-screen">
-        {/* Top bar — keep same layout */}
         <header className="topbar">
           <div className="topbar-inner">
             <div className="topbar-left">
@@ -183,7 +194,20 @@ export default function ExplorePage() {
               <button className="btn" onClick={copyLink} type="button">
                 Copy link
               </button>
+
+              {/* Always-visible Compare button (fixes “no compare button” UX issue) */}
+              <button
+                className="btn"
+                type="button"
+                onClick={() => setCompareOpen(true)}
+                disabled={compareCount < 2}
+                title={compareCount < 2 ? "Select at least 2 trials to compare" : "Compare selected trials"}
+              >
+                Compare ({compareCount})
+              </button>
+
               <DownloadMenu meta={meta} state={state} allRows={allRows} filteredRows={rows} selectedRows={compareRows} />
+
               <button className="btn" onClick={resetAll} type="button">
                 Reset
               </button>
@@ -192,19 +216,24 @@ export default function ExplorePage() {
         </header>
 
         <main className="page">
-          {/* Layout matches screenshot: left rail + center table */}
           <div className="layout">
-            {/* LEFT FILTER RAIL — NOW SCROLLABLE */}
             <aside className="rail">
               <div className="rail-scroll">
-                <ScientificFailureToggle
-                  checked={!!state.bio}
-                  onChange={(v) => updateState({ bio: v || undefined })}
+                <ScientificFailureToggle checked={!!state.bio} onChange={(v) => updateState({ bio: v || undefined })} />
+
+                <Facet
+                  title="Status"
+                  options={facets.status}
+                  selected={state.status || []}
+                  onToggle={(v) => toggleMulti("status", v)}
                 />
 
-                <Facet title="Status" options={facets.status} selected={state.status || []} onToggle={(v) => toggleMulti("status", v)} />
-
-                <Facet title="Phase" options={facets.phase} selected={state.phase || []} onToggle={(v) => toggleMulti("phase", v)} />
+                <Facet
+                  title="Phase"
+                  options={facets.phase}
+                  selected={state.phase || []}
+                  onToggle={(v) => toggleMulti("phase", v)}
+                />
 
                 <Facet
                   title="Disease area (Top 10)"
@@ -214,11 +243,15 @@ export default function ExplorePage() {
                   searchable
                 />
 
-                <Facet title="Reason bucket" options={facets.bucket} selected={state.bucket || []} onToggle={(v) => toggleMulti("bucket", v)} />
+                <Facet
+                  title="Reason bucket"
+                  options={facets.bucket}
+                  selected={state.bucket || []}
+                  onToggle={(v) => toggleMulti("bucket", v)}
+                />
               </div>
             </aside>
 
-            {/* CENTER RESULTS */}
             <section className="content">
               <div className="card pad-16">
                 <div className="results-header">
@@ -228,11 +261,7 @@ export default function ExplorePage() {
 
                   <div className="results-controls">
                     <label className="muted">Sort</label>
-                    <select
-                      className="input select"
-                      value={sortKey}
-                      onChange={(e) => updateState({ sort: e.target.value as SortKey })}
-                    >
+                    <select className="input select" value={sortKey} onChange={(e) => updateState({ sort: e.target.value as SortKey })}>
                       <option value="date_desc">Date (newest)</option>
                       <option value="date_asc">Date (oldest)</option>
                       <option value="sponsor_asc">Sponsor (A–Z)</option>
@@ -266,13 +295,9 @@ export default function ExplorePage() {
                   />
                 </div>
 
+                {/* Keep the bottom compare button as secondary (optional), but now top bar is primary */}
                 <div className="below-actions">
-                  <button
-                    className="btn"
-                    type="button"
-                    onClick={() => setCompareOpen(true)}
-                    disabled={(state.compare || []).length < 2}
-                  >
+                  <button className="btn" type="button" onClick={() => setCompareOpen(true)} disabled={(state.compare || []).length < 2}>
                     Compare ({(state.compare || []).length})
                   </button>
                 </div>
@@ -294,7 +319,8 @@ export default function ExplorePage() {
           onClose={() => setCompareOpen(false)}
           trials={compareRows}
           onRemove={(id) => {
-            const s = new Set(state.compare || []);
+            const base = decodeState(router.asPath);
+            const s = new Set(base.compare || []);
             s.delete(id);
             updateState({ compare: Array.from(s) });
           }}
