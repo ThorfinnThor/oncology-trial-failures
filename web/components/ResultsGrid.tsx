@@ -60,12 +60,12 @@ export default function ResultsGrid({
             <th className="p-3 text-left w-[52px]">Sel</th>
             <th className="p-3 text-left w-[140px]">Trial</th>
             <th className="p-3 text-left w-[420px]">Title</th>
-            <th className="p-3 text-left w-[160px]">Phase</th>
-            <th className="p-3 text-left w-[200px]">Disease area</th>
-            <th className="p-3 text-left w-[220px]">Condition</th>
+            <th className="p-3 text-left w-[150px]">Phase</th>
+            <th className="p-3 text-left w-[180px]">Disease area</th>
+            <th className="p-3 text-left w-[260px]">Condition</th>
             <th className="p-3 text-left w-[220px]">Intervention</th>
             <th className="p-3 text-left w-[160px]">Status</th>
-            <th className="p-3 text-left w-[180px]">Bucket</th>
+            <th className="p-3 text-left w-[180px]">Reason</th>
             <th className="p-3 text-left w-[260px]">Why stopped</th>
           </tr>
         </thead>
@@ -78,24 +78,46 @@ export default function ResultsGrid({
             const bucket = reasonBucket(r);
 
             return (
-              <tr key={r.nct_id} className="border-b hover:bg-slate-50" style={{ borderColor: "var(--border)" }}>
+              <tr
+                key={r.nct_id}
+                className="border-b hover:bg-slate-50"
+                style={{ borderColor: "var(--border)" }}
+              >
                 <td className="p-3 align-top">
-                  <input type="checkbox" checked={checked} onChange={() => onToggleSelect(r.nct_id)} aria-label={`Select ${r.nct_id}`} />
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={() => onToggleSelect(r.nct_id)}
+                    aria-label={`Select ${r.nct_id}`}
+                  />
                 </td>
 
                 <td className="p-3 align-top">
-                  <Link href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`} className="font-semibold">
+                  <Link
+                    href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
+                    className="font-semibold"
+                  >
                     {r.nct_id}
                   </Link>
                   <div className="mt-1">
-                    <button className="text-xs text-[var(--accent)] hover:underline" onClick={() => onOpenPanel(r.nct_id)} type="button">
+                    <button
+                      className="text-xs text-[var(--accent)] hover:underline"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onOpenPanel(r.nct_id);
+                      }}
+                      type="button"
+                    >
                       Open panel
                     </button>
                   </div>
                 </td>
 
                 <td className="p-3 align-top">
-                  <div className="font-medium leading-snug whitespace-normal break-words">{r.brief_title || "—"}</div>
+                  <div className="font-medium leading-snug whitespace-normal break-words">
+                    {r.brief_title || "—"}
+                  </div>
                   <div className="mt-1 text-xs leading-snug whitespace-normal break-words" style={{ color: "var(--text-muted)" }}>
                     {r.lead_sponsor || "—"}
                   </div>
@@ -105,7 +127,9 @@ export default function ResultsGrid({
                   <span className={`chip ${phaseClass(String(p))}`}>{phaseLabel(p as any)}</span>
                 </td>
 
-                <td className="p-3 align-top whitespace-normal break-words">{r.disease_area || "Other"}</td>
+                <td className="p-3 align-top whitespace-normal break-words">
+                  {r.disease_area || "Other"}
+                </td>
 
                 <td className="p-3 align-top whitespace-normal break-words">{r.condition_first || "—"}</td>
                 <td className="p-3 align-top whitespace-normal break-words">{r.intervention_first || "—"}</td>
@@ -128,7 +152,11 @@ export default function ResultsGrid({
                   </div>
 
                   {why && hoverId === r.nct_id && (
-                    <div className="absolute right-0 mt-2 w-[420px] max-w-[90vw] rounded-xl border bg-white p-3 shadow-lg z-20" style={{ borderColor: "var(--border)" }} role="tooltip">
+                    <div
+                      className="absolute right-0 mt-2 w-[420px] max-w-[90vw] rounded-xl border bg-white p-3 shadow-lg z-20"
+                      style={{ borderColor: "var(--border)" }}
+                      role="tooltip"
+                    >
                       <div className="text-xs font-semibold mb-1" style={{ color: "var(--text-muted)" }}>
                         Why stopped
                       </div>
