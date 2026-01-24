@@ -1,96 +1,95 @@
 import Link from "next/link";
-import { TrialRow } from "@/lib/types";
+import { TrialIndexRow } from "@/lib/types";
+import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
 type Props = {
-  rows: TrialRow[];
+  rows: TrialIndexRow[];
+  fromHref?: string;
+  onOpenPanel?: (id: string) => void;
 };
 
-function confBadge(v: string) {
-  const base = "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium border";
-  if (v === "HIGH") return `${base} border-green-200 bg-green-50 text-green-800`;
-  if (v === "MEDIUM") return `${base} border-yellow-200 bg-yellow-50 text-yellow-800`;
-  if (v === "LOW") return `${base} border-gray-200 bg-gray-50 text-gray-700`;
-  return `${base} border-gray-200 bg-gray-50 text-gray-700`;
-}
-
-function reasonPill(v: string) {
-  const base = "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium";
-  if (v === "SAFETY") return `${base} bg-red-50 text-red-700`;
-  if (v === "EFFICACY/FUTILITY") return `${base} bg-blue-50 text-blue-700`;
-  if (v === "OPERATIONAL") return `${base} bg-gray-100 text-gray-700`;
-  return `${base} bg-gray-100 text-gray-700`;
-}
-
-export function TrialTable({ rows }: Props) {
+function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="overflow-hidden rounded-2xl border bg-white shadow-sm">
-      <div className="overflow-auto">
-        <table className="min-w-[1250px] w-full text-left text-sm">
-          <thead className="bg-gray-50 text-[11px] uppercase tracking-wide text-gray-600">
-            <tr>
-              <th className="px-4 py-3">NCT</th>
-              <th className="px-4 py-3">Title</th>
-              <th className="px-4 py-3">Disease area</th>
-              <th className="px-4 py-3">Reason</th>
-              <th className="px-4 py-3">Sponsor</th>
-              <th className="px-4 py-3">Collaborators</th>
-              <th className="px-4 py-3">Updated</th>
-              <th className="px-4 py-3">Conf.</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y">
-            {rows.map((r) => (
-              <tr key={r.nct_id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 font-mono text-xs">
-                  <Link className="text-blue-700 hover:underline" href={`/trial/${encodeURIComponent(r.nct_id)}`}>
-                    {r.nct_id}
-                  </Link>
+    <span className="inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-2.5 py-1 text-xs font-semibold text-[var(--text)]">
+      {children}
+    </span>
+  );
+}
+
+/**
+ * TrialTable (compat)
+ * - Updated to TrialIndexRow
+ * - No dependency on old TrialRow
+ * - Keeps “Open panel” affordance if provided
+ */
+export default function TrialTable({ rows, fromHref, onOpenPanel }: Props) {
+  return (
+    <div className="overflow-auto rounded-2xl border border-[var(--border)] bg-white shadow-[var(--shadow-soft)]">
+      <table className="min-w-[1100px] w-full">
+        <thead className="sticky top-0 bg-[var(--surface-2)] border-b border-[var(--border)]">
+          <tr className="text-left text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]">
+            <th className="p-3">Trial</th>
+            <th className="p-3">Title</th>
+            <th className="p-3">Phase</th>
+            <th className="p-3">Condition</th>
+            <th className="p-3">Intervention</th>
+            <th className="p-3">Status</th>
+            <th className="p-3">Reason</th>
+            <th className="p-3">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => {
+            const ph = parsePhases(r.phases || "")[0] || "Unknown";
+            return (
+              <tr key={r.nct_id} className="border-b border-[var(--border)] hover:bg-[var(--surface-2)]">
+                <td className="p-3 align-top">
+                  <div className="text-sm font-semibold">
+                    <Link
+                      href={`/trial/${encodeURIComponent(r.nct_id)}${fromHref ? `?from=${encodeURIComponent(fromHref)}` : ""}`}
+                      className="text-[var(--accent)]"
+                    >
+                      {r.nct_id}
+                    </Link>
+                  </div>
+                  {onOpenPanel && (
+                    <button
+                      type="button"
+                      className="mt-1 text-xs text-[var(--text-muted)] hover:text-[var(--text)]"
+                      onClick={() => onOpenPanel(r.nct_id)}
+                    >
+                      Open panel
+                    </button>
+                  )}
                 </td>
 
-                <td className="px-4 py-3">
-                  <div className="font-medium text-gray-900 line-clamp-2">{r.brief_title}</div>
-                  <div className="mt-1 text-xs text-gray-500 line-clamp-2">{r.why_stopped}</div>
+                <td className="p-3 align-top min-w-[360px]">
+                  <div className="text-sm font-semibold leading-snug">{r.brief_title || "—"}</div>
+                  <div className="mt-1 text-xs text-[var(--text-muted)]">{r.lead_sponsor || "—"}</div>
                 </td>
 
-                <td className="px-4 py-3">
-                  <div className="text-gray-900">{r.disease_area || "Other"}</div>
-                  {r.disease_areas_matched ? (
-                    <div className="mt-1 text-xs text-gray-500 line-clamp-2">{r.disease_areas_matched}</div>
-                  ) : null}
+                <td className="p-3 align-top text-sm">{phaseLabel(ph as any)}</td>
+                <td className="p-3 align-top text-sm">{r.condition_first || "—"}</td>
+                <td className="p-3 align-top text-sm">{r.intervention_first || "—"}</td>
+                <td className="p-3 align-top text-sm">{(r.overall_status || "—").toUpperCase()}</td>
+
+                <td className="p-3 align-top">
+                  <div className="flex flex-wrap gap-2">
+                    <Pill>{reasonBucket(r)}</Pill>
+                    {r.classification_label === "BIOLOGICAL_FAILURE" && <Pill>Likely scientific failure</Pill>}
+                  </div>
+                  <div className="mt-2 text-xs text-[var(--text-muted)]">
+                    <span className="font-semibold">Why stopped:</span>{" "}
+                    <span title={r.why_stopped_short || ""}>{r.why_stopped_short || "—"}</span>
+                  </div>
                 </td>
 
-                <td className="px-4 py-3">
-                  <span className={reasonPill(r.classification_reason)}>{r.classification_reason}</span>
-                </td>
-
-                <td className="px-4 py-3">
-                  <div className="text-gray-900 line-clamp-2">{r.lead_sponsor || "—"}</div>
-                </td>
-
-                <td className="px-4 py-3">
-                  <div className="text-gray-900 line-clamp-2">{r.collaborators || "—"}</div>
-                </td>
-
-                <td className="px-4 py-3 font-mono text-xs">{r.last_update_post_date || "—"}</td>
-
-                <td className="px-4 py-3">
-                  <span className={confBadge(r.classification_confidence)} title={r.classification_evidence || ""}>
-                    {r.classification_confidence || "—"}
-                  </span>
-                </td>
+                <td className="p-3 align-top text-sm">{r.last_update_post_date || "—"}</td>
               </tr>
-            ))}
-
-            {rows.length === 0 && (
-              <tr>
-                <td className="px-4 py-6 text-center text-gray-500" colSpan={8}>
-                  No results. Adjust filters or broaden your search.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
