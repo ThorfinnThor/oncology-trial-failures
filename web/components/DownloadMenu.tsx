@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import { TrialIndexRow, UrlState, DatasetMeta } from "@/lib/types";
-import { exportCSV, exportJSON } from "@/lib/export";
+import { TrialIndexRow, DatasetMeta, UrlState } from "@/lib/types";
+import { downloadTrialsCSV, downloadTrialsJSON } from "@/lib/download";
 
 type Props = {
   meta: DatasetMeta | null;
   state: UrlState;
-  rows: TrialIndexRow[]; // current filtered results (already applied)
+  rows: TrialIndexRow[]; // current filtered + sorted rows
 };
 
 function clsx(...xs: Array<string | false | null | undefined>) {
@@ -16,73 +16,56 @@ export default function DownloadMenu({ meta, state, rows }: Props) {
   const [open, setOpen] = useState(false);
 
   const label = useMemo(() => {
-    if (state.bio) return "Filtered results (likely scientific failure)";
-    if (state.area?.length) return `Filtered results (${state.area.length} area${state.area.length > 1 ? "s" : ""})`;
-    return "Filtered results";
-  }, [state]);
+    const n = rows.length;
+    if (n === 0) return "Export";
+    if (n === 1) return "Export (1 result)";
+    return `Export (${n.toLocaleString()} results)`;
+  }, [rows.length]);
 
   return (
     <div className="relative">
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
         className="inline-flex items-center justify-center rounded-xl px-3 py-2 text-sm font-semibold transition border bg-[var(--surface)] text-[var(--text)] border-[var(--border)] hover:bg-[var(--surface-2)]"
-        aria-haspopup="menu"
+        onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
+        aria-haspopup="menu"
       >
-        Download
+        {label}
       </button>
 
       {open && (
         <div
           role="menu"
-          className="absolute right-0 mt-2 w-64 rounded-2xl border border-[var(--border)] bg-white shadow-[var(--shadow)] overflow-hidden z-50"
+          className="absolute right-0 mt-2 w-56 rounded-2xl border border-[var(--border)] bg-white shadow-[var(--shadow-soft)] overflow-hidden z-20"
         >
-          <div className="px-4 py-3 border-b border-[var(--border)]">
-            <div className="text-sm font-semibold">Export</div>
-            <div className="text-xs text-[var(--text-muted)]">{label}</div>
-            <div className="mt-1 text-xs text-[var(--text-muted)]">
-              {rows.length.toLocaleString()} rows
-            </div>
-          </div>
-
           <button
             role="menuitem"
             className={clsx(
-              "w-full text-left px-4 py-3 text-sm font-semibold hover:bg-[var(--surface-2)]"
+              "w-full text-left px-4 py-3 text-sm hover:bg-[var(--surface-2)]",
+              "border-b border-[var(--border)]"
             )}
             onClick={() => {
-              exportCSV(meta, state, rows);
+              downloadTrialsCSV(meta, state, rows);
               setOpen(false);
             }}
             type="button"
           >
-            Download CSV
-            <div className="text-xs font-normal text-[var(--text-muted)]">Includes metadata header</div>
+            Download CSV (this view)
+            <div className="text-xs text-[var(--text-muted)] mt-1">Includes filters + dataset version.</div>
           </button>
 
           <button
             role="menuitem"
-            className={clsx(
-              "w-full text-left px-4 py-3 text-sm font-semibold hover:bg-[var(--surface-2)] border-t border-[var(--border)]"
-            )}
+            className="w-full text-left px-4 py-3 text-sm hover:bg-[var(--surface-2)]"
             onClick={() => {
-              exportJSON(meta, state, rows);
+              downloadTrialsJSON(meta, state, rows);
               setOpen(false);
             }}
             type="button"
           >
-            Download JSON
-            <div className="text-xs font-normal text-[var(--text-muted)]">Includes metadata + records</div>
-          </button>
-
-          <button
-            role="menuitem"
-            className="w-full text-left px-4 py-3 text-sm font-semibold hover:bg-[var(--surface-2)] border-t border-[var(--border)]"
-            onClick={() => setOpen(false)}
-            type="button"
-          >
-            Close
+            Download JSON (this view)
+            <div className="text-xs text-[var(--text-muted)] mt-1">Metadata + records.</div>
           </button>
         </div>
       )}
