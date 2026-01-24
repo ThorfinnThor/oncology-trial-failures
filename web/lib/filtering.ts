@@ -7,7 +7,7 @@ function norm(s: string) {
 
 /**
  * Phase keys used in URL/state and facet filtering.
- * We keep these short and stable.
+ * Stable internal tokens + canonical ordering.
  */
 export type PhaseKey = "EP1" | "I" | "I/II" | "II" | "II/III" | "III" | "IV" | "Unknown";
 
@@ -28,25 +28,33 @@ export function phaseLabel(p: PhaseKey): string {
 
 /**
  * Parse phases from raw strings.
- * We detect explicit combined phases by slash patterns (e.g., Phase 1/2, Phase 2/3).
- * We do NOT invent combined phases from separate tokens like "PHASE1; PHASE2".
+ * Detect explicit combined phases via slash patterns.
+ * Do not synthesize combined phases from separate tokens (e.g., PHASE1; PHASE2).
  */
 export function parsePhases(phasesRaw: string): PhaseKey[] {
   const raw = (phasesRaw || "").toUpperCase();
-
   if (!raw.trim()) return ["Unknown"];
 
   const out = new Set<PhaseKey>();
 
   // explicit combined
-  if (raw.includes("1/2") || raw.includes("I/II") || raw.includes("PHASE 1/2") || raw.includes("PHASE1/2") || raw.includes("PHASE 1 / 2")) {
-    out.add("I/II");
-  }
-  if (raw.includes("2/3") || raw.includes("II/III") || raw.includes("PHASE 2/3") || raw.includes("PHASE2/3") || raw.includes("PHASE 2 / 3")) {
-    out.add("II/III");
-  }
+  if (
+    raw.includes("1/2") ||
+    raw.includes("I/II") ||
+    raw.includes("PHASE 1/2") ||
+    raw.includes("PHASE1/2") ||
+    raw.includes("PHASE 1 / 2")
+  ) out.add("I/II");
 
-  // Early Phase 1 (if present)
+  if (
+    raw.includes("2/3") ||
+    raw.includes("II/III") ||
+    raw.includes("PHASE 2/3") ||
+    raw.includes("PHASE2/3") ||
+    raw.includes("PHASE 2 / 3")
+  ) out.add("II/III");
+
+  // early phase 1
   if (raw.includes("EARLY PHASE 1") || raw.includes("EARLY_PHASE1") || raw.includes("EARLYPHASE1")) {
     out.add("EP1");
   }
@@ -59,11 +67,12 @@ export function parsePhases(phasesRaw: string): PhaseKey[] {
 
   if (out.size === 0) out.add("Unknown");
 
-  // order deterministically
   return PHASE_ORDER.filter((p) => out.has(p));
 }
 
-// Structured bucket inference from why_stopped + existing reason
+/**
+ * Structured reason-bucket inference from why_stopped + existing reason label.
+ */
 export function reasonBucket(t: TrialRow): ReasonBucket {
   const base = (t.classification_reason || "").toUpperCase();
   if (base === "SAFETY") return "Safety";
@@ -107,12 +116,16 @@ export function matchesQuery(t: TrialRow, q: string): boolean {
   return norm(blob).includes(needle);
 }
 
+/**
+ * Apply all filters from URL-state.
+ * state.bio == true means the “Likely scientific failure” facet is ON.
+ */
 export function filterTrials(trials: TrialRow[], state: UrlState): TrialRow[] {
   let rows = trials;
 
   if (state.q) rows = rows.filter((t) => matchesQuery(t, state.q!));
 
-  // “Likely scientific failure” filter (binary)
+  // “Likely scientific failure” (binary)
   if (state.bio) {
     rows = rows.filter((t) =>
       (t.classification_label || "") === "BIOLOGICAL_FAILURE" &&
@@ -194,4 +207,52 @@ export function sortTrials(rows: TrialRow[], sort: SortKey): TrialRow[] {
   }
 
   return out;
+}
+
+/**
+ * Related trials module for the details drawer.
+ * Returns up to 5 records for each similarity.
+ */
+export function relatedTrials(allTrials: TrialRow[], base: TrialRow) {
+  const baseId = base.nct_id;
+  const baseSponsor = (base.lead_sponsor || "").trim();
+
+  const baseInterventions = new Set(splitSemicolonValues(base.intervention_names || "").map((x) => x.toLowerCase()));
+  const baseConditions = new Set(splitSemicolonValues(base.conditions || "").map((x) => x.toLowerCase()));
+
+  const sameSponsor: TrialRow[] = [];
+  const sameIntervention: TrialRow[] = [];
+  const sameCondition: TrialRow[] = [];
+
+  for (const t of allTrials) {
+    if (!t?.nct_id || t.nct_id === baseId) continue;
+
+    const sponsor = (t.lead_sponsor || "").trim();
+    if (baseSponsor && sponsor && sponsor === baseSponsor) {
+      sameSponsor.push(t);
+    }
+
+    const ints = splitSemicolonValues(t.intervention_names || "").map((x) => x.toLowerCase());
+    if (ints.some((x) => baseInterventions.has(x))) {
+      sameIntervention.push(t);
+    }
+
+    const conds = splitSemicolonValues(t.conditions || "").map((x) => x.toLowerCase());
+    if (conds.some((x) => baseConditions.has(x))) {
+      sameCondition.push(t);
+    }
+  }
+
+  const byDateDesc = (a: TrialRow, b: TrialRow) =>
+    (b.last_update_post_date || "").localeCompare(a.last_update_post_date || "");
+
+  sameSponsor.sort(byDateDesc);
+  sameIntervention.sort(byDateDesc);
+  sameCondition.sort(byDateDesc);
+
+  return {
+    sameSponsor: sameSponsor.slice(0, 5),
+    sameIntervention: sameIntervention.slice(0, 5),
+    sameCondition: sameCondition.slice(0, 5),
+  };
 }
