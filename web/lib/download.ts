@@ -1,6 +1,33 @@
 import { DatasetMeta, TrialIndexRow, UrlState } from "./types";
 
-function downloadBlob(filename: string, content: string, mime: string) {
+export type DownloadScope = "all" | "filtered" | "selected";
+export type DownloadFormat = "csv" | "json";
+
+function nowIso() {
+  return new Date().toISOString();
+}
+
+function safe(s: any) {
+  return (s ?? "").toString();
+}
+
+function csvEscape(s: string) {
+  const t = safe(s);
+  if (t.includes('"') || t.includes(",") || t.includes("\n")) return `"${t.replace(/"/g, '""')}"`;
+  return t;
+}
+
+function buildMetadata(meta: DatasetMeta | null, state: UrlState, count: number) {
+  return {
+    exported_at_utc: nowIso(),
+    dataset: meta?.version || "Unknown dataset",
+    source: meta?.source || "Unknown",
+    filters: state,
+    result_count: count
+  };
+}
+
+function downloadBlob(filename: string, mime: string, content: string) {
   const blob = new Blob([content], { type: mime });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -12,15 +39,30 @@ function downloadBlob(filename: string, content: string, mime: string) {
   URL.revokeObjectURL(url);
 }
 
-export function downloadTrialsCSV(meta: DatasetMeta | null, state: UrlState, rows: TrialIndexRow[]) {
-  const headerMeta = [
-    `# exported_at_utc=${new Date().toISOString()}`,
-    `# dataset_version=${meta?.version || "unknown"}`,
-    `# filters=${JSON.stringify(state)}`,
-    `# total_rows=${rows.length}`,
-  ].join("\n");
+export function downloadTrials(
+  meta: DatasetMeta | null,
+  state: UrlState,
+  rows: TrialIndexRow[],
+  scope: DownloadScope,
+  format: DownloadFormat
+) {
+  const md = buildMetadata(meta, state, rows.length);
 
-  const cols = [
+  const baseName =
+    scope === "all"
+      ? "all_trials"
+      : scope === "filtered"
+      ? "filtered_trials"
+      : "selected_trials";
+
+  if (format === "json") {
+    const payload = { metadata: md, records: rows };
+    downloadBlob(`${baseName}.json`, "application/json;charset=utf-8", JSON.stringify(payload, null, 2));
+    return;
+  }
+
+  // CSV (metadata as commented header lines)
+  const header = [
     "nct_id",
     "brief_title",
     "overall_status",
@@ -36,32 +78,23 @@ export function downloadTrialsCSV(meta: DatasetMeta | null, state: UrlState, row
     "classification_confidence",
     "classification_evidence",
     "last_update_post_date",
-    "url",
+    "url"
   ];
 
-  const esc = (v: any) => {
-    const s = String(v ?? "");
-    const needs = s.includes(",") || s.includes('"') || s.includes("\n");
-    const out = s.replaceAll('"', '""');
-    return needs ? `"${out}"` : out;
-  };
+  const metaLines = [
+    `# exported_at_utc: ${md.exported_at_utc}`,
+    `# dataset: ${md.dataset}`,
+    `# source: ${md.source}`,
+    `# result_count: ${md.result_count}`,
+    `# filters: ${JSON.stringify(md.filters)}`
+  ].join("\n");
 
-  const body = [cols.join(",")]
-    .concat(rows.map((r) => cols.map((c) => esc((r as any)[c])).join(",")))
-    .join("\n");
+  const lines = rows.map((r) =>
+    header
+      .map((k) => csvEscape((r as any)[k]))
+      .join(",")
+  );
 
-  downloadBlob("trialfailures_export.csv", `${headerMeta}\n${body}`, "text/csv;charset=utf-8");
-}
-
-export function downloadTrialsJSON(meta: DatasetMeta | null, state: UrlState, rows: TrialIndexRow[]) {
-  const payload = {
-    metadata: {
-      exported_at_utc: new Date().toISOString(),
-      dataset_version: meta?.version || "unknown",
-      filters: state,
-      total_rows: rows.length,
-    },
-    records: rows,
-  };
-  downloadBlob("trialfailures_export.json", JSON.stringify(payload, null, 2), "application/json");
+  const csv = `${metaLines}\n${header.join(",")}\n${lines.join("\n")}`;
+  downloadBlob(`${baseName}.csv`, "text/csv;charset=utf-8", csv);
 }
