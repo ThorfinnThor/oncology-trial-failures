@@ -1,147 +1,227 @@
 import { ReasonBucket, SortKey, TrialIndexRow, UrlState } from "./types";
 
-function norm(s: string) {
-  return (s || "").toLowerCase();
-}
+/**
+ * Phase normalization and ordering
+ */
+export const PHASE_ORDER = [
+  "EARLY_PHASE1",
+  "PHASE1",
+  "PHASE1/PHASE2",
+  "PHASE2",
+  "PHASE2/PHASE3",
+  "PHASE3",
+  "PHASE4",
+  "NOT_APPLICABLE",
+  "UNKNOWN",
+] as const;
 
-export type PhaseKey = "EP1" | "I" | "I/II" | "II" | "II/III" | "III" | "IV" | "Unknown";
-export const PHASE_ORDER: PhaseKey[] = ["EP1", "I", "I/II", "II", "II/III", "III", "IV", "Unknown"];
-
-export function phaseLabel(p: PhaseKey): string {
-  switch (p) {
-    case "EP1": return "Early Phase 1";
-    case "I": return "Phase I";
-    case "I/II": return "Phase I/II";
-    case "II": return "Phase II";
-    case "II/III": return "Phase II/III";
-    case "III": return "Phase III";
-    case "IV": return "Phase IV";
-    default: return "Unknown";
-  }
-}
+export type PhaseKey = (typeof PHASE_ORDER)[number];
 
 export function parsePhases(phasesRaw: string): PhaseKey[] {
-  const raw = (phasesRaw || "").toUpperCase();
-  if (!raw.trim()) return ["Unknown"];
+  const s = (phasesRaw || "").toUpperCase();
 
-  const out = new Set<PhaseKey>();
+  // Common encodings coming from CT.gov exports/pipeline
+  const keys: PhaseKey[] = [];
+  if (!s.trim()) return ["UNKNOWN"];
 
-  if (raw.includes("1/2") || raw.includes("I/II")) out.add("I/II");
-  if (raw.includes("2/3") || raw.includes("II/III")) out.add("II/III");
-  if (raw.includes("EARLY PHASE 1")) out.add("EP1");
+  const add = (k: PhaseKey) => {
+    if (!keys.includes(k)) keys.push(k);
+  };
 
-  if (raw.includes("PHASE1") || raw.includes("PHASE 1") || raw.includes("PHASE I")) out.add("I");
-  if (raw.includes("PHASE2") || raw.includes("PHASE 2") || raw.includes("PHASE II")) out.add("II");
-  if (raw.includes("PHASE3") || raw.includes("PHASE 3") || raw.includes("PHASE III")) out.add("III");
-  if (raw.includes("PHASE4") || raw.includes("PHASE 4") || raw.includes("PHASE IV")) out.add("IV");
+  if (s.includes("EARLY") && s.includes("PHASE 1")) add("EARLY_PHASE1");
+  if (s.includes("PHASE 1/PHASE 2") || (s.includes("PHASE 1") && s.includes("PHASE 2") && s.includes("/"))) add("PHASE1/PHASE2");
+  if (s.includes("PHASE 2/PHASE 3") || (s.includes("PHASE 2") && s.includes("PHASE 3") && s.includes("/"))) add("PHASE2/PHASE3");
+  if (s.includes("PHASE 1") && !s.includes("EARLY") && !s.includes("1/PHASE 2")) add("PHASE1");
+  if (s.includes("PHASE 2") && !s.includes("2/PHASE 3")) add("PHASE2");
+  if (s.includes("PHASE 3")) add("PHASE3");
+  if (s.includes("PHASE 4")) add("PHASE4");
+  if (s.includes("NOT APPLICABLE")) add("NOT_APPLICABLE");
 
-  if (out.size === 0) out.add("Unknown");
-  return PHASE_ORDER.filter((p) => out.has(p));
+  if (keys.length === 0) add("UNKNOWN");
+  return keys;
 }
 
-export function reasonBucket(r: TrialIndexRow): ReasonBucket {
-  const base = (r.classification_reason || "").toUpperCase();
-  if (base === "SAFETY") return "Safety";
-  if (base === "EFFICACY/FUTILITY") return "Efficacy";
-
-  // Use short reason text (cheap)
-  const w = norm(r.why_stopped_short || "");
-  if (w.includes("recruit") || w.includes("enroll") || w.includes("accrual")) return "Enrollment";
-  if (w.includes("funding") || w.includes("budget") || w.includes("financial")) return "Funding";
-  if (w.includes("strategic") || w.includes("priorit") || w.includes("portfolio") || w.includes("business")) return "Strategic";
-  if (w.includes("regulatory") || w.includes("irb") || w.includes("fda") || w.includes("ema")) return "Regulatory";
-  if (base === "OPERATIONAL") return "Operational";
-  return "Other/Unknown";
-}
-
-export function confidenceScore(r: TrialIndexRow): number {
-  const c = (r.classification_confidence || "").toUpperCase();
-  if (c === "HIGH") return 3;
-  if (c === "MEDIUM") return 2;
-  if (c === "LOW") return 1;
-  return 0;
-}
-
-export function filterRows(rows: TrialIndexRow[], state: UrlState): TrialIndexRow[] {
-  let out = rows;
-
-  // Search: single includes() on precomputed blob (fast)
-  const q = (state.q || "").trim().toLowerCase();
-  if (q) out = out.filter((r) => (r.search_blob || "").includes(q));
-
-  // Likely scientific failure (binary)
-  if (state.bio) {
-    out = out.filter((r) =>
-      r.classification_label === "BIOLOGICAL_FAILURE" &&
-      ["HIGH", "MEDIUM"].includes((r.classification_confidence || "").toUpperCase())
-    );
-  }
-
-  if (state.status?.length) {
-    const set = new Set(state.status.map((x) => x.toUpperCase()));
-    out = out.filter((r) => set.has((r.overall_status || "").toUpperCase()));
-  }
-
-  if (state.phase?.length) {
-    const set = new Set(state.phase);
-    out = out.filter((r) => parsePhases(r.phases || "").some((p) => set.has(p)));
-  }
-
-  if (state.area?.length) {
-    const set = new Set(state.area);
-    out = out.filter((r) => set.has((r.disease_area || "Other") || "Other"));
-  }
-
-  if (state.bucket?.length) {
-    const set = new Set(state.bucket);
-    out = out.filter((r) => set.has(reasonBucket(r)));
-  }
-
-  // Lightweight sponsor/condition/intervention filtering uses index fields only (fast)
-  if (state.sponsor?.length) {
-    const set = new Set(state.sponsor);
-    out = out.filter((r) => set.has((r.lead_sponsor || "").trim()));
-  }
-
-  if (state.condition?.length) {
-    const set = new Set(state.condition);
-    out = out.filter((r) => set.has(r.condition_first));
-  }
-
-  if (state.intervention?.length) {
-    const set = new Set(state.intervention);
-    out = out.filter((r) => set.has(r.intervention_first));
-  }
-
-  if (state.date_from) out = out.filter((r) => (r.last_update_post_date || "") >= state.date_from!);
-  if (state.date_to) out = out.filter((r) => (r.last_update_post_date || "") <= state.date_to!);
-
-  return out;
-}
-
-export function sortRows(rows: TrialIndexRow[], sort: SortKey): TrialIndexRow[] {
-  const out = [...rows];
-  switch (sort) {
-    case "date_asc":
-      out.sort((a, b) => (a.last_update_post_date || "").localeCompare(b.last_update_post_date || ""));
-      break;
-    case "date_desc":
-      out.sort((a, b) => (b.last_update_post_date || "").localeCompare(a.last_update_post_date || ""));
-      break;
-    case "sponsor_asc":
-      out.sort((a, b) => (a.lead_sponsor || "").localeCompare(b.lead_sponsor || ""));
-      break;
-    case "sponsor_desc":
-      out.sort((a, b) => (b.lead_sponsor || "").localeCompare(a.lead_sponsor || ""));
-      break;
-    case "confidence_asc":
-      out.sort((a, b) => confidenceScore(a) - confidenceScore(b));
-      break;
-    case "confidence_desc":
-      out.sort((a, b) => confidenceScore(b) - confidenceScore(a));
-      break;
+export function phaseLabel(k: PhaseKey): string {
+  switch (k) {
+    case "EARLY_PHASE1":
+      return "Early Phase I";
+    case "PHASE1":
+      return "Phase I";
+    case "PHASE1/PHASE2":
+      return "Phase I/II";
+    case "PHASE2":
+      return "Phase II";
+    case "PHASE2/PHASE3":
+      return "Phase II/III";
+    case "PHASE3":
+      return "Phase III";
+    case "PHASE4":
+      return "Phase IV";
+    case "NOT_APPLICABLE":
+      return "Not applicable";
+    case "UNKNOWN":
     default:
-      out.sort((a, b) => (b.last_update_post_date || "").localeCompare(a.last_update_post_date || ""));
+      return "Unknown";
   }
-  return out;
+}
+
+/**
+ * Reason bucket (canonical union values)
+ * Must return one of ReasonBucket.
+ */
+export function reasonBucket(r: TrialIndexRow): ReasonBucket {
+  const base = (r.classification_reason || "").toUpperCase().trim();
+
+  // Prefer pipeline classification_reason when present
+  if (base === "SAFETY") return "SAFETY";
+  if (base === "EFFICACY/FUTILITY") return "EFFICACY/FUTILITY";
+  if (base === "OPERATIONAL") return "OPERATIONAL";
+  if (base === "ENROLLMENT") return "ENROLLMENT";
+  if (base === "FUNDING") return "FUNDING";
+  if (base === "STRATEGIC") return "STRATEGIC";
+  if (base === "REGULATORY") return "REGULATORY";
+  if (base === "OTHER/UNKNOWN") return "OTHER/UNKNOWN";
+
+  // Fallback: infer from short reason text (cheap heuristic)
+  const txt = (r.why_stopped_short || "").toLowerCase();
+
+  const has = (re: RegExp) => re.test(txt);
+
+  if (has(/\bsafety\b|\btox\b|\btoxic\b|\badverse\b|\bserious adverse\b/)) return "SAFETY";
+  if (has(/\befficacy\b|\bfutility\b|\binsufficient efficacy\b|\black of efficacy\b|\bno benefit\b/)) return "EFFICACY/FUTILITY";
+  if (has(/\benroll\b|\brecruit\b|\bslow accrual\b|\binsufficient accrual\b/)) return "ENROLLMENT";
+  if (has(/\bfund\b|\bbudget\b|\bfinancial\b/)) return "FUNDING";
+  if (has(/\bstrategy\b|\bpriorit/)) return "STRATEGIC";
+  if (has(/\bregulator\b|\bfda\b|\bethics\b|\birb\b/)) return "REGULATORY";
+
+  // default
+  return "OTHER/UNKNOWN";
+}
+
+/**
+ * Filtering — works on TrialIndexRow
+ */
+export function filterRows(rows: TrialIndexRow[], state: UrlState): TrialIndexRow[] {
+  const q = (state.q || "").trim().toLowerCase();
+
+  const statusSet = new Set((state.status || []).map((x) => x.toUpperCase()));
+  const phaseSet = new Set((state.phase || []).map((x) => x.toUpperCase()));
+  const areaSet = new Set((state.area || []).map((x) => x.toLowerCase()));
+  const bucketSet = new Set((state.bucket || []).map((x) => x.toUpperCase()));
+  const sponsorSet = new Set((state.sponsor || []).map((x) => x.toLowerCase()));
+  const conditionSet = new Set((state.condition || []).map((x) => x.toLowerCase()));
+  const interventionSet = new Set((state.intervention || []).map((x) => x.toLowerCase()));
+
+  const bioOnly = !!state.bio;
+
+  const dateFrom = state.date_from ? new Date(state.date_from) : null;
+  const dateTo = state.date_to ? new Date(state.date_to) : null;
+
+  return rows.filter((r) => {
+    if (statusSet.size) {
+      const st = (r.overall_status || "").toUpperCase();
+      if (!statusSet.has(st)) return false;
+    }
+
+    if (areaSet.size) {
+      const a = ((r.disease_area || "Other") || "Other").toLowerCase();
+      if (!areaSet.has(a)) return false;
+    }
+
+    if (bucketSet.size) {
+      const b = reasonBucket(r);
+      if (!bucketSet.has(b.toUpperCase())) return false;
+    }
+
+    if (bioOnly) {
+      if ((r.classification_label || "").toUpperCase() !== "BIOLOGICAL_FAILURE") return false;
+    }
+
+    if (sponsorSet.size) {
+      const s = (r.lead_sponsor || "").toLowerCase();
+      if (!sponsorSet.has(s)) return false;
+    }
+
+    if (conditionSet.size) {
+      const c = (r.condition_first || "").toLowerCase();
+      if (!conditionSet.has(c)) return false;
+    }
+
+    if (interventionSet.size) {
+      const i = (r.intervention_first || "").toLowerCase();
+      if (!interventionSet.has(i)) return false;
+    }
+
+    if (phaseSet.size) {
+      const ph = parsePhases(r.phases || "");
+      const ok = ph.some((p) => phaseSet.has(p.toUpperCase()));
+      if (!ok) return false;
+    }
+
+    if (dateFrom || dateTo) {
+      const d = r.last_update_post_date ? new Date(r.last_update_post_date) : null;
+      if (d) {
+        if (dateFrom && d < dateFrom) return false;
+        if (dateTo && d > dateTo) return false;
+      }
+    }
+
+    if (q) {
+      const hay = [
+        r.nct_id,
+        r.brief_title,
+        r.lead_sponsor,
+        r.collaborators,
+        r.condition_first,
+        r.intervention_first,
+        r.why_stopped_short,
+        r.disease_area,
+        r.overall_status,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+
+    return true;
+  });
+}
+
+/**
+ * Sorting
+ */
+function cmp(a: any, b: any) {
+  if (a == null && b == null) return 0;
+  if (a == null) return 1;
+  if (b == null) return -1;
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
+export function sortRows(rows: TrialIndexRow[], sortKey: SortKey): TrialIndexRow[] {
+  const arr = rows.slice();
+
+  arr.sort((x, y) => {
+    switch (sortKey) {
+      case "date_asc":
+        return cmp(x.last_update_post_date, y.last_update_post_date);
+      case "date_desc":
+        return -cmp(x.last_update_post_date, y.last_update_post_date);
+
+      case "sponsor_asc":
+        return cmp((x.lead_sponsor || "").toLowerCase(), (y.lead_sponsor || "").toLowerCase());
+      case "sponsor_desc":
+        return -cmp((x.lead_sponsor || "").toLowerCase(), (y.lead_sponsor || "").toLowerCase());
+
+      case "confidence_asc":
+        return cmp((x.classification_confidence || "").toUpperCase(), (y.classification_confidence || "").toUpperCase());
+      case "confidence_desc":
+        return -cmp((x.classification_confidence || "").toUpperCase(), (y.classification_confidence || "").toUpperCase());
+
+      default:
+        return -cmp(x.last_update_post_date, y.last_update_post_date);
+    }
+  });
+
+  return arr;
 }
