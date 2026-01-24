@@ -17,7 +17,7 @@ html,body{
   padding:0;
   background:var(--bg);
   color:var(--text);
-  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
 }
 *{box-sizing:border-box}
 a{color:inherit;text-decoration:none}
@@ -98,7 +98,13 @@ a{color:inherit;text-decoration:none}
 .chip-bucket-funding{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.22);color:rgba(154,52,18,.95)}
 .chip-bucket-regulatory{background:rgba(14,165,233,.12);border-color:rgba(14,165,233,.22);color:rgba(7,89,133,.95)}
 .chip-bucket-strategic{background:rgba(217,70,239,.12);border-color:rgba(217,70,239,.22);color:rgba(134,25,143,.95)}
-.chip-bucket-operational{background:rgba(100,116,139,.10);border-color:rgba(100,116,139,.22);color:rgba(30,41,59,.95)}
+
+/* UPDATED: OPERATIONAL now has a distinct teal color */
+.chip-bucket-operational{
+  background:rgba(20,184,166,.12);
+  border-color:rgba(20,184,166,.24);
+  color:rgba(15,118,110,.98);
+}
 
 /* Topbar + layout */
 .topbar{
@@ -132,7 +138,7 @@ a{color:inherit;text-decoration:none}
   align-items:start;
 }
 
-/* IMPORTANT: revert rail spacing to the previous behavior */
+/* Reverted rail spacing */
 .rail{position:relative}
 .rail-scroll{
   position:sticky;
@@ -142,7 +148,7 @@ a{color:inherit;text-decoration:none}
   padding-right:6px;
   display:flex;
   flex-direction:column;
-  gap:14px; /* previous spacing */
+  gap:14px;
 }
 
 .content{min-width:0}
@@ -158,7 +164,7 @@ a{color:inherit;text-decoration:none}
 .results-controls{display:flex;align-items:center;gap:10px}
 .below-actions{margin-top:12px;display:flex;justify-content:flex-end}
 
-/* Facet styles (clickable) without changing spacing */
+/* Facet styles */
 .facet-title{
   font-size:12px;
   font-weight:800;
@@ -214,7 +220,7 @@ a{color:inherit;text-decoration:none}
 .th.intv,.td.intv{width:240px}
 .th.status,.td.status{width:150px}
 .th.bucket,.td.bucket{width:170px}
-.th.why,.td.why{width:520px} /* increased */
+.th.why,.td.why{width:520px}
 
 .th{
   position:sticky;
@@ -253,7 +259,7 @@ a{color:inherit;text-decoration:none}
 
 .why-clamp{
   display:-webkit-box;
-  -webkit-line-clamp:3; /* show more */
+  -webkit-line-clamp:3;
   -webkit-box-orient:vertical;
   overflow:hidden;
   color:var(--text-muted);
@@ -282,31 +288,34 @@ a{color:inherit;text-decoration:none}
 
 .note{margin-top:10px;font-size:12px;color:var(--text-muted)}
 
-/* Modal + Drawer (custom CSS, no Tailwind) */
+/* Modal + Drawer */
 .overlay{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.30);
 }
 
+/* UPDATED: align to top, add padding, and prevent “bottom cut” feel */
 .modal-wrap{
   position:fixed;
   inset:0;
   z-index:60;
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:center;
-  padding:18px;
+  padding:72px 18px 42px;
 }
+
 .modal{
   width:min(1100px, 96vw);
-  max-height:88vh;
+  max-height:92vh;           /* slightly larger */
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:18px;
   box-shadow:var(--shadow);
   overflow:hidden;
 }
+
 .modal-hd{
   padding:14px 16px;
   border-bottom:1px solid var(--border);
@@ -315,10 +324,12 @@ a{color:inherit;text-decoration:none}
   justify-content:space-between;
   gap:12px;
 }
+
+/* UPDATED: always scroll + bottom padding so last row is never “under” rounded edge */
 .modal-bd{
-  padding:16px;
+  padding:16px 16px 28px;
   overflow:auto;
-  max-height:calc(88vh - 62px);
+  max-height:calc(92vh - 64px);
 }
 
 .drawer-wrap{
