@@ -2,31 +2,20 @@ import Link from "next/link";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
-function clamp(s: string, n: number) {
-  const t = (s || "").trim();
-  if (t.length <= n) return t;
-  return t.slice(0, n - 1) + "…";
-}
-
 function phaseClass(phaseKey: string) {
   const p = (phaseKey || "").toUpperCase();
-  if (p === "EARLY_PHASE1" || p === "PHASE1") return "chip-phase-1";
-  if (p === "PHASE1/PHASE2" || p === "PHASE2") return "chip-phase-2";
-  if (p === "PHASE2/PHASE3" || p === "PHASE3") return "chip-phase-3";
-  if (p === "PHASE4") return "chip-phase-4";
-  return "chip-neutral";
+  if (p === "EARLY_PHASE1" || p === "PHASE1") return "chip chip-phase-1";
+  if (p === "PHASE1/PHASE2" || p === "PHASE2") return "chip chip-phase-2";
+  if (p === "PHASE2/PHASE3" || p === "PHASE3") return "chip chip-phase-3";
+  if (p === "PHASE4") return "chip chip-phase-4";
+  return "chip chip-neutral";
 }
 
 function bucketClass(bucket: string) {
   const b = (bucket || "").toUpperCase();
-  if (b === "SAFETY") return "chip-bucket-safety";
-  if (b === "EFFICACY/FUTILITY") return "chip-bucket-efficacy";
-  if (b === "ENROLLMENT") return "chip-bucket-enrollment";
-  if (b === "FUNDING") return "chip-bucket-funding";
-  if (b === "REGULATORY") return "chip-bucket-regulatory";
-  if (b === "STRATEGIC") return "chip-bucket-strategic";
-  if (b === "OPERATIONAL") return "chip-bucket-operational";
-  return "chip-neutral";
+  if (b === "SAFETY") return "chip chip-bucket-safety";
+  if (b === "EFFICACY/FUTILITY") return "chip chip-bucket-efficacy";
+  return "chip chip-neutral";
 }
 
 export default function ResultsList({
@@ -46,66 +35,61 @@ export default function ResultsList({
   const shown = rows.slice(0, 400);
 
   return (
-    <div className="space-y-3">
+    <div className="m-list">
       {shown.map((r) => {
         const checked = selected.has(r.nct_id);
         const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
-        const why = (r.why_stopped_short || "").trim();
         const bucket = reasonBucket(r);
+        const why = (r.why_stopped_short || "").trim();
 
         return (
-          <div key={r.nct_id} className="card p-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <Link href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`} className="font-semibold">
+          <div key={r.nct_id} className="m-card">
+            <div className="m-head">
+              <div className="m-id">
+                <Link href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`} className="link">
                   {r.nct_id}
                 </Link>
-                <div className="mt-1 font-medium leading-snug break-words">{r.brief_title || "—"}</div>
-                <div className="mt-1 text-sm leading-snug break-words" style={{ color: "var(--text-muted)" }}>
-                  {r.lead_sponsor || "—"}
-                </div>
+                <div className="m-title">{r.brief_title || "—"}</div>
+                <div className="m-sub">{r.lead_sponsor || "—"}</div>
               </div>
 
-              <div className="flex flex-col items-end gap-2">
+              <div className="m-actions">
                 <input
                   type="checkbox"
                   checked={checked}
                   onClick={(e) => e.stopPropagation()}
                   onChange={() => onToggleSelect(r.nct_id)}
+                  aria-label={`Select ${r.nct_id}`}
                 />
                 <button
-                  className="text-xs text-[var(--accent)] hover:underline"
+                  className="mini"
+                  type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     onOpenPanel(r.nct_id);
                   }}
-                  type="button"
                 >
                   Open panel
                 </button>
               </div>
             </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              <span className={`chip ${phaseClass(String(p))}`}>{phaseLabel(p as any)}</span>
+            <div className="m-tags">
+              <span className={phaseClass(p)}>{phaseLabel(p)}</span>
               <span className="chip chip-neutral">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
-              <span className={`chip ${bucketClass(bucket)}`}>{bucket}</span>
+              <span className={bucketClass(bucket)}>{bucket}</span>
               <span className="chip chip-neutral">{r.disease_area || "Other"}</span>
             </div>
 
-            <div className="mt-3 text-sm" style={{ color: "var(--text-muted)" }}>
-              <div className="text-xs font-semibold uppercase tracking-wide mb-1">Why stopped</div>
-              {why ? clamp(why, 260) : "—"}
+            <div className="m-why">
+              <div className="m-why-label">Why stopped</div>
+              <div className="m-why-text">{why || "—"}</div>
             </div>
           </div>
         );
       })}
 
-      {rows.length > 400 && (
-        <div className="text-xs" style={{ color: "var(--text-muted)" }}>
-          Showing first 400 results on mobile for performance. Use filters/search to narrow further.
-        </div>
-      )}
+      {rows.length > 400 && <div className="note">Showing first 400 results on mobile. Filter/search to narrow.</div>}
     </div>
   );
 }
