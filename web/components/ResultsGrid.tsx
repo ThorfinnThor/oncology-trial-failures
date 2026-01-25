@@ -43,13 +43,12 @@ export default function ResultsGrid({
 }) {
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
 
-  // SSR-safe virtualization: scroll container (NOT window)
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 104,
+    estimateSize: () => 112, // slightly larger to fit the date line
     overscan: 12
   });
 
@@ -104,6 +103,7 @@ export default function ResultsGrid({
             const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
             const bucket = reasonBucket(r);
             const why = (r.why_stopped_short || "").trim();
+            const lastUpdated = (r.last_update_post_date || "").trim();
 
             return (
               <div
@@ -154,6 +154,9 @@ export default function ResultsGrid({
                 <div className="td title">
                   <div className="t-title">{r.brief_title || "—"}</div>
                   <div className="t-sub">{r.lead_sponsor || "—"}</div>
+                  <div className="t-sub">
+                    Last updated: <span style={{ fontWeight: 700, color: "rgba(15,23,42,.78)" }}>{lastUpdated || "—"}</span>
+                  </div>
                 </div>
 
                 <div className="td phase">
@@ -165,9 +168,7 @@ export default function ResultsGrid({
                 <div className="td intv">{r.intervention_first || "—"}</div>
 
                 <div className="td status">
-                  <span className="chip chip-neutral">
-                    {(r.overall_status || "UNKNOWN").toUpperCase()}
-                  </span>
+                  <span className="chip chip-neutral">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
                 </div>
 
                 <div className="td bucket">
@@ -182,9 +183,7 @@ export default function ResultsGrid({
           })}
         </div>
 
-        <div className="note">
-          Tip: scroll inside the table area vertically; use horizontal scroll to view all columns.
-        </div>
+        <div className="note">Tip: scroll inside the table area vertically; use horizontal scroll to view all columns.</div>
       </div>
     </div>
   );
