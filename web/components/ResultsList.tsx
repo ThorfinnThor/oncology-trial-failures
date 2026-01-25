@@ -40,13 +40,12 @@ export default function ResultsList({
 }) {
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
 
-  // SSR-safe: virtualize against an internal scroll container (not window).
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 240,
+    estimateSize: () => 268, // slightly larger to fit "Last updated"
     overscan: 10
   });
 
@@ -75,6 +74,7 @@ export default function ResultsList({
           const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
           const bucket = reasonBucket(r);
           const why = (r.why_stopped_short || "").trim();
+          const lastUpdated = (r.last_update_post_date || "").trim();
 
           return (
             <div
@@ -130,6 +130,13 @@ export default function ResultsList({
                   <span className="chip chip-neutral">{r.disease_area || "Other"}</span>
                 </div>
 
+                <div style={{ marginTop: 10 }}>
+                  <div className="m-why-label">Last updated</div>
+                  <div className="m-why-text" style={{ marginTop: 6 }}>
+                    {lastUpdated || "—"}
+                  </div>
+                </div>
+
                 <div className="m-why">
                   <div className="m-why-label">Why stopped</div>
                   <div className="m-why-text">{why || "—"}</div>
@@ -140,7 +147,7 @@ export default function ResultsList({
         })}
       </div>
 
-      <div className="note">Tip: The mobile list uses virtualization for performance. Scroll inside the results area.</div>
+      <div className="note">Tip: The results list uses virtualization for performance. Scroll inside the results area.</div>
     </div>
   );
 }
