@@ -45,7 +45,7 @@ export default function ResultsList({
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 268, // slightly larger to fit "Last updated"
+    estimateSize: () => 290,
     overscan: 10
   });
 
@@ -74,7 +74,8 @@ export default function ResultsList({
           const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
           const bucket = reasonBucket(r);
           const why = (r.why_stopped_short || "").trim();
-          const lastUpdated = (r.last_update_post_date || "").trim();
+          const ctgovDate = (r.last_update_post_date || "").trim();
+          const ctgovUrl = (r.url || "").trim();
 
           return (
             <div
@@ -98,6 +99,7 @@ export default function ResultsList({
                     >
                       {r.nct_id}
                     </Link>
+
                     <div className="m-title">{r.brief_title || "—"}</div>
                     <div className="m-sub">{r.lead_sponsor || "—"}</div>
                   </div>
@@ -131,9 +133,22 @@ export default function ResultsList({
                 </div>
 
                 <div style={{ marginTop: 10 }}>
-                  <div className="m-why-label">Last updated</div>
+                  <div className="m-why-label">ClinicalTrials.gov updated</div>
                   <div className="m-why-text" style={{ marginTop: 6 }}>
-                    {lastUpdated || "—"}
+                    {ctgovDate || "—"}
+                    {ctgovUrl ? (
+                      <>
+                        {" "}
+                        <a
+                          href={ctgovUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{ color: "var(--accent)", fontWeight: 800 }}
+                        >
+                          View on ClinicalTrials.gov
+                        </a>
+                      </>
+                    ) : null}
                   </div>
                 </div>
 
