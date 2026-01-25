@@ -19,8 +19,13 @@ html,body{
   color:var(--text);
   font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
 }
+
 *{box-sizing:border-box}
 a{color:inherit;text-decoration:none}
+
+/* Minimal utility shims for legacy classnames */
+.min-h-screen{min-height:100vh}
+.mt-10{margin-top:10px}
 
 .card{
   background:var(--surface);
@@ -40,6 +45,7 @@ a{color:inherit;text-decoration:none}
   padding:10px 14px;
   font-size:14px;
   cursor:pointer;
+  white-space:nowrap;
 }
 .btn:hover{border-color:rgba(79,70,229,.35)}
 .btn:disabled{opacity:.6;cursor:not-allowed}
@@ -53,6 +59,7 @@ a{color:inherit;text-decoration:none}
   font-size:14px;
   font-weight:700;
   cursor:pointer;
+  white-space:nowrap;
 }
 .btn-primary:hover{filter:brightness(.98)}
 .btn-primary:disabled{opacity:.6;cursor:not-allowed}
@@ -121,7 +128,7 @@ a{color:inherit;text-decoration:none}
 .nav{display:flex;gap:12px}
 .navlink{color:var(--text-muted);font-size:14px}
 .navlink:hover{color:var(--text)}
-.topbar-center{flex:1;max-width:560px}
+.topbar-center{flex:1;max-width:560px;min-width:260px}
 .topbar-right{display:flex;align-items:center;gap:10px}
 
 .page{max-width:1400px;margin:0 auto;padding:18px 16px 40px}
@@ -187,7 +194,7 @@ a{color:inherit;text-decoration:none}
 .row-main{font-size:13px;line-height:1.35;color:rgba(15,23,42,.92)}
 .row-sub{margin-top:4px;font-size:12px;line-height:1.25;color:var(--text-muted)}
 
-/* Table */
+/* Desktop table */
 .table-scroller{
   width:100%;
   overflow-x:auto;
@@ -202,6 +209,7 @@ a{color:inherit;text-decoration:none}
   font-size:14px;
   table-layout:fixed;
 }
+
 .th.sel,.td.sel{width:56px}
 .th.trial,.td.trial{width:140px}
 .th.title,.td.title{width:360px}
@@ -279,16 +287,38 @@ a{color:inherit;text-decoration:none}
 
 .note{margin-top:10px;font-size:12px;color:var(--text-muted)}
 
-/* Modal + Drawer */
+/* Responsive helpers */
+.desktop-only{display:block}
+.mobile-only{display:none}
+.mobile-only-inline{display:none}
 
-/* UPDATED: lighter backdrop so modal remains high contrast */
+/* Mobile list */
+.m-list{display:block}
+.m-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow-soft);
+  padding:14px;
+  margin:12px 0;
+}
+.m-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.m-id{min-width:0}
+.m-title{margin-top:6px;font-size:14px;font-weight:800;line-height:1.25;color:rgba(15,23,42,.92)}
+.m-sub{margin-top:6px;font-size:12px;line-height:1.2;color:var(--text-muted)}
+.m-actions{display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+.m-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.m-why{margin-top:12px;border-top:1px solid var(--border);padding-top:10px}
+.m-why-label{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)}
+.m-why-text{margin-top:6px;font-size:13px;line-height:1.45;color:rgba(15,23,42,.92)}
+
+/* Modal + Drawer */
 .overlay{
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.22);
 }
 
-/* IMPORTANT: pointer-events handling prevents weird “dim modal” artifacts */
 .modal-wrap{
   position:fixed;
   inset:0;
@@ -308,11 +338,8 @@ a{color:inherit;text-decoration:none}
   border-radius:18px;
   box-shadow:var(--shadow);
   overflow:hidden;
-
-  /* Force full opacity and isolate blend/alpha from backdrop */
   opacity:1;
   isolation:isolate;
-
   pointer-events:auto;
 }
 
@@ -333,11 +360,7 @@ a{color:inherit;text-decoration:none}
   background:var(--surface);
 }
 
-.drawer-wrap{
-  position:fixed;
-  inset:0;
-  z-index:55;
-}
+.drawer-wrap{position:fixed;inset:0;z-index:55}
 .drawer-panel{
   position:fixed;
   top:0;
@@ -350,6 +373,15 @@ a{color:inherit;text-decoration:none}
   display:flex;
   flex-direction:column;
 }
+
+/* Left-side drawer for mobile Filters */
+.drawer-panel-left{
+  left:0;
+  right:auto;
+  border-left:0;
+  border-right:1px solid var(--border);
+}
+
 .drawer-hd{
   padding:14px 16px;
   border-bottom:1px solid var(--border);
@@ -359,9 +391,41 @@ a{color:inherit;text-decoration:none}
   gap:12px;
   background:var(--surface);
 }
-.drawer-bd{
-  padding:16px;
-  overflow:auto;
-  flex:1;
-  background:var(--surface);
+.drawer-bd{padding:16px;overflow:auto;flex:1;background:var(--surface)}
+
+/* MOBILE */
+@media (max-width: 920px){
+  .layout{grid-template-columns: 1fr;}
+  .rail{display:none;}
+
+  .desktop-only{display:none;}
+  .mobile-only{display:block;}
+  .mobile-only-inline{display:inline-flex;}
+
+  .topbar-inner{flex-wrap:wrap;gap:10px;}
+  .topbar-left{min-width:0;width:100%;justify-content:space-between;}
+  .topbar-center{max-width:none;width:100%;min-width:0;}
+  .topbar-right{
+    width:100%;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-bottom:2px;
+  }
+  .topbar-right::-webkit-scrollbar{display:none;}
+
+  .btn,.btn-primary{padding:10px 12px;}
+  .select{width:160px;}
+
+  .results-header{flex-direction:column;align-items:flex-start;gap:10px;}
+  .results-controls{width:100%;}
+  .results-controls .input.select{width:100%;}
+
+  .modal-wrap{padding:56px 12px 18px;}
+}
+
+@media (max-width: 520px){
+  .drawer-panel{width:100vw;}
+  .drawer-panel-left{width:100vw;}
+  .modal{width:96vw;max-height:94vh;}
+  .modal-bd{padding:14px 12px 22px;}
 }
