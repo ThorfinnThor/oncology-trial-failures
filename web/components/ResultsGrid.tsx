@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useCallback } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
@@ -54,6 +54,14 @@ export default function ResultsGrid({
     ? rowVirtualizer.getTotalSize() - virtualItems[virtualItems.length - 1].end
     : 0;
 
+  // IMPORTANT: React calls refs with `null` on unmount; make this safe.
+  const measureRow = useCallback(
+    (el: HTMLTableRowElement | null) => {
+      if (el) rowVirtualizer.measureElement(el);
+    },
+    [rowVirtualizer]
+  );
+
   return (
     <div className="table-scroller">
       <table className="tbl">
@@ -90,7 +98,7 @@ export default function ResultsGrid({
               <tr
                 key={r.nct_id}
                 className="tr"
-                ref={rowVirtualizer.measureElement}
+                ref={measureRow}
                 data-index={v.index}
               >
                 <td className="td sel">
@@ -110,6 +118,7 @@ export default function ResultsGrid({
                   >
                     {r.nct_id}
                   </Link>
+
                   <button
                     className="mini"
                     type="button"
