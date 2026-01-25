@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useMemo, useState, useCallback } from "react";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
@@ -25,6 +25,8 @@ function bucketClass(bucket: string) {
   return "chip chip-neutral";
 }
 
+const COLS = "56px 140px 360px 120px 160px 240px 240px 150px 170px 520px";
+
 export default function ResultsGrid({
   rows,
   selectedIds,
@@ -41,22 +43,21 @@ export default function ResultsGrid({
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
   const [hoverId, setHoverId] = useState<string | null>(null);
 
-  // Virtualize against the window scroll so we can render all rows without capping.
-  const rowVirtualizer = useWindowVirtualizer({
+  // SSR-safe: virtualize against a scroll container, not `window`.
+  const parentRef = useRef<HTMLDivElement | null>(null);
+
+  const rowVirtualizer = useVirtualizer({
     count: rows.length,
+    getScrollElement: () => parentRef.current,
     estimateSize: () => 104,
-    overscan: 10
+    overscan: 12
   });
 
-  const virtualItems = rowVirtualizer.getVirtualItems();
-  const paddingTop = virtualItems.length ? virtualItems[0].start : 0;
-  const paddingBottom = virtualItems.length
-    ? rowVirtualizer.getTotalSize() - virtualItems[virtualItems.length - 1].end
-    : 0;
+  const items = rowVirtualizer.getVirtualItems();
 
-  // IMPORTANT: React calls refs with `null` on unmount; make this safe.
+  // Null-safe measurement callback
   const measureRow = useCallback(
-    (el: HTMLTableRowElement | null) => {
+    (el: HTMLDivElement | null) => {
       if (el) rowVirtualizer.measureElement(el);
     },
     [rowVirtualizer]
@@ -64,30 +65,55 @@ export default function ResultsGrid({
 
   return (
     <div className="table-scroller">
-      <table className="tbl">
-        <thead>
-          <tr>
-            <th className="th sel">Sel</th>
-            <th className="th trial">Trial</th>
-            <th className="th title">Title</th>
-            <th className="th phase">Phase</th>
-            <th className="th area">Disease area</th>
-            <th className="th cond">Condition</th>
-            <th className="th intv">Intervention</th>
-            <th className="th status">Status</th>
-            <th className="th bucket">Reason</th>
-            <th className="th why">Why stopped</th>
-          </tr>
-        </thead>
+      {/* Vertical scroller (independent) */}
+      <div
+        ref={parentRef}
+        style={{
+          maxHeight: "72vh",
+          overflowY: "auto",
+          overflowX: "hidden",
+          WebkitOverflowScrolling: "touch"
+        }}
+      >
+        {/* Sticky header */}
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 3,
+            background: "var(--surface)",
+            borderBottom: "1px solid var(--border)"
+          }}
+        >
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: COLS,
+              minWidth: 1980
+            }}
+          >
+            <div className="th sel">Sel</div>
+            <div className="th trial">Trial</div>
+            <div className="th title">Title</div>
+            <div className="th phase">Phase</div>
+            <div className="th area">Disease area</div>
+            <div className="th cond">Condition</div>
+            <div className="th intv">Intervention</div>
+            <div className="th status">Status</div>
+            <div className="th bucket">Reason</div>
+            <div className="th why">Why stopped</div>
+          </div>
+        </div>
 
-        <tbody>
-          {paddingTop > 0 ? (
-            <tr aria-hidden="true">
-              <td colSpan={10} style={{ height: paddingTop, padding: 0, border: 0 }} />
-            </tr>
-          ) : null}
-
-          {virtualItems.map((v) => {
+        {/* Virtualized body */}
+        <div
+          style={{
+            position: "relative",
+            height: rowVirtualizer.getTotalSize(),
+            minWidth: 1980
+          }}
+        >
+          {items.map((v) => {
             const r = rows[v.index];
             const checked = selected.has(r.nct_id);
             const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
@@ -95,13 +121,22 @@ export default function ResultsGrid({
             const why = (r.why_stopped_short || "").trim();
 
             return (
-              <tr
+              <div
                 key={r.nct_id}
-                className="tr"
                 ref={measureRow}
                 data-index={v.index}
+                className="tr"
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  transform: `translateY(${v.start}px)`,
+                  display: "grid",
+                  gridTemplateColumns: COLS
+                }}
               >
-                <td className="td sel">
+                <div className="td sel">
                   <input
                     type="checkbox"
                     checked={checked}
@@ -109,16 +144,15 @@ export default function ResultsGrid({
                     onChange={() => onToggleSelect(r.nct_id)}
                     aria-label={`Select ${r.nct_id}`}
                   />
-                </td>
+                </div>
 
-                <td className="td trial">
+                <div className="td trial">
                   <Link
                     href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
                     className="link"
                   >
                     {r.nct_id}
                   </Link>
-
                   <button
                     className="mini"
                     type="button"
@@ -129,33 +163,36 @@ export default function ResultsGrid({
                   >
                     Open panel
                   </button>
-                </td>
+                </div>
 
-                <td className="td title">
+                <div className="td title">
                   <div className="t-title">{r.brief_title || "—"}</div>
                   <div className="t-sub">{r.lead_sponsor || "—"}</div>
-                </td>
+                </div>
 
-                <td className="td phase">
+                <div className="td phase">
                   <span className={phaseClass(p)}>{phaseLabel(p)}</span>
-                </td>
+                </div>
 
-                <td className="td area">{r.disease_area || "Other"}</td>
-                <td className="td cond">{r.condition_first || "—"}</td>
-                <td className="td intv">{r.intervention_first || "—"}</td>
+                <div className="td area">{r.disease_area || "Other"}</div>
+                <div className="td cond">{r.condition_first || "—"}</div>
+                <div className="td intv">{r.intervention_first || "—"}</div>
 
-                <td className="td status">
-                  <span className="chip chip-neutral">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
-                </td>
+                <div className="td status">
+                  <span className="chip chip-neutral">
+                    {(r.overall_status || "UNKNOWN").toUpperCase()}
+                  </span>
+                </div>
 
-                <td className="td bucket">
+                <div className="td bucket">
                   <span className={bucketClass(bucket)}>{bucket}</span>
-                </td>
+                </div>
 
-                <td
+                <div
                   className="td why"
                   onMouseEnter={() => setHoverId(r.nct_id)}
                   onMouseLeave={() => setHoverId((x) => (x === r.nct_id ? null : x))}
+                  style={{ position: "relative" }}
                 >
                   <div className="why-clamp">{why || "—"}</div>
 
@@ -165,18 +202,16 @@ export default function ResultsGrid({
                       <div className="tooltip-body">{why}</div>
                     </div>
                   )}
-                </td>
-              </tr>
+                </div>
+              </div>
             );
           })}
+        </div>
 
-          {paddingBottom > 0 ? (
-            <tr aria-hidden="true">
-              <td colSpan={10} style={{ height: paddingBottom, padding: 0, border: 0 }} />
-            </tr>
-          ) : null}
-        </tbody>
-      </table>
+        <div className="note">
+          Tip: The results table uses virtualization for performance. Scroll inside the table area.
+        </div>
+      </div>
     </div>
   );
 }
