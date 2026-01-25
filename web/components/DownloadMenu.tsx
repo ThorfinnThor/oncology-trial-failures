@@ -78,7 +78,8 @@ export default function DownloadMenu({
         <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Download dataset">
           <div className="overlay" onClick={() => setOpen(false)} />
 
-          <div className="drawer-panel">
+          {/* KEY: drawer-panel-download => bottom sheet on mobile */}
+          <div className="drawer-panel drawer-panel-download">
             <div className="drawer-hd">
               <div style={{ minWidth: 0 }}>
                 <div className="muted" style={{ fontSize: 12 }}>
@@ -88,7 +89,8 @@ export default function DownloadMenu({
                   Export trials
                 </div>
                 <div className="muted" style={{ fontSize: 13, marginTop: 6 }}>
-                  Choose scope and format. <span style={{ fontWeight: 800 }}>{rows.length.toLocaleString()}</span> rows.
+                  Choose scope and format.{" "}
+                  <span style={{ fontWeight: 800 }}>{rows.length.toLocaleString()}</span> rows.
                 </div>
               </div>
 
