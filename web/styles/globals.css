@@ -318,6 +318,8 @@ a{color:inherit;text-decoration:none}
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.22);
+  z-index:0;
+  transform:translateZ(0);
 }
 
 .modal-wrap{
@@ -363,19 +365,28 @@ a{color:inherit;text-decoration:none}
   background:var(--surface);
 }
 
-.drawer-wrap{position:fixed;inset:0;z-index:55}
+.drawer-wrap{
+  position:fixed;
+  inset:0;
+  z-index:9999;              /* ensure above virtualized list layers */
+  isolation:isolate;          /* new stacking context on purpose */
+  transform:translateZ(0);    /* force compositor layer (iOS Safari) */
+}
+
 .drawer-panel{
   position:fixed;
   top:0;
   right:0;
   height:100vh;
-  height:100dvh;
   width:min(560px, 94vw);
   background:var(--surface);
   border-left:1px solid var(--border);
   box-shadow:var(--shadow);
   display:flex;
   flex-direction:column;
+
+  z-index:1;
+  transform:translateZ(0);
 }
 
 /* Left-side drawer for mobile Filters */
