@@ -26,13 +26,10 @@ function bucketClass(bucket: string) {
 }
 
 /**
- * Add final "Last updated" column (from last_update_post_date)
- * after "Why stopped".
+ * Desktop grid columns:
+ * (NEW) final "Last updated" column after "Why stopped"
  */
-const COLS =
-  "56px 140px 360px 120px 160px 240px 240px 150px 170px 520px 160px";
-
-// Increase min width to include the new column.
+const COLS = "56px 140px 360px 120px 160px 240px 240px 150px 170px 520px 160px";
 const MIN_WIDTH = 1980 + 160;
 
 export default function ResultsGrid({
@@ -50,6 +47,9 @@ export default function ResultsGrid({
 }) {
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
 
+  // Outer horizontal scroller
+  const outerRef = useRef<HTMLDivElement | null>(null);
+  // Inner vertical scroller (virtualizer scroll element)
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
@@ -68,10 +68,38 @@ export default function ResultsGrid({
     [rowVirtualizer]
   );
 
+  /**
+   * Key fix: forward horizontal wheel deltas to the outer horizontal scroller.
+   * Without this, the inner vertical scroller can "steal" trackpad momentum,
+   * causing a brief stop mid horizontal scroll.
+   */
+  const onWheelCapture = useCallback((e: React.WheelEvent<HTMLDivElement>) => {
+    const dx = e.deltaX || 0;
+    const dy = e.deltaY || 0;
+
+    // Only intercept "mostly horizontal" gestures (typical trackpad swipe)
+    if (Math.abs(dx) > 0 && Math.abs(dx) >= Math.abs(dy)) {
+      const outer = outerRef.current;
+      if (outer) {
+        outer.scrollLeft += dx;
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+  }, []);
+
   return (
-    <div className="table-scroller">
+    <div
+      className="table-scroller"
+      ref={outerRef}
+      style={{
+        // Helps trackpads: allow smooth horizontal momentum on the outer container
+        WebkitOverflowScrolling: "touch"
+      }}
+    >
       <div
         ref={parentRef}
+        onWheelCapture={onWheelCapture}
         style={{
           maxHeight: "72vh",
           overflowY: "auto",
@@ -90,13 +118,7 @@ export default function ResultsGrid({
             borderBottom: "1px solid var(--border)"
           }}
         >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: COLS,
-              minWidth: MIN_WIDTH
-            }}
-          >
+          <div style={{ display: "grid", gridTemplateColumns: COLS, minWidth: MIN_WIDTH }}>
             <div className="th sel">Sel</div>
             <div className="th trial">Trial</div>
             <div className="th title">Title</div>
@@ -107,20 +129,12 @@ export default function ResultsGrid({
             <div className="th status">Status</div>
             <div className="th bucket">Reason</div>
             <div className="th why">Why stopped</div>
-            <div className="th" style={{ width: 160 }}>
-              Last updated
-            </div>
+            <div className="th">Last updated</div>
           </div>
         </div>
 
         {/* Virtualized body */}
-        <div
-          style={{
-            position: "relative",
-            height: rowVirtualizer.getTotalSize(),
-            minWidth: MIN_WIDTH
-          }}
-        >
+        <div style={{ position: "relative", height: rowVirtualizer.getTotalSize(), minWidth: MIN_WIDTH }}>
           {items.map((v) => {
             const r = rows[v.index];
             const checked = selected.has(r.nct_id);
@@ -149,7 +163,7 @@ export default function ResultsGrid({
                   <input
                     type="checkbox"
                     checked={checked}
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(ev) => ev.stopPropagation()}
                     onChange={() => onToggleSelect(r.nct_id)}
                     aria-label={`Select ${r.nct_id}`}
                   />
@@ -166,8 +180,8 @@ export default function ResultsGrid({
                   <button
                     className="mini"
                     type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    onClick={(ev) => {
+                      ev.stopPropagation();
                       onOpenPanel(r.nct_id);
                     }}
                   >
@@ -202,8 +216,7 @@ export default function ResultsGrid({
                   <div className="why-clamp">{why || "—"}</div>
                 </div>
 
-                {/* NEW: final column */}
-                <div className="td" style={{ width: 160 }}>
+                <div className="td">
                   <span style={{ color: "var(--text-muted)", fontWeight: 700 }}>
                     {lastUpdated || "—"}
                   </span>
@@ -214,7 +227,7 @@ export default function ResultsGrid({
         </div>
 
         <div className="note">
-          Tip: scroll inside the table area vertically; use horizontal scroll to view all columns.
+          Tip: scroll vertically inside the table; use horizontal scroll to view all columns.
         </div>
       </div>
     </div>
