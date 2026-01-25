@@ -30,9 +30,12 @@ export default function DownloadMenu({
   const scopeDisabled = scope === "selected" && selectedRows.length === 0;
 
   async function doDownload() {
-    await downloadTrials(meta, state, rows, scope, format);
-    setOpen(false);
-  }
+  await downloadTrials(meta, state, rows, scope, format);
+  setOpen(false);
+}
+
+
+
 
   // iOS: prevent background scroll + “invisible drawer” issues
   useEffect(() => {
