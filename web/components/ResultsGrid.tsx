@@ -48,7 +48,7 @@ export default function ResultsGrid({
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 112,
+    estimateSize: () => 114, // slightly larger to fit "Last updated"
     overscan: 12
   });
 
@@ -156,9 +156,7 @@ export default function ResultsGrid({
                   <div className="t-sub">{r.lead_sponsor || "—"}</div>
                   <div className="t-sub">
                     Last updated:{" "}
-                    <span style={{ fontWeight: 800, color: "rgba(15,23,42,.78)" }}>
-                      {lastUpdated || "—"}
-                    </span>
+                    <span style={{ fontWeight: 800, color: "rgba(15,23,42,.78)" }}>{lastUpdated || "—"}</span>
                   </div>
                 </div>
 
