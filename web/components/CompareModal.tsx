@@ -34,7 +34,7 @@ function bucketChipClass(bucket: string) {
 
 const PAD = 10;
 const FIELD_W = 160;
-const MIN_COL_W = 210; // prevents NCT IDs from wrapping/splitting
+const MIN_COL_W = 210;
 
 function fieldRow(label: string, renderCells: React.ReactNode[]) {
   return (
@@ -133,7 +133,8 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
           </button>
         </div>
 
-        <div className="modal-bd">
+        {/* KEY FIX: make modal body a flex column and put scrolling on the table card */}
+        <div className="modal-bd" style={{ display: "flex", flexDirection: "column", gap: 10, overflow: "hidden" }}>
           {cols.length < 2 ? (
             <div className="card p-4">
               <div style={{ fontWeight: 900, marginBottom: 6 }}>Nothing to compare yet</div>
@@ -143,7 +144,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
             </div>
           ) : (
             <>
-              <div className="card" style={{ padding: 12, marginBottom: 10 }}>
+              <div className="card" style={{ padding: 12 }}>
                 <div className="facet-title" style={{ marginBottom: 8 }}>
                   Selected
                 </div>
@@ -178,8 +179,16 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                 </div>
               </div>
 
-              <div className="card" style={{ overflow: "auto", maxHeight: "64vh" }}>
-                <table style={{ minWidth: FIELD_W + cols.length * MIN_COL_W, width: "100%", borderCollapse: "separate", borderSpacing: 0 }}>
+              {/* This is now the main scrollable area, so lower parts are always reachable on mobile */}
+              <div className="card" style={{ overflow: "auto", flex: "1 1 auto", minHeight: 0 }}>
+                <table
+                  style={{
+                    minWidth: FIELD_W + cols.length * MIN_COL_W,
+                    width: "100%",
+                    borderCollapse: "separate",
+                    borderSpacing: 0
+                  }}
+                >
                   <thead style={{ background: "var(--surface-2)" }}>
                     <tr>
                       <th
@@ -210,7 +219,6 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                             minWidth: MIN_COL_W
                           }}
                         >
-                          {/* IMPORTANT: never wrap the NCT id */}
                           <div
                             style={{
                               fontSize: 13,
@@ -225,7 +233,6 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                             {t.nct_id}
                           </div>
 
-                          {/* title can wrap/clamp */}
                           <div
                             className="muted"
                             style={{
@@ -261,7 +268,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                 </table>
               </div>
 
-              <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
+              <div className="muted" style={{ fontSize: 12 }}>
                 Buckets/labels are inferred from registry text and may be incomplete.
               </div>
             </>
