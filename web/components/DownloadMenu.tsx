@@ -34,13 +34,25 @@ export default function DownloadMenu({
     setOpen(false);
   }
 
-  // Prevent background scroll while drawer is open (important on iOS Safari)
+  // iOS: prevent background scroll + “invisible drawer” issues
   useEffect(() => {
     if (!open) return;
-    const prev = document.body.style.overflow;
+    const prevOverflow = document.body.style.overflow;
+    const prevPos = document.body.style.position;
+    const prevTop = document.body.style.top;
+
+    // Lock body scroll without changing layout
+    const scrollY = window.scrollY;
     document.body.style.overflow = "hidden";
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+
     return () => {
-      document.body.style.overflow = prev;
+      document.body.style.overflow = prevOverflow;
+      document.body.style.position = prevPos;
+      document.body.style.top = prevTop;
+      window.scrollTo(0, scrollY);
     };
   }, [open]);
 
@@ -85,7 +97,7 @@ export default function DownloadMenu({
       </button>
 
       {open && (
-        // EXACT SAME PATTERN AS DetailsDrawer ("Open panel")
+        // Same structure/classes as DetailsDrawer (“Open panel”)
         <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Download trials">
           <div className="overlay" onClick={() => setOpen(false)} />
 
@@ -146,30 +158,12 @@ export default function DownloadMenu({
               <div className="card p-4">
                 <div className="facet-title">Format</div>
 
-                <label
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    padding: "8px 10px",
-                    borderRadius: 12,
-                    cursor: "pointer"
-                  }}
-                >
+                <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
                   <input type="radio" checked={format === "csv"} onChange={() => setFormat("csv")} />
                   <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>CSV</span>
                 </label>
 
-                <label
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 10,
-                    padding: "8px 10px",
-                    borderRadius: 12,
-                    cursor: "pointer"
-                  }}
-                >
+                <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
                   <input type="radio" checked={format === "json"} onChange={() => setFormat("json")} />
                   <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>JSON</span>
                 </label>
@@ -186,12 +180,10 @@ export default function DownloadMenu({
 
                 {meta?.version ? (
                   <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
-                    Dataset version:{" "}
-                    <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.version}</span>
+                    Dataset version: <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.version}</span>
                     {meta.source ? (
                       <>
-                        {" "}• Source:{" "}
-                        <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.source}</span>
+                        {" "}• Source: <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.source}</span>
                       </>
                     ) : null}
                   </div>
