@@ -30,24 +30,16 @@ function buildMetadata(meta: DatasetMeta | null, state: UrlState, count: number)
 function isIOSLike() {
   if (typeof navigator === "undefined") return false;
   const ua = navigator.userAgent || "";
-  // iPadOS 13+ can report as Mac; use touchpoints heuristic.
   const iOS = /iPad|iPhone|iPod/.test(ua);
+  // iPadOS 13+ sometimes reports as Mac; touchpoints heuristic
   const iPadOS = navigator.platform === "MacIntel" && (navigator.maxTouchPoints || 0) > 1;
   return iOS || iPadOS;
 }
 
-/**
- * Trigger a file download.
- *
- * Notes on mobile Safari (iOS):
- * - `a[download]` + blob URLs are unreliable and sometimes no-op.
- * - The most robust UX is using Web Share API (when available) to hand off a real file.
- * - Fallback is opening the blob URL in a new tab (user can then share/save).
- */
 async function downloadBlob(filename: string, mime: string, content: string) {
   const blob = new Blob([content], { type: mime });
 
-  // Best-effort: Web Share (iOS/Android) when supported.
+  // Best mobile UX when available: Web Share with a File
   try {
     const navAny = navigator as any;
     if (navAny?.share && typeof File !== "undefined") {
@@ -58,32 +50,36 @@ async function downloadBlob(filename: string, mime: string, content: string) {
       }
     }
   } catch {
-    // If the user cancels share, fall back to the traditional flow.
+    // If user cancels share or it fails, continue to fallback below
   }
 
   const url = URL.createObjectURL(blob);
 
-  // iOS Safari: open in a new tab as a reliable fallback.
-  // Other browsers: attempt a standard download via <a download>.
-  const a = document.createElement("a");
-  a.href = url;
-  a.style.display = "none";
-  a.rel = "noopener";
-
+  // iOS Safari: <a download> is unreliable. Opening the blob URL is more consistent.
   if (isIOSLike()) {
-    a.target = "_blank";
-    // `download` is often ignored on iOS, but harmless.
-    a.download = filename;
-  } else {
-    a.download = filename;
+    const w = window.open(url, "_blank", "noopener,noreferrer");
+    if (!w) {
+      // If popup blocked, navigate current tab
+      window.location.href = url;
+    }
+
+    // Do NOT revoke immediately (can break open on slower devices)
+    window.setTimeout(() => URL.revokeObjectURL(url), 120_000);
+    return;
   }
 
+  // Desktop + most non-iOS mobile browsers
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.rel = "noopener";
+  a.style.display = "none";
   document.body.appendChild(a);
   a.click();
   a.remove();
 
-  // Do NOT revoke immediately; mobile browsers can cancel the download.
-  window.setTimeout(() => URL.revokeObjectURL(url), 30_000);
+  // Do NOT revoke immediately; can cancel downloads on some mobile browsers
+  window.setTimeout(() => URL.revokeObjectURL(url), 120_000);
 }
 
 export async function downloadTrials(
@@ -108,7 +104,6 @@ export async function downloadTrials(
     return;
   }
 
-  // CSV (metadata as commented header lines)
   const header = [
     "nct_id",
     "brief_title",
@@ -137,9 +132,7 @@ export async function downloadTrials(
   ].join("\n");
 
   const lines = rows.map((r) =>
-    header
-      .map((k) => csvEscape((r as any)[k]))
-      .join(",")
+    header.map((k) => csvEscape((r as any)[k])).join(",")
   );
 
   const csv = `${metaLines}\n${header.join(",")}\n${lines.join("\n")}`;
