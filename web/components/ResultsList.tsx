@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useMemo, useCallback } from "react";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
+import { useCallback, useMemo, useRef } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
@@ -40,15 +40,18 @@ export default function ResultsList({
 }) {
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
 
-  const rowVirtualizer = useWindowVirtualizer({
+  // SSR-safe: virtualize against an internal scroll container (not window).
+  const parentRef = useRef<HTMLDivElement | null>(null);
+
+  const rowVirtualizer = useVirtualizer({
     count: rows.length,
+    getScrollElement: () => parentRef.current,
     estimateSize: () => 240,
-    overscan: 8
+    overscan: 10
   });
 
   const items = rowVirtualizer.getVirtualItems();
 
-  // IMPORTANT: safe ref (React calls it with null on cleanup)
   const measureItem = useCallback(
     (el: HTMLDivElement | null) => {
       if (el) rowVirtualizer.measureElement(el);
@@ -57,76 +60,87 @@ export default function ResultsList({
   );
 
   return (
-    <div className="m-list" style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-      {items.map((v) => {
-        const r = rows[v.index];
-        const checked = selected.has(r.nct_id);
-        const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
-        const bucket = reasonBucket(r);
-        const why = (r.why_stopped_short || "").trim();
+    <div
+      ref={parentRef}
+      style={{
+        maxHeight: "72vh",
+        overflowY: "auto",
+        WebkitOverflowScrolling: "touch"
+      }}
+    >
+      <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+        {items.map((v) => {
+          const r = rows[v.index];
+          const checked = selected.has(r.nct_id);
+          const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
+          const bucket = reasonBucket(r);
+          const why = (r.why_stopped_short || "").trim();
 
-        return (
-          <div
-            key={r.nct_id}
-            ref={measureItem}
-            data-index={v.index}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              transform: `translateY(${v.start}px)`
-            }}
-          >
-            <div className="m-card">
-              <div className="m-head">
-                <div className="m-id">
-                  <Link
-                    href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
-                    className="link"
-                  >
-                    {r.nct_id}
-                  </Link>
-                  <div className="m-title">{r.brief_title || "—"}</div>
-                  <div className="m-sub">{r.lead_sponsor || "—"}</div>
+          return (
+            <div
+              key={r.nct_id}
+              ref={measureItem}
+              data-index={v.index}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                transform: `translateY(${v.start}px)`
+              }}
+            >
+              <div className="m-card">
+                <div className="m-head">
+                  <div className="m-id">
+                    <Link
+                      href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
+                      className="link"
+                    >
+                      {r.nct_id}
+                    </Link>
+                    <div className="m-title">{r.brief_title || "—"}</div>
+                    <div className="m-sub">{r.lead_sponsor || "—"}</div>
+                  </div>
+
+                  <div className="m-actions">
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={() => onToggleSelect(r.nct_id)}
+                      aria-label={`Select ${r.nct_id}`}
+                    />
+                    <button
+                      className="mini"
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onOpenPanel(r.nct_id);
+                      }}
+                    >
+                      Open panel
+                    </button>
+                  </div>
                 </div>
 
-                <div className="m-actions">
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onClick={(e) => e.stopPropagation()}
-                    onChange={() => onToggleSelect(r.nct_id)}
-                    aria-label={`Select ${r.nct_id}`}
-                  />
-                  <button
-                    className="mini"
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onOpenPanel(r.nct_id);
-                    }}
-                  >
-                    Open panel
-                  </button>
+                <div className="m-tags">
+                  <span className={phaseClass(p)}>{phaseLabel(p)}</span>
+                  <span className="chip chip-neutral">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
+                  <span className={bucketClass(bucket)}>{bucket}</span>
+                  <span className="chip chip-neutral">{r.disease_area || "Other"}</span>
                 </div>
-              </div>
 
-              <div className="m-tags">
-                <span className={phaseClass(p)}>{phaseLabel(p)}</span>
-                <span className="chip chip-neutral">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
-                <span className={bucketClass(bucket)}>{bucket}</span>
-                <span className="chip chip-neutral">{r.disease_area || "Other"}</span>
-              </div>
-
-              <div className="m-why">
-                <div className="m-why-label">Why stopped</div>
-                <div className="m-why-text">{why || "—"}</div>
+                <div className="m-why">
+                  <div className="m-why-label">Why stopped</div>
+                  <div className="m-why-text">{why || "—"}</div>
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+
+      <div className="note">Tip: The mobile list uses virtualization for performance. Scroll inside the results area.</div>
     </div>
   );
 }
