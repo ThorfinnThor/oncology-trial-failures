@@ -48,7 +48,7 @@ export default function ResultsGrid({
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 112, // slightly larger to fit the date line
+    estimateSize: () => 116,
     overscan: 12
   });
 
@@ -103,7 +103,8 @@ export default function ResultsGrid({
             const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
             const bucket = reasonBucket(r);
             const why = (r.why_stopped_short || "").trim();
-            const lastUpdated = (r.last_update_post_date || "").trim();
+            const ctgovDate = (r.last_update_post_date || "").trim();
+            const ctgovUrl = (r.url || "").trim();
 
             return (
               <div
@@ -154,8 +155,25 @@ export default function ResultsGrid({
                 <div className="td title">
                   <div className="t-title">{r.brief_title || "—"}</div>
                   <div className="t-sub">{r.lead_sponsor || "—"}</div>
+
                   <div className="t-sub">
-                    Last updated: <span style={{ fontWeight: 700, color: "rgba(15,23,42,.78)" }}>{lastUpdated || "—"}</span>
+                    ClinicalTrials.gov updated:{" "}
+                    <span style={{ fontWeight: 800, color: "rgba(15,23,42,.78)" }}>
+                      {ctgovDate || "—"}
+                    </span>
+                    {ctgovUrl ? (
+                      <>
+                        {" "}•{" "}
+                        <a
+                          href={ctgovUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          style={{ color: "var(--accent)", fontWeight: 800 }}
+                        >
+                          ClinicalTrials.gov
+                        </a>
+                      </>
+                    ) : null}
                   </div>
                 </div>
 
