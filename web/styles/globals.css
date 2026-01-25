@@ -24,7 +24,7 @@ html,body{
 a{color:inherit;text-decoration:none}
 
 /* Minimal utility shims for legacy classnames */
-.min-h-screen{min-height:100vh}
+.min-h-screen{min-height:100vh;min-height:100dvh}
 .mt-10{margin-top:10px}
 
 .card{
@@ -144,6 +144,7 @@ a{color:inherit;text-decoration:none}
   position:sticky;
   top:86px;
   max-height:calc(100vh - 110px);
+  max-height:calc(100dvh - 110px);
   overflow-y:auto;
   padding-right:6px;
   display:flex;
@@ -333,6 +334,7 @@ a{color:inherit;text-decoration:none}
 .modal{
   width:min(1100px, 96vw);
   max-height:92vh;
+  max-height:92dvh;
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:18px;
@@ -357,6 +359,7 @@ a{color:inherit;text-decoration:none}
   padding:16px 16px 28px;
   overflow:auto;
   max-height:calc(92vh - 64px);
+  max-height:calc(92dvh - 64px);
   background:var(--surface);
 }
 
@@ -366,6 +369,7 @@ a{color:inherit;text-decoration:none}
   top:0;
   right:0;
   height:100vh;
+  height:100dvh;
   width:min(560px, 94vw);
   background:var(--surface);
   border-left:1px solid var(--border);
@@ -391,7 +395,14 @@ a{color:inherit;text-decoration:none}
   gap:12px;
   background:var(--surface);
 }
-.drawer-bd{padding:16px;overflow:auto;flex:1;background:var(--surface)}
+.drawer-bd{
+  padding:16px;
+  padding-bottom:calc(16px + env(safe-area-inset-bottom));
+  overflow:auto;
+  flex:1;
+  background:var(--surface);
+  -webkit-overflow-scrolling:touch;
+}
 
 /* MOBILE */
 @media (max-width: 920px){
