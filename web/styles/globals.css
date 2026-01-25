@@ -429,3 +429,18 @@ a{color:inherit;text-decoration:none}
   .modal{width:96vw;max-height:94vh;}
   .modal-bd{padding:14px 12px 22px;}
 }
+
+
+/* Improve horizontal scroll smoothness for wide results table */
+.table-scroller{
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+  scroll-behavior: auto;
+}
+
+/* The virtualized vertical scroller should only handle vertical gestures */
+.table-scroller > div{
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+}
