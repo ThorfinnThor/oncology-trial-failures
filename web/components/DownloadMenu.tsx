@@ -34,7 +34,7 @@ export default function DownloadMenu({
     setOpen(false);
   }
 
-  // Prevent background page from scrolling while modal is open (especially iOS Safari)
+  // Prevent background scroll while drawer is open (important on iOS Safari)
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -64,7 +64,7 @@ export default function DownloadMenu({
         width: "100%",
         cursor: "pointer",
         userSelect: "none",
-        padding: "10px 12px",
+        padding: "8px 10px",
         borderRadius: 12
       }}
       onMouseEnter={(e) => ((e.currentTarget.style.background = "rgba(15,23,42,.03)"))}
@@ -85,12 +85,12 @@ export default function DownloadMenu({
       </button>
 
       {open && (
-        <div className="modal-wrap" role="dialog" aria-modal="true" aria-label="Download dataset">
+        // EXACT SAME PATTERN AS DetailsDrawer ("Open panel")
+        <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Download trials">
           <div className="overlay" onClick={() => setOpen(false)} />
 
-          {/* Modal is robust on iOS Safari; same pattern as Compare */}
-          <div className="modal" style={{ width: "min(760px, 96vw)" }}>
-            <div className="modal-hd">
+          <div className="drawer-panel">
+            <div className="drawer-hd">
               <div style={{ minWidth: 0 }}>
                 <div className="muted" style={{ fontSize: 12 }}>
                   Download
@@ -109,7 +109,7 @@ export default function DownloadMenu({
               </button>
             </div>
 
-            <div className="modal-bd">
+            <div className="drawer-bd">
               <div className="card p-4">
                 <div className="facet-title">Scope</div>
 
@@ -151,7 +151,7 @@ export default function DownloadMenu({
                     display: "flex",
                     alignItems: "center",
                     gap: 10,
-                    padding: "10px 12px",
+                    padding: "8px 10px",
                     borderRadius: 12,
                     cursor: "pointer"
                   }}
@@ -165,7 +165,7 @@ export default function DownloadMenu({
                     display: "flex",
                     alignItems: "center",
                     gap: 10,
-                    padding: "10px 12px",
+                    padding: "8px 10px",
                     borderRadius: 12,
                     cursor: "pointer"
                   }}
@@ -201,13 +201,7 @@ export default function DownloadMenu({
               <div style={{ height: 14 }} />
 
               <div style={{ display: "flex", gap: 10 }}>
-                <button
-                  className="btn-primary"
-                  type="button"
-                  onClick={doDownload}
-                  disabled={scopeDisabled}
-                  style={{ flex: 1 }}
-                >
+                <button className="btn-primary" type="button" onClick={doDownload} disabled={scopeDisabled} style={{ flex: 1 }}>
                   Download
                 </button>
                 <button className="btn" type="button" onClick={() => setOpen(false)}>
