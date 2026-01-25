@@ -27,19 +27,66 @@ function buildMetadata(meta: DatasetMeta | null, state: UrlState, count: number)
   };
 }
 
-function downloadBlob(filename: string, mime: string, content: string) {
+function isIOSLike() {
+  if (typeof navigator === "undefined") return false;
+  const ua = navigator.userAgent || "";
+  // iPadOS 13+ can report as Mac; use touchpoints heuristic.
+  const iOS = /iPad|iPhone|iPod/.test(ua);
+  const iPadOS = navigator.platform === "MacIntel" && (navigator.maxTouchPoints || 0) > 1;
+  return iOS || iPadOS;
+}
+
+/**
+ * Trigger a file download.
+ *
+ * Notes on mobile Safari (iOS):
+ * - `a[download]` + blob URLs are unreliable and sometimes no-op.
+ * - The most robust UX is using Web Share API (when available) to hand off a real file.
+ * - Fallback is opening the blob URL in a new tab (user can then share/save).
+ */
+async function downloadBlob(filename: string, mime: string, content: string) {
   const blob = new Blob([content], { type: mime });
+
+  // Best-effort: Web Share (iOS/Android) when supported.
+  try {
+    const navAny = navigator as any;
+    if (navAny?.share && typeof File !== "undefined") {
+      const file = new File([blob], filename, { type: mime });
+      if (!navAny.canShare || navAny.canShare({ files: [file] })) {
+        await navAny.share({ files: [file], title: filename });
+        return;
+      }
+    }
+  } catch {
+    // If the user cancels share, fall back to the traditional flow.
+  }
+
   const url = URL.createObjectURL(blob);
+
+  // iOS Safari: open in a new tab as a reliable fallback.
+  // Other browsers: attempt a standard download via <a download>.
   const a = document.createElement("a");
   a.href = url;
-  a.download = filename;
+  a.style.display = "none";
+  a.rel = "noopener";
+
+  if (isIOSLike()) {
+    a.target = "_blank";
+    // `download` is often ignored on iOS, but harmless.
+    a.download = filename;
+  } else {
+    a.download = filename;
+  }
+
   document.body.appendChild(a);
   a.click();
   a.remove();
-  URL.revokeObjectURL(url);
+
+  // Do NOT revoke immediately; mobile browsers can cancel the download.
+  window.setTimeout(() => URL.revokeObjectURL(url), 30_000);
 }
 
-export function downloadTrials(
+export async function downloadTrials(
   meta: DatasetMeta | null,
   state: UrlState,
   rows: TrialIndexRow[],
@@ -57,7 +104,7 @@ export function downloadTrials(
 
   if (format === "json") {
     const payload = { metadata: md, records: rows };
-    downloadBlob(`${baseName}.json`, "application/json;charset=utf-8", JSON.stringify(payload, null, 2));
+    await downloadBlob(`${baseName}.json`, "application/json;charset=utf-8", JSON.stringify(payload, null, 2));
     return;
   }
 
@@ -96,5 +143,5 @@ export function downloadTrials(
   );
 
   const csv = `${metaLines}\n${header.join(",")}\n${lines.join("\n")}`;
-  downloadBlob(`${baseName}.csv`, "text/csv;charset=utf-8", csv);
+  await downloadBlob(`${baseName}.csv`, "text/csv;charset=utf-8", csv);
 }
