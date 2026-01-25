@@ -17,11 +17,6 @@ function bucketClass(bucket: string) {
   const b = (bucket || "").toUpperCase();
   if (b === "SAFETY") return "chip chip-bucket-safety";
   if (b === "EFFICACY/FUTILITY") return "chip chip-bucket-efficacy";
-  if (b === "ENROLLMENT") return "chip chip-bucket-enrollment";
-  if (b === "FUNDING") return "chip chip-bucket-funding";
-  if (b === "REGULATORY") return "chip chip-bucket-regulatory";
-  if (b === "STRATEGIC") return "chip chip-bucket-strategic";
-  if (b === "OPERATIONAL") return "chip chip-bucket-operational";
   return "chip chip-neutral";
 }
 
@@ -40,12 +35,13 @@ export default function ResultsList({
 }) {
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
 
+  // Virtualized scrolling for mobile so we can show all rows (no 400 cap)
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 284,
+    estimateSize: () => 270,
     overscan: 10
   });
 
@@ -61,6 +57,7 @@ export default function ResultsList({
   return (
     <div
       ref={parentRef}
+      className="m-list"
       style={{
         maxHeight: "72vh",
         overflowY: "auto",
@@ -98,7 +95,6 @@ export default function ResultsList({
                     >
                       {r.nct_id}
                     </Link>
-
                     <div className="m-title">{r.brief_title || "—"}</div>
                     <div className="m-sub">{r.lead_sponsor || "—"}</div>
                   </div>
@@ -131,6 +127,7 @@ export default function ResultsList({
                   <span className="chip chip-neutral">{r.disease_area || "Other"}</span>
                 </div>
 
+                {/* Only date shown in list: last_update_post_date */}
                 <div style={{ marginTop: 10 }}>
                   <div className="m-why-label">Last updated</div>
                   <div className="m-why-text" style={{ marginTop: 6 }}>
@@ -148,7 +145,7 @@ export default function ResultsList({
         })}
       </div>
 
-      <div className="note">Tip: The results list uses virtualization for performance. Scroll inside the results area.</div>
+      <div className="note">Tip: the mobile list is virtualized; scroll inside the results area.</div>
     </div>
   );
 }
