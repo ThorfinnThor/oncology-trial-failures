@@ -29,8 +29,8 @@ export default function DownloadMenu({
 
   const scopeDisabled = scope === "selected" && selectedRows.length === 0;
 
-  function doDownload() {
-    downloadTrials(meta, state, rows, scope, format);
+  async function doDownload() {
+    await downloadTrials(meta, state, rows, scope, format);
     setOpen(false);
   }
 
