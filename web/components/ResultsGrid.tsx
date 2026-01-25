@@ -26,6 +26,7 @@ function bucketClass(bucket: string) {
 }
 
 const COLS = "56px 140px 360px 120px 160px 240px 240px 150px 170px 520px";
+const MIN_WIDTH = 1980;
 
 export default function ResultsGrid({
   rows,
@@ -43,7 +44,7 @@ export default function ResultsGrid({
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
   const [hoverId, setHoverId] = useState<string | null>(null);
 
-  // SSR-safe: virtualize against a scroll container, not `window`.
+  // SSR-safe virtualization: scroll container (NOT window)
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const rowVirtualizer = useVirtualizer({
@@ -64,15 +65,18 @@ export default function ResultsGrid({
   );
 
   return (
+    // This outer element is responsible for horizontal scrolling
     <div className="table-scroller">
-      {/* Vertical scroller (independent) */}
+      {/* This inner element is responsible for vertical scrolling.
+          IMPORTANT: do NOT hide/clip overflow-x; otherwise horizontal scroll breaks. */}
       <div
         ref={parentRef}
         style={{
           maxHeight: "72vh",
           overflowY: "auto",
-          overflowX: "hidden",
-          WebkitOverflowScrolling: "touch"
+          overflowX: "visible",
+          WebkitOverflowScrolling: "touch",
+          minWidth: MIN_WIDTH
         }}
       >
         {/* Sticky header */}
@@ -89,7 +93,7 @@ export default function ResultsGrid({
             style={{
               display: "grid",
               gridTemplateColumns: COLS,
-              minWidth: 1980
+              minWidth: MIN_WIDTH
             }}
           >
             <div className="th sel">Sel</div>
@@ -110,7 +114,7 @@ export default function ResultsGrid({
           style={{
             position: "relative",
             height: rowVirtualizer.getTotalSize(),
-            minWidth: 1980
+            minWidth: MIN_WIDTH
           }}
         >
           {items.map((v) => {
@@ -153,6 +157,7 @@ export default function ResultsGrid({
                   >
                     {r.nct_id}
                   </Link>
+
                   <button
                     className="mini"
                     type="button"
@@ -209,7 +214,7 @@ export default function ResultsGrid({
         </div>
 
         <div className="note">
-          Tip: The results table uses virtualization for performance. Scroll inside the table area.
+          Tip: Scroll inside the table area vertically; scroll the page horizontally to view all columns.
         </div>
       </div>
     </div>
