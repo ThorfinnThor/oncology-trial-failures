@@ -71,6 +71,7 @@ export default function ExplorePage() {
   }, [allRows, compareIds]);
 
   const [compareOpen, setCompareOpen] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   function updateState(patch: Partial<UrlState>) {
     const base: UrlState = decodeState(router.asPath);
@@ -180,11 +181,14 @@ export default function ExplorePage() {
             </div>
 
             <div className="topbar-right">
+              <button className="btn mobile-only-inline" type="button" onClick={() => setFiltersOpen(true)}>
+                Filters
+              </button>
+
               <button className="btn" onClick={copyLink} type="button">
                 Copy link
               </button>
 
-              {/* Always opens; modal will tell you if <2 selected */}
               <button className="btn" type="button" onClick={() => setCompareOpen(true)}>
                 Compare ({compareCount})
               </button>
@@ -265,6 +269,55 @@ export default function ExplorePage() {
             </section>
           </div>
         </main>
+
+        {/* Mobile filters drawer (same content as left rail) */}
+        {filtersOpen && (
+          <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Filters">
+            <div className="overlay" onClick={() => setFiltersOpen(false)} />
+            <div className="drawer-panel drawer-panel-left">
+              <div className="drawer-hd">
+                <div style={{ minWidth: 0 }}>
+                  <div className="muted" style={{ fontSize: 12 }}>Filters</div>
+                  <div style={{ fontSize: 18, fontWeight: 900, marginTop: 4 }}>Refine results</div>
+                  <div className="muted" style={{ fontSize: 13, marginTop: 6 }}>
+                    <span style={{ fontWeight: 800 }}>{rows.length.toLocaleString()}</span> results
+                  </div>
+                </div>
+
+                <button className="btn" type="button" onClick={() => setFiltersOpen(false)}>
+                  Close
+                </button>
+              </div>
+
+              <div className="drawer-bd">
+                <ScientificFailureToggle checked={!!state.bio} onChange={(v) => updateState({ bio: v || undefined })} />
+
+                <div style={{ height: 12 }} />
+                <Facet title="Status" options={facets.status} selected={state.status || []} onToggle={(v) => toggleMulti("status", v)} />
+
+                <div style={{ height: 12 }} />
+                <Facet title="Phase" options={facets.phase} selected={state.phase || []} onToggle={(v) => toggleMulti("phase", v)} />
+
+                <div style={{ height: 12 }} />
+                <Facet
+                  title="Disease area (Top 10)"
+                  options={facets.area.slice(0, 10)}
+                  selected={state.area || []}
+                  onToggle={(v) => toggleMulti("area", v)}
+                  searchable
+                />
+
+                <div style={{ height: 12 }} />
+                <Facet title="Reason bucket" options={facets.bucket} selected={state.bucket || []} onToggle={(v) => toggleMulti("bucket", v)} />
+
+                <div style={{ height: 12 }} />
+                <button className="btn" type="button" onClick={resetAll} style={{ width: "100%" }}>
+                  Reset filters
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         <DetailsDrawer
           open={!!state.trial}
