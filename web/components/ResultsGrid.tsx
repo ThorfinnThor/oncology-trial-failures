@@ -25,8 +25,15 @@ function bucketClass(bucket: string) {
   return "chip chip-neutral";
 }
 
-const COLS = "56px 140px 360px 120px 160px 240px 240px 150px 170px 520px";
-const MIN_WIDTH = 1980;
+/**
+ * Add final "Last updated" column (from last_update_post_date)
+ * after "Why stopped".
+ */
+const COLS =
+  "56px 140px 360px 120px 160px 240px 240px 150px 170px 520px 160px";
+
+// Increase min width to include the new column.
+const MIN_WIDTH = 1980 + 160;
 
 export default function ResultsGrid({
   rows,
@@ -48,7 +55,7 @@ export default function ResultsGrid({
   const rowVirtualizer = useVirtualizer({
     count: rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 114, // slightly larger to fit "Last updated"
+    estimateSize: () => 104,
     overscan: 12
   });
 
@@ -73,6 +80,7 @@ export default function ResultsGrid({
           minWidth: MIN_WIDTH
         }}
       >
+        {/* Sticky header */}
         <div
           style={{
             position: "sticky",
@@ -82,7 +90,13 @@ export default function ResultsGrid({
             borderBottom: "1px solid var(--border)"
           }}
         >
-          <div style={{ display: "grid", gridTemplateColumns: COLS, minWidth: MIN_WIDTH }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: COLS,
+              minWidth: MIN_WIDTH
+            }}
+          >
             <div className="th sel">Sel</div>
             <div className="th trial">Trial</div>
             <div className="th title">Title</div>
@@ -93,10 +107,20 @@ export default function ResultsGrid({
             <div className="th status">Status</div>
             <div className="th bucket">Reason</div>
             <div className="th why">Why stopped</div>
+            <div className="th" style={{ width: 160 }}>
+              Last updated
+            </div>
           </div>
         </div>
 
-        <div style={{ position: "relative", height: rowVirtualizer.getTotalSize(), minWidth: MIN_WIDTH }}>
+        {/* Virtualized body */}
+        <div
+          style={{
+            position: "relative",
+            height: rowVirtualizer.getTotalSize(),
+            minWidth: MIN_WIDTH
+          }}
+        >
           {items.map((v) => {
             const r = rows[v.index];
             const checked = selected.has(r.nct_id);
@@ -154,10 +178,6 @@ export default function ResultsGrid({
                 <div className="td title">
                   <div className="t-title">{r.brief_title || "—"}</div>
                   <div className="t-sub">{r.lead_sponsor || "—"}</div>
-                  <div className="t-sub">
-                    Last updated:{" "}
-                    <span style={{ fontWeight: 800, color: "rgba(15,23,42,.78)" }}>{lastUpdated || "—"}</span>
-                  </div>
                 </div>
 
                 <div className="td phase">
@@ -169,7 +189,9 @@ export default function ResultsGrid({
                 <div className="td intv">{r.intervention_first || "—"}</div>
 
                 <div className="td status">
-                  <span className="chip chip-neutral">{(r.overall_status || "UNKNOWN").toUpperCase()}</span>
+                  <span className="chip chip-neutral">
+                    {(r.overall_status || "UNKNOWN").toUpperCase()}
+                  </span>
                 </div>
 
                 <div className="td bucket">
@@ -179,12 +201,21 @@ export default function ResultsGrid({
                 <div className="td why">
                   <div className="why-clamp">{why || "—"}</div>
                 </div>
+
+                {/* NEW: final column */}
+                <div className="td" style={{ width: 160 }}>
+                  <span style={{ color: "var(--text-muted)", fontWeight: 700 }}>
+                    {lastUpdated || "—"}
+                  </span>
+                </div>
               </div>
             );
           })}
         </div>
 
-        <div className="note">Tip: scroll inside the table area vertically; use horizontal scroll to view all columns.</div>
+        <div className="note">
+          Tip: scroll inside the table area vertically; use horizontal scroll to view all columns.
+        </div>
       </div>
     </div>
   );
