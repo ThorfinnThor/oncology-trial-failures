@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
@@ -42,7 +42,6 @@ export default function ResultsGrid({
   fromHref: string;
 }) {
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
-  const [hoverId, setHoverId] = useState<string | null>(null);
 
   // SSR-safe virtualization: scroll container (NOT window)
   const parentRef = useRef<HTMLDivElement | null>(null);
@@ -56,7 +55,6 @@ export default function ResultsGrid({
 
   const items = rowVirtualizer.getVirtualItems();
 
-  // Null-safe measurement callback
   const measureRow = useCallback(
     (el: HTMLDivElement | null) => {
       if (el) rowVirtualizer.measureElement(el);
@@ -65,10 +63,7 @@ export default function ResultsGrid({
   );
 
   return (
-    // This outer element is responsible for horizontal scrolling
     <div className="table-scroller">
-      {/* This inner element is responsible for vertical scrolling.
-          IMPORTANT: do NOT hide/clip overflow-x; otherwise horizontal scroll breaks. */}
       <div
         ref={parentRef}
         style={{
@@ -79,7 +74,6 @@ export default function ResultsGrid({
           minWidth: MIN_WIDTH
         }}
       >
-        {/* Sticky header */}
         <div
           style={{
             position: "sticky",
@@ -89,13 +83,7 @@ export default function ResultsGrid({
             borderBottom: "1px solid var(--border)"
           }}
         >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: COLS,
-              minWidth: MIN_WIDTH
-            }}
-          >
+          <div style={{ display: "grid", gridTemplateColumns: COLS, minWidth: MIN_WIDTH }}>
             <div className="th sel">Sel</div>
             <div className="th trial">Trial</div>
             <div className="th title">Title</div>
@@ -109,14 +97,7 @@ export default function ResultsGrid({
           </div>
         </div>
 
-        {/* Virtualized body */}
-        <div
-          style={{
-            position: "relative",
-            height: rowVirtualizer.getTotalSize(),
-            minWidth: MIN_WIDTH
-          }}
-        >
+        <div style={{ position: "relative", height: rowVirtualizer.getTotalSize(), minWidth: MIN_WIDTH }}>
           {items.map((v) => {
             const r = rows[v.index];
             const checked = selected.has(r.nct_id);
@@ -193,20 +174,8 @@ export default function ResultsGrid({
                   <span className={bucketClass(bucket)}>{bucket}</span>
                 </div>
 
-                <div
-                  className="td why"
-                  onMouseEnter={() => setHoverId(r.nct_id)}
-                  onMouseLeave={() => setHoverId((x) => (x === r.nct_id ? null : x))}
-                  style={{ position: "relative" }}
-                >
+                <div className="td why">
                   <div className="why-clamp">{why || "—"}</div>
-
-                  {why && hoverId === r.nct_id && (
-                    <div className="tooltip" role="tooltip">
-                      <div className="tooltip-title">Why stopped</div>
-                      <div className="tooltip-body">{why}</div>
-                    </div>
-                  )}
                 </div>
               </div>
             );
@@ -214,7 +183,7 @@ export default function ResultsGrid({
         </div>
 
         <div className="note">
-          Tip: Scroll inside the table area vertically; scroll the page horizontally to view all columns.
+          Tip: scroll inside the table area vertically; use horizontal scroll to view all columns.
         </div>
       </div>
     </div>
