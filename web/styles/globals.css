@@ -351,6 +351,11 @@ a{color:inherit;text-decoration:none}
   justify-content:space-between;
   gap:12px;
   background:var(--surface);
+
+  /* keep header visible in long modals */
+  position:sticky;
+  top:0;
+  z-index:5;
 }
 
 .modal-bd{
@@ -366,6 +371,7 @@ a{color:inherit;text-decoration:none}
   top:0;
   right:0;
   height:100vh;
+  height:100dvh;
   width:min(560px, 94vw);
   background:var(--surface);
   border-left:1px solid var(--border);
@@ -390,8 +396,18 @@ a{color:inherit;text-decoration:none}
   justify-content:space-between;
   gap:12px;
   background:var(--surface);
+
+  /* KEY FIX: keep “upper panel” visible while scrolling */
+  position:sticky;
+  top:0;
+  z-index:5;
 }
 .drawer-bd{padding:16px;overflow:auto;flex:1;background:var(--surface)}
+
+/* Download-specific: bottom sheet on small screens */
+.drawer-panel-download{
+  /* desktop uses default right drawer */
+}
 
 /* MOBILE */
 @media (max-width: 920px){
@@ -426,6 +442,23 @@ a{color:inherit;text-decoration:none}
 @media (max-width: 520px){
   .drawer-panel{width:100vw;}
   .drawer-panel-left{width:100vw;}
-  .modal{width:96vw;max-height:94vh;}
+
+  /* Download drawer becomes a bottom sheet for clarity */
+  .drawer-panel-download{
+    left:0;
+    right:0;
+    top:auto;
+    bottom:0;
+    width:100vw;
+    height:auto;
+    max-height:92vh;
+    max-height:92dvh;
+    border-left:0;
+    border-right:0;
+    border-top:1px solid var(--border);
+    border-radius:18px 18px 0 0;
+  }
+
+  .modal{width:96vw;max-height:94vh;max-height:94dvh;}
   .modal-bd{padding:14px 12px 22px;}
 }
