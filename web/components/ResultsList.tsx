@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
@@ -40,7 +40,6 @@ export default function ResultsList({
 }) {
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
 
-  // Virtualize against the window scroll so we can render all rows on mobile.
   const rowVirtualizer = useWindowVirtualizer({
     count: rows.length,
     estimateSize: () => 240,
@@ -48,6 +47,14 @@ export default function ResultsList({
   });
 
   const items = rowVirtualizer.getVirtualItems();
+
+  // IMPORTANT: safe ref (React calls it with null on cleanup)
+  const measureItem = useCallback(
+    (el: HTMLDivElement | null) => {
+      if (el) rowVirtualizer.measureElement(el);
+    },
+    [rowVirtualizer]
+  );
 
   return (
     <div className="m-list" style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
@@ -61,7 +68,7 @@ export default function ResultsList({
         return (
           <div
             key={r.nct_id}
-            ref={rowVirtualizer.measureElement}
+            ref={measureItem}
             data-index={v.index}
             style={{
               position: "absolute",
