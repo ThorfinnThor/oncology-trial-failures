@@ -1,6 +1,6 @@
 // web/components/DownloadMenu.tsx
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { downloadTrials, DownloadFormat, DownloadScope } from "@/lib/download";
 
@@ -27,12 +27,22 @@ export default function DownloadMenu({
     return filteredRows;
   }, [scope, allRows, filteredRows, selectedRows]);
 
+  const scopeDisabled = scope === "selected" && selectedRows.length === 0;
+
   function doDownload() {
     downloadTrials(meta, state, rows, scope, format);
     setOpen(false);
   }
 
-  const scopeDisabled = scope === "selected" && selectedRows.length === 0;
+  // Prevent background page from scrolling while modal is open (especially iOS Safari)
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
 
   const OptionRow = ({
     checked,
@@ -54,7 +64,7 @@ export default function DownloadMenu({
         width: "100%",
         cursor: "pointer",
         userSelect: "none",
-        padding: "8px 10px",
+        padding: "10px 12px",
         borderRadius: 12
       }}
       onMouseEnter={(e) => ((e.currentTarget.style.background = "rgba(15,23,42,.03)"))}
@@ -75,12 +85,12 @@ export default function DownloadMenu({
       </button>
 
       {open && (
-        <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Download dataset">
+        <div className="modal-wrap" role="dialog" aria-modal="true" aria-label="Download dataset">
           <div className="overlay" onClick={() => setOpen(false)} />
 
-          {/* KEY: drawer-panel-download => bottom sheet on mobile */}
-          <div className="drawer-panel drawer-panel-download">
-            <div className="drawer-hd">
+          {/* Modal is robust on iOS Safari; same pattern as Compare */}
+          <div className="modal" style={{ width: "min(760px, 96vw)" }}>
+            <div className="modal-hd">
               <div style={{ minWidth: 0 }}>
                 <div className="muted" style={{ fontSize: 12 }}>
                   Download
@@ -99,7 +109,7 @@ export default function DownloadMenu({
               </button>
             </div>
 
-            <div className="drawer-bd">
+            <div className="modal-bd">
               <div className="card p-4">
                 <div className="facet-title">Scope</div>
 
@@ -136,12 +146,30 @@ export default function DownloadMenu({
               <div className="card p-4">
                 <div className="facet-title">Format</div>
 
-                <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "10px 12px",
+                    borderRadius: 12,
+                    cursor: "pointer"
+                  }}
+                >
                   <input type="radio" checked={format === "csv"} onChange={() => setFormat("csv")} />
                   <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>CSV</span>
                 </label>
 
-                <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 10,
+                    padding: "10px 12px",
+                    borderRadius: 12,
+                    cursor: "pointer"
+                  }}
+                >
                   <input type="radio" checked={format === "json"} onChange={() => setFormat("json")} />
                   <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>JSON</span>
                 </label>
@@ -155,12 +183,15 @@ export default function DownloadMenu({
                   Exports include the displayed fields (title, phase, sponsor, disease area, inferred reason bucket, and stop reason).
                   For “Selected”, the export uses your checkbox selection.
                 </div>
+
                 {meta?.version ? (
                   <div className="muted" style={{ fontSize: 12, marginTop: 10 }}>
-                    Dataset version: <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.version}</span>
+                    Dataset version:{" "}
+                    <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.version}</span>
                     {meta.source ? (
                       <>
-                        {" "}• Source: <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.source}</span>
+                        {" "}• Source:{" "}
+                        <span style={{ color: "var(--text)", fontWeight: 800 }}>{meta.source}</span>
                       </>
                     ) : null}
                   </div>
@@ -170,7 +201,13 @@ export default function DownloadMenu({
               <div style={{ height: 14 }} />
 
               <div style={{ display: "flex", gap: 10 }}>
-                <button className="btn-primary" type="button" onClick={doDownload} disabled={scopeDisabled} style={{ flex: 1 }}>
+                <button
+                  className="btn-primary"
+                  type="button"
+                  onClick={doDownload}
+                  disabled={scopeDisabled}
+                  style={{ flex: 1 }}
+                >
                   Download
                 </button>
                 <button className="btn" type="button" onClick={() => setOpen(false)}>
