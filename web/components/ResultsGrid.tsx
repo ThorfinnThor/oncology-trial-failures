@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
@@ -40,7 +41,18 @@ export default function ResultsGrid({
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
   const [hoverId, setHoverId] = useState<string | null>(null);
 
-  const shown = rows.slice(0, 2000);
+  // Virtualize against the window scroll so we can render all rows without capping.
+  const rowVirtualizer = useWindowVirtualizer({
+    count: rows.length,
+    estimateSize: () => 104,
+    overscan: 10
+  });
+
+  const virtualItems = rowVirtualizer.getVirtualItems();
+  const paddingTop = virtualItems.length ? virtualItems[0].start : 0;
+  const paddingBottom = virtualItems.length
+    ? rowVirtualizer.getTotalSize() - virtualItems[virtualItems.length - 1].end
+    : 0;
 
   return (
     <div className="table-scroller">
@@ -61,25 +73,41 @@ export default function ResultsGrid({
         </thead>
 
         <tbody>
-          {shown.map((r) => {
+          {paddingTop > 0 ? (
+            <tr aria-hidden="true">
+              <td colSpan={10} style={{ height: paddingTop, padding: 0, border: 0 }} />
+            </tr>
+          ) : null}
+
+          {virtualItems.map((v) => {
+            const r = rows[v.index];
             const checked = selected.has(r.nct_id);
             const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
             const bucket = reasonBucket(r);
             const why = (r.why_stopped_short || "").trim();
 
             return (
-              <tr key={r.nct_id} className="tr">
+              <tr
+                key={r.nct_id}
+                className="tr"
+                ref={rowVirtualizer.measureElement}
+                data-index={v.index}
+              >
                 <td className="td sel">
                   <input
                     type="checkbox"
                     checked={checked}
                     onClick={(e) => e.stopPropagation()}
                     onChange={() => onToggleSelect(r.nct_id)}
+                    aria-label={`Select ${r.nct_id}`}
                   />
                 </td>
 
                 <td className="td trial">
-                  <Link href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`} className="link">
+                  <Link
+                    href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
+                    className="link"
+                  >
                     {r.nct_id}
                   </Link>
                   <button
@@ -132,10 +160,14 @@ export default function ResultsGrid({
               </tr>
             );
           })}
+
+          {paddingBottom > 0 ? (
+            <tr aria-hidden="true">
+              <td colSpan={10} style={{ height: paddingBottom, padding: 0, border: 0 }} />
+            </tr>
+          ) : null}
         </tbody>
       </table>
-
-      {rows.length > 2000 && <div className="note">Showing first 2,000 rows for performance. Filter/search to narrow.</div>}
     </div>
   );
 }
