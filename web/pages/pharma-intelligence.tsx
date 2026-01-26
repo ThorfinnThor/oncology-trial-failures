@@ -7,7 +7,12 @@ import { useEffect, useMemo, useState } from "react";
 import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
-import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import {
+  isLikelyScientificFailure,
+  parsePhases,
+  phaseLabel,
+  reasonBucket
+} from "@/lib/filtering";
 
 type BucketKey = string;
 type PhaseKey = string;
@@ -26,7 +31,24 @@ type PhaseBucketCell = {
   bio: number;
 };
 
-type SimpleRow = { key: string; label: string; total: number; bio: number; bioShare: number };
+type SimpleRow = {
+  key: string;
+  label: string;
+  total: number;
+  bio: number;
+  bioShare: number;
+};
+
+type SponsorProfile = {
+  sponsor: string;
+  rows: TrialIndexRow[];
+  total: number;
+  bio: number;
+  bioShare: number;
+  topBuckets: { bucket: string; count: number }[];
+  topPhases: { phase: string; count: number }[];
+  topConds: { condition: string; count: number }[];
+};
 
 function normEntity(s?: string): string {
   return (s || "").replace(/\s+/g, " ").trim();
@@ -63,15 +85,7 @@ function TopK<T>(arr: T[], k: number): T[] {
   return arr.slice(0, Math.max(0, k));
 }
 
-function Bar({
-  value,
-  max,
-  label
-}: {
-  value: number;
-  max: number;
-  label?: string;
-}) {
+function Bar({ value, max, label }: { value: number; max: number; label?: string }) {
   const pct = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0;
   return (
     <div className="barWrap" aria-label={label}>
@@ -134,14 +148,14 @@ export default function PharmaIntelligencePage() {
     // Confidence distribution on likely scientific failures only
     for (const r of allRows) {
       if (!isLikelyScientificFailure(r)) continue;
-      byConf[confKey(r.classification_confidence)] += 1;
+      byConf[confKey((r as any).classification_confidence)] += 1;
     }
 
     // Last updated range (descriptive only)
     let minDate = "";
     let maxDate = "";
     for (const r of allRows) {
-      const d = (r.last_update_post_date || r.date || "").slice(0, 10);
+      const d = ((r as any).last_update_post_date || (r as any).date || "").slice(0, 10);
       if (!d) continue;
       if (!minDate || d < minDate) minDate = d;
       if (!maxDate || d > maxDate) maxDate = d;
@@ -176,7 +190,7 @@ export default function PharmaIntelligencePage() {
     for (const b of bucketOrder) map.set(b, { total: 0, bio: 0 });
 
     for (const r of rows) {
-      const b = reasonBucket(r).toUpperCase().trim() || "OTHER/UNKNOWN";
+      const b = (reasonBucket(r) || "").toUpperCase().trim() || "OTHER/UNKNOWN";
       const key = map.has(b) ? b : "OTHER/UNKNOWN";
       const cur = map.get(key)!;
       cur.total += 1;
@@ -191,31 +205,36 @@ export default function PharmaIntelligencePage() {
     }));
 
     // If data produces buckets outside canonical order, append them
-    const extra: BucketStat[] = [];
     const known = new Set(bucketOrder);
+    const extraBuckets = new Set<string>();
     for (const r of rows) {
-      const b = reasonBucket(r).toUpperCase().trim() || "OTHER/UNKNOWN";
-      if (!known.has(b) && b) {
-        if (!extra.find((x) => x.bucket === b)) extra.push({ bucket: b, total: 0, bio: 0, bioShare: 0 });
-      }
+      const b = (reasonBucket(r) || "").toUpperCase().trim();
+      if (b && !known.has(b)) extraBuckets.add(b);
     }
-    if (extra.length) {
+
+    if (extraBuckets.size) {
+      const extra: BucketStat[] = [];
+      for (const b of extraBuckets) extra.push({ bucket: b, total: 0, bio: 0, bioShare: 0 });
+
       const extraMap = new Map<string, { total: number; bio: number }>();
       for (const e of extra) extraMap.set(e.bucket, { total: 0, bio: 0 });
+
       for (const r of rows) {
-        const b = reasonBucket(r).toUpperCase().trim() || "OTHER/UNKNOWN";
+        const b = (reasonBucket(r) || "").toUpperCase().trim();
         if (!extraMap.has(b)) continue;
         const cur = extraMap.get(b)!;
         cur.total += 1;
         if (isLikelyScientificFailure(r)) cur.bio += 1;
       }
-      for (const [bucket, v] of extraMap.entries()) {
-        extra.push({ bucket, total: v.total, bio: v.bio, bioShare: v.total > 0 ? v.bio / v.total : 0 });
-      }
-      // Rebuild extra as unique
-      const uniqExtra = new Map<string, BucketStat>();
-      for (const e of extra) uniqExtra.set(e.bucket, e);
-      return [...out, ...Array.from(uniqExtra.values())].sort((a, b) => b.total - a.total);
+
+      const finalizedExtra = Array.from(extraMap.entries()).map(([bucket, v]) => ({
+        bucket,
+        total: v.total,
+        bio: v.bio,
+        bioShare: v.total > 0 ? v.bio / v.total : 0
+      }));
+
+      return [...out, ...finalizedExtra].sort((a, b) => b.total - a.total);
     }
 
     return out;
@@ -227,6 +246,7 @@ export default function PharmaIntelligencePage() {
     const s = new Set<string>();
     for (const r of rows) s.add(primaryPhase(r));
     const arr = Array.from(s);
+
     // Preferred ordering
     const preferred = [
       "EARLY_PHASE1",
@@ -260,8 +280,9 @@ export default function PharmaIntelligencePage() {
 
     for (const r of rows) {
       const p = primaryPhase(r);
-      const bRaw = reasonBucket(r).toUpperCase().trim() || "OTHER/UNKNOWN";
+      const bRaw = (reasonBucket(r) || "").toUpperCase().trim() || "OTHER/UNKNOWN";
       const b = bucketOrder.includes(bRaw) ? bRaw : "OTHER/UNKNOWN";
+
       if (!m.has(p)) {
         const inner = new Map<BucketKey, { total: number; bio: number }>();
         for (const bb of bucketOrder) inner.set(bb, { total: 0, bio: 0 });
@@ -290,7 +311,7 @@ export default function PharmaIntelligencePage() {
   const diseaseAreaStats = useMemo<SimpleRow[]>(() => {
     const map = new Map<string, { total: number; bio: number }>();
     for (const r of rows) {
-      const a = normEntity(r.disease_area || "Other") || "Other";
+      const a = normEntity((r as any).disease_area || "Other") || "Other";
       if (!map.has(a)) map.set(a, { total: 0, bio: 0 });
       const cur = map.get(a)!;
       cur.total += 1;
@@ -310,7 +331,7 @@ export default function PharmaIntelligencePage() {
   const conditionStats = useMemo<SimpleRow[]>(() => {
     const map = new Map<string, { total: number; bio: number }>();
     for (const r of rows) {
-      const c = normEntity(r.condition_first || "");
+      const c = normEntity((r as any).condition_first || "");
       if (!c) continue;
       if (!map.has(c)) map.set(c, { total: 0, bio: 0 });
       const cur = map.get(c)!;
@@ -331,7 +352,7 @@ export default function PharmaIntelligencePage() {
   const sponsorUniverse = useMemo(() => {
     const map = new Map<string, { total: number; bio: number }>();
     for (const r of allRows) {
-      const s = normEntity(r.lead_sponsor || "");
+      const s = normEntity((r as any).lead_sponsor || "");
       if (!s) continue;
       if (!map.has(s)) map.set(s, { total: 0, bio: 0 });
       const cur = map.get(s)!;
@@ -339,23 +360,40 @@ export default function PharmaIntelligencePage() {
       if (isLikelyScientificFailure(r)) cur.bio += 1;
     }
     const list = Array.from(map.entries())
-      .map(([s, v]) => ({ sponsor: s, total: v.total, bio: v.bio, bioShare: v.total > 0 ? v.bio / v.total : 0 }))
+      .map(([s, v]) => ({
+        sponsor: s,
+        total: v.total,
+        bio: v.bio,
+        bioShare: v.total > 0 ? v.bio / v.total : 0
+      }))
       .sort((a, b) => b.total - a.total);
 
     return TopK(list, 80);
   }, [allRows]);
 
   useEffect(() => {
-    // Initialize selected sponsor once we have a list
     if (!selectedSponsor && sponsorUniverse.length) setSelectedSponsor(sponsorUniverse[0].sponsor);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sponsorUniverse.length]);
 
-  const sponsorProfile = useMemo(() => {
+  const sponsorProfile = useMemo<SponsorProfile | null>(() => {
     const s = normEntity(selectedSponsor);
     if (!s) return null;
-    const sponsorRows = rows.filter((r) => normEntity(r.lead_sponsor || "") === s);
-    if (!sponsorRows.length) return { sponsor: s, rows: [] as TrialIndexRow[] };
+
+    const sponsorRows = rows.filter((r) => normEntity((r as any).lead_sponsor || "") === s);
+
+    if (sponsorRows.length === 0) {
+      return {
+        sponsor: s,
+        rows: [],
+        total: 0,
+        bio: 0,
+        bioShare: 0,
+        topBuckets: [],
+        topPhases: [],
+        topConds: []
+      };
+    }
 
     const total = sponsorRows.length;
     const bio = sponsorRows.filter((r) => isLikelyScientificFailure(r)).length;
@@ -363,7 +401,7 @@ export default function PharmaIntelligencePage() {
     // Buckets
     const bucketMap = new Map<string, number>();
     for (const r of sponsorRows) {
-      const b = reasonBucket(r).toUpperCase().trim() || "OTHER/UNKNOWN";
+      const b = (reasonBucket(r) || "").toUpperCase().trim() || "OTHER/UNKNOWN";
       bucketMap.set(b, (bucketMap.get(b) || 0) + 1);
     }
     const topBuckets = Array.from(bucketMap.entries())
@@ -384,7 +422,7 @@ export default function PharmaIntelligencePage() {
     // Conditions
     const condMap = new Map<string, number>();
     for (const r of sponsorRows) {
-      const c = normEntity(r.condition_first || "");
+      const c = normEntity((r as any).condition_first || "");
       if (!c) continue;
       condMap.set(c, (condMap.get(c) || 0) + 1);
     }
@@ -411,7 +449,6 @@ export default function PharmaIntelligencePage() {
         <title>Pharma Intelligence — Clinical trial failures</title>
       </Head>
 
-      {/* Use the same “topbar” class that Explore relies on (mobile behavior already defined in globals.css) */}
       <header className="topbar">
         <div className="topbar-inner">
           <div className="topbar-left">
@@ -457,15 +494,27 @@ export default function PharmaIntelligencePage() {
             <h1 className="h1">Pharma Intelligence</h1>
             <div className="muted small">
               Descriptive analytics over stopped trials in the registry. Use “drill-down” links to validate in Explore.
-              {meta?.version ? <span> Dataset: <strong>{meta.version}</strong>.</span> : null}
+              {meta?.version ? (
+                <span>
+                  {" "}
+                  Dataset: <strong>{meta.version}</strong>.
+                </span>
+              ) : null}
               {totals.minDate && totals.maxDate ? (
-                <span> Last-update date range: <strong>{totals.minDate}</strong> to <strong>{totals.maxDate}</strong>.</span>
+                <span>
+                  {" "}
+                  Last-update date range: <strong>{totals.minDate}</strong> to <strong>{totals.maxDate}</strong>.
+                </span>
               ) : null}
             </div>
           </div>
 
           <div className="rightMeta">
-            {meta?.source ? <div className="chip">Source: <strong style={{ marginLeft: 6 }}>{meta.source}</strong></div> : null}
+            {meta?.source ? (
+              <div className="chip">
+                Source: <strong style={{ marginLeft: 6 }}>{meta.source}</strong>
+              </div>
+            ) : null}
           </div>
         </div>
 
@@ -475,7 +524,6 @@ export default function PharmaIntelligencePage() {
           <div className="card p-4 error">{err}</div>
         ) : (
           <>
-            {/* KPI tiles */}
             <section className="grid3" aria-label="Key metrics">
               <div className="card p-4">
                 <div className="muted small">Stopped trials (current focus)</div>
@@ -488,12 +536,18 @@ export default function PharmaIntelligencePage() {
               <div className="card p-4">
                 <div className="muted small">Likely scientific failures (overall)</div>
                 <div className="kpi">{totals.bio.toLocaleString()}</div>
-                <div className="muted small">Share of all stopped trials: <strong>{safePct(totals.bioShare)}</strong></div>
+                <div className="muted small">
+                  Share of all stopped trials: <strong>{safePct(totals.bioShare)}</strong>
+                </div>
                 <div className="miniRow">
-                  <div className="miniLabel">HIGH</div><div className="miniVal">{totals.byConf.HIGH.toLocaleString()}</div>
-                  <div className="miniLabel">MED</div><div className="miniVal">{totals.byConf.MEDIUM.toLocaleString()}</div>
-                  <div className="miniLabel">LOW</div><div className="miniVal">{totals.byConf.LOW.toLocaleString()}</div>
-                  <div className="miniLabel">UNK</div><div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
+                  <div className="miniLabel">HIGH</div>
+                  <div className="miniVal">{totals.byConf.HIGH.toLocaleString()}</div>
+                  <div className="miniLabel">MED</div>
+                  <div className="miniVal">{totals.byConf.MEDIUM.toLocaleString()}</div>
+                  <div className="miniLabel">LOW</div>
+                  <div className="miniVal">{totals.byConf.LOW.toLocaleString()}</div>
+                  <div className="miniLabel">UNK</div>
+                  <div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
                 </div>
               </div>
 
@@ -516,7 +570,6 @@ export default function PharmaIntelligencePage() {
               </div>
             </section>
 
-            {/* Failure taxonomy */}
             <section className="section" aria-label="Failure taxonomy">
               <div className="sectionTitleRow">
                 <h2 className="h2">Failure taxonomy</h2>
@@ -550,9 +603,7 @@ export default function PharmaIntelligencePage() {
                                 <Link className="link" href={exploreHref({ bucket: [b.bucket] })}>
                                   {b.bucket}
                                 </Link>
-                                <div className="muted small">
-                                  {b.bio.toLocaleString()} likely scientific failures
-                                </div>
+                                <div className="muted small">{b.bio.toLocaleString()} likely scientific failures</div>
                               </td>
                               <td style={{ textAlign: "right", fontWeight: 750 }}>{b.total.toLocaleString()}</td>
                               <td style={{ textAlign: "right" }}>{safePct(b.bioShare)}</td>
@@ -572,9 +623,7 @@ export default function PharmaIntelligencePage() {
 
                 <div className="card p-4">
                   <h3 className="h3">Phase × bucket matrix</h3>
-                  <div className="muted small">
-                    Click a cell to open Explore with both filters applied.
-                  </div>
+                  <div className="muted small">Click a cell to open Explore with both filters applied.</div>
 
                   <div className="tableWrap" style={{ marginTop: 10 }}>
                     <table className="matrixTbl" aria-label="Phase by bucket matrix">
@@ -628,7 +677,6 @@ export default function PharmaIntelligencePage() {
               </div>
             </section>
 
-            {/* Indication landscape */}
             <section className="section" aria-label="Indication landscape">
               <div className="sectionTitleRow">
                 <h2 className="h2">Indication landscape</h2>
@@ -670,7 +718,9 @@ export default function PharmaIntelligencePage() {
                     </table>
                   </div>
 
-                  <div className="note">Drill-down uses the existing Explore “area” filter (URL state), so behavior stays consistent.</div>
+                  <div className="note">
+                    Drill-down uses the existing Explore “area” filter (URL state), so behavior stays consistent.
+                  </div>
                 </div>
 
                 <div className="card p-4">
@@ -710,13 +760,13 @@ export default function PharmaIntelligencePage() {
                   </div>
 
                   <div className="note">
-                    Because this uses text search, results may include trials mentioning the condition in title/reason text, not only structured condition fields.
+                    Because this uses text search, results may include trials mentioning the condition in title/reason text, not only structured
+                    condition fields.
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Sponsor mix */}
             <section className="section" aria-label="Sponsor mix">
               <div className="sectionTitleRow">
                 <h2 className="h2">Sponsor mix</h2>
@@ -728,7 +778,9 @@ export default function PharmaIntelligencePage() {
               <div className="card p-4">
                 <div className="sponsorRow">
                   <div style={{ minWidth: 280, flex: "1 1 320px" }}>
-                    <div className="muted small" style={{ marginBottom: 6 }}>Select sponsor (top by volume)</div>
+                    <div className="muted small" style={{ marginBottom: 6 }}>
+                      Select sponsor (top by volume)
+                    </div>
                     <select
                       className="input"
                       value={selectedSponsor}
@@ -753,7 +805,7 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                {!sponsorProfile || sponsorProfile.rows.length === 0 ? (
+                {!sponsorProfile || sponsorProfile.total === 0 ? (
                   <div className="note">No trials found for this sponsor under the current page focus.</div>
                 ) : (
                   <div className="grid2" style={{ marginTop: 14 }}>
@@ -761,11 +813,15 @@ export default function PharmaIntelligencePage() {
                       <h3 className="h3">{sponsorProfile.sponsor}</h3>
                       <div className="kpiSm">{sponsorProfile.total.toLocaleString()} trials</div>
                       <div className="muted small">
-                        Likely scientific failures: <strong>{sponsorProfile.bio.toLocaleString()}</strong> ({safePct(sponsorProfile.bioShare)})
+                        Likely scientific failures: <strong>{sponsorProfile.bio.toLocaleString()}</strong> (
+                        {safePct(sponsorProfile.bioShare)})
                       </div>
 
                       <div style={{ marginTop: 12 }}>
-                        <div className="muted small" style={{ fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em" }}>
+                        <div
+                          className="muted small"
+                          style={{ fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em" }}
+                        >
                           Top reason buckets
                         </div>
                         <div className="tableWrap" style={{ marginTop: 8 }}>
@@ -787,7 +843,10 @@ export default function PharmaIntelligencePage() {
                                   </td>
                                   <td style={{ textAlign: "right", fontWeight: 750 }}>{b.count.toLocaleString()}</td>
                                   <td>
-                                    <Bar value={b.count} max={Math.max(1, ...sponsorProfile.topBuckets.map((x) => x.count))} />
+                                    <Bar
+                                      value={b.count}
+                                      max={Math.max(1, ...sponsorProfile.topBuckets.map((x) => x.count))}
+                                    />
                                   </td>
                                 </tr>
                               ))}
@@ -802,7 +861,10 @@ export default function PharmaIntelligencePage() {
 
                       <div className="splitCols">
                         <div>
-                          <div className="muted small" style={{ fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em" }}>
+                          <div
+                            className="muted small"
+                            style={{ fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em" }}
+                          >
                             Phases
                           </div>
                           <div className="tableWrap" style={{ marginTop: 8 }}>
@@ -830,7 +892,10 @@ export default function PharmaIntelligencePage() {
                         </div>
 
                         <div>
-                          <div className="muted small" style={{ fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em" }}>
+                          <div
+                            className="muted small"
+                            style={{ fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em" }}
+                          >
                             Top conditions
                           </div>
                           <div className="tableWrap" style={{ marginTop: 8 }}>
@@ -873,7 +938,6 @@ export default function PharmaIntelligencePage() {
         )}
       </main>
 
-      {/* Local, scoped styles for responsiveness without touching global CSS */}
       <style jsx>{`
         .sectionHeader {
           display: flex;
