@@ -166,6 +166,9 @@ export default function ExplorePage() {
                 </Link>
                 <Link className="navlink" href="/methods">
                   Methods
+                 <Link className="navlink" href="/pharma-intelligence">
+                   Pharma intelligence
+                 </Link>
                 </Link>
               </nav>
             </div>
