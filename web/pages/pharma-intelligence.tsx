@@ -86,7 +86,6 @@ function Bar({ value, max, label }: { value: number; max: number; label?: string
  * =========================
  * PHASE NORMALIZATION
  * =========================
- * Prevents duplicate "Unknown" labels from different raw phase tokens.
  */
 const CANON_PHASES = new Set([
   "EARLY_PHASE1",
@@ -116,7 +115,7 @@ function normalizePhaseToken(p: string): PhaseKey {
   return CANON_PHASES.has(u) ? u : "UNKNOWN";
 }
 
-// Representative phase per trial (earliest meaningful phase)
+// Representative phase per trial (earliest meaningful)
 function representativePhase(r: TrialIndexRow): PhaseKey {
   const raw = parsePhases(r.phases || "");
   if (!raw.length) return "UNKNOWN";
@@ -129,7 +128,6 @@ function representativePhase(r: TrialIndexRow): PhaseKey {
  * =========================
  * CONDITION NORMALIZATION
  * =========================
- * Groups variants like COVID-19 / Covid19 / COVID 19.
  */
 function normalizeConditionKey(s: string): string {
   const t = (s || "")
@@ -167,8 +165,8 @@ function isHealthyConditionKey(key: string): boolean {
  * =========================
  * BUCKET POLICY
  * =========================
- * User request: remove ENROLLMENT from reason buckets.
- * We collapse any ENROLLMENT classifications into OTHER/UNKNOWN for display on this page.
+ * Enrollment must not appear on this page.
+ * We collapse ENROLLMENT -> OTHER/UNKNOWN for display + all sponsor analytics here.
  */
 const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "OTHER/UNKNOWN"];
 
@@ -250,14 +248,13 @@ export default function PharmaIntelligencePage() {
    * BUCKET STATS (DISPLAYED)
    * - collapse ENROLLMENT -> OTHER/UNKNOWN
    * - show core buckets always
-   * - show extras only if present
+   * - show extras only if present (after normalization)
    */
   const bucketStatsAll = useMemo<BucketStat[]>(() => {
     const map = new Map<string, { total: number; bio: number }>();
 
     for (const r of rows) {
-      const raw = reasonBucket(r);
-      const b = normalizeBucketForDisplay(raw || "");
+      const b = normalizeBucketForDisplay(reasonBucket(r) || "");
       if (!map.has(b)) map.set(b, { total: 0, bio: 0 });
       const cur = map.get(b)!;
       cur.total += 1;
@@ -280,7 +277,6 @@ export default function PharmaIntelligencePage() {
       .filter((b) => !CORE_BUCKETS.includes(b.bucket) && b.total > 0)
       .map((b) => b.bucket);
 
-    // Ensure ENROLLMENT never appears as a column even if present in extras (it won’t be, due to normalization)
     return [...CORE_BUCKETS, ...extras].filter((b) => b !== "ENROLLMENT");
   }, [bucketStatsAll]);
 
@@ -294,7 +290,7 @@ export default function PharmaIntelligencePage() {
   const bucketMax = useMemo(() => Math.max(1, ...bucketStats.map((b) => b.total)), [bucketStats]);
 
   /**
-   * PHASES (normalized)
+   * PHASE KEYS (normalized)
    */
   const phaseKeys = useMemo<PhaseKey[]>(() => {
     const s = new Set<string>();
@@ -305,7 +301,7 @@ export default function PharmaIntelligencePage() {
   }, [rows]);
 
   /**
-   * PHASE × BUCKET MATRIX (ENROLLMENT removed)
+   * PHASE × BUCKET MATRIX (Enrollment removed)
    */
   const phaseBucketMatrix = useMemo(() => {
     const m = new Map<PhaseKey, Map<BucketKey, { total: number; bio: number }>>();
@@ -371,9 +367,7 @@ export default function PharmaIntelligencePage() {
   }, [rows]);
 
   /**
-   * CONDITIONS (GLOBAL TOP CONDITIONS)
-   * NOTE: leaving global section as-is (no toggle placement request here).
-   * We keep it normalized. If you want the toggle there too, say so.
+   * TOP CONDITIONS (global section; normalized)
    */
   const conditionStats = useMemo<SimpleRow[]>(() => {
     type Agg = { total: number; bio: number; labelCounts: Map<string, number> };
@@ -411,7 +405,7 @@ export default function PharmaIntelligencePage() {
   }, [rows]);
 
   /**
-   * SPONSOR UNIVERSE (top by volume)
+   * SPONSOR UNIVERSE (top by volume; uses allRows, not focus)
    */
   const sponsorUniverse = useMemo(() => {
     const map = new Map<string, { total: number; bio: number }>();
@@ -436,17 +430,14 @@ export default function PharmaIntelligencePage() {
   }, [sponsorUniverse.length]);
 
   /**
-   * SPONSOR PROFILE (3 panels)
-   * Exclude-healthy toggle is applied ONLY here (per your request).
+   * SPONSOR PROFILE (always render panels; if 0 rows in focus, show empty state IN panels)
    */
-  const sponsorProfile = useMemo<SponsorProfile | null>(() => {
+  const sponsorProfile = useMemo<SponsorProfile>(() => {
     const s = normEntity(selectedSponsor);
-    if (!s) return null;
+    const sponsorRows = s ? rows.filter((r) => normEntity(r.lead_sponsor || "") === s) : [];
 
-    const sponsorRows = rows.filter((r) => normEntity(r.lead_sponsor || "") === s);
-
-    if (sponsorRows.length === 0) {
-      return { sponsor: s, rows: [], total: 0, bio: 0, bioShare: 0, topBuckets: [], topPhases: [], topConds: [] };
+    if (!s) {
+      return { sponsor: "", rows: [], total: 0, bio: 0, bioShare: 0, topBuckets: [], topPhases: [], topConds: [] };
     }
 
     const total = sponsorRows.length;
@@ -509,8 +500,19 @@ export default function PharmaIntelligencePage() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    return { sponsor: s, rows: sponsorRows, total, bio, bioShare: total > 0 ? bio / total : 0, topBuckets, topPhases, topConds };
+    return {
+      sponsor: s,
+      rows: sponsorRows,
+      total,
+      bio,
+      bioShare: total > 0 ? bio / total : 0,
+      topBuckets,
+      topPhases,
+      topConds
+    };
   }, [rows, selectedSponsor, displayedBuckets, excludeHealthySponsor]);
+
+  const sponsorHasRows = sponsorProfile.total > 0;
 
   return (
     <>
@@ -650,7 +652,7 @@ export default function PharmaIntelligencePage() {
               <div className="grid2">
                 <div className="card p-4">
                   <h3 className="h3">Reason buckets</h3>
-                  <div className="muted small">Enrollment is intentionally removed and collapsed into Other/Unknown for this page.</div>
+                  <div className="muted small">Enrollment is removed on this page (collapsed into Other/Unknown).</div>
 
                   <div className="tableWrap" style={{ marginTop: 10 }}>
                     <table className="miniTbl" aria-label="Reason bucket table">
@@ -826,7 +828,7 @@ export default function PharmaIntelligencePage() {
               </div>
             </section>
 
-            {/* Sponsor mix (three panels like your screenshot) */}
+            {/* Sponsor mix (always renders panels) */}
             <section className="section" aria-label="Sponsor mix">
               <div className="sectionTitleRow">
                 <h2 className="h2">Sponsor mix</h2>
@@ -841,7 +843,12 @@ export default function PharmaIntelligencePage() {
                     <div className="muted small" style={{ marginBottom: 6 }}>
                       Select sponsor (top by volume)
                     </div>
-                    <select className="input" value={selectedSponsor} onChange={(e) => setSelectedSponsor(e.target.value)} aria-label="Select sponsor">
+                    <select
+                      className="input"
+                      value={selectedSponsor}
+                      onChange={(e) => setSelectedSponsor(e.target.value)}
+                      aria-label="Select sponsor"
+                    >
                       {sponsorUniverse.map((s) => (
                         <option key={s.sponsor} value={s.sponsor}>
                           {s.sponsor} ({s.total})
@@ -860,35 +867,36 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                {!sponsorProfile || sponsorProfile.total === 0 ? (
-                  <div className="note">No trials found for this sponsor under the current page focus.</div>
-                ) : (
-                  <div className="sponsorPanels3">
-                    {/* LEFT PANEL: company summary + top buckets */}
-                    <div className="card p-4 sponsorPanel">
-                      <div className="panelHeader">
-                        <div>
-                          <div className="muted small">Sponsor</div>
-                          <div className="panelTitle">{sponsorProfile.sponsor}</div>
+                {/* ALWAYS show 3 panels */}
+                <div className="sponsorPanels3">
+                  {/* LEFT PANEL */}
+                  <div className="card p-4 sponsorPanel">
+                    <div className="panelHeader">
+                      <div>
+                        <div className="muted small">Sponsor</div>
+                        <div className="panelTitle">{sponsorProfile.sponsor || "—"}</div>
+                      </div>
+
+                      <div className="panelKpis">
+                        <div className="panelKpi">
+                          <div className="muted small">Trials (current focus)</div>
+                          <div className="panelKpiVal">{sponsorProfile.total.toLocaleString()}</div>
                         </div>
-                        <div className="panelKpis">
-                          <div className="panelKpi">
-                            <div className="muted small">Trials</div>
-                            <div className="panelKpiVal">{sponsorProfile.total.toLocaleString()}</div>
-                          </div>
-                          <div className="panelKpi">
-                            <div className="muted small">Likely scientific failures</div>
-                            <div className="panelKpiVal">
-                              {sponsorProfile.bio.toLocaleString()} <span className="muted">({safePct(sponsorProfile.bioShare)})</span>
-                            </div>
+                        <div className="panelKpi">
+                          <div className="muted small">Likely scientific failures</div>
+                          <div className="panelKpiVal">
+                            {sponsorProfile.bio.toLocaleString()}{" "}
+                            <span className="muted">({safePct(sponsorProfile.bioShare)})</span>
                           </div>
                         </div>
                       </div>
+                    </div>
 
-                      <div className="subhead" style={{ marginTop: 12 }}>
-                        Top reason buckets
-                      </div>
+                    <div className="subhead" style={{ marginTop: 12 }}>
+                      Top reason buckets
+                    </div>
 
+                    {sponsorHasRows ? (
                       <div className="tableWrap">
                         <table className="compactTbl" aria-label="Sponsor bucket mix">
                           <thead>
@@ -913,15 +921,20 @@ export default function PharmaIntelligencePage() {
                           </tbody>
                         </table>
                       </div>
+                    ) : (
+                      <div className="note">No trials for this sponsor under the current focus.</div>
+                    )}
+                  </div>
+
+                  {/* MIDDLE PANEL */}
+                  <div className="card p-4 sponsorPanel">
+                    <div className="panelTitleRow">
+                      <h3 className="h3">Phase and indication mix</h3>
                     </div>
 
-                    {/* MIDDLE PANEL: phases */}
-                    <div className="card p-4 sponsorPanel">
-                      <div className="panelTitleRow">
-                        <h3 className="h3">Phase and indication mix</h3>
-                      </div>
+                    <div className="subhead">Phases</div>
 
-                      <div className="subhead">Phases</div>
+                    {sponsorHasRows ? (
                       <div className="tableWrap">
                         <table className="compactTbl" aria-label="Sponsor phase mix">
                           <thead>
@@ -946,25 +959,29 @@ export default function PharmaIntelligencePage() {
                           </tbody>
                         </table>
                       </div>
+                    ) : (
+                      <div className="note">No trials for this sponsor under the current focus.</div>
+                    )}
+                  </div>
+
+                  {/* RIGHT PANEL */}
+                  <div className="card p-4 sponsorPanel">
+                    <div className="panelTitleRow" style={{ justifyContent: "space-between" }}>
+                      <h3 className="h3">Top conditions</h3>
+                      <label className="chip" style={{ cursor: "pointer" }}>
+                        <input
+                          type="checkbox"
+                          checked={excludeHealthySponsor}
+                          onChange={(e) => setExcludeHealthySponsor(e.target.checked)}
+                          style={{ marginRight: 8 }}
+                        />
+                        Exclude “Healthy”
+                      </label>
                     </div>
 
-                    {/* RIGHT PANEL: top conditions + EXCLUDE HEALTHY TOGGLE (here only) */}
-                    <div className="card p-4 sponsorPanel">
-                      <div className="panelTitleRow" style={{ justifyContent: "space-between" }}>
-                        <h3 className="h3">Top conditions</h3>
-                        <label className="chip" style={{ cursor: "pointer" }}>
-                          <input
-                            type="checkbox"
-                            checked={excludeHealthySponsor}
-                            onChange={(e) => setExcludeHealthySponsor(e.target.checked)}
-                            style={{ marginRight: 8 }}
-                          />
-                          Exclude “Healthy”
-                        </label>
-                      </div>
+                    <div className="muted small">Grouped by normalized condition key (e.g., COVID-19 variants).</div>
 
-                      <div className="muted small">Grouped by normalized condition key (e.g., COVID-19 variants).</div>
-
+                    {sponsorHasRows ? (
                       <div className="tableWrap" style={{ marginTop: 10 }}>
                         <table className="compactTbl" aria-label="Sponsor top conditions">
                           <thead>
@@ -989,13 +1006,15 @@ export default function PharmaIntelligencePage() {
                           </tbody>
                         </table>
                       </div>
+                    ) : (
+                      <div className="note">No trials for this sponsor under the current focus.</div>
+                    )}
 
-                      <div className="note" style={{ marginTop: 10 }}>
-                        Condition drill-down uses Explore search (q) because Explore does not currently apply a dedicated condition facet in filtering.
-                      </div>
+                    <div className="note" style={{ marginTop: 10 }}>
+                      Condition drill-down uses Explore search (q) because Explore does not currently apply a dedicated condition facet in filtering.
                     </div>
                   </div>
-                )}
+                </div>
 
                 <div className="note" style={{ marginTop: 14 }}>
                   Guardrail: do not interpret sponsor volume as “worse”; it may reflect portfolio size, registry practices, or acquisitions.
@@ -1122,7 +1141,7 @@ export default function PharmaIntelligencePage() {
           z-index: 1;
         }
 
-        /* Sponsor compact tables (no forced min-width) */
+        /* Sponsor compact tables */
         .compactTbl {
           width: 100%;
           border-collapse: collapse;
@@ -1198,7 +1217,7 @@ export default function PharmaIntelligencePage() {
           border-radius: 999px;
         }
 
-        /* Sponsor section layout (match the screenshot intent) */
+        /* Sponsor section layout */
         .sponsorTopRow {
           display: flex;
           align-items: flex-end;
