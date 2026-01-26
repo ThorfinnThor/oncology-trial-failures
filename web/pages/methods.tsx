@@ -37,6 +37,7 @@ export default function MethodsPage() {
           <nav className="ml-2 flex items-center gap-3 text-sm">
             <Link href="/explore" className="text-[var(--text-muted)] hover:text-[var(--text)]">Explore</Link>
             <Link href="/methods" className="text-[var(--text-muted)] hover:text-[var(--text)]">Methods</Link>
+            <Link className="navlink" href="/pharma-intelligence">Pharma intelligence</Link>
           </nav>
         </div>
       </header>
