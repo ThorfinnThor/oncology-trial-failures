@@ -140,7 +140,6 @@ function normalizeConditionKey(s: string): string {
 
   const compact = t.replace(/\s+/g, "");
   if (compact === "covid19" || compact === "covid2019" || compact === "coronavirusdisease2019") return "covid-19";
-
   return t;
 }
 
@@ -186,8 +185,9 @@ export default function PharmaIntelligencePage() {
   // Sponsor selection
   const [selectedSponsor, setSelectedSponsor] = useState<string>("");
 
-  // Sponsor-only toggle (MUST be in the Top conditions panel)
-  const [excludeHealthySponsor, setExcludeHealthySponsor] = useState<boolean>(true);
+  // Exclude "Healthy" toggle MUST be in Indication landscape Top conditions panel (global)
+  // We apply it consistently to both global condition lists and sponsor condition list.
+  const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
 
   useEffect(() => {
     let alive = true;
@@ -362,7 +362,7 @@ export default function PharmaIntelligencePage() {
   }, [rows]);
 
   /**
-   * Global top conditions (normalized)
+   * Global top conditions (normalized + excludeHealthy)
    */
   const conditionStats = useMemo<SimpleRow[]>(() => {
     type Agg = { total: number; bio: number; labelCounts: Map<string, number> };
@@ -371,8 +371,11 @@ export default function PharmaIntelligencePage() {
     for (const r of rows) {
       const raw = normEntity(r.condition_first || "");
       if (!raw) continue;
+
       const key = normalizeConditionKey(raw);
       if (!key) continue;
+
+      if (excludeHealthy && isHealthyConditionKey(key)) continue;
 
       if (!map.has(key)) map.set(key, { total: 0, bio: 0, labelCounts: new Map<string, number>() });
       const cur = map.get(key)!;
@@ -396,7 +399,7 @@ export default function PharmaIntelligencePage() {
 
     out.sort((a, b) => b.total - a.total);
     return TopK(out, 25);
-  }, [rows]);
+  }, [rows, excludeHealthy]);
 
   /**
    * Sponsor universe (top by volume)
@@ -424,7 +427,7 @@ export default function PharmaIntelligencePage() {
   }, [sponsorUniverse.length]);
 
   /**
-   * Sponsor profile (ALWAYS computed; panels ALWAYS rendered)
+   * Sponsor profile
    */
   const sponsorProfile = useMemo<SponsorProfile>(() => {
     const s = normEntity(selectedSponsor);
@@ -459,7 +462,7 @@ export default function PharmaIntelligencePage() {
       .map(([k, v]) => ({ phase: k, count: v }))
       .sort((a, b) => PHASE_ORDER.indexOf(a.phase) - PHASE_ORDER.indexOf(b.phase));
 
-    // Conditions (normalized + sponsor toggle)
+    // Conditions (normalized + global excludeHealthy)
     type Agg = { count: number; labelCounts: Map<string, number> };
     const condAgg = new Map<string, Agg>();
 
@@ -470,7 +473,7 @@ export default function PharmaIntelligencePage() {
       const key = normalizeConditionKey(raw);
       if (!key) continue;
 
-      if (excludeHealthySponsor && isHealthyConditionKey(key)) continue;
+      if (excludeHealthy && isHealthyConditionKey(key)) continue;
 
       if (!condAgg.has(key)) condAgg.set(key, { count: 0, labelCounts: new Map<string, number>() });
       const cur = condAgg.get(key)!;
@@ -495,7 +498,7 @@ export default function PharmaIntelligencePage() {
       .slice(0, 10);
 
     return { sponsor: s, rows: sponsorRows, total, bio, bioShare: total > 0 ? bio / total : 0, topBuckets, topPhases, topConds };
-  }, [rows, selectedSponsor, displayedBuckets, excludeHealthySponsor]);
+  }, [rows, selectedSponsor, displayedBuckets, excludeHealthy]);
 
   const sponsorHasRows = sponsorProfile.total > 0;
 
@@ -773,8 +776,23 @@ export default function PharmaIntelligencePage() {
                 </div>
 
                 <div className="card p-4">
-                  <h3 className="h3">Top conditions</h3>
-                  <div className="muted small">Explore drill-down uses search (q). Condition variants are grouped before ranking.</div>
+                  <div className="panelTitleRow" style={{ justifyContent: "space-between" }}>
+                    <h3 className="h3">Top conditions</h3>
+                    <label className="chip" style={{ cursor: "pointer" }}>
+                      <input
+                        type="checkbox"
+                        checked={excludeHealthy}
+                        onChange={(e) => setExcludeHealthy(e.target.checked)}
+                        style={{ marginRight: 8 }}
+                      />
+                      Exclude “Healthy”
+                    </label>
+                  </div>
+
+                  <div className="muted small">
+                    Explore drill-down uses search (q). Condition variants are grouped before ranking.
+                    {excludeHealthy ? " “Healthy” is excluded." : " “Healthy” is included."}
+                  </div>
 
                   <div className="tableWrap" style={{ marginTop: 10 }}>
                     <table className="miniTbl" aria-label="Condition table">
@@ -807,7 +825,7 @@ export default function PharmaIntelligencePage() {
                   </div>
 
                   <div className="note">
-                    “Healthy” appears because many registry trials enroll healthy volunteers; sponsor-level analysis can exclude it via the toggle below.
+                    “Healthy” appears because many registry trials enroll healthy volunteers; excluding it improves signal for therapeutic indications.
                   </div>
                 </div>
               </div>
@@ -822,7 +840,6 @@ export default function PharmaIntelligencePage() {
                 </div>
               </div>
 
-              {/* overflow: visible protects against global overflow clipping */}
               <div className="card p-4" style={{ overflow: "visible" as const }}>
                 <div className="sponsorTopRow">
                   <div className="sponsorSelect">
@@ -853,7 +870,6 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                {/* Always show panels */}
                 <div className="sponsorPanels3">
                   {/* LEFT */}
                   <div className="sPanel">
@@ -947,19 +963,11 @@ export default function PharmaIntelligencePage() {
 
                   {/* RIGHT */}
                   <div className="sPanel">
-                    <div className="panelTitleRow" style={{ justifyContent: "space-between" }}>
+                    <div className="panelTitleRow">
                       <h3 className="h3">Top conditions</h3>
-
-                      {/* Toggle belongs here (always visible) */}
-                      <label className="chip" style={{ cursor: "pointer" }}>
-                        <input
-                          type="checkbox"
-                          checked={excludeHealthySponsor}
-                          onChange={(e) => setExcludeHealthySponsor(e.target.checked)}
-                          style={{ marginRight: 8 }}
-                        />
-                        Exclude “Healthy”
-                      </label>
+                      <div className="muted small">
+                        {excludeHealthy ? "Healthy excluded (global toggle)." : "Healthy included (global toggle)."}
+                      </div>
                     </div>
 
                     <div className="muted small">Grouped by normalized condition key (e.g., COVID-19 variants).</div>
@@ -1170,7 +1178,7 @@ export default function PharmaIntelligencePage() {
           border-radius: 999px;
         }
 
-        /* Sponsor top row */
+        /* Sponsor */
         .sponsorTopRow {
           display: flex;
           align-items: flex-end;
@@ -1190,13 +1198,6 @@ export default function PharmaIntelligencePage() {
           justify-content: flex-end;
         }
 
-        /**
-         * SPONSOR PANELS
-         * Key hardening:
-         * - grid children min-width:0
-         * - tables table-layout:fixed
-         * - truncation to prevent intrinsic overflow on desktop 3-col
-         */
         .sponsorPanels3 {
           display: grid !important;
           grid-template-columns: 1.15fr 1fr 1fr;
@@ -1209,8 +1210,8 @@ export default function PharmaIntelligencePage() {
           border: 1px solid var(--border);
           border-radius: 16px;
           padding: 14px;
-          min-width: 0; /* critical */
-          overflow: hidden; /* ensures truncation works */
+          min-width: 0;
+          overflow: hidden;
         }
 
         .panelHeader {
@@ -1239,8 +1240,9 @@ export default function PharmaIntelligencePage() {
         }
         .panelTitleRow {
           display: flex;
-          align-items: center;
-          gap: 10px;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 8px;
           flex-wrap: wrap;
           margin-bottom: 6px;
         }
@@ -1258,7 +1260,7 @@ export default function PharmaIntelligencePage() {
           width: 100%;
           border-collapse: collapse;
           font-size: 13px;
-          table-layout: fixed; /* critical */
+          table-layout: fixed;
         }
         .compactTbl th,
         .compactTbl td {
@@ -1302,12 +1304,83 @@ export default function PharmaIntelligencePage() {
           }
         }
 
+        /* MOBILE DESIGN FIXES */
         @media (max-width: 720px) {
+          /* Topbar becomes a clean stacked layout */
+          :global(.topbar-inner) {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+          }
+          :global(.topbar-left) {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+          }
+          :global(.nav) {
+            gap: 10px;
+            flex-wrap: wrap;
+          }
+          :global(.navlink) {
+            font-size: 13px;
+          }
+          :global(.topbar-right) {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            align-items: center;
+          }
+          /* Make controls feel deliberate and avoid “floating” */
+          :global(.topbar-right .btn) {
+            width: 100%;
+            justify-content: center;
+          }
+          :global(.topbar-right .chip) {
+            width: 100%;
+            justify-content: flex-start;
+          }
+
+          /* Header spacing */
+          .sectionHeader {
+            gap: 10px;
+            margin-bottom: 10px;
+          }
+
+          /* Sponsor controls: clean stack + full width buttons */
+          .sponsorTopRow {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .sponsorSelect {
+            min-width: 0;
+            width: 100%;
+          }
+          .sponsorBtns {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+          :global(.sponsorBtns .btn) {
+            width: 100%;
+            justify-content: center;
+          }
+
+          /* Sponsor panels stack */
           .sponsorPanels3 {
             grid-template-columns: 1fr;
           }
-          .panelKpis {
-            min-width: 0;
+          .sPanel {
+            padding: 12px;
+          }
+
+          /* Tables: reduce stickiness artifacts on very small screens */
+          .miniTbl th,
+          .matrixTbl th {
+            position: static;
           }
         }
       `}</style>
