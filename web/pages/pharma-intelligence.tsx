@@ -115,7 +115,6 @@ function normalizePhaseToken(p: string): PhaseKey {
   return CANON_PHASES.has(u) ? u : "UNKNOWN";
 }
 
-// Representative phase per trial (earliest meaningful)
 function representativePhase(r: TrialIndexRow): PhaseKey {
   const raw = parsePhases(r.phases || "");
   if (!raw.length) return "UNKNOWN";
@@ -165,8 +164,8 @@ function isHealthyConditionKey(key: string): boolean {
  * =========================
  * BUCKET POLICY
  * =========================
- * Enrollment must not appear on this page.
- * We collapse ENROLLMENT -> OTHER/UNKNOWN for display + all sponsor analytics here.
+ * ENROLLMENT must not show on this page.
+ * Collapse ENROLLMENT -> OTHER/UNKNOWN for all computations on this page.
  */
 const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "OTHER/UNKNOWN"];
 
@@ -187,7 +186,7 @@ export default function PharmaIntelligencePage() {
   // Sponsor selection
   const [selectedSponsor, setSelectedSponsor] = useState<string>("");
 
-  // Sponsor-only toggle (must live in sponsor Top conditions panel)
+  // Sponsor-only toggle (MUST be in the Top conditions panel)
   const [excludeHealthySponsor, setExcludeHealthySponsor] = useState<boolean>(true);
 
   useEffect(() => {
@@ -245,10 +244,7 @@ export default function PharmaIntelligencePage() {
   }, [allRows]);
 
   /**
-   * BUCKET STATS (DISPLAYED)
-   * - collapse ENROLLMENT -> OTHER/UNKNOWN
-   * - show core buckets always
-   * - show extras only if present (after normalization)
+   * BUCKET STATS (ENROLLMENT removed)
    */
   const bucketStatsAll = useMemo<BucketStat[]>(() => {
     const map = new Map<string, { total: number; bio: number }>();
@@ -283,7 +279,6 @@ export default function PharmaIntelligencePage() {
   const bucketStats = useMemo<BucketStat[]>(() => {
     const m = new Map<string, BucketStat>();
     for (const b of bucketStatsAll) m.set(b.bucket, b);
-
     return displayedBuckets.map((bucket) => m.get(bucket) || { bucket, total: 0, bio: 0, bioShare: 0 });
   }, [bucketStatsAll, displayedBuckets]);
 
@@ -301,7 +296,7 @@ export default function PharmaIntelligencePage() {
   }, [rows]);
 
   /**
-   * PHASE × BUCKET MATRIX (Enrollment removed)
+   * PHASE × BUCKET MATRIX
    */
   const phaseBucketMatrix = useMemo(() => {
     const m = new Map<PhaseKey, Map<BucketKey, { total: number; bio: number }>>();
@@ -344,7 +339,7 @@ export default function PharmaIntelligencePage() {
   const matrixMax = useMemo(() => Math.max(1, ...phaseBucketMatrix.map((c) => c.total)), [phaseBucketMatrix]);
 
   /**
-   * DISEASE AREA STATS
+   * Disease area stats
    */
   const diseaseAreaStats = useMemo<SimpleRow[]>(() => {
     const map = new Map<string, { total: number; bio: number }>();
@@ -367,7 +362,7 @@ export default function PharmaIntelligencePage() {
   }, [rows]);
 
   /**
-   * TOP CONDITIONS (global section; normalized)
+   * Global top conditions (normalized)
    */
   const conditionStats = useMemo<SimpleRow[]>(() => {
     type Agg = { total: number; bio: number; labelCounts: Map<string, number> };
@@ -376,7 +371,6 @@ export default function PharmaIntelligencePage() {
     for (const r of rows) {
       const raw = normEntity(r.condition_first || "");
       if (!raw) continue;
-
       const key = normalizeConditionKey(raw);
       if (!key) continue;
 
@@ -405,7 +399,7 @@ export default function PharmaIntelligencePage() {
   }, [rows]);
 
   /**
-   * SPONSOR UNIVERSE (top by volume; uses allRows, not focus)
+   * Sponsor universe (top by volume)
    */
   const sponsorUniverse = useMemo(() => {
     const map = new Map<string, { total: number; bio: number }>();
@@ -430,7 +424,7 @@ export default function PharmaIntelligencePage() {
   }, [sponsorUniverse.length]);
 
   /**
-   * SPONSOR PROFILE (always render panels; if 0 rows in focus, show empty state IN panels)
+   * Sponsor profile (ALWAYS computed; panels ALWAYS rendered)
    */
   const sponsorProfile = useMemo<SponsorProfile>(() => {
     const s = normEntity(selectedSponsor);
@@ -465,7 +459,7 @@ export default function PharmaIntelligencePage() {
       .map(([k, v]) => ({ phase: k, count: v }))
       .sort((a, b) => PHASE_ORDER.indexOf(a.phase) - PHASE_ORDER.indexOf(b.phase));
 
-    // Conditions (normalized + sponsor-only exclude healthy)
+    // Conditions (normalized + sponsor toggle)
     type Agg = { count: number; labelCounts: Map<string, number> };
     const condAgg = new Map<string, Agg>();
 
@@ -500,16 +494,7 @@ export default function PharmaIntelligencePage() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    return {
-      sponsor: s,
-      rows: sponsorRows,
-      total,
-      bio,
-      bioShare: total > 0 ? bio / total : 0,
-      topBuckets,
-      topPhases,
-      topConds
-    };
+    return { sponsor: s, rows: sponsorRows, total, bio, bioShare: total > 0 ? bio / total : 0, topBuckets, topPhases, topConds };
   }, [rows, selectedSponsor, displayedBuckets, excludeHealthySponsor]);
 
   const sponsorHasRows = sponsorProfile.total > 0;
@@ -828,7 +813,7 @@ export default function PharmaIntelligencePage() {
               </div>
             </section>
 
-            {/* Sponsor mix (always renders panels) */}
+            {/* Sponsor mix */}
             <section className="section" aria-label="Sponsor mix">
               <div className="sectionTitleRow">
                 <h2 className="h2">Sponsor mix</h2>
@@ -837,7 +822,8 @@ export default function PharmaIntelligencePage() {
                 </div>
               </div>
 
-              <div className="card p-4">
+              {/* overflow: visible protects against global overflow clipping */}
+              <div className="card p-4" style={{ overflow: "visible" as const }}>
                 <div className="sponsorTopRow">
                   <div className="sponsorSelect">
                     <div className="muted small" style={{ marginBottom: 6 }}>
@@ -867,10 +853,10 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                {/* ALWAYS show 3 panels */}
+                {/* Always show panels */}
                 <div className="sponsorPanels3">
-                  {/* LEFT PANEL */}
-                  <div className="card p-4 sponsorPanel">
+                  {/* LEFT */}
+                  <div className="sPanel">
                     <div className="panelHeader">
                       <div>
                         <div className="muted small">Sponsor</div>
@@ -885,8 +871,7 @@ export default function PharmaIntelligencePage() {
                         <div className="panelKpi">
                           <div className="muted small">Likely scientific failures</div>
                           <div className="panelKpiVal">
-                            {sponsorProfile.bio.toLocaleString()}{" "}
-                            <span className="muted">({safePct(sponsorProfile.bioShare)})</span>
+                            {sponsorProfile.bio.toLocaleString()} <span className="muted">({safePct(sponsorProfile.bioShare)})</span>
                           </div>
                         </div>
                       </div>
@@ -908,12 +893,10 @@ export default function PharmaIntelligencePage() {
                           <tbody>
                             {sponsorProfile.topBuckets.map((b) => (
                               <tr key={b.bucket}>
-                                <td>
-                                  <div className="truncate">
-                                    <Link className="link" href={exploreHref({ q: sponsorProfile.sponsor, bucket: [b.bucket] })}>
-                                      {b.bucket}
-                                    </Link>
-                                  </div>
+                                <td className="cellTrunc">
+                                  <Link className="link" href={exploreHref({ q: sponsorProfile.sponsor, bucket: [b.bucket] })}>
+                                    {b.bucket}
+                                  </Link>
                                 </td>
                                 <td style={{ textAlign: "right", fontWeight: 750 }}>{b.count.toLocaleString()}</td>
                               </tr>
@@ -926,8 +909,8 @@ export default function PharmaIntelligencePage() {
                     )}
                   </div>
 
-                  {/* MIDDLE PANEL */}
-                  <div className="card p-4 sponsorPanel">
+                  {/* MIDDLE */}
+                  <div className="sPanel">
                     <div className="panelTitleRow">
                       <h3 className="h3">Phase and indication mix</h3>
                     </div>
@@ -946,12 +929,10 @@ export default function PharmaIntelligencePage() {
                           <tbody>
                             {sponsorProfile.topPhases.map((p) => (
                               <tr key={p.phase}>
-                                <td>
-                                  <div className="truncate">
-                                    <Link className="link" href={exploreHref({ q: sponsorProfile.sponsor, phase: [p.phase] })}>
-                                      {phaseLabel(p.phase)}
-                                    </Link>
-                                  </div>
+                                <td className="cellTrunc">
+                                  <Link className="link" href={exploreHref({ q: sponsorProfile.sponsor, phase: [p.phase] })}>
+                                    {phaseLabel(p.phase)}
+                                  </Link>
                                 </td>
                                 <td style={{ textAlign: "right", fontWeight: 750 }}>{p.count.toLocaleString()}</td>
                               </tr>
@@ -964,10 +945,12 @@ export default function PharmaIntelligencePage() {
                     )}
                   </div>
 
-                  {/* RIGHT PANEL */}
-                  <div className="card p-4 sponsorPanel">
+                  {/* RIGHT */}
+                  <div className="sPanel">
                     <div className="panelTitleRow" style={{ justifyContent: "space-between" }}>
                       <h3 className="h3">Top conditions</h3>
+
+                      {/* Toggle belongs here (always visible) */}
                       <label className="chip" style={{ cursor: "pointer" }}>
                         <input
                           type="checkbox"
@@ -993,12 +976,10 @@ export default function PharmaIntelligencePage() {
                           <tbody>
                             {sponsorProfile.topConds.map((c) => (
                               <tr key={c.condition}>
-                                <td>
-                                  <div className="truncate">
-                                    <Link className="link" href={exploreHref({ q: c.condition })}>
-                                      {c.condition}
-                                    </Link>
-                                  </div>
+                                <td className="cellTrunc">
+                                  <Link className="link" href={exploreHref({ q: c.condition })}>
+                                    {c.condition}
+                                  </Link>
                                 </td>
                                 <td style={{ textAlign: "right", fontWeight: 750 }}>{c.count.toLocaleString()}</td>
                               </tr>
@@ -1141,34 +1122,6 @@ export default function PharmaIntelligencePage() {
           z-index: 1;
         }
 
-        /* Sponsor compact tables */
-        .compactTbl {
-          width: 100%;
-          border-collapse: collapse;
-          font-size: 13px;
-        }
-        .compactTbl th,
-        .compactTbl td {
-          border-bottom: 1px solid var(--border);
-          padding: 10px 10px;
-          vertical-align: top;
-        }
-        .compactTbl th {
-          text-align: left;
-          font-size: 12px;
-          color: var(--text-muted);
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          background: var(--surface);
-        }
-
-        .truncate {
-          width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-
         .barWrap {
           display: flex;
           justify-content: flex-end;
@@ -1217,7 +1170,7 @@ export default function PharmaIntelligencePage() {
           border-radius: 999px;
         }
 
-        /* Sponsor section layout */
+        /* Sponsor top row */
         .sponsorTopRow {
           display: flex;
           align-items: flex-end;
@@ -1237,15 +1190,27 @@ export default function PharmaIntelligencePage() {
           justify-content: flex-end;
         }
 
+        /**
+         * SPONSOR PANELS
+         * Key hardening:
+         * - grid children min-width:0
+         * - tables table-layout:fixed
+         * - truncation to prevent intrinsic overflow on desktop 3-col
+         */
         .sponsorPanels3 {
-          display: grid;
+          display: grid !important;
           grid-template-columns: 1.15fr 1fr 1fr;
           gap: 14px;
           align-items: start;
         }
-        .sponsorPanel {
+
+        .sPanel {
           background: var(--surface-2);
-          min-width: 0;
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 14px;
+          min-width: 0; /* critical */
+          overflow: hidden; /* ensures truncation works */
         }
 
         .panelHeader {
@@ -1287,6 +1252,33 @@ export default function PharmaIntelligencePage() {
           letter-spacing: 0.06em;
           text-transform: uppercase;
           margin-bottom: 8px;
+        }
+
+        .compactTbl {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+          table-layout: fixed; /* critical */
+        }
+        .compactTbl th,
+        .compactTbl td {
+          border-bottom: 1px solid var(--border);
+          padding: 10px 10px;
+          vertical-align: top;
+        }
+        .compactTbl th {
+          text-align: left;
+          font-size: 12px;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          background: var(--surface);
+        }
+
+        .cellTrunc {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         @media (max-width: 1100px) {
