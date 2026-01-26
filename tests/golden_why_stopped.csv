@@ -32,4 +32,5 @@ why_stopped,expected_label,expected_reason
 "Not due to safety concerns; terminated due to lack of efficacy.",BIOLOGICAL_FAILURE,EFFICACY/FUTILITY
 "Not due to efficacy; stopped because of safety concerns.",BIOLOGICAL_FAILURE,SAFETY
 "Sponsor terminated the study due to non-safety reasons. Based on the data and the current competitive landscape, Sponsor made the decision to close the study.",NON_BIOLOGICAL,OPERATIONAL
+"Pfizer decided terminating study for administrative reasons. The decision wasn't due to safety concerns or requests from regulatory authorities.",NON_BIOLOGICAL,OPERATIONAL
 
