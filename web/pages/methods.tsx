@@ -34,10 +34,16 @@ export default function MethodsPage() {
           <Link href="/explore" className="text-sm font-semibold" style={{ color: "var(--text)" }}>
             Clinical trial failures
           </Link>
-          <nav className="ml-2 flex items-center gap-3 text-sm">
-            <Link href="/explore" className="text-[var(--text-muted)] hover:text-[var(--text)]">Explore</Link>
-            <Link href="/methods" className="text-[var(--text-muted)] hover:text-[var(--text)]">Methods</Link>
-            <Link className="navlink" href="/pharma-intelligence">Pharma intelligence</Link>
+          <nav className="nav" aria-label="Primary">
+            <Link className="navlink" href="/explore">
+              Explore
+            </Link>
+            <Link className="navlink" href="/methods" aria-current="page" style={{ color: "var(--text)" }}>
+              Methods
+            </Link>
+            <Link className="navlink" href="/pharma-intelligence">
+              Pharma intelligence
+            </Link>
           </nav>
         </div>
       </header>
