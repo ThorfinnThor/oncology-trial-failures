@@ -160,15 +160,15 @@ export default function ExplorePage() {
               <Link href="/explore" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav">
+              <nav className="nav" aria-label="Primary">
                 <Link className="navlink" href="/explore" aria-current="page" style={{ color: "var(--text)" }}>
                   Explore
                 </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
                 <Link className="navlink" href="/pharma-intelligence">
                   Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
                 </Link>
               </nav>
             </div>
