@@ -642,14 +642,14 @@ export default function PharmaIntelligencePage() {
                   <h3 className="h3">Reason buckets</h3>
                   <div className="muted small">Enrollment is removed on this page (collapsed into Other/Unknown).</div>
 
-                  <div className="tableWrap" style={{ marginTop: 10 }}>
+                  <div className="tableWrap tableWrapEdge" style={{ marginTop: 10 }}>
                     <table className="miniTbl" aria-label="Reason bucket table">
                       <thead>
                         <tr>
                           <th>Bucket</th>
-                          <th style={{ width: 120, textAlign: "right" }}>Trials</th>
-                          <th style={{ width: 140, textAlign: "right" }}>Bio share</th>
-                          <th style={{ width: 120 }} />
+                          <th className="colTrials">Trials</th>
+                          <th className="colShare">Bio share</th>
+                          <th className="colBar" aria-hidden="true" />
                         </tr>
                       </thead>
                       <tbody>
@@ -661,9 +661,9 @@ export default function PharmaIntelligencePage() {
                               </Link>
                               <div className="muted small">{b.bio.toLocaleString()} likely scientific failures</div>
                             </td>
-                            <td style={{ textAlign: "right", fontWeight: 750 }}>{b.total.toLocaleString()}</td>
-                            <td style={{ textAlign: "right" }}>{safePct(b.bioShare)}</td>
-                            <td>
+                            <td className="colTrials">{b.total.toLocaleString()}</td>
+                            <td className="colShare">{safePct(b.bioShare)}</td>
+                            <td className="colBar">
                               <Bar value={b.total} max={bucketMax} label={`${b.bucket} volume`} />
                             </td>
                           </tr>
@@ -681,7 +681,9 @@ export default function PharmaIntelligencePage() {
                   <h3 className="h3">Phase × bucket matrix</h3>
                   <div className="muted small">Phase tokens are normalized; non-canonical phases roll into “Unknown”.</div>
 
-                  <div className="tableWrap" style={{ marginTop: 10 }}>
+                  <div className="scrollHint">Swipe horizontally to see all buckets →</div>
+
+                  <div className="tableWrap tableWrapEdge" style={{ marginTop: 10 }}>
                     <table className="matrixTbl" aria-label="Phase by bucket matrix">
                       <thead>
                         <tr>
@@ -742,14 +744,14 @@ export default function PharmaIntelligencePage() {
                 <div className="card p-4">
                   <h3 className="h3">By disease area</h3>
 
-                  <div className="tableWrap" style={{ marginTop: 10 }}>
+                  <div className="tableWrap tableWrapEdge" style={{ marginTop: 10 }}>
                     <table className="miniTbl" aria-label="Disease area table">
                       <thead>
                         <tr>
                           <th>Disease area</th>
-                          <th style={{ width: 120, textAlign: "right" }}>Trials</th>
-                          <th style={{ width: 140, textAlign: "right" }}>Bio share</th>
-                          <th style={{ width: 120 }} />
+                          <th className="colTrials">Trials</th>
+                          <th className="colShare">Bio share</th>
+                          <th className="colBar" aria-hidden="true" />
                         </tr>
                       </thead>
                       <tbody>
@@ -761,9 +763,9 @@ export default function PharmaIntelligencePage() {
                               </Link>
                               <div className="muted small">{a.bio.toLocaleString()} likely scientific failures</div>
                             </td>
-                            <td style={{ textAlign: "right", fontWeight: 750 }}>{a.total.toLocaleString()}</td>
-                            <td style={{ textAlign: "right" }}>{safePct(a.bioShare)}</td>
-                            <td>
+                            <td className="colTrials">{a.total.toLocaleString()}</td>
+                            <td className="colShare">{safePct(a.bioShare)}</td>
+                            <td className="colBar">
                               <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
                             </td>
                           </tr>
@@ -794,14 +796,14 @@ export default function PharmaIntelligencePage() {
                     {excludeHealthy ? " “Healthy” is excluded." : " “Healthy” is included."}
                   </div>
 
-                  <div className="tableWrap" style={{ marginTop: 10 }}>
+                  <div className="tableWrap tableWrapEdge" style={{ marginTop: 10 }}>
                     <table className="miniTbl" aria-label="Condition table">
                       <thead>
                         <tr>
                           <th>Condition</th>
-                          <th style={{ width: 120, textAlign: "right" }}>Trials</th>
-                          <th style={{ width: 140, textAlign: "right" }}>Bio share</th>
-                          <th style={{ width: 120 }} />
+                          <th className="colTrials">Trials</th>
+                          <th className="colShare">Bio share</th>
+                          <th className="colBar" aria-hidden="true" />
                         </tr>
                       </thead>
                       <tbody>
@@ -813,9 +815,9 @@ export default function PharmaIntelligencePage() {
                               </Link>
                               <div className="muted small">{c.bio.toLocaleString()} likely scientific failures</div>
                             </td>
-                            <td style={{ textAlign: "right", fontWeight: 750 }}>{c.total.toLocaleString()}</td>
-                            <td style={{ textAlign: "right" }}>{safePct(c.bioShare)}</td>
-                            <td>
+                            <td className="colTrials">{c.total.toLocaleString()}</td>
+                            <td className="colShare">{safePct(c.bioShare)}</td>
+                            <td className="colBar">
                               <Bar value={c.total} max={Math.max(1, ...conditionStats.map((x) => x.total))} />
                             </td>
                           </tr>
@@ -1102,6 +1104,39 @@ export default function PharmaIntelligencePage() {
           -webkit-overflow-scrolling: touch;
         }
 
+        /* Edge-to-edge scroll on small screens (used for wide tables) */
+        .tableWrapEdge {
+          padding-bottom: 2px;
+        }
+
+        .scrollHint {
+          display: none;
+          margin-top: 8px;
+          margin-bottom: 8px;
+          color: var(--text-muted);
+          font-size: 12px;
+          font-weight: 650;
+        }
+
+        /* Column helpers for mini tables (lets us hide/squeeze on phones) */
+        .miniTbl .colTrials,
+        .miniTbl .colShare {
+          text-align: right;
+          white-space: nowrap;
+        }
+        .miniTbl td.colTrials {
+          font-weight: 750;
+        }
+        .miniTbl .colTrials {
+          width: 120px;
+        }
+        .miniTbl .colShare {
+          width: 90px;
+        }
+        .miniTbl .colBar {
+          width: 120px;
+        }
+
         .miniTbl,
         .matrixTbl {
           width: 100%;
@@ -1315,12 +1350,21 @@ export default function PharmaIntelligencePage() {
         @media (max-width: 720px) {
           /* Make the page genuinely phone-friendly */
           .sponsorTopRow{flex-direction:column;align-items:stretch;}
+
+          /* Wide table UX */
+          .scrollHint{display:block;}
+          .tableWrapEdge{margin:0 -16px;padding:0 16px;}
+          .miniTbl .colBar{display:none;}
+          .miniTbl th, .miniTbl td{padding:8px 8px;}
+          .miniTbl .colTrials, .miniTbl .colShare{width:auto;}
+
           .sponsorSelect{flex:1 1 auto;min-width:0;}
           .sponsorBtns{width:100%;display:grid;grid-template-columns:1fr;}
 
           .miniRow{grid-template-columns:repeat(4,auto);}
           .barTrack{width:84px;}
-          .miniTbl,.matrixTbl{min-width:560px;font-size:12px;}
+          .matrixTbl{min-width:560px;font-size:12px;}
+          .miniTbl{min-width:0;font-size:12px;table-layout:auto;}
 
           /* Topbar becomes a clean stacked layout */
           :global(.topbar-inner) {
