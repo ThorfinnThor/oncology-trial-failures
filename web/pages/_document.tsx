@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Critical for correct mobile rendering + for CSS breakpoints to work */}
+        {/* Critical for correct mobile breakpoints (iOS Safari renders desktop-width without it). */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
       <body className="antialiased">
