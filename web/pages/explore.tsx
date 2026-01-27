@@ -161,14 +161,14 @@ export default function ExplorePage() {
                 Clinical trial failures
               </Link>
               <nav className="nav">
-                <Link className="navlink" href="/explore">
+                <Link className="navlink" href="/explore" aria-current="page" style={{ color: "var(--text)" }}>
                   Explore
                 </Link>
                 <Link className="navlink" href="/methods">
                   Methods
-                 <Link className="navlink" href="/pharma-intelligence">
-                   Pharma intelligence
-                 </Link>
+                </Link>
+                <Link className="navlink" href="/pharma-intelligence">
+                  Pharma intelligence
                 </Link>
               </nav>
             </div>
