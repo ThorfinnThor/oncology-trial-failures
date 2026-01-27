@@ -4,10 +4,10 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* Critical for mobile: enables proper responsive breakpoints */}
+        {/* Critical for correct mobile rendering + for CSS breakpoints to work */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <body>
+      <body className="antialiased">
         <Main />
         <NextScript />
       </body>
