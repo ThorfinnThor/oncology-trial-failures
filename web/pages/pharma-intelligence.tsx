@@ -518,11 +518,11 @@ export default function PharmaIntelligencePage() {
               <Link className="navlink" href="/explore">
                 Explore
               </Link>
-              <Link className="navlink" href="/pharma-intelligence" aria-current="page" style={{ color: "var(--text)" }}>
-                Pharma intelligence
-              </Link>
               <Link className="navlink" href="/methods">
                 Methods
+              </Link>
+              <Link className="navlink" href="/pharma-intelligence" aria-current="page" style={{ color: "var(--text)" }}>
+                Pharma intelligence
               </Link>
             </nav>
           </div>
@@ -1381,6 +1381,30 @@ export default function PharmaIntelligencePage() {
           .miniTbl th,
           .matrixTbl th {
             position: static;
+          }
+        }
+
+        @media (max-width: 520px) {
+          /* KPI confidence row wraps cleanly on narrow phones */
+          .miniRow {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 6px 8px;
+          }
+          .miniVal {
+            text-align: right;
+          }
+
+          /* Buttons stack when space is tight */
+          :global(.topbar-right) {
+            grid-template-columns: 1fr;
+          }
+          .sponsorBtns {
+            grid-template-columns: 1fr;
+          }
+
+          /* Slightly smaller bars to reduce horizontal squeeze */
+          .barTrack {
+            width: 86px;
           }
         }
       `}</style>
