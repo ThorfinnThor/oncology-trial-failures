@@ -1289,6 +1289,13 @@ export default function PharmaIntelligencePage() {
           }
         }
 
+        /* Phones: collapse sponsor panels into a single column */
+        @media (max-width: 820px) {
+          .sponsorPanels3 {
+            grid-template-columns: 1fr;
+          }
+        }
+
         @media (max-width: 980px) {
           .grid3 {
             grid-template-columns: 1fr;
@@ -1306,6 +1313,15 @@ export default function PharmaIntelligencePage() {
 
         /* MOBILE DESIGN FIXES */
         @media (max-width: 720px) {
+          /* Make the page genuinely phone-friendly */
+          .sponsorTopRow{flex-direction:column;align-items:stretch;}
+          .sponsorSelect{flex:1 1 auto;min-width:0;}
+          .sponsorBtns{width:100%;display:grid;grid-template-columns:1fr;}
+
+          .miniRow{grid-template-columns:repeat(4,auto);}
+          .barTrack{width:84px;}
+          .miniTbl,.matrixTbl{min-width:560px;font-size:12px;}
+
           /* Topbar becomes a clean stacked layout */
           :global(.topbar-inner) {
             flex-direction: column;
@@ -1383,27 +1399,6 @@ export default function PharmaIntelligencePage() {
             position: static;
           }
         }
-      
-        @media (max-width: 520px) {
-          .sectionHeader {
-            flex-direction: column;
-            align-items: stretch;
-          }
-          .rightMeta {
-            justify-content: flex-start;
-          }
-          .miniRow {
-            grid-template-columns: repeat(4, auto);
-            gap: 6px 8px;
-          }
-          .grid3 {
-            grid-template-columns: 1fr;
-          }
-          .grid2 {
-            grid-template-columns: 1fr;
-          }
-        }
-
       `}</style>
     </>
   );
