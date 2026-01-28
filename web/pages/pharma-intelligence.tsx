@@ -685,7 +685,7 @@ export default function PharmaIntelligencePage() {
                     {phaseKeys.map((p) => (
                       <div className="mRow" key={p}>
                         <div className="mPhase">{phaseLabel(p)}</div>
-                        <div className="mBuckets hScroll" role="region" tabIndex={0} aria-label={`Buckets for ${phaseLabel(p)}`}>
+                        <div className="mBuckets" role="region" tabIndex={0} aria-label={`Buckets for ${phaseLabel(p)}`}>
                           {displayedBuckets.map((b) => {
                             const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
                             const total = cell?.total || 0;
@@ -1137,7 +1137,7 @@ export default function PharmaIntelligencePage() {
           width: 100%;
           border-collapse: collapse;
           font-size: 13px;
-          min-width: 500px;
+          min-width: 680px;
         }
 
         .matrixDesktop {
@@ -1354,23 +1354,6 @@ export default function PharmaIntelligencePage() {
            MOBILE FIXES (≤720px)
            =========================== */
         @media (max-width: 720px) {
-          /* Sponsor controls */
-          .sponsorTopRow {
-            flex-direction: column;
-            align-items: stretch;
-          }
-          .sponsorSelect {
-            flex: 1 1 auto;
-            min-width: 0;
-            width: 100%;
-          }
-          .sponsorBtns {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-          }
-
           /* Show scroll hint */
           .scrollHint {
             display: block;
@@ -1420,9 +1403,9 @@ export default function PharmaIntelligencePage() {
             table-layout: auto;
           }
 
-          /* Reason buckets table: needs wider min-width for proper horizontal scroll */
+          /* Reason buckets table: needs horizontal scroll on mobile */
           .miniTbl.reasonTbl {
-            min-width: 600px;
+            min-width: 720px;
             font-size: 12px;
             table-layout: auto;
           }
@@ -1435,7 +1418,7 @@ export default function PharmaIntelligencePage() {
             display: block;
           }
 
-          /* Mobile matrix styling */
+          /* Mobile matrix styling - EXACT ORIGINAL STYLES */
           .mRow {
             margin-top: 10px;
           }
@@ -1453,8 +1436,8 @@ export default function PharmaIntelligencePage() {
             touch-action: pan-x;
           }
           .mCell {
-            min-width: 160px;
-            max-width: 180px;
+            min-width: 170px;
+            max-width: 190px;
             flex: 0 0 auto;
             display: block;
             border: 1px solid var(--border);
@@ -1481,7 +1464,7 @@ export default function PharmaIntelligencePage() {
             gap: 8px;
           }
           .mTotal {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 900;
           }
           .mBio {
@@ -1498,6 +1481,23 @@ export default function PharmaIntelligencePage() {
             height: 100%;
             background: rgba(79, 70, 229, 0.55);
             border-radius: 999px;
+          }
+
+          /* Sponsor controls */
+          .sponsorTopRow {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .sponsorSelect {
+            flex: 1 1 auto;
+            min-width: 0;
+            width: 100%;
+          }
+          .sponsorBtns {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
           }
 
           /* Topbar mobile adjustments */
@@ -1541,26 +1541,6 @@ export default function PharmaIntelligencePage() {
           .sectionHeader {
             gap: 10px;
             margin-bottom: 10px;
-          }
-
-          /* Sponsor controls clean stack + full width buttons */
-          .sponsorTopRow {
-            flex-direction: column;
-            align-items: stretch;
-          }
-          .sponsorSelect {
-            min-width: 0;
-            width: 100%;
-          }
-          .sponsorBtns {
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-          }
-          :global(.sponsorBtns .btn) {
-            width: 100%;
-            justify-content: center;
           }
 
           /* Sponsor panels stack */
