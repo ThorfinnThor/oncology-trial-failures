@@ -1,7 +1,7 @@
 // web/pages/pharma-intelligence.tsx
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
@@ -225,6 +225,40 @@ export default function PharmaIntelligencePage() {
 
   // Exclude "Healthy" toggle (applies to global + sponsor top conditions)
   const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
+
+  // Mobile horizontal-scroll guard: prevents accidental link taps while swiping.
+  // This also makes horizontal scrolling feel more reliable on iOS Safari where nested links can "eat" gestures.
+  const hScrollDraggingRef = useRef(false);
+  const hScrollStartRef = useRef({ x: 0, y: 0 });
+
+  const onHScrollTouchStart = (e: any) => {
+    const t = e?.touches?.[0];
+    hScrollDraggingRef.current = false;
+    if (t) hScrollStartRef.current = { x: t.clientX, y: t.clientY };
+  };
+
+  const onHScrollTouchMove = (e: any) => {
+    const t = e?.touches?.[0];
+    if (!t) return;
+    const dx = Math.abs(t.clientX - hScrollStartRef.current.x);
+    const dy = Math.abs(t.clientY - hScrollStartRef.current.y);
+    // threshold + directionality: only treat as horizontal swipe if clearly horizontal
+    if (dx > 10 && dx > dy + 4) hScrollDraggingRef.current = true;
+  };
+
+  const onHScrollTouchEnd = () => {
+    // Allow the scroll momentum to settle before re-enabling clicks.
+    window.setTimeout(() => {
+      hScrollDraggingRef.current = false;
+    }, 0);
+  };
+
+  const onHScrollClickCapture = (e: any) => {
+    if (hScrollDraggingRef.current) {
+      e.preventDefault?.();
+      e.stopPropagation?.();
+    }
+  };
 
   useEffect(() => {
     let alive = true;
@@ -651,6 +685,11 @@ export default function PharmaIntelligencePage() {
 
               <div className="scrollHint">Swipe horizontally →</div>
               <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
+                onTouchStart={onHScrollTouchStart}
+                onTouchMove={onHScrollTouchMove}
+                onTouchEnd={onHScrollTouchEnd}
+                onTouchCancel={onHScrollTouchEnd}
+                onClickCapture={onHScrollClickCapture}
                 <div className="hScrollInner">
                   <table className="tblMini tblReason" aria-label="Reason buckets table">
                   <thead>
@@ -705,6 +744,11 @@ export default function PharmaIntelligencePage() {
               <div className="desktopOnly">
                 <div className="scrollHint">Scroll horizontally →</div>
                 <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0}>
+                onTouchStart={onHScrollTouchStart}
+                onTouchMove={onHScrollTouchMove}
+                onTouchEnd={onHScrollTouchEnd}
+                onTouchCancel={onHScrollTouchEnd}
+                onClickCapture={onHScrollClickCapture}
                   <div className="hScrollInner">
                     <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
                     <thead>
@@ -769,6 +813,11 @@ export default function PharmaIntelligencePage() {
                       </div>
 
                       <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0}>
+                      onTouchStart={onHScrollTouchStart}
+                      onTouchMove={onHScrollTouchMove}
+                      onTouchEnd={onHScrollTouchEnd}
+                      onTouchCancel={onHScrollTouchEnd}
+                      onClickCapture={onHScrollClickCapture}
                         {displayedBuckets.map((b) => {
                           const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
                           const total = cell?.total || 0;
@@ -813,6 +862,11 @@ export default function PharmaIntelligencePage() {
               </div>
 
               <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
+                onTouchStart={onHScrollTouchStart}
+                onTouchMove={onHScrollTouchMove}
+                onTouchEnd={onHScrollTouchEnd}
+                onTouchCancel={onHScrollTouchEnd}
+                onClickCapture={onHScrollClickCapture}
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
@@ -869,6 +923,11 @@ export default function PharmaIntelligencePage() {
               </div>
 
               <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
+                onTouchStart={onHScrollTouchStart}
+                onTouchMove={onHScrollTouchMove}
+                onTouchEnd={onHScrollTouchEnd}
+                onTouchCancel={onHScrollTouchEnd}
+                onClickCapture={onHScrollClickCapture}
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Top conditions table">
                   <thead>
@@ -1225,19 +1284,19 @@ export default function PharmaIntelligencePage() {
         .hScroll {
           width: 100%;
           max-width: 100%;
-          overflow-x: scroll;
-          scrollbar-gutter: stable both-edges;
+          overflow-x: auto;
           overflow-y: hidden;
           -webkit-overflow-scrolling: touch;
           touch-action: pan-x;
           overscroll-behavior-x: contain;
           border-radius: 12px;
-          transform: translateZ(0);
+          
         }
 
         .hScrollInner {
           display: inline-block;
           min-width: max-content;
+          white-space: nowrap;
           padding-bottom: 2px;
         }
         .hScrollInner > table {
@@ -1614,7 +1673,36 @@ export default function PharmaIntelligencePage() {
             font-size: 13px;
           }
 
-          /* Edge-to-edge scroll regions on phones */
+          
+          /* Tighten typography on phones */
+          .kpi {
+            font-size: 22px;
+          }
+          .panelTitle {
+            font-size: 15px;
+          }
+          .subhead {
+            font-size: 11px;
+          }
+          .tiny {
+            font-size: 10px;
+          }
+          .tblMini th {
+            font-size: 11px;
+          }
+          :global(.chip) {
+            font-size: 12px;
+            padding: 6px 8px;
+          }
+          :global(.btn),
+          :global(.btn-primary) {
+            font-size: 13px;
+            padding: 10px 12px;
+          }
+          :global(.select) {
+            font-size: 14px;
+          }
+/* Edge-to-edge scroll regions on phones */
           .hScroll {
             margin: 0 -16px;
             padding: 0 16px;
@@ -1633,7 +1721,7 @@ export default function PharmaIntelligencePage() {
 
           /* Ensure the reason buckets table keeps overflow visible on mobile */
           .tblReason {
-            min-width: 720px;
+            min-width: 760px;
           }
 
           .miniRow {
@@ -1647,151 +1735,37 @@ export default function PharmaIntelligencePage() {
             display: block;
           }
 
-          /* Mobile matrix styles - CRITICAL FIX */
-          .mRow {
-            margin-top: 12px;
-          }
-          .mPhase {
-            font-weight: 750;
-            font-size: 13px;
-            margin-bottom: 8px;
-            color: var(--text);
-          }
-          .mBuckets {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding-bottom: 6px;
-            -webkit-overflow-scrolling: touch;
-            touch-action: pan-x;
-          }
-          .mCell {
-            min-width: 165px;
-            max-width: 185px;
-            flex: 0 0 auto;
-            display: block;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px;
-            background: rgba(15, 23, 42, 0.02);
-          }
-          .mCellTop {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-          }
-          .mBucket {
-            font-size: 10px;
-            font-weight: 850;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            line-height: 1.3;
-          }
-          .mNums {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 6px;
-          }
-          .mTotal {
-            font-size: 16px;
-            font-weight: 850;
-          }
-          .mBio {
-            font-size: 11px;
-          }
-          .mBar {
-            margin-top: 8px;
-            height: 6px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.08);
-            overflow: hidden;
-          }
-          .mBarFill {
-            height: 100%;
-            background: rgba(79, 70, 229, 0.55);
-            border-radius: 999px;
-          }
-
-          /* Sponsor controls stack nicely - FIX GAP */
+          /* Sponsor controls stack nicely */
           .sponsorTopRow {
             flex-direction: column;
             align-items: stretch;
-            margin-bottom: 16px;
           }
           .sponsorSelect {
             min-width: 0;
-            margin-bottom: 0;
+            flex: 0 0 auto;
+            width: 100%;
+          }
+          .sponsorBtns {
+            margin-top: 6px;
           }
           .sponsorBtns {
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 12px;
           }
           :global(.sponsorBtns .btn),
           :global(.sponsorBtns .btn-primary) {
             width: 100%;
             justify-content: center;
           }
-
-          /* Sponsor panels - reduce excessive spacing */
-          .sponsorPanels3 {
-            grid-template-columns: 1fr;
-            gap: 12px;
-          }
-          .sPanel {
-            padding: 12px;
-          }
-          .panelKpis {
-            min-width: 0;
-            gap: 6px;
-            margin-top: 8px;
-          }
-
-          /* Bucket cards on mobile */
           .bucketCard {
-            width: 185px;
-            padding: 10px;
+            width: 200px;
+            padding: 11px;
           }
           .bucketCardNum {
-            font-size: 16px;
-          }
-
-          /* Grid adjustments */
-          .grid3 {
-            grid-template-columns: 1fr;
-            gap: 12px;
-          }
-          .grid2 {
-            grid-template-columns: 1fr;
-            gap: 12px;
-          }
-
-          /* Header responsive */
-          :global(.topbar-inner) {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 10px;
-          }
-          :global(.topbar-left) {
-            width: 100%;
-          }
-          :global(.topbar-right) {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-          }
-          :global(.topbar-right .btn) {
-            width: 100%;
-            justify-content: center;
+            font-size: 18px;
           }
         }
-      
       `}</style>
     </>
   );
