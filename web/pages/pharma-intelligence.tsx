@@ -642,7 +642,7 @@ export default function PharmaIntelligencePage() {
                   <h3 className="h3">Reason buckets</h3>
                   <div className="muted small">Enrollment is removed on this page (collapsed into Other/Unknown).</div>
 
-                  <div className="tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Reason buckets table (horizontally scrollable)" tabIndex={0}>
+                  <div className="tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
                     <table className="miniTbl reasonTbl" aria-label="Reason bucket table">
                       <thead>
                         <tr>
@@ -683,7 +683,7 @@ export default function PharmaIntelligencePage() {
 
                   <div className="scrollHint">Swipe horizontally to see all buckets →</div>
 
-                  <div className="tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Phase by bucket matrix (horizontally scrollable)" tabIndex={0}>
+                  <div className="matrixDesktop tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Phase × bucket matrix (horizontally scrollable)" tabIndex={0}>
                     <table className="matrixTbl" aria-label="Phase by bucket matrix">
                       <thead>
                         <tr>
@@ -726,6 +726,40 @@ export default function PharmaIntelligencePage() {
                         ))}
                       </tbody>
                     </table>
+                  </div>
+
+                  <div className="matrixMobile" style={{ marginTop: 10 }} aria-label="Phase × bucket matrix mobile">
+                    {phaseKeys.map((p) => (
+                      <div className="mRow" key={p}>
+                        <div className="mPhase">{phaseLabel(p)}</div>
+                        <div className="mBuckets hScroll" role="region" tabIndex={0} aria-label={`Buckets for ${phaseLabel(p)}`}>
+                          {displayedBuckets.map((b) => {
+                            const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
+                            const total = cell?.total || 0;
+                            const bio = cell?.bio || 0;
+                            const cellHref = exploreHref({
+                              phase: [p],
+                              bucket: [b],
+                              bio: focusBio ? true : undefined
+                            });
+                            return (
+                              <Link className="mCell" key={`${p}_${b}`} href={cellHref} title={`${phaseLabel(p)} × ${b}`}>
+                                <div className="mCellTop">
+                                  <div className="mBucket">{b}</div>
+                                  <div className="mNums">
+                                    <span className="mTotal">{total.toLocaleString()}</span>
+                                    <span className="mBio muted small">{bio.toLocaleString()} bio</span>
+                                  </div>
+                                </div>
+                                <div className="mBar">
+                                  <div className="mBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
                   </div>
 
                   <div className="note">Counting uses a single representative phase per trial (avoids double counting multi-phase records).</div>
@@ -1104,13 +1138,17 @@ export default function PharmaIntelligencePage() {
           -webkit-overflow-scrolling: touch;
         }
 
-        /* Improves touch/trackpad horizontal scroll behavior */
+        /* Horizontal scroll helper: makes touch scrolling reliable on mobile */
         .hScroll {
           overflow-x: auto;
           overflow-y: hidden;
           -webkit-overflow-scrolling: touch;
-          overscroll-behavior-x: contain;
           touch-action: pan-x;
+        }
+        /* Ensure the scroller actually has overflow when content is wide */
+        .hScroll > table {
+          width: max-content;
+          min-width: 100%;
         }
 
         /* Edge-to-edge scroll on small screens (used for wide tables) */
@@ -1152,6 +1190,13 @@ export default function PharmaIntelligencePage() {
           border-collapse: collapse;
           font-size: 13px;
           min-width: 680px;
+        }
+
+        .matrixDesktop {
+          display: block;
+        }
+        .matrixMobile {
+          display: none;
         }
         .miniTbl th,
         .miniTbl td,
@@ -1363,11 +1408,8 @@ export default function PharmaIntelligencePage() {
           /* Wide table UX */
           .scrollHint{display:block;}
           .tableWrapEdge{margin:0 -16px;padding:0 16px;}
-          .tableWrap{padding-bottom:6px;}
           .miniTbl .colBar{display:none;}
-          .reasonTbl{min-width:720px;}
-          .reasonTbl .colBar{display:table-cell;}
-
+          .miniTbl.reasonTbl .colBar{display:table-cell;}
           .miniTbl th, .miniTbl td{padding:8px 8px;}
           .miniTbl .colTrials, .miniTbl .colShare{width:auto;}
 
@@ -1376,11 +1418,20 @@ export default function PharmaIntelligencePage() {
 
           .miniRow{grid-template-columns:repeat(4,auto);}
           .barTrack{width:84px;}
-          .matrixTbl{min-width:560px;font-size:12px;}
-          .matrixTbl th:first-child,.matrixTbl td:first-child{position:static;}
-
           .miniTbl:not(.reasonTbl){min-width:0;font-size:12px;table-layout:auto;}
-          .miniTbl.reasonTbl{min-width:720px;}
+          .miniTbl.reasonTbl{min-width:720px;font-size:12px;table-layout:auto;}
+          .matrixDesktop{display:none;}
+          .matrixMobile{display:block;}
+          .mRow{margin-top:10px;}
+          .mPhase{font-weight:850;font-size:13px;margin-bottom:8px;}
+          .mBuckets{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
+          .mCell{min-width:170px;max-width:190px;flex:0 0 auto;display:block;border:1px solid var(--border);border-radius:14px;padding:10px;background:rgba(15,23,42,0.02);}
+          .mCellTop{display:flex;flex-direction:column;gap:8px;}
+          .mBucket{font-size:11px;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);}
+          .mNums{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
+          .mTotal{font-size:18px;font-weight:900;}
+          .mBar{margin-top:10px;height:7px;border-radius:999px;background:rgba(15,23,42,0.08);overflow:hidden;}
+          .mBarFill{height:100%;background:rgba(79,70,229,0.55);border-radius:999px;}
 
           /* Topbar becomes a clean stacked layout */
           :global(.topbar-inner) {
