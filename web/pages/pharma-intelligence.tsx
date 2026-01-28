@@ -1633,7 +1633,7 @@ export default function PharmaIntelligencePage() {
 
           /* Ensure the reason buckets table keeps overflow visible on mobile */
           .tblReason {
-            min-width: 760px;
+            min-width: 720px;
           }
 
           .miniRow {
@@ -1647,32 +1647,151 @@ export default function PharmaIntelligencePage() {
             display: block;
           }
 
-          /* Sponsor controls stack nicely */
+          /* Mobile matrix styles - CRITICAL FIX */
+          .mRow {
+            margin-top: 12px;
+          }
+          .mPhase {
+            font-weight: 750;
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: var(--text);
+          }
+          .mBuckets {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 6px;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+          }
+          .mCell {
+            min-width: 165px;
+            max-width: 185px;
+            flex: 0 0 auto;
+            display: block;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.02);
+          }
+          .mCellTop {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+          }
+          .mBucket {
+            font-size: 10px;
+            font-weight: 850;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            line-height: 1.3;
+          }
+          .mNums {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 6px;
+          }
+          .mTotal {
+            font-size: 16px;
+            font-weight: 850;
+          }
+          .mBio {
+            font-size: 11px;
+          }
+          .mBar {
+            margin-top: 8px;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+          }
+          .mBarFill {
+            height: 100%;
+            background: rgba(79, 70, 229, 0.55);
+            border-radius: 999px;
+          }
+
+          /* Sponsor controls stack nicely - FIX GAP */
           .sponsorTopRow {
             flex-direction: column;
             align-items: stretch;
+            margin-bottom: 16px;
           }
           .sponsorSelect {
             min-width: 0;
+            margin-bottom: 0;
           }
           .sponsorBtns {
             width: 100%;
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 12px;
           }
           :global(.sponsorBtns .btn),
           :global(.sponsorBtns .btn-primary) {
             width: 100%;
             justify-content: center;
           }
+
+          /* Sponsor panels - reduce excessive spacing */
+          .sponsorPanels3 {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+          .sPanel {
+            padding: 12px;
+          }
+          .panelKpis {
+            min-width: 0;
+            gap: 6px;
+            margin-top: 8px;
+          }
+
+          /* Bucket cards on mobile */
           .bucketCard {
-            width: 200px;
-            padding: 11px;
+            width: 185px;
+            padding: 10px;
           }
           .bucketCardNum {
-            font-size: 18px;
+            font-size: 16px;
+          }
+
+          /* Grid adjustments */
+          .grid3 {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+          .grid2 {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+
+          /* Header responsive */
+          :global(.topbar-inner) {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+          }
+          :global(.topbar-left) {
+            width: 100%;
+          }
+          :global(.topbar-right) {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          :global(.topbar-right .btn) {
+            width: 100%;
+            justify-content: center;
           }
         }
+      
       `}</style>
     </>
   );
