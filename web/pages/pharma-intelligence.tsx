@@ -684,12 +684,7 @@ export default function PharmaIntelligencePage() {
               </div>
 
               <div className="scrollHint">Swipe horizontally →</div>
-              <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
-                onTouchStart={onHScrollTouchStart}
-                onTouchMove={onHScrollTouchMove}
-                onTouchEnd={onHScrollTouchEnd}
-                onTouchCancel={onHScrollTouchEnd}
-                onClickCapture={onHScrollClickCapture}
+              <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
                 <div className="hScrollInner">
                   <table className="tblMini tblReason" aria-label="Reason buckets table">
                   <thead>
@@ -743,12 +738,7 @@ export default function PharmaIntelligencePage() {
               {/* Desktop/table version */}
               <div className="desktopOnly">
                 <div className="scrollHint">Scroll horizontally →</div>
-                <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0}>
-                onTouchStart={onHScrollTouchStart}
-                onTouchMove={onHScrollTouchMove}
-                onTouchEnd={onHScrollTouchEnd}
-                onTouchCancel={onHScrollTouchEnd}
-                onClickCapture={onHScrollClickCapture}
+                <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
                   <div className="hScrollInner">
                     <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
                     <thead>
@@ -812,12 +802,7 @@ export default function PharmaIntelligencePage() {
                         <span className="muted tiny">{p}</span>
                       </div>
 
-                      <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0}>
-                      onTouchStart={onHScrollTouchStart}
-                      onTouchMove={onHScrollTouchMove}
-                      onTouchEnd={onHScrollTouchEnd}
-                      onTouchCancel={onHScrollTouchEnd}
-                      onClickCapture={onHScrollClickCapture}
+                      <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
                         {displayedBuckets.map((b) => {
                           const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
                           const total = cell?.total || 0;
@@ -861,12 +846,7 @@ export default function PharmaIntelligencePage() {
                 <div className="muted small">Top areas by volume.</div>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
-                onTouchStart={onHScrollTouchStart}
-                onTouchMove={onHScrollTouchMove}
-                onTouchEnd={onHScrollTouchEnd}
-                onTouchCancel={onHScrollTouchEnd}
-                onClickCapture={onHScrollClickCapture}
+              <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
@@ -922,12 +902,7 @@ export default function PharmaIntelligencePage() {
                 </label>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
-                onTouchStart={onHScrollTouchStart}
-                onTouchMove={onHScrollTouchMove}
-                onTouchEnd={onHScrollTouchEnd}
-                onTouchCancel={onHScrollTouchEnd}
-                onClickCapture={onHScrollClickCapture}
+              <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Top conditions table">
                   <thead>
