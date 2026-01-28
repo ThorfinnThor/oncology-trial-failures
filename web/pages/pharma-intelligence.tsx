@@ -651,7 +651,8 @@ export default function PharmaIntelligencePage() {
 
               <div className="scrollHint">Swipe horizontally →</div>
               <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
-                <table className="tblMini tblReason" aria-label="Reason buckets table">
+                <div className="hScrollInner">
+                  <table className="tblMini tblReason" aria-label="Reason buckets table">
                   <thead>
                     <tr>
                       <th>Bucket</th>
@@ -685,6 +686,7 @@ export default function PharmaIntelligencePage() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
 
               <div className="note">
@@ -703,7 +705,8 @@ export default function PharmaIntelligencePage() {
               <div className="desktopOnly">
                 <div className="scrollHint">Scroll horizontally →</div>
                 <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0}>
-                  <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
+                  <div className="hScrollInner">
+                    <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
                     <thead>
                       <tr>
                         <th>Phase</th>
@@ -809,7 +812,8 @@ export default function PharmaIntelligencePage() {
               </div>
 
               <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
-                <table className="tblMini tblWide" aria-label="Disease area table">
+                <div className="hScrollInner">
+                  <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
                     <tr>
                       <th>Disease area</th>
@@ -843,6 +847,7 @@ export default function PharmaIntelligencePage() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
 
               <div className="note">Disease area drill-down uses the Explore “area” filter.</div>
@@ -863,7 +868,8 @@ export default function PharmaIntelligencePage() {
               </div>
 
               <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
-                <table className="tblMini tblWide" aria-label="Top conditions table">
+                <div className="hScrollInner">
+                  <table className="tblMini tblWide" aria-label="Top conditions table">
                   <thead>
                     <tr>
                       <th>Condition</th>
@@ -897,6 +903,7 @@ export default function PharmaIntelligencePage() {
                     ))}
                   </tbody>
                 </table>
+                </div>
               </div>
 
               <div className="note">
@@ -1216,12 +1223,24 @@ export default function PharmaIntelligencePage() {
 
         .hScroll {
           width: 100%;
-          overflow-x: auto;
+          max-width: 100%;
+          overflow-x: scroll;
+          scrollbar-gutter: stable both-edges;
           overflow-y: hidden;
           -webkit-overflow-scrolling: touch;
           touch-action: pan-x;
           overscroll-behavior-x: contain;
           border-radius: 12px;
+          transform: translateZ(0);
+        }
+
+        .hScrollInner {
+          display: inline-block;
+          min-width: max-content;
+          padding-bottom: 2px;
+        }
+        .hScrollInner > table {
+          width: max-content;
         }
 
         /* ====== Pill tags ====== */
@@ -1421,6 +1440,7 @@ export default function PharmaIntelligencePage() {
         }
         .bucketStrip {
           display: flex;
+          scroll-snap-type: x proximity;
           gap: 10px;
           overflow-x: auto;
           overflow-y: hidden;
@@ -1431,6 +1451,7 @@ export default function PharmaIntelligencePage() {
         }
         .bucketCard {
           flex: 0 0 auto;
+          scroll-snap-align: start;
           width: 210px;
           border: 1px solid var(--border);
           background: var(--surface);
