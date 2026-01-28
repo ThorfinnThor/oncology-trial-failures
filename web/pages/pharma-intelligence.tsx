@@ -213,7 +213,7 @@ export default function PharmaIntelligencePage() {
     let minDate: string | undefined;
     let maxDate: string | undefined;
     for (const r of allRows) {
-      const d = (r.last_update_posted_date || r.date || "").slice(0, 10);
+      const d = (r.last_update_post_date || r.date || "").slice(0, 10);
       if (!d) continue;
       if (!minDate || d < minDate) minDate = d;
       if (!maxDate || d > maxDate) maxDate = d;
