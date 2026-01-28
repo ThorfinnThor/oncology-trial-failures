@@ -1106,7 +1106,11 @@ export default function PharmaIntelligencePage() {
 
         /* Improves touch/trackpad horizontal scroll behavior */
         .hScroll {
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
           overscroll-behavior-x: contain;
+          touch-action: pan-x;
         }
 
         /* Edge-to-edge scroll on small screens (used for wide tables) */
@@ -1359,8 +1363,9 @@ export default function PharmaIntelligencePage() {
           /* Wide table UX */
           .scrollHint{display:block;}
           .tableWrapEdge{margin:0 -16px;padding:0 16px;}
+          .tableWrap{padding-bottom:6px;}
           .miniTbl .colBar{display:none;}
-          .reasonTbl{min-width:640px;}
+          .reasonTbl{min-width:720px;}
           .reasonTbl .colBar{display:table-cell;}
 
           .miniTbl th, .miniTbl td{padding:8px 8px;}
@@ -1372,9 +1377,10 @@ export default function PharmaIntelligencePage() {
           .miniRow{grid-template-columns:repeat(4,auto);}
           .barTrack{width:84px;}
           .matrixTbl{min-width:560px;font-size:12px;}
-          .matrixTbl th:first-child,.matrixTbl td:first-child{position:sticky;left:0;background:var(--surface);z-index:3;}
+          .matrixTbl th:first-child,.matrixTbl td:first-child{position:static;}
 
-          .miniTbl{min-width:0;font-size:12px;table-layout:auto;}
+          .miniTbl:not(.reasonTbl){min-width:0;font-size:12px;table-layout:auto;}
+          .miniTbl.reasonTbl{min-width:720px;}
 
           /* Topbar becomes a clean stacked layout */
           :global(.topbar-inner) {
