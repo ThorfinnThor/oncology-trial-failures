@@ -1,13 +1,10 @@
-// web/pages/pharma-intelligence.tsx
-
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-
-import { loadIndex, loadMeta } from "@/lib/data";
-import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
-import { encodeState } from "@/lib/urlState";
-import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { loadIndex, loadMeta } from "../lib/data";
+import { DatasetMeta, TrialIndexRow, UrlState } from "../lib/types";
+import { encodeState } from "../lib/urlState";
+import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "../lib/filtering";
 
 type BucketKey = string;
 type PhaseKey = string;
@@ -63,8 +60,8 @@ function confKey(s?: string): "HIGH" | "MEDIUM" | "LOW" | "UNKNOWN" {
 }
 
 function exploreHref(patch: Partial<UrlState>): string {
-  const base: UrlState = { sort: "date_desc" };
-  return `/explore${encodeState({ ...base, ...patch })}`;
+  const base: UrlState = { sort: "date:desc" };
+  return `/explore?${encodeState({ ...base, ...patch })}`;
 }
 
 function TopK<T>(arr: T[], k: number): T[] {
@@ -76,68 +73,59 @@ function Bar({ value, max, label }: { value: number; max: number; label?: string
   return (
     <div className="barWrap" aria-label={label}>
       <div className="barTrack">
-        <div className="barFill" style={{ width: `${pct * 100}%` }} />
+        <div className="barFill" style={{ width: `${pct * 100}%` }}></div>
       </div>
     </div>
   );
 }
 
-/**
- * =========================
- * PHASE NORMALIZATION
- * =========================
- */
+// PHASE NORMALIZATION
 const CANON_PHASES = new Set([
-  "EARLY_PHASE1",
-  "PHASE1",
-  "PHASE1/PHASE2",
-  "PHASE2",
-  "PHASE2/PHASE3",
-  "PHASE3",
-  "PHASE4",
-  "UNKNOWN"
+  "EARLY_PHASE_1",
+  "PHASE_1",
+  "PHASE_1_PHASE_2",
+  "PHASE_2",
+  "PHASE_2_PHASE_3",
+  "PHASE_3",
+  "PHASE_4",
+  "UNKNOWN",
 ]);
 
 const PHASE_ORDER: string[] = [
-  "EARLY_PHASE1",
-  "PHASE1",
-  "PHASE1/PHASE2",
-  "PHASE2",
-  "PHASE2/PHASE3",
-  "PHASE3",
-  "PHASE4",
-  "UNKNOWN"
+  "EARLY_PHASE_1",
+  "PHASE_1",
+  "PHASE_1_PHASE_2",
+  "PHASE_2",
+  "PHASE_2_PHASE_3",
+  "PHASE_3",
+  "PHASE_4",
+  "UNKNOWN",
 ];
 
 function normalizePhaseToken(p: string): PhaseKey {
-  const u = (p || "").toUpperCase().trim();
+  const u = p.toUpperCase().trim();
   if (!u) return "UNKNOWN";
   return CANON_PHASES.has(u) ? u : "UNKNOWN";
 }
 
 function representativePhase(r: TrialIndexRow): PhaseKey {
-  const raw = parsePhases(r.phases || "");
+  const raw = parsePhases(r.phases);
   if (!raw.length) return "UNKNOWN";
   const tokens = Array.from(new Set(raw.map(normalizePhaseToken)));
   tokens.sort((a, b) => PHASE_ORDER.indexOf(a) - PHASE_ORDER.indexOf(b));
   return tokens[0] || "UNKNOWN";
 }
 
-/**
- * =========================
- * CONDITION NORMALIZATION
- * =========================
- */
+// CONDITION NORMALIZATION
 function normalizeConditionKey(s: string): string {
-  const t = (s || "")
+  const t = s
     .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/[()]/g, " ")
-    .replace(/[-_/]/g, " ")
-    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/\band\b/g, "")
+    .replace(/-/g, " ")
+    .replace(/[^a-z0-9]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
-
   const compact = t.replace(/\s+/g, "");
   if (compact === "covid19" || compact === "covid2019" || compact === "coronavirusdisease2019") return "covid-19";
   return t;
@@ -149,7 +137,7 @@ function canonicalConditionLabel(key: string, fallback: string): string {
 }
 
 function isHealthyConditionKey(key: string): boolean {
-  const k = (key || "").toLowerCase().trim();
+  const k = key.toLowerCase().trim();
   return (
     k === "healthy" ||
     k === "healthy volunteers" ||
@@ -159,17 +147,12 @@ function isHealthyConditionKey(key: string): boolean {
   );
 }
 
-/**
- * =========================
- * BUCKET POLICY
- * =========================
- * ENROLLMENT must not show on this page.
- * Collapse ENROLLMENT -> OTHER/UNKNOWN for all computations on this page.
- */
+// BUCKET POLICY
+// ENROLLMENT must not show on this page. Collapse ENROLLMENT → OTHER/UNKNOWN for all computations on this page.
 const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "OTHER/UNKNOWN"];
 
 function normalizeBucketForDisplay(b: string): BucketKey {
-  const u = (b || "").toUpperCase().trim() || "OTHER/UNKNOWN";
+  const u = b.toUpperCase().trim();
   if (u === "ENROLLMENT") return "OTHER/UNKNOWN";
   return u as BucketKey;
 }
@@ -179,13 +162,12 @@ export default function PharmaIntelligencePage() {
   const [allRows, setAllRows] = useState<TrialIndexRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
-
   const [focusBio, setFocusBio] = useState<boolean>(false);
 
   // Sponsor selection
   const [selectedSponsor, setSelectedSponsor] = useState<string>("");
 
-  // Exclude "Healthy" toggle MUST be in Indication landscape Top conditions panel (global)
+  // Exclude Healthy toggle – MUST be in "Indication landscape > Top conditions" panel (global).
   // We apply it consistently to both global condition lists and sponsor condition list.
   const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
 
@@ -220,50 +202,41 @@ export default function PharmaIntelligencePage() {
   const totals = useMemo(() => {
     const total = allRows.length;
     const bio = allRows.filter((r) => isLikelyScientificFailure(r)).length;
-
     const byConf = { HIGH: 0, MEDIUM: 0, LOW: 0, UNKNOWN: 0 } as Record<
       "HIGH" | "MEDIUM" | "LOW" | "UNKNOWN",
       number
     >;
-
     for (const r of allRows) {
       if (!isLikelyScientificFailure(r)) continue;
       byConf[confKey(r.classification_confidence)] += 1;
     }
-
-    let minDate = "";
-    let maxDate = "";
+    let minDate: string | undefined;
+    let maxDate: string | undefined;
     for (const r of allRows) {
-      const d = (r.last_update_post_date || r.date || "").slice(0, 10);
+      const d = (r.last_update_posted_date || r.date || "").slice(0, 10);
       if (!d) continue;
       if (!minDate || d < minDate) minDate = d;
       if (!maxDate || d > maxDate) maxDate = d;
     }
-
     return { total, bio, bioShare: total > 0 ? bio / total : 0, byConf, minDate, maxDate };
   }, [allRows]);
 
-  /**
-   * BUCKET STATS (ENROLLMENT removed)
-   */
+  // BUCKET STATS (ENROLLMENT removed)
   const bucketStatsAll = useMemo<BucketStat[]>(() => {
     const map = new Map<string, { total: number; bio: number }>();
-
     for (const r of rows) {
-      const b = normalizeBucketForDisplay(reasonBucket(r) || "");
+      const b = normalizeBucketForDisplay(reasonBucket(r));
       if (!map.has(b)) map.set(b, { total: 0, bio: 0 });
       const cur = map.get(b)!;
       cur.total += 1;
       if (isLikelyScientificFailure(r)) cur.bio += 1;
     }
-
     const out: BucketStat[] = Array.from(map.entries()).map(([bucket, v]) => ({
       bucket,
       total: v.total,
       bio: v.bio,
-      bioShare: v.total > 0 ? v.bio / v.total : 0
+      bioShare: v.total > 0 ? v.bio / v.total : 0,
     }));
-
     out.sort((a, b) => b.total - a.total);
     return out;
   }, [rows]);
@@ -272,8 +245,7 @@ export default function PharmaIntelligencePage() {
     const extras = bucketStatsAll
       .filter((b) => !CORE_BUCKETS.includes(b.bucket) && b.total > 0)
       .map((b) => b.bucket);
-
-    return [...CORE_BUCKETS, ...extras].filter((b) => b !== "ENROLLMENT");
+    return [...CORE_BUCKETS, ...extras.filter((b) => b !== "ENROLLMENT")];
   }, [bucketStatsAll]);
 
   const bucketStats = useMemo<BucketStat[]>(() => {
@@ -284,9 +256,7 @@ export default function PharmaIntelligencePage() {
 
   const bucketMax = useMemo(() => Math.max(1, ...bucketStats.map((b) => b.total)), [bucketStats]);
 
-  /**
-   * PHASE KEYS (normalized)
-   */
+  // PHASE KEYS (normalized)
   const phaseKeys = useMemo<PhaseKey[]>(() => {
     const s = new Set<string>();
     for (const r of rows) s.add(representativePhase(r));
@@ -295,34 +265,27 @@ export default function PharmaIntelligencePage() {
     return arr.length ? arr : ["UNKNOWN"];
   }, [rows]);
 
-  /**
-   * PHASE × BUCKET MATRIX
-   */
+  // PHASE × BUCKET MATRIX
   const phaseBucketMatrix = useMemo(() => {
     const m = new Map<PhaseKey, Map<BucketKey, { total: number; bio: number }>>();
-
     for (const p of phaseKeys) {
       const inner = new Map<BucketKey, { total: number; bio: number }>();
       for (const b of displayedBuckets) inner.set(b, { total: 0, bio: 0 });
       m.set(p, inner);
     }
-
     for (const r of rows) {
       const p = representativePhase(r);
-      const bRaw = normalizeBucketForDisplay(reasonBucket(r) || "");
+      const bRaw = normalizeBucketForDisplay(reasonBucket(r));
       const b = displayedBuckets.includes(bRaw) ? bRaw : "OTHER/UNKNOWN";
-
       if (!m.has(p)) {
         const inner = new Map<BucketKey, { total: number; bio: number }>();
         for (const bb of displayedBuckets) inner.set(bb, { total: 0, bio: 0 });
         m.set(p, inner);
       }
-
       const cell = m.get(p)!.get(b)!;
       cell.total += 1;
       if (isLikelyScientificFailure(r)) cell.bio += 1;
     }
-
     const cells: PhaseBucketCell[] = [];
     for (const p of phaseKeys) {
       const inner = m.get(p);
@@ -338,13 +301,11 @@ export default function PharmaIntelligencePage() {
 
   const matrixMax = useMemo(() => Math.max(1, ...phaseBucketMatrix.map((c) => c.total)), [phaseBucketMatrix]);
 
-  /**
-   * Disease area stats
-   */
+  // Disease area stats
   const diseaseAreaStats = useMemo<SimpleRow[]>(() => {
     const map = new Map<string, { total: number; bio: number }>();
     for (const r of rows) {
-      const a = normEntity(r.disease_area || "Other") || "Other";
+      const a = normEntity(r.disease_area) || "Other";
       if (!map.has(a)) map.set(a, { total: 0, bio: 0 });
       const cur = map.get(a)!;
       cur.total += 1;
@@ -355,37 +316,30 @@ export default function PharmaIntelligencePage() {
       label: k,
       total: v.total,
       bio: v.bio,
-      bioShare: v.total > 0 ? v.bio / v.total : 0
+      bioShare: v.total > 0 ? v.bio / v.total : 0,
     }));
     out.sort((a, b) => b.total - a.total);
     return TopK(out, 20);
   }, [rows]);
 
-  /**
-   * Global top conditions (normalized + excludeHealthy)
-   */
+  // Global top conditions (normalized + excludeHealthy)
   const conditionStats = useMemo<SimpleRow[]>(() => {
     type Agg = { total: number; bio: number; labelCounts: Map<string, number> };
     const map = new Map<string, Agg>();
-
     for (const r of rows) {
-      const raw = normEntity(r.condition_first || "");
+      const raw = normEntity(r.condition_first);
       if (!raw) continue;
-
       const key = normalizeConditionKey(raw);
       if (!key) continue;
-
       if (excludeHealthy && isHealthyConditionKey(key)) continue;
-
       if (!map.has(key)) map.set(key, { total: 0, bio: 0, labelCounts: new Map<string, number>() });
       const cur = map.get(key)!;
       cur.total += 1;
       if (isLikelyScientificFailure(r)) cur.bio += 1;
       cur.labelCounts.set(raw, (cur.labelCounts.get(raw) || 0) + 1);
     }
-
     const out: SimpleRow[] = Array.from(map.entries()).map(([key, v]) => {
-      let bestLabel = "";
+      let bestLabel: string = "";
       let bestCount = -1;
       for (const [lab, c] of v.labelCounts.entries()) {
         if (c > bestCount) {
@@ -396,18 +350,15 @@ export default function PharmaIntelligencePage() {
       const label = canonicalConditionLabel(key, bestLabel || key);
       return { key, label, total: v.total, bio: v.bio, bioShare: v.total > 0 ? v.bio / v.total : 0 };
     });
-
     out.sort((a, b) => b.total - a.total);
     return TopK(out, 25);
   }, [rows, excludeHealthy]);
 
-  /**
-   * Sponsor universe (top by volume)
-   */
+  // Sponsor universe (top by volume)
   const sponsorUniverse = useMemo(() => {
     const map = new Map<string, { total: number; bio: number }>();
     for (const r of allRows) {
-      const s = normEntity(r.lead_sponsor || "");
+      const s = normEntity(r.lead_sponsor);
       if (!s) continue;
       if (!map.has(s)) map.set(s, { total: 0, bio: 0 });
       const cur = map.get(s)!;
@@ -417,25 +368,31 @@ export default function PharmaIntelligencePage() {
     const list = Array.from(map.entries())
       .map(([s, v]) => ({ sponsor: s, total: v.total, bio: v.bio, bioShare: v.total > 0 ? v.bio / v.total : 0 }))
       .sort((a, b) => b.total - a.total);
-
     return TopK(list, 80);
   }, [allRows]);
 
   useEffect(() => {
-    if (!selectedSponsor && sponsorUniverse.length) setSelectedSponsor(sponsorUniverse[0].sponsor);
+    if (!selectedSponsor && sponsorUniverse.length) {
+      setSelectedSponsor(sponsorUniverse[0].sponsor);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sponsorUniverse.length]);
 
-  /**
-   * Sponsor profile
-   */
+  // Sponsor profile
   const sponsorProfile = useMemo<SponsorProfile>(() => {
     const s = normEntity(selectedSponsor);
-    const sponsorRows = s ? rows.filter((r) => normEntity(r.lead_sponsor || "") === s) : [];
-
-    if (!s) {
-      return { sponsor: "", rows: [], total: 0, bio: 0, bioShare: 0, topBuckets: [], topPhases: [], topConds: [] };
-    }
+    const sponsorRows = s ? rows.filter((r) => normEntity(r.lead_sponsor) === s) : [];
+    if (!s)
+      return {
+        sponsor: "",
+        rows: [],
+        total: 0,
+        bio: 0,
+        bioShare: 0,
+        topBuckets: [],
+        topPhases: [],
+        topConds: [],
+      };
 
     const total = sponsorRows.length;
     const bio = sponsorRows.filter((r) => isLikelyScientificFailure(r)).length;
@@ -443,7 +400,7 @@ export default function PharmaIntelligencePage() {
     // Buckets
     const bucketMap = new Map<string, number>();
     for (const r of sponsorRows) {
-      const bRaw = normalizeBucketForDisplay(reasonBucket(r) || "");
+      const bRaw = normalizeBucketForDisplay(reasonBucket(r));
       const b = displayedBuckets.includes(bRaw) ? bRaw : "OTHER/UNKNOWN";
       bucketMap.set(b, (bucketMap.get(b) || 0) + 1);
     }
@@ -465,25 +422,20 @@ export default function PharmaIntelligencePage() {
     // Conditions (normalized + global excludeHealthy)
     type Agg = { count: number; labelCounts: Map<string, number> };
     const condAgg = new Map<string, Agg>();
-
     for (const r of sponsorRows) {
-      const raw = normEntity(r.condition_first || "");
+      const raw = normEntity(r.condition_first);
       if (!raw) continue;
-
       const key = normalizeConditionKey(raw);
       if (!key) continue;
-
       if (excludeHealthy && isHealthyConditionKey(key)) continue;
-
       if (!condAgg.has(key)) condAgg.set(key, { count: 0, labelCounts: new Map<string, number>() });
       const cur = condAgg.get(key)!;
       cur.count += 1;
       cur.labelCounts.set(raw, (cur.labelCounts.get(raw) || 0) + 1);
     }
-
     const topConds = Array.from(condAgg.entries())
       .map(([key, v]) => {
-        let bestLabel = "";
+        let bestLabel: string = "";
         let bestCount = -1;
         for (const [lab, c] of v.labelCounts.entries()) {
           if (c > bestCount) {
@@ -497,7 +449,16 @@ export default function PharmaIntelligencePage() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 10);
 
-    return { sponsor: s, rows: sponsorRows, total, bio, bioShare: total > 0 ? bio / total : 0, topBuckets, topPhases, topConds };
+    return {
+      sponsor: s,
+      rows: sponsorRows,
+      total,
+      bio,
+      bioShare: total > 0 ? bio / total : 0,
+      topBuckets,
+      topPhases,
+      topConds,
+    };
   }, [rows, selectedSponsor, displayedBuckets, excludeHealthy]);
 
   const sponsorHasRows = sponsorProfile.total > 0;
@@ -505,7 +466,7 @@ export default function PharmaIntelligencePage() {
   return (
     <>
       <Head>
-        <title>Pharma Intelligence — Clinical trial failures</title>
+        <title>Pharma Intelligence – Clinical trial failures</title>
       </Head>
 
       <header className="topbar">
@@ -526,9 +487,7 @@ export default function PharmaIntelligencePage() {
               </Link>
             </nav>
           </div>
-
-          <div className="topbar-center" />
-
+          <div className="topbar-center"></div>
           <div className="topbar-right">
             <label className="chip" style={{ cursor: "pointer" }}>
               <input
@@ -537,9 +496,8 @@ export default function PharmaIntelligencePage() {
                 onChange={(e) => setFocusBio(e.target.checked)}
                 style={{ marginRight: 8 }}
               />
-              Focus: likely scientific failures
+              Focus likely scientific failures
             </label>
-
             <Link className="btn" href={exploreHref({ bio: focusBio ? true : undefined })}>
               Open Explore with focus
             </Link>
@@ -556,7 +514,7 @@ export default function PharmaIntelligencePage() {
               {meta?.version ? (
                 <span>
                   {" "}
-                  Dataset: <strong>{meta.version}</strong>.
+                  Dataset <strong>{meta.version}</strong>.
                 </span>
               ) : null}
               {totals.minDate && totals.maxDate ? (
@@ -567,7 +525,6 @@ export default function PharmaIntelligencePage() {
               ) : null}
             </div>
           </div>
-
           <div className="rightMeta">
             {meta?.source ? (
               <div className="chip">
@@ -588,9 +545,10 @@ export default function PharmaIntelligencePage() {
               <div className="card p-4">
                 <div className="muted small">Stopped trials (current focus)</div>
                 <div className="kpi">{rows.length.toLocaleString()}</div>
-                <div className="muted small">{focusBio ? "Filtered to likely scientific failures." : "All stopped trials in the dataset."}</div>
+                <div className="muted small">
+                  {focusBio ? "Filtered to likely scientific failures." : "All stopped trials in the dataset."}
+                </div>
               </div>
-
               <div className="card p-4">
                 <div className="muted small">Likely scientific failures (overall)</div>
                 <div className="kpi">{totals.bio.toLocaleString()}</div>
@@ -608,7 +566,6 @@ export default function PharmaIntelligencePage() {
                   <div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
                 </div>
               </div>
-
               <div className="card p-4">
                 <div className="muted small">Fast drill-down</div>
                 <div className="muted small" style={{ marginTop: 6 }}>
@@ -633,23 +590,22 @@ export default function PharmaIntelligencePage() {
               <div className="sectionTitleRow">
                 <h2 className="h2">Failure taxonomy</h2>
                 <div className="muted small">
-                  Buckets prefer pipeline field <code>classification_reason</code>; heuristic fallback uses <code>why_stopped_short</code>.
+                  Buckets prefer pipeline field <code>classification_reason</code>; heuristic fallback uses{" "}
+                  <code>why_stopped_short</code>.
                 </div>
               </div>
-
               <div className="grid2">
                 <div className="card p-4">
                   <h3 className="h3">Reason buckets</h3>
                   <div className="muted small">Enrollment is removed on this page (collapsed into Other/Unknown).</div>
-
-                  <div className="tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
+                  <div className="tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Reason buckets horizontally scrollable" tabIndex={0}>
                     <table className="miniTbl reasonTbl" aria-label="Reason bucket table">
                       <thead>
                         <tr>
                           <th>Bucket</th>
                           <th className="colTrials">Trials</th>
                           <th className="colShare">Bio share</th>
-                          <th className="colBar" aria-hidden="true" />
+                          <th className="colBar" aria-hidden="true"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -671,19 +627,19 @@ export default function PharmaIntelligencePage() {
                       </tbody>
                     </table>
                   </div>
-
                   <div className="note">
-                    Keep in mind: we should not widen Explore facets based purely on heuristic keyword parsing of stop text. Pipeline-first is the safe path.
+                    Keep in mind: we should not widen Explore facets based purely on heuristic keyword parsing of stop
+                    text. Pipeline-first is the safe path.
                   </div>
                 </div>
 
                 <div className="card p-4">
                   <h3 className="h3">Phase × bucket matrix</h3>
-                  <div className="muted small">Phase tokens are normalized; non-canonical phases roll into “Unknown”.</div>
+                  <div className="muted small">Phase tokens are normalized; non-canonical phases roll into Unknown.</div>
+                  <div className="scrollHint">Swipe horizontally to see all buckets</div>
 
-                  <div className="scrollHint">Swipe horizontally to see all buckets →</div>
-
-                  <div className="matrixDesktop tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Phase × bucket matrix (horizontally scrollable)" tabIndex={0}>
+                  {/* Desktop matrix */}
+                  <div className="matrixDesktop tableWrap tableWrapEdge hScroll" style={{ marginTop: 10 }} role="region" aria-label="Phase bucket matrix horizontally scrollable" tabIndex={0}>
                     <table className="matrixTbl" aria-label="Phase by bucket matrix">
                       <thead>
                         <tr>
@@ -703,20 +659,16 @@ export default function PharmaIntelligencePage() {
                               const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
                               const total = cell?.total || 0;
                               const bio = cell?.bio || 0;
-                              const cellHref = exploreHref({
-                                phase: [p],
-                                bucket: [b],
-                                bio: focusBio ? true : undefined
-                              });
+                              const cellHref = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
                               return (
-                                <td key={`${p}_${b}`}>
-                                  <Link className="cellLink" href={cellHref} title={`${phaseLabel(p)} × ${b}`}>
+                                <td key={`${p}${b}`}>
+                                  <Link className="cellLink" href={cellHref} title={`${phaseLabel(p)} → ${b}`}>
                                     <div className="cellTop">
                                       <span className="cellNum">{total.toLocaleString()}</span>
                                       <span className="cellSub muted small">{bio.toLocaleString()} bio</span>
                                     </div>
                                     <div className="cellBar">
-                                      <div className="cellBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
+                                      <div className="cellBarFill" style={{ width: `${(total / matrixMax) * 100}%` }}></div>
                                     </div>
                                   </Link>
                                 </td>
@@ -728,7 +680,8 @@ export default function PharmaIntelligencePage() {
                     </table>
                   </div>
 
-                  <div className="matrixMobile" style={{ marginTop: 10 }} aria-label="Phase × bucket matrix mobile">
+                  {/* Mobile matrix */}
+                  <div className="matrixMobile" style={{ marginTop: 10 }} aria-label="Phase bucket matrix (mobile)">
                     {phaseKeys.map((p) => (
                       <div className="mRow" key={p}>
                         <div className="mPhase">{phaseLabel(p)}</div>
@@ -737,13 +690,9 @@ export default function PharmaIntelligencePage() {
                             const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
                             const total = cell?.total || 0;
                             const bio = cell?.bio || 0;
-                            const cellHref = exploreHref({
-                              phase: [p],
-                              bucket: [b],
-                              bio: focusBio ? true : undefined
-                            });
+                            const cellHref = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
                             return (
-                              <Link className="mCell" key={`${p}_${b}`} href={cellHref} title={`${phaseLabel(p)} × ${b}`}>
+                              <Link className="mCell" key={`${p}${b}`} href={cellHref} title={`${phaseLabel(p)} → ${b}`}>
                                 <div className="mCellTop">
                                   <div className="mBucket">{b}</div>
                                   <div className="mNums">
@@ -752,7 +701,7 @@ export default function PharmaIntelligencePage() {
                                   </div>
                                 </div>
                                 <div className="mBar">
-                                  <div className="mBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
+                                  <div className="mBarFill" style={{ width: `${(total / matrixMax) * 100}%` }}></div>
                                 </div>
                               </Link>
                             );
@@ -762,7 +711,9 @@ export default function PharmaIntelligencePage() {
                     ))}
                   </div>
 
-                  <div className="note">Counting uses a single representative phase per trial (avoids double counting multi-phase records).</div>
+                  <div className="note">
+                    Counting uses a single representative phase per trial; avoids double counting multi-phase records.
+                  </div>
                 </div>
               </div>
             </section>
@@ -773,11 +724,9 @@ export default function PharmaIntelligencePage() {
                 <h2 className="h2">Indication landscape</h2>
                 <div className="muted small">Conditions are normalized (e.g., COVID-19 variants are grouped).</div>
               </div>
-
               <div className="grid2">
                 <div className="card p-4">
                   <h3 className="h3">By disease area</h3>
-
                   <div className="tableWrap tableWrapEdge" style={{ marginTop: 10 }}>
                     <table className="miniTbl" aria-label="Disease area table">
                       <thead>
@@ -785,7 +734,7 @@ export default function PharmaIntelligencePage() {
                           <th>Disease area</th>
                           <th className="colTrials">Trials</th>
                           <th className="colShare">Bio share</th>
-                          <th className="colBar" aria-hidden="true" />
+                          <th className="colBar" aria-hidden="true"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -800,15 +749,17 @@ export default function PharmaIntelligencePage() {
                             <td className="colTrials">{a.total.toLocaleString()}</td>
                             <td className="colShare">{safePct(a.bioShare)}</td>
                             <td className="colBar">
-                              <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
+                              <Bar
+                                value={a.total}
+                                max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))}
+                              />
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-
-                  <div className="note">Drill-down uses the existing Explore “area” filter (URL state).</div>
+                  <div className="note">Drill-down uses the existing Explore area filter (URL state).</div>
                 </div>
 
                 <div className="card p-4">
@@ -821,15 +772,13 @@ export default function PharmaIntelligencePage() {
                         onChange={(e) => setExcludeHealthy(e.target.checked)}
                         style={{ marginRight: 8 }}
                       />
-                      Exclude “Healthy”
+                      Exclude Healthy
                     </label>
                   </div>
-
                   <div className="muted small">
-                    Explore drill-down uses search (q). Condition variants are grouped before ranking.
-                    {excludeHealthy ? " “Healthy” is excluded." : " “Healthy” is included."}
+                    Explore drill-down uses search (q). Condition variants are grouped before ranking.{" "}
+                    {excludeHealthy ? "Healthy is excluded." : "Healthy is included."}
                   </div>
-
                   <div className="tableWrap tableWrapEdge" style={{ marginTop: 10 }}>
                     <table className="miniTbl" aria-label="Condition table">
                       <thead>
@@ -837,7 +786,7 @@ export default function PharmaIntelligencePage() {
                           <th>Condition</th>
                           <th className="colTrials">Trials</th>
                           <th className="colShare">Bio share</th>
-                          <th className="colBar" aria-hidden="true" />
+                          <th className="colBar" aria-hidden="true"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -852,16 +801,19 @@ export default function PharmaIntelligencePage() {
                             <td className="colTrials">{c.total.toLocaleString()}</td>
                             <td className="colShare">{safePct(c.bioShare)}</td>
                             <td className="colBar">
-                              <Bar value={c.total} max={Math.max(1, ...conditionStats.map((x) => x.total))} />
+                              <Bar
+                                value={c.total}
+                                max={Math.max(1, ...conditionStats.map((x) => x.total))}
+                              />
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
-
                   <div className="note">
-                    “Healthy” appears because many registry trials enroll healthy volunteers; excluding it improves signal for therapeutic indications.
+                    "Healthy" appears because many registry trials enroll healthy volunteers; excluding it improves signal
+                    for therapeutic indications.
                   </div>
                 </div>
               </div>
@@ -872,11 +824,11 @@ export default function PharmaIntelligencePage() {
               <div className="sectionTitleRow">
                 <h2 className="h2">Sponsor mix</h2>
                 <div className="muted small">
-                  Descriptive only; sponsor naming variance and corporate structure can affect grouping. Use drill-down to validate.
+                  Descriptive only: sponsor naming variance and corporate structure can affect grouping. Use drill-down to
+                  validate.
                 </div>
               </div>
-
-              <div className="card p-4" style={{ overflow: "visible" as const }}>
+              <div className="card p-4" style={{ overflow: "visible" } as const}>
                 <div className="sponsorTopRow">
                   <div className="sponsorSelect">
                     <div className="muted small" style={{ marginBottom: 6 }}>
@@ -895,7 +847,6 @@ export default function PharmaIntelligencePage() {
                       ))}
                     </select>
                   </div>
-
                   <div className="sponsorBtns">
                     <Link className="btn" href={exploreHref({ q: selectedSponsor || undefined })}>
                       Open in Explore (search)
@@ -912,19 +863,19 @@ export default function PharmaIntelligencePage() {
                     <div className="panelHeader">
                       <div>
                         <div className="muted small">Sponsor</div>
-                        <div className="panelTitle">{sponsorProfile.sponsor || "—"}</div>
+                        <div className="panelTitle">{sponsorProfile.sponsor}</div>
                       </div>
-
-                      <div className="panelKpis">
-                        <div className="panelKpi">
-                          <div className="muted small">Trials (current focus)</div>
-                          <div className="panelKpiVal">{sponsorProfile.total.toLocaleString()}</div>
-                        </div>
-                        <div className="panelKpi">
-                          <div className="muted small">Likely scientific failures</div>
-                          <div className="panelKpiVal">
-                            {sponsorProfile.bio.toLocaleString()} <span className="muted">({safePct(sponsorProfile.bioShare)})</span>
-                          </div>
+                    </div>
+                    <div className="panelKpis">
+                      <div className="panelKpi">
+                        <div className="muted small">Trials (current focus)</div>
+                        <div className="panelKpiVal">{sponsorProfile.total.toLocaleString()}</div>
+                      </div>
+                      <div className="panelKpi">
+                        <div className="muted small">Likely scientific failures</div>
+                        <div className="panelKpiVal">
+                          {sponsorProfile.bio.toLocaleString()}{" "}
+                          <span className="muted">({safePct(sponsorProfile.bioShare)})</span>
                         </div>
                       </div>
                     </div>
@@ -932,7 +883,6 @@ export default function PharmaIntelligencePage() {
                     <div className="subhead" style={{ marginTop: 12 }}>
                       Top reason buckets
                     </div>
-
                     {sponsorHasRows ? (
                       <div className="tableWrap">
                         <table className="compactTbl" aria-label="Sponsor bucket mix">
@@ -946,7 +896,10 @@ export default function PharmaIntelligencePage() {
                             {sponsorProfile.topBuckets.map((b) => (
                               <tr key={b.bucket}>
                                 <td className="cellTrunc">
-                                  <Link className="link" href={exploreHref({ q: sponsorProfile.sponsor, bucket: [b.bucket] })}>
+                                  <Link
+                                    className="link"
+                                    href={exploreHref({ q: sponsorProfile.sponsor, bucket: [b.bucket] })}
+                                  >
                                     {b.bucket}
                                   </Link>
                                 </td>
@@ -966,9 +919,7 @@ export default function PharmaIntelligencePage() {
                     <div className="panelTitleRow">
                       <h3 className="h3">Phase and indication mix</h3>
                     </div>
-
                     <div className="subhead">Phases</div>
-
                     {sponsorHasRows ? (
                       <div className="tableWrap">
                         <table className="compactTbl" aria-label="Sponsor phase mix">
@@ -982,7 +933,10 @@ export default function PharmaIntelligencePage() {
                             {sponsorProfile.topPhases.map((p) => (
                               <tr key={p.phase}>
                                 <td className="cellTrunc">
-                                  <Link className="link" href={exploreHref({ q: sponsorProfile.sponsor, phase: [p.phase] })}>
+                                  <Link
+                                    className="link"
+                                    href={exploreHref({ q: sponsorProfile.sponsor, phase: [p.phase] })}
+                                  >
                                     {phaseLabel(p.phase)}
                                   </Link>
                                 </td>
@@ -1001,13 +955,11 @@ export default function PharmaIntelligencePage() {
                   <div className="sPanel">
                     <div className="panelTitleRow">
                       <h3 className="h3">Top conditions</h3>
-                      <div className="muted small">
-                        {excludeHealthy ? "Healthy excluded (global toggle)." : "Healthy included (global toggle)."}
-                      </div>
                     </div>
-
+                    <div className="muted small">
+                      {excludeHealthy ? "Healthy excluded (global toggle)." : "Healthy included (global toggle)."}
+                    </div>
                     <div className="muted small">Grouped by normalized condition key (e.g., COVID-19 variants).</div>
-
                     {sponsorHasRows ? (
                       <div className="tableWrap" style={{ marginTop: 10 }}>
                         <table className="compactTbl" aria-label="Sponsor top conditions">
@@ -1034,15 +986,15 @@ export default function PharmaIntelligencePage() {
                     ) : (
                       <div className="note">No trials for this sponsor under the current focus.</div>
                     )}
-
                     <div className="note" style={{ marginTop: 10 }}>
-                      Condition drill-down uses Explore search (q) because Explore does not currently apply a dedicated condition facet in filtering.
+                      Condition drill-down uses Explore search (q) because Explore does not currently apply a dedicated
+                      condition facet in filtering.
                     </div>
                   </div>
                 </div>
-
                 <div className="note" style={{ marginTop: 14 }}>
-                  Guardrail: do not interpret sponsor volume as “worse”; it may reflect portfolio size, registry practices, or acquisitions.
+                  Guardrail: do not interpret sponsor volume as "worse"; it may reflect portfolio size, registry practices,
+                  or acquisitions.
                 </div>
               </div>
             </section>
@@ -1051,6 +1003,9 @@ export default function PharmaIntelligencePage() {
       </main>
 
       <style jsx>{`
+        /* ===========================
+           BASE & LAYOUT
+           =========================== */
         .sectionHeader {
           display: flex;
           align-items: flex-start;
@@ -1064,7 +1019,6 @@ export default function PharmaIntelligencePage() {
           flex-wrap: wrap;
           justify-content: flex-end;
         }
-
         .h1 {
           margin: 0;
           font-size: 22px;
@@ -1091,7 +1045,6 @@ export default function PharmaIntelligencePage() {
           font-weight: 900;
           letter-spacing: -0.02em;
         }
-
         .miniRow {
           margin-top: 10px;
           display: grid;
@@ -1108,7 +1061,6 @@ export default function PharmaIntelligencePage() {
         .miniVal {
           font-weight: 850;
         }
-
         .grid3 {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1120,7 +1072,6 @@ export default function PharmaIntelligencePage() {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
         }
-
         .section {
           margin-top: 18px;
         }
@@ -1132,30 +1083,27 @@ export default function PharmaIntelligencePage() {
           margin-bottom: 10px;
         }
 
+        /* ===========================
+           TABLES
+           =========================== */
         .tableWrap {
           width: 100%;
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
         }
-
-        /* Horizontal scroll helper: makes touch scrolling reliable on mobile */
         .hScroll {
           overflow-x: auto;
           overflow-y: hidden;
           -webkit-overflow-scrolling: touch;
           touch-action: pan-x;
         }
-        /* Ensure the scroller actually has overflow when content is wide */
-        .hScroll > table {
+        .hScroll table {
           width: max-content;
           min-width: 100%;
         }
-
-        /* Edge-to-edge scroll on small screens (used for wide tables) */
         .tableWrapEdge {
           padding-bottom: 2px;
         }
-
         .scrollHint {
           display: none;
           margin-top: 8px;
@@ -1165,7 +1113,7 @@ export default function PharmaIntelligencePage() {
           font-weight: 650;
         }
 
-        /* Column helpers for mini tables (lets us hide/squeeze on phones) */
+        /* Column helpers */
         .miniTbl .colTrials,
         .miniTbl .colShare {
           text-align: right;
@@ -1189,7 +1137,7 @@ export default function PharmaIntelligencePage() {
           width: 100%;
           border-collapse: collapse;
           font-size: 13px;
-          min-width: 680px;
+          min-width: 500px;
         }
 
         .matrixDesktop {
@@ -1198,6 +1146,7 @@ export default function PharmaIntelligencePage() {
         .matrixMobile {
           display: none;
         }
+
         .miniTbl th,
         .miniTbl td,
         .matrixTbl th,
@@ -1219,6 +1168,7 @@ export default function PharmaIntelligencePage() {
           z-index: 1;
         }
 
+        /* Bar component */
         .barWrap {
           display: flex;
           justify-content: flex-end;
@@ -1236,6 +1186,7 @@ export default function PharmaIntelligencePage() {
           border-radius: 999px;
         }
 
+        /* Matrix cells */
         .cellLink {
           display: block;
           border-radius: 12px;
@@ -1267,7 +1218,9 @@ export default function PharmaIntelligencePage() {
           border-radius: 999px;
         }
 
-        /* Sponsor */
+        /* ===========================
+           SPONSOR
+           =========================== */
         .sponsorTopRow {
           display: flex;
           align-items: flex-end;
@@ -1286,14 +1239,12 @@ export default function PharmaIntelligencePage() {
           flex-wrap: wrap;
           justify-content: flex-end;
         }
-
         .sponsorPanels3 {
           display: grid !important;
           grid-template-columns: 1.15fr 1fr 1fr;
           gap: 14px;
           align-items: start;
         }
-
         .sPanel {
           background: var(--surface-2);
           border: 1px solid var(--border);
@@ -1302,7 +1253,6 @@ export default function PharmaIntelligencePage() {
           min-width: 0;
           overflow: hidden;
         }
-
         .panelHeader {
           display: flex;
           gap: 12px;
@@ -1335,7 +1285,6 @@ export default function PharmaIntelligencePage() {
           flex-wrap: wrap;
           margin-bottom: 6px;
         }
-
         .subhead {
           color: var(--text-muted);
           font-size: 12px;
@@ -1365,20 +1314,21 @@ export default function PharmaIntelligencePage() {
           letter-spacing: 0.06em;
           background: var(--surface);
         }
-
         .cellTrunc {
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
 
+        /* ===========================
+           TABLET BREAKPOINT
+           =========================== */
         @media (max-width: 1100px) {
           .sponsorPanels3 {
             grid-template-columns: 1fr 1fr;
           }
         }
 
-        /* Phones: collapse sponsor panels into a single column */
         @media (max-width: 820px) {
           .sponsorPanels3 {
             grid-template-columns: 1fr;
@@ -1400,40 +1350,157 @@ export default function PharmaIntelligencePage() {
           }
         }
 
-        /* MOBILE DESIGN FIXES */
+        /* ===========================
+           MOBILE FIXES (≤720px)
+           =========================== */
         @media (max-width: 720px) {
-          /* Make the page genuinely phone-friendly */
-          .sponsorTopRow{flex-direction:column;align-items:stretch;}
+          /* Sponsor controls */
+          .sponsorTopRow {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .sponsorSelect {
+            flex: 1 1 auto;
+            min-width: 0;
+            width: 100%;
+          }
+          .sponsorBtns {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+          }
 
-          /* Wide table UX */
-          .scrollHint{display:block;}
-          .tableWrapEdge{margin:0 -16px;padding:0 16px;}
-          .miniTbl .colBar{display:none;}
-          .miniTbl.reasonTbl .colBar{display:table-cell;}
-          .miniTbl th, .miniTbl td{padding:8px 8px;}
-          .miniTbl .colTrials, .miniTbl .colShare{width:auto;}
+          /* Show scroll hint */
+          .scrollHint {
+            display: block;
+          }
 
-          .sponsorSelect{flex:1 1 auto;min-width:0;}
-          .sponsorBtns{width:100%;display:grid;grid-template-columns:1fr;}
+          /* Fix table edge margins on mobile */
+          .tableWrapEdge {
+            margin: 0 -16px;
+            padding: 0 16px;
+          }
 
-          .miniRow{grid-template-columns:repeat(4,auto);}
-          .barTrack{width:84px;}
-          .miniTbl:not(.reasonTbl){min-width:0;font-size:12px;table-layout:auto;}
-          .miniTbl.reasonTbl{min-width:720px;font-size:12px;table-layout:auto;}
-          .matrixDesktop{display:none;}
-          .matrixMobile{display:block;}
-          .mRow{margin-top:10px;}
-          .mPhase{font-weight:850;font-size:13px;margin-bottom:8px;}
-          .mBuckets{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;}
-          .mCell{min-width:170px;max-width:190px;flex:0 0 auto;display:block;border:1px solid var(--border);border-radius:14px;padding:10px;background:rgba(15,23,42,0.02);}
-          .mCellTop{display:flex;flex-direction:column;gap:8px;}
-          .mBucket{font-size:11px;font-weight:900;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);}
-          .mNums{display:flex;align-items:baseline;justify-content:space-between;gap:8px;}
-          .mTotal{font-size:18px;font-weight:900;}
-          .mBar{margin-top:10px;height:7px;border-radius:999px;background:rgba(15,23,42,0.08);overflow:hidden;}
-          .mBarFill{height:100%;background:rgba(79,70,229,0.55);border-radius:999px;}
+          /* Hide bar column on most tables to save space */
+          .miniTbl .colBar {
+            display: none;
+          }
+          /* But keep it for reason buckets table */
+          .miniTbl.reasonTbl .colBar {
+            display: table-cell;
+          }
 
-          /* Topbar becomes a clean stacked layout */
+          /* Tighten table cell padding */
+          .miniTbl th,
+          .miniTbl td {
+            padding: 8px 8px;
+          }
+
+          /* Adjust column widths for mobile */
+          .miniTbl .colTrials,
+          .miniTbl .colShare {
+            width: auto;
+          }
+
+          /* Mini row grid adjustment */
+          .miniRow {
+            grid-template-columns: repeat(4, auto);
+          }
+
+          /* Bar track smaller on mobile */
+          .barTrack {
+            width: 84px;
+          }
+
+          /* Regular mini tables: remove min-width, allow responsive sizing */
+          .miniTbl:not(.reasonTbl) {
+            min-width: 0;
+            font-size: 12px;
+            table-layout: auto;
+          }
+
+          /* Reason buckets table: needs wider min-width for proper horizontal scroll */
+          .miniTbl.reasonTbl {
+            min-width: 600px;
+            font-size: 12px;
+            table-layout: auto;
+          }
+
+          /* Hide desktop matrix, show mobile */
+          .matrixDesktop {
+            display: none;
+          }
+          .matrixMobile {
+            display: block;
+          }
+
+          /* Mobile matrix styling */
+          .mRow {
+            margin-top: 10px;
+          }
+          .mPhase {
+            font-weight: 850;
+            font-size: 13px;
+            margin-bottom: 8px;
+          }
+          .mBuckets {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+          }
+          .mCell {
+            min-width: 160px;
+            max-width: 180px;
+            flex: 0 0 auto;
+            display: block;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 10px;
+            background: rgba(15, 23, 42, 0.02);
+          }
+          .mCellTop {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          .mBucket {
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+          }
+          .mNums {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 8px;
+          }
+          .mTotal {
+            font-size: 16px;
+            font-weight: 900;
+          }
+          .mBio {
+            font-size: 12px;
+          }
+          .mBar {
+            margin-top: 10px;
+            height: 7px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+          }
+          .mBarFill {
+            height: 100%;
+            background: rgba(79, 70, 229, 0.55);
+            border-radius: 999px;
+          }
+
+          /* Topbar mobile adjustments */
           :global(.topbar-inner) {
             flex-direction: column;
             align-items: stretch;
@@ -1457,11 +1524,10 @@ export default function PharmaIntelligencePage() {
           :global(.topbar-right) {
             width: 100%;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 8px;
             align-items: center;
           }
-          /* Make controls feel deliberate and avoid “floating” */
           :global(.topbar-right .btn) {
             width: 100%;
             justify-content: center;
@@ -1477,7 +1543,7 @@ export default function PharmaIntelligencePage() {
             margin-bottom: 10px;
           }
 
-          /* Sponsor controls: clean stack + full width buttons */
+          /* Sponsor controls clean stack + full width buttons */
           .sponsorTopRow {
             flex-direction: column;
             align-items: stretch;
@@ -1489,7 +1555,8 @@ export default function PharmaIntelligencePage() {
           .sponsorBtns {
             width: 100%;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
+            gap: 8px;
           }
           :global(.sponsorBtns .btn) {
             width: 100%;
@@ -1504,7 +1571,7 @@ export default function PharmaIntelligencePage() {
             padding: 12px;
           }
 
-          /* Tables: reduce stickiness artifacts on very small screens */
+          /* Tables reduce stickiness artifacts on very small screens */
           .miniTbl th,
           .matrixTbl th {
             position: static;
