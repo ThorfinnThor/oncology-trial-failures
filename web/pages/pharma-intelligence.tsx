@@ -109,7 +109,7 @@ function normalizePhaseToken(p: string): PhaseKey {
 }
 
 function representativePhase(r: TrialIndexRow): PhaseKey {
-  const raw = parsePhases(r.phases);
+  const raw = parsePhases(r.phases || "");
   if (!raw.length) return "UNKNOWN";
   const tokens = Array.from(new Set(raw.map(normalizePhaseToken)));
   tokens.sort((a, b) => PHASE_ORDER.indexOf(a) - PHASE_ORDER.indexOf(b));
