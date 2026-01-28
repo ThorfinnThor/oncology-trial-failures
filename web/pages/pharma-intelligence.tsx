@@ -1,7 +1,7 @@
 // web/pages/pharma-intelligence.tsx
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
@@ -225,40 +225,6 @@ export default function PharmaIntelligencePage() {
 
   // Exclude "Healthy" toggle (applies to global + sponsor top conditions)
   const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
-
-  // Mobile horizontal-scroll guard: prevents accidental link taps while swiping.
-  // This also makes horizontal scrolling feel more reliable on iOS Safari where nested links can "eat" gestures.
-  const hScrollDraggingRef = useRef(false);
-  const hScrollStartRef = useRef({ x: 0, y: 0 });
-
-  const onHScrollTouchStart = (e: any) => {
-    const t = e?.touches?.[0];
-    hScrollDraggingRef.current = false;
-    if (t) hScrollStartRef.current = { x: t.clientX, y: t.clientY };
-  };
-
-  const onHScrollTouchMove = (e: any) => {
-    const t = e?.touches?.[0];
-    if (!t) return;
-    const dx = Math.abs(t.clientX - hScrollStartRef.current.x);
-    const dy = Math.abs(t.clientY - hScrollStartRef.current.y);
-    // threshold + directionality: only treat as horizontal swipe if clearly horizontal
-    if (dx > 10 && dx > dy + 4) hScrollDraggingRef.current = true;
-  };
-
-  const onHScrollTouchEnd = () => {
-    // Allow the scroll momentum to settle before re-enabling clicks.
-    window.setTimeout(() => {
-      hScrollDraggingRef.current = false;
-    }, 0);
-  };
-
-  const onHScrollClickCapture = (e: any) => {
-    if (hScrollDraggingRef.current) {
-      e.preventDefault?.();
-      e.stopPropagation?.();
-    }
-  };
 
   useEffect(() => {
     let alive = true;
@@ -684,7 +650,7 @@ export default function PharmaIntelligencePage() {
               </div>
 
               <div className="scrollHint">Swipe horizontally →</div>
-              <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
+              <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
                 <div className="hScrollInner">
                   <table className="tblMini tblReason" aria-label="Reason buckets table">
                   <thead>
@@ -738,7 +704,7 @@ export default function PharmaIntelligencePage() {
               {/* Desktop/table version */}
               <div className="desktopOnly">
                 <div className="scrollHint">Scroll horizontally →</div>
-                <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
+                <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0}>
                   <div className="hScrollInner">
                     <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
                     <thead>
@@ -802,7 +768,7 @@ export default function PharmaIntelligencePage() {
                         <span className="muted tiny">{p}</span>
                       </div>
 
-                      <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
+                      <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0}>
                         {displayedBuckets.map((b) => {
                           const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
                           const total = cell?.total || 0;
@@ -846,7 +812,7 @@ export default function PharmaIntelligencePage() {
                 <div className="muted small">Top areas by volume.</div>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
+              <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
@@ -902,7 +868,7 @@ export default function PharmaIntelligencePage() {
                 </label>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0} onTouchStart={onHScrollTouchStart} onTouchMove={onHScrollTouchMove} onTouchEnd={onHScrollTouchEnd} onTouchCancel={onHScrollTouchEnd} onClickCapture={onHScrollClickCapture}>
+              <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Top conditions table">
                   <thead>
@@ -1259,19 +1225,19 @@ export default function PharmaIntelligencePage() {
         .hScroll {
           width: 100%;
           max-width: 100%;
-          overflow-x: auto;
+          overflow-x: scroll;
+          scrollbar-gutter: stable both-edges;
           overflow-y: hidden;
           -webkit-overflow-scrolling: touch;
           touch-action: pan-x;
           overscroll-behavior-x: contain;
           border-radius: 12px;
-          
+          transform: translateZ(0);
         }
 
         .hScrollInner {
           display: inline-block;
           min-width: max-content;
-          white-space: nowrap;
           padding-bottom: 2px;
         }
         .hScrollInner > table {
@@ -1648,39 +1614,33 @@ export default function PharmaIntelligencePage() {
             font-size: 13px;
           }
 
-          
-          /* Tighten typography on phones */
-          .kpi {
-            font-size: 22px;
+          /* Tighten section spacing on phones */
+          .section {
+            margin-top: 14px;
           }
-          .panelTitle {
-            font-size: 15px;
-          }
-          .subhead {
-            font-size: 11px;
-          }
-          .tiny {
-            font-size: 10px;
-          }
-          .tblMini th {
-            font-size: 11px;
-          }
-          :global(.chip) {
-            font-size: 12px;
-            padding: 6px 8px;
-          }
-          :global(.btn),
-          :global(.btn-primary) {
-            font-size: 13px;
-            padding: 10px 12px;
-          }
-          :global(.select) {
-            font-size: 14px;
-          }
-/* Edge-to-edge scroll regions on phones */
+
+          /* Mobile: avoid negative margins (can clip on devices where the parent padding isn't 16px).
+             Keep scroll areas contained so the right edge is always reachable. */
           .hScroll {
-            margin: 0 -16px;
-            padding: 0 16px;
+            margin: 0;
+            padding: 0;
+          }
+
+          /* Ensure page respects safe areas and doesn't clip the right edge */
+          :global(.page) {
+            padding-left: max(12px, env(safe-area-inset-left));
+            padding-right: max(12px, env(safe-area-inset-right));
+          }
+
+          /* Reduce card padding on mobile to tighten layout */
+          :global(.p-4) {
+            padding: 12px;
+          }
+
+          /* Prevent any grid children from forcing overflow */
+          .grid2 > *,
+          .grid3 > * {
+            min-width: 0;
           }
 
           .tblMini {
@@ -1717,11 +1677,6 @@ export default function PharmaIntelligencePage() {
           }
           .sponsorSelect {
             min-width: 0;
-            flex: 0 0 auto;
-            width: 100%;
-          }
-          .sponsorBtns {
-            margin-top: 6px;
           }
           .sponsorBtns {
             width: 100%;
