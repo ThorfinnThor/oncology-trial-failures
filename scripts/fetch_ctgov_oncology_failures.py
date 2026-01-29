@@ -276,15 +276,65 @@ REGULATORY_TERMS = [
 ]
 
 # "Anchors" are the only tokens that can unlock the REGULATORY bucket.
-# This prevents vague language like "on hold" from being mislabeled as regulatory.
+# This prevents vague language like "on hold" / "unable to open" from being mislabeled as regulatory.
+#
+# IMPORTANT (user requirement):
+#   - REGULATORY should only fire for explicit FDA/EMA/authority/clinical-hold style reasons.
+#   - The mere presence of the word "regulatory" is NOT sufficient.
 REGULATORY_ANCHOR_PAT = re.compile(
     r"\b("
+    # Named regulators / agencies
     r"fda|food and drug administration|ema|european medicines agency|mhra|health canada|"
-    r"therapeutic goods administration|tga|anvisa|pmda|nmpa|"
-    r"regulatory authority|health authority|competent authority|regulator|regulatory|"
-    r"clinical hold|regulatory hold"
+    r"therapeutic goods administration|\btga\b|anvisa|pmda|nmpa|"
+    # Explicit authority phrases
+    r"regulatory authority|regulatory authorities|health authority|health authorities|competent authority|"
+    r"regulatory agency|regulatory agencies|regulator|regulators|"
+    # Explicit regulatory actions
+    r"clinical hold|fda clinical hold|regulatory hold|"
+    # Explicit request/mandate phrases (anchor without relying on bare 'regulatory')
+    r"regulatory request|regulatory requests"
     r")\b"
 )
+
+# Hard block: deny REGULATORY when the text explicitly states the stop was NOT regulatory.
+REGULATORY_NEGATION_PATTERNS = [
+    r"\bnot\s+due\s+to\b.{0,120}\bregulat",                 # not due to ... regulat*
+    r"\bnot\s+because\s+of\b.{0,120}\bregulat",
+    r"\bno\s+request(?:s)?\s+from\b.{0,120}\bregulat",      # no requests from ... regulat*
+    r"\bnot\s+requested\s+by\b.{0,120}\bregulat",
+    r"\bwithout\b.{0,120}\bregulat",
+    r"\bno\b.{0,60}\bregulatory\b.{0,60}\brequest",         # no regulatory request
+    r"\bno\b.{0,60}\brequest\b.{0,60}\bregulatory",         # no request ... regulatory
+    r"\bno\b.{0,60}\bregulatory\b.{0,60}\bconcern",         # no regulatory concern
+    r"\bno\b.{0,60}\bregulatory\b.{0,60}\bissue",           # no regulatory issue
+]
+
+# Positive-causality cues. We only assign REGULATORY if there is an explicit anchor AND
+# at least one of these cues is present (prevents generic mentions like "regulatory developments").
+REGULATORY_POSITIVE_CUES = [
+    "due to", "because of", "at the request of", "requested by", "required by",
+    "per fda", "per ema", "based on fda", "based on ema", "fda feedback", "ema feedback",
+    "following fda", "following ema", "as requested by",
+    "clinical hold", "fda clinical hold", "regulatory hold", "placed on hold by",
+    "approval not obtained", "not approved by", "not approved", "regulatory approval",
+    "inspection", "audit", "gcp", "non-compliance", "warning letter",
+    "ind", "cta",
+    "regulatory request", "regulatory requests",
+]
+
+def _is_regulatory_negated(txt: str) -> bool:
+    if not txt:
+        return False
+    for p in REGULATORY_NEGATION_PATTERNS:
+        if re.search(p, txt, flags=re.IGNORECASE | re.DOTALL):
+            return True
+    return False
+
+def _has_positive_regulatory_cue(txt: str) -> bool:
+    if not txt:
+        return False
+    t = txt.lower()
+    return any(cue in t for cue in REGULATORY_POSITIVE_CUES)
 
 REGULATORY_WEIGHTS: Dict[str, int] = {
     # Agencies / explicit regulators
@@ -657,11 +707,18 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     reg_score = 0
     reg_ev: List[str] = []
     if REGULATORY_ANCHOR_PAT.search(txt):
-        reg_score, reg_ev = _score_dimension(txt, REGULATORY_TERMS, False, "reg", REGULATORY_WEIGHTS)
+        # Guardrails:
+        #   - Do NOT assign REGULATORY if the text explicitly negates a regulatory cause.
+        #   - Require a positive causal cue (e.g., "at the request of", "based on FDA feedback", "clinical hold").
+        if _is_regulatory_negated(txt) or (not _has_positive_regulatory_cue(txt)):
+            reg_score = 0
+            reg_ev = []
+        else:
+            reg_score, reg_ev = _score_dimension(txt, REGULATORY_TERMS, False, "reg", REGULATORY_WEIGHTS)
 
-        # If the text also contains operational/admin language, require stronger regulatory signal.
-        if operational_present:
-            reg_score -= 1  # bias towards OPERATIONAL when both are present
+            # If the text also contains operational/admin language, bias towards OPERATIONAL unless regulatory is strong.
+            if operational_present:
+                reg_score -= 1  # bias towards OPERATIONAL when both are present
 
     # Keep your existing "no benefit-risk impact" handling (operational, not biological).
     if _contains_any(txt_raw, NO_BENEFIT_RISK_IMPACT_PATTERNS) and operational_present:
