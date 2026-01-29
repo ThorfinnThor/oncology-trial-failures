@@ -1503,6 +1503,7 @@ export default function PharmaIntelligencePage() {
           border-collapse: collapse;
           font-size: 13px;
           min-width: 640px;
+          table-layout: fixed; /* keep columns aligned; avoid huge gaps */
         }
         .tblMini th,
         .tblMini td {
@@ -1524,6 +1525,32 @@ export default function PharmaIntelligencePage() {
         .tblReason {
           min-width: 760px; /* ensure overflow on phones */
         }
+
+        /* Column sizing: keep numeric columns tight so content doesn't look "floated" far right */
+        .tblMini td:first-child {
+          word-break: break-word;
+        }
+        .tblReason th:nth-child(2),
+        .tblReason td:nth-child(2) {
+          width: 120px; /* Trials */
+        }
+        .tblReason th:nth-child(3),
+        .tblReason td:nth-child(3) {
+          width: 110px; /* Bio share */
+        }
+        .tblReason th:nth-child(4),
+        .tblReason td:nth-child(4) {
+          width: 140px; /* Bar */
+        }
+        .tblWide th:nth-child(2),
+        .tblWide td:nth-child(2) {
+          width: 120px;
+        }
+        .tblWide th:nth-child(3),
+        .tblWide td:nth-child(3) {
+          width: 120px;
+        }
+
         .num {
           text-align: right;
           white-space: nowrap;
