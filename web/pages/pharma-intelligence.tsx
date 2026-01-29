@@ -595,6 +595,7 @@ export default function PharmaIntelligencePage() {
           <div className="card p-4">Loading…</div>
         </div>
         </div>
+        </div>
       </>
     );
   }
@@ -605,11 +606,33 @@ export default function PharmaIntelligencePage() {
         <Head>
           <title>Pharma intelligence</title>
         </Head>
+        <div className="min-h-screen">
+        <header className="topbar">
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <Link href="/explore" className="brand">
+                Clinical trial failures
+              </Link>
+              <nav className="nav" aria-label="Primary">
+                <Link className="navlink" href="/explore">
+                  Explore
+                </Link>
+                <Link className="navlink" href="/pharma-intelligence" aria-current="page">
+                  Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
+                </Link>
+              </nav>
+            </div>
+          </div>
+        </header>
         <div className="page">
           <div className="card p-4">
             <div style={{ fontWeight: 800, marginBottom: 6 }}>Error</div>
             <div className="muted">{err}</div>
           </div>
+        </div>
         </div>
       </>
     );
@@ -620,6 +643,28 @@ export default function PharmaIntelligencePage() {
       <Head>
         <title>Pharma intelligence</title>
       </Head>
+
+      <div className="min-h-screen">
+        <header className="topbar">
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <Link href="/explore" className="brand">
+                Clinical trial failures
+              </Link>
+              <nav className="nav" aria-label="Primary">
+                <Link className="navlink" href="/explore">
+                  Explore
+                </Link>
+                <Link className="navlink" href="/pharma-intelligence" aria-current="page">
+                  Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
+                </Link>
+              </nav>
+            </div>
+          </div>
+        </header>
 
       <div className="page">
         {/* ===== Header ===== */}
@@ -1188,8 +1233,8 @@ export default function PharmaIntelligencePage() {
             </>
           ) : null}
         </footer>
-              </div>
       </div>
+    </div>
 
       <style jsx>{`
         .header {
