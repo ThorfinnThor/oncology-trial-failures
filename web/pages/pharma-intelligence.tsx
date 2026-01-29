@@ -1867,24 +1867,49 @@ export default function PharmaIntelligencePage() {
             min-width: 0;
           }
 
-          .tblMini {
+          .tblMini.tblWide,
+          .tblMini.tblReason {
             font-size: 12px;
-            min-width: 640px;
-          }
-          .tblWide {
-            min-width: 720px;
-          }
-          .tblMini th,
-          .tblMini td {
-            padding: 10px 8px;
-          }
-          .barTrack {
-            width: 88px;
+            width: 100%;
+            min-width: 0;
+            table-layout: fixed;
           }
 
-          /* Ensure the reason buckets table keeps overflow visible on mobile */
+          .tblMini.tblWide th,
+          .tblMini.tblWide td,
+          .tblMini.tblReason th,
+          .tblMini.tblReason td {
+            padding: 8px 6px;
+          }
+
+          .tblMini.tblWide th:nth-child(1),
+          .tblMini.tblWide td:nth-child(1),
+          .tblMini.tblReason th:nth-child(1),
+          .tblMini.tblReason td:nth-child(1) {
+            width: 62%;
+            white-space: normal;
+            overflow-wrap: anywhere;
+          }
+
+          .tblMini.tblWide th:nth-child(2),
+          .tblMini.tblWide td:nth-child(2),
+          .tblMini.tblReason th:nth-child(2),
+          .tblMini.tblReason td:nth-child(2) {
+            width: 22%;
+          }
+
+          .tblMini.tblWide th:nth-child(3),
+          .tblMini.tblWide td:nth-child(3),
+          .tblMini.tblReason th:nth-child(3),
+          .tblMini.tblReason td:nth-child(3) {
+            width: 16%;
+          }
+
+          .tblWide {
+            min-width: 0;
+          }
           .tblReason {
-            min-width: 760px;
+            min-width: 0;
           }
 
           .miniRow {
