@@ -171,7 +171,7 @@ function isHealthyConditionKey(key: string): boolean {
  * Keep parity with the original intent: do not show ENROLLMENT as its own bucket here.
  * Collapse ENROLLMENT -> OTHER/UNKNOWN for all computations on this page.
  */
-const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "OTHER/UNKNOWN"];
+const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "REGULATORY", "OTHER/UNKNOWN"];
 
 function normalizeBucketForDisplay(b: string): BucketKey {
   const u = (b || "").toUpperCase().trim() || "OTHER/UNKNOWN";
@@ -200,6 +200,7 @@ function bucketPillClass(bucket: string): string {
   if (b === "SAFETY") return "pill pillSafety";
   if (b === "EFFICACY/FUTILITY") return "pill pillEfficacy";
   if (b === "OPERATIONAL") return "pill pillOperational";
+  if (b === "REGULATORY") return "pill pillRegulatory";
   return "pill pillNeutral";
 }
 
@@ -741,6 +742,9 @@ export default function PharmaIntelligencePage() {
               </Link>
               <Link className="btn" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                 Operational
+              </Link>
+              <Link className="btn" href={exploreHref({ bucket: ["REGULATORY"] })}>
+                Regulatory
               </Link>
             </div>
           </div>
@@ -1423,6 +1427,10 @@ export default function PharmaIntelligencePage() {
         .pillOperational {
           background: rgba(234, 179, 8, 0.12);
           border-color: rgba(234, 179, 8, 0.25);
+        }
+        .pillRegulatory {
+          background: rgba(2, 132, 199, 0.10);
+          border-color: rgba(2, 132, 199, 0.25);
         }
         .pillPhase1 {
           background: rgba(14, 165, 233, 0.10);
