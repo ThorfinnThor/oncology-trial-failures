@@ -782,10 +782,10 @@ export default function PharmaIntelligencePage() {
                 <div className="hScrollInner">
                   <table className="tblMini tblReason tblTight" aria-label="Reason buckets table">
                   <colgroup>
-                    <col style={{ width: 320 }} />
-                    <col style={{ width: 96 }} />
-                    <col style={{ width: 86 }} />
-                    <col style={{ width: 140 }} />
+                    <col style={{ width: 240 }} />
+                    <col style={{ width: 90 }} />
+                    <col style={{ width: 80 }} />
+                    <col style={{ width: 120 }} />
                   </colgroup>
                   <thead>
                     <tr>
@@ -950,10 +950,10 @@ export default function PharmaIntelligencePage() {
                 <div className="hScrollInner">
                   <table className="tblMini tblWide tblTight" aria-label="Disease area table">
                   <colgroup>
-                    <col style={{ width: 320 }} />
-                    <col style={{ width: 96 }} />
-                    <col style={{ width: 86 }} />
-                    <col style={{ width: 140 }} />
+                    <col style={{ width: 240 }} />
+                    <col style={{ width: 90 }} />
+                    <col style={{ width: 80 }} />
+                    <col style={{ width: 120 }} />
                   </colgroup>
                   <thead>
                     <tr>
@@ -1012,10 +1012,10 @@ export default function PharmaIntelligencePage() {
                 <div className="hScrollInner">
                   <table className="tblMini tblWide tblTight" aria-label="Top conditions table">
                   <colgroup>
-                    <col style={{ width: 320 }} />
-                    <col style={{ width: 96 }} />
-                    <col style={{ width: 86 }} />
-                    <col style={{ width: 140 }} />
+                    <col style={{ width: 240 }} />
+                    <col style={{ width: 90 }} />
+                    <col style={{ width: 80 }} />
+                    <col style={{ width: 120 }} />
                   </colgroup>
                   <thead>
                     <tr>
@@ -1526,7 +1526,7 @@ export default function PharmaIntelligencePage() {
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 10px 8px; /* tighter default cell padding */
+          padding: 8px 6px; /* tighter default cell padding */
           vertical-align: top;
         }
         .tblMini th {
@@ -1576,7 +1576,7 @@ export default function PharmaIntelligencePage() {
         .tblReason td:first-child,
         .tblWide th:first-child,
         .tblWide td:first-child {
-          width: clamp(220px, 28vw, 300px) !important; /* pull numeric cols left; allow wrap for long labels */
+          width: clamp(180px, 22vw, 240px) !important; /* pull numeric cols left; allow wrap for long labels */
         }
 
         /* Column sizing: keep numeric columns tight so content doesn't look "floated" far right */
@@ -1585,23 +1585,23 @@ export default function PharmaIntelligencePage() {
         }
         .tblReason th:nth-child(2),
         .tblReason td:nth-child(2) {
-          width: 120px; /* Trials */
+          width: 90px; /* Trials */
         }
         .tblReason th:nth-child(3),
         .tblReason td:nth-child(3) {
-          width: 110px; /* Bio share */
+          width: 80px; /* Bio share */
         }
         .tblReason th:nth-child(4),
         .tblReason td:nth-child(4) {
-          width: 140px; /* Bar */
+          width: 120px; /* Bar */
         }
         .tblWide th:nth-child(2),
         .tblWide td:nth-child(2) {
-          width: 120px;
+          width: 90px;
         }
         .tblWide th:nth-child(3),
         .tblWide td:nth-child(3) {
-          width: 120px;
+          width: 80px;
         }
 
         .num {
@@ -1610,7 +1610,7 @@ export default function PharmaIntelligencePage() {
           font-weight: 800;
         }
         .barCol {
-          width: 140px;
+          width: 120px;
         }
 
         .cellTop {
