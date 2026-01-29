@@ -780,7 +780,13 @@ export default function PharmaIntelligencePage() {
               <div className="scrollHint">Swipe horizontally →</div>
               <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblReason" aria-label="Reason buckets table">
+                  <table className="tblMini tblReason tblTight" aria-label="Reason buckets table">
+                  <colgroup>
+                    <col style={{ width: 320 }} />
+                    <col style={{ width: 96 }} />
+                    <col style={{ width: 86 }} />
+                    <col style={{ width: 140 }} />
+                  </colgroup>
                   <thead>
                     <tr>
                       <th>Bucket</th>
@@ -942,7 +948,13 @@ export default function PharmaIntelligencePage() {
 
               <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblWide" aria-label="Disease area table">
+                  <table className="tblMini tblWide tblTight" aria-label="Disease area table">
+                  <colgroup>
+                    <col style={{ width: 320 }} />
+                    <col style={{ width: 96 }} />
+                    <col style={{ width: 86 }} />
+                    <col style={{ width: 140 }} />
+                  </colgroup>
                   <thead>
                     <tr>
                       <th>Disease area</th>
@@ -998,7 +1010,13 @@ export default function PharmaIntelligencePage() {
 
               <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblWide" aria-label="Top conditions table">
+                  <table className="tblMini tblWide tblTight" aria-label="Top conditions table">
+                  <colgroup>
+                    <col style={{ width: 320 }} />
+                    <col style={{ width: 96 }} />
+                    <col style={{ width: 86 }} />
+                    <col style={{ width: 140 }} />
+                  </colgroup>
                   <thead>
                     <tr>
                       <th>Condition</th>
@@ -1524,6 +1542,12 @@ export default function PharmaIntelligencePage() {
         }
         .tblReason {
           min-width: 760px; /* ensure overflow on phones */
+        }
+
+        /* Make tables shrink-to-content inside the horizontal scroller (reduces wide-screen column gaps) */
+        .tblTight {
+          width: max-content !important;
+          min-width: 0 !important;
         }
 
         /* Keep first columns from ballooning on wide screens (reduces perceived gap before numeric cols) */
