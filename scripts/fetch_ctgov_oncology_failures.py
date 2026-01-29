@@ -249,6 +249,82 @@ OPERATIONAL_TERMS = [
     "feasibility", "feasibility issues", "not feasible",
 ]
 
+
+REGULATORY_TERMS = [
+    # Regulators / agencies (explicit)
+    "fda", "food and drug administration",
+    "ema", "european medicines agency",
+    "mhra", "medicines and healthcare products regulatory agency",
+    "health canada",
+    "tga", "therapeutic goods administration",
+    "anvisa",
+    "pmda",
+    "nmpa",
+    "competent authority",
+    "health authority",
+    "regulatory authority", "regulatory authorities",
+    "regulator", "regulatory",
+
+    # Explicit regulatory actions / artifacts
+    "clinical hold", "fda clinical hold", "regulatory hold",
+    "inspection", "gcp", "good clinical practice",
+    "audit", "audit findings",
+    "non-compliance", "noncompliance",
+    "warning letter",
+    "approval not obtained", "not approved by", "not approved",
+    "regulatory approval",
+]
+
+# "Anchors" are the only tokens that can unlock the REGULATORY bucket.
+# This prevents vague language like "on hold" from being mislabeled as regulatory.
+REGULATORY_ANCHOR_PAT = re.compile(
+    r"\b("
+    r"fda|food and drug administration|ema|european medicines agency|mhra|health canada|"
+    r"therapeutic goods administration|tga|anvisa|pmda|nmpa|"
+    r"regulatory authority|health authority|competent authority|regulator|regulatory|"
+    r"clinical hold|regulatory hold"
+    r")\b"
+)
+
+REGULATORY_WEIGHTS: Dict[str, int] = {
+    # Agencies / explicit regulators
+    "fda": 5,
+    "food and drug administration": 5,
+    "ema": 5,
+    "european medicines agency": 5,
+    "mhra": 5,
+    "health canada": 5,
+    "tga": 4,
+    "therapeutic goods administration": 5,
+    "anvisa": 5,
+    "pmda": 5,
+    "nmpa": 5,
+    "competent authority": 4,
+    "health authority": 4,
+    "regulatory authority": 4,
+    "regulatory authorities": 4,
+    "regulator": 3,
+    "regulatory": 2,
+
+    # Actions / outcomes
+    "clinical hold": 5,
+    "fda clinical hold": 6,
+    "regulatory hold": 5,
+    "warning letter": 5,
+    "inspection": 4,
+    "audit": 3,
+    "audit findings": 4,
+    "gcp": 4,
+    "good clinical practice": 4,
+    "non-compliance": 4,
+    "noncompliance": 4,
+    "approval not obtained": 4,
+    "not approved by": 4,
+    "not approved": 3,
+    "regulatory approval": 4,
+}
+
+
 EFFICACY_WEIGHTS: Dict[str, int] = {
     "efficacy concerns": 2,
     "efficacy concern": 2,
@@ -564,6 +640,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     operational_hits = _find_terms(txt, OPERATIONAL_TERMS)
     operational_present = len(operational_hits) > 0
 
+    # Special: operational explicitly stated as "non-safety" while operational reasons present.
     if _contains_any(txt_raw, NON_SAFETY_PATTERNS) and operational_present:
         return Classification(
             "NON_BIOLOGICAL",
@@ -575,6 +652,18 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf", SAFETY_WEIGHTS)
     efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff", EFFICACY_WEIGHTS)
 
+    # REGULATORY scoring is *gated* by explicit anchors (FDA/EMA/authority/clinical hold/regulatory hold/etc).
+    # This prevents conceptual overlap with OPERATIONAL (e.g., recruitment difficulty) unless it is truly regulatory.
+    reg_score = 0
+    reg_ev: List[str] = []
+    if REGULATORY_ANCHOR_PAT.search(txt):
+        reg_score, reg_ev = _score_dimension(txt, REGULATORY_TERMS, False, "reg", REGULATORY_WEIGHTS)
+
+        # If the text also contains operational/admin language, require stronger regulatory signal.
+        if operational_present:
+            reg_score -= 1  # bias towards OPERATIONAL when both are present
+
+    # Keep your existing "no benefit-risk impact" handling (operational, not biological).
     if _contains_any(txt_raw, NO_BENEFIT_RISK_IMPACT_PATTERNS) and operational_present:
         return Classification(
             "NON_BIOLOGICAL",
@@ -583,6 +672,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             "special:no_benefit_risk_impact;operational:" + "|".join(operational_hits)
         )
 
+    # If operational is present, slightly reduce bio scores (same as before).
     if operational_present:
         safety_score -= 1
         efficacy_score -= 1
@@ -591,19 +681,35 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     best_score = max(safety_score, efficacy_score)
     best_ev = safety_ev if best_dim == "SAFETY" else efficacy_ev
 
+    # Operational + explicit denials => operational (same as before).
     if operational_present and denies_safety and denies_efficacy:
         return Classification("NON_BIOLOGICAL", "OPERATIONAL", "HIGH", "operational:" + "|".join(operational_hits) + ";denial:both")
 
+    # --- BIOLOGICAL FAILURE (unchanged thresholds) ---
     if best_score >= 6:
         return Classification("BIOLOGICAL_FAILURE", best_dim, "HIGH", f"score={best_score};" + ",".join(best_ev[:14]))
 
     if best_score >= 2 and not operational_present:
         return Classification("BIOLOGICAL_FAILURE", best_dim, "MEDIUM", f"score={best_score};" + ",".join(best_ev[:14]))
 
+    # --- REGULATORY (strict, non-overlapping) ---
+    # Only classify as REGULATORY when there is explicit regulatory evidence AND
+    # there is no meaningful safety/efficacy signal.
+    #
+    # Additionally, when OPERATIONAL terms are present, require a stronger regulatory score to avoid overlaps.
+    if best_score < 2 and reg_score > 0:
+        if (not operational_present and reg_score >= 4):
+            conf = "HIGH" if reg_score >= 6 else "MEDIUM"
+            return Classification("NON_BIOLOGICAL", "REGULATORY", conf, f"score={reg_score};" + ",".join(reg_ev[:14]))
+        if (operational_present and reg_score >= 6):
+            # Strong explicit regulatory signal can override operational.
+            return Classification("NON_BIOLOGICAL", "REGULATORY", "HIGH", f"score={reg_score};" + ",".join(reg_ev[:14]))
+
+    # --- OPERATIONAL (unchanged) ---
     if operational_present:
         return Classification("NON_BIOLOGICAL", "OPERATIONAL", "HIGH", "operational:" + "|".join(operational_hits))
 
-    return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score}")
+    return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score};reg_score={reg_score}")
 
 
 def _looks_generic_why_stopped(text: str) -> bool:
