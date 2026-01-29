@@ -204,6 +204,16 @@ function bucketPillClass(bucket: string): string {
   return "pill pillNeutral";
 }
 
+
+function bucketBtnClass(bucket: string): string {
+  const b = (bucket || "").toUpperCase();
+  if (b === "SAFETY") return "btn btnBucket btnBucketSafety";
+  if (b === "EFFICACY/FUTILITY") return "btn btnBucket btnBucketEfficacy";
+  if (b === "OPERATIONAL") return "btn btnBucket btnBucketOperational";
+  if (b === "REGULATORY") return "btn btnBucket btnBucketRegulatory";
+  return "btn btnBucket";
+}
+
 function phasePillClass(phase: string): string {
   const p = (phase || "").toUpperCase();
   if (p.includes("PHASE1") || p === "EARLY_PHASE1") return "pill pillPhase1";
@@ -734,16 +744,16 @@ export default function PharmaIntelligencePage() {
               Open Explore with pre-applied filters.
             </div>
             <div className="btnRow" style={{ marginTop: 12 }}>
-              <Link className="btn" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+              <Link className={bucketBtnClass("EFFICACY/FUTILITY")} href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
                 Efficacy/Futility
               </Link>
-              <Link className="btn" href={exploreHref({ bucket: ["SAFETY"] })}>
+              <Link className={bucketBtnClass("SAFETY")} href={exploreHref({ bucket: ["SAFETY"] })}>
                 Safety
               </Link>
-              <Link className="btn" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+              <Link className={bucketBtnClass("OPERATIONAL")} href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                 Operational
               </Link>
-              <Link className="btn" href={exploreHref({ bucket: ["REGULATORY"] })}>
+              <Link className={bucketBtnClass("REGULATORY")} href={exploreHref({ bucket: ["REGULATORY"] })}>
                 Regulatory
               </Link>
             </div>
@@ -1348,6 +1358,44 @@ export default function PharmaIntelligencePage() {
           gap: 8px;
           flex-wrap: wrap;
         }
+
+/* Bucket-colored drill-down buttons (keep base .btn behavior; only add tint) */
+:global(.btn.btnBucket) {
+  border: 1px solid var(--border);
+  background: rgba(15, 23, 42, 0.02);
+}
+:global(.btn.btnBucket:hover) {
+  background: rgba(15, 23, 42, 0.04);
+}
+:global(.btn.btnBucketSafety) {
+  background: rgba(220, 38, 38, 0.08);
+  border-color: rgba(220, 38, 38, 0.25);
+}
+:global(.btn.btnBucketSafety:hover) {
+  background: rgba(220, 38, 38, 0.12);
+}
+:global(.btn.btnBucketEfficacy) {
+  background: rgba(79, 70, 229, 0.10);
+  border-color: rgba(79, 70, 229, 0.25);
+}
+:global(.btn.btnBucketEfficacy:hover) {
+  background: rgba(79, 70, 229, 0.14);
+}
+:global(.btn.btnBucketOperational) {
+  background: rgba(234, 179, 8, 0.12);
+  border-color: rgba(234, 179, 8, 0.25);
+}
+:global(.btn.btnBucketOperational:hover) {
+  background: rgba(234, 179, 8, 0.16);
+}
+:global(.btn.btnBucketRegulatory) {
+  background: rgba(2, 132, 199, 0.10);
+  border-color: rgba(2, 132, 199, 0.25);
+}
+:global(.btn.btnBucketRegulatory:hover) {
+  background: rgba(2, 132, 199, 0.14);
+}
+
 
         .panelTitleRow {
           display: flex;
