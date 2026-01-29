@@ -590,7 +590,7 @@ export default function PharmaIntelligencePage() {
           </div>
         </header>
 
-        <main className="page">
+        <div className="page">
 
           <div className="card p-4">Loading…</div>
         </div>
@@ -1187,7 +1187,7 @@ export default function PharmaIntelligencePage() {
             </>
           ) : null}
         </footer>
-              </main>
+              </div>
       </div>
 
       <style jsx>{`
