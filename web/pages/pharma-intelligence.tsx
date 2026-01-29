@@ -1526,6 +1526,16 @@ export default function PharmaIntelligencePage() {
           min-width: 760px; /* ensure overflow on phones */
         }
 
+        /* Keep first columns from ballooning on wide screens (reduces perceived gap before numeric cols) */
+        .tblReason th:first-child,
+        .tblReason td:first-child {
+          width: 360px;
+        }
+        .tblWide th:first-child,
+        .tblWide td:first-child {
+          width: 360px;
+        }
+
         /* Column sizing: keep numeric columns tight so content doesn't look "floated" far right */
         .tblMini td:first-child {
           word-break: break-word;
