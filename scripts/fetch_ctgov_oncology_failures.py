@@ -4,8 +4,15 @@ and are interventional with DRUG/BIOLOGICAL interventions.
 
 Classify whyStopped into:
 - BIOLOGICAL_FAILURE (SAFETY or EFFICACY/FUTILITY)
-- NON_BIOLOGICAL (OPERATIONAL)
+- NON_BIOLOGICAL (OPERATIONAL or REGULATORY)
 - UNCLEAR
+
+Reason buckets emitted:
+- SAFETY
+- EFFICACY/FUTILITY
+- OPERATIONAL
+- REGULATORY
+- OTHER/UNKNOWN
 
 Assign disease areas (keyword taxonomy) and extract trial site countries.
 
@@ -169,8 +176,7 @@ SAFETY_TERMS = [
     "unacceptable risk",
     "risk/benefit", "risk benefit", "risk-benefit",
     "safety profile",
-    # Regulatory / monitoring committee signals
-    "clinical hold", "fda clinical hold", "regulatory hold",
+    # Monitoring committee signals
     "dsmb", "data safety monitoring board",
     "dmc", "data monitoring committee",
 ]
@@ -204,6 +210,95 @@ EFFICACY_TERMS = [
     "no clinical benefit",
     "no meaningful benefit",
 ]
+
+
+# Regulatory/authority reasons (distinct bucket)
+# We keep this bucket separate from SAFETY/OPERATIONAL. If safety/efficacy signals are
+# also present, we may still label the trial BIOLOGICAL_FAILURE, but the bucket remains REGULATORY.
+REGULATORY_TERMS = [
+    # Holds / authority actions
+    "clinical hold", "fda clinical hold", "regulatory hold",
+    "placed on clinical hold", "placed on hold",
+    "suspended by", "halted by", "stopped by",
+
+    # Agencies / authorities
+    "fda", "food and drug administration",
+    "ema", "european medicines agency",
+    "mhra", "health canada", "tga", "anvisa", "pmda",
+    "competent authority", "health authority", "regulatory authority", "national authority",
+
+    # Ethics / IRB / IEC
+    "irb", "institutional review board",
+    "ethics committee", "ethics approval", "ethics", "iec",
+    "informed consent", "consent form",
+
+    # Approvals / submissions / compliance
+    "regulatory approval", "approval not obtained", "approval was not obtained",
+    "not approved", "not approved by",
+    "regulatory requirements", "regulatory requirement",
+    "regulatory delay", "regulatory delays",
+    "inspection", "audit findings", "gcp", "good clinical practice",
+    "noncompliance", "non-compliance", "compliance issues",
+    "ind", "investigational new drug",
+    "cta", "clinical trial application",
+    "protocol amendment required", "protocol amendment requested",
+]
+
+REGULATORY_WEIGHTS: Dict[str, int] = {
+    "clinical hold": 4,
+    "fda clinical hold": 5,
+    "regulatory hold": 4,
+    "placed on clinical hold": 5,
+    "placed on hold": 3,
+
+    "fda": 3,
+    "food and drug administration": 3,
+    "ema": 3,
+    "european medicines agency": 3,
+    "mhra": 3,
+    "health canada": 3,
+    "tga": 3,
+    "anvisa": 3,
+    "pmda": 3,
+    "competent authority": 3,
+    "health authority": 3,
+    "regulatory authority": 3,
+    "national authority": 2,
+
+    "regulatory approval": 3,
+    "approval not obtained": 4,
+    "approval was not obtained": 4,
+    "not approved": 2,
+    "not approved by": 3,
+
+    "ethics committee": 4,
+    "ethics approval": 4,
+    "institutional review board": 4,
+    "irb": 3,
+    "iec": 3,
+    "informed consent": 2,
+    "consent form": 2,
+
+    "regulatory requirements": 2,
+    "regulatory requirement": 2,
+    "regulatory delay": 2,
+    "regulatory delays": 2,
+
+    "inspection": 3,
+    "audit findings": 3,
+    "gcp": 3,
+    "good clinical practice": 3,
+    "noncompliance": 3,
+    "non-compliance": 3,
+    "compliance issues": 2,
+
+    "ind": 2,
+    "investigational new drug": 2,
+    "cta": 2,
+    "clinical trial application": 2,
+    "protocol amendment required": 2,
+    "protocol amendment requested": 2,
+}
 
 # Operational/admin reasons are the #1 driver of OTHER/UNKNOWN if not covered well.
 OPERATIONAL_TERMS = [
@@ -291,9 +386,6 @@ SAFETY_WEIGHTS: Dict[str, int] = {
     "risk benefit": 2,
     "risk-benefit": 2,
     "safety profile": 2,
-    "clinical hold": 3,
-    "fda clinical hold": 3,
-    "regulatory hold": 2,
     "dsmb": 2,
     "data safety monitoring board": 3,
     "dmc": 2,
@@ -335,6 +427,7 @@ NO_BENEFIT_RISK_IMPACT_PATTERNS = [
 
 NON_SAFETY_PATTERNS = ["non-safety", "non safety", "non–safety", "nonsafety"]
 NON_EFFICACY_PATTERNS = ["non-efficacy", "non efficacy", "non–efficacy", "nonefficacy"]
+NON_REGULATORY_PATTERNS = ["non-regulatory", "non regulatory", "non–regulatory"]
 
 # If whyStopped is generic/placeholder, try mining a snippet from descriptions.
 GENERIC_WHY_STOPPED_PATTERNS = [
@@ -350,7 +443,8 @@ GENERIC_WHY_STOPPED_PATTERNS = [
 STOP_SNIPPET_CUES = [
     "terminated", "withdrawn", "suspended",
     "stopped", "halted", "discontinued",
-    "clinical hold",
+    "clinical hold", "regulatory hold",
+    "regulatory", "fda", "irb", "ethics",
 ]
 
 
@@ -453,16 +547,19 @@ def _protect_non_safety_efficacy(text: str) -> str:
     return out
 
 
-def _explicit_denial_flags(text_raw: str) -> Tuple[bool, bool]:
+def _explicit_denial_flags(text_raw: str) -> Tuple[bool, bool, bool]:
     clauses = [c.strip() for c in re.split(r"[.;:]", text_raw) if c.strip()]
     denies_safety = False
     denies_efficacy = False
+    denies_regulatory = False
 
     for clause in clauses:
         if _contains_any(clause, NON_SAFETY_PATTERNS):
             denies_safety = True
         if _contains_any(clause, NON_EFFICACY_PATTERNS):
             denies_efficacy = True
+        if _contains_any(clause, NON_REGULATORY_PATTERNS):
+            denies_regulatory = True
 
         if _contains_any(clause, NO_BENEFIT_RISK_IMPACT_PATTERNS):
             denies_safety = True
@@ -491,7 +588,7 @@ def _explicit_denial_flags(text_raw: str) -> Tuple[bool, bool]:
                 ("unrelated to" in clause)):
                 denies_efficacy = True
 
-    return denies_safety, denies_efficacy
+    return denies_safety, denies_efficacy, denies_regulatory
 
 
 def _causal_near(text: str, idx: int, window: int = 90) -> bool:
@@ -556,7 +653,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     if not txt_raw:
         return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", "")
 
-    denies_safety, denies_efficacy = _explicit_denial_flags(txt_raw)
+    denies_safety, denies_efficacy, denies_regulatory = _explicit_denial_flags(txt_raw)
 
     txt = _protect_no_benefit_risk_impact(txt_raw)
     txt = _protect_non_safety_efficacy(txt)
@@ -574,6 +671,8 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
 
     safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf", SAFETY_WEIGHTS)
     efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff", EFFICACY_WEIGHTS)
+    regulatory_score, regulatory_ev = _score_dimension(txt, REGULATORY_TERMS, denies_regulatory, "reg", REGULATORY_WEIGHTS)
+
 
     if _contains_any(txt_raw, NO_BENEFIT_RISK_IMPACT_PATTERNS) and operational_present:
         return Classification(
@@ -583,9 +682,14 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
             "special:no_benefit_risk_impact;operational:" + "|".join(operational_hits)
         )
 
+    # If operational signals are present, down-weight SAFETY/EFFICACY slightly (common confound).
     if operational_present:
         safety_score -= 1
         efficacy_score -= 1
+
+    # Regulatory is its own bucket. Determine if regulatory evidence is strong enough to win.
+    # Thresholds are set to avoid accidental matches on generic "approval" language.
+    regulatory_wins = (regulatory_score >= 6) or (regulatory_score >= 4 and not operational_present)
 
     best_dim = "SAFETY" if safety_score >= efficacy_score else "EFFICACY/FUTILITY"
     best_score = max(safety_score, efficacy_score)
@@ -593,6 +697,15 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
 
     if operational_present and denies_safety and denies_efficacy:
         return Classification("NON_BIOLOGICAL", "OPERATIONAL", "HIGH", "operational:" + "|".join(operational_hits) + ";denial:both")
+
+    # Regulatory bucket (priority): if regulatory evidence is strong, bucket as REGULATORY.
+    # Labeling: if there are concurrent safety/efficacy signals, we still mark BIOLOGICAL_FAILURE,
+    # otherwise NON_BIOLOGICAL.
+    if regulatory_wins:
+        label = "BIOLOGICAL_FAILURE" if (safety_score >= 2 or efficacy_score >= 2) else "NON_BIOLOGICAL"
+        conf = "HIGH" if regulatory_score >= 6 else "MEDIUM"
+        ev = f"reg_score={regulatory_score};" + ",".join(regulatory_ev[:14])
+        return Classification(label, "REGULATORY", conf, ev)
 
     if best_score >= 6:
         return Classification("BIOLOGICAL_FAILURE", best_dim, "HIGH", f"score={best_score};" + ",".join(best_ev[:14]))
@@ -603,7 +716,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     if operational_present:
         return Classification("NON_BIOLOGICAL", "OPERATIONAL", "HIGH", "operational:" + "|".join(operational_hits))
 
-    return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score}")
+    return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score};regulatory_score={regulatory_score}")
 
 
 def _looks_generic_why_stopped(text: str) -> bool:
