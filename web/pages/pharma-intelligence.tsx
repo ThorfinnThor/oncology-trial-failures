@@ -1516,17 +1516,18 @@ export default function PharmaIntelligencePage() {
         }
 
         /* ====== Tables ====== */
+        /* Key fix: do NOT force 100% width. Let tables shrink to content so numeric columns
+           don't get pushed far right by an expanding first column. */
         .tblMini {
-          width: 100%;
+          width: max-content;
           border-collapse: collapse;
           font-size: 13px;
-          min-width: 640px;
-          table-layout: fixed; /* default for wide tables */
+          table-layout: auto;
         }
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 8px 6px; /* tighter default cell padding */
+          padding: 10px 8px;
           vertical-align: top;
         }
         .tblMini th {
@@ -1537,73 +1538,9 @@ export default function PharmaIntelligencePage() {
           letter-spacing: 0.06em;
           white-space: nowrap;
         }
-        .tblWide {
-          min-width: 720px;
-        }
-        .tblReason {
-          min-width: 760px; /* ensure overflow on phones */
-        }
-
-        /*
-          Desktop alignment fix:
-          These tables live inside a horizontal scroller, but on desktop the table was still 100% width,
-          pushing numeric columns far right. Force the WIDE + REASON tables to shrink to content.
-          (On mobile we keep a min-width via the existing .tblWide/.tblReason rules.)
-        */
-        .tblMini.tblWide,
-        .tblMini.tblReason {
-          display: inline-table !important;
-          width: max-content !important;
-          min-width: 0 !important;
-          table-layout: auto !important;
-        }
-
-        /* Reduce whitespace between the numeric columns */
-        .tblWide th:nth-child(2),
-        .tblWide td:nth-child(2),
-        .tblWide th:nth-child(3),
-        .tblWide td:nth-child(3),
-        .tblReason th:nth-child(2),
-        .tblReason td:nth-child(2),
-        .tblReason th:nth-child(3),
-        .tblReason td:nth-child(3) {
-          padding-left: 8px;
-          padding-right: 8px;
-        }
-
-        /* Keep first columns from ballooning on wide screens (reduces perceived whitespace) */
-        .tblReason th:first-child,
-        .tblReason td:first-child,
-        .tblWide th:first-child,
-        .tblWide td:first-child {
-          width: clamp(180px, 22vw, 240px) !important; /* pull numeric cols left; allow wrap for long labels */
-        }
-
-        /* Column sizing: keep numeric columns tight so content doesn't look "floated" far right */
         .tblMini td:first-child {
-          word-break: break-word;
+          white-space: normal;
         }
-        .tblReason th:nth-child(2),
-        .tblReason td:nth-child(2) {
-          width: 90px; /* Trials */
-        }
-        .tblReason th:nth-child(3),
-        .tblReason td:nth-child(3) {
-          width: 80px; /* Bio share */
-        }
-        .tblReason th:nth-child(4),
-        .tblReason td:nth-child(4) {
-          width: 120px; /* Bar */
-        }
-        .tblWide th:nth-child(2),
-        .tblWide td:nth-child(2) {
-          width: 90px;
-        }
-        .tblWide th:nth-child(3),
-        .tblWide td:nth-child(3) {
-          width: 80px;
-        }
-
         .num {
           text-align: right;
           white-space: nowrap;
@@ -1611,25 +1548,6 @@ export default function PharmaIntelligencePage() {
         }
         .barCol {
           width: 120px;
-        }
-
-        .cellTop {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          min-width: 0;
-        }
-        .cellSub {
-          margin-top: 6px;
-          font-size: 12px;
-        }
-
-        .link {
-          color: rgba(79, 70, 229, 0.92);
-          font-weight: 750;
-        }
-        .link:hover {
-          text-decoration: underline;
         }
 
         /* Bars */
@@ -1968,6 +1886,13 @@ export default function PharmaIntelligencePage() {
 
           .tblMini {
             font-size: 12px;
+            min-width: 640px;
+          }
+          .tblWide {
+            min-width: 720px;
+          }
+          .tblReason {
+            min-width: 760px;
           }
           .tblMini th,
           .tblMini td {
@@ -1975,11 +1900,6 @@ export default function PharmaIntelligencePage() {
           }
           .barTrack {
             width: 88px;
-          }
-
-          /* Ensure the reason buckets table keeps overflow visible on mobile */
-          .tblReason {
-            min-width: 760px;
           }
 
           .miniRow {
