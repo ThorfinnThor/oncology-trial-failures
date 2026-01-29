@@ -1526,7 +1526,7 @@ export default function PharmaIntelligencePage() {
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 12px 10px;
+          padding: 10px 8px; /* tighter default cell padding */
           vertical-align: top;
         }
         .tblMini th {
@@ -1552,6 +1552,7 @@ export default function PharmaIntelligencePage() {
         */
         .tblMini.tblWide,
         .tblMini.tblReason {
+          display: inline-table !important;
           width: max-content !important;
           min-width: 0 !important;
           table-layout: auto !important;
@@ -1570,12 +1571,12 @@ export default function PharmaIntelligencePage() {
           padding-right: 8px;
         }
 
-        /* Keep first columns from ballooning on wide screens */
+        /* Keep first columns from ballooning on wide screens (reduces perceived whitespace) */
         .tblReason th:first-child,
         .tblReason td:first-child,
         .tblWide th:first-child,
         .tblWide td:first-child {
-          width: 360px;
+          width: clamp(220px, 28vw, 300px) !important; /* pull numeric cols left; allow wrap for long labels */
         }
 
         /* Column sizing: keep numeric columns tight so content doesn't look "floated" far right */
