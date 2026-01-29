@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""
-Fetch ClinicalTrials.gov (API v2) studies that are SUSPENDED/TERMINATED/WITHDRAWN
+"""Fetch ClinicalTrials.gov (API v2) studies that are SUSPENDED/TERMINATED/WITHDRAWN
 and are interventional with DRUG/BIOLOGICAL interventions.
 
 Classify whyStopped into:
@@ -15,6 +14,12 @@ Outputs:
 - data/biological_failure_trials.csv
 - data/all_stopped_trials.json
 - data/biological_failure_trials.json
+
+Notes on this version:
+- Expands OPERATIONAL/SAFETY/EFFICACY phrase coverage to reduce OTHER/UNKNOWN.
+- Adds a safe second-pass classifier that, when whyStopped is vague or empty,
+  mines briefSummary/detailedDescription for a short stop-reason snippet.
+  (Schema/output columns remain unchanged; description text is NOT exported.)
 """
 
 from __future__ import annotations
@@ -146,23 +151,28 @@ def assign_disease_areas(conditions: List[str], mesh_terms: List[str]) -> Tuple[
 
 
 # -----------------------------
-# whyStopped classification (rule-based)
+# whyStopped classification (rule-based + safe 2nd-pass snippet mining)
 # -----------------------------
 
 SAFETY_TERMS = [
     "safety", "safety concern", "safety concerns",
     "safety issue", "safety issues",
+    "safety reasons",
     "adverse event", "adverse events",
     "adverse effect", "adverse effects",
     "serious adverse",
     "sae", "saes",
     "toxicity", "toxic",
     "unacceptable toxicity",
-    "dose limiting", "dlt", "dlts",
+    "dose limiting", "dose-limiting", "dose limiting toxicity", "dlt", "dlts",
     "intolerable",
     "unacceptable risk",
     "risk/benefit", "risk benefit", "risk-benefit",
     "safety profile",
+    # Regulatory / monitoring committee signals
+    "clinical hold", "fda clinical hold", "regulatory hold",
+    "dsmb", "data safety monitoring board",
+    "dmc", "data monitoring committee",
 ]
 
 EFFICACY_TERMS = [
@@ -188,25 +198,55 @@ EFFICACY_TERMS = [
     "futility analysis",
     "interim analysis",
     "stopping for futility",
+    # Common phrases
+    "lack of response",
+    "no response",
+    "no clinical benefit",
+    "no meaningful benefit",
 ]
 
+# Operational/admin reasons are the #1 driver of OTHER/UNKNOWN if not covered well.
 OPERATIONAL_TERMS = [
     "recruit", "recruitment", "enrollment", "enrolment", "accrual",
     "insufficient accrual", "slow accrual", "low accrual", "poor accrual",
     "unable to enroll", "unable to enrol",
+    "no participants enrolled", "no patients enrolled", "no subjects enrolled",
+    "not enough participants", "insufficient enrollment", "insufficient enrolment",
+
     "funding", "budget", "financial",
-    "administrative", "logistical", "site closure", "staffing",
+    "lack of funds", "insufficient funds", "not funded", "lack of resources",
+
+    "administrative", "logistical", "site closure", "site closed", "site closures", "staffing",
     "regulatory delay", "protocol deviation",
-    "sponsor decision", "sponsor request", "per sponsor request", "at sponsor request",
+
+    "sponsor decision", "sponsor's decision", "sponsors decision",
+    "sponsor request", "per sponsor request", "at sponsor request",
+    "terminated by sponsor", "sponsor withdrew support", "withdrew support",
     "sponsor-initiated", "sponsor initiated",
-    "company decision", "business decision", "strategic decision", "strategic reasons",
+
+    "company decision", "business decision", "business reasons", "corporate decision",
+    "strategic decision", "strategic reasons",
     "prioritisation", "prioritization",
     "portfolio", "commercial reasons",
+
     "external environment", "changes in the external environment",
     "development halted", "development has been halted", "programme halted", "program halted",
     "no longer pursuing",
     "competitive landscape", "competitive", "market dynamics", "market",
+
     "covid", "pandemic",
+
+    # Common CT.gov operational phrasing
+    "investigator decision", "investigator request",
+    "pi decision", "pi request", "pi left", "pi left institution",
+    "principal investigator left", "investigator left",
+
+    "study never started", "never started", "never initiated", "not initiated",
+
+    "drug supply", "drug supply issues", "supply issues", "manufacturing issues",
+    "contract issues", "agreement issues",
+
+    "feasibility", "feasibility issues", "not feasible",
 ]
 
 EFFICACY_WEIGHTS: Dict[str, int] = {
@@ -217,6 +257,10 @@ EFFICACY_WEIGHTS: Dict[str, int] = {
     "no efficacy": 3,
     "ineffective": 2,
     "no benefit": 2,
+    "no clinical benefit": 3,
+    "no meaningful benefit": 3,
+    "lack of response": 2,
+    "no response": 2,
     "unmet primary endpoint": 3,
     "unmet endpoint": 2,
     "endpoint not met": 3,
@@ -224,6 +268,8 @@ EFFICACY_WEIGHTS: Dict[str, int] = {
     "failed to meet": 3,
     "futility": 3,
     "futility analysis": 3,
+    "stopping for futility": 3,
+    "interim analysis": 2,  # raise so "interim analysis" alone can contribute
     "no signal of activity": 3,
     "no signal of efficacy": 3,
     "no activity": 2,
@@ -234,6 +280,7 @@ SAFETY_WEIGHTS: Dict[str, int] = {
     "safety concern": 2,
     "safety issues": 2,
     "safety issue": 2,
+    "safety reasons": 3,
     "adverse event": 2,
     "adverse events": 2,
     "serious adverse": 3,
@@ -244,6 +291,13 @@ SAFETY_WEIGHTS: Dict[str, int] = {
     "risk benefit": 2,
     "risk-benefit": 2,
     "safety profile": 2,
+    "clinical hold": 3,
+    "fda clinical hold": 3,
+    "regulatory hold": 2,
+    "dsmb": 2,
+    "data safety monitoring board": 3,
+    "dmc": 2,
+    "data monitoring committee": 3,
 }
 
 CAUSAL_CUES = [
@@ -269,6 +323,7 @@ NEGATION_CUES = [
     "cannot ", "can't ", "won't ", "didn't ", "doesn't ", "don't ",
     "isn't ", "aren't ", "wasn't ", "weren't ",
 ]
+
 NO_BENEFIT_RISK_IMPACT_PATTERNS = [
     "no benefit-risk impact",
     "no benefit risk impact",
@@ -280,6 +335,23 @@ NO_BENEFIT_RISK_IMPACT_PATTERNS = [
 
 NON_SAFETY_PATTERNS = ["non-safety", "non safety", "non–safety", "nonsafety"]
 NON_EFFICACY_PATTERNS = ["non-efficacy", "non efficacy", "non–efficacy", "nonefficacy"]
+
+# If whyStopped is generic/placeholder, try mining a snippet from descriptions.
+GENERIC_WHY_STOPPED_PATTERNS = [
+    "see detailed description",
+    "see the detailed description",
+    "see study description",
+    "see description",
+    "see details",
+    "reason described",
+    "refer to",
+]
+
+STOP_SNIPPET_CUES = [
+    "terminated", "withdrawn", "suspended",
+    "stopped", "halted", "discontinued",
+    "clinical hold",
+]
 
 
 def request_with_retries(session: requests.Session, url: str, params: Dict[str, Any]) -> Dict[str, Any]:
@@ -534,6 +606,75 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score}")
 
 
+def _looks_generic_why_stopped(text: str) -> bool:
+    t = normalize_text(text)
+    if not t:
+        return True
+    return _contains_any(t, GENERIC_WHY_STOPPED_PATTERNS)
+
+
+def extract_stop_snippet(text: str, window: int = 360) -> str:
+    """Extract a short chunk around the first stop-related cue in description text.
+
+    This avoids feeding full background description into the classifier.
+    """
+    t = normalize_text(text)
+    if not t:
+        return ""
+
+    idxs = [t.find(cue) for cue in STOP_SNIPPET_CUES if t.find(cue) != -1]
+    if not idxs:
+        return ""
+
+    i = min(idxs)
+    start = max(0, i - window // 2)
+    end = min(len(t), i + window // 2)
+    return t[start:end].strip()
+
+
+def classify_with_description_fallback(
+    why_stopped: Optional[str],
+    brief_summary: Optional[str],
+    detailed_description: Optional[str],
+) -> Classification:
+    """Two-pass classification:
+
+    1) Run the rule-based classifier on whyStopped.
+    2) If UNCLEAR (or whyStopped is generic), attempt to mine a snippet from
+       briefSummary/detailedDescription and re-classify on (whyStopped + snippet).
+
+    Output schema remains unchanged; evidence is annotated when fallback is used.
+    """
+    base = classify_why_stopped(why_stopped)
+
+    # Only attempt fallback when base is UNCLEAR or the provided whyStopped is generic/placeholder.
+    if base.label != "UNCLEAR" and not _looks_generic_why_stopped(why_stopped or ""):
+        return base
+
+    snippet = extract_stop_snippet(detailed_description or "") or extract_stop_snippet(brief_summary or "")
+    if not snippet:
+        return base
+
+    combined = (why_stopped or "") + " " + snippet
+    alt = classify_why_stopped(combined)
+
+    # Accept only if it improves classification from UNCLEAR -> something else,
+    # or improves confidence.
+    conf_rank = {"LOW": 0, "MEDIUM": 1, "HIGH": 2}
+    if alt.label == "UNCLEAR":
+        return base
+
+    if base.label == "UNCLEAR" or conf_rank.get(alt.confidence, 0) > conf_rank.get(base.confidence, 0):
+        return Classification(
+            alt.label,
+            alt.reason,
+            alt.confidence,
+            ("augmented_from_description;" + alt.matched_evidence)[:2000],
+        )
+
+    return base
+
+
 def load_overrides(path: str) -> Dict[str, Classification]:
     overrides: Dict[str, Classification] = {}
     if not os.path.exists(path):
@@ -565,9 +706,7 @@ def extract_mesh_terms(protocol: Dict[str, Any]) -> List[str]:
 
 
 def extract_countries(protocol: Dict[str, Any]) -> List[str]:
-    """
-    Extract trial site countries from contactsLocationsModule.locations[].locationCountry
-    """
+    """Extract trial site countries from contactsLocationsModule.locations[].locationCountry"""
     out: Set[str] = set()
     cl = protocol.get("contactsLocationsModule") or {}
     locs = cl.get("locations") or []
@@ -589,6 +728,11 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
 
     overall_status = get_nested(protocol, ["statusModule", "overallStatus"], "")
     why_stopped = get_nested(protocol, ["statusModule", "whyStopped"], "")
+
+    # Description fields are often where CT.gov hides the real stop reason
+    # when whyStopped is generic (e.g., "see detailed description").
+    brief_summary = get_nested(protocol, ["descriptionModule", "briefSummary"], "")
+    detailed_description = get_nested(protocol, ["descriptionModule", "detailedDescription"], "")
 
     conditions = get_nested(protocol, ["conditionsModule", "conditions"], []) or []
     if not isinstance(conditions, list):
@@ -634,8 +778,11 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
 
     url = f"https://clinicaltrials.gov/study/{nct_id}" if nct_id else ""
 
-    cls = classify_why_stopped(why_stopped)
-    primary_area, matched_areas = assign_disease_areas([str(c) for c in conditions if c], [str(m) for m in mesh_terms if m])
+    cls = classify_with_description_fallback(why_stopped, brief_summary, detailed_description)
+    primary_area, matched_areas = assign_disease_areas(
+        [str(c) for c in conditions if c],
+        [str(m) for m in mesh_terms if m],
+    )
 
     return {
         "nct_id": nct_id,
