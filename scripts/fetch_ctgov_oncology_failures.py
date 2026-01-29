@@ -48,7 +48,7 @@ OVERRIDES_PATH = os.getenv("OVERRIDES_PATH", "overrides.csv")
 @dataclass(frozen=True)
 class Classification:
     label: str          # BIOLOGICAL_FAILURE | NON_BIOLOGICAL | UNCLEAR
-    reason: str         # SAFETY | EFFICACY/FUTILITY | OPERATIONAL | REGULATORY | OTHER/UNKNOWN
+    reason: str         # SAFETY | EFFICACY/FUTILITY | OPERATIONAL | OTHER/UNKNOWN
     confidence: str     # HIGH | MEDIUM | LOW
     matched_evidence: str
 
@@ -169,11 +169,11 @@ SAFETY_TERMS = [
     "unacceptable risk",
     "risk/benefit", "risk benefit", "risk-benefit",
     "safety profile",
-    # Monitoring committee signals (keep as SAFETY, not regulatory)
+    # Regulatory / monitoring committee signals
+    "clinical hold", "fda clinical hold", "regulatory hold",
     "dsmb", "data safety monitoring board",
     "dmc", "data monitoring committee",
 ]
-
 
 EFFICACY_TERMS = [
     "efficacy concern", "efficacy concerns",
@@ -249,38 +249,6 @@ OPERATIONAL_TERMS = [
     "feasibility", "feasibility issues", "not feasible",
 ]
 
-# Regulatory reasons: ONLY trigger when explicitly regulatory (FDA/EMA/agency/IRB/ethics/IND/CTA/clinical hold),
-# never on vague "on hold" phrasing alone.
-REGULATORY_TERMS = [
-    # Explicit agencies / authorities
-    "fda", "food and drug administration",
-    "ema", "european medicines agency",
-    "mhra", "medicines and healthcare products regulatory agency",
-    "health canada", "therapeutic goods administration", "tga",
-    "pmda", "anvisa", "nmpa",
-    "health authority", "health authorities",
-    "regulatory authority", "regulatory authorities",
-    "competent authority", "competent authorities",
-
-    # Explicit regulatory actions / artifacts
-    "clinical hold", "fda clinical hold", "regulatory hold",
-    "regulatory request", "requested by fda", "requested by ema",
-    "regulatory decision", "regulator decision",
-    "ind", "investigational new drug",
-    "cta", "clinical trial application",
-    "inspection", "regulatory inspection",
-    "audit finding", "audit findings",
-    "non-compliance", "noncompliance",
-    "gcp", "good clinical practice",
-
-    # Ethics / IRB / IEC processes (still explicitly regulatory/compliance)
-    "irb", "institutional review board",
-    "iec", "independent ethics committee",
-    "ethics committee", "ethics approval", "ethics review",
-    "not approved", "approval not obtained", "approval was not obtained",
-    "informed consent", "consent form",
-]
-
 EFFICACY_WEIGHTS: Dict[str, int] = {
     "efficacy concerns": 2,
     "efficacy concern": 2,
@@ -323,70 +291,13 @@ SAFETY_WEIGHTS: Dict[str, int] = {
     "risk benefit": 2,
     "risk-benefit": 2,
     "safety profile": 2,
+    "clinical hold": 3,
+    "fda clinical hold": 3,
+    "regulatory hold": 2,
     "dsmb": 2,
     "data safety monitoring board": 3,
     "dmc": 2,
     "data monitoring committee": 3,
-}
-
-REGULATORY_WEIGHTS: Dict[str, int] = {
-    # Agencies / authorities
-    "fda": 3,
-    "food and drug administration": 3,
-    "ema": 3,
-    "european medicines agency": 3,
-    "mhra": 3,
-    "medicines and healthcare products regulatory agency": 3,
-    "health canada": 3,
-    "therapeutic goods administration": 3,
-    "tga": 3,
-    "pmda": 3,
-    "anvisa": 3,
-    "nmpa": 3,
-    "health authority": 3,
-    "health authorities": 3,
-    "regulatory authority": 3,
-    "regulatory authorities": 3,
-    "competent authority": 3,
-    "competent authorities": 3,
-
-    # Explicit regulatory actions
-    "clinical hold": 4,
-    "fda clinical hold": 5,
-    "regulatory hold": 4,
-    "regulatory request": 3,
-    "requested by fda": 4,
-    "requested by ema": 4,
-    "regulatory decision": 3,
-    "regulator decision": 3,
-
-    # Submissions / compliance
-    "ind": 2,
-    "investigational new drug": 3,
-    "cta": 2,
-    "clinical trial application": 3,
-    "inspection": 2,
-    "regulatory inspection": 3,
-    "audit finding": 2,
-    "audit findings": 2,
-    "non-compliance": 3,
-    "noncompliance": 3,
-    "gcp": 2,
-    "good clinical practice": 3,
-
-    # Ethics / IRB / IEC
-    "irb": 3,
-    "institutional review board": 3,
-    "iec": 3,
-    "independent ethics committee": 3,
-    "ethics committee": 3,
-    "ethics approval": 3,
-    "ethics review": 2,
-    "not approved": 2,
-    "approval not obtained": 3,
-    "approval was not obtained": 3,
-    "informed consent": 2,
-    "consent form": 2,
 }
 
 CAUSAL_CUES = [
@@ -664,9 +575,6 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     safety_score, safety_ev = _score_dimension(txt, SAFETY_TERMS, denies_safety, "saf", SAFETY_WEIGHTS)
     efficacy_score, efficacy_ev = _score_dimension(txt, EFFICACY_TERMS, denies_efficacy, "eff", EFFICACY_WEIGHTS)
 
-    # Regulatory score is intentionally strict: only explicit agency/IRB/ethics/hold/compliance signals count.
-    regulatory_score, regulatory_ev = _score_dimension(txt, REGULATORY_TERMS, False, "reg", REGULATORY_WEIGHTS)
-
     if _contains_any(txt_raw, NO_BENEFIT_RISK_IMPACT_PATTERNS) and operational_present:
         return Classification(
             "NON_BIOLOGICAL",
@@ -692,23 +600,10 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
     if best_score >= 2 and not operational_present:
         return Classification("BIOLOGICAL_FAILURE", best_dim, "MEDIUM", f"score={best_score};" + ",".join(best_ev[:14]))
 
-    # REGULATORY bucket (strict):
-    # - Only when explicit regulatory signals are present (e.g., FDA/EMA/IRB/ethics/clinical hold/etc.)
-    # - Must NOT override clear SAFETY or EFFICACY/FUTILITY signals (to avoid misclassifying efficacy as regulatory).
-    # - If both operational and regulatory signals exist and no scientific-failure signal, prefer REGULATORY.
-    if regulatory_score >= 4 and best_score < 2:
-        return Classification(
-            "NON_BIOLOGICAL",
-            "REGULATORY",
-            "HIGH" if regulatory_score >= 6 else "MEDIUM",
-            f"score={regulatory_score};" + ",".join(regulatory_ev[:14]),
-        )
-
-
     if operational_present:
         return Classification("NON_BIOLOGICAL", "OPERATIONAL", "HIGH", "operational:" + "|".join(operational_hits))
 
-    return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score};regulatory_score={regulatory_score}")
+    return Classification("UNCLEAR", "OTHER/UNKNOWN", "LOW", f"safety_score={safety_score};efficacy_score={efficacy_score}")
 
 
 def _looks_generic_why_stopped(text: str) -> bool:
