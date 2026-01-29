@@ -1,23 +1,23 @@
 {
-  "version": "2026-01-28",
-  "generated_at_utc": "2026-01-29T14:22:41Z",
+  "version": "2026-01-29",
+  "generated_at_utc": "2026-01-29T14:38:16Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 22615,
-    "max_last_update_post_date": "2026-01-28"
+    "record_count": 22622,
+    "max_last_update_post_date": "2026-01-29"
   },
   "biological_failure": {
-    "record_count": 1711,
-    "max_last_update_post_date": "2026-01-28"
+    "record_count": 1704,
+    "max_last_update_post_date": "2026-01-29"
   },
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 7503
+      "count": 7508
     },
     {
       "area": "Other",
-      "count": 5563
+      "count": 5565
     },
     {
       "area": "Infectious Disease",
@@ -29,7 +29,7 @@
     },
     {
       "area": "Cardiovascular",
-      "count": 1253
+      "count": 1254
     },
     {
       "area": "Neurology",
@@ -45,7 +45,7 @@
     },
     {
       "area": "Respiratory",
-      "count": 615
+      "count": 614
     },
     {
       "area": "Psychiatry & Mental Health",
