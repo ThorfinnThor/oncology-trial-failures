@@ -1521,7 +1521,7 @@ export default function PharmaIntelligencePage() {
           border-collapse: collapse;
           font-size: 13px;
           min-width: 640px;
-          table-layout: fixed; /* keep columns aligned; avoid huge gaps */
+          table-layout: fixed; /* default for wide tables */
         }
         .tblMini th,
         .tblMini td {
@@ -1544,17 +1544,35 @@ export default function PharmaIntelligencePage() {
           min-width: 760px; /* ensure overflow on phones */
         }
 
-        /* Make tables shrink-to-content inside the horizontal scroller (reduces wide-screen column gaps) */
-        .tblTight {
+        /*
+          Desktop alignment fix:
+          These tables live inside a horizontal scroller, but on desktop the table was still 100% width,
+          pushing numeric columns far right. Force the WIDE + REASON tables to shrink to content.
+          (On mobile we keep a min-width via the existing .tblWide/.tblReason rules.)
+        */
+        .tblMini.tblWide,
+        .tblMini.tblReason {
           width: max-content !important;
           min-width: 0 !important;
+          table-layout: auto !important;
         }
 
-        /* Keep first columns from ballooning on wide screens (reduces perceived gap before numeric cols) */
-        .tblReason th:first-child,
-        .tblReason td:first-child {
-          width: 360px;
+        /* Reduce whitespace between the numeric columns */
+        .tblWide th:nth-child(2),
+        .tblWide td:nth-child(2),
+        .tblWide th:nth-child(3),
+        .tblWide td:nth-child(3),
+        .tblReason th:nth-child(2),
+        .tblReason td:nth-child(2),
+        .tblReason th:nth-child(3),
+        .tblReason td:nth-child(3) {
+          padding-left: 8px;
+          padding-right: 8px;
         }
+
+        /* Keep first columns from ballooning on wide screens */
+        .tblReason th:first-child,
+        .tblReason td:first-child,
         .tblWide th:first-child,
         .tblWide td:first-child {
           width: 360px;
