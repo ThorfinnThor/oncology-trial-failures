@@ -204,14 +204,17 @@ function bucketPillClass(bucket: string): string {
   return "pill pillNeutral";
 }
 
-
+/**
+ * Colored "button" variants used in Fast drill-down.
+ * Keep existing .btn behavior; only add bucket-specific tints.
+ */
 function bucketBtnClass(bucket: string): string {
   const b = (bucket || "").toUpperCase();
-  if (b === "SAFETY") return "btn btnBucket btnBucketSafety";
-  if (b === "EFFICACY/FUTILITY") return "btn btnBucket btnBucketEfficacy";
-  if (b === "OPERATIONAL") return "btn btnBucket btnBucketOperational";
-  if (b === "REGULATORY") return "btn btnBucket btnBucketRegulatory";
-  return "btn btnBucket";
+  if (b === "SAFETY") return "btn btnSafety";
+  if (b === "EFFICACY/FUTILITY") return "btn btnEfficacy";
+  if (b === "OPERATIONAL") return "btn btnOperational";
+  if (b === "REGULATORY") return "btn btnRegulatory";
+  return "btn";
 }
 
 function phasePillClass(phase: string): string {
@@ -780,13 +783,7 @@ export default function PharmaIntelligencePage() {
               <div className="scrollHint">Swipe horizontally →</div>
               <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblReason tblTight" aria-label="Reason buckets table">
-                  <colgroup>
-                    <col style={{ width: 240 }} />
-                    <col style={{ width: 90 }} />
-                    <col style={{ width: 80 }} />
-                    <col style={{ width: 120 }} />
-                  </colgroup>
+                  <table className="tblMini tblReason" aria-label="Reason buckets table">
                   <thead>
                     <tr>
                       <th>Bucket</th>
@@ -948,13 +945,7 @@ export default function PharmaIntelligencePage() {
 
               <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblWide tblTight" aria-label="Disease area table">
-                  <colgroup>
-                    <col style={{ width: 240 }} />
-                    <col style={{ width: 90 }} />
-                    <col style={{ width: 80 }} />
-                    <col style={{ width: 120 }} />
-                  </colgroup>
+                  <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
                     <tr>
                       <th>Disease area</th>
@@ -1010,13 +1001,7 @@ export default function PharmaIntelligencePage() {
 
               <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblWide tblTight" aria-label="Top conditions table">
-                  <colgroup>
-                    <col style={{ width: 240 }} />
-                    <col style={{ width: 90 }} />
-                    <col style={{ width: 80 }} />
-                    <col style={{ width: 120 }} />
-                  </colgroup>
+                  <table className="tblMini tblWide" aria-label="Top conditions table">
                   <thead>
                     <tr>
                       <th>Condition</th>
@@ -1376,44 +1361,22 @@ export default function PharmaIntelligencePage() {
           gap: 8px;
           flex-wrap: wrap;
         }
-
-/* Bucket-colored drill-down buttons (keep base .btn behavior; only add tint) */
-:global(.btn.btnBucket) {
-  border: 1px solid var(--border);
-  background: rgba(15, 23, 42, 0.02);
-}
-:global(.btn.btnBucket:hover) {
-  background: rgba(15, 23, 42, 0.04);
-}
-:global(.btn.btnBucketSafety) {
-  background: rgba(220, 38, 38, 0.08);
-  border-color: rgba(220, 38, 38, 0.25);
-}
-:global(.btn.btnBucketSafety:hover) {
-  background: rgba(220, 38, 38, 0.12);
-}
-:global(.btn.btnBucketEfficacy) {
-  background: rgba(79, 70, 229, 0.10);
-  border-color: rgba(79, 70, 229, 0.25);
-}
-:global(.btn.btnBucketEfficacy:hover) {
-  background: rgba(79, 70, 229, 0.14);
-}
-:global(.btn.btnBucketOperational) {
-  background: rgba(234, 179, 8, 0.12);
-  border-color: rgba(234, 179, 8, 0.25);
-}
-:global(.btn.btnBucketOperational:hover) {
-  background: rgba(234, 179, 8, 0.16);
-}
-:global(.btn.btnBucketRegulatory) {
-  background: rgba(2, 132, 199, 0.10);
-  border-color: rgba(2, 132, 199, 0.25);
-}
-:global(.btn.btnBucketRegulatory:hover) {
-  background: rgba(2, 132, 199, 0.14);
-}
-
+        .btnSafety {
+          border-color: rgba(244, 63, 94, 0.28);
+          background: rgba(244, 63, 94, 0.08);
+        }
+        .btnEfficacy {
+          border-color: rgba(79, 70, 229, 0.28);
+          background: rgba(79, 70, 229, 0.08);
+        }
+        .btnOperational {
+          border-color: rgba(234, 179, 8, 0.30);
+          background: rgba(234, 179, 8, 0.08);
+        }
+        .btnRegulatory {
+          border-color: rgba(59, 130, 246, 0.30);
+          background: rgba(59, 130, 246, 0.08);
+        }
 
         .panelTitleRow {
           display: flex;
@@ -1495,8 +1458,8 @@ export default function PharmaIntelligencePage() {
           border-color: rgba(234, 179, 8, 0.25);
         }
         .pillRegulatory {
-          background: rgba(2, 132, 199, 0.10);
-          border-color: rgba(2, 132, 199, 0.25);
+          background: rgba(59, 130, 246, 0.10);
+          border-color: rgba(59, 130, 246, 0.25);
         }
         .pillPhase1 {
           background: rgba(14, 165, 233, 0.10);
@@ -1516,18 +1479,16 @@ export default function PharmaIntelligencePage() {
         }
 
         /* ====== Tables ====== */
-        /* Key fix: do NOT force 100% width. Let tables shrink to content so numeric columns
-           don't get pushed far right by an expanding first column. */
         .tblMini {
           width: max-content;
+          min-width: 0;
           border-collapse: collapse;
           font-size: 13px;
-          table-layout: auto;
         }
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 10px 8px;
+          padding: 12px 10px;
           vertical-align: top;
         }
         .tblMini th {
@@ -1538,8 +1499,11 @@ export default function PharmaIntelligencePage() {
           letter-spacing: 0.06em;
           white-space: nowrap;
         }
-        .tblMini td:first-child {
-          white-space: normal;
+        .tblWide {
+          min-width: 0;
+        }
+        .tblReason {
+          min-width: 0;
         }
         .num {
           text-align: right;
@@ -1547,7 +1511,26 @@ export default function PharmaIntelligencePage() {
           font-weight: 800;
         }
         .barCol {
-          width: 120px;
+          width: 140px;
+        }
+
+        .cellTop {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 0;
+        }
+        .cellSub {
+          margin-top: 6px;
+          font-size: 12px;
+        }
+
+        .link {
+          color: rgba(79, 70, 229, 0.92);
+          font-weight: 750;
+        }
+        .link:hover {
+          text-decoration: underline;
         }
 
         /* Bars */
@@ -1891,15 +1874,17 @@ export default function PharmaIntelligencePage() {
           .tblWide {
             min-width: 720px;
           }
-          .tblReason {
-            min-width: 760px;
-          }
           .tblMini th,
           .tblMini td {
             padding: 10px 8px;
           }
           .barTrack {
             width: 88px;
+          }
+
+          /* Ensure the reason buckets table keeps overflow visible on mobile */
+          .tblReason {
+            min-width: 760px;
           }
 
           .miniRow {
