@@ -171,7 +171,7 @@ function isHealthyConditionKey(key: string): boolean {
  * Keep parity with the original intent: do not show ENROLLMENT as its own bucket here.
  * Collapse ENROLLMENT -> OTHER/UNKNOWN for all computations on this page.
  */
-const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "REGULATORY", "OTHER/UNKNOWN"];
+const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "OTHER/UNKNOWN"];
 
 function normalizeBucketForDisplay(b: string): BucketKey {
   const u = (b || "").toUpperCase().trim() || "OTHER/UNKNOWN";
@@ -200,21 +200,7 @@ function bucketPillClass(bucket: string): string {
   if (b === "SAFETY") return "pill pillSafety";
   if (b === "EFFICACY/FUTILITY") return "pill pillEfficacy";
   if (b === "OPERATIONAL") return "pill pillOperational";
-  if (b === "REGULATORY") return "pill pillRegulatory";
   return "pill pillNeutral";
-}
-
-/**
- * Colored "button" variants used in Fast drill-down.
- * Keep existing .btn behavior; only add bucket-specific tints.
- */
-function bucketBtnClass(bucket: string): string {
-  const b = (bucket || "").toUpperCase();
-  if (b === "SAFETY") return "btn btnSafety";
-  if (b === "EFFICACY/FUTILITY") return "btn btnEfficacy";
-  if (b === "OPERATIONAL") return "btn btnOperational";
-  if (b === "REGULATORY") return "btn btnRegulatory";
-  return "btn";
 }
 
 function phasePillClass(phase: string): string {
@@ -747,17 +733,14 @@ export default function PharmaIntelligencePage() {
               Open Explore with pre-applied filters.
             </div>
             <div className="btnRow" style={{ marginTop: 12 }}>
-              <Link className={bucketBtnClass("EFFICACY/FUTILITY")} href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+              <Link className="btn" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
                 Efficacy/Futility
               </Link>
-              <Link className={bucketBtnClass("SAFETY")} href={exploreHref({ bucket: ["SAFETY"] })}>
+              <Link className="btn" href={exploreHref({ bucket: ["SAFETY"] })}>
                 Safety
               </Link>
-              <Link className={bucketBtnClass("OPERATIONAL")} href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+              <Link className="btn" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                 Operational
-              </Link>
-              <Link className={bucketBtnClass("REGULATORY")} href={exploreHref({ bucket: ["REGULATORY"] })}>
-                Regulatory
               </Link>
             </div>
           </div>
@@ -1361,22 +1344,6 @@ export default function PharmaIntelligencePage() {
           gap: 8px;
           flex-wrap: wrap;
         }
-        .btnSafety {
-          border-color: rgba(244, 63, 94, 0.28);
-          background: rgba(244, 63, 94, 0.08);
-        }
-        .btnEfficacy {
-          border-color: rgba(79, 70, 229, 0.28);
-          background: rgba(79, 70, 229, 0.08);
-        }
-        .btnOperational {
-          border-color: rgba(234, 179, 8, 0.30);
-          background: rgba(234, 179, 8, 0.08);
-        }
-        .btnRegulatory {
-          border-color: rgba(59, 130, 246, 0.30);
-          background: rgba(59, 130, 246, 0.08);
-        }
 
         .panelTitleRow {
           display: flex;
@@ -1457,10 +1424,6 @@ export default function PharmaIntelligencePage() {
           background: rgba(234, 179, 8, 0.12);
           border-color: rgba(234, 179, 8, 0.25);
         }
-        .pillRegulatory {
-          background: rgba(59, 130, 246, 0.10);
-          border-color: rgba(59, 130, 246, 0.25);
-        }
         .pillPhase1 {
           background: rgba(14, 165, 233, 0.10);
           border-color: rgba(14, 165, 233, 0.25);
@@ -1488,7 +1451,7 @@ export default function PharmaIntelligencePage() {
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 12px 10px;
+          padding: 10px 8px;
           vertical-align: top;
         }
         .tblMini th {
@@ -1499,6 +1462,17 @@ export default function PharmaIntelligencePage() {
           letter-spacing: 0.06em;
           white-space: nowrap;
         }
+        /* Desktop: cap label column so numeric columns don't drift far right */
+        .tblMini th:first-child,
+        .tblMini td:first-child {
+          width: 320px;
+          max-width: 320px;
+        }
+        .tblMini td:first-child {
+          overflow-wrap: anywhere;
+          word-break: break-word;
+        }
+
         .tblWide {
           min-width: 0;
         }
@@ -1867,58 +1841,43 @@ export default function PharmaIntelligencePage() {
             min-width: 0;
           }
 
-          .tblMini.tblWide,
-.tblMini.tblReason {
-  font-size: 12px;
-  width: 100%;
-  min-width: 0;
-  table-layout: fixed;
-}
-
-/* Mobile: hide the bar column so headers and values align cleanly */
-.tblMini.tblWide th:nth-child(4),
-.tblMini.tblWide td:nth-child(4),
-.tblMini.tblReason th:nth-child(4),
-.tblMini.tblReason td:nth-child(4) {
-  display: none;
-}
-
-.tblMini.tblWide th,
-.tblMini.tblWide td,
-.tblMini.tblReason th,
-.tblMini.tblReason td {
-  padding: 8px 6px;
-}
-
-/* Column widths (3-column layout on mobile) */
-.tblMini.tblWide th:nth-child(1),
-.tblMini.tblWide td:nth-child(1),
-.tblMini.tblReason th:nth-child(1),
-.tblMini.tblReason td:nth-child(1) {
-  width: 68%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.tblMini.tblWide th:nth-child(2),
-.tblMini.tblWide td:nth-child(2),
-.tblMini.tblReason th:nth-child(2),
-.tblMini.tblReason td:nth-child(2) {
-  width: 20%;
-}
-
-.tblMini.tblWide th:nth-child(3),
-.tblMini.tblWide td:nth-child(3),
-.tblMini.tblReason th:nth-child(3),
-.tblMini.tblReason td:nth-child(3) {
-  width: 12%;
-}
-
-          .tblWide {
-            min-width: 0;
+          .tblMini {
+            font-size: 12px;
           }
-          .tblReason {
-            min-width: 0;
+          .tblMini th,
+          .tblMini td {
+            padding: 10px 8px;
+          }
+          
+          /* Mobile: make mini tables true 3-column tables (hide bar column) so headers align with values */
+          .hScrollInner > table {
+            width: 100%;
+          }
+          .tblMini {
+            width: 100%;
+            table-layout: fixed;
+          }
+          .tblMini th:nth-child(4),
+          .tblMini td:nth-child(4) {
+            display: none;
+          }
+          /* Column widths: label / trials / bio share */
+          .tblMini th:nth-child(1),
+          .tblMini td:nth-child(1) {
+            width: 68%;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+          }
+          .tblMini th:nth-child(2),
+          .tblMini td:nth-child(2) {
+            width: 20%;
+          }
+          .tblMini th:nth-child(3),
+          .tblMini td:nth-child(3) {
+            width: 12%;
+          }
+.barTrack {
+            width: 88px;
           }
 
           .miniRow {
