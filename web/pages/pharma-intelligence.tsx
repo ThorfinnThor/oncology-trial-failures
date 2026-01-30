@@ -930,7 +930,7 @@ export default function PharmaIntelligencePage() {
                 <div className="muted small">Top areas by volume.</div>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
+              <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
@@ -986,7 +986,7 @@ export default function PharmaIntelligencePage() {
                 </label>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
+              <div className="hScroll vScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Top conditions table">
                   <thead>
@@ -1388,6 +1388,25 @@ export default function PharmaIntelligencePage() {
           overscroll-behavior-x: contain;
           border-radius: 12px;
           transform: translateZ(0);
+        }
+
+        /* Desktop: clamp long tables inside cards and allow vertical scrolling. */
+        @media (min-width: 721px) {
+          .hScroll.vScroll {
+            max-height: 520px;
+            overflow-y: auto;
+            /* allow both axes when a user scrolls inside the table region */
+            touch-action: pan-x pan-y;
+            overscroll-behavior: contain;
+          }
+
+          /* Keep headers visible while scrolling vertically inside the card */
+          .hScroll.vScroll thead th {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 2;
+          }
         }
 
         .hScrollInner {
