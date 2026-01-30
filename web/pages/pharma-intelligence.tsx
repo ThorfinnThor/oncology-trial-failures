@@ -171,7 +171,7 @@ function isHealthyConditionKey(key: string): boolean {
  * Keep parity with the original intent: do not show ENROLLMENT as its own bucket here.
  * Collapse ENROLLMENT -> OTHER/UNKNOWN for all computations on this page.
  */
-const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "REGULATORY", "OTHER/UNKNOWN"];
+const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "OTHER/UNKNOWN"];
 
 function normalizeBucketForDisplay(b: string): BucketKey {
   const u = (b || "").toUpperCase().trim() || "OTHER/UNKNOWN";
@@ -200,7 +200,6 @@ function bucketPillClass(bucket: string): string {
   if (b === "SAFETY") return "pill pillSafety";
   if (b === "EFFICACY/FUTILITY") return "pill pillEfficacy";
   if (b === "OPERATIONAL") return "pill pillOperational";
-  if (b === "REGULATORY") return "pill pillRegulatory";
   return "pill pillNeutral";
 }
 
@@ -734,19 +733,16 @@ export default function PharmaIntelligencePage() {
               Open Explore with pre-applied filters.
             </div>
             <div className="btnRow" style={{ marginTop: 12 }}>
-              <Link className="btn btnEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+              <Link className="btn" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
                 Efficacy/Futility
               </Link>
-              <Link className="btn btnSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
+              <Link className="btn" href={exploreHref({ bucket: ["SAFETY"] })}>
                 Safety
               </Link>
-              <Link className="btn btnOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+              <Link className="btn" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                 Operational
               </Link>
-              <Link className="btn btnRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
-                Regulatory
-              </Link>
-</div>
+            </div>
           </div>
         </section>
 
@@ -1399,69 +1395,6 @@ export default function PharmaIntelligencePage() {
           width: max-content;
         }
 
-        /* Desktop: keep mini tables tight between columns, but let the bar column use remaining width */
-        @media (min-width: 821px) {
-          .hScrollInner > table.tblMini.tblWide,
-          .hScrollInner > table.tblMini.tblReason {
-            width: 100%;
-          }
-          table.tblMini.tblWide,
-          table.tblMini.tblReason {
-            width: 100%;
-            table-layout: fixed;
-          }
-          table.tblMini.tblWide th:first-child,
-          table.tblMini.tblWide td:first-child,
-          table.tblMini.tblReason th:first-child,
-          table.tblMini.tblReason td:first-child {
-            width: 280px;
-            max-width: 280px;
-          }
-          table.tblMini.tblWide th.num,
-          table.tblMini.tblWide td.num,
-          table.tblMini.tblReason th.num,
-          table.tblMini.tblReason td.num {
-            width: 90px;
-          }
-          table.tblMini.tblWide th.barCol,
-          table.tblMini.tblWide td.barCol,
-          table.tblMini.tblReason th.barCol,
-          table.tblMini.tblReason td.barCol {
-            width: auto;
-          }
-          /* reduce perceived emptiness by aligning the bar to the left */
-          .barWrap { justify-content: flex-start; }
-        }
-
-        /* Mobile: fixed three-column layout; hide bar column to keep headers aligned */
-        @media (max-width: 820px) {
-          table.tblMini.tblWide,
-          table.tblMini.tblReason {
-            width: 100%;
-            min-width: 0;
-            table-layout: fixed;
-          }
-          table.tblMini.tblWide th:first-child,
-          table.tblMini.tblWide td:first-child,
-          table.tblMini.tblReason th:first-child,
-          table.tblMini.tblReason td:first-child {
-            width: 68%;
-          }
-          table.tblMini.tblWide th.num,
-          table.tblMini.tblWide td.num,
-          table.tblMini.tblReason th.num,
-          table.tblMini.tblReason td.num {
-            width: 16%;
-          }
-          table.tblMini.tblWide th:nth-child(4),
-          table.tblMini.tblWide td:nth-child(4),
-          table.tblMini.tblReason th:nth-child(4),
-          table.tblMini.tblReason td:nth-child(4) {
-            display: none;
-          }
-        }
-
-
         /* ====== Pill tags ====== */
         .pill {
           display: inline-flex;
@@ -1490,10 +1423,6 @@ export default function PharmaIntelligencePage() {
         .pillOperational {
           background: rgba(234, 179, 8, 0.12);
           border-color: rgba(234, 179, 8, 0.25);
-        }
-        .pillRegulatory {
-          background: rgba(56, 189, 248, 0.12);
-          border-color: rgba(56, 189, 248, 0.28);
         }
         .pillPhase1 {
           background: rgba(14, 165, 233, 0.10);
@@ -1545,7 +1474,7 @@ export default function PharmaIntelligencePage() {
           font-weight: 800;
         }
         .barCol {
-          width: 140px;
+          width: 120px;
         }
 
         .cellTop {
@@ -1573,7 +1502,8 @@ export default function PharmaIntelligencePage() {
           justify-content: flex-end;
         }
         .barTrack {
-          width: 110px;
+          width: 100%;
+          max-width: 120px;
           height: 8px;
           border-radius: 999px;
           background: rgba(15, 23, 42, 0.08);
@@ -1583,6 +1513,15 @@ export default function PharmaIntelligencePage() {
           height: 100%;
           background: rgba(79, 70, 229, 0.55);
           border-radius: 999px;
+        }
+
+        /* Tighten the bar column on desktop to avoid large empty space after Bio share */
+        @media (min-width: 821px) {
+          .tblMini td.barCol,
+          .tblMini th.barCol {
+            padding-left: 6px;
+            padding-right: 6px;
+          }
         }
 
         /* ====== Matrix table (desktop) ====== */
