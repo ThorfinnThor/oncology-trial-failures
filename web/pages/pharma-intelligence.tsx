@@ -1432,7 +1432,8 @@ export default function PharmaIntelligencePage() {
         .pill {
           display: inline-flex;
           align-items: center;
-          padding: 6px 10px;
+          padding: 3px 10px;
+          line-height: 1.1;
           border-radius: 999px;
           font-size: 12px;
           font-weight: 850;
@@ -1488,7 +1489,7 @@ export default function PharmaIntelligencePage() {
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 12px 10px;
+          padding: 8px 10px;
           vertical-align: top;
         }
         .tblMini th {
@@ -1498,9 +1499,6 @@ export default function PharmaIntelligencePage() {
           text-transform: uppercase;
           letter-spacing: 0.06em;
           white-space: nowrap;
-        }
-        .tblMini th.num {
-          text-align: right;
         }
         .tblWide {
           min-width: 0;
@@ -1514,7 +1512,7 @@ export default function PharmaIntelligencePage() {
           font-weight: 800;
         }
         .barCol {
-          width: 120px;
+          width: 140px;
         }
 
         .cellTop {
@@ -1524,8 +1522,12 @@ export default function PharmaIntelligencePage() {
           min-width: 0;
         }
         .cellSub {
-          margin-top: 6px;
+          margin-top: 4px;
           font-size: 12px;
+          line-height: 1.25;
+        }
+        .cellSub + .cellSub {
+          margin-top: 2px;
         }
 
         .link {
@@ -1542,8 +1544,7 @@ export default function PharmaIntelligencePage() {
           justify-content: flex-end;
         }
         .barTrack {
-          width: 100%;
-          max-width: 120px;
+          width: 110px;
           height: 8px;
           border-radius: 999px;
           background: rgba(15, 23, 42, 0.08);
@@ -1553,15 +1554,6 @@ export default function PharmaIntelligencePage() {
           height: 100%;
           background: rgba(79, 70, 229, 0.55);
           border-radius: 999px;
-        }
-
-        /* Tighten the bar column on desktop so space after Bio share is purposeful */
-        @media (min-width: 821px) {
-          .tblMini td.barCol,
-          .tblMini th.barCol {
-            padding-left: 6px;
-            padding-right: 6px;
-          }
         }
 
         /* ====== Matrix table (desktop) ====== */
