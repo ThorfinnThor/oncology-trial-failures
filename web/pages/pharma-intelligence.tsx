@@ -204,19 +204,6 @@ function bucketPillClass(bucket: string): string {
   return "pill pillNeutral";
 }
 
-/**
- * Colored "button" variants used in Fast drill-down.
- * Keep existing .btn behavior; only add bucket-specific tints.
- */
-function bucketBtnClass(bucket: string): string {
-  const b = (bucket || "").toUpperCase();
-  if (b === "SAFETY") return "btn btnSafety";
-  if (b === "EFFICACY/FUTILITY") return "btn btnEfficacy";
-  if (b === "OPERATIONAL") return "btn btnOperational";
-  if (b === "REGULATORY") return "btn btnRegulatory";
-  return "btn";
-}
-
 function phasePillClass(phase: string): string {
   const p = (phase || "").toUpperCase();
   if (p.includes("PHASE1") || p === "EARLY_PHASE1") return "pill pillPhase1";
@@ -743,20 +730,20 @@ export default function PharmaIntelligencePage() {
 
           <div className="card p-4">
             <div className="muted small">Fast drill-down</div>
-            <div className="muted small" style={{ marginTop: 6 }}>
+            <div className="muted small" style={{ marginTop: 4 }}>
               Open Explore with pre-applied filters.
             </div>
-            <div className="btnRow" style={{ marginTop: 12 }}>
-              <Link className={bucketBtnClass("EFFICACY/FUTILITY")} href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+                        <div className="btnRow" style={{ marginTop: 12 }}>
+              <Link className="btn btnBucketEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
                 Efficacy/Futility
               </Link>
-              <Link className={bucketBtnClass("SAFETY")} href={exploreHref({ bucket: ["SAFETY"] })}>
+              <Link className="btn btnBucketSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
                 Safety
               </Link>
-              <Link className={bucketBtnClass("OPERATIONAL")} href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+              <Link className="btn btnBucketOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                 Operational
               </Link>
-              <Link className={bucketBtnClass("REGULATORY")} href={exploreHref({ bucket: ["REGULATORY"] })}>
+              <Link className="btn btnBucketRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
                 Regulatory
               </Link>
             </div>
@@ -799,7 +786,7 @@ export default function PharmaIntelligencePage() {
                           <div className="cellTop">
                             <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
                           </div>
-                          <div className="muted tiny" style={{ marginTop: 6 }}>
+                          <div className="muted tiny" style={{ marginTop: 4 }}>
                             {b.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
@@ -961,7 +948,7 @@ export default function PharmaIntelligencePage() {
                           <div className="cellTop">
                             <span className="pill pillNeutral">{a.label}</span>
                           </div>
-                          <div className="muted tiny" style={{ marginTop: 6 }}>
+                          <div className="muted tiny" style={{ marginTop: 4 }}>
                             {a.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
@@ -1017,7 +1004,7 @@ export default function PharmaIntelligencePage() {
                           <div className="cellTop">
                             <span className="pill pillNeutral">{c.label}</span>
                           </div>
-                          <div className="muted tiny" style={{ marginTop: 6 }}>
+                          <div className="muted tiny" style={{ marginTop: 4 }}>
                             {c.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
@@ -1123,7 +1110,7 @@ export default function PharmaIntelligencePage() {
                 <div className="sPanel">
                   <div className="subhead">Sponsor totals</div>
                   <div className="panelTitle">{sponsorProfile.sponsor}</div>
-                  <div className="muted small" style={{ marginTop: 6 }}>
+                  <div className="muted small" style={{ marginTop: 4 }}>
                     Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
                   </div>
 
@@ -1280,7 +1267,7 @@ export default function PharmaIntelligencePage() {
           letter-spacing: -0.02em;
         }
         .subtitle {
-          margin-top: 6px;
+          margin-top: 4px;
           font-size: 13px;
           line-height: 1.35;
         }
@@ -1333,7 +1320,7 @@ export default function PharmaIntelligencePage() {
         }
 
         .kpi {
-          margin-top: 6px;
+          margin-top: 4px;
           font-size: 28px;
           font-weight: 900;
           letter-spacing: -0.02em;
@@ -1360,22 +1347,6 @@ export default function PharmaIntelligencePage() {
           display: flex;
           gap: 8px;
           flex-wrap: wrap;
-        }
-        .btnSafety {
-          border-color: rgba(244, 63, 94, 0.28);
-          background: rgba(244, 63, 94, 0.08);
-        }
-        .btnEfficacy {
-          border-color: rgba(79, 70, 229, 0.28);
-          background: rgba(79, 70, 229, 0.08);
-        }
-        .btnOperational {
-          border-color: rgba(234, 179, 8, 0.30);
-          background: rgba(234, 179, 8, 0.08);
-        }
-        .btnRegulatory {
-          border-color: rgba(59, 130, 246, 0.30);
-          background: rgba(59, 130, 246, 0.08);
         }
 
         .panelTitleRow {
@@ -1420,12 +1391,12 @@ export default function PharmaIntelligencePage() {
         }
 
         .hScrollInner {
-          display: inline-block;
-          min-width: max-content;
+          display: block;
+          width: 100%;
           padding-bottom: 2px;
         }
         .hScrollInner > table {
-          width: max-content;
+          width: 100%;
         }
 
         /* ====== Pill tags ====== */
@@ -1433,7 +1404,6 @@ export default function PharmaIntelligencePage() {
           display: inline-flex;
           align-items: center;
           padding: 3px 10px;
-          line-height: 1.1;
           border-radius: 999px;
           font-size: 12px;
           font-weight: 850;
@@ -1459,8 +1429,8 @@ export default function PharmaIntelligencePage() {
           border-color: rgba(234, 179, 8, 0.25);
         }
         .pillRegulatory {
-          background: rgba(59, 130, 246, 0.10);
-          border-color: rgba(59, 130, 246, 0.25);
+          background: rgba(2, 132, 199, 0.10);
+          border-color: rgba(2, 132, 199, 0.25);
         }
         .pillPhase1 {
           background: rgba(14, 165, 233, 0.10);
@@ -1481,10 +1451,10 @@ export default function PharmaIntelligencePage() {
 
         /* ====== Tables ====== */
         .tblMini {
-          width: max-content;
-          min-width: 0;
+          width: 100%;
           border-collapse: collapse;
           font-size: 13px;
+          min-width: 640px;
         }
         .tblMini th,
         .tblMini td {
@@ -1500,11 +1470,14 @@ export default function PharmaIntelligencePage() {
           letter-spacing: 0.06em;
           white-space: nowrap;
         }
+        .tblMini th.num {
+          text-align: right;
+        }
         .tblWide {
-          min-width: 0;
+          min-width: 720px;
         }
         .tblReason {
-          min-width: 0;
+          min-width: 760px; /* ensure overflow on phones */
         }
         .num {
           text-align: right;
@@ -1513,23 +1486,6 @@ export default function PharmaIntelligencePage() {
         }
         .barCol {
           width: 140px;
-        }
-
-        /* Desktop-only: slightly larger table typography to better fill available space.
-           Mobile remains unchanged via the max-width: 720px overrides below. */
-        @media (min-width: 721px) {
-          .tblMini {
-            font-size: 14px;
-          }
-          .tblMini th {
-            font-size: 13px;
-          }
-          .pill {
-            font-size: 13px;
-          }
-          .cellSub {
-            font-size: 13px;
-          }
         }
 
         .cellTop {
@@ -1541,10 +1497,6 @@ export default function PharmaIntelligencePage() {
         .cellSub {
           margin-top: 4px;
           font-size: 12px;
-          line-height: 1.25;
-        }
-        .cellSub + .cellSub {
-          margin-top: 2px;
         }
 
         .link {
@@ -1559,9 +1511,11 @@ export default function PharmaIntelligencePage() {
         .barWrap {
           display: flex;
           justify-content: flex-end;
+          width: 100%;
         }
         .barTrack {
-          width: 110px;
+          width: 100%;
+          max-width: 140px;
           height: 8px;
           border-radius: 999px;
           background: rgba(15, 23, 42, 0.08);
@@ -1872,6 +1826,23 @@ export default function PharmaIntelligencePage() {
             padding: 0;
           }
 
+
+          /* Mobile: keep horizontal scroll tables as intrinsic-width */
+          .hScrollInner {
+            display: inline-block;
+            min-width: max-content;
+          }
+          .hScrollInner > table {
+            width: max-content;
+          }
+
+          /* Mobile: hide bar column to keep header/value alignment tight */
+          .tblMini.tblWide th:nth-child(4),
+          .tblMini.tblWide td:nth-child(4),
+          .tblMini.tblReason th:nth-child(4),
+          .tblMini.tblReason td:nth-child(4) {
+            display: none;
+          }
           /* Ensure page respects safe areas and doesn't clip the right edge */
           :global(.page) {
             padding-left: max(12px, env(safe-area-inset-left));
@@ -1889,58 +1860,20 @@ export default function PharmaIntelligencePage() {
             min-width: 0;
           }
 
-          .tblMini.tblWide,
-.tblMini.tblReason {
-  font-size: 12px;
-  width: 100%;
-  min-width: 0;
-  table-layout: fixed;
-}
-
-/* Mobile: hide the bar column so headers and values align cleanly */
-.tblMini.tblWide th:nth-child(4),
-.tblMini.tblWide td:nth-child(4),
-.tblMini.tblReason th:nth-child(4),
-.tblMini.tblReason td:nth-child(4) {
-  display: none;
-}
-
-.tblMini.tblWide th,
-.tblMini.tblWide td,
-.tblMini.tblReason th,
-.tblMini.tblReason td {
-  padding: 8px 6px;
-}
-
-/* Column widths (3-column layout on mobile) */
-.tblMini.tblWide th:nth-child(1),
-.tblMini.tblWide td:nth-child(1),
-.tblMini.tblReason th:nth-child(1),
-.tblMini.tblReason td:nth-child(1) {
-  width: 68%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.tblMini.tblWide th:nth-child(2),
-.tblMini.tblWide td:nth-child(2),
-.tblMini.tblReason th:nth-child(2),
-.tblMini.tblReason td:nth-child(2) {
-  width: 20%;
-}
-
-.tblMini.tblWide th:nth-child(3),
-.tblMini.tblWide td:nth-child(3),
-.tblMini.tblReason th:nth-child(3),
-.tblMini.tblReason td:nth-child(3) {
-  width: 12%;
-}
-
-          .tblWide {
-            min-width: 0;
+          .tblMini {
+            font-size: 12px;
           }
+          .tblMini th,
+          .tblMini td {
+            padding: 8px 8px;
+          }
+          .barTrack {
+            width: 88px;
+          }
+
+          /* Ensure the reason buckets table keeps overflow visible on mobile */
           .tblReason {
-            min-width: 0;
+            min-width: 760px;
           }
 
           .miniRow {
