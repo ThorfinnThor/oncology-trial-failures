@@ -1119,7 +1119,7 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                <div className="sPanel">
+                <div className="sPanel sPanelBuckets">
                   <div className="panelTitleRow">
                     <div className="subhead">Top buckets</div>
                     <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
@@ -1155,7 +1155,7 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                <div className="sPanel">
+                <div className="sPanel sPanelPhases">
                   <div className="panelTitleRow">
                     <div className="subhead">Top phases</div>
                     <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
@@ -1753,19 +1753,32 @@ export default function PharmaIntelligencePage() {
           align-items: start;
           margin-top: 10px;
         }
-        /* Tablet/desktop: 2-column grid */
+
+        /* Desktop: left stack (totals/buckets/phases) + roomy right column (conditions) */
         @media (min-width: 900px) {
           .sponsorGrid {
-            grid-template-columns: 1.15fr 1fr;
-          }
-        }
-        /* Wide desktop: totals left, others on right; conditions spans two cols */
-        @media (min-width: 1100px) {
-          .sponsorGrid {
-            grid-template-columns: 1.15fr 1fr 1fr;
-            grid-auto-flow: row dense;
+            grid-template-columns: minmax(360px, 440px) 1fr;
+            column-gap: 16px;
+            row-gap: 14px;
           }
           .sponsorTotals {
+            grid-column: 1;
+            grid-row: 1;
+          }
+          .sPanelBuckets {
+            grid-column: 1;
+            grid-row: 2;
+          }
+          .sPanelPhases {
+            grid-column: 1;
+            grid-row: 3;
+          }
+          .sPanelConditions {
+            grid-column: 2;
+            grid-row: 1 / span 3;
+          }
+        }
+.sponsorTotals {
             grid-row: 1 / span 2;
           }
           .sPanelConditions {
