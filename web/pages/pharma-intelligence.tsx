@@ -1515,6 +1515,23 @@ export default function PharmaIntelligencePage() {
           width: 140px;
         }
 
+        /* Desktop-only: slightly larger table typography to better fill available space.
+           Mobile remains unchanged via the max-width: 720px overrides below. */
+        @media (min-width: 721px) {
+          .tblMini {
+            font-size: 14px;
+          }
+          .tblMini th {
+            font-size: 13px;
+          }
+          .pill {
+            font-size: 13px;
+          }
+          .cellSub {
+            font-size: 13px;
+          }
+        }
+
         .cellTop {
           display: flex;
           align-items: center;
