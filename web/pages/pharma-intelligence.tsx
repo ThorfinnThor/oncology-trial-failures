@@ -1744,8 +1744,7 @@ export default function PharmaIntelligencePage() {
           align-items: start;
           margin-top: 10px;
         }
-        
-        /* New sponsor layout (desktop friendly, mobile unchanged) */
+
         .sponsorGrid {
           display: grid;
           grid-template-columns: 1fr;
@@ -1754,7 +1753,6 @@ export default function PharmaIntelligencePage() {
           margin-top: 10px;
         }
 
-        /* Desktop: left stack (totals/buckets/phases) + roomy right column (conditions) */
         @media (min-width: 900px) {
           .sponsorGrid {
             grid-template-columns: minmax(360px, 440px) 1fr;
@@ -1778,17 +1776,11 @@ export default function PharmaIntelligencePage() {
             grid-row: 1 / span 3;
           }
         }
-.sponsorTotals {
-            grid-row: 1 / span 2;
-          }
-          .sPanelConditions {
-            grid-column: 2 / span 2;
-          }
-        }
+
         .sPanelBody {
-          margin-top: 2px;
+          margin-top: 6px;
         }
-.sPanel {
+        .sPanel {
           background: var(--surface-2);
           border: 1px solid var(--border);
           border-radius: 16px;
