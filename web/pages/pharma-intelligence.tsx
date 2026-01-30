@@ -204,19 +204,6 @@ function bucketPillClass(bucket: string): string {
   return "pill pillNeutral";
 }
 
-/**
- * Colored "button" variants used in Fast drill-down.
- * Keep existing .btn behavior; only add bucket-specific tints.
- */
-function bucketBtnClass(bucket: string): string {
-  const b = (bucket || "").toUpperCase();
-  if (b === "SAFETY") return "btn btnSafety";
-  if (b === "EFFICACY/FUTILITY") return "btn btnEfficacy";
-  if (b === "OPERATIONAL") return "btn btnOperational";
-  if (b === "REGULATORY") return "btn btnRegulatory";
-  return "btn";
-}
-
 function phasePillClass(phase: string): string {
   const p = (phase || "").toUpperCase();
   if (p.includes("PHASE1") || p === "EARLY_PHASE1") return "pill pillPhase1";
@@ -747,19 +734,19 @@ export default function PharmaIntelligencePage() {
               Open Explore with pre-applied filters.
             </div>
             <div className="btnRow" style={{ marginTop: 12 }}>
-              <Link className={bucketBtnClass("EFFICACY/FUTILITY")} href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+              <Link className="btn btnEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
                 Efficacy/Futility
               </Link>
-              <Link className={bucketBtnClass("SAFETY")} href={exploreHref({ bucket: ["SAFETY"] })}>
+              <Link className="btn btnSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
                 Safety
               </Link>
-              <Link className={bucketBtnClass("OPERATIONAL")} href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+              <Link className="btn btnOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                 Operational
               </Link>
-              <Link className={bucketBtnClass("REGULATORY")} href={exploreHref({ bucket: ["REGULATORY"] })}>
+              <Link className="btn btnRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
                 Regulatory
               </Link>
-            </div>
+</div>
           </div>
         </section>
 
@@ -1361,22 +1348,6 @@ export default function PharmaIntelligencePage() {
           gap: 8px;
           flex-wrap: wrap;
         }
-        .btnSafety {
-          border-color: rgba(244, 63, 94, 0.28);
-          background: rgba(244, 63, 94, 0.08);
-        }
-        .btnEfficacy {
-          border-color: rgba(79, 70, 229, 0.28);
-          background: rgba(79, 70, 229, 0.08);
-        }
-        .btnOperational {
-          border-color: rgba(234, 179, 8, 0.30);
-          background: rgba(234, 179, 8, 0.08);
-        }
-        .btnRegulatory {
-          border-color: rgba(59, 130, 246, 0.30);
-          background: rgba(59, 130, 246, 0.08);
-        }
 
         .panelTitleRow {
           display: flex;
@@ -1428,6 +1399,69 @@ export default function PharmaIntelligencePage() {
           width: max-content;
         }
 
+        /* Desktop: keep mini tables tight between columns, but let the bar column use remaining width */
+        @media (min-width: 821px) {
+          .hScrollInner > table.tblMini.tblWide,
+          .hScrollInner > table.tblMini.tblReason {
+            width: 100%;
+          }
+          table.tblMini.tblWide,
+          table.tblMini.tblReason {
+            width: 100%;
+            table-layout: fixed;
+          }
+          table.tblMini.tblWide th:first-child,
+          table.tblMini.tblWide td:first-child,
+          table.tblMini.tblReason th:first-child,
+          table.tblMini.tblReason td:first-child {
+            width: 280px;
+            max-width: 280px;
+          }
+          table.tblMini.tblWide th.num,
+          table.tblMini.tblWide td.num,
+          table.tblMini.tblReason th.num,
+          table.tblMini.tblReason td.num {
+            width: 90px;
+          }
+          table.tblMini.tblWide th.barCol,
+          table.tblMini.tblWide td.barCol,
+          table.tblMini.tblReason th.barCol,
+          table.tblMini.tblReason td.barCol {
+            width: auto;
+          }
+          /* reduce perceived emptiness by aligning the bar to the left */
+          .barWrap { justify-content: flex-start; }
+        }
+
+        /* Mobile: fixed three-column layout; hide bar column to keep headers aligned */
+        @media (max-width: 820px) {
+          table.tblMini.tblWide,
+          table.tblMini.tblReason {
+            width: 100%;
+            min-width: 0;
+            table-layout: fixed;
+          }
+          table.tblMini.tblWide th:first-child,
+          table.tblMini.tblWide td:first-child,
+          table.tblMini.tblReason th:first-child,
+          table.tblMini.tblReason td:first-child {
+            width: 68%;
+          }
+          table.tblMini.tblWide th.num,
+          table.tblMini.tblWide td.num,
+          table.tblMini.tblReason th.num,
+          table.tblMini.tblReason td.num {
+            width: 16%;
+          }
+          table.tblMini.tblWide th:nth-child(4),
+          table.tblMini.tblWide td:nth-child(4),
+          table.tblMini.tblReason th:nth-child(4),
+          table.tblMini.tblReason td:nth-child(4) {
+            display: none;
+          }
+        }
+
+
         /* ====== Pill tags ====== */
         .pill {
           display: inline-flex;
@@ -1458,8 +1492,8 @@ export default function PharmaIntelligencePage() {
           border-color: rgba(234, 179, 8, 0.25);
         }
         .pillRegulatory {
-          background: rgba(59, 130, 246, 0.10);
-          border-color: rgba(59, 130, 246, 0.25);
+          background: rgba(56, 189, 248, 0.12);
+          border-color: rgba(56, 189, 248, 0.28);
         }
         .pillPhase1 {
           background: rgba(14, 165, 233, 0.10);
@@ -1480,15 +1514,15 @@ export default function PharmaIntelligencePage() {
 
         /* ====== Tables ====== */
         .tblMini {
-          width: max-content;
-          min-width: 0;
+          width: 100%;
           border-collapse: collapse;
           font-size: 13px;
+          min-width: 640px;
         }
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 10px 8px;
+          padding: 12px 10px;
           vertical-align: top;
         }
         .tblMini th {
@@ -1500,30 +1534,10 @@ export default function PharmaIntelligencePage() {
           white-space: nowrap;
         }
         .tblWide {
-          min-width: 0;
+          min-width: 720px;
         }
         .tblReason {
-          min-width: 0;
-        }
-        @media (min-width: 721px) {
-        /* Desktop: reduce perceived white space by constraining the first column for mini tables. */
-        .tblMini.tblWide th:first-child,
-        .tblMini.tblWide td:first-child,
-        .tblMini.tblReason th:first-child,
-        .tblMini.tblReason td:first-child {
-          width: 300px;
-          max-width: 300px;
-          white-space: normal;
-          overflow-wrap: anywhere;
-        }
-
-        /* Prevent long pills (e.g. Gastroenterology & Hepatology) from forcing the column wider than the cap. */
-        .tblMini.tblWide .pill,
-        .tblMini.tblReason .pill {
-          max-width: 280px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
+          min-width: 760px; /* ensure overflow on phones */
         }
         .num {
           text-align: right;
@@ -1887,58 +1901,20 @@ export default function PharmaIntelligencePage() {
             min-width: 0;
           }
 
-          .tblMini.tblWide,
-.tblMini.tblReason {
-  font-size: 12px;
-  width: 100%;
-  min-width: 0;
-  table-layout: fixed;
-}
-
-/* Mobile: hide the bar column so headers and values align cleanly */
-.tblMini.tblWide th:nth-child(4),
-.tblMini.tblWide td:nth-child(4),
-.tblMini.tblReason th:nth-child(4),
-.tblMini.tblReason td:nth-child(4) {
-  display: none;
-}
-
-.tblMini.tblWide th,
-.tblMini.tblWide td,
-.tblMini.tblReason th,
-.tblMini.tblReason td {
-  padding: 8px 6px;
-}
-
-/* Column widths (3-column layout on mobile) */
-.tblMini.tblWide th:nth-child(1),
-.tblMini.tblWide td:nth-child(1),
-.tblMini.tblReason th:nth-child(1),
-.tblMini.tblReason td:nth-child(1) {
-  width: 68%;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
-
-.tblMini.tblWide th:nth-child(2),
-.tblMini.tblWide td:nth-child(2),
-.tblMini.tblReason th:nth-child(2),
-.tblMini.tblReason td:nth-child(2) {
-  width: 20%;
-}
-
-.tblMini.tblWide th:nth-child(3),
-.tblMini.tblWide td:nth-child(3),
-.tblMini.tblReason th:nth-child(3),
-.tblMini.tblReason td:nth-child(3) {
-  width: 12%;
-}
-
-          .tblWide {
-            min-width: 0;
+          .tblMini {
+            font-size: 12px;
           }
+          .tblMini th,
+          .tblMini td {
+            padding: 10px 8px;
+          }
+          .barTrack {
+            width: 88px;
+          }
+
+          /* Ensure the reason buckets table keeps overflow visible on mobile */
           .tblReason {
-            min-width: 0;
+            min-width: 760px;
           }
 
           .miniRow {
