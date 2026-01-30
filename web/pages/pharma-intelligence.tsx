@@ -1106,8 +1106,8 @@ export default function PharmaIntelligencePage() {
             </div>
 
             {sponsorProfile && (
-              <div className="sponsorPanels3">
-                <div className="sPanel">
+              <div className="sponsorGrid">
+                <div className="sPanel sponsorTotals">
                   <div className="subhead">Sponsor totals</div>
                   <div className="panelTitle">{sponsorProfile.sponsor}</div>
                   <div className="muted small" style={{ marginTop: 4 }}>
@@ -1127,30 +1127,32 @@ export default function PharmaIntelligencePage() {
                     </Link>
                   </div>
 
-                  <table className="compactTbl" aria-label="Sponsor top buckets table">
-                    <thead>
-                      <tr>
-                        <th>Bucket</th>
-                        <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                        <th style={{ width: 120 }} aria-hidden="true" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sponsorProfile.topBuckets.map((x) => (
-                        <tr key={x.bucket}>
-                          <td>
-                            <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
-                              {x.bucket}
-                            </Link>
-                          </td>
-                          <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                          <td>
-                            <Bar value={x.count} max={sponsorBucketMax} />
-                          </td>
+                  <div className="sPanelBody">
+                    <table className="compactTbl" aria-label="Sponsor top buckets table">
+                      <thead>
+                        <tr>
+                          <th>Bucket</th>
+                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                          <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {sponsorProfile.topBuckets.map((x) => (
+                          <tr key={x.bucket}>
+                            <td>
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
+                                {x.bucket}
+                              </Link>
+                            </td>
+                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                            <td>
+                              <Bar value={x.count} max={sponsorBucketMax} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
                 <div className="sPanel">
@@ -1161,59 +1163,68 @@ export default function PharmaIntelligencePage() {
                     </Link>
                   </div>
 
-                  <table className="compactTbl" aria-label="Sponsor top phases table">
-                    <thead>
-                      <tr>
-                        <th>Phase</th>
-                        <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                        <th style={{ width: 120 }} aria-hidden="true" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sponsorProfile.topPhases.map((x) => (
-                        <tr key={x.phase}>
-                          <td>
-                            <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
-                              {phaseLabel(x.phase)}
-                            </Link>
-                          </td>
-                          <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                          <td>
-                            <Bar value={x.count} max={sponsorPhaseMax} />
-                          </td>
+                  <div className="sPanelBody">
+                    <table className="compactTbl" aria-label="Sponsor top phases table">
+                      <thead>
+                        <tr>
+                          <th>Phase</th>
+                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                          <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {sponsorProfile.topPhases.map((x) => (
+                          <tr key={x.phase}>
+                            <td>
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
+                                {phaseLabel(x.phase)}
+                              </Link>
+                            </td>
+                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                            <td>
+                              <Bar value={x.count} max={sponsorPhaseMax} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-                  <div className="subhead" style={{ marginTop: 16 }}>
-                    Top conditions
+                <div className="sPanel sPanelConditions">
+                  <div className="panelTitleRow">
+                    <div className="subhead">Top conditions</div>
+                    <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                      View all →
+                    </Link>
                   </div>
 
-                  <table className="compactTbl" aria-label="Sponsor top conditions table">
-                    <thead>
-                      <tr>
-                        <th>Condition</th>
-                        <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                        <th style={{ width: 120 }} aria-hidden="true" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sponsorProfile.topConds.map((x) => (
-                        <tr key={x.condition}>
-                          <td>
-                            <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { q: canonicalConditionLabel(x.condition, x.condition) })}>
-                              {canonicalConditionLabel(x.condition, x.condition)}
-                            </Link>
-                          </td>
-                          <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                          <td>
-                            <Bar value={x.count} max={sponsorCondMax} />
-                          </td>
+                  <div className="sPanelBody">
+                    <table className="compactTbl" aria-label="Sponsor top conditions table">
+                      <thead>
+                        <tr>
+                          <th>Condition</th>
+                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                          <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {sponsorProfile.topConds.map((x) => (
+                          <tr key={x.condition}>
+                            <td>
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { q: canonicalConditionLabel(x.condition, x.condition) })}>
+                                {canonicalConditionLabel(x.condition, x.condition)}
+                              </Link>
+                            </td>
+                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                            <td>
+                              <Bar value={x.count} max={sponsorCondMax} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             )}
@@ -1733,7 +1744,38 @@ export default function PharmaIntelligencePage() {
           align-items: start;
           margin-top: 10px;
         }
-        .sPanel {
+        
+        /* New sponsor layout (desktop friendly, mobile unchanged) */
+        .sponsorGrid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          align-items: start;
+          margin-top: 10px;
+        }
+        /* Tablet/desktop: 2-column grid */
+        @media (min-width: 900px) {
+          .sponsorGrid {
+            grid-template-columns: 1.15fr 1fr;
+          }
+        }
+        /* Wide desktop: totals left, others on right; conditions spans two cols */
+        @media (min-width: 1100px) {
+          .sponsorGrid {
+            grid-template-columns: 1.15fr 1fr 1fr;
+            grid-auto-flow: row dense;
+          }
+          .sponsorTotals {
+            grid-row: 1 / span 2;
+          }
+          .sPanelConditions {
+            grid-column: 2 / span 2;
+          }
+        }
+        .sPanelBody {
+          margin-top: 2px;
+        }
+.sPanel {
           background: var(--surface-2);
           border: 1px solid var(--border);
           border-radius: 16px;
