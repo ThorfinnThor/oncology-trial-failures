@@ -1465,8 +1465,8 @@ export default function PharmaIntelligencePage() {
         /* Desktop: cap label column so numeric columns don't drift far right */
         .tblMini th:first-child,
         .tblMini td:first-child {
-          width: 320px;
-          max-width: 320px;
+          width: 280px;
+          max-width: 280px;
         }
         .tblMini td:first-child {
           overflow-wrap: anywhere;
