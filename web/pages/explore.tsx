@@ -161,16 +161,19 @@ export default function ExplorePage() {
                 Clinical trial failures
               </Link>
               <nav className="nav" aria-label="Primary">
-  <Link className="navlink" href="/explore" aria-current="page">
-    Explore
-  </Link>
-  <Link className="navlink" href="/pharma-intelligence">
-    Pharma intelligence
-  </Link>
-  <Link className="navlink" href="/methods">
-    Methods
-  </Link>
-</nav>
+                <Link className="navlink" href="/explore" aria-current="page">
+                  Explore
+                </Link>
+                <Link className="navlink" href="/pharma-intelligence">
+                  Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
+                </Link>
+              </nav>
             </div>
 
             <div className="topbar-center">
