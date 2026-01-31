@@ -22,6 +22,23 @@ export default function ComparePage() {
       </Head>
 
       <div className="min-h-screen">
+        <header className="topbar">
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <Link href="/explore" className="brand">Clinical trial failures</Link>
+              <nav className="nav" aria-label="Primary">
+                <Link className="navlink" href="/explore">Explore</Link>
+                <Link className="navlink" href="/pharma-intelligence">Pharma intelligence</Link>
+                <Link className="navlink" href="/share-leaders">Share leaders</Link>
+                <Link className="navlink" href="/methods">Methods</Link>
+              </nav>
+            </div>
+
+            <div className="topbar-right">
+              <Link className="btn" href={`/explore${router.asPath.includes("?") ? router.asPath.slice(router.asPath.indexOf("?")) : ""}`}>Back</Link>
+            </div>
+          </div>
+        </header>
         <div className="mx-auto max-w-5xl px-4 py-6">
           <div className="flex items-center justify-between gap-3">
             <div>
@@ -29,12 +46,7 @@ export default function ComparePage() {
               <p className="mt-1 text-sm text-[var(--text-muted)]">Compare 2–5 selected trials side-by-side.</p>
             </div>
 
-            <Link
-              className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm font-semibold hover:bg-[var(--surface-2)]"
-              href={`/explore${router.asPath.includes("?") ? router.asPath.slice(router.asPath.indexOf("?")) : ""}`}
-            >
-              Back to Explore
-            </Link>
+
           </div>
 
           <div className="mt-4 rounded-2xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-soft)] text-sm">
