@@ -56,7 +56,7 @@ type SponsorProfile = {
   bioShare: number;
   topBuckets: { bucket: string; count: number }[];
   topPhases: { phase: string; count: number }[];
-  topConds: { condition: string; count: number; label: string }[];
+  topAreas: { area: string; count: number; label: string }[];
 };
 
 /**
@@ -315,7 +315,7 @@ export default function PharmaIntelligencePage() {
   const [sponsorMenuOpen, setSponsorMenuOpen] = useState<boolean>(false);
   const sponsorBoxRef = useRef<HTMLDivElement | null>(null);
 
-  // Exclude "Healthy" toggle (applies to global + sponsor top conditions)
+  // Exclude "Healthy" toggle (applies to the global condition panels)
   const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
 
   useEffect(() => {
@@ -612,7 +612,7 @@ export default function PharmaIntelligencePage() {
 
     const bucketCounts = new Map<string, number>();
     const phaseCounts = new Map<string, number>();
-    const condCounts = new Map<string, { count: number; label: string }>();
+    const areaCounts = new Map<string, { count: number; label: string }>();
 
     for (const r of sRows) {
       const b = normalizeBucketForDisplay(reasonBucket(r) || "");
@@ -621,14 +621,13 @@ export default function PharmaIntelligencePage() {
       const p = representativePhase(r);
       phaseCounts.set(p, (phaseCounts.get(p) || 0) + 1);
 
-      const c0 = normEntity(r.condition_first || "");
-      if (c0) {
-        const key = normalizeConditionKey(c0);
-        if (key && !(excludeHealthy && isHealthyConditionKey(key))) {
-          const cur = condCounts.get(key);
-          if (!cur) condCounts.set(key, { count: 1, label: c0 });
-          else cur.count += 1;
-        }
+      // Sponsor panel uses disease area (not condition) for more stable grouping.
+      // Match Explore's disease-area filter semantics: empty -> "Other".
+      const a0 = normEntity((r.disease_area || "Other").trim());
+      if (a0) {
+        const cur = areaCounts.get(a0);
+        if (!cur) areaCounts.set(a0, { count: 1, label: a0 });
+        else cur.count += 1;
       }
     }
 
@@ -642,17 +641,17 @@ export default function PharmaIntelligencePage() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 6);
 
-    const topConds = Array.from(condCounts.entries())
-      .map(([condition, v]) => ({ condition, count: v.count, label: v.label }))
+    const topAreas = Array.from(areaCounts.entries())
+      .map(([area, v]) => ({ area, count: v.count, label: v.label }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 8);
 
-    return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topConds };
-  }, [rows, selectedSponsor, excludeHealthy]);
+    return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topAreas };
+  }, [rows, selectedSponsor]);
 
   const sponsorBucketMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topBuckets.map((x) => x.count) || [0])), [sponsorProfile]);
   const sponsorPhaseMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topPhases.map((x) => x.count) || [0])), [sponsorProfile]);
-  const sponsorCondMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topConds.map((x) => x.count) || [0])), [sponsorProfile]);
+  const sponsorAreaMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topAreas.map((x) => x.count) || [0])), [sponsorProfile]);
 
   // Precompute for wide table min-width (desktop)
   const matrixMinWidth = useMemo(() => {
@@ -1296,37 +1295,35 @@ export default function PharmaIntelligencePage() {
 
                 <div className="sPanel sPanelConditions">
                   <div className="panelTitleRow">
-                    <div className="subhead">Top conditions</div>
+                    <div className="subhead">Top disease areas</div>
                     <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
                       View all →
                     </Link>
                   </div>
 
                   <div className="sPanelBody">
-                    <table className="compactTbl" aria-label="Sponsor top conditions table">
+                    <table className="compactTbl" aria-label="Sponsor top disease areas table">
                       <thead>
                         <tr>
-                          <th>Condition</th>
+                          <th>Disease area</th>
                           <th style={{ width: 110, textAlign: "right" }}>Trials</th>
                           <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
                       </thead>
                       <tbody>
-                        {sponsorProfile.topConds.map((x) => (
-                          <tr key={x.condition}>
+                        {sponsorProfile.topAreas.map((x) => (
+                          <tr key={x.area}>
                             <td>
                               <Link
                                 className="link cellTrunc"
-                                href={sponsorQueryHref(sponsorProfile.sponsor, {
-                                  q: toSmartTitleCase(canonicalConditionLabel(x.condition, x.label))
-                                })}
+                                href={sponsorQueryHref(sponsorProfile.sponsor, { area: [x.area] })}
                               >
-                                {toSmartTitleCase(canonicalConditionLabel(x.condition, x.label))}
+                                {toSmartTitleCase(x.label)}
                               </Link>
                             </td>
                             <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
                             <td>
-                              <Bar value={x.count} max={sponsorCondMax} />
+                              <Bar value={x.count} max={sponsorAreaMax} />
                             </td>
                           </tr>
                         ))}
