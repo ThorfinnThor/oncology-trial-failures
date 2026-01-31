@@ -56,94 +56,8 @@ type SponsorProfile = {
   bioShare: number;
   topBuckets: { bucket: string; count: number }[];
   topPhases: { phase: string; count: number }[];
-  topAreas: { area: string; count: number; label: string }[];
+  topConds: { condition: string; count: number }[];
 };
-
-/**
- * =========================
- * DISPLAY NORMALIZATION
- * =========================
- * The dataset's free-text fields (notably conditions) are often lowercased during
- * ingest/normalization. For readability we apply light presentation formatting in
- * this page only (no changes to filtering/aggregation keys).
- */
-
-const TITLECASE_LOWER_WORDS = new Set([
-  "a",
-  "an",
-  "and",
-  "as",
-  "at",
-  "but",
-  "by",
-  "for",
-  "from",
-  "in",
-  "into",
-  "nor",
-  "of",
-  "on",
-  "or",
-  "over",
-  "per",
-  "the",
-  "to",
-  "via",
-  "with"
-]);
-
-const ROMAN_NUMERALS = new Set(["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"]);
-
-function toSmartTitleCase(input: string): string {
-  const s = normEntity(input);
-  if (!s) return "";
-
-  // Preserve known canonical cases
-  if (s.toLowerCase() === "covid-19") return "COVID-19";
-
-  const words = s.split(" ");
-  return words
-    .map((w, i) => {
-      const raw = w;
-      if (!raw) return raw;
-
-      // Keep tokens with digits/hyphens as-is if they already contain uppercase
-      // (e.g. "BRAF", "PD-1", "HER2", "COVID-19")
-      const hasUpper = /[A-Z]/.test(raw);
-      const hasDigit = /\d/.test(raw);
-      const hasDash = /-/.test(raw);
-      if ((hasDigit || hasDash) && hasUpper) return raw;
-
-      // Preserve all-caps acronyms up to length 5
-      if (/^[A-Z0-9]{2,5}$/.test(raw)) return raw;
-
-      const upper = raw.toUpperCase();
-      if (ROMAN_NUMERALS.has(upper)) return upper;
-
-      const lower = raw.toLowerCase();
-      if (i > 0 && TITLECASE_LOWER_WORDS.has(lower)) return lower;
-
-      // Capitalize first alpha character; keep rest lowercase
-      return lower.charAt(0).toUpperCase() + lower.slice(1);
-    })
-    .join(" ");
-}
-
-function bucketDisplayLabel(bucketKey: string): string {
-  // On this page we collapse ENROLLMENT into OTHER/UNKNOWN; for users this reads as missing/unclear.
-  const b = (bucketKey || "").toUpperCase().trim();
-  if (b === "OTHER/UNKNOWN") return "MISSING";
-  return bucketKey;
-}
-
-function bucketExploreFilter(bucketKey: string): string[] {
-  // Keep displayed counts consistent with Explore:
-  // "OTHER/UNKNOWN" counts on this page include ENROLLMENT (collapsed),
-  // so the drill-down must include both values.
-  const b = (bucketKey || "").toUpperCase().trim();
-  if (b === "OTHER/UNKNOWN") return ["OTHER/UNKNOWN", "ENROLLMENT"];
-  return [bucketKey];
-}
 
 function normEntity(s?: string): string {
   return (s || "").replace(/\s+/g, " ").trim();
@@ -315,7 +229,7 @@ export default function PharmaIntelligencePage() {
   const [sponsorMenuOpen, setSponsorMenuOpen] = useState<boolean>(false);
   const sponsorBoxRef = useRef<HTMLDivElement | null>(null);
 
-  // Exclude "Healthy" toggle (applies to the global condition panels)
+  // Exclude "Healthy" toggle (applies to global + sponsor top conditions)
   const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
 
   useEffect(() => {
@@ -479,28 +393,19 @@ export default function PharmaIntelligencePage() {
    * Indication landscape
    * =========================
    */
-  // NOTE: We intentionally use first-condition (not disease area) for the indication landscape.
-  // Disease-area strings are inconsistent and often fail to normalize cleanly.
-  const conditionLandscapeStats = useMemo<SimpleRow[]>(() => {
-    const map = new Map<string, { total: number; bio: number; label: string }>();
-
+  const diseaseAreaStats = useMemo<SimpleRow[]>(() => {
+    const map = new Map<string, { total: number; bio: number }>();
     for (const r of rows) {
-      const c0 = normEntity(r.condition_first || "");
-      if (!c0) continue;
-
-      const key = normalizeConditionKey(c0);
-      if (!key) continue;
-      if (excludeHealthy && isHealthyConditionKey(key)) continue;
-
-      if (!map.has(key)) map.set(key, { total: 0, bio: 0, label: c0 });
-      const cur = map.get(key)!;
+      const a = normEntity(r.disease_area || "Other/Unknown") || "Other/Unknown";
+      if (!map.has(a)) map.set(a, { total: 0, bio: 0 });
+      const cur = map.get(a)!;
       cur.total += 1;
       if (isLikelyScientificFailure(r)) cur.bio += 1;
     }
 
     const out: SimpleRow[] = Array.from(map.entries()).map(([key, v]) => ({
       key,
-      label: toSmartTitleCase(canonicalConditionLabel(key, v.label)),
+      label: key,
       total: v.total,
       bio: v.bio,
       bioShare: v.total > 0 ? v.bio / v.total : 0
@@ -508,7 +413,7 @@ export default function PharmaIntelligencePage() {
 
     out.sort((a, b) => b.total - a.total);
     return TopK(out, 12);
-  }, [rows, excludeHealthy]);
+  }, [rows]);
 
   const topConditionStats = useMemo<SimpleRow[]>(() => {
     const map = new Map<string, { total: number; bio: number; label: string }>();
@@ -529,7 +434,7 @@ export default function PharmaIntelligencePage() {
 
     const out: SimpleRow[] = Array.from(map.entries()).map(([key, v]) => ({
       key,
-      label: toSmartTitleCase(canonicalConditionLabel(key, v.label)),
+      label: canonicalConditionLabel(key, v.label),
       total: v.total,
       bio: v.bio,
       bioShare: v.total > 0 ? v.bio / v.total : 0
@@ -612,7 +517,7 @@ export default function PharmaIntelligencePage() {
 
     const bucketCounts = new Map<string, number>();
     const phaseCounts = new Map<string, number>();
-    const areaCounts = new Map<string, { count: number; label: string }>();
+    const condCounts = new Map<string, number>();
 
     for (const r of sRows) {
       const b = normalizeBucketForDisplay(reasonBucket(r) || "");
@@ -621,13 +526,12 @@ export default function PharmaIntelligencePage() {
       const p = representativePhase(r);
       phaseCounts.set(p, (phaseCounts.get(p) || 0) + 1);
 
-      // Sponsor panel uses disease area (not condition) for more stable grouping.
-      // Match Explore's disease-area filter semantics: empty -> "Other".
-      const a0 = normEntity((r.disease_area || "Other").trim());
-      if (a0) {
-        const cur = areaCounts.get(a0);
-        if (!cur) areaCounts.set(a0, { count: 1, label: a0 });
-        else cur.count += 1;
+      const c0 = normEntity(r.condition_first || "");
+      if (c0) {
+        const key = normalizeConditionKey(c0);
+        if (key && !(excludeHealthy && isHealthyConditionKey(key))) {
+          condCounts.set(key, (condCounts.get(key) || 0) + 1);
+        }
       }
     }
 
@@ -641,17 +545,17 @@ export default function PharmaIntelligencePage() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 6);
 
-    const topAreas = Array.from(areaCounts.entries())
-      .map(([area, v]) => ({ area, count: v.count, label: v.label }))
+    const topConds = Array.from(condCounts.entries())
+      .map(([condition, count]) => ({ condition, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 8);
 
-    return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topAreas };
-  }, [rows, selectedSponsor]);
+    return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topConds };
+  }, [rows, selectedSponsor, excludeHealthy]);
 
   const sponsorBucketMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topBuckets.map((x) => x.count) || [0])), [sponsorProfile]);
   const sponsorPhaseMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topPhases.map((x) => x.count) || [0])), [sponsorProfile]);
-  const sponsorAreaMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topAreas.map((x) => x.count) || [0])), [sponsorProfile]);
+  const sponsorCondMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topConds.map((x) => x.count) || [0])), [sponsorProfile]);
 
   // Precompute for wide table min-width (desktop)
   const matrixMinWidth = useMemo(() => {
@@ -678,6 +582,9 @@ export default function PharmaIntelligencePage() {
                 </Link>
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
                 </Link>
                 <Link className="navlink" href="/methods">
                   Methods
@@ -716,6 +623,9 @@ export default function PharmaIntelligencePage() {
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
                 </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
+                </Link>
                 <Link className="navlink" href="/methods">
                   Methods
                 </Link>
@@ -753,6 +663,9 @@ export default function PharmaIntelligencePage() {
                 </Link>
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
                 </Link>
                 <Link className="navlink" href="/methods">
                   Methods
@@ -860,7 +773,7 @@ export default function PharmaIntelligencePage() {
             <div className="card p-4">
               <div className="panelTitleRow">
                 <h3 className="h3">Reason buckets</h3>
-                <div className="muted small">Enrollment is collapsed into Missing on this page.</div>
+                <div className="muted small">Enrollment is collapsed into Other/Unknown on this page.</div>
               </div>
 
               <div className="scrollHint">Swipe horizontally →</div>
@@ -880,16 +793,13 @@ export default function PharmaIntelligencePage() {
                       <tr key={b.bucket}>
                         <td>
                           <div className="cellTop">
-                            <span className={bucketPillClass(b.bucket)}>{bucketDisplayLabel(b.bucket)}</span>
+                            <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
                           </div>
                           <div className="muted tiny" style={{ marginTop: 4 }}>
                             {b.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
-                            <Link
-                              className="link"
-                              href={exploreHref({ bucket: bucketExploreFilter(b.bucket), bio: focusBio ? true : undefined })}
-                            >
+                            <Link className="link" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
                               Explore →
                             </Link>
                           </div>
@@ -929,7 +839,7 @@ export default function PharmaIntelligencePage() {
                         <th>Phase</th>
                         {displayedBuckets.map((b) => (
                           <th key={b} title={b} className="bucketHead">
-                            {bucketDisplayLabel(b)}
+                            {b}
                           </th>
                         ))}
                       </tr>
@@ -947,7 +857,7 @@ export default function PharmaIntelligencePage() {
                             const total = cell?.total || 0;
                             const bio = cell?.bio || 0;
 
-                            const href = exploreHref({ phase: [p], bucket: bucketExploreFilter(b), bio: focusBio ? true : undefined });
+                            const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
 
                             return (
                               <td key={`${p}_${b}`} className="matrixCell">
@@ -991,12 +901,12 @@ export default function PharmaIntelligencePage() {
                           const total = cell?.total || 0;
                           const bio = cell?.bio || 0;
 
-                          const href = exploreHref({ phase: [p], bucket: bucketExploreFilter(b), bio: focusBio ? true : undefined });
+                          const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
 
                           return (
                             <Link key={`${p}_${b}`} href={href} className="bucketCard">
                               <div className="bucketCardTop">
-                                <span className={bucketPillClass(b)}>{bucketDisplayLabel(b)}</span>
+                                <span className={bucketPillClass(b)}>{b}</span>
                               </div>
                               <div className="bucketCardNum">{total.toLocaleString()}</div>
                               {!focusBio && <div className="muted tiny">{bio.toLocaleString()} bio</div>}
@@ -1025,41 +935,41 @@ export default function PharmaIntelligencePage() {
           <div className="grid2">
             <div className="card p-4">
               <div className="panelTitleRow">
-                <h3 className="h3">By condition</h3>
-                <div className="muted small">Top conditions by volume.</div>
+                <h3 className="h3">By disease area</h3>
+                <div className="muted small">Top areas by volume.</div>
               </div>
 
-              <div className="hScroll vScroll" role="region" aria-label="Condition table" tabIndex={0}>
+              <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblWide" aria-label="Condition table">
+                  <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
                     <tr>
-                      <th>Condition</th>
+                      <th>Disease area</th>
                       <th className="num">Trials</th>
                       <th className="num">Bio share</th>
                       <th className="barCol" aria-hidden="true" />
                     </tr>
                   </thead>
                   <tbody>
-                    {conditionLandscapeStats.map((c) => (
-                      <tr key={c.key}>
+                    {diseaseAreaStats.map((a) => (
+                      <tr key={a.key}>
                         <td>
                           <div className="cellTop">
-                            <span className="pill pillNeutral">{c.label}</span>
+                            <span className="pill pillNeutral">{a.label}</span>
                           </div>
                           <div className="muted tiny" style={{ marginTop: 4 }}>
-                            {c.bio.toLocaleString()} likely scientific failures
+                            {a.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
-                            <Link className="link" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
+                            <Link className="link" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
                               Explore →
                             </Link>
                           </div>
                         </td>
-                        <td className="num">{c.total.toLocaleString()}</td>
-                        <td className="num">{safePct(c.bioShare)}</td>
+                        <td className="num">{a.total.toLocaleString()}</td>
+                        <td className="num">{safePct(a.bioShare)}</td>
                         <td className="barCol">
-                          <Bar value={c.total} max={Math.max(1, ...conditionLandscapeStats.map((x) => x.total))} />
+                          <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
                         </td>
                       </tr>
                     ))}
@@ -1068,7 +978,7 @@ export default function PharmaIntelligencePage() {
                 </div>
               </div>
 
-              <div className="note">Condition drill-down uses Explore free-text search (q).</div>
+              <div className="note">Disease area drill-down uses the Explore “area” filter.</div>
             </div>
 
             <div className="card p-4">
@@ -1239,11 +1149,8 @@ export default function PharmaIntelligencePage() {
                         {sponsorProfile.topBuckets.map((x) => (
                           <tr key={x.bucket}>
                             <td>
-                              <Link
-                                className="link cellTrunc"
-                                href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: bucketExploreFilter(x.bucket) })}
-                              >
-                                {bucketDisplayLabel(x.bucket)}
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
+                                {x.bucket}
                               </Link>
                             </td>
                             <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
@@ -1295,35 +1202,32 @@ export default function PharmaIntelligencePage() {
 
                 <div className="sPanel sPanelConditions">
                   <div className="panelTitleRow">
-                    <div className="subhead">Top disease areas</div>
+                    <div className="subhead">Top conditions</div>
                     <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
                       View all →
                     </Link>
                   </div>
 
                   <div className="sPanelBody">
-                    <table className="compactTbl" aria-label="Sponsor top disease areas table">
+                    <table className="compactTbl" aria-label="Sponsor top conditions table">
                       <thead>
                         <tr>
-                          <th>Disease area</th>
+                          <th>Condition</th>
                           <th style={{ width: 110, textAlign: "right" }}>Trials</th>
                           <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
                       </thead>
                       <tbody>
-                        {sponsorProfile.topAreas.map((x) => (
-                          <tr key={x.area}>
+                        {sponsorProfile.topConds.map((x) => (
+                          <tr key={x.condition}>
                             <td>
-                              <Link
-                                className="link cellTrunc"
-                                href={sponsorQueryHref(sponsorProfile.sponsor, { area: [x.area] })}
-                              >
-                                {toSmartTitleCase(x.label)}
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { q: canonicalConditionLabel(x.condition, x.condition) })}>
+                                {canonicalConditionLabel(x.condition, x.condition)}
                               </Link>
                             </td>
                             <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
                             <td>
-                              <Bar value={x.count} max={sponsorAreaMax} />
+                              <Bar value={x.count} max={sponsorCondMax} />
                             </td>
                           </tr>
                         ))}
@@ -1882,20 +1786,8 @@ export default function PharmaIntelligencePage() {
           }
         }
 
-        /* Sponsor panels can get long (esp. conditions) — clamp height and enable scroll. */
         .sPanelBody {
           margin-top: 6px;
-          max-height: 360px;
-          overflow-y: auto;
-          scrollbar-gutter: stable both-edges;
-          -webkit-overflow-scrolling: touch;
-        }
-
-        /* Keep headers visible inside the sponsor panel scroll containers */
-        .sPanelBody thead th {
-          position: sticky;
-          top: 0;
-          z-index: 2;
         }
         .sPanel {
           background: var(--surface-2);
