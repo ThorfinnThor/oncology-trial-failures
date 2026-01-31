@@ -429,7 +429,7 @@ export default function PharmaIntelligencePage() {
     const topSum = topConds.reduce((a, x) => a + x.count, 0);
     const otherCount = condTotal - topSum;
     if (otherCount > 0) {
-      topConds.push({ key: "__other__", label: "Other", count: otherCount, isOther: true });
+      const isOther = row.key === "__other__";
     }
 
     return {
