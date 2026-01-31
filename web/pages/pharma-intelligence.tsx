@@ -479,19 +479,28 @@ export default function PharmaIntelligencePage() {
    * Indication landscape
    * =========================
    */
-  const diseaseAreaStats = useMemo<SimpleRow[]>(() => {
-    const map = new Map<string, { total: number; bio: number }>();
+  // NOTE: We intentionally use first-condition (not disease area) for the indication landscape.
+  // Disease-area strings are inconsistent and often fail to normalize cleanly.
+  const conditionLandscapeStats = useMemo<SimpleRow[]>(() => {
+    const map = new Map<string, { total: number; bio: number; label: string }>();
+
     for (const r of rows) {
-      const a = normEntity(r.disease_area || "Other/Unknown") || "Other/Unknown";
-      if (!map.has(a)) map.set(a, { total: 0, bio: 0 });
-      const cur = map.get(a)!;
+      const c0 = normEntity(r.condition_first || "");
+      if (!c0) continue;
+
+      const key = normalizeConditionKey(c0);
+      if (!key) continue;
+      if (excludeHealthy && isHealthyConditionKey(key)) continue;
+
+      if (!map.has(key)) map.set(key, { total: 0, bio: 0, label: c0 });
+      const cur = map.get(key)!;
       cur.total += 1;
       if (isLikelyScientificFailure(r)) cur.bio += 1;
     }
 
     const out: SimpleRow[] = Array.from(map.entries()).map(([key, v]) => ({
       key,
-      label: key,
+      label: toSmartTitleCase(canonicalConditionLabel(key, v.label)),
       total: v.total,
       bio: v.bio,
       bioShare: v.total > 0 ? v.bio / v.total : 0
@@ -499,7 +508,7 @@ export default function PharmaIntelligencePage() {
 
     out.sort((a, b) => b.total - a.total);
     return TopK(out, 12);
-  }, [rows]);
+  }, [rows, excludeHealthy]);
 
   const topConditionStats = useMemo<SimpleRow[]>(() => {
     const map = new Map<string, { total: number; bio: number; label: string }>();
@@ -1017,41 +1026,41 @@ export default function PharmaIntelligencePage() {
           <div className="grid2">
             <div className="card p-4">
               <div className="panelTitleRow">
-                <h3 className="h3">By disease area</h3>
-                <div className="muted small">Top areas by volume.</div>
+                <h3 className="h3">By condition</h3>
+                <div className="muted small">Top conditions by volume.</div>
               </div>
 
-              <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
+              <div className="hScroll vScroll" role="region" aria-label="Condition table" tabIndex={0}>
                 <div className="hScrollInner">
-                  <table className="tblMini tblWide" aria-label="Disease area table">
+                  <table className="tblMini tblWide" aria-label="Condition table">
                   <thead>
                     <tr>
-                      <th>Disease area</th>
+                      <th>Condition</th>
                       <th className="num">Trials</th>
                       <th className="num">Bio share</th>
                       <th className="barCol" aria-hidden="true" />
                     </tr>
                   </thead>
                   <tbody>
-                    {diseaseAreaStats.map((a) => (
-                      <tr key={a.key}>
+                    {conditionLandscapeStats.map((c) => (
+                      <tr key={c.key}>
                         <td>
                           <div className="cellTop">
-                            <span className="pill pillNeutral">{a.label}</span>
+                            <span className="pill pillNeutral">{c.label}</span>
                           </div>
                           <div className="muted tiny" style={{ marginTop: 4 }}>
-                            {a.bio.toLocaleString()} likely scientific failures
+                            {c.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
-                            <Link className="link" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
+                            <Link className="link" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
                               Explore →
                             </Link>
                           </div>
                         </td>
-                        <td className="num">{a.total.toLocaleString()}</td>
-                        <td className="num">{safePct(a.bioShare)}</td>
+                        <td className="num">{c.total.toLocaleString()}</td>
+                        <td className="num">{safePct(c.bioShare)}</td>
                         <td className="barCol">
-                          <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
+                          <Bar value={c.total} max={Math.max(1, ...conditionLandscapeStats.map((x) => x.total))} />
                         </td>
                       </tr>
                     ))}
@@ -1060,7 +1069,7 @@ export default function PharmaIntelligencePage() {
                 </div>
               </div>
 
-              <div className="note">Disease area drill-down uses the Explore “area” filter.</div>
+              <div className="note">Condition drill-down uses Explore free-text search (q).</div>
             </div>
 
             <div className="card p-4">
@@ -1876,8 +1885,20 @@ export default function PharmaIntelligencePage() {
           }
         }
 
+        /* Sponsor panels can get long (esp. conditions) — clamp height and enable scroll. */
         .sPanelBody {
           margin-top: 6px;
+          max-height: 360px;
+          overflow-y: auto;
+          scrollbar-gutter: stable both-edges;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        /* Keep headers visible inside the sponsor panel scroll containers */
+        .sPanelBody thead th {
+          position: sticky;
+          top: 0;
+          z-index: 2;
         }
         .sPanel {
           background: var(--surface-2);
