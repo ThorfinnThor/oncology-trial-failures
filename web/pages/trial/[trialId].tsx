@@ -42,8 +42,14 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function TrialPage() {
   const router = useRouter();
 
-  const trialId = useMemo(() => (router.query.trialId ? String(router.query.trialId) : ""), [router.query.trialId]);
-  const from = useMemo(() => (router.query.from ? String(router.query.from) : "/explore"), [router.query.from]);
+  const trialId = useMemo(
+    () => (router.query.trialId ? String(router.query.trialId) : ""),
+    [router.query.trialId]
+  );
+  const from = useMemo(
+    () => (router.query.from ? String(router.query.from) : "/explore"),
+    [router.query.from]
+  );
 
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
   const [trial, setTrial] = useState<TrialDetail | null>(null);
@@ -69,7 +75,10 @@ export default function TrialPage() {
     };
   }, [trialId]);
 
-  const phaseKey = useMemo(() => (trial ? parsePhases(trial.phases || "")[0] || "UNKNOWN" : "UNKNOWN"), [trial]);
+  const phaseKey = useMemo(
+    () => (trial ? parsePhases(trial.phases || "")[0] || "UNKNOWN" : "UNKNOWN"),
+    [trial]
+  );
   const bucket = useMemo(() => (trial ? reasonBucket(trial) : "OTHER/UNKNOWN"), [trial]);
 
   return (
@@ -82,15 +91,29 @@ export default function TrialPage() {
         <header className="topbar">
           <div className="topbar-inner">
             <div className="topbar-left">
-              <Link href="/explore" className="brand">Clinical trial failures</Link>
+              <Link href="/explore" className="brand">
+                Clinical trial failures
+              </Link>
               <nav className="nav">
-                <Link className="navlink" href="/explore">Explore</Link>
-                <Link className="navlink" href="/methods">Methods</Link>
+                <Link className="navlink" href="/explore">
+                  Explore
+                </Link>
+                <Link className="navlink" href="/pharma-intelligence">
+                  Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
+                </Link>
               </nav>
             </div>
 
             <div className="topbar-right">
-              <Link href={from} className="btn">Back</Link>
+              <Link href={from} className="btn">
+                Back
+              </Link>
             </div>
           </div>
         </header>
@@ -103,7 +126,9 @@ export default function TrialPage() {
             {trial && (
               <>
                 <div className="card p-4">
-                  <div className="muted" style={{ fontSize: 12 }}>Trial</div>
+                  <div className="muted" style={{ fontSize: 12 }}>
+                    Trial
+                  </div>
                   <div style={{ fontSize: 22, fontWeight: 900, marginTop: 4 }}>{trial.nct_id}</div>
                   <div style={{ fontSize: 18, fontWeight: 800, marginTop: 10, lineHeight: 1.25 }}>
                     {trial.brief_title || "—"}
@@ -111,7 +136,9 @@ export default function TrialPage() {
 
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 12 }}>
                     <span className={phaseChipClass(phaseKey)}>{phaseLabel(phaseKey)}</span>
-                    <span className="chip chip-neutral">{(trial.overall_status || "UNKNOWN").toUpperCase()}</span>
+                    <span className="chip chip-neutral">
+                      {(trial.overall_status || "UNKNOWN").toUpperCase()}
+                    </span>
                     <span className={bucketChipClass(bucket)}>{bucket}</span>
                     {trial.classification_confidence ? (
                       <span className="chip chip-neutral">Confidence: {trial.classification_confidence}</span>
@@ -120,20 +147,30 @@ export default function TrialPage() {
 
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 14 }}>
                     <div>
-                      <div className="facet-title" style={{ marginBottom: 6 }}>Sponsor</div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>
+                        Sponsor
+                      </div>
                       <div style={{ fontSize: 14 }}>{trial.lead_sponsor || "—"}</div>
                     </div>
                     <div>
-                      <div className="facet-title" style={{ marginBottom: 6 }}>Collaborators</div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>
+                        Collaborators
+                      </div>
                       <div style={{ fontSize: 14 }}>{trial.collaborators || "—"}</div>
                     </div>
                     <div>
-                      <div className="facet-title" style={{ marginBottom: 6 }}>Condition</div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>
+                        Condition
+                      </div>
                       <div style={{ fontSize: 14 }}>{trial.conditions || trial.condition_first || "—"}</div>
                     </div>
                     <div>
-                      <div className="facet-title" style={{ marginBottom: 6 }}>Intervention</div>
-                      <div style={{ fontSize: 14 }}>{trial.intervention_names || trial.intervention_first || "—"}</div>
+                      <div className="facet-title" style={{ marginBottom: 6 }}>
+                        Intervention
+                      </div>
+                      <div style={{ fontSize: 14 }}>
+                        {trial.intervention_names || trial.intervention_first || "—"}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -146,15 +183,20 @@ export default function TrialPage() {
 
                 <Section title="Provenance">
                   <div className="muted" style={{ fontSize: 13, lineHeight: 1.5 }}>
-                    Dataset: <span style={{ color: "var(--text)", fontWeight: 700 }}>{meta?.version || "—"}</span>
+                    Dataset:{" "}
+                    <span style={{ color: "var(--text)", fontWeight: 700 }}>{meta?.version || "—"}</span>
                     {meta?.source ? (
                       <>
-                        {" "}• Source: <span style={{ color: "var(--text)", fontWeight: 700 }}>{meta.source}</span>
+                        {" "}
+                        • Source:{" "}
+                        <span style={{ color: "var(--text)", fontWeight: 700 }}>{meta.source}</span>
                       </>
                     ) : null}
                     {trial.last_update_post_date ? (
                       <>
-                        {" "}• Last update: <span style={{ color: "var(--text)", fontWeight: 700 }}>{trial.last_update_post_date}</span>
+                        {" "}
+                        • Last update:{" "}
+                        <span style={{ color: "var(--text)", fontWeight: 700 }}>{trial.last_update_post_date}</span>
                       </>
                     ) : null}
                   </div>
