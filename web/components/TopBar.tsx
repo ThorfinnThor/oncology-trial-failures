@@ -22,7 +22,7 @@ export function TopBar({ q, setQ, onCopyLink, onExport, onReset }: Props) {
                 Explore
               </Link>
               <Link className="text-gray-700 hover:underline" href="/share-leaders">
-                Share leaders
+                Leader board 
               </Link>
               <Link className="text-gray-700 hover:underline" href="/methods">
                 Methods
