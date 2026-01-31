@@ -56,7 +56,7 @@ type SponsorProfile = {
   bioShare: number;
   topBuckets: { bucket: string; count: number }[];
   topPhases: { phase: string; count: number }[];
-  topConds: { key: string; label: string; count: number }[];
+  topConds: { condition: string; count: number }[];
 };
 
 function normEntity(s?: string): string {
@@ -171,7 +171,7 @@ function isHealthyConditionKey(key: string): boolean {
  * Keep parity with the original intent: do not show ENROLLMENT as its own bucket here.
  * Collapse ENROLLMENT -> OTHER/UNKNOWN for all computations on this page.
  */
-const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "OTHER/UNKNOWN"];
+const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "REGULATORY", "OTHER/UNKNOWN"];
 
 function normalizeBucketForDisplay(b: string): BucketKey {
   const u = (b || "").toUpperCase().trim() || "OTHER/UNKNOWN";
@@ -200,6 +200,7 @@ function bucketPillClass(bucket: string): string {
   if (b === "SAFETY") return "pill pillSafety";
   if (b === "EFFICACY/FUTILITY") return "pill pillEfficacy";
   if (b === "OPERATIONAL") return "pill pillOperational";
+  if (b === "REGULATORY") return "pill pillRegulatory";
   return "pill pillNeutral";
 }
 
@@ -517,7 +518,6 @@ export default function PharmaIntelligencePage() {
     const bucketCounts = new Map<string, number>();
     const phaseCounts = new Map<string, number>();
     const condCounts = new Map<string, number>();
-    const condLabels = new Map<string, string>();
 
     for (const r of sRows) {
       const b = normalizeBucketForDisplay(reasonBucket(r) || "");
@@ -530,7 +530,6 @@ export default function PharmaIntelligencePage() {
       if (c0) {
         const key = normalizeConditionKey(c0);
         if (key && !(excludeHealthy && isHealthyConditionKey(key))) {
-          if (!condLabels.has(key)) condLabels.set(key, canonicalConditionLabel(key, c0));
           condCounts.set(key, (condCounts.get(key) || 0) + 1);
         }
       }
@@ -546,21 +545,10 @@ export default function PharmaIntelligencePage() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 6);
 
-    const condTotal = Array.from(condCounts.values()).reduce((a, b) => a + b, 0);
     const topConds = Array.from(condCounts.entries())
-      .map(([key, count]) => ({
-        key,
-        label: condLabels.get(key) || canonicalConditionLabel(key, key),
-        count,
-      }))
+      .map(([condition, count]) => ({ condition, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 8);
-
-    const topSum = topConds.reduce((a, b) => a + b.count, 0);
-    const otherCount = condTotal - topSum;
-    if (otherCount > 0) {
-      topConds.push({ key: "__other__", label: "Other", count: otherCount });
-    }
 
     return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topConds };
   }, [rows, selectedSponsor, excludeHealthy]);
@@ -742,18 +730,21 @@ export default function PharmaIntelligencePage() {
 
           <div className="card p-4">
             <div className="muted small">Fast drill-down</div>
-            <div className="muted small" style={{ marginTop: 6 }}>
+            <div className="muted small" style={{ marginTop: 4 }}>
               Open Explore with pre-applied filters.
             </div>
-            <div className="btnRow" style={{ marginTop: 12 }}>
-              <Link className="btn" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+                        <div className="btnRow" style={{ marginTop: 12 }}>
+              <Link className="btn btnBucketEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
                 Efficacy/Futility
               </Link>
-              <Link className="btn" href={exploreHref({ bucket: ["SAFETY"] })}>
+              <Link className="btn btnBucketSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
                 Safety
               </Link>
-              <Link className="btn" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+              <Link className="btn btnBucketOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                 Operational
+              </Link>
+              <Link className="btn btnBucketRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
+                Regulatory
               </Link>
             </div>
           </div>
@@ -795,7 +786,7 @@ export default function PharmaIntelligencePage() {
                           <div className="cellTop">
                             <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
                           </div>
-                          <div className="muted tiny" style={{ marginTop: 6 }}>
+                          <div className="muted tiny" style={{ marginTop: 4 }}>
                             {b.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
@@ -939,7 +930,7 @@ export default function PharmaIntelligencePage() {
                 <div className="muted small">Top areas by volume.</div>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Disease area table" tabIndex={0}>
+              <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Disease area table">
                   <thead>
@@ -957,7 +948,7 @@ export default function PharmaIntelligencePage() {
                           <div className="cellTop">
                             <span className="pill pillNeutral">{a.label}</span>
                           </div>
-                          <div className="muted tiny" style={{ marginTop: 6 }}>
+                          <div className="muted tiny" style={{ marginTop: 4 }}>
                             {a.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
@@ -995,7 +986,7 @@ export default function PharmaIntelligencePage() {
                 </label>
               </div>
 
-              <div className="hScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
+              <div className="hScroll vScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
                 <div className="hScrollInner">
                   <table className="tblMini tblWide" aria-label="Top conditions table">
                   <thead>
@@ -1013,7 +1004,7 @@ export default function PharmaIntelligencePage() {
                           <div className="cellTop">
                             <span className="pill pillNeutral">{c.label}</span>
                           </div>
-                          <div className="muted tiny" style={{ marginTop: 6 }}>
+                          <div className="muted tiny" style={{ marginTop: 4 }}>
                             {c.bio.toLocaleString()} likely scientific failures
                           </div>
                           <div className="cellSub">
@@ -1115,11 +1106,11 @@ export default function PharmaIntelligencePage() {
             </div>
 
             {sponsorProfile && (
-              <div className="sponsorPanels3">
-                <div className="sPanel">
+              <div className="sponsorGrid">
+                <div className="sPanel sponsorTotals">
                   <div className="subhead">Sponsor totals</div>
                   <div className="panelTitle">{sponsorProfile.sponsor}</div>
-                  <div className="muted small" style={{ marginTop: 6 }}>
+                  <div className="muted small" style={{ marginTop: 4 }}>
                     Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
                   </div>
 
@@ -1128,7 +1119,7 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                <div className="sPanel">
+                <div className="sPanel sPanelBuckets">
                   <div className="panelTitleRow">
                     <div className="subhead">Top buckets</div>
                     <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
@@ -1136,33 +1127,35 @@ export default function PharmaIntelligencePage() {
                     </Link>
                   </div>
 
-                  <table className="compactTbl" aria-label="Sponsor top buckets table">
-                    <thead>
-                      <tr>
-                        <th>Bucket</th>
-                        <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                        <th style={{ width: 120 }} aria-hidden="true" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sponsorProfile.topBuckets.map((x) => (
-                        <tr key={x.bucket}>
-                          <td>
-                            <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
-                              {x.bucket}
-                            </Link>
-                          </td>
-                          <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                          <td>
-                            <Bar value={x.count} max={sponsorBucketMax} />
-                          </td>
+                  <div className="sPanelBody">
+                    <table className="compactTbl" aria-label="Sponsor top buckets table">
+                      <thead>
+                        <tr>
+                          <th>Bucket</th>
+                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                          <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {sponsorProfile.topBuckets.map((x) => (
+                          <tr key={x.bucket}>
+                            <td>
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
+                                {x.bucket}
+                              </Link>
+                            </td>
+                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                            <td>
+                              <Bar value={x.count} max={sponsorBucketMax} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
 
-                <div className="sPanel">
+                <div className="sPanel sPanelPhases">
                   <div className="panelTitleRow">
                     <div className="subhead">Top phases</div>
                     <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
@@ -1170,63 +1163,68 @@ export default function PharmaIntelligencePage() {
                     </Link>
                   </div>
 
-                  <table className="compactTbl" aria-label="Sponsor top phases table">
-                    <thead>
-                      <tr>
-                        <th>Phase</th>
-                        <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                        <th style={{ width: 120 }} aria-hidden="true" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sponsorProfile.topPhases.map((x) => (
-                        <tr key={x.phase}>
-                          <td>
-                            <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
-                              {phaseLabel(x.phase)}
-                            </Link>
-                          </td>
-                          <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                          <td>
-                            <Bar value={x.count} max={sponsorPhaseMax} />
-                          </td>
+                  <div className="sPanelBody">
+                    <table className="compactTbl" aria-label="Sponsor top phases table">
+                      <thead>
+                        <tr>
+                          <th>Phase</th>
+                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                          <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {sponsorProfile.topPhases.map((x) => (
+                          <tr key={x.phase}>
+                            <td>
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
+                                {phaseLabel(x.phase)}
+                              </Link>
+                            </td>
+                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                            <td>
+                              <Bar value={x.count} max={sponsorPhaseMax} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
 
-                  <div className="subhead" style={{ marginTop: 16 }}>
-                    Top conditions
+                <div className="sPanel sPanelConditions">
+                  <div className="panelTitleRow">
+                    <div className="subhead">Top conditions</div>
+                    <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                      View all →
+                    </Link>
                   </div>
 
-                  <table className="compactTbl" aria-label="Sponsor top conditions table">
-                    <thead>
-                      <tr>
-                        <th>Condition</th>
-                        <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                        <th style={{ width: 120 }} aria-hidden="true" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sponsorProfile.topConds.map((x) => (
-                        <tr key={x.key}>
-                          <td>
-                            {x.key === "__other__" ? (
-                              <span className="muted cellTrunc">Other</span>
-                            ) : (
-                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { q: x.label })}>
-                                {x.label}
-                              </Link>
-                            )}
-                          </td>
-                          <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                          <td>
-                            <Bar value={x.count} max={sponsorCondMax} />
-                          </td>
+                  <div className="sPanelBody">
+                    <table className="compactTbl" aria-label="Sponsor top conditions table">
+                      <thead>
+                        <tr>
+                          <th>Condition</th>
+                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                          <th style={{ width: 120 }} aria-hidden="true" />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {sponsorProfile.topConds.map((x) => (
+                          <tr key={x.condition}>
+                            <td>
+                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { q: canonicalConditionLabel(x.condition, x.condition) })}>
+                                {canonicalConditionLabel(x.condition, x.condition)}
+                              </Link>
+                            </td>
+                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                            <td>
+                              <Bar value={x.count} max={sponsorCondMax} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             )}
@@ -1280,7 +1278,7 @@ export default function PharmaIntelligencePage() {
           letter-spacing: -0.02em;
         }
         .subtitle {
-          margin-top: 6px;
+          margin-top: 4px;
           font-size: 13px;
           line-height: 1.35;
         }
@@ -1333,7 +1331,7 @@ export default function PharmaIntelligencePage() {
         }
 
         .kpi {
-          margin-top: 6px;
+          margin-top: 4px;
           font-size: 28px;
           font-weight: 900;
           letter-spacing: -0.02em;
@@ -1403,20 +1401,39 @@ export default function PharmaIntelligencePage() {
           transform: translateZ(0);
         }
 
+        /* Desktop: clamp long tables inside cards and allow vertical scrolling. */
+        @media (min-width: 721px) {
+          .hScroll.vScroll {
+            max-height: 520px;
+            overflow-y: auto;
+            /* allow both axes when a user scrolls inside the table region */
+            touch-action: pan-x pan-y;
+            overscroll-behavior: contain;
+          }
+
+          /* Keep headers visible while scrolling vertically inside the card */
+          .hScroll.vScroll thead th {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 2;
+          }
+        }
+
         .hScrollInner {
-          display: inline-block;
-          min-width: max-content;
+          display: block;
+          width: 100%;
           padding-bottom: 2px;
         }
         .hScrollInner > table {
-          width: max-content;
+          width: 100%;
         }
 
         /* ====== Pill tags ====== */
         .pill {
           display: inline-flex;
           align-items: center;
-          padding: 6px 10px;
+          padding: 3px 10px;
           border-radius: 999px;
           font-size: 12px;
           font-weight: 850;
@@ -1440,6 +1457,10 @@ export default function PharmaIntelligencePage() {
         .pillOperational {
           background: rgba(234, 179, 8, 0.12);
           border-color: rgba(234, 179, 8, 0.25);
+        }
+        .pillRegulatory {
+          background: rgba(2, 132, 199, 0.10);
+          border-color: rgba(2, 132, 199, 0.25);
         }
         .pillPhase1 {
           background: rgba(14, 165, 233, 0.10);
@@ -1468,7 +1489,7 @@ export default function PharmaIntelligencePage() {
         .tblMini th,
         .tblMini td {
           border-bottom: 1px solid var(--border);
-          padding: 12px 10px;
+          padding: 8px 10px;
           vertical-align: top;
         }
         .tblMini th {
@@ -1478,6 +1499,9 @@ export default function PharmaIntelligencePage() {
           text-transform: uppercase;
           letter-spacing: 0.06em;
           white-space: nowrap;
+        }
+        .tblMini th.num {
+          text-align: right;
         }
         .tblWide {
           min-width: 720px;
@@ -1501,7 +1525,7 @@ export default function PharmaIntelligencePage() {
           min-width: 0;
         }
         .cellSub {
-          margin-top: 6px;
+          margin-top: 4px;
           font-size: 12px;
         }
 
@@ -1517,9 +1541,11 @@ export default function PharmaIntelligencePage() {
         .barWrap {
           display: flex;
           justify-content: flex-end;
+          width: 100%;
         }
         .barTrack {
-          width: 110px;
+          width: 100%;
+          max-width: 140px;
           height: 8px;
           border-radius: 999px;
           background: rgba(15, 23, 42, 0.08);
@@ -1718,6 +1744,42 @@ export default function PharmaIntelligencePage() {
           align-items: start;
           margin-top: 10px;
         }
+
+        .sponsorGrid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          align-items: start;
+          margin-top: 10px;
+        }
+
+        @media (min-width: 900px) {
+          .sponsorGrid {
+            grid-template-columns: minmax(360px, 440px) 1fr;
+            column-gap: 16px;
+            row-gap: 14px;
+          }
+          .sponsorTotals {
+            grid-column: 1;
+            grid-row: 1;
+          }
+          .sPanelBuckets {
+            grid-column: 1;
+            grid-row: 2;
+          }
+          .sPanelPhases {
+            grid-column: 1;
+            grid-row: 3;
+          }
+          .sPanelConditions {
+            grid-column: 2;
+            grid-row: 1 / span 3;
+          }
+        }
+
+        .sPanelBody {
+          margin-top: 6px;
+        }
         .sPanel {
           background: var(--surface-2);
           border: 1px solid var(--border);
@@ -1830,6 +1892,23 @@ export default function PharmaIntelligencePage() {
             padding: 0;
           }
 
+
+          /* Mobile: keep horizontal scroll tables as intrinsic-width */
+          .hScrollInner {
+            display: inline-block;
+            min-width: max-content;
+          }
+          .hScrollInner > table {
+            width: max-content;
+          }
+
+          /* Mobile: hide bar column to keep header/value alignment tight */
+          .tblMini.tblWide th:nth-child(4),
+          .tblMini.tblWide td:nth-child(4),
+          .tblMini.tblReason th:nth-child(4),
+          .tblMini.tblReason td:nth-child(4) {
+            display: none;
+          }
           /* Ensure page respects safe areas and doesn't clip the right edge */
           :global(.page) {
             padding-left: max(12px, env(safe-area-inset-left));
@@ -1852,7 +1931,7 @@ export default function PharmaIntelligencePage() {
           }
           .tblMini th,
           .tblMini td {
-            padding: 10px 8px;
+            padding: 8px 8px;
           }
           .barTrack {
             width: 88px;
