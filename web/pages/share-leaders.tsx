@@ -1,7 +1,4 @@
 // web/pages/share-leaders.tsx
-//
-// Share-leaders page: find sponsors / disease areas with high share of a selected stop-reason bucket.
-// Tables are rendered inside a fixed-height scroll container (scrollbar track always visible).
 
 import Head from "next/head";
 import Link from "next/link";
@@ -151,11 +148,16 @@ function RankTable({
   rows: ShareRow[];
   getHref: (r: ShareRow) => string;
 }) {
-  const shown = rows.slice(0, 50);
+  // IMPORTANT: render ALL rows (no slice), so everything is reachable via scroll.
+  const shown = rows;
   const maxShare = shown.length ? shown[0].share : 0;
 
   return (
     <div className="rankWrap" role="region" aria-label="Ranked results">
+      <div className="rankMeta muted small">
+        Showing <b>{shown.length.toLocaleString()}</b> results
+      </div>
+
       <div className="rankScroller">
         <table className="rankTbl">
           <thead>
@@ -259,7 +261,7 @@ export default function ShareLeadersPage() {
       bioOnly,
       minTrials: Math.max(1, minTrialsCompany || 1),
       bucketSet: bucketSetCompany,
-      getKey: (r) => normEntity(r.lead_sponsor),
+      getKey: (r) => normEntity((r as any).lead_sponsor),
       getLabel: (k) => k,
       unknownLabel: "Unknown"
     });
@@ -271,7 +273,7 @@ export default function ShareLeadersPage() {
       bioOnly,
       minTrials: Math.max(1, minTrialsArea || 1),
       bucketSet: bucketSetArea,
-      getKey: (r) => normEntity(r.disease_area),
+      getKey: (r) => normEntity((r as any).disease_area),
       getLabel: (k) => k,
       unknownLabel: "Other"
     });
@@ -564,12 +566,16 @@ export default function ShareLeadersPage() {
             border-top: 1px solid var(--border);
             padding-top: 14px;
           }
+          .rankMeta {
+            margin-bottom: 8px;
+          }
 
-          /* Force an internal scroll region. Scrollbar track is always visible (overflow-y: scroll). */
+          /* KEY FIX:
+             - shorter fixed viewport -> table will overflow -> scrollbar appears
+             - internal scrolling keeps page compact while all results remain accessible */
           .rankScroller {
             overflow-x: auto;
-            overflow-y: scroll;
-            scrollbar-gutter: stable both-edges;
+            overflow-y: auto;
             overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
 
@@ -577,15 +583,22 @@ export default function ShareLeadersPage() {
             border: 1px solid var(--border);
             background: var(--surface);
 
-            height: clamp(280px, 40vh, 360px);
-            max-height: clamp(280px, 40vh, 360px);
+            /* shorter by design */
+            height: 260px;
+            max-height: 260px;
 
             box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
           }
+          @media (max-width: 520px) {
+            .rankScroller {
+              height: 220px;
+              max-height: 220px;
+            }
+          }
           @media (min-width: 980px) {
             .rankScroller {
-              height: clamp(320px, 48vh, 440px);
-              max-height: clamp(320px, 48vh, 440px);
+              height: 300px;
+              max-height: 300px;
             }
           }
 
@@ -683,25 +696,6 @@ export default function ShareLeadersPage() {
             margin-top: 12px;
             font-size: 12px;
           }
-
-          /* Make scrollbars visibly styled in Chromium/WebKit (helps if OS uses overlay scrollbars). */
-          .rankScroller::-webkit-scrollbar {
-            width: 12px;
-            height: 12px;
-          }
-          .rankScroller::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.06);
-            border-radius: 999px;
-          }
-          .rankScroller::-webkit-scrollbar-thumb {
-            background: rgba(15, 23, 42, 0.25);
-            border-radius: 999px;
-            border: 3px solid rgba(15, 23, 42, 0.06);
-          }
-          .rankScroller::-webkit-scrollbar-thumb:hover {
-            background: rgba(15, 23, 42, 0.35);
-          }
-
         `}</style>
       </div>
     </>
