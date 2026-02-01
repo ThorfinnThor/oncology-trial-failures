@@ -20,7 +20,7 @@ import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from
  * - Quick totals cards + fast drill-down links
  * - Failure taxonomy: buckets + phase×bucket
  * - Indication landscape: disease area + top conditions (+ exclude healthy toggle)
- * - Sponsor intelligence: sponsor selector + top buckets/phases/conditions + explore drill-downs
+ * - Sponsor intelligence: sponsor selector + top buckets/phases/disease areas + explore drill-downs
  */
 
 type BucketKey = string;
@@ -56,7 +56,7 @@ type SponsorProfile = {
   bioShare: number;
   topBuckets: { bucket: string; count: number }[];
   topPhases: { phase: string; count: number }[];
-  topConds: { condition: string; count: number }[];
+  topAreas: { area: string; count: number }[];
 };
 
 function normEntity(s?: string): string {
@@ -229,7 +229,7 @@ export default function PharmaIntelligencePage() {
   const [sponsorMenuOpen, setSponsorMenuOpen] = useState<boolean>(false);
   const sponsorBoxRef = useRef<HTMLDivElement | null>(null);
 
-  // Exclude "Healthy" toggle (applies to global + sponsor top conditions)
+  // Exclude "Healthy" toggle (applies to global top conditions only)
   const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
 
   useEffect(() => {
@@ -477,7 +477,6 @@ export default function PharmaIntelligencePage() {
     return [...prefix, ...sub].slice(0, 50);
   }, [sponsorQuery, sponsorList]);
 
-
   useEffect(() => {
     if (!selectedSponsor && sponsorList.length) setSelectedSponsor(sponsorList[0]);
   }, [selectedSponsor, sponsorList]);
@@ -517,7 +516,7 @@ export default function PharmaIntelligencePage() {
 
     const bucketCounts = new Map<string, number>();
     const phaseCounts = new Map<string, number>();
-    const condCounts = new Map<string, number>();
+    const areaCounts = new Map<string, number>();
 
     for (const r of sRows) {
       const b = normalizeBucketForDisplay(reasonBucket(r) || "");
@@ -526,13 +525,8 @@ export default function PharmaIntelligencePage() {
       const p = representativePhase(r);
       phaseCounts.set(p, (phaseCounts.get(p) || 0) + 1);
 
-      const c0 = normEntity(r.condition_first || "");
-      if (c0) {
-        const key = normalizeConditionKey(c0);
-        if (key && !(excludeHealthy && isHealthyConditionKey(key))) {
-          condCounts.set(key, (condCounts.get(key) || 0) + 1);
-        }
-      }
+      const a = normEntity(r.disease_area || "Other/Unknown") || "Other/Unknown";
+      areaCounts.set(a, (areaCounts.get(a) || 0) + 1);
     }
 
     const topBuckets = Array.from(bucketCounts.entries())
@@ -545,17 +539,17 @@ export default function PharmaIntelligencePage() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 6);
 
-    const topConds = Array.from(condCounts.entries())
-      .map(([condition, count]) => ({ condition, count }))
+    const topAreas = Array.from(areaCounts.entries())
+      .map(([area, count]) => ({ area, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, 8);
 
-    return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topConds };
-  }, [rows, selectedSponsor, excludeHealthy]);
+    return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topAreas };
+  }, [rows, selectedSponsor]);
 
   const sponsorBucketMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topBuckets.map((x) => x.count) || [0])), [sponsorProfile]);
   const sponsorPhaseMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topPhases.map((x) => x.count) || [0])), [sponsorProfile]);
-  const sponsorCondMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topConds.map((x) => x.count) || [0])), [sponsorProfile]);
+  const sponsorAreaMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topAreas.map((x) => x.count) || [0])), [sponsorProfile]);
 
   // Precompute for wide table min-width (desktop)
   const matrixMinWidth = useMemo(() => {
@@ -570,31 +564,33 @@ export default function PharmaIntelligencePage() {
           <title>Pharma intelligence</title>
         </Head>
         <div className="min-h-screen">
-        <header className="topbar">
-          <div className="topbar-inner">
-            <div className="topbar-left">
-              <Link href="/explore" className="brand">
-                Clinical trial failures
-              </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">
-                  Explore
+          <header className="topbar">
+            <div className="topbar-inner">
+              <div className="topbar-left">
+                <Link href="/explore" className="brand">
+                  Clinical trial failures
                 </Link>
-                <Link className="navlink" href="/pharma-intelligence" aria-current="page">
-                  Pharma intelligence
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+                <nav className="nav" aria-label="Primary">
+                  <Link className="navlink" href="/explore">
+                    Explore
+                  </Link>
+                  <Link className="navlink" href="/pharma-intelligence" aria-current="page">
+                    Pharma intelligence
+                  </Link>
+                  <Link className="navlink" href="/share-leaders">
+                    Share leaders
+                  </Link>
+                  <Link className="navlink" href="/methods">
+                    Methods
+                  </Link>
+                </nav>
+              </div>
             </div>
+          </header>
+
+          <div className="page">
+            <div className="card p-4">Loading…</div>
           </div>
-        </header>
-
-        <div className="page">
-
-          <div className="card p-4">Loading…</div>
-        </div>
         </div>
       </>
     );
@@ -607,32 +603,35 @@ export default function PharmaIntelligencePage() {
           <title>Pharma intelligence</title>
         </Head>
         <div className="min-h-screen">
-        <header className="topbar">
-          <div className="topbar-inner">
-            <div className="topbar-left">
-              <Link href="/explore" className="brand">
-                Clinical trial failures
-              </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">
-                  Explore
+          <header className="topbar">
+            <div className="topbar-inner">
+              <div className="topbar-left">
+                <Link href="/explore" className="brand">
+                  Clinical trial failures
                 </Link>
-                <Link className="navlink" href="/pharma-intelligence" aria-current="page">
-                  Pharma intelligence
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+                <nav className="nav" aria-label="Primary">
+                  <Link className="navlink" href="/explore">
+                    Explore
+                  </Link>
+                  <Link className="navlink" href="/pharma-intelligence" aria-current="page">
+                    Pharma intelligence
+                  </Link>
+                  <Link className="navlink" href="/share-leaders">
+                    Share leaders
+                  </Link>
+                  <Link className="navlink" href="/methods">
+                    Methods
+                  </Link>
+                </nav>
+              </div>
+            </div>
+          </header>
+          <div className="page">
+            <div className="card p-4">
+              <div style={{ fontWeight: 800, marginBottom: 6 }}>Error</div>
+              <div className="muted">{err}</div>
             </div>
           </div>
-        </header>
-        <div className="page">
-          <div className="card p-4">
-            <div style={{ fontWeight: 800, marginBottom: 6 }}>Error</div>
-            <div className="muted">{err}</div>
-          </div>
-        </div>
         </div>
       </>
     );
@@ -658,6 +657,9 @@ export default function PharmaIntelligencePage() {
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
                 </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
+                </Link>
                 <Link className="navlink" href="/methods">
                   Methods
                 </Link>
@@ -666,183 +668,227 @@ export default function PharmaIntelligencePage() {
           </div>
         </header>
 
-      <div className="page">
-        {/* ===== Header ===== */}
-        <header className="header">
-          <div className="headerLeft">
-            <h1 className="title">Pharma intelligence</h1>
-            <div className="muted subtitle">
-              Snapshot derived from stopped interventional drug/biologic trials on ClinicalTrials.gov (API v2). Use Explore for full filtering.
-            </div>
-          </div>
-
-          <div className="headerRight">
-            <div className="chip">
-              Trials&nbsp;<b>{totals.total.toLocaleString()}</b>
-            </div>
-            <div className="chip">
-              Bio share&nbsp;<b>{safePct(totals.bioShare)}</b>
-            </div>
-            <div className="chip">
-              Window&nbsp;
-              <b>
-                {totals.minDate || "—"} → {totals.maxDate || "—"}
-              </b>
+        <div className="page">
+          {/* ===== Header ===== */}
+          <header className="header">
+            <div className="headerLeft">
+              <h1 className="title">Pharma intelligence</h1>
+              <div className="muted subtitle">
+                Snapshot derived from stopped interventional drug/biologic trials on ClinicalTrials.gov (API v2). Use Explore for full filtering.
+              </div>
             </div>
 
-            <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
-              {focusBio ? "Showing scientific failures" : "Show scientific failures"}
-            </button>
-          </div>
-        </header>
-
-        {/* ===== Quick totals ===== */}
-        <section className="grid3" aria-label="Quick totals">
-          <div className="card p-4">
-            <div className="muted small">Stopped trials</div>
-            <div className="kpi">{totals.total.toLocaleString()}</div>
-            <div className="muted small" style={{ marginTop: 4 }}>
-              Interventional, drug/biologic only.
-            </div>
-          </div>
-
-          <div className="card p-4">
-            <div className="muted small">Likely scientific failures</div>
-            <div className="kpi">{totals.bio.toLocaleString()}</div>
-            <div className="muted small" style={{ marginTop: 4 }}>
-              Conservative rule-based label.
-            </div>
-          </div>
-
-          <div className="card p-4">
-            <div className="muted small">Confidence breakdown (bio subset)</div>
-            <div className="miniRow" aria-label="Confidence breakdown">
-              <div className="miniLabel">HIGH</div>
-              <div className="miniVal">{totals.byConf.HIGH.toLocaleString()}</div>
-              <div className="miniLabel">MED</div>
-              <div className="miniVal">{totals.byConf.MEDIUM.toLocaleString()}</div>
-              <div className="miniLabel">LOW</div>
-              <div className="miniVal">{totals.byConf.LOW.toLocaleString()}</div>
-              <div className="miniLabel">UNK</div>
-              <div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
-            </div>
-          </div>
-
-          <div className="card p-4">
-            <div className="muted small">Fast drill-down</div>
-            <div className="muted small" style={{ marginTop: 4 }}>
-              Open Explore with pre-applied filters.
-            </div>
-                        <div className="btnRow" style={{ marginTop: 12 }}>
-              <Link className="btn btnBucketEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
-                Efficacy/Futility
-              </Link>
-              <Link className="btn btnBucketSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
-                Safety
-              </Link>
-              <Link className="btn btnBucketOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
-                Operational
-              </Link>
-              <Link className="btn btnBucketRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
-                Regulatory
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Failure taxonomy ===== */}
-        <section className="section" aria-label="Failure taxonomy">
-          <div className="sectionHead">
-            <h2 className="h2">Failure taxonomy</h2>
-            <div className="muted small">
-              Buckets prefer pipeline field <code>classification_reason</code>; heuristic fallback uses <code>why_stopped_short</code>.
-            </div>
-          </div>
-
-          <div className="grid2">
-            {/* Reason buckets */}
-            <div className="card p-4">
-              <div className="panelTitleRow">
-                <h3 className="h3">Reason buckets</h3>
-                <div className="muted small">Enrollment is collapsed into Other/Unknown on this page.</div>
+            <div className="headerRight">
+              <div className="chip">
+                Trials&nbsp;<b>{totals.total.toLocaleString()}</b>
+              </div>
+              <div className="chip">
+                Bio share&nbsp;<b>{safePct(totals.bioShare)}</b>
+              </div>
+              <div className="chip">
+                Window&nbsp;
+                <b>
+                  {totals.minDate || "—"} → {totals.maxDate || "—"}
+                </b>
               </div>
 
-              <div className="scrollHint">Swipe horizontally →</div>
-              <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
-                <div className="hScrollInner">
-                  <table className="tblMini tblReason" aria-label="Reason buckets table">
-                  <thead>
-                    <tr>
-                      <th>Bucket</th>
-                      <th className="num">Trials</th>
-                      <th className="num">Bio share</th>
-                      <th className="barCol" aria-hidden="true" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {bucketStats.map((b) => (
-                      <tr key={b.bucket}>
-                        <td>
-                          <div className="cellTop">
-                            <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
-                          </div>
-                          <div className="muted tiny" style={{ marginTop: 4 }}>
-                            {b.bio.toLocaleString()} likely scientific failures
-                          </div>
-                          <div className="cellSub">
-                            <Link className="link" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
-                              Explore →
-                            </Link>
-                          </div>
-                        </td>
-                        <td className="num">{b.total.toLocaleString()}</td>
-                        <td className="num">{safePct(b.bioShare)}</td>
-                        <td className="barCol">
-                          <Bar value={b.total} max={bucketMax} label={`${b.bucket} volume`} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
+                {focusBio ? "Showing scientific failures" : "Show scientific failures"}
+              </button>
+            </div>
+          </header>
+
+          {/* ===== Quick totals ===== */}
+          <section className="grid3" aria-label="Quick totals">
+            <div className="card p-4">
+              <div className="muted small">Stopped trials</div>
+              <div className="kpi">{totals.total.toLocaleString()}</div>
+              <div className="muted small" style={{ marginTop: 4 }}>
+                Interventional, drug/biologic only.
+              </div>
+            </div>
+
+            <div className="card p-4">
+              <div className="muted small">Likely scientific failures</div>
+              <div className="kpi">{totals.bio.toLocaleString()}</div>
+              <div className="muted small" style={{ marginTop: 4 }}>
+                Conservative rule-based label.
+              </div>
+            </div>
+
+            <div className="card p-4">
+              <div className="muted small">Confidence breakdown (bio subset)</div>
+              <div className="miniRow" aria-label="Confidence breakdown">
+                <div className="miniLabel">HIGH</div>
+                <div className="miniVal">{totals.byConf.HIGH.toLocaleString()}</div>
+                <div className="miniLabel">MED</div>
+                <div className="miniVal">{totals.byConf.MEDIUM.toLocaleString()}</div>
+                <div className="miniLabel">LOW</div>
+                <div className="miniVal">{totals.byConf.LOW.toLocaleString()}</div>
+                <div className="miniLabel">UNK</div>
+                <div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
+              </div>
+            </div>
+
+            <div className="card p-4">
+              <div className="muted small">Fast drill-down</div>
+              <div className="muted small" style={{ marginTop: 4 }}>
+                Open Explore with pre-applied filters.
+              </div>
+              <div className="btnRow" style={{ marginTop: 12 }}>
+                <Link className="btn btnBucketEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+                  Efficacy/Futility
+                </Link>
+                <Link className="btn btnBucketSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
+                  Safety
+                </Link>
+                <Link className="btn btnBucketOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+                  Operational
+                </Link>
+                <Link className="btn btnBucketRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
+                  Regulatory
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== Failure taxonomy ===== */}
+          <section className="section" aria-label="Failure taxonomy">
+            <div className="sectionHead">
+              <h2 className="h2">Failure taxonomy</h2>
+              <div className="muted small">
+                Buckets prefer pipeline field <code>classification_reason</code>; heuristic fallback uses <code>why_stopped_short</code>.
+              </div>
+            </div>
+
+            <div className="grid2">
+              {/* Reason buckets */}
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">Reason buckets</h3>
+                  <div className="muted small">Enrollment is collapsed into Other/Unknown on this page.</div>
+                </div>
+
+                <div className="scrollHint">Swipe horizontally →</div>
+                <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
+                  <div className="hScrollInner">
+                    <table className="tblMini tblReason" aria-label="Reason buckets table">
+                      <thead>
+                        <tr>
+                          <th>Bucket</th>
+                          <th className="num">Trials</th>
+                          <th className="num">Bio share</th>
+                          <th className="barCol" aria-hidden="true" />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bucketStats.map((b) => (
+                          <tr key={b.bucket}>
+                            <td>
+                              <div className="cellTop">
+                                <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
+                              </div>
+                              <div className="muted tiny" style={{ marginTop: 4 }}>
+                                {b.bio.toLocaleString()} likely scientific failures
+                              </div>
+                              <div className="cellSub">
+                                <Link className="link" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
+                                  Explore →
+                                </Link>
+                              </div>
+                            </td>
+                            <td className="num">{b.total.toLocaleString()}</td>
+                            <td className="num">{safePct(b.bioShare)}</td>
+                            <td className="barCol">
+                              <Bar value={b.total} max={bucketMax} label={`${b.bucket} volume`} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="note">
+                  Notes: this view is designed for quick directional insight. For production analysis, always confirm the pipeline fields on the trial detail page.
                 </div>
               </div>
 
-              <div className="note">
-                Notes: this view is designed for quick directional insight. For production analysis, always confirm the pipeline fields on the trial detail page.
-              </div>
-            </div>
+              {/* Phase × bucket matrix */}
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">Phase × bucket matrix</h3>
+                  <div className="muted small">Mobile uses swipeable cards per phase (more reliable than scrollable tables on iOS).</div>
+                </div>
 
-            {/* Phase × bucket matrix */}
-            <div className="card p-4">
-              <div className="panelTitleRow">
-                <h3 className="h3">Phase × bucket matrix</h3>
-                <div className="muted small">Mobile uses swipeable cards per phase (more reliable than scrollable tables on iOS).</div>
-              </div>
+                {/* Desktop/table version */}
+                <div className="desktopOnly">
+                  <div className="scrollHint">Scroll horizontally →</div>
+                  <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0}>
+                    <div className="hScrollInner">
+                      <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
+                        <thead>
+                          <tr>
+                            <th>Phase</th>
+                            {displayedBuckets.map((b) => (
+                              <th key={b} title={b} className="bucketHead">
+                                {b}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {phaseKeys.map((p) => (
+                            <tr key={p}>
+                              <td className="phaseCell">
+                                <span className={phasePillClass(p)}>{phaseLabel(p)}</span>
+                                <div className="muted tiny">{p}</div>
+                              </td>
 
-              {/* Desktop/table version */}
-              <div className="desktopOnly">
-                <div className="scrollHint">Scroll horizontally →</div>
-                <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0}>
-                  <div className="hScrollInner">
-                    <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
-                    <thead>
-                      <tr>
-                        <th>Phase</th>
-                        {displayedBuckets.map((b) => (
-                          <th key={b} title={b} className="bucketHead">
-                            {b}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {phaseKeys.map((p) => (
-                        <tr key={p}>
-                          <td className="phaseCell">
-                            <span className={phasePillClass(p)}>{phaseLabel(p)}</span>
-                            <div className="muted tiny">{p}</div>
-                          </td>
+                              {displayedBuckets.map((b) => {
+                                const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
+                                const total = cell?.total || 0;
+                                const bio = cell?.bio || 0;
 
+                                const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
+
+                                return (
+                                  <td key={`${p}_${b}`} className="matrixCell">
+                                    <Link className="cellLink" href={href}>
+                                      <div className="cellNums">
+                                        <span className="big">{total.toLocaleString()}</span>
+                                        {!focusBio && <span className="muted tiny">{bio.toLocaleString()} bio</span>}
+                                      </div>
+                                      <div className="cellBarTrack" aria-hidden="true">
+                                        <div className="cellBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
+                                      </div>
+                                    </Link>
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="note">
+                    Counting uses a single representative phase per trial (avoids double counting multi-phase records).
+                  </div>
+                </div>
+
+                {/* Mobile version */}
+                <div className="mobileOnly">
+                  {phaseKeys.map((p) => {
+                    return (
+                      <div key={p} className="phaseRow">
+                        <div className="phaseRowHead">
+                          <span className={phasePillClass(p)}>{phaseLabel(p)}</span>
+                          <span className="muted tiny">{p}</span>
+                        </div>
+
+                        <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0}>
                           {displayedBuckets.map((b) => {
                             const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
                             const total = cell?.total || 0;
@@ -851,302 +897,72 @@ export default function PharmaIntelligencePage() {
                             const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
 
                             return (
-                              <td key={`${p}_${b}`} className="matrixCell">
-                                <Link className="cellLink" href={href}>
-                                  <div className="cellNums">
-                                    <span className="big">{total.toLocaleString()}</span>
-                                    {!focusBio && <span className="muted tiny">{bio.toLocaleString()} bio</span>}
-                                  </div>
-                                  <div className="cellBarTrack" aria-hidden="true">
-                                    <div className="cellBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
-                                  </div>
-                                </Link>
-                              </td>
+                              <Link key={`${p}_${b}`} href={href} className="bucketCard">
+                                <div className="bucketCardTop">
+                                  <span className={bucketPillClass(b)}>{b}</span>
+                                </div>
+                                <div className="bucketCardNum">{total.toLocaleString()}</div>
+                                {!focusBio && <div className="muted tiny">{bio.toLocaleString()} bio</div>}
+                                <div className="cardBarTrack" aria-hidden="true">
+                                  <div className="cardBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
+                                </div>
+                              </Link>
                             );
                           })}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                </div>
-
-                <div className="note">
-                  Counting uses a single representative phase per trial (avoids double counting multi-phase records).
-                </div>
-              </div>
-
-              {/* Mobile version */}
-              <div className="mobileOnly">
-                {phaseKeys.map((p) => {
-                  return (
-                    <div key={p} className="phaseRow">
-                      <div className="phaseRowHead">
-                        <span className={phasePillClass(p)}>{phaseLabel(p)}</span>
-                        <span className="muted tiny">{p}</span>
+                        </div>
                       </div>
-
-                      <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0}>
-                        {displayedBuckets.map((b) => {
-                          const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
-                          const total = cell?.total || 0;
-                          const bio = cell?.bio || 0;
-
-                          const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
-
-                          return (
-                            <Link key={`${p}_${b}`} href={href} className="bucketCard">
-                              <div className="bucketCardTop">
-                                <span className={bucketPillClass(b)}>{b}</span>
-                              </div>
-                              <div className="bucketCardNum">{total.toLocaleString()}</div>
-                              {!focusBio && <div className="muted tiny">{bio.toLocaleString()} bio</div>}
-                              <div className="cardBarTrack" aria-hidden="true">
-                                <div className="cardBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ===== Indication landscape ===== */}
-        <section className="section" aria-label="Indication landscape">
-          <div className="sectionHead">
-            <h2 className="h2">Indication landscape</h2>
-            <div className="muted small">Derived from compact index fields (first condition per trial).</div>
-          </div>
-
-          <div className="grid2">
-            <div className="card p-4">
-              <div className="panelTitleRow">
-                <h3 className="h3">By disease area</h3>
-                <div className="muted small">Top areas by volume.</div>
-              </div>
-
-              <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
-                <div className="hScrollInner">
-                  <table className="tblMini tblWide" aria-label="Disease area table">
-                  <thead>
-                    <tr>
-                      <th>Disease area</th>
-                      <th className="num">Trials</th>
-                      <th className="num">Bio share</th>
-                      <th className="barCol" aria-hidden="true" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {diseaseAreaStats.map((a) => (
-                      <tr key={a.key}>
-                        <td>
-                          <div className="cellTop">
-                            <span className="pill pillNeutral">{a.label}</span>
-                          </div>
-                          <div className="muted tiny" style={{ marginTop: 4 }}>
-                            {a.bio.toLocaleString()} likely scientific failures
-                          </div>
-                          <div className="cellSub">
-                            <Link className="link" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
-                              Explore →
-                            </Link>
-                          </div>
-                        </td>
-                        <td className="num">{a.total.toLocaleString()}</td>
-                        <td className="num">{safePct(a.bioShare)}</td>
-                        <td className="barCol">
-                          <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                </div>
-              </div>
-
-              <div className="note">Disease area drill-down uses the Explore “area” filter.</div>
+          {/* ===== Indication landscape ===== */}
+          <section className="section" aria-label="Indication landscape">
+            <div className="sectionHead">
+              <h2 className="h2">Indication landscape</h2>
+              <div className="muted small">Derived from compact index fields (first condition per trial).</div>
             </div>
 
-            <div className="card p-4">
-              <div className="panelTitleRow">
-                <h3 className="h3">Top conditions</h3>
-                <label className="chip" style={{ cursor: "pointer" }}>
-                  <input
-                    type="checkbox"
-                    checked={excludeHealthy}
-                    onChange={(e) => setExcludeHealthy(e.target.checked)}
-                    style={{ marginRight: 8 }}
-                  />
-                  Exclude “Healthy”
-                </label>
-              </div>
-
-              <div className="hScroll vScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
-                <div className="hScrollInner">
-                  <table className="tblMini tblWide" aria-label="Top conditions table">
-                  <thead>
-                    <tr>
-                      <th>Condition</th>
-                      <th className="num">Trials</th>
-                      <th className="num">Bio share</th>
-                      <th className="barCol" aria-hidden="true" />
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {topConditionStats.map((c) => (
-                      <tr key={c.key}>
-                        <td>
-                          <div className="cellTop">
-                            <span className="pill pillNeutral">{c.label}</span>
-                          </div>
-                          <div className="muted tiny" style={{ marginTop: 4 }}>
-                            {c.bio.toLocaleString()} likely scientific failures
-                          </div>
-                          <div className="cellSub">
-                            <Link className="link" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
-                              Explore →
-                            </Link>
-                          </div>
-                        </td>
-                        <td className="num">{c.total.toLocaleString()}</td>
-                        <td className="num">{safePct(c.bioShare)}</td>
-                        <td className="barCol">
-                          <Bar value={c.total} max={Math.max(1, ...topConditionStats.map((x) => x.total))} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                </div>
-              </div>
-
-              <div className="note">
-                Condition drill-down uses Explore free-text search (q). For more complete condition analysis, extend the index to include full condition lists.
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Sponsor intelligence ===== */}
-        <section className="section" aria-label="Sponsor intelligence">
-          <div className="sectionHead">
-            <h2 className="h2">Sponsor intelligence</h2>
-            <div className="muted small">Sponsor drill-downs use Explore free-text search (q) plus bucket/phase where applicable.</div>
-          </div>
-
-          <div className="card p-4">
-            <div className="sponsorTopRow">
-              <div className="sponsorSelect">
-                <div className="muted small" style={{ marginBottom: 6 }}>
-                  Sponsor
-                </div>
-                <div ref={sponsorBoxRef} className="comboWrap">
-                  <input
-                    className="input"
-                    value={sponsorQuery}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setSponsorQuery(v);
-                      setSponsorMenuOpen(true);
-                    }}
-                    onFocus={() => setSponsorMenuOpen(true)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        const first = sponsorSuggestions[0] || "";
-                        const exact = sponsorList.find((s) => s.toLowerCase() === sponsorQuery.trim().toLowerCase());
-                        const next = exact || first;
-                        if (next) {
-                          setSelectedSponsor(next);
-                          setSponsorMenuOpen(false);
-                        }
-                      }
-                      if (e.key === "ArrowDown") setSponsorMenuOpen(true);
-                    }}
-                    placeholder="Type a sponsor…"
-                    aria-label="Sponsor"
-                  />
-
-                  {sponsorMenuOpen && sponsorSuggestions.length ? (
-                    <div className="comboMenu" role="listbox" aria-label="Sponsor suggestions">
-                      {sponsorSuggestions.slice(0, 12).map((s) => (
-                        <button
-                          key={s}
-                          type="button"
-                          className="comboItem"
-                          role="option"
-                          onMouseDown={(ev) => {
-                            // Prevent input blur before selection
-                            ev.preventDefault();
-                            setSelectedSponsor(s);
-                            setSponsorMenuOpen(false);
-                          }}
-                        >
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              </div>
-
-              <div className="sponsorBtns">
-                <Link className="btn" href={sponsorQueryHref(selectedSponsor)}>
-                  Open in Explore
-                </Link>
-                <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
-                  {focusBio ? "Showing scientific failures" : "Show scientific failures"}
-                </button>
-              </div>
-            </div>
-
-            {sponsorProfile && (
-              <div className="sponsorGrid">
-                <div className="sPanel sponsorTotals">
-                  <div className="subhead">Sponsor totals</div>
-                  <div className="panelTitle">{sponsorProfile.sponsor}</div>
-                  <div className="muted small" style={{ marginTop: 4 }}>
-                    Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
-                  </div>
-
-                  <div className="note" style={{ marginTop: 12 }}>
-                    The sponsor panel follows the current page mode (all trials vs scientific failures).
-                  </div>
+            <div className="grid2">
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">By disease area</h3>
+                  <div className="muted small">Top areas by volume.</div>
                 </div>
 
-                <div className="sPanel sPanelBuckets">
-                  <div className="panelTitleRow">
-                    <div className="subhead">Top buckets</div>
-                    <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
-                      View all →
-                    </Link>
-                  </div>
-
-                  <div className="sPanelBody">
-                    <table className="compactTbl" aria-label="Sponsor top buckets table">
+                <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
+                  <div className="hScrollInner">
+                    <table className="tblMini tblWide" aria-label="Disease area table">
                       <thead>
                         <tr>
-                          <th>Bucket</th>
-                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                          <th style={{ width: 120 }} aria-hidden="true" />
+                          <th>Disease area</th>
+                          <th className="num">Trials</th>
+                          <th className="num">Bio share</th>
+                          <th className="barCol" aria-hidden="true" />
                         </tr>
                       </thead>
                       <tbody>
-                        {sponsorProfile.topBuckets.map((x) => (
-                          <tr key={x.bucket}>
+                        {diseaseAreaStats.map((a) => (
+                          <tr key={a.key}>
                             <td>
-                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
-                                {x.bucket}
-                              </Link>
+                              <div className="cellTop">
+                                <span className="pill pillNeutral">{a.label}</span>
+                              </div>
+                              <div className="muted tiny" style={{ marginTop: 4 }}>
+                                {a.bio.toLocaleString()} likely scientific failures
+                              </div>
+                              <div className="cellSub">
+                                <Link className="link" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
+                                  Explore →
+                                </Link>
+                              </div>
                             </td>
-                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                            <td>
-                              <Bar value={x.count} max={sponsorBucketMax} />
+                            <td className="num">{a.total.toLocaleString()}</td>
+                            <td className="num">{safePct(a.bioShare)}</td>
+                            <td className="barCol">
+                              <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
                             </td>
                           </tr>
                         ))}
@@ -1155,70 +971,54 @@ export default function PharmaIntelligencePage() {
                   </div>
                 </div>
 
-                <div className="sPanel sPanelPhases">
-                  <div className="panelTitleRow">
-                    <div className="subhead">Top phases</div>
-                    <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
-                      View all →
-                    </Link>
-                  </div>
+                <div className="note">Disease area drill-down uses the Explore “area” filter.</div>
+              </div>
 
-                  <div className="sPanelBody">
-                    <table className="compactTbl" aria-label="Sponsor top phases table">
-                      <thead>
-                        <tr>
-                          <th>Phase</th>
-                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                          <th style={{ width: 120 }} aria-hidden="true" />
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {sponsorProfile.topPhases.map((x) => (
-                          <tr key={x.phase}>
-                            <td>
-                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
-                                {phaseLabel(x.phase)}
-                              </Link>
-                            </td>
-                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                            <td>
-                              <Bar value={x.count} max={sponsorPhaseMax} />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">Top conditions</h3>
+                  <label className="chip" style={{ cursor: "pointer" }}>
+                    <input
+                      type="checkbox"
+                      checked={excludeHealthy}
+                      onChange={(e) => setExcludeHealthy(e.target.checked)}
+                      style={{ marginRight: 8 }}
+                    />
+                    Exclude “Healthy”
+                  </label>
                 </div>
 
-                <div className="sPanel sPanelConditions">
-                  <div className="panelTitleRow">
-                    <div className="subhead">Top conditions</div>
-                    <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
-                      View all →
-                    </Link>
-                  </div>
-
-                  <div className="sPanelBody">
-                    <table className="compactTbl" aria-label="Sponsor top conditions table">
+                <div className="hScroll vScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
+                  <div className="hScrollInner">
+                    <table className="tblMini tblWide" aria-label="Top conditions table">
                       <thead>
                         <tr>
                           <th>Condition</th>
-                          <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                          <th style={{ width: 120 }} aria-hidden="true" />
+                          <th className="num">Trials</th>
+                          <th className="num">Bio share</th>
+                          <th className="barCol" aria-hidden="true" />
                         </tr>
                       </thead>
                       <tbody>
-                        {sponsorProfile.topConds.map((x) => (
-                          <tr key={x.condition}>
+                        {topConditionStats.map((c) => (
+                          <tr key={c.key}>
                             <td>
-                              <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { q: canonicalConditionLabel(x.condition, x.condition) })}>
-                                {canonicalConditionLabel(x.condition, x.condition)}
-                              </Link>
+                              <div className="cellTop">
+                                <span className="pill pillNeutral">{c.label}</span>
+                              </div>
+                              <div className="muted tiny" style={{ marginTop: 4 }}>
+                                {c.bio.toLocaleString()} likely scientific failures
+                              </div>
+                              <div className="cellSub">
+                                <Link className="link" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
+                                  Explore →
+                                </Link>
+                              </div>
                             </td>
-                            <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                            <td>
-                              <Bar value={x.count} max={sponsorCondMax} />
+                            <td className="num">{c.total.toLocaleString()}</td>
+                            <td className="num">{safePct(c.bioShare)}</td>
+                            <td className="barCol">
+                              <Bar value={c.total} max={Math.max(1, ...topConditionStats.map((x) => x.total))} />
                             </td>
                           </tr>
                         ))}
@@ -1226,29 +1026,231 @@ export default function PharmaIntelligencePage() {
                     </table>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </section>
 
-        {/* ===== Footer ===== */}
-        <footer className="footer muted">
-          Dataset version: <b>{meta?.version || "—"}</b>
-          {meta?.generated_at_utc ? (
-            <>
-              {" "}
-              • Generated: <b>{meta.generated_at_utc}</b>
-            </>
-          ) : null}
-          {meta?.source ? (
-            <>
-              {" "}
-              • Source: <b>{meta.source}</b>
-            </>
-          ) : null}
-        </footer>
+                <div className="note">
+                  Condition drill-down uses Explore free-text search (q). For more complete condition analysis, extend the index to include full condition lists.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== Sponsor intelligence ===== */}
+          <section className="section" aria-label="Sponsor intelligence">
+            <div className="sectionHead">
+              <h2 className="h2">Sponsor intelligence</h2>
+              <div className="muted small">Sponsor drill-downs use Explore free-text search (q) plus bucket/phase/area where applicable.</div>
+            </div>
+
+            <div className="card p-4">
+              <div className="sponsorTopRow">
+                <div className="sponsorSelect">
+                  <div className="muted small" style={{ marginBottom: 6 }}>
+                    Sponsor
+                  </div>
+                  <div ref={sponsorBoxRef} className="comboWrap">
+                    <input
+                      className="input"
+                      value={sponsorQuery}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setSponsorQuery(v);
+                        setSponsorMenuOpen(true);
+                      }}
+                      onFocus={() => setSponsorMenuOpen(true)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          const first = sponsorSuggestions[0] || "";
+                          const exact = sponsorList.find((s) => s.toLowerCase() === sponsorQuery.trim().toLowerCase());
+                          const next = exact || first;
+                          if (next) {
+                            setSelectedSponsor(next);
+                            setSponsorMenuOpen(false);
+                          }
+                        }
+                        if (e.key === "ArrowDown") setSponsorMenuOpen(true);
+                      }}
+                      placeholder="Type a sponsor…"
+                      aria-label="Sponsor"
+                    />
+
+                    {sponsorMenuOpen && sponsorSuggestions.length ? (
+                      <div className="comboMenu" role="listbox" aria-label="Sponsor suggestions">
+                        {sponsorSuggestions.slice(0, 12).map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            className="comboItem"
+                            role="option"
+                            onMouseDown={(ev) => {
+                              // Prevent input blur before selection
+                              ev.preventDefault();
+                              setSelectedSponsor(s);
+                              setSponsorMenuOpen(false);
+                            }}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="sponsorBtns">
+                  <Link className="btn" href={sponsorQueryHref(selectedSponsor)}>
+                    Open in Explore
+                  </Link>
+                  <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
+                    {focusBio ? "Showing scientific failures" : "Show scientific failures"}
+                  </button>
+                </div>
+              </div>
+
+              {sponsorProfile && (
+                <div className="sponsorGrid">
+                  <div className="sPanel sponsorTotals">
+                    <div className="subhead">Sponsor totals</div>
+                    <div className="panelTitle">{sponsorProfile.sponsor}</div>
+                    <div className="muted small" style={{ marginTop: 4 }}>
+                      Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
+                    </div>
+
+                    <div className="note" style={{ marginTop: 12 }}>
+                      The sponsor panel follows the current page mode (all trials vs scientific failures).
+                    </div>
+                  </div>
+
+                  <div className="sPanel sPanelBuckets">
+                    <div className="panelTitleRow">
+                      <div className="subhead">Top buckets</div>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                        View all →
+                      </Link>
+                    </div>
+
+                    <div className="sPanelBody">
+                      <table className="compactTbl" aria-label="Sponsor top buckets table">
+                        <thead>
+                          <tr>
+                            <th>Bucket</th>
+                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                            <th style={{ width: 120 }} aria-hidden="true" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sponsorProfile.topBuckets.map((x) => (
+                            <tr key={x.bucket}>
+                              <td>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
+                                  {x.bucket}
+                                </Link>
+                              </td>
+                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                              <td>
+                                <Bar value={x.count} max={sponsorBucketMax} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="sPanel sPanelPhases">
+                    <div className="panelTitleRow">
+                      <div className="subhead">Top phases</div>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                        View all →
+                      </Link>
+                    </div>
+
+                    <div className="sPanelBody">
+                      <table className="compactTbl" aria-label="Sponsor top phases table">
+                        <thead>
+                          <tr>
+                            <th>Phase</th>
+                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                            <th style={{ width: 120 }} aria-hidden="true" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sponsorProfile.topPhases.map((x) => (
+                            <tr key={x.phase}>
+                              <td>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
+                                  {phaseLabel(x.phase)}
+                                </Link>
+                              </td>
+                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                              <td>
+                                <Bar value={x.count} max={sponsorPhaseMax} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="sPanel sPanelAreas">
+                    <div className="panelTitleRow">
+                      <div className="subhead">Top disease areas</div>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                        View all →
+                      </Link>
+                    </div>
+
+                    <div className="sPanelBody">
+                      <table className="compactTbl" aria-label="Sponsor top disease areas table">
+                        <thead>
+                          <tr>
+                            <th>Disease area</th>
+                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                            <th style={{ width: 120 }} aria-hidden="true" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sponsorProfile.topAreas.map((x) => (
+                            <tr key={x.area}>
+                              <td>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { area: [x.area] })}>
+                                  {x.area}
+                                </Link>
+                              </td>
+                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                              <td>
+                                <Bar value={x.count} max={sponsorAreaMax} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* ===== Footer ===== */}
+          <footer className="footer muted">
+            Dataset version: <b>{meta?.version || "—"}</b>
+            {meta?.generated_at_utc ? (
+              <>
+                {" "}
+                • Generated: <b>{meta.generated_at_utc}</b>
+              </>
+            ) : null}
+            {meta?.source ? (
+              <>
+                {" "}
+                • Source: <b>{meta.source}</b>
+              </>
+            ) : null}
+          </footer>
+        </div>
       </div>
-    </div>
 
       <style jsx>{`
         .header {
@@ -1682,7 +1684,6 @@ export default function PharmaIntelligencePage() {
           border-radius: 999px;
         }
 
-
         /* ===== Sponsor typeahead ===== */
         .comboWrap {
           position: relative;
@@ -1771,7 +1772,7 @@ export default function PharmaIntelligencePage() {
             grid-column: 1;
             grid-row: 3;
           }
-          .sPanelConditions {
+          .sPanelAreas {
             grid-column: 2;
             grid-row: 1 / span 3;
           }
@@ -1891,7 +1892,6 @@ export default function PharmaIntelligencePage() {
             margin: 0;
             padding: 0;
           }
-
 
           /* Mobile: keep horizontal scroll tables as intrinsic-width */
           .hScrollInner {
