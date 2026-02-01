@@ -583,9 +583,6 @@ export default function PharmaIntelligencePage() {
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
                 </Link>
-                <Link className="navlink" href="/share-leaders">
-                  Share leaders
-                </Link>
                 <Link className="navlink" href="/methods">
                   Methods
                 </Link>
@@ -622,9 +619,6 @@ export default function PharmaIntelligencePage() {
                 </Link>
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
-                </Link>
-                <Link className="navlink" href="/share-leaders">
-                  Share leaders
                 </Link>
                 <Link className="navlink" href="/methods">
                   Methods
@@ -663,9 +657,6 @@ export default function PharmaIntelligencePage() {
                 </Link>
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
-                </Link>
-                <Link className="navlink" href="/share-leaders">
-                  Share leaders
                 </Link>
                 <Link className="navlink" href="/methods">
                   Methods
