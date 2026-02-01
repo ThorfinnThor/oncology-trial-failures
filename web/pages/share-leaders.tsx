@@ -210,7 +210,6 @@ export default function ShareLeadersPage() {
   const [bucketCompany, setBucketCompany] = useState(BUCKETS[0].key);
   const [bucketArea, setBucketArea] = useState(BUCKETS[0].key);
 
-  // default min trials is 10
   const [minTrialsCompany, setMinTrialsCompany] = useState(10);
   const [minTrialsArea, setMinTrialsArea] = useState(10);
 
@@ -563,7 +562,7 @@ export default function ShareLeadersPage() {
             padding-top: 14px;
           }
 
-          /* ✅ Stronger internal scrolling so tables never "take over" the page */
+          /* CHANGE: table is always an internal scroll area with a fixed viewport height */
           .rankScroller {
             overflow-x: auto;
             overflow-y: auto;
@@ -574,12 +573,15 @@ export default function ShareLeadersPage() {
             border: 1px solid var(--border);
             background: var(--surface);
 
-            /* default (mobile-ish / smaller viewports) */
-            max-height: 420px;
+            height: clamp(300px, 45vh, 420px);
+            max-height: clamp(300px, 45vh, 420px);
+
+            box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
           }
           @media (min-width: 980px) {
             .rankScroller {
-              max-height: 520px;
+              height: clamp(340px, 55vh, 520px);
+              max-height: clamp(340px, 55vh, 520px);
             }
           }
 
