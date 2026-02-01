@@ -158,48 +158,61 @@ function RankTable({
         Showing <b>{shown.length.toLocaleString()}</b> results
       </div>
 
-      <div className="rankScroller">
-        <table className="rankTbl">
-          <thead>
-            <tr>
-              <th className="th thRank">Rank</th>
-              <th className="th thName">Name</th>
-              <th className="th thNum">Share</th>
-              <th className="th thNum">Trials</th>
-              <th className="th thNum thNoWrap">In&nbsp;bucket</th>
-            </tr>
-          </thead>
-          <tbody>
-            {shown.map((r, i) => (
-              <tr key={r.key} className="tr">
-                <td className="td tdRank muted">{i + 1}</td>
-                <td className="td tdName">
-                  <div className="nameCell">
-                    <Link className="link" href={getHref(r)}>
-                      {r.label}
-                    </Link>
-                    <div className="miniBar" aria-hidden="true">
-                      <div
-                        className="miniBarFill"
-                        style={{ width: `${maxShare > 0 ? (r.share / maxShare) * 100 : 0}%` }}
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td className="td tdNum strong">{safePct(r.share)}</td>
-                <td className="td tdNum">{r.total.toLocaleString()}</td>
-                <td className="td tdNum">{r.inBucket.toLocaleString()}</td>
-              </tr>
-            ))}
-            {!shown.length ? (
+      <div className="scrollHint" aria-hidden="true">
+        Swipe to scroll →
+      </div>
+
+      {/*
+        Mobile-first scrolling strategy (mirrors pharma-intelligence.tsx):
+        - Always allow horizontal scroll for wide tables.
+        - Only enable *internal* vertical scrolling + sticky headers on desktop.
+          This avoids iOS Safari scroll-freeze quirks with sticky headers inside
+          overflow containers.
+      */}
+      <div className="hScroll vScroll rankScroll" tabIndex={0}>
+        <div className="hScrollInner">
+          <table className="rankTbl" aria-label="Ranked table">
+            <thead>
               <tr>
-                <td className="td muted" colSpan={5}>
-                  No results (try lowering “Min trials”).
-                </td>
+                <th className="th thRank">Rank</th>
+                <th className="th thName">Name</th>
+                <th className="th thNum">Share</th>
+                <th className="th thNum">Trials</th>
+                <th className="th thNum thNoWrap">In&nbsp;bucket</th>
               </tr>
-            ) : null}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {shown.map((r, i) => (
+                <tr key={r.key} className="tr">
+                  <td className="td tdRank muted">{i + 1}</td>
+                  <td className="td tdName">
+                    <div className="nameCell">
+                      <Link className="link" href={getHref(r)}>
+                        {r.label}
+                      </Link>
+                      <div className="miniBar" aria-hidden="true">
+                        <div
+                          className="miniBarFill"
+                          style={{ width: `${maxShare > 0 ? (r.share / maxShare) * 100 : 0}%` }}
+                        />
+                      </div>
+                    </div>
+                  </td>
+                  <td className="td tdNum strong">{safePct(r.share)}</td>
+                  <td className="td tdNum">{r.total.toLocaleString()}</td>
+                  <td className="td tdNum">{r.inBucket.toLocaleString()}</td>
+                </tr>
+              ))}
+              {!shown.length ? (
+                <tr>
+                  <td className="td muted" colSpan={5}>
+                    No results (try lowering “Min trials”).
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
@@ -544,9 +557,30 @@ export default function ShareLeadersPage() {
             flex-wrap: wrap;
             align-items: flex-end;
           }
+          .control {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          }
+          .control :global(.facet-title) {
+            margin-bottom: 0;
+          }
           .minTrials {
             width: 132px;
             max-width: 132px;
+          }
+          @media (max-width: 520px) {
+            .controls {
+              flex-direction: column;
+              align-items: stretch;
+            }
+            .control {
+              width: 100%;
+            }
+            .minTrials {
+              width: 100%;
+              max-width: 100%;
+            }
           }
 
           .topPick {
@@ -570,36 +604,56 @@ export default function ShareLeadersPage() {
             margin-bottom: 8px;
           }
 
-          /* KEY FIX:
-             - shorter fixed viewport -> table will overflow -> scrollbar appears
-             - internal scrolling keeps page compact while all results remain accessible */
-          .rankScroller {
-            overflow-x: auto;
-            overflow-y: auto;
-            overscroll-behavior: contain;
-            -webkit-overflow-scrolling: touch;
+          .scrollHint {
+            display: none;
+            color: var(--text-muted);
+            font-weight: 750;
+            font-size: 12px;
+            margin-bottom: 10px;
+          }
+          @media (max-width: 720px) {
+            .scrollHint {
+              display: block;
+            }
+          }
 
+          /* Mobile-first table scrolling (mirrors pharma-intelligence.tsx) */
+          .hScroll {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            scrollbar-gutter: stable both-edges;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-x;
+            overscroll-behavior-x: contain;
             border-radius: 12px;
             border: 1px solid var(--border);
             background: var(--surface);
-
-            /* shorter by design */
-            height: 260px;
-            max-height: 260px;
-
-            box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
+            transform: translateZ(0);
           }
-          @media (max-width: 520px) {
-            .rankScroller {
-              height: 220px;
-              max-height: 220px;
+
+          /* Desktop: clamp long tables inside cards and allow vertical scrolling + sticky header */
+          @media (min-width: 721px) {
+            .hScroll.vScroll {
+              max-height: 360px;
+              overflow-y: auto;
+              touch-action: pan-x pan-y;
+              overscroll-behavior: contain;
+              box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
+            }
+            .hScroll.vScroll thead th {
+              position: sticky;
+              top: 0;
+              background: var(--surface);
+              z-index: 2;
             }
           }
-          @media (min-width: 980px) {
-            .rankScroller {
-              height: 300px;
-              max-height: 300px;
-            }
+
+          .hScrollInner {
+            display: block;
+            width: 100%;
+            padding-bottom: 2px;
           }
 
           .rankTbl {
@@ -612,15 +666,11 @@ export default function ShareLeadersPage() {
           }
           @media (max-width: 980px) {
             .rankTbl {
-              min-width: 720px;
+              min-width: 740px; /* force horizontal scroll on phones */
             }
           }
 
           .th {
-            position: sticky;
-            top: 0;
-            z-index: 2;
-            background: var(--surface);
             border-bottom: 1px solid var(--border);
             text-align: left;
             padding: 12px 14px;
