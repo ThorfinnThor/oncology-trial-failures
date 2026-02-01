@@ -161,7 +161,9 @@ function RankTable({
               <th className="th thName">Name</th>
               <th className="th thNum">Share</th>
               <th className="th thNum">Trials</th>
-              <th className="th thNum">In bucket</th>
+              <th className="th thNum thNoWrap">
+                In&nbsp;bucket
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -210,8 +212,9 @@ export default function ShareLeadersPage() {
   const [bucketCompany, setBucketCompany] = useState(BUCKETS[0].key);
   const [bucketArea, setBucketArea] = useState(BUCKETS[0].key);
 
-  const [minTrialsCompany, setMinTrialsCompany] = useState(25);
-  const [minTrialsArea, setMinTrialsArea] = useState(25);
+  // ✅ default min trials now 10 (was 25)
+  const [minTrialsCompany, setMinTrialsCompany] = useState(10);
+  const [minTrialsArea, setMinTrialsArea] = useState(10);
 
   useEffect(() => {
     let alive = true;
@@ -562,7 +565,6 @@ export default function ShareLeadersPage() {
             padding-top: 14px;
           }
 
-          /* Key change: allow full-width table on desktop; only force min-width on small screens */
           .rankScroller {
             max-height: 560px;
             overflow: auto;
@@ -601,6 +603,9 @@ export default function ShareLeadersPage() {
             letter-spacing: 0.06em;
             white-space: nowrap;
           }
+          .thNoWrap {
+            white-space: nowrap !important;
+          }
 
           .td {
             padding: 12px 14px;
@@ -608,14 +613,13 @@ export default function ShareLeadersPage() {
             vertical-align: top;
           }
 
-          /* More breathing room + consistent widths */
           .thRank,
           .tdRank {
             width: 64px;
           }
           .thNum,
           .tdNum {
-            width: 110px;
+            width: 120px;
             text-align: right;
             white-space: nowrap;
           }
@@ -624,7 +628,6 @@ export default function ShareLeadersPage() {
             width: auto;
           }
 
-          /* Zebra + hover (same “data table” feel as pharma page) */
           tbody tr:nth-child(even) .td {
             background: rgba(15, 23, 42, 0.02);
           }
