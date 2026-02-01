@@ -37,15 +37,14 @@ function exploreHref(bioOnly: boolean, patch: Partial<UrlState>): string {
   return `/explore${encodeState({ ...base, ...patch })}`;
 }
 
+/**
+ * IMPORTANT: Only include these four buckets in the share-leaders filters.
+ */
 const BUCKETS: BucketOption[] = [
   { key: "EFFICACY/FUTILITY", label: "Efficacy/Futility", buckets: ["EFFICACY/FUTILITY"] },
   { key: "SAFETY", label: "Safety", buckets: ["SAFETY"] },
   { key: "OPERATIONAL", label: "Operational", buckets: ["OPERATIONAL"] },
-  { key: "REGULATORY", label: "Regulatory", buckets: ["REGULATORY"] },
-  { key: "STRATEGIC", label: "Strategic", buckets: ["STRATEGIC"] },
-  { key: "FUNDING", label: "Funding", buckets: ["FUNDING"] },
-  { key: "ENROLLMENT", label: "Enrollment", buckets: ["ENROLLMENT"] },
-  { key: "OTHER/UNKNOWN", label: "Missing/Unknown", buckets: ["OTHER/UNKNOWN"] }
+  { key: "REGULATORY", label: "Regulatory", buckets: ["REGULATORY"] }
 ];
 
 function computeShareTable(args: {
@@ -159,23 +158,25 @@ function RankTable({
         Showing <b>{shown.length.toLocaleString()}</b> results
       </div>
 
-      <div className="slScrollHint">Scroll inside table ↓ (wheel/trackpad), swipe ↔ for wide columns</div>
+      <div className="slScrollHint">
+        Scroll inside table ↓ (wheel/trackpad). On phones: swipe ↔ for wide columns.
+      </div>
 
-      {/* SAME STRUCTURE AS pharma-intelligence.tsx */}
+      {/* Same structure as pharma-intelligence */}
       <div className="hScroll vScroll" role="region" aria-label={`${ariaLabel} (scrollable)`} tabIndex={0}>
         <div className="hScrollInner">
-          <table className="tblMini tblWide tblShareLeaders" aria-label={ariaLabel}>
+          <table className="tblMini tblShareLeaders" aria-label={ariaLabel}>
             <thead>
               <tr>
-                <th style={{ width: 70 }}>Rank</th>
+                <th style={{ width: 64 }}>Rank</th>
                 <th>Name</th>
-                <th className="num" style={{ width: 120 }}>
+                <th className="num" style={{ width: 92 }}>
                   Share
                 </th>
-                <th className="num" style={{ width: 120 }}>
+                <th className="num" style={{ width: 92 }}>
                   Trials
                 </th>
-                <th className="num" style={{ width: 120 }}>
+                <th className="num" style={{ width: 110 }}>
                   In bucket
                 </th>
               </tr>
@@ -490,7 +491,7 @@ export default function ShareLeadersPage() {
           ) : null}
         </main>
 
-        {/* IMPORTANT: global styles, scoped under .shareLeaders so they affect child components like pharma-intelligence does */}
+        {/* Global styles scoped under .shareLeaders (so they apply inside child components) */}
         <style jsx global>{`
           .shareLeaders .slHeader {
             display: flex;
@@ -539,9 +540,15 @@ export default function ShareLeadersPage() {
             }
           }
 
+          /* critical in CSS grid: allow children to shrink (prevents one table forcing the other to lose columns) */
           .shareLeaders .slPanel {
             padding: 18px !important;
+            min-width: 0;
           }
+          .shareLeaders .slGrid2 > * {
+            min-width: 0;
+          }
+
           .shareLeaders .slPanelHead {
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
@@ -552,12 +559,11 @@ export default function ShareLeadersPage() {
             font-weight: 900;
             letter-spacing: -0.01em;
           }
-
           .shareLeaders .slSmall {
             font-size: 12px;
           }
 
-          /* Controls (mobile stack) */
+          /* Controls */
           .shareLeaders .slControls {
             margin-top: 14px;
             display: flex;
@@ -569,6 +575,7 @@ export default function ShareLeadersPage() {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            min-width: 0;
           }
           .shareLeaders .slMinTrials {
             width: 132px;
@@ -612,11 +619,11 @@ export default function ShareLeadersPage() {
             margin-bottom: 10px;
           }
 
-          /* ======= EXACT SCROLL PATTERN FROM pharma-intelligence ======= */
+          /* === pharma-intelligence scroll containers === */
           .shareLeaders .hScroll {
             width: 100%;
             max-width: 100%;
-            overflow-x: scroll;
+            overflow-x: auto; /* auto so we don't force a scrollbar when not needed */
             scrollbar-gutter: stable both-edges;
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
@@ -626,27 +633,24 @@ export default function ShareLeadersPage() {
             transform: translateZ(0);
           }
 
-          /* We clamp on ALL sizes here because you explicitly want the tables not to grow forever. */
+          /* Clamp on all sizes (you explicitly want tables not to get too long) */
           .shareLeaders .hScroll.vScroll {
-            max-height: 520px; /* desktop feel identical to pharma */
+            max-height: 520px;
             overflow-y: auto;
             touch-action: pan-x pan-y;
             overscroll-behavior: contain;
           }
-
-          /* Slightly smaller on mobile so cards don’t dominate the screen */
           @media (max-width: 520px) {
             .shareLeaders .hScroll.vScroll {
               max-height: 320px;
             }
           }
 
-          /* Sticky header only on desktop (same reason as pharma) */
           @media (min-width: 721px) {
             .shareLeaders .hScroll.vScroll thead th {
               position: sticky;
               top: 0;
-              background: var(--surface);
+              background: #fff;
               z-index: 2;
             }
           }
@@ -660,13 +664,24 @@ export default function ShareLeadersPage() {
             width: 100%;
           }
 
-          /* ======= Table styling (copied from pharma-intelligence) ======= */
+          /* === Table styling (match pharma-intelligence look) === */
           .shareLeaders .tblMini {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
-            min-width: 640px;
+
+            /* IMPORTANT CHANGE:
+               Do NOT force min-width on desktop (2-col grid). */
+            min-width: 0;
           }
+
+          /* On mobile, force horizontal scroll for wide tables */
+          @media (max-width: 720px) {
+            .shareLeaders .tblMini.tblShareLeaders {
+              min-width: 760px; /* ensures overflow on phones */
+            }
+          }
+
           .shareLeaders .tblMini th,
           .shareLeaders .tblMini td {
             border-bottom: 1px solid var(--border);
@@ -684,25 +699,25 @@ export default function ShareLeadersPage() {
           .shareLeaders .tblMini th.num {
             text-align: right;
           }
-          .shareLeaders .tblWide {
-            min-width: 720px;
-          }
-          .shareLeaders .tblShareLeaders {
-            min-width: 760px; /* ensures horizontal overflow on laptops/phones */
-          }
           .shareLeaders .num {
             text-align: right;
             white-space: nowrap;
             font-weight: 800;
           }
 
-          /* Mini-bar like your earlier share-leaders */
+          /* Allow long sponsor names to wrap instead of widening the table */
+          .shareLeaders .tblShareLeaders td:nth-child(2) {
+            white-space: normal;
+            word-break: break-word;
+          }
+
           .shareLeaders .slNameCell {
             display: flex;
             flex-direction: column;
             gap: 8px;
             min-width: 0;
           }
+
           .shareLeaders .slMiniBar {
             height: 9px;
             background: rgba(15, 23, 42, 0.08);
