@@ -157,12 +157,13 @@ function RankTable({
         Showing <b>{shown.length.toLocaleString()}</b> results
       </div>
 
-      <div className="scrollHint" aria-hidden="true">
-        Swipe to scroll →
-      </div>
-
-      {/* IMPORTANT: THIS is the clamped scrolling region */}
-      <div className="rankScroller" tabIndex={0} role="region" aria-label="Scrollable results table">
+      {/* This box MUST be the scroll container. Inline maxHeight makes it impossible for global CSS to override. */}
+      <div
+        className="rankViewport"
+        tabIndex={0}
+        style={{ maxHeight: "clamp(260px, 45vh, 520px)" }}
+        aria-label="Scrollable ranked table"
+      >
         <table className="rankTbl" aria-label="Ranked table">
           <thead>
             <tr>
@@ -195,7 +196,6 @@ function RankTable({
                 <td className="td tdNum">{r.inBucket.toLocaleString()}</td>
               </tr>
             ))}
-
             {!shown.length ? (
               <tr>
                 <td className="td muted" colSpan={5}>
@@ -206,6 +206,8 @@ function RankTable({
           </tbody>
         </table>
       </div>
+
+      <div className="scrollHint muted small">Scroll inside the table (mouse wheel / trackpad) ↓</div>
     </div>
   );
 }
@@ -563,9 +565,6 @@ export default function ShareLeadersPage() {
               flex-direction: column;
               align-items: stretch;
             }
-            .control {
-              width: 100%;
-            }
             .minTrials {
               width: 100%;
               max-width: 100%;
@@ -593,32 +592,10 @@ export default function ShareLeadersPage() {
             margin-bottom: 8px;
           }
 
-          .scrollHint {
-            display: none;
-            color: var(--text-muted);
-            font-weight: 750;
-            font-size: 12px;
-            margin-bottom: 10px;
-          }
-          @media (max-width: 720px) {
-            .scrollHint {
-              display: block;
-            }
-          }
-
-          /*
-            THIS IS THE IMPORTANT PART:
-            - Fixed/max height => internal vertical overflow
-            - overflow-y: scroll => scrollbar track exists whenever overflow container exists
-            - overflow-x: auto + min-width table => horizontal scroll on narrow screens
-          */
-          .rankScroller {
-            display: block;
+          /* THIS is the scroll container. If the page is still long after this, you are not running this file. */
+          .rankViewport {
             width: 100%;
-
-            overflow-x: auto;
-            overflow-y: scroll; /* <— force a vertical scrollbar when clamped */
-            scrollbar-gutter: stable both-edges;
+            overflow: auto; /* both axes */
             overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
 
@@ -626,29 +603,15 @@ export default function ShareLeadersPage() {
             border: 1px solid var(--border);
             background: var(--surface);
 
-            max-height: 360px; /* <— prevents the page from getting too long */
             box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
           }
 
-          @media (max-width: 520px) {
-            .rankScroller {
-              max-height: 280px;
-            }
-          }
-          @media (min-width: 1200px) {
-            .rankScroller {
-              max-height: 420px;
-            }
-          }
-
-          /* Desktop sticky header only (mobile Safari can be weird with sticky inside overflow) */
-          @media (min-width: 721px) {
-            .rankScroller thead th {
-              position: sticky;
-              top: 0;
-              z-index: 2;
-              background: var(--surface);
-            }
+          /* Keep header visible while scrolling INSIDE the viewport */
+          .rankViewport thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: var(--surface);
           }
 
           .rankTbl {
@@ -660,10 +623,10 @@ export default function ShareLeadersPage() {
             font-variant-numeric: tabular-nums;
           }
 
-          /* Forces horizontal scroll on small screens */
+          /* Force horizontal scrolling on narrow screens */
           @media (max-width: 980px) {
             .rankTbl {
-              min-width: 740px;
+              min-width: 760px;
             }
           }
 
@@ -740,9 +703,8 @@ export default function ShareLeadersPage() {
             font-size: 12px;
           }
 
-          /* Optional: make scrollbars more obvious (works in Firefox; WebKit uses OS settings) */
-          .rankScroller {
-            scrollbar-width: auto;
+          .scrollHint {
+            margin-top: 8px;
           }
         `}</style>
       </div>
