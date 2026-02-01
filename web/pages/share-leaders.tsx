@@ -12,7 +12,7 @@ import { isLikelyScientificFailure, reasonBucket } from "@/lib/filtering";
 type BucketOption = {
   key: string;
   label: string;
-  buckets: string[]; // reasonBucket tokens used for filtering + Explore drilldown
+  buckets: string[];
 };
 
 type ShareRow = {
@@ -94,33 +94,29 @@ function computeShareTable(args: {
   return out;
 }
 
-function Bar({ value, max, label }: { value: number; max: number; label?: string }) {
-  const pct = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0;
-  return (
-    <div className="barWrap" aria-label={label}>
-      <div className="barTrack">
-        <div className="barFill" style={{ width: `${pct * 100}%` }} />
-      </div>
-    </div>
-  );
-}
-
 function ControlGroup({
   bucketKey,
   setBucketKey,
   minTrials,
-  setMinTrials
+  setMinTrials,
+  label
 }: {
   bucketKey: string;
   setBucketKey: (v: string) => void;
   minTrials: number;
   setMinTrials: (n: number) => void;
+  label: string;
 }) {
   return (
     <div className="controls">
       <div className="control">
         <div className="facet-title">Bucket</div>
-        <select className="input select" value={bucketKey} onChange={(e) => setBucketKey(e.target.value)} aria-label="Bucket">
+        <select
+          className="input select"
+          value={bucketKey}
+          onChange={(e) => setBucketKey(e.target.value)}
+          aria-label={`${label} bucket`}
+        >
           {BUCKETS.map((b) => (
             <option key={b.key} value={b.key}>
               {b.label}
@@ -138,7 +134,7 @@ function ControlGroup({
           step={1}
           value={minTrials}
           onChange={(e) => setMinTrials(Math.max(1, parseInt(e.target.value || "1", 10)))}
-          aria-label="Minimum trials"
+          aria-label={`${label} minimum trials`}
         />
       </div>
     </div>
@@ -147,50 +143,52 @@ function ControlGroup({
 
 function RankTable({
   rows,
-  getHref,
-  maxRows = 50
+  getHref
 }: {
   rows: ShareRow[];
   getHref: (r: ShareRow) => string;
-  maxRows?: number;
 }) {
-  const shown = rows.slice(0, maxRows);
+  const shown = rows.slice(0, 50);
   const maxShare = shown.length ? shown[0].share : 0;
 
   return (
-    <div className="tblWrap" role="region" aria-label="Ranked results">
-      <div className="tblScroll">
-        <table className="tblMini tblWide">
+    <div className="rankWrap" role="region" aria-label="Ranked results">
+      <div className="rankScroller">
+        <table className="rankTbl">
           <thead>
             <tr>
-              <th style={{ width: 56 }}>Rank</th>
-              <th>Name</th>
-              <th className="num">Share</th>
-              <th className="barCol" />
-              <th className="num">Trials</th>
-              <th className="num">In bucket</th>
+              <th className="th thRank">Rank</th>
+              <th className="th thName">Name</th>
+              <th className="th thNum">Share</th>
+              <th className="th thNum">Trials</th>
+              <th className="th thNum">In bucket</th>
             </tr>
           </thead>
           <tbody>
             {shown.map((r, i) => (
-              <tr key={r.key}>
-                <td className="muted">{i + 1}</td>
-                <td>
-                  <Link className="link" href={getHref(r)}>
-                    {r.label}
-                  </Link>
+              <tr key={r.key} className="tr">
+                <td className="td tdRank muted">{i + 1}</td>
+                <td className="td tdName">
+                  <div className="nameCell">
+                    <Link className="link" href={getHref(r)}>
+                      {r.label}
+                    </Link>
+                    <div className="miniBar" aria-hidden="true">
+                      <div
+                        className="miniBarFill"
+                        style={{ width: `${maxShare > 0 ? (r.share / maxShare) * 100 : 0}%` }}
+                      />
+                    </div>
+                  </div>
                 </td>
-                <td className="num">{safePct(r.share)}</td>
-                <td className="barCol">
-                  <Bar value={r.share} max={maxShare} label={`${safePct(r.share)} bar`} />
-                </td>
-                <td className="num">{r.total.toLocaleString()}</td>
-                <td className="num">{r.inBucket.toLocaleString()}</td>
+                <td className="td tdNum strong">{safePct(r.share)}</td>
+                <td className="td tdNum">{r.total.toLocaleString()}</td>
+                <td className="td tdNum">{r.inBucket.toLocaleString()}</td>
               </tr>
             ))}
             {!shown.length ? (
               <tr>
-                <td className="muted" colSpan={6}>
+                <td className="td muted" colSpan={5}>
                   No results (try lowering “Min trials”).
                 </td>
               </tr>
@@ -207,7 +205,7 @@ export default function ShareLeadersPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  const [focusBio, setFocusBio] = useState(false);
+  const [bioOnly, setBioOnly] = useState(false);
 
   const [bucketCompany, setBucketCompany] = useState(BUCKETS[0].key);
   const [bucketArea, setBucketArea] = useState(BUCKETS[0].key);
@@ -237,12 +235,10 @@ export default function ShareLeadersPage() {
     };
   }, []);
 
-  const scopedRows = useMemo(() => {
-    if (!focusBio) return allRows;
-    return allRows.filter((r) => isLikelyScientificFailure(r));
-  }, [allRows, focusBio]);
-
-  const scopedCount = scopedRows.length;
+  const scopedCount = useMemo(() => {
+    if (!bioOnly) return allRows.length;
+    return allRows.filter((r) => isLikelyScientificFailure(r)).length;
+  }, [allRows, bioOnly]);
 
   const bucketSetCompany = useMemo(() => {
     const opt = BUCKETS.find((b) => b.key === bucketCompany) || BUCKETS[0];
@@ -257,29 +253,35 @@ export default function ShareLeadersPage() {
   const companyTable = useMemo(() => {
     return computeShareTable({
       rows: allRows,
-      bioOnly: focusBio,
+      bioOnly,
       minTrials: Math.max(1, minTrialsCompany || 1),
       bucketSet: bucketSetCompany,
       getKey: (r) => normEntity(r.lead_sponsor),
       getLabel: (k) => k,
       unknownLabel: "Unknown"
     });
-  }, [allRows, focusBio, minTrialsCompany, bucketSetCompany]);
+  }, [allRows, bioOnly, minTrialsCompany, bucketSetCompany]);
 
   const areaTable = useMemo(() => {
     return computeShareTable({
       rows: allRows,
-      bioOnly: focusBio,
+      bioOnly,
       minTrials: Math.max(1, minTrialsArea || 1),
       bucketSet: bucketSetArea,
       getKey: (r) => normEntity(r.disease_area),
       getLabel: (k) => k,
       unknownLabel: "Other"
     });
-  }, [allRows, focusBio, minTrialsArea, bucketSetArea]);
+  }, [allRows, bioOnly, minTrialsArea, bucketSetArea]);
 
-  const companyBucketList = useMemo(() => (BUCKETS.find((b) => b.key === bucketCompany) || BUCKETS[0]).buckets, [bucketCompany]);
-  const areaBucketList = useMemo(() => (BUCKETS.find((b) => b.key === bucketArea) || BUCKETS[0]).buckets, [bucketArea]);
+  const companyBucketList = useMemo(
+    () => (BUCKETS.find((b) => b.key === bucketCompany) || BUCKETS[0]).buckets,
+    [bucketCompany]
+  );
+  const areaBucketList = useMemo(
+    () => (BUCKETS.find((b) => b.key === bucketArea) || BUCKETS[0]).buckets,
+    [bucketArea]
+  );
 
   const topCompany = companyTable[0];
   const topArea = areaTable[0];
@@ -318,13 +320,12 @@ export default function ShareLeadersPage() {
           </div>
         </header>
 
-        <div className="page">
+        <main className="page">
           <header className="header">
             <div className="headerLeft">
               <h1 className="title">Share leaders</h1>
               <div className="muted subtitle">
-                Identify sponsors and disease areas that disproportionately appear in a selected stop-reason bucket. Use the toggle to restrict to likely
-                biology-driven failures.
+                Identify sponsors and disease areas that disproportionately appear in a selected stop-reason bucket.
               </div>
             </div>
 
@@ -333,8 +334,12 @@ export default function ShareLeadersPage() {
                 Trials&nbsp;<b>{scopedCount.toLocaleString()}</b>
               </div>
 
-              <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
-                {focusBio ? "Showing scientific failures" : "Show scientific failures"}
+              <button
+                className={bioOnly ? "btn btn-primary" : "btn"}
+                onClick={() => setBioOnly((v) => !v)}
+                aria-pressed={bioOnly}
+              >
+                {bioOnly ? "Showing scientific failures" : "Show scientific failures"}
               </button>
             </div>
           </header>
@@ -344,94 +349,109 @@ export default function ShareLeadersPage() {
 
           {!loading && !err ? (
             <section className="grid2" aria-label="Share leaders panels">
-              <div className="card p-4">
-                <div className="muted small">Company</div>
-                <div className="panelTitle">Which company has the highest share of…</div>
-                <div className="muted small" style={{ marginTop: 6 }}>
-                  Share = (trials in selected bucket) / (all trials for that sponsor) within the current scope.
+              <div className="card p-4 panel">
+                <div className="panelHead">
+                  <div className="muted small">Company</div>
+                  <div className="panelTitle">Which company has the highest share of…</div>
+                  <div className="muted small" style={{ marginTop: 6 }}>
+                    Share = (trials in selected bucket) / (all trials for that sponsor) within the current scope.
+                  </div>
                 </div>
 
-                <div className="divider" />
+                <ControlGroup
+                  label="Company"
+                  bucketKey={bucketCompany}
+                  setBucketKey={setBucketCompany}
+                  minTrials={minTrialsCompany}
+                  setMinTrials={setMinTrialsCompany}
+                />
 
-                <ControlGroup bucketKey={bucketCompany} setBucketKey={setBucketCompany} minTrials={minTrialsCompany} setMinTrials={setMinTrialsCompany} />
-
-                <div className="divider" />
-
-                <div className="facet-title">Top sponsor</div>
                 <div className="topPick">
+                  <div className="facet-title">Top sponsor</div>
+                  <div className="topPickName">
+                    {topCompany ? (
+                      <Link
+                        className="link"
+                        href={exploreHref(bioOnly, {
+                          sponsor: [topCompany.key],
+                          bucket: companyBucketList,
+                          bio: bioOnly ? true : undefined
+                        })}
+                      >
+                        {topCompany.label}
+                      </Link>
+                    ) : (
+                      <span className="muted">—</span>
+                    )}
+                  </div>
                   {topCompany ? (
-                    <>
-                      <div className="topPickName">
-                        <Link
-                          className="link"
-                          href={exploreHref(focusBio, { sponsor: [topCompany.key], bucket: companyBucketList, bio: focusBio ? true : undefined })}
-                        >
-                          {topCompany.label}
-                        </Link>
-                      </div>
-                      <div className="muted small" style={{ marginTop: 4 }}>
-                        {safePct(topCompany.share)} ({topCompany.inBucket}/{topCompany.total}) in {companyBucketLabel}
-                      </div>
-                    </>
-                  ) : (
-                    <div className="muted">—</div>
-                  )}
+                    <div className="muted small" style={{ marginTop: 4 }}>
+                      {safePct(topCompany.share)} ({topCompany.inBucket}/{topCompany.total}) in {companyBucketLabel}
+                    </div>
+                  ) : null}
                 </div>
-
-                <div className="divider" />
 
                 <RankTable
                   rows={companyTable}
                   getHref={(r) =>
-                    exploreHref(focusBio, {
+                    exploreHref(bioOnly, {
                       sponsor: [r.key],
                       bucket: companyBucketList,
-                      bio: focusBio ? true : undefined
+                      bio: bioOnly ? true : undefined
                     })
                   }
                 />
               </div>
 
-              <div className="card p-4">
-                <div className="muted small">Disease area</div>
-                <div className="panelTitle">Which disease area has the highest share of failures…</div>
-                <div className="muted small" style={{ marginTop: 6 }}>
-                  Same share calculation, grouped by disease area within the current scope.
+              <div className="card p-4 panel">
+                <div className="panelHead">
+                  <div className="muted small">Disease area</div>
+                  <div className="panelTitle">Which disease area has the highest share of failures…</div>
+                  <div className="muted small" style={{ marginTop: 6 }}>
+                    Same share calculation, grouped by disease area within the current scope.
+                  </div>
                 </div>
 
-                <div className="divider" />
+                <ControlGroup
+                  label="Disease area"
+                  bucketKey={bucketArea}
+                  setBucketKey={setBucketArea}
+                  minTrials={minTrialsArea}
+                  setMinTrials={setMinTrialsArea}
+                />
 
-                <ControlGroup bucketKey={bucketArea} setBucketKey={setBucketArea} minTrials={minTrialsArea} setMinTrials={setMinTrialsArea} />
-
-                <div className="divider" />
-
-                <div className="facet-title">Top disease area</div>
                 <div className="topPick">
+                  <div className="facet-title">Top disease area</div>
+                  <div className="topPickName">
+                    {topArea ? (
+                      <Link
+                        className="link"
+                        href={exploreHref(bioOnly, {
+                          area: [topArea.key],
+                          bucket: areaBucketList,
+                          bio: bioOnly ? true : undefined
+                        })}
+                      >
+                        {topArea.label}
+                      </Link>
+                    ) : (
+                      <span className="muted">—</span>
+                    )}
+                  </div>
                   {topArea ? (
-                    <>
-                      <div className="topPickName">
-                        <Link className="link" href={exploreHref(focusBio, { area: [topArea.key], bucket: areaBucketList, bio: focusBio ? true : undefined })}>
-                          {topArea.label}
-                        </Link>
-                      </div>
-                      <div className="muted small" style={{ marginTop: 4 }}>
-                        {safePct(topArea.share)} ({topArea.inBucket}/{topArea.total}) in {areaBucketLabel}
-                      </div>
-                    </>
-                  ) : (
-                    <div className="muted">—</div>
-                  )}
+                    <div className="muted small" style={{ marginTop: 4 }}>
+                      {safePct(topArea.share)} ({topArea.inBucket}/{topArea.total}) in {areaBucketLabel}
+                    </div>
+                  ) : null}
                 </div>
-
-                <div className="divider" />
 
                 <RankTable
                   rows={areaTable}
                   getHref={(r) =>
-                    exploreHref(focusBio, {
+                    exploreHref(bioOnly, {
                       area: [r.key],
                       bucket: areaBucketList,
-                      bio: focusBio ? true : undefined
+                      bio: bioOnly ? true : undefined
                     })
                   }
                 />
@@ -444,7 +464,7 @@ export default function ShareLeadersPage() {
               Tip: shares can be unstable for small denominators — increase “Min trials” to focus on larger samples.
             </div>
           ) : null}
-        </div>
+        </main>
 
         <style jsx>{`
           .header {
@@ -453,9 +473,6 @@ export default function ShareLeadersPage() {
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 14px;
-          }
-          .headerLeft {
-            min-width: 0;
           }
           .title {
             margin: 0;
@@ -497,6 +514,14 @@ export default function ShareLeadersPage() {
             }
           }
 
+          .panel {
+            padding: 18px !important;
+          }
+
+          .panelHead {
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+          }
           .panelTitle {
             margin-top: 4px;
             font-size: 16px;
@@ -506,106 +531,134 @@ export default function ShareLeadersPage() {
           .small {
             font-size: 12px;
           }
-          .divider {
-            height: 1px;
-            background: var(--border);
-            margin: 12px 0;
-          }
 
           .controls {
+            margin-top: 14px;
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
             align-items: flex-end;
           }
           .minTrials {
-            width: 120px;
-            max-width: 120px;
+            width: 132px;
+            max-width: 132px;
           }
 
           .topPick {
-            margin-top: 2px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
           }
           .topPickName {
-            margin-top: 2px;
+            margin-top: 4px;
             font-size: 18px;
             font-weight: 900;
-            line-height: 1.2;
+            line-height: 1.25;
           }
 
-          /* Match pharma-intelligence accent coloring */
-          .link {
-            color: rgba(79, 70, 229, 0.92);
-            font-weight: 750;
-          }
-          .link:hover {
-            text-decoration: underline;
+          .rankWrap {
+            margin-top: 14px;
+            border-top: 1px solid var(--border);
+            padding-top: 14px;
           }
 
-          /* Tables (style aligned with pharma-intelligence) */
-          .tblWrap {
-            width: 100%;
-          }
-          .tblScroll {
-            max-height: 520px;
+          /* Key change: allow full-width table on desktop; only force min-width on small screens */
+          .rankScroller {
+            max-height: 560px;
             overflow: auto;
             -webkit-overflow-scrolling: touch;
             border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--surface);
           }
-          .tblMini {
+
+          .rankTbl {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            min-width: 720px;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 13.5px;
+            line-height: 1.25;
+            font-variant-numeric: tabular-nums;
           }
-          .tblMini th,
-          .tblMini td {
-            border-bottom: 1px solid var(--border);
-            padding: 8px 10px;
-            vertical-align: top;
+          @media (max-width: 980px) {
+            .rankTbl {
+              min-width: 720px;
+            }
           }
-          .tblMini th {
+
+          .th {
             position: sticky;
             top: 0;
             z-index: 2;
             background: var(--surface);
+            border-bottom: 1px solid var(--border);
             text-align: left;
+            padding: 12px 14px;
             font-size: 12px;
+            font-weight: 800;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.06em;
             white-space: nowrap;
           }
-          .tblWide {
-            min-width: 760px;
-          }
-          .num {
-            text-align: right;
-            white-space: nowrap;
-            font-weight: 800;
-          }
-          .barCol {
-            width: 140px;
+
+          .td {
+            padding: 12px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
           }
 
-          /* Bars (match pharma-intelligence) */
-          .barWrap {
-            display: flex;
-            justify-content: flex-end;
-            width: 100%;
+          /* More breathing room + consistent widths */
+          .thRank,
+          .tdRank {
+            width: 64px;
           }
-          .barTrack {
-            width: 100%;
-            max-width: 140px;
-            height: 8px;
-            border-radius: 999px;
+          .thNum,
+          .tdNum {
+            width: 110px;
+            text-align: right;
+            white-space: nowrap;
+          }
+          .thName,
+          .tdName {
+            width: auto;
+          }
+
+          /* Zebra + hover (same “data table” feel as pharma page) */
+          tbody tr:nth-child(even) .td {
+            background: rgba(15, 23, 42, 0.02);
+          }
+          tbody tr:hover .td {
+            background: rgba(79, 70, 229, 0.06);
+          }
+
+          .nameCell {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 0;
+          }
+          .link {
+            font-weight: 850;
+            color: rgb(79 70 229);
+          }
+          .link:hover {
+            text-decoration: underline;
+          }
+
+          .miniBar {
+            height: 9px;
             background: rgba(15, 23, 42, 0.08);
+            border-radius: 999px;
             overflow: hidden;
           }
-          .barFill {
+          .miniBarFill {
             height: 100%;
-            background: rgba(79, 70, 229, 0.55);
-            border-radius: 999px;
+            background: rgba(79, 70, 229, 0.65);
+          }
+
+          .strong {
+            font-weight: 900;
           }
 
           .foot {
