@@ -148,7 +148,6 @@ function RankTable({
   rows: ShareRow[];
   getHref: (r: ShareRow) => string;
 }) {
-  // IMPORTANT: render ALL rows (no slice), so everything is reachable via scroll.
   const shown = rows;
   const maxShare = shown.length ? shown[0].share : 0;
 
@@ -162,57 +161,50 @@ function RankTable({
         Swipe to scroll →
       </div>
 
-      {/*
-        Mobile-first scrolling strategy (mirrors pharma-intelligence.tsx):
-        - Always allow horizontal scroll for wide tables.
-        - Only enable *internal* vertical scrolling + sticky headers on desktop.
-          This avoids iOS Safari scroll-freeze quirks with sticky headers inside
-          overflow containers.
-      */}
-      <div className="hScroll vScroll rankScroll" tabIndex={0}>
-        <div className="hScrollInner">
-          <table className="rankTbl" aria-label="Ranked table">
-            <thead>
-              <tr>
-                <th className="th thRank">Rank</th>
-                <th className="th thName">Name</th>
-                <th className="th thNum">Share</th>
-                <th className="th thNum">Trials</th>
-                <th className="th thNum thNoWrap">In&nbsp;bucket</th>
-              </tr>
-            </thead>
-            <tbody>
-              {shown.map((r, i) => (
-                <tr key={r.key} className="tr">
-                  <td className="td tdRank muted">{i + 1}</td>
-                  <td className="td tdName">
-                    <div className="nameCell">
-                      <Link className="link" href={getHref(r)}>
-                        {r.label}
-                      </Link>
-                      <div className="miniBar" aria-hidden="true">
-                        <div
-                          className="miniBarFill"
-                          style={{ width: `${maxShare > 0 ? (r.share / maxShare) * 100 : 0}%` }}
-                        />
-                      </div>
+      {/* IMPORTANT: THIS is the clamped scrolling region */}
+      <div className="rankScroller" tabIndex={0} role="region" aria-label="Scrollable results table">
+        <table className="rankTbl" aria-label="Ranked table">
+          <thead>
+            <tr>
+              <th className="th thRank">Rank</th>
+              <th className="th thName">Name</th>
+              <th className="th thNum">Share</th>
+              <th className="th thNum">Trials</th>
+              <th className="th thNum thNoWrap">In&nbsp;bucket</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shown.map((r, i) => (
+              <tr key={r.key} className="tr">
+                <td className="td tdRank muted">{i + 1}</td>
+                <td className="td tdName">
+                  <div className="nameCell">
+                    <Link className="link" href={getHref(r)}>
+                      {r.label}
+                    </Link>
+                    <div className="miniBar" aria-hidden="true">
+                      <div
+                        className="miniBarFill"
+                        style={{ width: `${maxShare > 0 ? (r.share / maxShare) * 100 : 0}%` }}
+                      />
                     </div>
-                  </td>
-                  <td className="td tdNum strong">{safePct(r.share)}</td>
-                  <td className="td tdNum">{r.total.toLocaleString()}</td>
-                  <td className="td tdNum">{r.inBucket.toLocaleString()}</td>
-                </tr>
-              ))}
-              {!shown.length ? (
-                <tr>
-                  <td className="td muted" colSpan={5}>
-                    No results (try lowering “Min trials”).
-                  </td>
-                </tr>
-              ) : null}
-            </tbody>
-          </table>
-        </div>
+                  </div>
+                </td>
+                <td className="td tdNum strong">{safePct(r.share)}</td>
+                <td className="td tdNum">{r.total.toLocaleString()}</td>
+                <td className="td tdNum">{r.inBucket.toLocaleString()}</td>
+              </tr>
+            ))}
+
+            {!shown.length ? (
+              <tr>
+                <td className="td muted" colSpan={5}>
+                  No results (try lowering “Min trials”).
+                </td>
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
       </div>
     </div>
   );
@@ -562,9 +554,6 @@ export default function ShareLeadersPage() {
             flex-direction: column;
             gap: 8px;
           }
-          .control :global(.facet-title) {
-            margin-bottom: 0;
-          }
           .minTrials {
             width: 132px;
             max-width: 132px;
@@ -617,43 +606,49 @@ export default function ShareLeadersPage() {
             }
           }
 
-          /* Mobile-first table scrolling (mirrors pharma-intelligence.tsx) */
-          .hScroll {
+          /*
+            THIS IS THE IMPORTANT PART:
+            - Fixed/max height => internal vertical overflow
+            - overflow-y: scroll => scrollbar track exists whenever overflow container exists
+            - overflow-x: auto + min-width table => horizontal scroll on narrow screens
+          */
+          .rankScroller {
+            display: block;
             width: 100%;
-            max-width: 100%;
+
             overflow-x: auto;
+            overflow-y: scroll; /* <— force a vertical scrollbar when clamped */
             scrollbar-gutter: stable both-edges;
-            overflow-y: hidden;
+            overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
-            touch-action: pan-x;
-            overscroll-behavior-x: contain;
+
             border-radius: 12px;
             border: 1px solid var(--border);
             background: var(--surface);
-            transform: translateZ(0);
+
+            max-height: 360px; /* <— prevents the page from getting too long */
+            box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
           }
 
-          /* Desktop: clamp long tables inside cards and allow vertical scrolling + sticky header */
-          @media (min-width: 721px) {
-            .hScroll.vScroll {
-              max-height: 360px;
-              overflow-y: auto;
-              touch-action: pan-x pan-y;
-              overscroll-behavior: contain;
-              box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
+          @media (max-width: 520px) {
+            .rankScroller {
+              max-height: 280px;
             }
-            .hScroll.vScroll thead th {
+          }
+          @media (min-width: 1200px) {
+            .rankScroller {
+              max-height: 420px;
+            }
+          }
+
+          /* Desktop sticky header only (mobile Safari can be weird with sticky inside overflow) */
+          @media (min-width: 721px) {
+            .rankScroller thead th {
               position: sticky;
               top: 0;
-              background: var(--surface);
               z-index: 2;
+              background: var(--surface);
             }
-          }
-
-          .hScrollInner {
-            display: block;
-            width: 100%;
-            padding-bottom: 2px;
           }
 
           .rankTbl {
@@ -664,9 +659,11 @@ export default function ShareLeadersPage() {
             line-height: 1.25;
             font-variant-numeric: tabular-nums;
           }
+
+          /* Forces horizontal scroll on small screens */
           @media (max-width: 980px) {
             .rankTbl {
-              min-width: 740px; /* force horizontal scroll on phones */
+              min-width: 740px;
             }
           }
 
@@ -700,10 +697,6 @@ export default function ShareLeadersPage() {
             width: 120px;
             text-align: right;
             white-space: nowrap;
-          }
-          .thName,
-          .tdName {
-            width: auto;
           }
 
           tbody tr:nth-child(even) .td {
@@ -745,6 +738,11 @@ export default function ShareLeadersPage() {
           .foot {
             margin-top: 12px;
             font-size: 12px;
+          }
+
+          /* Optional: make scrollbars more obvious (works in Firefox; WebKit uses OS settings) */
+          .rankScroller {
+            scrollbar-width: auto;
           }
         `}</style>
       </div>
