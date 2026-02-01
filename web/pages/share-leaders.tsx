@@ -28,7 +28,7 @@ function normEntity(s?: string): string {
 }
 
 function safePct(x: number): string {
-  if (!Number.isFinite(x)) return "--";
+  if (!Number.isFinite(x)) return "—";
   return `${Math.round(x * 100)}%`;
 }
 
@@ -45,7 +45,7 @@ const BUCKETS: BucketOption[] = [
   { key: "STRATEGIC", label: "Strategic", buckets: ["STRATEGIC"] },
   { key: "FUNDING", label: "Funding", buckets: ["FUNDING"] },
   { key: "ENROLLMENT", label: "Enrollment", buckets: ["ENROLLMENT"] },
-  { key: "OTHER/UNKNOWN", label: "Missing", buckets: ["OTHER/UNKNOWN"] }
+  { key: "OTHER/UNKNOWN", label: "Missing/Unknown", buckets: ["OTHER/UNKNOWN"] }
 ];
 
 function computeShareTable(args: {
@@ -94,7 +94,18 @@ function computeShareTable(args: {
   return out;
 }
 
-function ControlsRow({
+function Bar({ value, max, label }: { value: number; max: number; label?: string }) {
+  const pct = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0;
+  return (
+    <div className="barWrap" aria-label={label}>
+      <div className="barTrack">
+        <div className="barFill" style={{ width: `${pct * 100}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function ControlGroup({
   bucketKey,
   setBucketKey,
   minTrials,
@@ -106,9 +117,9 @@ function ControlsRow({
   setMinTrials: (n: number) => void;
 }) {
   return (
-    <div className="sl-controls">
-      <label className="sl-field">
-        <div className="sl-label">Bucket</div>
+    <div className="controls">
+      <div className="control">
+        <div className="facet-title">Bucket</div>
         <select className="input select" value={bucketKey} onChange={(e) => setBucketKey(e.target.value)} aria-label="Bucket">
           {BUCKETS.map((b) => (
             <option key={b.key} value={b.key}>
@@ -116,12 +127,12 @@ function ControlsRow({
             </option>
           ))}
         </select>
-      </label>
+      </div>
 
-      <label className="sl-field">
-        <div className="sl-label">Min trials</div>
+      <div className="control">
+        <div className="facet-title">Min trials</div>
         <input
-          className="input sl-min"
+          className="input minTrials"
           type="number"
           min={1}
           step={1}
@@ -129,49 +140,64 @@ function ControlsRow({
           onChange={(e) => setMinTrials(Math.max(1, parseInt(e.target.value || "1", 10)))}
           aria-label="Minimum trials"
         />
-      </label>
+      </div>
     </div>
   );
 }
 
-function ShareTable({ rows, getHref }: { rows: ShareRow[]; getHref: (r: ShareRow) => string }) {
-  const maxShare = rows.length ? rows[0].share : 0;
+function RankTable({
+  rows,
+  getHref,
+  maxRows = 50
+}: {
+  rows: ShareRow[];
+  getHref: (r: ShareRow) => string;
+  maxRows?: number;
+}) {
+  const shown = rows.slice(0, maxRows);
+  const maxShare = shown.length ? shown[0].share : 0;
 
   return (
-    <div className="sl-tableWrap" role="region" aria-label="Ranked share table">
-      <table className="sl-table">
-        <thead>
-          <tr>
-            <th className="sl-th sl-rank">Rank</th>
-            <th className="sl-th">Name</th>
-            <th className="sl-th sl-num">Share</th>
-            <th className="sl-th sl-num">Trials</th>
-            <th className="sl-th sl-num">In bucket</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.slice(0, 50).map((r, i) => (
-            <tr key={r.key} className="sl-tr">
-              <td className="sl-td sl-rank muted">{i + 1}</td>
-              <td className="sl-td">
-                <div className="sl-name">
-                  <Link className="sl-link" href={getHref(r)}>
+    <div className="tblWrap" role="region" aria-label="Ranked results">
+      <div className="tblScroll">
+        <table className="tblMini tblWide">
+          <thead>
+            <tr>
+              <th style={{ width: 56 }}>Rank</th>
+              <th>Name</th>
+              <th className="num">Share</th>
+              <th className="barCol" />
+              <th className="num">Trials</th>
+              <th className="num">In bucket</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shown.map((r, i) => (
+              <tr key={r.key}>
+                <td className="muted">{i + 1}</td>
+                <td>
+                  <Link className="link" href={getHref(r)}>
                     {r.label}
                   </Link>
-                  <div className="sl-bar" aria-hidden="true">
-                    <div className="sl-barFill" style={{ width: `${maxShare > 0 ? (r.share / maxShare) * 100 : 0}%` }} />
-                  </div>
-                </div>
-              </td>
-              <td className="sl-td sl-num" style={{ fontWeight: 800 }}>
-                {safePct(r.share)}
-              </td>
-              <td className="sl-td sl-num">{r.total}</td>
-              <td className="sl-td sl-num">{r.inBucket}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+                <td className="num">{safePct(r.share)}</td>
+                <td className="barCol">
+                  <Bar value={r.share} max={maxShare} label={`${safePct(r.share)} bar`} />
+                </td>
+                <td className="num">{r.total.toLocaleString()}</td>
+                <td className="num">{r.inBucket.toLocaleString()}</td>
+              </tr>
+            ))}
+            {!shown.length ? (
+              <tr>
+                <td className="muted" colSpan={6}>
+                  No results (try lowering “Min trials”).
+                </td>
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -181,7 +207,7 @@ export default function ShareLeadersPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
-  const [bioOnly, setBioOnly] = useState(false);
+  const [focusBio, setFocusBio] = useState(false);
 
   const [bucketCompany, setBucketCompany] = useState(BUCKETS[0].key);
   const [bucketArea, setBucketArea] = useState(BUCKETS[0].key);
@@ -211,10 +237,12 @@ export default function ShareLeadersPage() {
     };
   }, []);
 
-  const scopedCount = useMemo(() => {
-    if (!bioOnly) return allRows.length;
-    return allRows.filter((r) => isLikelyScientificFailure(r)).length;
-  }, [allRows, bioOnly]);
+  const scopedRows = useMemo(() => {
+    if (!focusBio) return allRows;
+    return allRows.filter((r) => isLikelyScientificFailure(r));
+  }, [allRows, focusBio]);
+
+  const scopedCount = scopedRows.length;
 
   const bucketSetCompany = useMemo(() => {
     const opt = BUCKETS.find((b) => b.key === bucketCompany) || BUCKETS[0];
@@ -229,34 +257,40 @@ export default function ShareLeadersPage() {
   const companyTable = useMemo(() => {
     return computeShareTable({
       rows: allRows,
-      bioOnly,
+      bioOnly: focusBio,
       minTrials: Math.max(1, minTrialsCompany || 1),
       bucketSet: bucketSetCompany,
       getKey: (r) => normEntity(r.lead_sponsor),
       getLabel: (k) => k,
       unknownLabel: "Unknown"
     });
-  }, [allRows, bioOnly, minTrialsCompany, bucketSetCompany]);
+  }, [allRows, focusBio, minTrialsCompany, bucketSetCompany]);
 
   const areaTable = useMemo(() => {
     return computeShareTable({
       rows: allRows,
-      bioOnly,
+      bioOnly: focusBio,
       minTrials: Math.max(1, minTrialsArea || 1),
       bucketSet: bucketSetArea,
       getKey: (r) => normEntity(r.disease_area),
       getLabel: (k) => k,
       unknownLabel: "Other"
     });
-  }, [allRows, bioOnly, minTrialsArea, bucketSetArea]);
+  }, [allRows, focusBio, minTrialsArea, bucketSetArea]);
 
   const companyBucketList = useMemo(() => (BUCKETS.find((b) => b.key === bucketCompany) || BUCKETS[0]).buckets, [bucketCompany]);
   const areaBucketList = useMemo(() => (BUCKETS.find((b) => b.key === bucketArea) || BUCKETS[0]).buckets, [bucketArea]);
 
+  const topCompany = companyTable[0];
+  const topArea = areaTable[0];
+
+  const companyBucketLabel = (BUCKETS.find((b) => b.key === bucketCompany) || BUCKETS[0]).label;
+  const areaBucketLabel = (BUCKETS.find((b) => b.key === bucketArea) || BUCKETS[0]).label;
+
   return (
     <>
       <Head>
-        <title>Share leaders - Clinical trial failures</title>
+        <title>Share leaders — Clinical trial failures</title>
       </Head>
 
       <div className="min-h-screen">
@@ -284,93 +318,120 @@ export default function ShareLeadersPage() {
           </div>
         </header>
 
-        <main className="page">
-          <header className="sl-header">
-            <div className="sl-headerLeft">
-              <h1 className="sl-title">Share leaders</h1>
-              <div className="muted sl-sub">
-                Identify sponsors and disease areas that disproportionately show up in a selected stop-reason bucket. Toggle scientific failures to focus on likely
+        <div className="page">
+          <header className="header">
+            <div className="headerLeft">
+              <h1 className="title">Share leaders</h1>
+              <div className="muted subtitle">
+                Identify sponsors and disease areas that disproportionately appear in a selected stop-reason bucket. Use the toggle to restrict to likely
                 biology-driven failures.
               </div>
             </div>
 
-            <div className="sl-headerRight">
+            <div className="headerRight">
               <div className="chip">
                 Trials&nbsp;<b>{scopedCount.toLocaleString()}</b>
               </div>
-              <label className="sl-bioToggle">
-                <input type="checkbox" checked={bioOnly} onChange={(e) => setBioOnly(e.target.checked)} />
-                <span>Scientific failures only</span>
-              </label>
+
+              <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
+                {focusBio ? "Showing scientific failures" : "Show scientific failures"}
+              </button>
             </div>
           </header>
 
           {err ? <div className="card p-4 error">{err}</div> : null}
-          {loading ? <div className="card p-4 muted">Loading...</div> : null}
+          {loading ? <div className="card p-4 muted">Loading…</div> : null}
 
           {!loading && !err ? (
-            <section className="sl-grid" aria-label="Share leader panels">
-              <div className="card sl-panel">
-                <div className="sl-panelHead">
-                  <div>
-                    <div className="sl-kicker">Company</div>
-                    <h2 className="sl-h2">Which company has the highest share of...</h2>
-                    <div className="muted sl-help">Share = (trials in selected bucket) / (all trials for that sponsor) within the current scope.</div>
-                  </div>
+            <section className="grid2" aria-label="Share leaders panels">
+              <div className="card p-4">
+                <div className="muted small">Company</div>
+                <div className="panelTitle">Which company has the highest share of…</div>
+                <div className="muted small" style={{ marginTop: 6 }}>
+                  Share = (trials in selected bucket) / (all trials for that sponsor) within the current scope.
                 </div>
 
-                <ControlsRow bucketKey={bucketCompany} setBucketKey={setBucketCompany} minTrials={minTrialsCompany} setMinTrials={setMinTrialsCompany} />
+                <div className="divider" />
 
-                <div className="sl-topline">
-                  <div className="sl-topLabel">Top sponsor</div>
-                  <div className="sl-topValue">{companyTable[0]?.label || "--"}</div>
-                  {companyTable[0] ? (
-                    <div className="muted sl-topSub">
-                      {safePct(companyTable[0].share)} ({companyTable[0].inBucket}/{companyTable[0].total})
-                    </div>
-                  ) : null}
+                <ControlGroup bucketKey={bucketCompany} setBucketKey={setBucketCompany} minTrials={minTrialsCompany} setMinTrials={setMinTrialsCompany} />
+
+                <div className="divider" />
+
+                <div className="facet-title">Top sponsor</div>
+                <div className="topPick">
+                  {topCompany ? (
+                    <>
+                      <div className="topPickName">
+                        <Link
+                          className="link"
+                          href={exploreHref(focusBio, { sponsor: [topCompany.key], bucket: companyBucketList, bio: focusBio ? true : undefined })}
+                        >
+                          {topCompany.label}
+                        </Link>
+                      </div>
+                      <div className="muted small" style={{ marginTop: 4 }}>
+                        {safePct(topCompany.share)} ({topCompany.inBucket}/{topCompany.total}) in {companyBucketLabel}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="muted">—</div>
+                  )}
                 </div>
 
-                <ShareTable
+                <div className="divider" />
+
+                <RankTable
                   rows={companyTable}
                   getHref={(r) =>
-                    exploreHref(bioOnly, {
+                    exploreHref(focusBio, {
                       sponsor: [r.key],
                       bucket: companyBucketList,
-                      bio: bioOnly ? true : undefined
+                      bio: focusBio ? true : undefined
                     })
                   }
                 />
               </div>
 
-              <div className="card sl-panel">
-                <div className="sl-panelHead">
-                  <div>
-                    <div className="sl-kicker">Disease area</div>
-                    <h2 className="sl-h2">Which disease area has the highest share of failures...</h2>
-                    <div className="muted sl-help">Same share calculation, grouped by disease area within the current scope.</div>
-                  </div>
+              <div className="card p-4">
+                <div className="muted small">Disease area</div>
+                <div className="panelTitle">Which disease area has the highest share of failures…</div>
+                <div className="muted small" style={{ marginTop: 6 }}>
+                  Same share calculation, grouped by disease area within the current scope.
                 </div>
 
-                <ControlsRow bucketKey={bucketArea} setBucketKey={setBucketArea} minTrials={minTrialsArea} setMinTrials={setMinTrialsArea} />
+                <div className="divider" />
 
-                <div className="sl-topline">
-                  <div className="sl-topLabel">Top disease area</div>
-                  <div className="sl-topValue">{areaTable[0]?.label || "--"}</div>
-                  {areaTable[0] ? (
-                    <div className="muted sl-topSub">
-                      {safePct(areaTable[0].share)} ({areaTable[0].inBucket}/{areaTable[0].total})
-                    </div>
-                  ) : null}
+                <ControlGroup bucketKey={bucketArea} setBucketKey={setBucketArea} minTrials={minTrialsArea} setMinTrials={setMinTrialsArea} />
+
+                <div className="divider" />
+
+                <div className="facet-title">Top disease area</div>
+                <div className="topPick">
+                  {topArea ? (
+                    <>
+                      <div className="topPickName">
+                        <Link className="link" href={exploreHref(focusBio, { area: [topArea.key], bucket: areaBucketList, bio: focusBio ? true : undefined })}>
+                          {topArea.label}
+                        </Link>
+                      </div>
+                      <div className="muted small" style={{ marginTop: 4 }}>
+                        {safePct(topArea.share)} ({topArea.inBucket}/{topArea.total}) in {areaBucketLabel}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="muted">—</div>
+                  )}
                 </div>
 
-                <ShareTable
+                <div className="divider" />
+
+                <RankTable
                   rows={areaTable}
                   getHref={(r) =>
-                    exploreHref(bioOnly, {
+                    exploreHref(focusBio, {
                       area: [r.key],
                       bucket: areaBucketList,
-                      bio: bioOnly ? true : undefined
+                      bio: focusBio ? true : undefined
                     })
                   }
                 />
@@ -378,206 +439,178 @@ export default function ShareLeadersPage() {
             </section>
           ) : null}
 
-          <div className="muted sl-foot">Tip: Shares can be unstable for small denominators - increase "Min trials" to focus on larger samples.</div>
-        </main>
+          {!loading && !err ? (
+            <div className="muted foot">
+              Tip: shares can be unstable for small denominators — increase “Min trials” to focus on larger samples.
+            </div>
+          ) : null}
+        </div>
 
         <style jsx>{`
-          .sl-header {
+          .header {
             display: flex;
             align-items: flex-start;
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 14px;
           }
-          .sl-title {
+          .headerLeft {
+            min-width: 0;
+          }
+          .title {
             margin: 0;
             font-size: 22px;
             font-weight: 900;
             letter-spacing: -0.01em;
           }
-          .sl-sub {
-            margin-top: 6px;
-            font-size: 13px;
+          .subtitle {
+            margin-top: 8px;
+            font-size: 14px;
+            line-height: 1.45;
             max-width: 820px;
-            line-height: 1.4;
           }
-          .sl-headerRight {
+          .headerRight {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
-          }
-          .sl-bioToggle {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            background: var(--surface);
-            font-size: 13px;
-            color: rgba(15, 23, 42, 0.88);
-            white-space: nowrap;
-            user-select: none;
-          }
-          .sl-bioToggle input {
-            margin: 0;
+            justify-content: flex-end;
           }
 
-          .sl-grid {
+          .grid2 {
             display: grid;
             grid-template-columns: 1fr;
             gap: 14px;
             align-items: start;
           }
-
-          .sl-panel {
-            overflow: hidden;
-          }
-          .sl-panelHead {
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-          }
-          .sl-kicker {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-          }
-          .sl-h2 {
-            margin: 6px 0 0;
-            font-size: 16px;
-            font-weight: 900;
-            letter-spacing: -0.01em;
-          }
-          .sl-help {
-            margin-top: 6px;
-            font-size: 12px;
-            line-height: 1.35;
-          }
-
-          .sl-controls {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-          }
-          .sl-field {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-          }
-          .sl-label {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-          }
-          .sl-min {
-            width: 120px;
-            max-width: 120px;
-          }
-
-          .sl-topline {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-          }
-          .sl-topLabel {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-          }
-          .sl-topValue {
-            margin-top: 4px;
-            font-size: 18px;
-            font-weight: 900;
-            color: var(--text);
-          }
-          .sl-topSub {
-            font-size: 13px;
-            margin-top: 2px;
-          }
-
-          .sl-tableWrap {
-            max-height: 520px;
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-          }
-          .sl-table {
-            width: 100%;
-            min-width: 680px;
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 13px;
-          }
-          .sl-th {
-            position: sticky;
-            top: 0;
-            z-index: 2;
-            background: var(--bg);
-            border-bottom: 1px solid var(--border);
-            text-align: left;
-            padding: 10px 12px;
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-          }
-          .sl-td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: top;
-          }
-          .sl-num {
-            text-align: right;
-            white-space: nowrap;
-          }
-          .sl-rank {
-            width: 54px;
-          }
-          .sl-name {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-          }
-          .sl-link {
-            font-weight: 850;
-            color: var(--accent);
-          }
-          .sl-link:hover {
-            text-decoration: underline;
-          }
-          .sl-bar {
-            height: 8px;
-            background: rgba(15, 23, 42, 0.06);
-            border-radius: 999px;
-            overflow: hidden;
-          }
-          .sl-barFill {
-            height: 100%;
-            background: rgba(79, 70, 229, 0.65);
-          }
-
-          .sl-foot {
-            font-size: 12px;
-            margin-top: 12px;
-          }
-
           @media (min-width: 980px) {
-            .sl-grid {
+            .grid2 {
               grid-template-columns: 1fr 1fr;
             }
           }
           @media (max-width: 520px) {
-            .sl-header {
+            .header {
               flex-direction: column;
             }
+            .headerRight {
+              justify-content: flex-start;
+            }
+          }
+
+          .panelTitle {
+            margin-top: 4px;
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: -0.01em;
+          }
+          .small {
+            font-size: 12px;
+          }
+          .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 12px 0;
+          }
+
+          .controls {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: flex-end;
+          }
+          .minTrials {
+            width: 120px;
+            max-width: 120px;
+          }
+
+          .topPick {
+            margin-top: 2px;
+          }
+          .topPickName {
+            margin-top: 2px;
+            font-size: 18px;
+            font-weight: 900;
+            line-height: 1.2;
+          }
+
+          /* Match pharma-intelligence accent coloring */
+          .link {
+            color: rgba(79, 70, 229, 0.92);
+            font-weight: 750;
+          }
+          .link:hover {
+            text-decoration: underline;
+          }
+
+          /* Tables (style aligned with pharma-intelligence) */
+          .tblWrap {
+            width: 100%;
+          }
+          .tblScroll {
+            max-height: 520px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 12px;
+          }
+          .tblMini {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            min-width: 720px;
+          }
+          .tblMini th,
+          .tblMini td {
+            border-bottom: 1px solid var(--border);
+            padding: 8px 10px;
+            vertical-align: top;
+          }
+          .tblMini th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: var(--surface);
+            text-align: left;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+          }
+          .tblWide {
+            min-width: 760px;
+          }
+          .num {
+            text-align: right;
+            white-space: nowrap;
+            font-weight: 800;
+          }
+          .barCol {
+            width: 140px;
+          }
+
+          /* Bars (match pharma-intelligence) */
+          .barWrap {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+          }
+          .barTrack {
+            width: 100%;
+            max-width: 140px;
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+          }
+          .barFill {
+            height: 100%;
+            background: rgba(79, 70, 229, 0.55);
+            border-radius: 999px;
+          }
+
+          .foot {
+            margin-top: 12px;
+            font-size: 12px;
           }
         `}</style>
       </div>
