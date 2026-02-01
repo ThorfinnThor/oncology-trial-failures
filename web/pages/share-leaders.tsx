@@ -161,9 +161,7 @@ function RankTable({
               <th className="th thName">Name</th>
               <th className="th thNum">Share</th>
               <th className="th thNum">Trials</th>
-              <th className="th thNum thNoWrap">
-                In&nbsp;bucket
-              </th>
+              <th className="th thNum thNoWrap">In&nbsp;bucket</th>
             </tr>
           </thead>
           <tbody>
@@ -212,7 +210,7 @@ export default function ShareLeadersPage() {
   const [bucketCompany, setBucketCompany] = useState(BUCKETS[0].key);
   const [bucketArea, setBucketArea] = useState(BUCKETS[0].key);
 
-  // ✅ default min trials now 10 (was 25)
+  // default min trials is 10
   const [minTrialsCompany, setMinTrialsCompany] = useState(10);
   const [minTrialsArea, setMinTrialsArea] = useState(10);
 
@@ -565,13 +563,24 @@ export default function ShareLeadersPage() {
             padding-top: 14px;
           }
 
+          /* ✅ Stronger internal scrolling so tables never "take over" the page */
           .rankScroller {
-            max-height: 560px;
-            overflow: auto;
+            overflow-x: auto;
+            overflow-y: auto;
+            overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
+
             border-radius: 12px;
             border: 1px solid var(--border);
             background: var(--surface);
+
+            /* default (mobile-ish / smaller viewports) */
+            max-height: 420px;
+          }
+          @media (min-width: 980px) {
+            .rankScroller {
+              max-height: 520px;
+            }
           }
 
           .rankTbl {
