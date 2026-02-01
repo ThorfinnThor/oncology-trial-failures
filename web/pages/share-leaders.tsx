@@ -1,4 +1,7 @@
 // web/pages/share-leaders.tsx
+//
+// Share-leaders page: find sponsors / disease areas with high share of a selected stop-reason bucket.
+// Tables are rendered inside a fixed-height scroll container (scrollbar track always visible).
 
 import Head from "next/head";
 import Link from "next/link";
@@ -562,10 +565,11 @@ export default function ShareLeadersPage() {
             padding-top: 14px;
           }
 
-          /* CHANGE: table is always an internal scroll area with a fixed viewport height */
+          /* Force an internal scroll region. Scrollbar track is always visible (overflow-y: scroll). */
           .rankScroller {
             overflow-x: auto;
-            overflow-y: auto;
+            overflow-y: scroll;
+            scrollbar-gutter: stable both-edges;
             overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
 
@@ -573,15 +577,15 @@ export default function ShareLeadersPage() {
             border: 1px solid var(--border);
             background: var(--surface);
 
-            height: clamp(300px, 45vh, 420px);
-            max-height: clamp(300px, 45vh, 420px);
+            height: clamp(280px, 40vh, 360px);
+            max-height: clamp(280px, 40vh, 360px);
 
             box-shadow: inset 0 -12px 12px -12px rgba(15, 23, 42, 0.22);
           }
           @media (min-width: 980px) {
             .rankScroller {
-              height: clamp(340px, 55vh, 520px);
-              max-height: clamp(340px, 55vh, 520px);
+              height: clamp(320px, 48vh, 440px);
+              max-height: clamp(320px, 48vh, 440px);
             }
           }
 
@@ -679,6 +683,25 @@ export default function ShareLeadersPage() {
             margin-top: 12px;
             font-size: 12px;
           }
+
+          /* Make scrollbars visibly styled in Chromium/WebKit (helps if OS uses overlay scrollbars). */
+          .rankScroller::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+          }
+          .rankScroller::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.06);
+            border-radius: 999px;
+          }
+          .rankScroller::-webkit-scrollbar-thumb {
+            background: rgba(15, 23, 42, 0.25);
+            border-radius: 999px;
+            border: 3px solid rgba(15, 23, 42, 0.06);
+          }
+          .rankScroller::-webkit-scrollbar-thumb:hover {
+            background: rgba(15, 23, 42, 0.35);
+          }
+
         `}</style>
       </div>
     </>
