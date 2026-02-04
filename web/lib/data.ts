@@ -2,6 +2,7 @@ import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
 
 let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
+let _specialness: any | null = null;
 
 async function fetchJSON<T>(url: string): Promise<T> {
   const res = await fetch(url, { cache: "no-store" });
@@ -151,4 +152,20 @@ export async function loadDetail(nctId: string): Promise<TrialDetail | null> {
     conditions: row.condition_first || "",
     intervention_names: row.intervention_first || ""
   };
+}
+
+/**
+ * Aggregate "outlier" / enrichment stats used by /outliers.
+ * Published at web/public/specialness_index.json by scripts/publish_public_assets.py.
+ */
+export async function loadSpecialness(): Promise<any> {
+  if (_specialness) return _specialness;
+
+  const raw =
+    (await tryFetchJSON<any>("/specialness_index.json")) ??
+    (await tryFetchJSON<any>("/data/specialness_index.json"));
+
+  if (!raw) throw new Error("Failed to load specialness_index.json");
+  _specialness = raw;
+  return _specialness;
 }
