@@ -20,6 +20,8 @@ PUBLIC_BIO_CSV = os.path.join(PUBLIC_DIR, "biological_failure_trials.csv")
 
 PUBLIC_META = os.path.join(PUBLIC_DIR, "dataset_meta.json")
 
+PUBLIC_SPECIALNESS = os.path.join(PUBLIC_DIR, "specialness_index.json")
+
 
 def _load_json(path: str):
     with open(path, "r", encoding="utf-8") as f:
@@ -85,6 +87,19 @@ def main() -> None:
 
     with open(PUBLIC_META, "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
+
+    # Build and publish enrichment/outlier aggregates used by /outliers
+    try:
+        # When invoked as: python scripts/publish_public_assets.py
+        from build_specialness_assets import build_specialness_index  # type: ignore
+    except Exception:
+        # When invoked as a module: python -m scripts.publish_public_assets
+        from scripts.build_specialness_assets import build_specialness_index  # type: ignore
+
+    specialness = build_specialness_index(all_rows)
+    with open(PUBLIC_SPECIALNESS, "w", encoding="utf-8") as f:
+        json.dump(specialness, f, ensure_ascii=False, indent=2)
+    print(f"Wrote: {PUBLIC_SPECIALNESS}")
 
     print(f"Wrote: {PUBLIC_ALL_JSON}")
     print(f"Wrote: {PUBLIC_BIO_JSON}")
