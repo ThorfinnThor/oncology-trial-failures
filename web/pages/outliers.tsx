@@ -378,12 +378,15 @@ export default function OutliersPage() {
                 <Link className="navlink" href="/pharma-intelligence">
                   Pharma intelligence
                 </Link>
-                <Link className="navlink" href="/share-leaders">
-                  Share leaders
-                </Link>
+
+                {/* ✅ Keep order consistent with the rest of the site */}
                 <Link className="navlink" href="/outliers" aria-current="page">
                   Outliers
                 </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
+                </Link>
+
                 <Link className="navlink" href="/methods">
                   Methods
                 </Link>
