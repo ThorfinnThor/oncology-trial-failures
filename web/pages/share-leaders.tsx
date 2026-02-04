@@ -330,6 +330,9 @@ export default function ShareLeadersPage() {
                 <Link className="navlink" href="/pharma-intelligence">
                   Pharma intelligence
                 </Link>
+                <Link className="navlink" href="/outliers">
+                  Outliers
+                </Link>
                 <Link className="navlink" href="/share-leaders" aria-current="page">
                   Share leaders
                 </Link>
