@@ -563,7 +563,7 @@ export default function PharmaIntelligencePage() {
         <Head>
           <title>Pharma intelligence</title>
         </Head>
-        <div className="min-h-screen">
+        <div className="pharma min-h-screen">
           <header className="topbar">
             <div className="topbar-inner">
               <div className="topbar-left">
