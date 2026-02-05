@@ -577,9 +577,6 @@ export default function PharmaIntelligencePage() {
                   <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                     Pharma intelligence
                   </Link>
-                  <Link className="navlink" href="/outliers">
-                    Outliers
-                  </Link>
                   <Link className="navlink" href="/share-leaders">
                     Share leaders
                   </Link>
@@ -618,9 +615,6 @@ export default function PharmaIntelligencePage() {
                   </Link>
                   <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                     Pharma intelligence
-                  </Link>
-                  <Link className="navlink" href="/outliers">
-                    Outliers
                   </Link>
                   <Link className="navlink" href="/share-leaders">
                     Share leaders
@@ -662,9 +656,6 @@ export default function PharmaIntelligencePage() {
                 </Link>
                 <Link className="navlink" href="/pharma-intelligence" aria-current="page">
                   Pharma intelligence
-                </Link>
-                <Link className="navlink" href="/outliers">
-                  Outliers
                 </Link>
                 <Link className="navlink" href="/share-leaders">
                   Share leaders
@@ -1884,26 +1875,30 @@ export default function PharmaIntelligencePage() {
             font-size: 12px;
           }
 
-          /* Mobile: keep header actions directly under title/subtitle (no bottom-pushed whitespace) */
-          .header {
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: flex-start;
-          }
-          .headerRight {
-            width: 100%;
-            justify-content: flex-start;
-            align-items: stretch;
-          }
-          .headerRight :global(.chip) {
-            width: 100%;
-          }
-          .headerRight :global(.btn),
-          .headerRight :global(.btn-primary),
-          .headerRight button {
-            width: 100%;
-            justify-content: center;
-          }
+
+/* Mobile: prevent iOS Safari flex-wrap gap in the page header.
+   On some Safari builds, a wrapping flex header can create a large internal
+   vertical gap that pushes the second flex line (chips/button) far down.
+   The robust fix is to stop using flex for the header on phones. */
+.header {
+  display: block !important;
+}
+.headerRight {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start !important;
+  gap: 10px;
+}
+.headerRight .chip {
+  width: 100%;
+}
+.headerRight button {
+  width: 100%;
+  justify-content: center;
+}
           .h2 {
             font-size: 15px;
           }
