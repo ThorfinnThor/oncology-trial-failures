@@ -154,7 +154,7 @@ export default function ExplorePage() {
       </Head>
 
       <div className="min-h-screen">
-        <header className="topbar">
+        <header className="topbar topbar-explore">
           <div className="topbar-inner">
             <div className="topbar-left">
               <Link href="/explore" className="brand">
