@@ -1990,6 +1990,32 @@ export default function PharmaIntelligencePage() {
             font-size: 18px;
           }
         }
+                /* ===== Mobile: remove the big left whitespace next to the button ===== */
+        @media (max-width: 720px) {
+          .header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+          }
+
+          .headerRight {
+            width: 100%;
+            justify-content: flex-start !important;
+            align-items: stretch;
+          }
+
+          /* Stack chips nicely (no right-aligned “floating” chips) */
+          .headerRight .chip {
+            width: 100%;
+          }
+
+          /* Make the CTA full-width so it doesn’t look offset */
+          .headerRight button {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+
       `}</style>
     </>
   );
