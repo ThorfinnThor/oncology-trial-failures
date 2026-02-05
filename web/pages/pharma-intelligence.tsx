@@ -1990,31 +1990,45 @@ export default function PharmaIntelligencePage() {
             font-size: 18px;
           }
         }
-                /* ===== Mobile: remove the big left whitespace next to the button ===== */
+                 /* ===== Mobile: fix header layout (no bottom-pushed actions, no left whitespace) ===== */
         @media (max-width: 720px) {
           .header {
             flex-direction: column;
             align-items: stretch;
             gap: 10px;
+
+            /* critical: do NOT fill viewport */
+            height: auto !important;
+            min-height: 0 !important;
+            justify-content: flex-start !important;
+          }
+
+          /* in case there is a "hero" wrapper with a tall min-height */
+          .hero,
+          .heroWrap,
+          .heroInner,
+          .headerWrap {
+            height: auto !important;
+            min-height: 0 !important;
           }
 
           .headerRight {
             width: 100%;
             justify-content: flex-start !important;
             align-items: stretch;
+            margin-top: 0 !important;
           }
 
-          /* Stack chips nicely (no right-aligned “floating” chips) */
           .headerRight .chip {
             width: 100%;
           }
 
-          /* Make the CTA full-width so it doesn’t look offset */
           .headerRight button {
             width: 100%;
             justify-content: center;
           }
         }
+   
 
       `}</style>
     </>
