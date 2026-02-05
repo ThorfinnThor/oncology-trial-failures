@@ -591,3 +591,79 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
     min-width: 0;
   }
 }
+
+
+/* =========================
+   Mobile header refinement
+   ========================= */
+@media (max-width: 720px) {
+  /* Tighten vertical rhythm */
+  .topbar {
+    padding: 10px 12px 6px;
+  }
+
+  .topbar-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px; /* was 10px */
+  }
+
+  /* Brand and nav share the same left edge */
+  .topbar-left {
+    gap: 6px; /* was 8px */
+  }
+
+  .brand {
+    white-space: nowrap;
+    line-height: 1.1;
+    margin: 0; /* avoid any unexpected margins */
+  }
+
+  /* Force nav to align to left and remove any leftover justification */
+  .nav {
+    justify-content: flex-start !important;
+    align-items: center;
+    gap: 8px 10px;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Make each nav item consistent height to prevent “baseline wobble” */
+  .navlink {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    line-height: 1;
+    height: 30px;
+    white-space: nowrap;
+  }
+
+  .navlink[aria-current="page"] {
+    background: rgba(15, 23, 42, 0.06);
+  }
+
+  /* Controls wrap cleanly (Explore search + buttons) */
+  .topbar-center,
+  .topbar-right {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .topbar-right {
+    justify-content: flex-start;
+    gap: 8px;
+  }
+
+  /* Reduce the “white band” between header and content */
+  main.page {
+    padding-top: 12px !important; /* overrides larger desktop padding */
+  }
+
+  /* Also neutralize top margins of the first heading inside the page */
+  main.page h1:first-child,
+  main.page .page-title:first-child {
+    margin-top: 0 !important;
+  }
+}
