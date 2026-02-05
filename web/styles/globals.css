@@ -466,3 +466,50 @@ a{color:inherit;text-decoration:none}
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
 }
+
+
+/* ===== Explore header layout fix ===== */
+
+/* Never wrap the brand onto two lines (prevents "Clinical trial / failures") */
+.brand {
+  white-space: nowrap;
+}
+
+/*
+Explore is the only page with: left(nav) + center(search) + right(buttons).
+On wide screens this can still squeeze the left block; so we wrap into 2 rows:
+  Row 1: brand + nav
+  Row 2: search + actions
+*/
+.topbar-explore .topbar-inner {
+  flex-wrap: wrap;
+}
+
+.topbar-explore .topbar-left {
+  flex: 1 1 100%;
+  min-width: 0; /* override the default min-width:300px */
+}
+
+.topbar-explore .topbar-center {
+  flex: 1 1 560px;
+  max-width: 720px;
+  min-width: 260px;
+}
+
+.topbar-explore .topbar-right {
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+/* On smaller screens, keep it readable */
+@media (max-width: 860px) {
+  .topbar-explore .topbar-center {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+  .topbar-explore .topbar-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
