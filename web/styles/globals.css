@@ -667,3 +667,41 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
     margin-top: 0 !important;
   }
 }
+
+
+/* Mobile: avoid awkward left whitespace next to "Show scientific failures" */
+@media (max-width: 720px) {
+  /* Outliers page header actions */
+  .outliers .olHeaderRight {
+    width: 100%;
+    justify-content: flex-start !important;
+  }
+
+  /* Make the toggle button feel intentional on mobile */
+  .outliers .olHeaderRight .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Chips wrap nicely above the button */
+  .outliers .olHeaderRight .chip {
+    width: 100%;
+  }
+
+  /* Pharma intelligence header actions (chips + button) */
+  .pharma .piHeaderRight,
+  .pharma-intelligence .piHeaderRight,
+  .pharma .headerRight,
+  .pharma-intelligence .headerRight {
+    width: 100%;
+    justify-content: flex-start !important;
+  }
+
+  .pharma .piHeaderRight .btn,
+  .pharma-intelligence .piHeaderRight .btn,
+  .pharma .headerRight .btn,
+  .pharma-intelligence .headerRight .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
