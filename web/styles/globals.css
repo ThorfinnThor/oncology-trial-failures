@@ -705,3 +705,39 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
     justify-content: center;
   }
 }
+
+
+/* Mobile: pharma-intelligence header actions should not be right-aligned */
+@media (max-width: 720px) {
+  /* Scope to the pharma page only (requires wrapper class "pharma") */
+  .pharma header {
+    width: 100%;
+  }
+
+  /* The container that holds chips + button is typically a flex row.
+     We force it to behave like a stacked mobile control group. */
+  .pharma header .chip,
+  .pharma header .btn {
+    width: 100%;
+  }
+
+  .pharma header .btn {
+    justify-content: center;
+  }
+
+  /* If the header right side is a flex box, this ensures it aligns left */
+  .pharma header [class*="HeaderRight"],
+  .pharma header [class*="headerRight"],
+  .pharma header [class*="HeaderActions"],
+  .pharma header [class*="headerActions"] {
+    width: 100%;
+    justify-content: flex-start !important;
+  }
+
+  /* Extra safety: if chips/buttons are in a generic flex row container */
+  .pharma header .chip + .chip,
+  .pharma header .chip + .btn,
+  .pharma header .btn + .chip {
+    margin-left: 0 !important;
+  }
+}
