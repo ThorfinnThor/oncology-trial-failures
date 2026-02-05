@@ -1,195 +1,1987 @@
-from __future__ import annotations
+// web/pages/pharma-intelligence.tsx
+import Head from "next/head";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
 
-import hashlib
-import json
-import re
-from pathlib import Path
-from typing import Any, Optional
+import { loadIndex, loadMeta } from "@/lib/data";
+import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
+import { encodeState } from "@/lib/urlState";
+import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
-import requests
-from loguru import logger
-from sqlalchemy.orm import Session
+/**
+ * Mobile responsiveness strategy (robust on iOS Safari):
+ * - Any truly wide content is inside an explicit horizontal scroll region with touch-friendly settings.
+ * - "Reason buckets": stays a table but forces overflow via min-width on the table.
+ * - "Phase × bucket matrix": desktop = table; mobile = per-phase horizontal card strips
+ *   (avoids scroll-freeze issues caused by sticky table cells inside overflow containers on mobile Safari).
+ *
+ * Original features preserved:
+ * - Header KPIs + window + confidence breakdown
+ * - Quick totals cards + fast drill-down links
+ * - Failure taxonomy: buckets + phase×bucket
+ * - Indication landscape: disease area + top conditions (+ exclude healthy toggle)
+ * - Sponsor intelligence: sponsor selector + top buckets/phases/disease areas + explore drill-downs
+ */
 
-from .evidence import store_json
-from .repo import add_evidence
-from .settings import settings
-from .normalize import norm_text
+type BucketKey = string;
+type PhaseKey = string;
 
+type BucketStat = {
+  bucket: BucketKey;
+  total: number;
+  bio: number;
+  bioShare: number;
+};
 
-_JSON_OBJECT_RE = re.compile(r"\{.*\}", re.DOTALL)
+type PhaseBucketCell = {
+  phase: PhaseKey;
+  bucket: BucketKey;
+  total: number;
+  bio: number;
+};
 
+type SimpleRow = {
+  key: string;
+  label: string;
+  total: number;
+  bio: number;
+  bioShare: number;
+};
 
-def _extract_json_object(text: str) -> Optional[dict[str, Any]]:
-    if not text:
-        return None
-    m = _JSON_OBJECT_RE.search(text)
-    if not m:
-        return None
-    try:
-        return json.loads(m.group(0))
-    except Exception:
-        return None
+type SponsorProfile = {
+  sponsor: string;
+  rows: TrialIndexRow[];
+  total: number;
+  bio: number;
+  bioShare: number;
+  topBuckets: { bucket: string; count: number }[];
+  topPhases: { phase: string; count: number }[];
+  topAreas: { area: string; count: number }[];
+};
 
+function normEntity(s?: string): string {
+  return (s || "").replace(/\s+/g, " ").trim();
+}
 
-def _prompt_hash(company_id: str, raw_label: str, context: str) -> str:
-    h = hashlib.sha256()
-    h.update(company_id.encode("utf-8"))
-    h.update(b"\n")
-    h.update(raw_label.encode("utf-8"))
-    h.update(b"\n")
-    h.update(context.encode("utf-8"))
-    return h.hexdigest()
+function safePct(x: number): string {
+  if (!Number.isFinite(x)) return "—";
+  return `${Math.round(x * 100)}%`;
+}
 
+function confKey(s?: string): "HIGH" | "MEDIUM" | "LOW" | "UNKNOWN" {
+  const v = (s || "").toUpperCase().trim();
+  if (v === "HIGH") return "HIGH";
+  if (v === "MEDIUM") return "MEDIUM";
+  if (v === "LOW") return "LOW";
+  return "UNKNOWN";
+}
 
-def _cache_path(prompt_hash: str) -> Path:
-    root = Path("data/llm_cache/gemini_asset_clean")
-    root.mkdir(parents=True, exist_ok=True)
-    return root / f"{prompt_hash}.json"
+function exploreHref(patch: Partial<UrlState>): string {
+  const base: UrlState = { sort: "date_desc" };
+  return `/explore${encodeState({ ...base, ...patch })}`;
+}
 
+function TopK<T>(arr: T[], k: number): T[] {
+  return arr.slice(0, Math.max(0, k));
+}
 
-def _gemini_generate(prompt: str) -> str:
-    if not settings.gemini_api_key:
-        raise RuntimeError("Missing PHARMA_INTEL_GEMINI_API_KEY")
+function Bar({ value, max, label }: { value: number; max: number; label?: string }) {
+  const pct = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0;
+  return (
+    <div className="barWrap" aria-label={label}>
+      <div className="barTrack">
+        <div className="barFill" style={{ width: `${pct * 100}%` }} />
+      </div>
+    </div>
+  );
+}
 
-    model = settings.gemini_model
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-    params = {"key": settings.gemini_api_key}
-    payload = {
-        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0, "maxOutputTokens": 512},
+/**
+ * =========================
+ * PHASE NORMALIZATION
+ * =========================
+ */
+const PHASE_ORDER: string[] = [
+  "EARLY_PHASE1",
+  "PHASE1",
+  "PHASE1/PHASE2",
+  "PHASE2",
+  "PHASE2/PHASE3",
+  "PHASE3",
+  "PHASE4",
+  "UNKNOWN"
+];
+
+const CANON_PHASES = new Set(PHASE_ORDER);
+
+function normalizePhaseToken(p: string): PhaseKey {
+  const u = (p || "").toUpperCase().trim();
+  if (!u) return "UNKNOWN";
+  return CANON_PHASES.has(u) ? u : "UNKNOWN";
+}
+
+function representativePhase(r: TrialIndexRow): PhaseKey {
+  const raw = parsePhases(r.phases || "");
+  if (!raw.length) return "UNKNOWN";
+  const tokens = Array.from(new Set(raw.map(normalizePhaseToken)));
+  tokens.sort((a, b) => PHASE_ORDER.indexOf(a) - PHASE_ORDER.indexOf(b));
+  return tokens[0] || "UNKNOWN";
+}
+
+/**
+ * =========================
+ * CONDITION NORMALIZATION
+ * =========================
+ */
+function normalizeConditionKey(s: string): string {
+  const t = (s || "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[()]/g, " ")
+    .replace(/[-_/]/g, " ")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const compact = t.replace(/\s+/g, "");
+  if (compact === "covid19" || compact === "covid2019" || compact === "coronavirusdisease2019") return "covid-19";
+  return t;
+}
+
+function canonicalConditionLabel(key: string, fallback: string): string {
+  if (key === "covid-19") return "COVID-19";
+  return fallback || key;
+}
+
+function isHealthyConditionKey(key: string): boolean {
+  const k = (key || "").toLowerCase().trim();
+  return (
+    k === "healthy" ||
+    k === "healthy volunteers" ||
+    k === "healthy volunteer" ||
+    k === "healthy subjects" ||
+    k === "healthy subject"
+  );
+}
+
+/**
+ * =========================
+ * BUCKET POLICY
+ * =========================
+ * Keep parity with the original intent: do not show ENROLLMENT as its own bucket here.
+ * Collapse ENROLLMENT -> OTHER/UNKNOWN for all computations on this page.
+ */
+const CORE_BUCKETS: BucketKey[] = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "REGULATORY", "OTHER/UNKNOWN"];
+
+function normalizeBucketForDisplay(b: string): BucketKey {
+  const u = (b || "").toUpperCase().trim() || "OTHER/UNKNOWN";
+  if (u === "ENROLLMENT") return "OTHER/UNKNOWN";
+  return u as BucketKey;
+}
+
+/**
+ * Helper: choose Explore filter strategy for sponsor/condition.
+ * Explore currently supports q + status/phase/area/bucket/bio.
+ * So sponsor/condition drill-downs are implemented via q search.
+ */
+function sponsorQueryHref(leadSponsor: string, patch?: Partial<UrlState>): string {
+  return exploreHref({ q: leadSponsor, ...(patch || {}) });
+}
+
+function conditionQueryHref(conditionLabel: string, patch?: Partial<UrlState>): string {
+  return exploreHref({ q: conditionLabel, ...(patch || {}) });
+}
+
+/**
+ * Simple bucket tag styling (works with global theme vars).
+ */
+function bucketPillClass(bucket: string): string {
+  const b = (bucket || "").toUpperCase();
+  if (b === "SAFETY") return "pill pillSafety";
+  if (b === "EFFICACY/FUTILITY") return "pill pillEfficacy";
+  if (b === "OPERATIONAL") return "pill pillOperational";
+  if (b === "REGULATORY") return "pill pillRegulatory";
+  return "pill pillNeutral";
+}
+
+function phasePillClass(phase: string): string {
+  const p = (phase || "").toUpperCase();
+  if (p.includes("PHASE1") || p === "EARLY_PHASE1") return "pill pillPhase1";
+  if (p.includes("PHASE2")) return "pill pillPhase2";
+  if (p.includes("PHASE3")) return "pill pillPhase3";
+  if (p.includes("PHASE4")) return "pill pillPhase4";
+  return "pill pillNeutral";
+}
+
+export default function PharmaIntelligencePage() {
+  const [meta, setMeta] = useState<DatasetMeta | null>(null);
+  const [allRows, setAllRows] = useState<TrialIndexRow[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState<string | null>(null);
+
+  const [focusBio, setFocusBio] = useState<boolean>(false);
+
+  // Sponsor selection
+  const [selectedSponsor, setSelectedSponsor] = useState<string>("");
+
+  // Sponsor selector w/ typeahead
+  const [sponsorQuery, setSponsorQuery] = useState<string>("");
+  const [sponsorMenuOpen, setSponsorMenuOpen] = useState<boolean>(false);
+  const sponsorBoxRef = useRef<HTMLDivElement | null>(null);
+
+  // Exclude "Healthy" toggle (applies to global top conditions only)
+  const [excludeHealthy, setExcludeHealthy] = useState<boolean>(true);
+
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        setLoading(true);
+        setErr(null);
+        const [m, idx] = await Promise.all([loadMeta(), loadIndex()]);
+        if (!alive) return;
+        setMeta(m);
+        setAllRows(idx);
+      } catch (e: any) {
+        if (!alive) return;
+        setErr(e?.message || "Failed to load dataset.");
+      } finally {
+        if (!alive) return;
+        setLoading(false);
+      }
+    })();
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const rows = useMemo(() => {
+    if (!focusBio) return allRows;
+    return allRows.filter((r) => isLikelyScientificFailure(r));
+  }, [allRows, focusBio]);
+
+  const totals = useMemo(() => {
+    const total = allRows.length;
+    const bio = allRows.filter((r) => isLikelyScientificFailure(r)).length;
+
+    const byConf: Record<"HIGH" | "MEDIUM" | "LOW" | "UNKNOWN", number> = {
+      HIGH: 0,
+      MEDIUM: 0,
+      LOW: 0,
+      UNKNOWN: 0
+    };
+
+    for (const r of allRows) {
+      if (!isLikelyScientificFailure(r)) continue;
+      byConf[confKey(r.classification_confidence)] += 1;
     }
 
-    r = requests.post(url, params=params, json=payload, timeout=settings.gemini_timeout_s)
-    r.raise_for_status()
-    data = r.json()
-
-    try:
-        return data["candidates"][0]["content"]["parts"][0]["text"]
-    except Exception:
-        return json.dumps(data)[:2000]
-
-
-def llm_classify_and_canonicalize_asset_label(
-    session: Session,
-    company_id: str,
-    raw_label: str,
-    *,
-    context: str,
-    source_url: str,
-    call_counter: list[int],
-) -> Optional[dict[str, Any]]:
-    """Constrained Gemini cleaner.
-
-    - Never invent: only normalize text already present in RAW_LABEL.
-    - If uncertain: returns is_asset=false.
-    - Cached by hash.
-
-    call_counter is a mutable single-item list used to enforce per-run quota.
-    """
-    if not settings.llm_clean_enabled:
-        return None
-
-    raw_label = (raw_label or "").strip()
-    if not raw_label:
-        return {"is_asset": False, "canonical_name": None, "aliases": [], "evidence_id": None}
-
-    context = (context or "").strip()
-    ph = _prompt_hash(company_id, raw_label, context)
-    cache_file = _cache_path(ph)
-    if cache_file.exists():
-        try:
-            return json.loads(cache_file.read_text(encoding="utf-8"))
-        except Exception:
-            pass
-
-    # enforce free-tier quota safety
-    if call_counter[0] >= settings.gemini_max_calls_per_run:
-        return {"is_asset": False, "canonical_name": None, "aliases": [], "evidence_id": None}
-
-    prompt = f"""You are cleaning extracted pharma pipeline labels.
-
-Task:
-- Decide whether RAW_LABEL is a drug/program/intervention name (asset) or an indication/disease/other non-asset.
-- If it is an asset: return a cleaned canonical name and 1-10 aliases that appear directly in RAW_LABEL.
-- If it is NOT an asset: return is_asset=false.
-
-Rules:
-- Do NOT invent or guess new drug names.
-- Only normalize/clean/trim strings that appear in RAW_LABEL.
-- If uncertain, set is_asset=false.
-- Output MUST be valid JSON and NOTHING ELSE.
-
-Return JSON schema:
-{{
-  "is_asset": true|false,
-  "canonical_name": "..." | null,
-  "aliases": ["...", ...]
-}}
-
-RAW_LABEL: {raw_label}
-CONTEXT (nearby lines from same PDF column):
-{context}
-"""
-
-    try:
-        call_counter[0] += 1
-        raw_out = _gemini_generate(prompt)
-    except Exception as e:
-        logger.warning("Gemini call failed for label='{}': {}", raw_label, e)
-        return {"is_asset": False, "canonical_name": None, "aliases": [], "evidence_id": None}
-
-    parsed = _extract_json_object(raw_out)
-    if not isinstance(parsed, dict):
-        logger.warning("Gemini returned non-JSON for label='{}': {}", raw_label, raw_out[:200])
-        parsed = {"is_asset": False, "canonical_name": None, "aliases": []}
-
-    is_asset = bool(parsed.get("is_asset"))
-    canonical = parsed.get("canonical_name") if is_asset else None
-    aliases = parsed.get("aliases") if is_asset else []
-
-    if canonical is not None and not isinstance(canonical, str):
-        canonical = None
-    if not isinstance(aliases, list):
-        aliases = []
-    aliases = [a.strip() for a in aliases if isinstance(a, str) and a.strip()]
-
-    # hard constraint: canonical (if present) must be derivable from RAW_LABEL text
-    raw_norm = norm_text(raw_label)
-    if canonical and norm_text(canonical) not in raw_norm:
-        # allow the model to unwrap parentheses etc, but still must be substring after normalization
-        canonical = None
-        is_asset = False
-        aliases = []
-
-    result: dict[str, Any] = {
-        "is_asset": is_asset,
-        "canonical_name": canonical.strip() if isinstance(canonical, str) and canonical.strip() else None,
-        "aliases": aliases,
-        "evidence_id": None,
+    let minDate = "";
+    let maxDate = "";
+    for (const r of allRows) {
+      const d = (r.last_update_post_date || r.date || "").slice(0, 10);
+      if (!d) continue;
+      if (!minDate || d < minDate) minDate = d;
+      if (!maxDate || d > maxDate) maxDate = d;
     }
 
-    # Persist decision as evidence (audit trail)
-    try:
-        content_hash, path, meta = store_json(
-            company_id,
-            "llm_asset_clean",
-            source_url,
-            {"raw_label": raw_label, "context": context, "model": settings.gemini_model, "result": result},
-            meta={"prompt_hash": ph},
-        )
-        ev = add_evidence(session, company_id, "llm_asset_clean", source_url, content_hash, str(path), meta=meta)
-        result["evidence_id"] = int(ev.id)
-        session.commit()
-    except Exception as e:
-        logger.warning("Failed to persist LLM cleaning evidence: {}", e)
-        try:
-            session.rollback()
-        except Exception:
-            pass
+    return { total, bio, bioShare: total > 0 ? bio / total : 0, byConf, minDate, maxDate };
+  }, [allRows]);
 
-    try:
-        cache_file.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
-    except Exception:
-        pass
+  /**
+   * =========================
+   * Failure taxonomy: bucket stats (ENROLLMENT collapsed)
+   * =========================
+   */
+  const bucketStatsAll = useMemo<BucketStat[]>(() => {
+    const map = new Map<string, { total: number; bio: number }>();
 
-    return result
+    for (const r of rows) {
+      const b = normalizeBucketForDisplay(reasonBucket(r) || "");
+      if (!map.has(b)) map.set(b, { total: 0, bio: 0 });
+      const cur = map.get(b)!;
+      cur.total += 1;
+      if (isLikelyScientificFailure(r)) cur.bio += 1;
+    }
+
+    const out: BucketStat[] = Array.from(map.entries()).map(([bucket, v]) => ({
+      bucket,
+      total: v.total,
+      bio: v.bio,
+      bioShare: v.total > 0 ? v.bio / v.total : 0
+    }));
+
+    out.sort((a, b) => b.total - a.total);
+    return out;
+  }, [rows]);
+
+  const displayedBuckets = useMemo<BucketKey[]>(() => {
+    const extras = bucketStatsAll
+      .filter((b) => !CORE_BUCKETS.includes(b.bucket) && b.total > 0)
+      .map((b) => b.bucket);
+
+    // Keep core buckets first; append extras; ENROLLMENT already collapsed
+    return [...CORE_BUCKETS, ...extras];
+  }, [bucketStatsAll]);
+
+  const bucketStats = useMemo<BucketStat[]>(() => {
+    const m = new Map<string, BucketStat>();
+    for (const b of bucketStatsAll) m.set(b.bucket, b);
+    return displayedBuckets.map((bucket) => m.get(bucket) || { bucket, total: 0, bio: 0, bioShare: 0 });
+  }, [bucketStatsAll, displayedBuckets]);
+
+  const bucketMax = useMemo(() => Math.max(1, ...bucketStats.map((b) => b.total)), [bucketStats]);
+
+  /**
+   * =========================
+   * Failure taxonomy: phase keys
+   * =========================
+   */
+  const phaseKeys = useMemo<PhaseKey[]>(() => {
+    const s = new Set<string>();
+    for (const r of rows) s.add(representativePhase(r));
+    const arr = Array.from(s);
+    arr.sort((a, b) => PHASE_ORDER.indexOf(a) - PHASE_ORDER.indexOf(b));
+    return arr.length ? arr : ["UNKNOWN"];
+  }, [rows]);
+
+  /**
+   * =========================
+   * Failure taxonomy: phase × bucket matrix
+   * =========================
+   */
+  const phaseBucketMatrix = useMemo(() => {
+    const m = new Map<PhaseKey, Map<BucketKey, { total: number; bio: number }>>();
+
+    for (const p of phaseKeys) {
+      const inner = new Map<BucketKey, { total: number; bio: number }>();
+      for (const b of displayedBuckets) inner.set(b, { total: 0, bio: 0 });
+      m.set(p, inner);
+    }
+
+    for (const r of rows) {
+      const p = representativePhase(r);
+      const b = normalizeBucketForDisplay(reasonBucket(r) || "");
+      if (!m.has(p)) {
+        const inner = new Map<BucketKey, { total: number; bio: number }>();
+        for (const bb of displayedBuckets) inner.set(bb, { total: 0, bio: 0 });
+        m.set(p, inner);
+      }
+      const inner = m.get(p)!;
+      if (!inner.has(b)) inner.set(b, { total: 0, bio: 0 });
+      const cell = inner.get(b)!;
+      cell.total += 1;
+      if (isLikelyScientificFailure(r)) cell.bio += 1;
+    }
+
+    const cells: PhaseBucketCell[] = [];
+    for (const p of phaseKeys) {
+      const inner = m.get(p);
+      if (!inner) continue;
+      for (const b of displayedBuckets) {
+        const v = inner.get(b) || { total: 0, bio: 0 };
+        cells.push({ phase: p, bucket: b, total: v.total, bio: v.bio });
+      }
+    }
+    return cells;
+  }, [rows, phaseKeys, displayedBuckets]);
+
+  const matrixMax = useMemo(() => Math.max(1, ...phaseBucketMatrix.map((c) => c.total)), [phaseBucketMatrix]);
+
+  /**
+   * =========================
+   * Indication landscape
+   * =========================
+   */
+  const diseaseAreaStats = useMemo<SimpleRow[]>(() => {
+    const map = new Map<string, { total: number; bio: number }>();
+    for (const r of rows) {
+      const a = normEntity(r.disease_area || "Other/Unknown") || "Other/Unknown";
+      if (!map.has(a)) map.set(a, { total: 0, bio: 0 });
+      const cur = map.get(a)!;
+      cur.total += 1;
+      if (isLikelyScientificFailure(r)) cur.bio += 1;
+    }
+
+    const out: SimpleRow[] = Array.from(map.entries()).map(([key, v]) => ({
+      key,
+      label: key,
+      total: v.total,
+      bio: v.bio,
+      bioShare: v.total > 0 ? v.bio / v.total : 0
+    }));
+
+    out.sort((a, b) => b.total - a.total);
+    return TopK(out, 12);
+  }, [rows]);
+
+  const topConditionStats = useMemo<SimpleRow[]>(() => {
+    const map = new Map<string, { total: number; bio: number; label: string }>();
+
+    for (const r of rows) {
+      const c0 = normEntity(r.condition_first || "");
+      if (!c0) continue;
+
+      const key = normalizeConditionKey(c0);
+      if (!key) continue;
+      if (excludeHealthy && isHealthyConditionKey(key)) continue;
+
+      if (!map.has(key)) map.set(key, { total: 0, bio: 0, label: c0 });
+      const cur = map.get(key)!;
+      cur.total += 1;
+      if (isLikelyScientificFailure(r)) cur.bio += 1;
+    }
+
+    const out: SimpleRow[] = Array.from(map.entries()).map(([key, v]) => ({
+      key,
+      label: canonicalConditionLabel(key, v.label),
+      total: v.total,
+      bio: v.bio,
+      bioShare: v.total > 0 ? v.bio / v.total : 0
+    }));
+
+    out.sort((a, b) => b.total - a.total);
+    return TopK(out, 14);
+  }, [rows, excludeHealthy]);
+
+  /**
+   * =========================
+   * Sponsor intelligence
+   * =========================
+   */
+  const sponsorList = useMemo(() => {
+    const s = new Set<string>();
+    for (const r of allRows) {
+      const sp = normEntity(r.lead_sponsor);
+      if (sp) s.add(sp);
+    }
+    const arr = Array.from(s);
+    arr.sort((a, b) => a.localeCompare(b));
+    return arr;
+  }, [allRows]);
+
+  const sponsorSuggestions = useMemo(() => {
+    const q = (sponsorQuery || "").trim().toLowerCase();
+    const pool = sponsorList;
+
+    if (!q) return pool.slice(0, 50);
+
+    // prefer prefix matches, then substring matches
+    const prefix: string[] = [];
+    const sub: string[] = [];
+    for (const s of pool) {
+      const sl = s.toLowerCase();
+      if (sl.startsWith(q)) prefix.push(s);
+      else if (sl.includes(q)) sub.push(s);
+    }
+    return [...prefix, ...sub].slice(0, 50);
+  }, [sponsorQuery, sponsorList]);
+
+  useEffect(() => {
+    if (!selectedSponsor && sponsorList.length) setSelectedSponsor(sponsorList[0]);
+  }, [selectedSponsor, sponsorList]);
+
+  // Keep input in sync with selected sponsor
+  useEffect(() => {
+    setSponsorQuery(selectedSponsor || "");
+  }, [selectedSponsor]);
+
+  // Close sponsor menu on outside click / escape
+  useEffect(() => {
+    function onDocDown(e: MouseEvent) {
+      const el = sponsorBoxRef.current;
+      if (!el) return;
+      if (e.target instanceof Node && !el.contains(e.target)) setSponsorMenuOpen(false);
+    }
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setSponsorMenuOpen(false);
+    }
+    document.addEventListener("mousedown", onDocDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, []);
+
+  const sponsorProfile = useMemo<SponsorProfile | null>(() => {
+    const sponsor = normEntity(selectedSponsor);
+    if (!sponsor) return null;
+
+    // Respect focusBio toggle: the page is a "mode"; sponsor summaries follow it.
+    const sRows = rows.filter((r) => normEntity(r.lead_sponsor) === sponsor);
+    const total = sRows.length;
+    const bio = sRows.filter((r) => isLikelyScientificFailure(r)).length;
+    const bioShare = total > 0 ? bio / total : 0;
+
+    const bucketCounts = new Map<string, number>();
+    const phaseCounts = new Map<string, number>();
+    const areaCounts = new Map<string, number>();
+
+    for (const r of sRows) {
+      const b = normalizeBucketForDisplay(reasonBucket(r) || "");
+      bucketCounts.set(b, (bucketCounts.get(b) || 0) + 1);
+
+      const p = representativePhase(r);
+      phaseCounts.set(p, (phaseCounts.get(p) || 0) + 1);
+
+      const a = normEntity(r.disease_area || "Other/Unknown") || "Other/Unknown";
+      areaCounts.set(a, (areaCounts.get(a) || 0) + 1);
+    }
+
+    const topBuckets = Array.from(bucketCounts.entries())
+      .map(([bucket, count]) => ({ bucket, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 6);
+
+    const topPhases = Array.from(phaseCounts.entries())
+      .map(([phase, count]) => ({ phase, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 6);
+
+    const topAreas = Array.from(areaCounts.entries())
+      .map(([area, count]) => ({ area, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 8);
+
+    return { sponsor, rows: sRows, total, bio, bioShare, topBuckets, topPhases, topAreas };
+  }, [rows, selectedSponsor]);
+
+  const sponsorBucketMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topBuckets.map((x) => x.count) || [0])), [sponsorProfile]);
+  const sponsorPhaseMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topPhases.map((x) => x.count) || [0])), [sponsorProfile]);
+  const sponsorAreaMax = useMemo(() => Math.max(1, ...(sponsorProfile?.topAreas.map((x) => x.count) || [0])), [sponsorProfile]);
+
+  // Precompute for wide table min-width (desktop)
+  const matrixMinWidth = useMemo(() => {
+    // Phase col (~180) + per-bucket col (~150)
+    return 180 + displayedBuckets.length * 150;
+  }, [displayedBuckets.length]);
+
+  if (loading) {
+    return (
+      <>
+        <Head>
+          <title>Pharma intelligence</title>
+        </Head>
+        <div className="min-h-screen">
+          <header className="topbar">
+            <div className="topbar-inner">
+              <div className="topbar-left">
+                <Link href="/explore" className="brand">
+                  Clinical trial failures
+                </Link>
+                <nav className="nav" aria-label="Primary">
+                  <Link className="navlink" href="/explore">
+                    Explore
+                  </Link>
+                  <Link className="navlink" href="/pharma-intelligence" aria-current="page">
+                    Pharma intelligence
+                  </Link>
+                  <Link className="navlink" href="/share-leaders">
+                    Share leaders
+                  </Link>
+                  <Link className="navlink" href="/methods">
+                    Methods
+                  </Link>
+                </nav>
+              </div>
+            </div>
+          </header>
+
+          <div className="page">
+            <div className="card p-4">Loading…</div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (err) {
+    return (
+      <>
+        <Head>
+          <title>Pharma intelligence</title>
+        </Head>
+        <div className="min-h-screen">
+          <header className="topbar">
+            <div className="topbar-inner">
+              <div className="topbar-left">
+                <Link href="/explore" className="brand">
+                  Clinical trial failures
+                </Link>
+                <nav className="nav" aria-label="Primary">
+                  <Link className="navlink" href="/explore">
+                    Explore
+                  </Link>
+                  <Link className="navlink" href="/pharma-intelligence" aria-current="page">
+                    Pharma intelligence
+                  </Link>
+                  <Link className="navlink" href="/share-leaders">
+                    Share leaders
+                  </Link>
+                  <Link className="navlink" href="/methods">
+                    Methods
+                  </Link>
+                </nav>
+              </div>
+            </div>
+          </header>
+          <div className="page">
+            <div className="card p-4">
+              <div style={{ fontWeight: 800, marginBottom: 6 }}>Error</div>
+              <div className="muted">{err}</div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Head>
+        <title>Pharma intelligence</title>
+      </Head>
+
+      <div className="min-h-screen">
+        <header className="topbar">
+          <div className="topbar-inner">
+            <div className="topbar-left">
+              <Link href="/explore" className="brand">
+                Clinical trial failures
+              </Link>
+              <nav className="nav" aria-label="Primary">
+                <Link className="navlink" href="/explore">
+                  Explore
+                </Link>
+                <Link className="navlink" href="/pharma-intelligence" aria-current="page">
+                  Pharma intelligence
+                </Link>
+                <Link className="navlink" href="/share-leaders">
+                  Share leaders
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
+                </Link>
+              </nav>
+            </div>
+          </div>
+        </header>
+
+        <div className="page">
+          {/* ===== Header ===== */}
+          <header className="header">
+            <div className="headerLeft">
+              <h1 className="title">Pharma intelligence</h1>
+              <div className="muted subtitle">
+                Snapshot derived from stopped interventional drug/biologic trials on ClinicalTrials.gov (API v2). Use Explore for full filtering.
+              </div>
+            </div>
+
+            <div className="headerRight">
+              <div className="chip">
+                Trials&nbsp;<b>{totals.total.toLocaleString()}</b>
+              </div>
+              <div className="chip">
+                Bio share&nbsp;<b>{safePct(totals.bioShare)}</b>
+              </div>
+              <div className="chip">
+                Window&nbsp;
+                <b>
+                  {totals.minDate || "—"} → {totals.maxDate || "—"}
+                </b>
+              </div>
+
+              <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
+                {focusBio ? "Showing scientific failures" : "Show scientific failures"}
+              </button>
+            </div>
+          </header>
+
+          {/* ===== Quick totals ===== */}
+          <section className="grid3" aria-label="Quick totals">
+            <div className="card p-4">
+              <div className="muted small">Stopped trials</div>
+              <div className="kpi">{totals.total.toLocaleString()}</div>
+              <div className="muted small" style={{ marginTop: 4 }}>
+                Interventional, drug/biologic only.
+              </div>
+            </div>
+
+            <div className="card p-4">
+              <div className="muted small">Likely scientific failures</div>
+              <div className="kpi">{totals.bio.toLocaleString()}</div>
+              <div className="muted small" style={{ marginTop: 4 }}>
+                Conservative rule-based label.
+              </div>
+            </div>
+
+            <div className="card p-4">
+              <div className="muted small">Confidence breakdown (bio subset)</div>
+              <div className="miniRow" aria-label="Confidence breakdown">
+                <div className="miniLabel">HIGH</div>
+                <div className="miniVal">{totals.byConf.HIGH.toLocaleString()}</div>
+                <div className="miniLabel">MED</div>
+                <div className="miniVal">{totals.byConf.MEDIUM.toLocaleString()}</div>
+                <div className="miniLabel">LOW</div>
+                <div className="miniVal">{totals.byConf.LOW.toLocaleString()}</div>
+                <div className="miniLabel">UNK</div>
+                <div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
+              </div>
+            </div>
+
+            <div className="card p-4">
+              <div className="muted small">Fast drill-down</div>
+              <div className="muted small" style={{ marginTop: 4 }}>
+                Open Explore with pre-applied filters.
+              </div>
+              <div className="btnRow" style={{ marginTop: 12 }}>
+                <Link className="btn btnBucketEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+                  Efficacy/Futility
+                </Link>
+                <Link className="btn btnBucketSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
+                  Safety
+                </Link>
+                <Link className="btn btnBucketOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+                  Operational
+                </Link>
+                <Link className="btn btnBucketRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
+                  Regulatory
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== Failure taxonomy ===== */}
+          <section className="section" aria-label="Failure taxonomy">
+            <div className="sectionHead">
+              <h2 className="h2">Failure taxonomy</h2>
+              <div className="muted small">
+                Buckets prefer pipeline field <code>classification_reason</code>; heuristic fallback uses <code>why_stopped_short</code>.
+              </div>
+            </div>
+
+            <div className="grid2">
+              {/* Reason buckets */}
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">Reason buckets</h3>
+                  <div className="muted small">Enrollment is collapsed into Other/Unknown on this page.</div>
+                </div>
+
+                <div className="scrollHint">Swipe horizontally →</div>
+                <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
+                  <div className="hScrollInner">
+                    <table className="tblMini tblReason" aria-label="Reason buckets table">
+                      <thead>
+                        <tr>
+                          <th>Bucket</th>
+                          <th className="num">Trials</th>
+                          <th className="num">Bio share</th>
+                          <th className="barCol" aria-hidden="true" />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {bucketStats.map((b) => (
+                          <tr key={b.bucket}>
+                            <td>
+                              <div className="cellTop">
+                                <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
+                              </div>
+                              <div className="muted tiny" style={{ marginTop: 4 }}>
+                                {b.bio.toLocaleString()} likely scientific failures
+                              </div>
+                              <div className="cellSub">
+                                <Link className="link" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
+                                  Explore →
+                                </Link>
+                              </div>
+                            </td>
+                            <td className="num">{b.total.toLocaleString()}</td>
+                            <td className="num">{safePct(b.bioShare)}</td>
+                            <td className="barCol">
+                              <Bar value={b.total} max={bucketMax} label={`${b.bucket} volume`} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="note">
+                  Notes: this view is designed for quick directional insight. For production analysis, always confirm the pipeline fields on the trial detail page.
+                </div>
+              </div>
+
+              {/* Phase × bucket matrix */}
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">Phase × bucket matrix</h3>
+                  <div className="muted small">Mobile uses swipeable cards per phase (more reliable than scrollable tables on iOS).</div>
+                </div>
+
+                {/* Desktop/table version */}
+                <div className="desktopOnly">
+                  <div className="scrollHint">Scroll horizontally →</div>
+                  <div className="hScroll" role="region" aria-label="Phase by bucket matrix (scrollable)" tabIndex={0}>
+                    <div className="hScrollInner">
+                      <table className="tblMatrix" style={{ minWidth: matrixMinWidth }} aria-label="Phase by bucket matrix">
+                        <thead>
+                          <tr>
+                            <th>Phase</th>
+                            {displayedBuckets.map((b) => (
+                              <th key={b} title={b} className="bucketHead">
+                                {b}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {phaseKeys.map((p) => (
+                            <tr key={p}>
+                              <td className="phaseCell">
+                                <span className={phasePillClass(p)}>{phaseLabel(p)}</span>
+                                <div className="muted tiny">{p}</div>
+                              </td>
+
+                              {displayedBuckets.map((b) => {
+                                const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
+                                const total = cell?.total || 0;
+                                const bio = cell?.bio || 0;
+
+                                const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
+
+                                return (
+                                  <td key={`${p}_${b}`} className="matrixCell">
+                                    <Link className="cellLink" href={href}>
+                                      <div className="cellNums">
+                                        <span className="big">{total.toLocaleString()}</span>
+                                        {!focusBio && <span className="muted tiny">{bio.toLocaleString()} bio</span>}
+                                      </div>
+                                      <div className="cellBarTrack" aria-hidden="true">
+                                        <div className="cellBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
+                                      </div>
+                                    </Link>
+                                  </td>
+                                );
+                              })}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="note">
+                    Counting uses a single representative phase per trial (avoids double counting multi-phase records).
+                  </div>
+                </div>
+
+                {/* Mobile version */}
+                <div className="mobileOnly">
+                  {phaseKeys.map((p) => {
+                    return (
+                      <div key={p} className="phaseRow">
+                        <div className="phaseRowHead">
+                          <span className={phasePillClass(p)}>{phaseLabel(p)}</span>
+                          <span className="muted tiny">{p}</span>
+                        </div>
+
+                        <div className="bucketStrip" role="region" aria-label={`${phaseLabel(p)} buckets`} tabIndex={0}>
+                          {displayedBuckets.map((b) => {
+                            const cell = phaseBucketMatrix.find((x) => x.phase === p && x.bucket === b);
+                            const total = cell?.total || 0;
+                            const bio = cell?.bio || 0;
+
+                            const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
+
+                            return (
+                              <Link key={`${p}_${b}`} href={href} className="bucketCard">
+                                <div className="bucketCardTop">
+                                  <span className={bucketPillClass(b)}>{b}</span>
+                                </div>
+                                <div className="bucketCardNum">{total.toLocaleString()}</div>
+                                {!focusBio && <div className="muted tiny">{bio.toLocaleString()} bio</div>}
+                                <div className="cardBarTrack" aria-hidden="true">
+                                  <div className="cardBarFill" style={{ width: `${(total / matrixMax) * 100}%` }} />
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== Indication landscape ===== */}
+          <section className="section" aria-label="Indication landscape">
+            <div className="sectionHead">
+              <h2 className="h2">Indication landscape</h2>
+              <div className="muted small">Derived from compact index fields (first condition per trial).</div>
+            </div>
+
+            <div className="grid2">
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">By disease area</h3>
+                  <div className="muted small">Top areas by volume.</div>
+                </div>
+
+                <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
+                  <div className="hScrollInner">
+                    <table className="tblMini tblWide" aria-label="Disease area table">
+                      <thead>
+                        <tr>
+                          <th>Disease area</th>
+                          <th className="num">Trials</th>
+                          <th className="num">Bio share</th>
+                          <th className="barCol" aria-hidden="true" />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {diseaseAreaStats.map((a) => (
+                          <tr key={a.key}>
+                            <td>
+                              <div className="cellTop">
+                                <span className="pill pillNeutral">{a.label}</span>
+                              </div>
+                              <div className="muted tiny" style={{ marginTop: 4 }}>
+                                {a.bio.toLocaleString()} likely scientific failures
+                              </div>
+                              <div className="cellSub">
+                                <Link className="link" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
+                                  Explore →
+                                </Link>
+                              </div>
+                            </td>
+                            <td className="num">{a.total.toLocaleString()}</td>
+                            <td className="num">{safePct(a.bioShare)}</td>
+                            <td className="barCol">
+                              <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="note">Disease area drill-down uses the Explore “area” filter.</div>
+              </div>
+
+              <div className="card p-4">
+                <div className="panelTitleRow">
+                  <h3 className="h3">Top conditions</h3>
+                  <label className="chip" style={{ cursor: "pointer" }}>
+                    <input
+                      type="checkbox"
+                      checked={excludeHealthy}
+                      onChange={(e) => setExcludeHealthy(e.target.checked)}
+                      style={{ marginRight: 8 }}
+                    />
+                    Exclude “Healthy”
+                  </label>
+                </div>
+
+                <div className="hScroll vScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
+                  <div className="hScrollInner">
+                    <table className="tblMini tblWide" aria-label="Top conditions table">
+                      <thead>
+                        <tr>
+                          <th>Condition</th>
+                          <th className="num">Trials</th>
+                          <th className="num">Bio share</th>
+                          <th className="barCol" aria-hidden="true" />
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {topConditionStats.map((c) => (
+                          <tr key={c.key}>
+                            <td>
+                              <div className="cellTop">
+                                <span className="pill pillNeutral">{c.label}</span>
+                              </div>
+                              <div className="muted tiny" style={{ marginTop: 4 }}>
+                                {c.bio.toLocaleString()} likely scientific failures
+                              </div>
+                              <div className="cellSub">
+                                <Link className="link" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
+                                  Explore →
+                                </Link>
+                              </div>
+                            </td>
+                            <td className="num">{c.total.toLocaleString()}</td>
+                            <td className="num">{safePct(c.bioShare)}</td>
+                            <td className="barCol">
+                              <Bar value={c.total} max={Math.max(1, ...topConditionStats.map((x) => x.total))} />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="note">
+                  Condition drill-down uses Explore free-text search (q). For more complete condition analysis, extend the index to include full condition lists.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ===== Sponsor intelligence ===== */}
+          <section className="section" aria-label="Sponsor intelligence">
+            <div className="sectionHead">
+              <h2 className="h2">Sponsor intelligence</h2>
+              <div className="muted small">Sponsor drill-downs use Explore free-text search (q) plus bucket/phase/area where applicable.</div>
+            </div>
+
+            <div className="card p-4">
+              <div className="sponsorTopRow">
+                <div className="sponsorSelect">
+                  <div className="muted small" style={{ marginBottom: 6 }}>
+                    Sponsor
+                  </div>
+                  <div ref={sponsorBoxRef} className="comboWrap">
+                    <input
+                      className="input"
+                      value={sponsorQuery}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setSponsorQuery(v);
+                        setSponsorMenuOpen(true);
+                      }}
+                      onFocus={() => setSponsorMenuOpen(true)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          const first = sponsorSuggestions[0] || "";
+                          const exact = sponsorList.find((s) => s.toLowerCase() === sponsorQuery.trim().toLowerCase());
+                          const next = exact || first;
+                          if (next) {
+                            setSelectedSponsor(next);
+                            setSponsorMenuOpen(false);
+                          }
+                        }
+                        if (e.key === "ArrowDown") setSponsorMenuOpen(true);
+                      }}
+                      placeholder="Type a sponsor…"
+                      aria-label="Sponsor"
+                    />
+
+                    {sponsorMenuOpen && sponsorSuggestions.length ? (
+                      <div className="comboMenu" role="listbox" aria-label="Sponsor suggestions">
+                        {sponsorSuggestions.slice(0, 12).map((s) => (
+                          <button
+                            key={s}
+                            type="button"
+                            className="comboItem"
+                            role="option"
+                            onMouseDown={(ev) => {
+                              // Prevent input blur before selection
+                              ev.preventDefault();
+                              setSelectedSponsor(s);
+                              setSponsorMenuOpen(false);
+                            }}
+                          >
+                            {s}
+                          </button>
+                        ))}
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
+
+                <div className="sponsorBtns">
+                  <Link className="btn" href={sponsorQueryHref(selectedSponsor)}>
+                    Open in Explore
+                  </Link>
+                  <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
+                    {focusBio ? "Showing scientific failures" : "Show scientific failures"}
+                  </button>
+                </div>
+              </div>
+
+              {sponsorProfile && (
+                <div className="sponsorGrid">
+                  <div className="sPanel sponsorTotals">
+                    <div className="subhead">Sponsor totals</div>
+                    <div className="panelTitle">{sponsorProfile.sponsor}</div>
+                    <div className="muted small" style={{ marginTop: 4 }}>
+                      Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
+                    </div>
+
+                    <div className="note" style={{ marginTop: 12 }}>
+                      The sponsor panel follows the current page mode (all trials vs scientific failures).
+                    </div>
+                  </div>
+
+                  <div className="sPanel sPanelBuckets">
+                    <div className="panelTitleRow">
+                      <div className="subhead">Top buckets</div>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                        View all →
+                      </Link>
+                    </div>
+
+                    <div className="sPanelBody">
+                      <table className="compactTbl" aria-label="Sponsor top buckets table">
+                        <thead>
+                          <tr>
+                            <th>Bucket</th>
+                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                            <th style={{ width: 120 }} aria-hidden="true" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sponsorProfile.topBuckets.map((x) => (
+                            <tr key={x.bucket}>
+                              <td>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
+                                  {x.bucket}
+                                </Link>
+                              </td>
+                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                              <td>
+                                <Bar value={x.count} max={sponsorBucketMax} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="sPanel sPanelPhases">
+                    <div className="panelTitleRow">
+                      <div className="subhead">Top phases</div>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                        View all →
+                      </Link>
+                    </div>
+
+                    <div className="sPanelBody">
+                      <table className="compactTbl" aria-label="Sponsor top phases table">
+                        <thead>
+                          <tr>
+                            <th>Phase</th>
+                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                            <th style={{ width: 120 }} aria-hidden="true" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sponsorProfile.topPhases.map((x) => (
+                            <tr key={x.phase}>
+                              <td>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
+                                  {phaseLabel(x.phase)}
+                                </Link>
+                              </td>
+                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                              <td>
+                                <Bar value={x.count} max={sponsorPhaseMax} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="sPanel sPanelAreas">
+                    <div className="panelTitleRow">
+                      <div className="subhead">Top disease areas</div>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                        View all →
+                      </Link>
+                    </div>
+
+                    <div className="sPanelBody">
+                      <table className="compactTbl" aria-label="Sponsor top disease areas table">
+                        <thead>
+                          <tr>
+                            <th>Disease area</th>
+                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                            <th style={{ width: 120 }} aria-hidden="true" />
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sponsorProfile.topAreas.map((x) => (
+                            <tr key={x.area}>
+                              <td>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { area: [x.area] })}>
+                                  {x.area}
+                                </Link>
+                              </td>
+                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                              <td>
+                                <Bar value={x.count} max={sponsorAreaMax} />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </section>
+
+          {/* ===== Footer ===== */}
+          <footer className="footer muted">
+            Dataset version: <b>{meta?.version || "—"}</b>
+            {meta?.generated_at_utc ? (
+              <>
+                {" "}
+                • Generated: <b>{meta.generated_at_utc}</b>
+              </>
+            ) : null}
+            {meta?.source ? (
+              <>
+                {" "}
+                • Source: <b>{meta.source}</b>
+              </>
+            ) : null}
+          </footer>
+        </div>
+      </div>
+
+      <style jsx>{`
+        .header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 14px;
+          margin-bottom: 16px;
+          flex-wrap: wrap;
+        }
+        .headerLeft {
+          min-width: 0;
+          flex: 1 1 520px;
+        }
+        .headerRight {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          justify-content: flex-end;
+          flex-wrap: wrap;
+        }
+
+        .title {
+          margin: 0;
+          font-size: 22px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+        }
+        .subtitle {
+          margin-top: 4px;
+          font-size: 13px;
+          line-height: 1.35;
+        }
+
+        .section {
+          margin-top: 18px;
+        }
+        .sectionHead {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 12px;
+          margin-bottom: 10px;
+          flex-wrap: wrap;
+        }
+        .h2 {
+          margin: 0;
+          font-size: 16px;
+          font-weight: 900;
+        }
+        .h3 {
+          margin: 0;
+          font-size: 14px;
+          font-weight: 900;
+        }
+
+        .small {
+          font-size: 12px;
+          line-height: 1.35;
+        }
+        .tiny {
+          font-size: 11px;
+          line-height: 1.25;
+        }
+
+        code {
+          font-size: 0.95em;
+        }
+
+        .grid3 {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+          margin-bottom: 18px;
+        }
+        .grid2 {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px;
+        }
+
+        .kpi {
+          margin-top: 4px;
+          font-size: 28px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+        }
+
+        .miniRow {
+          margin-top: 10px;
+          display: grid;
+          grid-template-columns: auto auto auto auto auto auto auto auto;
+          gap: 6px 10px;
+          align-items: center;
+          font-size: 12px;
+        }
+        .miniLabel {
+          color: var(--text-muted);
+          font-weight: 900;
+          letter-spacing: 0.06em;
+        }
+        .miniVal {
+          font-weight: 850;
+        }
+
+        .btnRow {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .panelTitleRow {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-bottom: 10px;
+        }
+
+        .note {
+          margin-top: 12px;
+          padding: 10px 12px;
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          background: rgba(15, 23, 42, 0.02);
+          color: var(--text-muted);
+          font-size: 12px;
+          line-height: 1.35;
+        }
+
+        .scrollHint {
+          display: none;
+          color: var(--text-muted);
+          font-weight: 750;
+          font-size: 12px;
+          margin-bottom: 10px;
+        }
+
+        .hScroll {
+          width: 100%;
+          max-width: 100%;
+          overflow-x: scroll;
+          scrollbar-gutter: stable both-edges;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
+          touch-action: pan-x;
+          overscroll-behavior-x: contain;
+          border-radius: 12px;
+          transform: translateZ(0);
+        }
+
+        /* Desktop: clamp long tables inside cards and allow vertical scrolling. */
+        @media (min-width: 721px) {
+          .hScroll.vScroll {
+            max-height: 520px;
+            overflow-y: auto;
+            /* allow both axes when a user scrolls inside the table region */
+            touch-action: pan-x pan-y;
+            overscroll-behavior: contain;
+          }
+
+          /* Keep headers visible while scrolling vertically inside the card */
+          .hScroll.vScroll thead th {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 2;
+          }
+        }
+
+        .hScrollInner {
+          display: block;
+          width: 100%;
+          padding-bottom: 2px;
+        }
+        .hScrollInner > table {
+          width: 100%;
+        }
+
+        /* ====== Pill tags ====== */
+        .pill {
+          display: inline-flex;
+          align-items: center;
+          padding: 3px 10px;
+          border-radius: 999px;
+          font-size: 12px;
+          font-weight: 850;
+          letter-spacing: 0.01em;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          line-height: 1;
+          white-space: nowrap;
+        }
+        .pillNeutral {
+          background: rgba(15, 23, 42, 0.02);
+        }
+        .pillSafety {
+          background: rgba(220, 38, 38, 0.08);
+          border-color: rgba(220, 38, 38, 0.25);
+        }
+        .pillEfficacy {
+          background: rgba(79, 70, 229, 0.10);
+          border-color: rgba(79, 70, 229, 0.25);
+        }
+        .pillOperational {
+          background: rgba(234, 179, 8, 0.12);
+          border-color: rgba(234, 179, 8, 0.25);
+        }
+        .pillRegulatory {
+          background: rgba(2, 132, 199, 0.10);
+          border-color: rgba(2, 132, 199, 0.25);
+        }
+        .pillPhase1 {
+          background: rgba(14, 165, 233, 0.10);
+          border-color: rgba(14, 165, 233, 0.25);
+        }
+        .pillPhase2 {
+          background: rgba(16, 185, 129, 0.10);
+          border-color: rgba(16, 185, 129, 0.25);
+        }
+        .pillPhase3 {
+          background: rgba(168, 85, 247, 0.10);
+          border-color: rgba(168, 85, 247, 0.25);
+        }
+        .pillPhase4 {
+          background: rgba(244, 63, 94, 0.10);
+          border-color: rgba(244, 63, 94, 0.25);
+        }
+
+        /* ====== Tables ====== */
+        .tblMini {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+          min-width: 640px;
+        }
+        .tblMini th,
+        .tblMini td {
+          border-bottom: 1px solid var(--border);
+          padding: 8px 10px;
+          vertical-align: top;
+        }
+        .tblMini th {
+          text-align: left;
+          font-size: 12px;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          white-space: nowrap;
+        }
+        .tblMini th.num {
+          text-align: right;
+        }
+        .tblWide {
+          min-width: 720px;
+        }
+        .tblReason {
+          min-width: 760px; /* ensure overflow on phones */
+        }
+        .num {
+          text-align: right;
+          white-space: nowrap;
+          font-weight: 800;
+        }
+        .barCol {
+          width: 140px;
+        }
+
+        .cellTop {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 0;
+        }
+        .cellSub {
+          margin-top: 4px;
+          font-size: 12px;
+        }
+
+        .link {
+          color: rgba(79, 70, 229, 0.92);
+          font-weight: 750;
+        }
+        .link:hover {
+          text-decoration: underline;
+        }
+
+        /* Bars */
+        .barWrap {
+          display: flex;
+          justify-content: flex-end;
+          width: 100%;
+        }
+        .barTrack {
+          width: 100%;
+          max-width: 140px;
+          height: 8px;
+          border-radius: 999px;
+          background: rgba(15, 23, 42, 0.08);
+          overflow: hidden;
+        }
+        .barFill {
+          height: 100%;
+          background: rgba(79, 70, 229, 0.55);
+          border-radius: 999px;
+        }
+
+        /* ====== Matrix table (desktop) ====== */
+        .tblMatrix {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+        }
+        .tblMatrix th,
+        .tblMatrix td {
+          border-bottom: 1px solid var(--border);
+          padding: 10px 10px;
+          vertical-align: top;
+        }
+        .tblMatrix th {
+          text-align: left;
+          font-size: 12px;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          white-space: nowrap;
+        }
+        .bucketHead {
+          min-width: 150px;
+        }
+        .phaseCell {
+          min-width: 180px;
+        }
+        .matrixCell {
+          min-width: 150px;
+        }
+
+        .cellLink {
+          display: block;
+          border-radius: 12px;
+          padding: 8px;
+          background: rgba(15, 23, 42, 0.02);
+        }
+        .cellLink:hover {
+          background: rgba(79, 70, 229, 0.06);
+        }
+        .cellNums {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 8px;
+        }
+        .big {
+          font-weight: 900;
+        }
+        .cellBarTrack {
+          margin-top: 8px;
+          height: 8px;
+          background: rgba(15, 23, 42, 0.08);
+          border-radius: 999px;
+          overflow: hidden;
+        }
+        .cellBarFill {
+          height: 100%;
+          background: rgba(79, 70, 229, 0.55);
+          border-radius: 999px;
+        }
+
+        /* ====== Mobile matrix (per-phase bucket strip) ====== */
+        .phaseRow {
+          padding: 10px 0 14px;
+          border-bottom: 1px solid var(--border);
+        }
+        .phaseRow:last-child {
+          border-bottom: none;
+        }
+        .phaseRowHead {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 10px;
+          margin-bottom: 10px;
+        }
+        .bucketStrip {
+          display: flex;
+          scroll-snap-type: x proximity;
+          gap: 10px;
+          overflow-x: auto;
+          overflow-y: hidden;
+          -webkit-overflow-scrolling: touch;
+          touch-action: pan-x;
+          overscroll-behavior-x: contain;
+          padding-bottom: 4px;
+        }
+        .bucketCard {
+          flex: 0 0 auto;
+          scroll-snap-align: start;
+          width: 210px;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          border-radius: 14px;
+          padding: 12px;
+          box-shadow: var(--shadow-soft);
+        }
+        .bucketCard:active {
+          transform: scale(0.99);
+        }
+        .bucketCardTop {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 0;
+        }
+        .bucketCardNum {
+          margin-top: 10px;
+          font-size: 20px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+        }
+        .cardBarTrack {
+          margin-top: 10px;
+          height: 8px;
+          background: rgba(15, 23, 42, 0.08);
+          border-radius: 999px;
+          overflow: hidden;
+        }
+        .cardBarFill {
+          height: 100%;
+          background: rgba(79, 70, 229, 0.55);
+          border-radius: 999px;
+        }
+
+        /* ===== Sponsor typeahead ===== */
+        .comboWrap {
+          position: relative;
+        }
+        .comboMenu {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: calc(100% + 6px);
+          z-index: 60;
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          background: var(--surface);
+          box-shadow: var(--shadow-soft);
+          max-height: 280px;
+          overflow: auto;
+          padding: 6px;
+        }
+        .comboItem {
+          width: 100%;
+          text-align: left;
+          border: 0;
+          background: transparent;
+          padding: 10px 10px;
+          border-radius: 10px;
+          font-size: 13px;
+          cursor: pointer;
+        }
+        .comboItem:hover {
+          background: rgba(79, 70, 229, 0.06);
+        }
+        .comboItem:active {
+          background: rgba(79, 70, 229, 0.10);
+        }
+
+        /* ===== Sponsor ===== */
+        .sponsorTopRow {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 12px;
+          flex-wrap: wrap;
+          margin-bottom: 12px;
+        }
+        .sponsorSelect {
+          flex: 1 1 520px;
+          min-width: 280px;
+        }
+        .sponsorBtns {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+        }
+        .sponsorPanels3 {
+          display: grid;
+          grid-template-columns: 1.15fr 1fr 1fr;
+          gap: 14px;
+          align-items: start;
+          margin-top: 10px;
+        }
+
+        .sponsorGrid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 14px;
+          align-items: start;
+          margin-top: 10px;
+        }
+
+        @media (min-width: 900px) {
+          .sponsorGrid {
+            grid-template-columns: minmax(360px, 440px) 1fr;
+            column-gap: 16px;
+            row-gap: 14px;
+          }
+          .sponsorTotals {
+            grid-column: 1;
+            grid-row: 1;
+          }
+          .sPanelBuckets {
+            grid-column: 1;
+            grid-row: 2;
+          }
+          .sPanelPhases {
+            grid-column: 1;
+            grid-row: 3;
+          }
+          .sPanelAreas {
+            grid-column: 2;
+            grid-row: 1 / span 3;
+          }
+        }
+
+        .sPanelBody {
+          margin-top: 6px;
+        }
+        .sPanel {
+          background: var(--surface-2);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 14px;
+          min-width: 0;
+          overflow: hidden;
+        }
+        .subhead {
+          color: var(--text-muted);
+          font-size: 12px;
+          font-weight: 900;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          margin-bottom: 8px;
+        }
+        .panelTitle {
+          font-weight: 900;
+          font-size: 16px;
+          margin-top: 2px;
+          line-height: 1.2;
+        }
+        .compactTbl {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+          table-layout: fixed;
+        }
+        .compactTbl th,
+        .compactTbl td {
+          border-bottom: 1px solid var(--border);
+          padding: 10px 10px;
+          vertical-align: top;
+        }
+        .compactTbl th {
+          text-align: left;
+          font-size: 12px;
+          color: var(--text-muted);
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          background: var(--surface);
+        }
+        .cellTrunc {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          display: block;
+        }
+
+        .footer {
+          margin-top: 18px;
+          font-size: 12px;
+        }
+
+        /* Visibility toggles */
+        .mobileOnly {
+          display: none;
+        }
+        .desktopOnly {
+          display: block;
+        }
+
+        @media (max-width: 1100px) {
+          .sponsorPanels3 {
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+
+        @media (max-width: 980px) {
+          .grid3 {
+            grid-template-columns: 1fr;
+          }
+          .grid2 {
+            grid-template-columns: 1fr;
+          }
+          .scrollHint {
+            display: block;
+          }
+        }
+
+        @media (max-width: 820px) {
+          .sponsorPanels3 {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 720px) {
+          .title {
+            font-size: 20px;
+          }
+          .subtitle {
+            font-size: 12px;
+          }
+          .h2 {
+            font-size: 15px;
+          }
+          .h3 {
+            font-size: 13px;
+          }
+
+          /* Tighten section spacing on phones */
+          .section {
+            margin-top: 14px;
+          }
+
+          /* Mobile: avoid negative margins (can clip on devices where the parent padding isn't 16px).
+             Keep scroll areas contained so the right edge is always reachable. */
+          .hScroll {
+            margin: 0;
+            padding: 0;
+          }
+
+          /* Mobile: keep horizontal scroll tables as intrinsic-width */
+          .hScrollInner {
+            display: inline-block;
+            min-width: max-content;
+          }
+          .hScrollInner > table {
+            width: max-content;
+          }
+
+          /* Mobile: hide bar column to keep header/value alignment tight */
+          .tblMini.tblWide th:nth-child(4),
+          .tblMini.tblWide td:nth-child(4),
+          .tblMini.tblReason th:nth-child(4),
+          .tblMini.tblReason td:nth-child(4) {
+            display: none;
+          }
+          /* Ensure page respects safe areas and doesn't clip the right edge */
+          :global(.page) {
+            padding-left: max(12px, env(safe-area-inset-left));
+            padding-right: max(12px, env(safe-area-inset-right));
+          }
+
+          /* Reduce card padding on mobile to tighten layout */
+          :global(.p-4) {
+            padding: 12px;
+          }
+
+          /* Prevent any grid children from forcing overflow */
+          .grid2 > *,
+          .grid3 > * {
+            min-width: 0;
+          }
+
+          .tblMini {
+            font-size: 12px;
+          }
+          .tblMini th,
+          .tblMini td {
+            padding: 8px 8px;
+          }
+          .barTrack {
+            width: 88px;
+          }
+
+          /* Ensure the reason buckets table keeps overflow visible on mobile */
+          .tblReason {
+            min-width: 760px;
+          }
+
+          .miniRow {
+            grid-template-columns: repeat(4, auto);
+          }
+
+          .desktopOnly {
+            display: none;
+          }
+          .mobileOnly {
+            display: block;
+          }
+
+          /* Sponsor controls stack nicely */
+          .sponsorTopRow {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .sponsorSelect {
+            min-width: 0;
+            flex: 0 0 auto;
+            width: 100%;
+          }
+          .sponsorBtns {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+          }
+          :global(.sponsorBtns .btn),
+          :global(.sponsorBtns .btn-primary) {
+            width: 100%;
+            justify-content: center;
+          }
+          .bucketCard {
+            width: 200px;
+            padding: 11px;
+          }
+          .bucketCardNum {
+            font-size: 18px;
+          }
+        }
+      `}</style>
+    </>
+  );
+}
