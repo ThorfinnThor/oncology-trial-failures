@@ -513,3 +513,81 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
     justify-content: flex-end;
   }
 }
+
+
+/* =========================
+   Mobile header normalization
+   Applies to ALL pages
+   ========================= */
+
+@media (max-width: 720px) {
+  /* Make the header a clean vertical stack */
+  .topbar {
+    padding: 10px 12px;
+  }
+
+  .topbar-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  /* Put brand + nav on one line group, then allow wrap */
+  .topbar-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  /* Brand should never awkwardly wrap mid-word */
+  .brand {
+    white-space: nowrap;
+    line-height: 1.1;
+  }
+
+  /* Nav becomes a compact wrapped row (not a vertical spaced list) */
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+  }
+
+  .navlink {
+    padding: 6px 10px;
+    border-radius: 999px;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  /* If your CSS uses aria-current styling, this will still look good */
+  .navlink[aria-current="page"] {
+    background: rgba(15, 23, 42, 0.06);
+  }
+
+  /* Explore page (and any page with center/right controls) */
+  .topbar-center,
+  .topbar-right {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .topbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start; /* avoids awkward right-justified stacking on mobile */
+  }
+
+  /* Search input should not overflow */
+  .topbar-center input,
+  .topbar-center .input,
+  .topbar-center .search,
+  .topbar-center .searchInput {
+    width: 100%;
+    min-width: 0;
+  }
+}
