@@ -1331,7 +1331,8 @@ export default function PharmaIntelligencePage() {
 
         .grid3 {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          /* Default desktop/tablet: 2×2 KPI layout so the 4th card doesn't float alone. */
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
           margin-bottom: 18px;
         }
@@ -1339,6 +1340,43 @@ export default function PharmaIntelligencePage() {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
+        }
+
+        /* Wide desktop: make KPI row a single 4-column strip and tighten header/tooling. */
+        @media (min-width: 1180px) {
+          .header {
+            margin-bottom: 18px;
+            align-items: center;
+          }
+          .title {
+            font-size: 26px;
+          }
+          .subtitle {
+            font-size: 14px;
+            max-width: 78ch;
+          }
+
+          .grid3 {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            align-items: stretch;
+          }
+
+          /* Drill-down buttons look cleaner when the card becomes narrower in a 4-col grid. */
+          .btnRow {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+          .btnRow :global(a.btn) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+          }
+
+          /* Slightly denser chips for desktop toolbars. */
+          :global(.chip) {
+            padding: 6px 12px;
+          }
         }
 
         .kpi {
