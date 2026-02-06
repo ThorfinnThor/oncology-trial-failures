@@ -1,10 +1,17 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+// web/pages/index.tsx
+
+import type { GetServerSideProps } from "next";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    redirect: {
+      destination: "/explore",
+      permanent: false,
+    },
+  };
+};
 
 export default function Index() {
-  const r = useRouter();
-  useEffect(() => {
-    r.replace("/explore");
-  }, [r]);
+  // This component never renders because of the server-side redirect.
   return null;
 }
