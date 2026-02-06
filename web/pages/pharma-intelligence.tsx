@@ -1334,6 +1334,7 @@ export default function PharmaIntelligencePage() {
           /* Default desktop/tablet: 2×2 KPI layout so the 4th card doesn't float alone. */
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
+          align-items: start;
           margin-bottom: 18px;
         }
         .grid2 {
@@ -1358,7 +1359,7 @@ export default function PharmaIntelligencePage() {
 
           .grid3 {
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            align-items: stretch;
+            align-items: start;
           }
 
           /* Slightly denser chips in the header toolbar (desktop only). */
@@ -1377,7 +1378,7 @@ export default function PharmaIntelligencePage() {
         .miniRow {
           margin-top: 10px;
           display: grid;
-          grid-template-columns: auto auto auto auto auto auto auto auto;
+          grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
           gap: 6px 10px;
           align-items: center;
           font-size: 12px;
@@ -1892,6 +1893,20 @@ export default function PharmaIntelligencePage() {
         }
         .desktopOnly {
           display: block;
+        }
+
+
+        /* Desktop/tablet: make confidence breakdown a tidy 2×2 layout (HIGH/MED on row 1, LOW/UNK on row 2). */
+        @media (min-width: 981px) {
+          .miniRow {
+            grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+            column-gap: 14px;
+            row-gap: 8px;
+          }
+          .miniVal {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+          }
         }
 
         @media (max-width: 1100px) {
