@@ -1356,7 +1356,7 @@ export default function PharmaIntelligencePage() {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
           margin-bottom: 18px;
-          /* Critical: avoid equal-height stretch on desktop KPI row */
+          /* Mobile/tablet: allow natural heights */
           align-items: start;
         }
         .grid2 {
@@ -1444,6 +1444,27 @@ export default function PharmaIntelligencePage() {
           }
           .confGrid {
             display: grid;
+          }
+
+          /* Desktop KPI row: make all 4 cards equal height */
+          .grid3 {
+            align-items: stretch;
+          }
+          .grid3 > .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+
+          /* Balance vertical rhythm inside equal-height KPI cards */
+          .grid3 > .card .kpi + .muted.small {
+            margin-top: auto !important;
+          }
+          .grid3 > .card .btnRow {
+            margin-top: auto;
+          }
+          .grid3 > .card .confGrid {
+            margin-top: auto;
           }
         }
 
