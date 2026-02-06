@@ -62,7 +62,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   const [err, setErr] = useState<string | null>(null);
 
   // Keep the existing runtime behavior: once hydrated, the page still fetches the same
-  // client-side sources as before. This preserves functionality while enabling SSR/SSG.
+  // client-side sources as before. This preserves functionality while enabling SSG.
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -249,35 +249,33 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   );
 }
 
-// SSG/ISR: pre-render trial pages so crawlers get real content without JS.
-// We use fallback: "blocking" to avoid a huge build if there are many trials.
+/**
+ * STATIC-ONLY REQUIREMENT:
+ * For `next export` you MUST return all paths and set `fallback: false`.
+ */
 export const getStaticPaths: GetStaticPaths = async () => {
+  const { loadIndexServer } = await import("@/lib/server-data");
+  const rows = await loadIndexServer();
+
   return {
-    paths: [],
-    fallback: "blocking",
+    paths: rows.map((r) => ({ params: { trialId: r.nct_id } })),
+    fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps<TrialPageProps> = async (ctx) => {
   const trialId = String(ctx.params?.trialId || "").trim();
-  if (!trialId) {
-    return { notFound: true };
-  }
+  if (!trialId) return { notFound: true };
 
-  // Dynamic import prevents server-only fs/path code from ever entering the client bundle.
   const { loadMetaServer, loadDetailServer } = await import("@/lib/server-data");
   const [meta, trial] = await Promise.all([loadMetaServer(), loadDetailServer(trialId)]);
 
-  if (!trial) {
-    return { notFound: true, revalidate: 3600 };
-  }
+  if (!trial) return { notFound: true };
 
   return {
     props: {
       initialMeta: meta,
       initialTrial: trial,
     },
-    // Re-generate periodically (ISR). This does not change UI, only freshness for crawlers.
-    revalidate: 24 * 60 * 60,
   };
 };
