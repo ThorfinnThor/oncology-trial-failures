@@ -727,6 +727,8 @@ export default function PharmaIntelligencePage() {
 
             <div className="card p-4">
               <div className="muted small">Confidence breakdown (bio subset)</div>
+
+              {/* Mobile (unchanged): compact inline breakdown */}
               <div className="miniRow" aria-label="Confidence breakdown">
                 <div className="miniLabel">HIGH</div>
                 <div className="miniVal">{totals.byConf.HIGH.toLocaleString()}</div>
@@ -736,6 +738,26 @@ export default function PharmaIntelligencePage() {
                 <div className="miniVal">{totals.byConf.LOW.toLocaleString()}</div>
                 <div className="miniLabel">UNK</div>
                 <div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
+              </div>
+
+              {/* Desktop: 2×2 stat tiles for clean pairing/alignment */}
+              <div className="confGrid" aria-label="Confidence breakdown (2 by 2)">
+                <div className="confCell">
+                  <div className="confLabel">HIGH</div>
+                  <div className="confVal">{totals.byConf.HIGH.toLocaleString()}</div>
+                </div>
+                <div className="confCell">
+                  <div className="confLabel">MED</div>
+                  <div className="confVal">{totals.byConf.MEDIUM.toLocaleString()}</div>
+                </div>
+                <div className="confCell">
+                  <div className="confLabel">LOW</div>
+                  <div className="confVal">{totals.byConf.LOW.toLocaleString()}</div>
+                </div>
+                <div className="confCell">
+                  <div className="confLabel">UNK</div>
+                  <div className="confVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
+                </div>
               </div>
             </div>
 
@@ -1331,11 +1353,11 @@ export default function PharmaIntelligencePage() {
 
         .grid3 {
           display: grid;
-          /* Default desktop/tablet: 2×2 KPI layout so the 4th card doesn't float alone. */
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
-          align-items: start;
           margin-bottom: 18px;
+          /* Critical: avoid equal-height stretch on desktop KPI row */
+          align-items: start;
         }
         .grid2 {
           display: grid;
@@ -1343,28 +1365,21 @@ export default function PharmaIntelligencePage() {
           gap: 14px;
         }
 
-        /* Wide desktop: make KPI row a single 4-column strip and tighten header/tooling. */
+        /* Wide desktop: show all 4 KPI cards in one row */
         @media (min-width: 1180px) {
-          .header {
-            margin-bottom: 18px;
-            align-items: center;
-          }
-          .title {
-            font-size: 26px;
-          }
-          .subtitle {
-            font-size: 14px;
-            max-width: 78ch;
-          }
-
           .grid3 {
             grid-template-columns: repeat(4, minmax(0, 1fr));
-            align-items: start;
           }
 
-          /* Slightly denser chips in the header toolbar (desktop only). */
-          .headerRight :global(.chip) {
-            padding: 6px 12px;
+          /* Drill-down: compact 2×2 button grid */
+          .btnRow {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .btnRow .btn {
+            width: 100%;
+            justify-content: center;
           }
         }
 
@@ -1378,7 +1393,7 @@ export default function PharmaIntelligencePage() {
         .miniRow {
           margin-top: 10px;
           display: grid;
-          grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+          grid-template-columns: auto auto auto auto auto auto auto auto;
           gap: 6px 10px;
           align-items: center;
           font-size: 12px;
@@ -1392,27 +1407,51 @@ export default function PharmaIntelligencePage() {
           font-weight: 850;
         }
 
+        .confGrid {
+          display: none; /* mobile unchanged */
+          margin-top: 10px;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+        }
+        .confCell {
+          border: 1px solid var(--border);
+          background: rgba(15, 23, 42, 0.02);
+          border-radius: 14px;
+          padding: 10px 12px;
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 12px;
+        }
+        .confLabel {
+          color: var(--text-muted);
+          font-weight: 900;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          font-size: 11px;
+          line-height: 1.2;
+        }
+        .confVal {
+          font-weight: 950;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: -0.01em;
+        }
+
+        /* Desktop: replace inline strip with 2×2 stat tiles */
+        @media (min-width: 981px) {
+          .miniRow {
+            display: none;
+          }
+          .confGrid {
+            display: grid;
+          }
+        }
+
         .btnRow {
           display: flex;
           gap: 8px;
           flex-wrap: wrap;
         }
-
-        /* Wide desktop: make drill-down buttons a clean 2×2 grid inside the KPI strip. */
-        @media (min-width: 1180px) {
-          .btnRow {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 10px;
-          }
-          .btnRow :global(a.btn) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-          }
-        }
-
 
         .panelTitleRow {
           display: flex;
@@ -1893,36 +1932,6 @@ export default function PharmaIntelligencePage() {
         }
         .desktopOnly {
           display: block;
-        }
-
-
-        /* Desktop/tablet: make confidence breakdown a tidy 2×2 layout (HIGH/MED on row 1, LOW/UNK on row 2). */
-        @media (min-width: 981px) {
-          /* Desktop-only tightening of the KPI strip (mobile remains unchanged). */
-          .grid3 > .card.p-4 {
-            padding: 18px;
-          }
-
-          /* Confidence breakdown: make it read like a compact 2×2 stat grid. */
-          .grid3 .miniRow {
-            grid-template-columns: 1fr auto 1fr auto;
-            column-gap: 18px;
-            row-gap: 10px;
-            font-size: 13px;
-          }
-          .grid3 .miniLabel {
-            letter-spacing: 0.05em;
-          }
-          .grid3 .miniVal {
-            justify-self: end;
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-          }
-        }
-          .miniVal {
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-          }
         }
 
         @media (max-width: 1100px) {
