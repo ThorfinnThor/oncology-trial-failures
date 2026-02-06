@@ -1361,20 +1361,8 @@ export default function PharmaIntelligencePage() {
             align-items: stretch;
           }
 
-          /* Drill-down buttons look cleaner when the card becomes narrower in a 4-col grid. */
-          .btnRow {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
-          .btnRow :global(a.btn) {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-          }
-
-          /* Slightly denser chips for desktop toolbars. */
-          :global(.chip) {
+          /* Slightly denser chips in the header toolbar (desktop only). */
+          .headerRight :global(.chip) {
             padding: 6px 12px;
           }
         }
@@ -1408,6 +1396,22 @@ export default function PharmaIntelligencePage() {
           gap: 8px;
           flex-wrap: wrap;
         }
+
+        /* Wide desktop: make drill-down buttons a clean 2×2 grid inside the KPI strip. */
+        @media (min-width: 1180px) {
+          .btnRow {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+          }
+          .btnRow :global(a.btn) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+          }
+        }
+
 
         .panelTitleRow {
           display: flex;
