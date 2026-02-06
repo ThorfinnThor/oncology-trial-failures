@@ -61,8 +61,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   const [trial, setTrial] = useState<TrialDetail | null>(initialTrial ?? null);
   const [err, setErr] = useState<string | null>(null);
 
-  // Keep the existing runtime behavior: once hydrated, the page still fetches the same
-  // client-side sources as before. This preserves functionality while enabling SSG.
+  // Keep existing client behavior after hydration (no functionality/design changes).
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -249,17 +248,11 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   );
 }
 
-/**
- * STATIC-ONLY REQUIREMENT:
- * For `next export` you MUST return all paths and set `fallback: false`.
- */
+// Vercel/Next runtime: generate pages on-demand (best for large datasets).
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { loadIndexServer } = await import("@/lib/server-data");
-  const rows = await loadIndexServer();
-
   return {
-    paths: rows.map((r) => ({ params: { trialId: r.nct_id } })),
-    fallback: false,
+    paths: [],
+    fallback: "blocking",
   };
 };
 
@@ -270,12 +263,16 @@ export const getStaticProps: GetStaticProps<TrialPageProps> = async (ctx) => {
   const { loadMetaServer, loadDetailServer } = await import("@/lib/server-data");
   const [meta, trial] = await Promise.all([loadMetaServer(), loadDetailServer(trialId)]);
 
-  if (!trial) return { notFound: true };
+  if (!trial) {
+    return { notFound: true, revalidate: 3600 };
+  }
 
   return {
     props: {
       initialMeta: meta,
       initialTrial: trial,
     },
+    // ISR: refresh the static HTML occasionally without changing UX/design.
+    revalidate: 24 * 60 * 60,
   };
 };
