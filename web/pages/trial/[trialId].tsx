@@ -2,12 +2,18 @@
 
 import Head from "next/head";
 import Link from "next/link";
+import type { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+
+type TrialPageProps = {
+  initialMeta: DatasetMeta | null;
+  initialTrial: TrialDetail | null;
+};
 
 function phaseChipClass(phaseKey: string) {
   const p = (phaseKey || "").toUpperCase();
@@ -39,22 +45,24 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-export default function TrialPage() {
+export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps) {
   const router = useRouter();
 
   const trialId = useMemo(
-    () => (router.query.trialId ? String(router.query.trialId) : ""),
-    [router.query.trialId]
+    () => (router.query.trialId ? String(router.query.trialId) : initialTrial?.nct_id || ""),
+    [router.query.trialId, initialTrial]
   );
   const from = useMemo(
     () => (router.query.from ? String(router.query.from) : "/explore"),
     [router.query.from]
   );
 
-  const [meta, setMeta] = useState<DatasetMeta | null>(null);
-  const [trial, setTrial] = useState<TrialDetail | null>(null);
+  const [meta, setMeta] = useState<DatasetMeta | null>(initialMeta ?? null);
+  const [trial, setTrial] = useState<TrialDetail | null>(initialTrial ?? null);
   const [err, setErr] = useState<string | null>(null);
 
+  // Keep the existing runtime behavior: once hydrated, the page still fetches the same
+  // client-side sources as before. This preserves functionality while enabling SSR/SSG.
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -81,10 +89,26 @@ export default function TrialPage() {
   );
   const bucket = useMemo(() => (trial ? reasonBucket(trial) : "OTHER/UNKNOWN"), [trial]);
 
+  const title = trialId
+    ? `${trialId} — Clinical trial failures`
+    : "Trial — Clinical trial failures";
+
+  const description = trial
+    ? `${trial.brief_title || trial.nct_id} — ${bucket}. ${
+        (trial.why_stopped || trial.why_stopped_short || "").trim() || "Stopped early."
+      }`
+        .replace(/\s+/g, " ")
+        .slice(0, 180)
+    : "Trial detail for a stopped clinical trial.";
+
   return (
     <>
       <Head>
-        <title>{trialId ? `${trialId} — Clinical trial failures` : "Trial — Clinical trial failures"}</title>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta name="twitter:title" content={title} />
       </Head>
 
       <div className="min-h-screen">
@@ -148,7 +172,9 @@ export default function TrialPage() {
                     ) : null}
                   </div>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 14 }}>
+                  <div
+                    style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 14 }}
+                  >
                     <div>
                       <div className="facet-title" style={{ marginBottom: 6 }}>
                         Sponsor
@@ -179,7 +205,9 @@ export default function TrialPage() {
                 </div>
 
                 <Section title="Why stopped">
-                  <div style={{ fontSize: 14, lineHeight: 1.55, whiteSpace: "normal", wordBreak: "break-word" }}>
+                  <div
+                    style={{ fontSize: 14, lineHeight: 1.55, whiteSpace: "normal", wordBreak: "break-word" }}
+                  >
                     {(trial.why_stopped || trial.why_stopped_short || "—").trim()}
                   </div>
                 </Section>
@@ -199,7 +227,9 @@ export default function TrialPage() {
                       <>
                         {" "}
                         • Last update:{" "}
-                        <span style={{ color: "var(--text)", fontWeight: 700 }}>{trial.last_update_post_date}</span>
+                        <span style={{ color: "var(--text)", fontWeight: 700 }}>
+                          {trial.last_update_post_date}
+                        </span>
                       </>
                     ) : null}
                   </div>
@@ -218,3 +248,36 @@ export default function TrialPage() {
     </>
   );
 }
+
+// SSG/ISR: pre-render trial pages so crawlers get real content without JS.
+// We use fallback: "blocking" to avoid a huge build if there are many trials.
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps<TrialPageProps> = async (ctx) => {
+  const trialId = String(ctx.params?.trialId || "").trim();
+  if (!trialId) {
+    return { notFound: true };
+  }
+
+  // Dynamic import prevents server-only fs/path code from ever entering the client bundle.
+  const { loadMetaServer, loadDetailServer } = await import("@/lib/server-data");
+  const [meta, trial] = await Promise.all([loadMetaServer(), loadDetailServer(trialId)]);
+
+  if (!trial) {
+    return { notFound: true, revalidate: 3600 };
+  }
+
+  return {
+    props: {
+      initialMeta: meta,
+      initialTrial: trial,
+    },
+    // Re-generate periodically (ISR). This does not change UI, only freshness for crawlers.
+    revalidate: 24 * 60 * 60,
+  };
+};
