@@ -1898,11 +1898,27 @@ export default function PharmaIntelligencePage() {
 
         /* Desktop/tablet: make confidence breakdown a tidy 2×2 layout (HIGH/MED on row 1, LOW/UNK on row 2). */
         @media (min-width: 981px) {
-          .miniRow {
-            grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
-            column-gap: 14px;
-            row-gap: 8px;
+          /* Desktop-only tightening of the KPI strip (mobile remains unchanged). */
+          .grid3 > .card.p-4 {
+            padding: 18px;
           }
+
+          /* Confidence breakdown: make it read like a compact 2×2 stat grid. */
+          .grid3 .miniRow {
+            grid-template-columns: 1fr auto 1fr auto;
+            column-gap: 18px;
+            row-gap: 10px;
+            font-size: 13px;
+          }
+          .grid3 .miniLabel {
+            letter-spacing: 0.05em;
+          }
+          .grid3 .miniVal {
+            justify-self: end;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+          }
+        }
           .miniVal {
             text-align: right;
             font-variant-numeric: tabular-nums;
