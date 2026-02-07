@@ -727,6 +727,8 @@ export default function PharmaIntelligencePage() {
 
             <div className="card p-4">
               <div className="muted small">Confidence breakdown (bio subset)</div>
+
+              {/* Mobile (unchanged): compact inline breakdown */}
               <div className="miniRow" aria-label="Confidence breakdown">
                 <div className="miniLabel">HIGH</div>
                 <div className="miniVal">{totals.byConf.HIGH.toLocaleString()}</div>
@@ -736,6 +738,26 @@ export default function PharmaIntelligencePage() {
                 <div className="miniVal">{totals.byConf.LOW.toLocaleString()}</div>
                 <div className="miniLabel">UNK</div>
                 <div className="miniVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
+              </div>
+
+              {/* Desktop: 2×2 stat tiles for clean pairing/alignment */}
+              <div className="confGrid" aria-label="Confidence breakdown (2 by 2)">
+                <div className="confCell">
+                  <div className="confLabel">HIGH</div>
+                  <div className="confVal">{totals.byConf.HIGH.toLocaleString()}</div>
+                </div>
+                <div className="confCell">
+                  <div className="confLabel">MED</div>
+                  <div className="confVal">{totals.byConf.MEDIUM.toLocaleString()}</div>
+                </div>
+                <div className="confCell">
+                  <div className="confLabel">LOW</div>
+                  <div className="confVal">{totals.byConf.LOW.toLocaleString()}</div>
+                </div>
+                <div className="confCell">
+                  <div className="confLabel">UNK</div>
+                  <div className="confVal">{totals.byConf.UNKNOWN.toLocaleString()}</div>
+                </div>
               </div>
             </div>
 
@@ -1331,14 +1353,34 @@ export default function PharmaIntelligencePage() {
 
         .grid3 {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
           margin-bottom: 18px;
+          /* Critical: avoid equal-height stretch on desktop KPI row */
+          align-items: start;
         }
         .grid2 {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
+        }
+
+        /* Wide desktop: show all 4 KPI cards in one row */
+        @media (min-width: 1180px) {
+          .grid3 {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+          }
+
+          /* Drill-down: compact 2×2 button grid */
+          .btnRow {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .btnRow .btn {
+            width: 100%;
+            justify-content: center;
+          }
         }
 
         .kpi {
@@ -1363,6 +1405,46 @@ export default function PharmaIntelligencePage() {
         }
         .miniVal {
           font-weight: 850;
+        }
+
+        .confGrid {
+          display: none; /* mobile unchanged */
+          margin-top: 10px;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+        }
+        .confCell {
+          border: 1px solid var(--border);
+          background: rgba(15, 23, 42, 0.02);
+          border-radius: 14px;
+          padding: 10px 12px;
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 12px;
+        }
+        .confLabel {
+          color: var(--text-muted);
+          font-weight: 900;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          font-size: 11px;
+          line-height: 1.2;
+        }
+        .confVal {
+          font-weight: 950;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: -0.01em;
+        }
+
+        /* Desktop: replace inline strip with 2×2 stat tiles */
+        @media (min-width: 981px) {
+          .miniRow {
+            display: none;
+          }
+          .confGrid {
+            display: grid;
+          }
         }
 
         .btnRow {
@@ -1520,46 +1602,6 @@ export default function PharmaIntelligencePage() {
         .tblReason {
           min-width: 760px; /* ensure overflow on phones */
         }
-
-
-/* Desktop: keep numeric columns aligned across the stacked left tables
-   (Reason buckets + By disease area + Top conditions).
-   Without fixed column widths, the flexible first column causes TRIALS / BIO SHARE
-   to land at different x positions across separate tables. */
-@media (min-width: 981px) {
-  .tblMini.tblWide,
-  .tblMini.tblReason {
-    table-layout: fixed;
-  }
-
-  /* Column schema: [label] [trials] [bio share] [bar] */
-  .tblMini.tblWide th:nth-child(2),
-  .tblMini.tblWide td:nth-child(2),
-  .tblMini.tblReason th:nth-child(2),
-  .tblMini.tblReason td:nth-child(2) {
-    width: 120px;
-  }
-
-  .tblMini.tblWide th:nth-child(3),
-  .tblMini.tblWide td:nth-child(3),
-  .tblMini.tblReason th:nth-child(3),
-  .tblMini.tblReason td:nth-child(3) {
-    width: 96px;
-  }
-
-  .tblMini.tblWide th:nth-child(4),
-  .tblMini.tblWide td:nth-child(4),
-  .tblMini.tblReason th:nth-child(4),
-  .tblMini.tblReason td:nth-child(4) {
-    width: 160px;
-  }
-
-  /* Make number columns visually consistent */
-  .tblMini.tblWide td.num,
-  .tblMini.tblReason td.num {
-    font-variant-numeric: tabular-nums;
-  }
-}
         .num {
           text-align: right;
           white-space: nowrap;
