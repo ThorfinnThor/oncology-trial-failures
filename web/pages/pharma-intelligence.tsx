@@ -801,7 +801,7 @@ export default function PharmaIntelligencePage() {
                 </div>
 
                 <div className="scrollHint">Swipe horizontally →</div>
-                <div className="hScroll" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
+                <div className="hScroll hScrollMini" role="region" aria-label="Reason buckets (horizontally scrollable)" tabIndex={0}>
                   <div className="hScrollInner">
                     <table className="tblMini tblReason" aria-label="Reason buckets table">
                       <thead>
@@ -963,7 +963,7 @@ export default function PharmaIntelligencePage() {
                   <div className="muted small">Top areas by volume.</div>
                 </div>
 
-                <div className="hScroll vScroll" role="region" aria-label="Disease area table" tabIndex={0}>
+                <div className="hScroll vScroll hScrollMini" role="region" aria-label="Disease area table" tabIndex={0}>
                   <div className="hScrollInner">
                     <table className="tblMini tblWide" aria-label="Disease area table">
                       <thead>
@@ -1019,7 +1019,7 @@ export default function PharmaIntelligencePage() {
                   </label>
                 </div>
 
-                <div className="hScroll vScroll" role="region" aria-label="Top conditions table" tabIndex={0}>
+                <div className="hScroll vScroll hScrollMini" role="region" aria-label="Top conditions table" tabIndex={0}>
                   <div className="hScrollInner">
                     <table className="tblMini tblWide" aria-label="Top conditions table">
                       <thead>
@@ -1466,6 +1466,50 @@ export default function PharmaIntelligencePage() {
           .grid3 > .card .confGrid {
             margin-top: auto;
           }
+          /* Desktop: align numeric columns across all mini tables (Reason buckets, Disease area, Conditions, etc.)
+             The main culprit was vertical scrollbar gutter in vScroll tables causing a narrower content box.
+             Fix: ensure all mini table scroll regions reserve a stable vertical gutter on desktop and use a shared fixed column schema. */
+          .hScrollMini {
+            overflow-y: auto; /* makes it a y-scroll container, enabling stable gutter even when not overflowing */
+            scrollbar-gutter: stable; /* reserve space so vScroll and non-vScroll regions have identical inner widths */
+          }
+
+          .tblMini {
+            min-width: 0; /* remove mobile overflow forcing on desktop */
+            table-layout: fixed;
+          }
+          .tblMini.tblWide,
+          .tblMini.tblReason {
+            min-width: 0;
+            width: 100%;
+          }
+
+          /* Shared column widths: [label] | trials | bio share | bar */
+          .tblMini.tblWide th:nth-child(2),
+          .tblMini.tblWide td:nth-child(2),
+          .tblMini.tblReason th:nth-child(2),
+          .tblMini.tblReason td:nth-child(2) {
+            width: 120px;
+          }
+          .tblMini.tblWide th:nth-child(3),
+          .tblMini.tblWide td:nth-child(3),
+          .tblMini.tblReason th:nth-child(3),
+          .tblMini.tblReason td:nth-child(3) {
+            width: 96px;
+          }
+          .tblMini.tblWide th:nth-child(4),
+          .tblMini.tblWide td:nth-child(4),
+          .tblMini.tblReason th:nth-child(4),
+          .tblMini.tblReason td:nth-child(4) {
+            width: 160px;
+          }
+          .barCol {
+            width: 160px;
+          }
+          .barTrack {
+            max-width: 160px;
+          }
+
         }
 
         .btnRow {
