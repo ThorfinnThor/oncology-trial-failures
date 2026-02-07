@@ -85,16 +85,6 @@ function TopK<T>(arr: T[], k: number): T[] {
   return arr.slice(0, Math.max(0, k));
 }
 
-function Bar({ value, max, label }: { value: number; max: number; label?: string }) {
-  const pct = max > 0 ? Math.max(0, Math.min(1, value / max)) : 0;
-  return (
-    <div className="barWrap" aria-label={label}>
-      <div className="barTrack">
-        <div className="barFill" style={{ width: `${pct * 100}%` }} />
-      </div>
-    </div>
-  );
-}
 
 /**
  * =========================
@@ -809,8 +799,7 @@ export default function PharmaIntelligencePage() {
                           <th>Bucket</th>
                           <th className="num">Trials</th>
                           <th className="num">Bio share</th>
-                          <th className="barCol" aria-hidden="true" />
-                        </tr>
+</tr>
                       </thead>
                       <tbody>
                         {bucketStats.map((b) => (
@@ -830,9 +819,6 @@ export default function PharmaIntelligencePage() {
                             </td>
                             <td className="num">{b.total.toLocaleString()}</td>
                             <td className="num">{safePct(b.bioShare)}</td>
-                            <td className="barCol">
-                              <Bar value={b.total} max={bucketMax} label={`${b.bucket} volume`} />
-                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -971,8 +957,7 @@ export default function PharmaIntelligencePage() {
                           <th>Disease area</th>
                           <th className="num">Trials</th>
                           <th className="num">Bio share</th>
-                          <th className="barCol" aria-hidden="true" />
-                        </tr>
+</tr>
                       </thead>
                       <tbody>
                         {diseaseAreaStats.map((a) => (
@@ -992,9 +977,6 @@ export default function PharmaIntelligencePage() {
                             </td>
                             <td className="num">{a.total.toLocaleString()}</td>
                             <td className="num">{safePct(a.bioShare)}</td>
-                            <td className="barCol">
-                              <Bar value={a.total} max={Math.max(1, ...diseaseAreaStats.map((x) => x.total))} />
-                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -1027,8 +1009,7 @@ export default function PharmaIntelligencePage() {
                           <th>Condition</th>
                           <th className="num">Trials</th>
                           <th className="num">Bio share</th>
-                          <th className="barCol" aria-hidden="true" />
-                        </tr>
+</tr>
                       </thead>
                       <tbody>
                         {topConditionStats.map((c) => (
@@ -1048,9 +1029,6 @@ export default function PharmaIntelligencePage() {
                             </td>
                             <td className="num">{c.total.toLocaleString()}</td>
                             <td className="num">{safePct(c.bioShare)}</td>
-                            <td className="barCol">
-                              <Bar value={c.total} max={Math.max(1, ...topConditionStats.map((x) => x.total))} />
-                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -1166,8 +1144,7 @@ export default function PharmaIntelligencePage() {
                           <tr>
                             <th>Bucket</th>
                             <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                            <th style={{ width: 120 }} aria-hidden="true" />
-                          </tr>
+</tr>
                         </thead>
                         <tbody>
                           {sponsorProfile.topBuckets.map((x) => (
@@ -1178,9 +1155,6 @@ export default function PharmaIntelligencePage() {
                                 </Link>
                               </td>
                               <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                              <td>
-                                <Bar value={x.count} max={sponsorBucketMax} />
-                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -1202,8 +1176,7 @@ export default function PharmaIntelligencePage() {
                           <tr>
                             <th>Phase</th>
                             <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                            <th style={{ width: 120 }} aria-hidden="true" />
-                          </tr>
+</tr>
                         </thead>
                         <tbody>
                           {sponsorProfile.topPhases.map((x) => (
@@ -1214,9 +1187,6 @@ export default function PharmaIntelligencePage() {
                                 </Link>
                               </td>
                               <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                              <td>
-                                <Bar value={x.count} max={sponsorPhaseMax} />
-                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -1238,8 +1208,7 @@ export default function PharmaIntelligencePage() {
                           <tr>
                             <th>Disease area</th>
                             <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                            <th style={{ width: 120 }} aria-hidden="true" />
-                          </tr>
+</tr>
                         </thead>
                         <tbody>
                           {sponsorProfile.topAreas.map((x) => (
@@ -1250,9 +1219,6 @@ export default function PharmaIntelligencePage() {
                                 </Link>
                               </td>
                               <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                              <td>
-                                <Bar value={x.count} max={sponsorAreaMax} />
-                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -1512,18 +1478,6 @@ export default function PharmaIntelligencePage() {
           .tblMini.tblReason td:nth-child(3) {
             width: 88px;
           }
-          .tblMini.tblWide th:nth-child(4),
-          .tblMini.tblWide td:nth-child(4),
-          .tblMini.tblReason th:nth-child(4),
-          .tblMini.tblReason td:nth-child(4) {
-            width: 132px;
-          }
-          .barCol {
-            width: 132px;
-          }
-          .barTrack {
-            max-width: 132px;
-          }
 
         }
 
@@ -1582,20 +1536,6 @@ export default function PharmaIntelligencePage() {
             /* allow both axes when a user scrolls inside the table region */
             touch-action: pan-x pan-y;
             overscroll-behavior: contain;
-          }
-
-          /* Desktop/tablet: make the mini-table bar column actually use its allocated width.
-             Without this, the bar track is capped (max-width) and right-aligned, so when the
-             table decides the bar column can grow, you get a big empty gap to the right of
-             the Bio share column (exactly what you're seeing in the screenshot).
-
-             Mobile is unaffected because the bar column is hidden at <=720px. */
-          .tblMini .barWrap {
-            justify-content: flex-start;
-          }
-          .tblMini .barTrack {
-            max-width: none;
-            width: 100%;
           }
 
           /* Keep headers visible while scrolling vertically inside the card */
@@ -1701,9 +1641,6 @@ export default function PharmaIntelligencePage() {
           white-space: nowrap;
           font-weight: 800;
         }
-        .barCol {
-          width: 140px;
-        }
 
         .cellTop {
           display: flex;
@@ -1722,26 +1659,6 @@ export default function PharmaIntelligencePage() {
         }
         .link:hover {
           text-decoration: underline;
-        }
-
-        /* Bars */
-        .barWrap {
-          display: flex;
-          justify-content: flex-end;
-          width: 100%;
-        }
-        .barTrack {
-          width: 100%;
-          max-width: 140px;
-          height: 8px;
-          border-radius: 999px;
-          background: rgba(15, 23, 42, 0.08);
-          overflow: hidden;
-        }
-        .barFill {
-          height: 100%;
-          background: rgba(79, 70, 229, 0.55);
-          border-radius: 999px;
         }
 
         /* ====== Matrix table (desktop) ====== */
@@ -2142,9 +2059,6 @@ export default function PharmaIntelligencePage() {
           .tblMini th,
           .tblMini td {
             padding: 8px 8px;
-          }
-          .barTrack {
-            width: 88px;
           }
 
           /* Ensure the reason buckets table keeps overflow visible on mobile */
