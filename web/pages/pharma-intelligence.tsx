@@ -1439,6 +1439,21 @@ export default function PharmaIntelligencePage() {
 
         /* Desktop: replace inline strip with 2×2 stat tiles */
         @media (min-width: 981px) {
+          /* Desktop-only: avoid wasted "gutter" whitespace inside scroll regions.
+             Base styles use overflow-x: scroll and scrollbar-gutter: stable both-edges.
+             On Windows (non-overlay scrollbars), that can reserve extra space and make
+             the mini tables look like they have a lot of empty room.
+
+             On desktop we switch to overflow-x: auto (no forced empty scrollbar) and
+             reserve a single stable gutter on the right (not both edges) so all scroll
+             regions keep identical inner widths without creating extra blank space. */
+          .hScroll {
+            overflow-x: auto;
+            overflow-y: auto;
+            scrollbar-gutter: stable;
+            touch-action: pan-x pan-y;
+          }
+
           .miniRow {
             display: none;
           }
@@ -1489,25 +1504,25 @@ export default function PharmaIntelligencePage() {
           .tblMini.tblWide td:nth-child(2),
           .tblMini.tblReason th:nth-child(2),
           .tblMini.tblReason td:nth-child(2) {
-            width: 120px;
+            width: 112px;
           }
           .tblMini.tblWide th:nth-child(3),
           .tblMini.tblWide td:nth-child(3),
           .tblMini.tblReason th:nth-child(3),
           .tblMini.tblReason td:nth-child(3) {
-            width: 96px;
+            width: 88px;
           }
           .tblMini.tblWide th:nth-child(4),
           .tblMini.tblWide td:nth-child(4),
           .tblMini.tblReason th:nth-child(4),
           .tblMini.tblReason td:nth-child(4) {
-            width: 160px;
+            width: 132px;
           }
           .barCol {
-            width: 160px;
+            width: 132px;
           }
           .barTrack {
-            max-width: 160px;
+            max-width: 132px;
           }
 
         }
