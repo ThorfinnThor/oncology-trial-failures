@@ -807,6 +807,9 @@ export default function PharmaIntelligencePage() {
                             <td>
                               <div className="cellTop">
                                 <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
+                                <Link className="link exploreInline" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
+                                  Explore
+                                </Link>
                               </div>
                               <div className="muted tiny" style={{ marginTop: 4 }}>
                                 {b.bio.toLocaleString()} likely scientific failures
@@ -965,6 +968,9 @@ export default function PharmaIntelligencePage() {
                             <td>
                               <div className="cellTop">
                                 <span className="pill pillNeutral">{a.label}</span>
+                                <Link className="link exploreInline" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
+                                  Explore
+                                </Link>
                               </div>
                               <div className="muted tiny" style={{ marginTop: 4 }}>
                                 {a.bio.toLocaleString()} likely scientific failures
@@ -1017,6 +1023,9 @@ export default function PharmaIntelligencePage() {
                             <td>
                               <div className="cellTop">
                                 <span className="pill pillNeutral">{c.label}</span>
+                                <Link className="link exploreInline" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
+                                  Explore
+                                </Link>
                               </div>
                               <div className="muted tiny" style={{ marginTop: 4 }}>
                                 {c.bio.toLocaleString()} likely scientific failures
@@ -1330,6 +1339,16 @@ export default function PharmaIntelligencePage() {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
         }
+
+        /* Desktop: use more horizontal real estate without affecting mobile layouts. */
+        @media (min-width: 1100px) {
+          :global(.page) {
+            max-width: 1320px;
+            margin-left: auto;
+            margin-right: auto;
+          }
+        }
+
 
         /* Wide desktop: show all 4 KPI cards in one row */
         @media (min-width: 1180px) {
@@ -1651,6 +1670,31 @@ export default function PharmaIntelligencePage() {
         .cellSub {
           margin-top: 4px;
           font-size: 12px;
+        }
+
+        .exploreInline {
+          margin-left: auto;
+          font-size: 12px;
+          font-weight: 800;
+          white-space: nowrap;
+        }
+
+        /* Desktop: keep "Explore" on the primary row and reduce vertical noise.
+           Mobile remains unchanged (the inline link is hidden). */
+        @media (min-width: 721px) {
+          .cellSub {
+            display: none;
+          }
+          .exploreInline {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 120ms ease;
+          }
+          .tblMini tbody tr:hover .exploreInline,
+          .tblMini tbody tr:focus-within .exploreInline {
+            opacity: 1;
+            pointer-events: auto;
+          }
         }
 
         .link {
@@ -2069,6 +2113,12 @@ export default function PharmaIntelligencePage() {
           .miniRow {
             grid-template-columns: repeat(4, auto);
           }
+          /* Mobile: keep "Explore →" on its own line; hide the inline link. */
+          .exploreInline {
+            display: none;
+          }
+
+
 
           .desktopOnly {
             display: none;
