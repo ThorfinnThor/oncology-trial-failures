@@ -1584,6 +1584,20 @@ export default function PharmaIntelligencePage() {
             overscroll-behavior: contain;
           }
 
+          /* Desktop/tablet: make the mini-table bar column actually use its allocated width.
+             Without this, the bar track is capped (max-width) and right-aligned, so when the
+             table decides the bar column can grow, you get a big empty gap to the right of
+             the Bio share column (exactly what you're seeing in the screenshot).
+
+             Mobile is unaffected because the bar column is hidden at <=720px. */
+          .tblMini .barWrap {
+            justify-content: flex-start;
+          }
+          .tblMini .barTrack {
+            max-width: none;
+            width: 100%;
+          }
+
           /* Keep headers visible while scrolling vertically inside the card */
           .hScroll.vScroll thead th {
             position: sticky;
