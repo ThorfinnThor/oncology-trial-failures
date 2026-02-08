@@ -1126,114 +1126,116 @@ export default function PharmaIntelligencePage() {
               </div>
 
               {sponsorProfile && (
-                <div className="sponsorGrid">
-                  <div className="sPanel sponsorTotals">
-                    <div className="subhead">Sponsor totals</div>
-                    <div className="panelTitle">{sponsorProfile.sponsor}</div>
-                    <div className="muted small" style={{ marginTop: 4 }}>
-                      Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
-                    </div>
+                                <div className="sponsorGrid">
+                  <div className="sponsorLeft">
+                    <div className="sPanel sponsorTotals">
+                      <div className="subhead">Sponsor totals</div>
+                      <div className="panelTitle">{sponsorProfile.sponsor}</div>
+                      <div className="muted small" style={{ marginTop: 4 }}>
+                        Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
+                      </div>
 
-                    <div className="note" style={{ marginTop: 12 }}>
-                      The sponsor panel follows the current page mode (all trials vs scientific failures).
+                      <div className="note" style={{ marginTop: 12 }}>
+                        The sponsor panel follows the current page mode (all trials vs scientific failures).
+                      </div>
+                    </div>
+                    <div className="sponsorLeftLower">
+                      <div className="sPanel sPanelBuckets">
+                                          <div className="panelTitleRow">
+                                            <div className="subhead">Top buckets</div>
+                                            <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                                              View all →
+                                            </Link>
+                                          </div>
+
+                                          <div className="sPanelBody">
+                                            <table className="compactTbl" aria-label="Sponsor top buckets table">
+                                              <thead>
+                                                <tr>
+                                                  <th>Bucket</th>
+                                                  <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                      </tr>
+                                              </thead>
+                                              <tbody>
+                                                {sponsorProfile.topBuckets.map((x) => (
+                                                  <tr key={x.bucket}>
+                                                    <td>
+                                                      <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { bucket: [x.bucket] })}>
+                                                        {x.bucket}
+                                                      </Link>
+                                                    </td>
+                                                    <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                                                  </tr>
+                                                ))}
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
+                      <div className="sPanel sPanelPhases">
+                                          <div className="panelTitleRow">
+                                            <div className="subhead">Top phases</div>
+                                            <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                                              View all →
+                                            </Link>
+                                          </div>
+
+                                          <div className="sPanelBody">
+                                            <table className="compactTbl" aria-label="Sponsor top phases table">
+                                              <thead>
+                                                <tr>
+                                                  <th>Phase</th>
+                                                  <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                      </tr>
+                                              </thead>
+                                              <tbody>
+                                                {sponsorProfile.topPhases.map((x) => (
+                                                  <tr key={x.phase}>
+                                                    <td>
+                                                      <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { phase: [x.phase] })}>
+                                                        {phaseLabel(x.phase)}
+                                                      </Link>
+                                                    </td>
+                                                    <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                                                  </tr>
+                                                ))}
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
                     </div>
                   </div>
-
-                  <div className="sPanel sPanelBuckets">
-                    <div className="panelTitleRow">
-                      <div className="subhead">Top buckets</div>
-                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
-                        View all →
-                      </Link>
-                    </div>
-
-                    <div className="sPanelBody">
-                      <table className="compactTbl" aria-label="Sponsor top buckets table">
-                        <thead>
-                          <tr>
-                            <th>Bucket</th>
-                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-</tr>
-                        </thead>
-                        <tbody>
-                          {sponsorProfile.topBuckets.map((x) => (
-                            <tr key={x.bucket}>
-                              <td>
-                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { bucket: [x.bucket] })}>
-                                  {x.bucket}
-                                </Link>
-                              </td>
-                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div className="sPanel sPanelPhases">
-                    <div className="panelTitleRow">
-                      <div className="subhead">Top phases</div>
-                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
-                        View all →
-                      </Link>
-                    </div>
-
-                    <div className="sPanelBody">
-                      <table className="compactTbl" aria-label="Sponsor top phases table">
-                        <thead>
-                          <tr>
-                            <th>Phase</th>
-                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-</tr>
-                        </thead>
-                        <tbody>
-                          {sponsorProfile.topPhases.map((x) => (
-                            <tr key={x.phase}>
-                              <td>
-                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { phase: [x.phase] })}>
-                                  {phaseLabel(x.phase)}
-                                </Link>
-                              </td>
-                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
                   <div className="sPanel sPanelAreas">
-                    <div className="panelTitleRow">
-                      <div className="subhead">Top disease areas</div>
-                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
-                        View all →
-                      </Link>
-                    </div>
+                                      <div className="panelTitleRow">
+                                        <div className="subhead">Top disease areas</div>
+                                        <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                                          View all →
+                                        </Link>
+                                      </div>
 
-                    <div className="sPanelBody">
-                      <table className="compactTbl" aria-label="Sponsor top disease areas table">
-                        <thead>
-                          <tr>
-                            <th>Disease area</th>
-                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-</tr>
-                        </thead>
-                        <tbody>
-                          {sponsorProfile.topAreas.map((x) => (
-                            <tr key={x.area}>
-                              <td>
-                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { area: [x.area] })}>
-                                  {x.area}
-                                </Link>
-                              </td>
-                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
+                                      <div className="sPanelBody">
+                                        <table className="compactTbl" aria-label="Sponsor top disease areas table">
+                                          <thead>
+                                            <tr>
+                                              <th>Disease area</th>
+                                              <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                  </tr>
+                                          </thead>
+                                          <tbody>
+                                            {sponsorProfile.topAreas.map((x) => (
+                                              <tr key={x.area}>
+                                                <td>
+                                                  <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { area: [x.area] })}>
+                                                    {x.area}
+                                                  </Link>
+                                                </td>
+                                                <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                                              </tr>
+                                            ))}
+                                          </tbody>
+                                        </table>
+                                      </div>
+                                    </div>
+                </div>
                 </div>
               )}
             </div>
@@ -1932,6 +1934,7 @@ export default function PharmaIntelligencePage() {
           margin-top: 10px;
         }
 
+        
         .sponsorGrid {
           display: grid;
           grid-template-columns: 1fr;
@@ -1939,28 +1942,47 @@ export default function PharmaIntelligencePage() {
           align-items: start;
           margin-top: 10px;
         }
+        .sponsorLeft {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          min-width: 0;
+        }
+        .sponsorLeftLower {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          min-width: 0;
+        }
 
         @media (min-width: 900px) {
           .sponsorGrid {
-            grid-template-columns: minmax(360px, 440px) 1fr;
+            grid-template-columns: minmax(380px, 460px) 1fr;
             column-gap: 16px;
             row-gap: 14px;
           }
-          .sponsorTotals {
+          .sponsorLeft {
             grid-column: 1;
-            grid-row: 1;
-          }
-          .sPanelBuckets {
-            grid-column: 1;
-            grid-row: 2;
-          }
-          .sPanelPhases {
-            grid-column: 1;
-            grid-row: 3;
           }
           .sPanelAreas {
             grid-column: 2;
-            grid-row: 1 / span 3;
+          }
+        }
+
+        @media (min-width: 1100px) {
+          .sponsorLeftLower {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+          }
+          .sPanelAreas .sPanelBody {
+            max-height: 520px;
+            overflow: auto;
+          }
+          .sPanelAreas thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
           }
         }
 
