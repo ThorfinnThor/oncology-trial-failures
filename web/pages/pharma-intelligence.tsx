@@ -1506,6 +1506,46 @@ export default function PharmaIntelligencePage() {
           flex-wrap: wrap;
         }
 
+        /* Match bucket pill colors for the Fast drill-down buttons. */
+        .btn.btnBucketEfficacy {
+          background: rgba(79, 70, 229, 0.10);
+          border-color: rgba(79, 70, 229, 0.25);
+        }
+        .btn.btnBucketSafety {
+          background: rgba(220, 38, 38, 0.08);
+          border-color: rgba(220, 38, 38, 0.25);
+        }
+        .btn.btnBucketOperational {
+          background: rgba(234, 179, 8, 0.12);
+          border-color: rgba(234, 179, 8, 0.25);
+        }
+        .btn.btnBucketRegulatory {
+          background: rgba(2, 132, 199, 0.10);
+          border-color: rgba(2, 132, 199, 0.25);
+        }
+
+        .btn.btnBucketEfficacy:hover,
+        .btn.btnBucketSafety:hover,
+        .btn.btnBucketOperational:hover,
+        .btn.btnBucketRegulatory:hover {
+          filter: brightness(0.98);
+        }
+
+        .btn.btnBucketEfficacy:active,
+        .btn.btnBucketSafety:active,
+        .btn.btnBucketOperational:active,
+        .btn.btnBucketRegulatory:active {
+          filter: brightness(0.95);
+        }
+        
+        .btn.btnBucketEfficacy:focus-visible,
+        .btn.btnBucketSafety:focus-visible,
+        .btn.btnBucketOperational:focus-visible,
+        .btn.btnBucketRegulatory:focus-visible {
+          outline: none;
+          box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.08);
+        }
+
         .panelTitleRow {
           display: flex;
           align-items: baseline;
