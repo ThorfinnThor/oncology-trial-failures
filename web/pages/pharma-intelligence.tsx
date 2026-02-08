@@ -1507,41 +1507,41 @@ export default function PharmaIntelligencePage() {
         }
 
         /* Match bucket pill colors for the Fast drill-down buttons. */
-        .btn.btn.btnBucketEfficacy {
+        :global(.btn.btnBucketEfficacy) {
           background: rgba(79, 70, 229, 0.10) !important;
           border-color: rgba(79, 70, 229, 0.25) !important;
         }
-        .btn.btnBucketSafety {
+        :global(.btn.btnBucketSafety) {
           background: rgba(220, 38, 38, 0.08) !important;
           border-color: rgba(220, 38, 38, 0.25) !important;
         }
-        .btn.btnBucketOperational {
+        :global(.btn.btnBucketOperational) {
           background: rgba(234, 179, 8, 0.12) !important;
           border-color: rgba(234, 179, 8, 0.25) !important;
         }
-        .btn.btnBucketRegulatory {
+        :global(.btn.btnBucketRegulatory) {
           background: rgba(2, 132, 199, 0.10) !important;
           border-color: rgba(2, 132, 199, 0.25) !important;
         }
 
-        .btn.btnBucketEfficacy:hover,
-        .btn.btnBucketSafety:hover,
-        .btn.btnBucketOperational:hover,
-        .btn.btnBucketRegulatory:hover {
+        :global(.btn.btnBucketEfficacy:hover),
+        :global(.btn.btnBucketSafety:hover),
+        :global(.btn.btnBucketOperational:hover),
+        :global(.btn.btnBucketRegulatory:hover) {
           filter: brightness(0.98);
         }
 
-        .btn.btnBucketEfficacy:active,
-        .btn.btnBucketSafety:active,
-        .btn.btnBucketOperational:active,
-        .btn.btnBucketRegulatory:active {
+        :global(.btn.btnBucketEfficacy:active),
+        :global(.btn.btnBucketSafety:active),
+        :global(.btn.btnBucketOperational:active),
+        :global(.btn.btnBucketRegulatory:active) {
           filter: brightness(0.95);
         }
         
-        .btn.btnBucketEfficacy:focus-visible,
-        .btn.btnBucketSafety:focus-visible,
-        .btn.btnBucketOperational:focus-visible,
-        .btn.btnBucketRegulatory:focus-visible {
+        :global(.btn.btnBucketEfficacy:focus-visible),
+        :global(.btn.btnBucketSafety:focus-visible),
+        :global(.btn.btnBucketOperational:focus-visible),
+        :global(.btn.btnBucketRegulatory:focus-visible) {
           outline: none;
           box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.08);
         }
