@@ -1507,21 +1507,21 @@ export default function PharmaIntelligencePage() {
         }
 
         /* Match bucket pill colors for the Fast drill-down buttons. */
-        .btn.btnBucketEfficacy {
-          background: rgba(79, 70, 229, 0.10);
-          border-color: rgba(79, 70, 229, 0.25);
+        .btn.btn.btnBucketEfficacy {
+          background: rgba(79, 70, 229, 0.10) !important;
+          border-color: rgba(79, 70, 229, 0.25) !important;
         }
         .btn.btnBucketSafety {
-          background: rgba(220, 38, 38, 0.08);
-          border-color: rgba(220, 38, 38, 0.25);
+          background: rgba(220, 38, 38, 0.08) !important;
+          border-color: rgba(220, 38, 38, 0.25) !important;
         }
         .btn.btnBucketOperational {
-          background: rgba(234, 179, 8, 0.12);
-          border-color: rgba(234, 179, 8, 0.25);
+          background: rgba(234, 179, 8, 0.12) !important;
+          border-color: rgba(234, 179, 8, 0.25) !important;
         }
         .btn.btnBucketRegulatory {
-          background: rgba(2, 132, 199, 0.10);
-          border-color: rgba(2, 132, 199, 0.25);
+          background: rgba(2, 132, 199, 0.10) !important;
+          border-color: rgba(2, 132, 199, 0.25) !important;
         }
 
         .btn.btnBucketEfficacy:hover,
