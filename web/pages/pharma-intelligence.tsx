@@ -174,8 +174,8 @@ function normalizeBucketForDisplay(b: string): BucketKey {
  * Explore currently supports q + status/phase/area/bucket/bio.
  * So sponsor/condition drill-downs are implemented via q search.
  */
-function sponsorQueryHref(leadSponsor: string, patch?: Partial<UrlState>): string {
-  return exploreHref({ q: leadSponsor, ...(patch || {}) });
+function sponsorQueryHref(leadSponsor: string, scientificOnly?: boolean, patch?: Partial<UrlState>): string {
+  return exploreHref({ q: leadSponsor, ...(scientificOnly ? { bio: true } : {}), ...(patch || {}) });
 }
 
 function conditionQueryHref(conditionLabel: string, patch?: Partial<UrlState>): string {
@@ -1116,7 +1116,7 @@ export default function PharmaIntelligencePage() {
                 </div>
 
                 <div className="sponsorBtns">
-                  <Link className="btn" href={sponsorQueryHref(selectedSponsor)}>
+                  <Link className="btn" href={sponsorQueryHref(selectedSponsor, focusBio)}>
                     Open in Explore
                   </Link>
                   <button className={focusBio ? "btn-primary" : "btn"} onClick={() => setFocusBio((v) => !v)}>
@@ -1142,7 +1142,7 @@ export default function PharmaIntelligencePage() {
                   <div className="sPanel sPanelBuckets">
                     <div className="panelTitleRow">
                       <div className="subhead">Top buckets</div>
-                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
                         View all →
                       </Link>
                     </div>
@@ -1159,7 +1159,7 @@ export default function PharmaIntelligencePage() {
                           {sponsorProfile.topBuckets.map((x) => (
                             <tr key={x.bucket}>
                               <td>
-                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { bucket: [x.bucket] })}>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { bucket: [x.bucket] })}>
                                   {x.bucket}
                                 </Link>
                               </td>
@@ -1174,7 +1174,7 @@ export default function PharmaIntelligencePage() {
                   <div className="sPanel sPanelPhases">
                     <div className="panelTitleRow">
                       <div className="subhead">Top phases</div>
-                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
                         View all →
                       </Link>
                     </div>
@@ -1191,7 +1191,7 @@ export default function PharmaIntelligencePage() {
                           {sponsorProfile.topPhases.map((x) => (
                             <tr key={x.phase}>
                               <td>
-                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { phase: [x.phase] })}>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { phase: [x.phase] })}>
                                   {phaseLabel(x.phase)}
                                 </Link>
                               </td>
@@ -1206,7 +1206,7 @@ export default function PharmaIntelligencePage() {
                   <div className="sPanel sPanelAreas">
                     <div className="panelTitleRow">
                       <div className="subhead">Top disease areas</div>
-                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor)}>
+                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
                         View all →
                       </Link>
                     </div>
@@ -1223,7 +1223,7 @@ export default function PharmaIntelligencePage() {
                           {sponsorProfile.topAreas.map((x) => (
                             <tr key={x.area}>
                               <td>
-                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, { area: [x.area] })}>
+                                <Link className="link cellTrunc" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { area: [x.area] })}>
                                   {x.area}
                                 </Link>
                               </td>
