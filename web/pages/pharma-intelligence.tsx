@@ -1125,130 +1125,136 @@ export default function PharmaIntelligencePage() {
                 </div>
               </div>
 
+              {sponsorProfile ? (
+                <div className="sponsorLayout" aria-label="Sponsor profile">
+                  <div className="sCard sSummary">
+                      <div className="sCardHeader">
+                        <div className="min0">
+                          <div className="sEyebrow">Sponsor totals</div>
+                          <div className="sTitle">{sponsorProfile.sponsor}</div>
+                        </div>
+                        <div className="sModePill" aria-label="Sponsor mode">
+                          {focusBio ? "Scientific failures" : "All stopped trials"}
+                        </div>
+                      </div>
 
-  {sponsorProfile && (
-                <div className="sponsorGrid">
-                  <div className="sPanel sponsorTotals">
-                    <div className="subhead">Sponsor totals</div>
-                    <div className="panelTitle">{sponsorProfile.sponsor}</div>
-                    <div className="muted small" style={{ marginTop: 4 }}>
-                      Trials: <b>{sponsorProfile.total.toLocaleString()}</b> • Bio share: <b>{safePct(sponsorProfile.bioShare)}</b>
-                    </div>
+                      <div className="sKpis" aria-label="Sponsor KPIs">
+                        <div className="sKpi">
+                          <div className="sKpiLabel">Trials</div>
+                          <div className="sKpiVal">{sponsorProfile.total.toLocaleString()}</div>
+                        </div>
+                        <div className="sKpi">
+                          <div className="sKpiLabel">Bio share</div>
+                          <div className="sKpiVal">{safePct(sponsorProfile.bioShare)}</div>
+                        </div>
+                        <div className="sKpi">
+                          <div className="sKpiLabel">Bio trials</div>
+                          <div className="sKpiVal">{sponsorProfile.bio.toLocaleString()}</div>
+                        </div>
+                      </div>
 
-                    <div className="note" style={{ marginTop: 12 }}>
-                      The sponsor panel follows the current page mode (all trials vs scientific failures).
-                    </div>
+                      <div className="muted small" style={{ marginTop: 10 }}>
+                        Drill-downs open Explore with sponsor pre-filled (q) plus bucket/phase/area where applicable.
+                      </div>
                   </div>
 
-                  <div className="sponsorLower">
-                    <div className="sPanel sPanelBuckets">
-                      <div className="panelTitleRow">
-                        <div className="subhead">Top buckets</div>
-                        <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
-                          View all →
-                        </Link>
-                      </div>
-
-                      <div className="sPanelBody">
-                        <table className="compactTbl" aria-label="Sponsor top buckets table">
-                          <thead>
-                            <tr>
-                              <th>Bucket</th>
-                              <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {sponsorProfile.topBuckets.map((x) => (
-                              <tr key={x.bucket}>
-                                <td>
-                                  <Link
-                                    className="link cellTrunc"
-                                    href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { bucket: [x.bucket] })}
-                                  >
-                                    {x.bucket}
-                                  </Link>
-                                </td>
-                                <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-
-                    <div className="sPanel sPanelPhases">
-                      <div className="panelTitleRow">
-                        <div className="subhead">Top phases</div>
-                        <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
-                          View all →
-                        </Link>
-                      </div>
-
-                      <div className="sPanelBody">
-                        <table className="compactTbl" aria-label="Sponsor top phases table">
-                          <thead>
-                            <tr>
-                              <th>Phase</th>
-                              <th style={{ width: 110, textAlign: "right" }}>Trials</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {sponsorProfile.topPhases.map((x) => (
-                              <tr key={x.phase}>
-                                <td>
-                                  <Link
-                                    className="link cellTrunc"
-                                    href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { phase: [x.phase] })}
-                                  >
-                                    {phaseLabel(x.phase)}
-                                  </Link>
-                                </td>
-                                <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="sPanel sPanelAreas">
-                    <div className="panelTitleRow">
-                      <div className="subhead">Top disease areas</div>
-                      <Link className="link" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
-                        View all →
+                  <div className="sCard sAreas" aria-label="Top disease areas">
+                    <div className="sCardHeader compact">
+                      <div className="sEyebrow">Top disease areas</div>
+                      <Link className="sLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                        View all
                       </Link>
                     </div>
 
-                    <div className="sPanelBody">
-                      <table className="compactTbl" aria-label="Sponsor top disease areas table">
+                    <div className="sScroll" role="region" aria-label="Top disease areas table" tabIndex={0}>
+                      <table className="sTable" aria-label="Sponsor top disease areas">
                         <thead>
                           <tr>
                             <th>Disease area</th>
-                            <th style={{ width: 110, textAlign: "right" }}>Trials</th>
+                            <th className="sNum">Trials</th>
                           </tr>
                         </thead>
                         <tbody>
                           {sponsorProfile.topAreas.map((x) => (
                             <tr key={x.area}>
                               <td>
-                                <Link
-                                  className="link cellTrunc"
-                                  href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { area: [x.area] })}
-                                >
-                                  {x.area}
+                                <Link className="sRowLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { area: [x.area] })}>
+                                  <span className="pill pillNeutral">{x.area}</span>
                                 </Link>
                               </td>
-                              <td style={{ textAlign: "right", fontWeight: 800 }}>{x.count.toLocaleString()}</td>
+                              <td className="sNum" aria-label={`${x.count} trials`}>
+                                <div className="sNumTop">{x.count.toLocaleString()}</div>
+                                <div className="sBar" aria-hidden="true">
+                                  <div className="sFill" style={{ width: `${Math.max(3, Math.round((x.count / sponsorAreaMax) * 100))}%` }} />
+                                </div>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
                       </table>
                     </div>
                   </div>
+
+                  <div className="sCard sBuckets" aria-label="Top buckets">
+                    <div className="sCardHeader compact">
+                      <div className="sEyebrow">Top buckets</div>
+                      <Link className="sLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                        View all
+                      </Link>
+                    </div>
+
+                    <table className="sTable" aria-label="Sponsor top buckets">
+                      <tbody>
+                        {sponsorProfile.topBuckets.map((x) => (
+                          <tr key={x.bucket}>
+                            <td>
+                              <Link className="sRowLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { bucket: [x.bucket] })}>
+                                <span className={bucketPillClass(x.bucket)}>{x.bucket}</span>
+                              </Link>
+                            </td>
+                            <td className="sNum" aria-label={`${x.count} trials`}>
+                              <div className="sNumTop">{x.count.toLocaleString()}</div>
+                              <div className="sBar" aria-hidden="true">
+                                <div className="sFill" style={{ width: `${Math.max(3, Math.round((x.count / sponsorBucketMax) * 100))}%` }} />
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="sCard sPhases" aria-label="Top phases">
+                    <div className="sCardHeader compact">
+                      <div className="sEyebrow">Top phases</div>
+                      <Link className="sLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                        View all
+                      </Link>
+                    </div>
+
+                    <table className="sTable" aria-label="Sponsor top phases">
+                      <tbody>
+                        {sponsorProfile.topPhases.map((x) => (
+                          <tr key={x.phase}>
+                            <td>
+                              <Link className="sRowLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { phase: [x.phase] })}>
+                                <span className={phasePillClass(x.phase)}>{phaseLabel(x.phase)}</span>
+                              </Link>
+                            </td>
+                            <td className="sNum" aria-label={`${x.count} trials`}>
+                              <div className="sNumTop">{x.count.toLocaleString()}</div>
+                              <div className="sBar" aria-hidden="true">
+                                <div className="sFill" style={{ width: `${Math.max(3, Math.round((x.count / sponsorPhaseMax) * 100))}%` }} />
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              )}
-</div>
+              ) : null}
+            </div>
           </section>
 
           {/* ===== Footer ===== */}
@@ -1936,143 +1942,212 @@ export default function PharmaIntelligencePage() {
           flex-wrap: wrap;
           justify-content: flex-end;
         }
-        .sponsorPanels3 {
-          display: grid;
-          grid-template-columns: 1.15fr 1fr 1fr;
-          gap: 14px;
-          align-items: start;
-          margin-top: 10px;
-        }
 
-        
-        .sponsorGrid {
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
-          align-items: stretch;
-          margin-top: 10px;
-        }
-
-        /* Bottom mini-cards (buckets / phases) */
-        .sponsorLower {
-          display: flex;
-          flex-direction: column;
-          gap: 14px;
+        /* Sponsor panel redesign (desktop only). Mobile remains stacked by default. */
+        .min0 {
           min-width: 0;
         }
 
-        /* Desktop: 2-column sponsor panel, with disease areas spanning full height */
-        @media (min-width: 900px) {
-          .sponsorGrid {
-            display: grid;
-            grid-template-columns: minmax(520px, 560px) minmax(0, 1fr);
-            grid-template-rows: auto auto;
-            column-gap: 16px;
-            row-gap: 14px;
-            align-items: start;
-          }
-          .sponsorTotals {
-            grid-column: 1;
-            grid-row: 1;
-          }
-          .sponsorLower {
-            grid-column: 1;
-            grid-row: 2;
-          }
-          .sPanelAreas {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-            align-self: start; /* avoid stretching a short table into a tall empty card */
-          }
+        .sponsorLayout {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          margin-top: 12px;
         }
 
-        /* Desktop polish for sponsor panels: keep headers tight and avoid awkward wrapping */
-        @media (min-width: 900px) {
-          .sPanel .panelTitleRow {
-            flex-wrap: nowrap;
-            align-items: center;
-            margin-bottom: 8px;
-          }
-          .sPanel .subhead {
-            margin-bottom: 0;
-          }
-          .sPanel .panelTitleRow :global(a.link) {
-            font-size: 12px;
-            font-weight: 850;
-            white-space: nowrap;
-          }
-        }
-
-
-        /* Wide desktop: buckets + phases side-by-side, and scrollable disease areas */
-        @media (min-width: 1100px) {
-          .sponsorLower {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-          }
-
-          .sPanelAreas .sPanelBody {
-            max-height: 480px;
-            overflow: auto;
-          }
-          .sPanelAreas thead th {
-            position: sticky;
-            top: 0;
-            z-index: 2;
-          }
-        }
-
-        .sPanelBody {
-          margin-top: 6px;
-        }
-        .sPanel {
+        .sCard {
           background: var(--surface-2);
           border: 1px solid var(--border);
-          border-radius: 16px;
+          border-radius: 18px;
           padding: 14px;
           min-width: 0;
           overflow: hidden;
         }
-        .subhead {
+        .sSummary {
+          padding: 16px;
+        }
+
+        .sCardHeader {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 12px;
+          margin-bottom: 10px;
+        }
+        .sCardHeader.compact {
+          align-items: center;
+          margin-bottom: 8px;
+        }
+
+        .sEyebrow {
           color: var(--text-muted);
           font-size: 12px;
           font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .sTitle {
+          font-size: 18px;
+          font-weight: 950;
+          line-height: 1.15;
+          margin-top: 4px;
+          word-break: break-word;
+        }
+
+        .sModePill {
+          font-size: 12px;
+          font-weight: 900;
+          border: 1px solid var(--border);
+          background: var(--surface);
+          border-radius: 999px;
+          padding: 6px 10px;
+          white-space: nowrap;
+          color: var(--text);
+        }
+
+        .sKpis {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          margin-top: 6px;
+        }
+        .sKpi {
+          background: rgba(15, 23, 42, 0.03);
+          border: 1px solid rgba(15, 23, 42, 0.06);
+          border-radius: 14px;
+          padding: 10px 10px;
+          min-width: 0;
+        }
+        .sKpiLabel {
+          color: var(--text-muted);
+          font-size: 11px;
+          font-weight: 900;
           letter-spacing: 0.06em;
           text-transform: uppercase;
-          margin-bottom: 8px;
         }
-        .panelTitle {
+        .sKpiVal {
+          margin-top: 4px;
+          font-size: 18px;
+          font-weight: 950;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .sLink {
+          font-size: 12px;
           font-weight: 900;
-          font-size: 16px;
-          margin-top: 2px;
-          line-height: 1.2;
+          white-space: nowrap;
         }
-        .compactTbl {
+
+        .sScroll {
+          max-height: 420px;
+          overflow: auto;
+          border-radius: 14px;
+        }
+
+        .sTable {
           width: 100%;
           border-collapse: collapse;
-          font-size: 13px;
           table-layout: fixed;
+          font-size: 13px;
         }
-        .compactTbl th,
-        .compactTbl td {
+        .sTable th,
+        .sTable td {
           border-bottom: 1px solid var(--border);
-          padding: 9px 10px;
+          padding: 10px 10px;
           vertical-align: top;
         }
-        .compactTbl th {
+        .sTable th {
           text-align: left;
           font-size: 12px;
           color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.06em;
-          background: var(--surface);
+          background: var(--surface-2);
         }
-        .cellTrunc {
+
+        .sTable tbody tr:hover {
+          background: rgba(79, 70, 229, 0.04);
+        }
+
+        .sRowLink {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 0;
+          max-width: 100%;
+        }
+
+        .sNum {
+          width: 132px;
+          text-align: right;
+          font-weight: 950;
+        }
+        .sNumTop {
+          font-variant-numeric: tabular-nums;
+        }
+        .sBar {
+          height: 6px;
+          margin-top: 6px;
+          background: rgba(15, 23, 42, 0.10);
+          border-radius: 999px;
           overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          display: block;
+        }
+        .sFill {
+          height: 100%;
+          background: rgba(79, 70, 229, 0.55);
+          border-radius: 999px;
+        }
+
+        .sAreas thead th {
+          position: sticky;
+          top: 0;
+          z-index: 2;
+        }
+
+        @media (min-width: 980px) {
+          .sponsorTopRow {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 14px;
+            align-items: end;
+          }
+          .sponsorSelect {
+            min-width: 420px;
+          }
+        }
+
+        @media (min-width: 1100px) {
+          .sponsorLayout {
+            display: grid;
+            grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) minmax(0, 1.65fr);
+            grid-template-areas:
+              "summary summary areas"
+              "buckets phases areas";
+            gap: 16px;
+            align-items: start;
+          }
+          .sSummary {
+            grid-area: summary;
+          }
+          .sBuckets {
+            grid-area: buckets;
+          }
+          .sPhases {
+            grid-area: phases;
+          }
+          .sAreas {
+            grid-area: areas;
+            align-self: start;
+          }
+          .sScroll {
+            max-height: 520px;
+          }
+        }
+
+        @media (max-width: 420px) {
+          .sKpis {
+            grid-template-columns: 1fr;
+          }
         }
 
         .footer {
