@@ -18,11 +18,20 @@ export function TopBar({ q, setQ, onCopyLink, onExport, onReset }: Props) {
           <div className="flex items-center justify-between xl:justify-start gap-3">
             <div className="text-sm font-semibold text-gray-900">Clinical trial failures</div>
             <nav className="flex items-center gap-3 text-sm">
-              <Link className="text-gray-700 hover:underline" href="/">
+              <Link className="text-gray-700 hover:underline" href="/explore">
                 Explore
               </Link>
-              <Link className="text-gray-700 hover:underline" href="/share-leaders">
-                Leader board 
+              <Link className="text-gray-700 hover:underline" href="/overview">
+                Overview
+              </Link>
+              <Link className="text-gray-700 hover:underline" href="/sponsor-insights">
+                Sponsor insights
+              </Link>
+              <Link className="text-gray-700 hover:underline" href="/outliers">
+                Outliers
+              </Link>
+              <Link className="text-gray-700 hover:underline" href="/top-entities">
+                Top entities
               </Link>
               <Link className="text-gray-700 hover:underline" href="/methods">
                 Methods

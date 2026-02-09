@@ -21,10 +21,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const paths = [
     "/",
     "/explore",
-    "/methods",
+    "/overview",
+    "/sponsor-insights",
+    "/top-entities",
     "/outliers",
-    "/pharma-intelligence",
-    "/share-leaders",
+    "/methods",
     "/compare",
   ];
 

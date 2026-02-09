@@ -42,14 +42,17 @@ export default function MethodsPage() {
               <Link className="navlink" href="/explore">
                 Explore
               </Link>
-              <Link className="navlink" href="/pharma-intelligence">
-                Pharma intelligence
+              <Link className="navlink" href="/overview">
+                Overview
+              </Link>
+              <Link className="navlink" href="/sponsor-insights">
+                Sponsor insights
               </Link>
               <Link className="navlink" href="/outliers">
                 Outliers
               </Link>
-              <Link className="navlink" href="/share-leaders">
-                Share leaders
+              <Link className="navlink" href="/top-entities">
+                Top entities
               </Link>
               <Link className="navlink" href="/methods" aria-current="page">
                 Methods
