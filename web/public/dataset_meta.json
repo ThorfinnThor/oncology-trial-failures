@@ -1,13 +1,13 @@
 {
   "version": "2026-02-09",
-  "generated_at_utc": "2026-02-09T21:41:56Z",
+  "generated_at_utc": "2026-02-09T22:20:56Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 22677,
     "max_last_update_post_date": "2026-02-09"
   },
   "biological_failure": {
-    "record_count": 1710,
+    "record_count": 1763,
     "max_last_update_post_date": "2026-02-09"
   },
   "top_areas": [
