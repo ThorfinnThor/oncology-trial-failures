@@ -168,6 +168,12 @@ SAFETY_TERMS = [
     "intolerable",
     "unacceptable risk",
     "risk/benefit", "risk benefit", "risk-benefit",
+    # Benefit–risk phrasing (common in sponsor / regulator communications)
+    "benefit-risk", "benefit risk", "benefit/risk",
+    "unfavorable benefit-risk", "unfavourable benefit-risk",
+    "unfavorable benefit risk", "unfavourable benefit risk",
+    # Synthetic token injected by _inject_benefit_risk_unfavorable()
+    "benefit_risk_unfavorable",
     "safety profile",
     # Regulatory / monitoring committee signals
     "clinical hold", "fda clinical hold", "regulatory hold",
@@ -226,7 +232,6 @@ OPERATIONAL_TERMS = [
 
     "company decision", "business decision", "business reasons", "corporate decision",
     "strategic decision", "strategic reasons",
-    # Business/portfolio strategy phrasing (common in sponsor-driven stops)
     "business strategy", "corporate strategy", "company strategy",
     "change in strategy", "changes in strategy",
     "strategic priority", "strategic priorities",
@@ -420,6 +425,15 @@ SAFETY_WEIGHTS: Dict[str, int] = {
     "risk/benefit": 2,
     "risk benefit": 2,
     "risk-benefit": 2,
+    "benefit-risk": 2,
+    "benefit risk": 2,
+    "benefit/risk": 2,
+    "unfavorable benefit-risk": 4,
+    "unfavourable benefit-risk": 4,
+    "unfavorable benefit risk": 4,
+    "unfavourable benefit risk": 4,
+    # Injected when text indicates risks outweigh benefits (e.g., "risk profile exceeds the benefits")
+    "benefit_risk_unfavorable": 6,
     "safety profile": 2,
     "clinical hold": 3,
     "fda clinical hold": 3,
@@ -446,18 +460,17 @@ NEGATION_CUES = [
     "not due to", "not because of", "not prompted by", "not related to",
     "unrelated to", "not caused by", "not attributable to",
 
-    # Contrastive/alternative-cause cues (important for phrases like
-    # "... rather than any safety issues" or "... instead of safety concerns")
-    "rather than ", "rather than any ",
-    "instead of ",
-    "as opposed to ",
-
     # Contraction variants of the above
     "n't due to", "n't because of", "n't prompted by", "n't related to",
 
     # Other frequent negations
     "cannot ", "can't ", "won't ", "didn't ", "doesn't ", "don't ",
     "isn't ", "aren't ", "wasn't ", "weren't ",
+
+    # Contrast / exclusion cues (treat as negation for nearby terms)
+    "rather than ", "rather than any ",
+    "instead of ",
+    "as opposed to ",
 ]
 
 NO_BENEFIT_RISK_IMPACT_PATTERNS = [
@@ -471,6 +484,29 @@ NO_BENEFIT_RISK_IMPACT_PATTERNS = [
 
 NON_SAFETY_PATTERNS = ["non-safety", "non safety", "non–safety", "nonsafety"]
 NON_EFFICACY_PATTERNS = ["non-efficacy", "non efficacy", "non–efficacy", "nonefficacy"]
+
+# Benefit–risk “inversion” patterns where the text implies the overall risk is unacceptable
+# because it outweighs or exceeds the observed benefits. These often appear alongside regulator
+# mentions (“shared with regulatory authorities”) and should be treated primarily as SAFETY,
+# not REGULATORY.
+BENEFIT_RISK_UNFAVORABLE_PATTERNS: List[str] = [
+    # "risk profile ... exceeds the benefits"
+    r"\brisk profile\b.{0,120}\bexceed(?:s|ed)?\b.{0,60}\bbenefit",
+    r"\brisk profile\b.{0,120}\boutweigh(?:s|ed)?\b.{0,60}\bbenefit",
+
+    # "risks ... outweigh benefits" / "risk exceeds benefit"
+    r"\brisks?\b.{0,80}\boutweigh(?:s|ed)?\b.{0,80}\bbenefits?\b",
+    r"\brisks?\b.{0,80}\bexceed(?:s|ed)?\b.{0,80}\bbenefits?\b",
+
+    # "benefits do not outweigh risks"
+    r"\bbenefits?\b.{0,80}\b(do(?:es)? not|don't|did not|doesn't|didn't)\b.{0,40}\boutweigh\b.{0,80}\brisks?\b",
+
+    # Explicit "unfavorable benefit-risk" language
+    r"\bunfavo(?:u)?rable\b.{0,40}\bbenefit[- ]risk\b",
+    r"\bnegative\b.{0,40}\bbenefit[- ]risk\b",
+]
+
+BENEFIT_RISK_UNFAVORABLE_REGEXES = [re.compile(p, flags=re.IGNORECASE | re.DOTALL) for p in BENEFIT_RISK_UNFAVORABLE_PATTERNS]
 
 # If whyStopped is generic/placeholder, try mining a snippet from descriptions.
 GENERIC_WHY_STOPPED_PATTERNS = [
@@ -589,6 +625,25 @@ def _protect_non_safety_efficacy(text: str) -> str:
     return out
 
 
+def _inject_benefit_risk_unfavorable(text: str) -> str:
+    """Append a synthetic token when the text implies the benefit–risk assessment is unfavorable.
+
+    This is used to correctly classify stop reasons like:
+      - "risk profile ... exceeds the benefits"
+      - "benefits do not outweigh risks"
+
+    These statements are fundamentally SAFETY/benefit–risk outcomes, even if the text
+    also mentions regulators (e.g., "shared with regulatory authorities").
+    """
+    if not text:
+        return text
+    for rx in BENEFIT_RISK_UNFAVORABLE_REGEXES:
+        if rx.search(text):
+            # Space-prefixed to behave like a normal substring term for scoring.
+            return text + " benefit_risk_unfavorable"
+    return text
+
+
 def _explicit_denial_flags(text_raw: str) -> Tuple[bool, bool]:
     clauses = [c.strip() for c in re.split(r"[.;:]", text_raw) if c.strip()]
     denies_safety = False
@@ -696,6 +751,7 @@ def classify_why_stopped(why_stopped: Optional[str]) -> Classification:
 
     txt = _protect_no_benefit_risk_impact(txt_raw)
     txt = _protect_non_safety_efficacy(txt)
+    txt = _inject_benefit_risk_unfavorable(txt)
 
     operational_hits = _find_terms(txt, OPERATIONAL_TERMS)
     operational_present = len(operational_hits) > 0
