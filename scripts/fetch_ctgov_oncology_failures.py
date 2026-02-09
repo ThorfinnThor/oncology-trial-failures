@@ -226,6 +226,10 @@ OPERATIONAL_TERMS = [
 
     "company decision", "business decision", "business reasons", "corporate decision",
     "strategic decision", "strategic reasons",
+    # Business/portfolio strategy phrasing (common in sponsor-driven stops)
+    "business strategy", "corporate strategy", "company strategy",
+    "change in strategy", "changes in strategy",
+    "strategic priority", "strategic priorities",
     "prioritisation", "prioritization",
     "portfolio", "commercial reasons",
 
@@ -441,6 +445,12 @@ NEGATION_CUES = [
     # Common causal-negation phrases
     "not due to", "not because of", "not prompted by", "not related to",
     "unrelated to", "not caused by", "not attributable to",
+
+    # Contrastive/alternative-cause cues (important for phrases like
+    # "... rather than any safety issues" or "... instead of safety concerns")
+    "rather than ", "rather than any ",
+    "instead of ",
+    "as opposed to ",
 
     # Contraction variants of the above
     "n't due to", "n't because of", "n't prompted by", "n't related to",
