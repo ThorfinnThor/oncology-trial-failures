@@ -19,6 +19,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   // Trial detail pages are not included because the app currently loads them client-side;
   // including them in a sitemap won’t help much unless you later SSR/SSG those pages.
   const paths = [
+    "/",
     "/explore",
     "/methods",
     "/outliers",
