@@ -34,4 +34,5 @@ why_stopped,expected_label,expected_reason
 "Sponsor terminated the study due to non-safety reasons. Based on the data and the current competitive landscape, Sponsor made the decision to close the study.",NON_BIOLOGICAL,OPERATIONAL
 "Pfizer decided terminating study for administrative reasons. The decision wasn't due to safety concerns or requests from regulatory authorities.",NON_BIOLOGICAL,OPERATIONAL
 "The research was terminated voluntarily due to changes in the company's business strategy regarding the development of BGB-24714, rather than any safety issues.",NON_BIOLOGICAL,OPERATIONAL
+"Emerging clinical data evaluated by Pfizer and shared with regulatory authorities indicates that the risk profile of voxelotor in people with SCD exceeds the benefits observed in previously generated global",BIOLOGICAL_FAILURE,SAFETY
 
