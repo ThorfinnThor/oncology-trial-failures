@@ -113,17 +113,17 @@ export default function MethodsPage() {
               Outliers calculations
             </h2>
             <p className="muted">
-              The <Link className="link" href="/outliers">
+              The{" "}
+              <Link className="link" href="/outliers">
                 Outliers
               </Link>{" "}
               page highlights sponsors or disease areas that appear unusually often in a particular stop-reason bucket (for example: Safety in Phase II).
-              All metrics are computed within a chosen <b>cohort</b> (scope × phase × bucket) and then compared to that cohort’s baseline rate.
+              All metrics are computed within a chosen <span className="strong">cohort</span> (scope × phase × bucket) and then compared to that cohort’s
+              baseline rate.
             </p>
 
             <h3 className="h3">Cohorts and counts</h3>
-            <p className="muted">
-              For a selected cohort, each group (sponsor or disease area) has:
-            </p>
+            <p className="muted">For a selected cohort, each group (sponsor or disease area) has:</p>
             <ul className="muted list">
               <li>
                 <code>n</code>: total stopped trials in the cohort for that group
@@ -147,15 +147,13 @@ export default function MethodsPage() {
             <h3 className="h3">Shrunk rate and 90% CI</h3>
             <p className="muted">
               To avoid over-emphasizing small-sample groups, we use a simple Beta–Binomial shrinkage model. Each group’s bucket rate is treated as a
-              probability <code>p</code> with a Beta prior <code>Beta(a, b)</code> (read from <code>specialness_index.json</code>; defaults to
+              probability <code>p</code> with a Beta prior <code>Beta(a, b)</code> (read from <code>specialness_index.json</code>; defaults to{" "}
               <code>a=b=1</code>). After observing <code>k</code> hits out of <code>n</code> trials:
             </p>
             <p className="muted">
-              Posterior: <code>p | data ~ Beta(a + k, b + (n - k))</code>
+              Posterior: <code className="eq">p | data ~ Beta(a + k, b + (n - k))</code>
             </p>
-            <p className="muted">
-              “Shrunk rate” shown in the table is the posterior mean:
-            </p>
+            <p className="muted">“Shrunk rate” shown in the table is the posterior mean:</p>
             <p className="muted">
               <code>posterior_mean = (a + k) / (a + b + n)</code>
             </p>
@@ -163,11 +161,11 @@ export default function MethodsPage() {
               The displayed 90% CI is an approximation using the posterior standard deviation and a normal approximation:
             </p>
             <p className="muted">
-              <code>sd = sqrt( (αβ) / ((α+β)^2 (α+β+1)) )</code> with <code>α=a+k</code>, <code>β=b+(n-k)</code>, and a two-sided 90% z-value
-              <code>z≈1.645</code>. Then:
+              <code className="eq">sd = sqrt( (αβ) / ((α+β)^2 (α+β+1)) )</code> with <code>α=a+k</code>, <code>β=b+(n-k)</code>, and a two-sided 90%
+              z-value <code>z≈1.645</code>. Then:
             </p>
             <p className="muted">
-              <code>CI90 ≈ [mean - z·sd, mean + z·sd]</code> clipped to <code>[0, 1]</code>.
+              <code className="eq">CI90 ≈ [mean - z·sd, mean + z·sd]</code> clipped to <code>[0, 1]</code>.
             </p>
 
             <h3 className="h3">P(&gt;baseline)</h3>
@@ -175,7 +173,8 @@ export default function MethodsPage() {
               We report an approximate probability that a group’s true rate exceeds the cohort baseline. Using the same normal approximation:
             </p>
             <p className="muted">
-              <code>z = (posterior_mean - p0) / sd</code> and <code>P(&gt;baseline) ≈ Φ(z)</code>, where <code>Φ</code> is the standard normal CDF.
+              <code className="eq">z = (posterior_mean - p0) / sd</code> and <code>P(&gt;baseline) ≈ Φ(z)</code>, where <code>Φ</code> is the standard
+              normal CDF.
             </p>
             <p className="muted">
               Interpretation: values near 50% indicate “not distinguishable from baseline”; values near 100% indicate the group is very likely above the
@@ -183,9 +182,7 @@ export default function MethodsPage() {
             </p>
 
             <h3 className="h3">Lift</h3>
-            <p className="muted">
-              Lift is a ratio of the shrunk rate to the baseline:
-            </p>
+            <p className="muted">Lift is a ratio of the shrunk rate to the baseline:</p>
             <p className="muted">
               <code>lift = posterior_mean / p0</code> (shown as “×”). If <code>p0</code> is zero (rare), lift is omitted.
             </p>
@@ -251,6 +248,35 @@ export default function MethodsPage() {
         }
         .list li {
           margin: 6px 0;
+        }
+
+        /* Keep typography consistent with the rest of the app */
+        p.muted {
+          font-size: 14px;
+          line-height: 1.55;
+        }
+        ul.muted {
+          font-size: 14px;
+          line-height: 1.55;
+        }
+
+        /* Inline symbols / formulas should not switch to a different font */
+        .body :global(code) {
+          font-family: inherit;
+          font-size: 0.95em;
+          font-weight: 750;
+          padding: 1px 6px;
+          border-radius: 10px;
+          border: 1px solid var(--border);
+          background: var(--surface-2);
+          color: rgba(15, 23, 42, 0.92);
+          white-space: nowrap;
+        }
+
+        /* Allow long equations to wrap instead of overflowing on narrow screens */
+        .body :global(code.eq) {
+          white-space: normal;
+          display: inline-block;
         }
       `}</style>
     </>
