@@ -226,6 +226,7 @@ export default function TopEntitiesPage() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
 
+  const [tab, setTab] = useState<"sponsors" | "diseases">("sponsors");
   const [bioOnly, setBioOnly] = useState(false);
 
   const [bucketCompany, setBucketCompany] = useState(BUCKETS[0].key);
@@ -375,117 +376,141 @@ export default function TopEntitiesPage() {
           {loading ? <div className="card p-4 muted">Loading…</div> : null}
 
           {!loading && !err ? (
-            <section className="slGrid2" aria-label="Share leaders panels">
+            <section className="slGrid1" aria-label="Top entities">
               <div className="card p-4 slPanel">
                 <div className="slPanelHead">
-                  <div className="muted slSmall">Company</div>
-                  <div className="slPanelTitle">Which company has the highest share of…</div>
-                  <div className="muted slSmall" style={{ marginTop: 6 }}>
-                    Share = (trials in selected bucket) / (all trials for that sponsor) within the current scope.
+                  <div className="muted slSmall">Top entities</div>
+                  <div className="slPanelTitle">Rank sponsors and disease areas by their share of…</div>
+
+                  <div className="teTabs" role="tablist" aria-label="Entity type" style={{ marginTop: 10 }}>
+                    <button
+                      className={tab === "sponsors" ? "btn btn-primary teTabBtn" : "btn teTabBtn"}
+                      onClick={() => setTab("sponsors")}
+                      role="tab"
+                      aria-selected={tab === "sponsors"}
+                    >
+                      Sponsors
+                    </button>
+                    <button
+                      className={tab === "diseases" ? "btn btn-primary teTabBtn" : "btn teTabBtn"}
+                      onClick={() => setTab("diseases")}
+                      role="tab"
+                      aria-selected={tab === "diseases"}
+                    >
+                      Diseases
+                    </button>
+                  </div>
+
+                  <div className="muted slSmall" style={{ marginTop: 10 }}>
+                    Share = (trials in selected bucket) / (all trials for the entity) within the current scope.
                   </div>
                 </div>
 
-                <ControlGroup
-                  label="Company"
-                  bucketKey={bucketCompany}
-                  setBucketKey={setBucketCompany}
-                  minTrials={minTrialsCompany}
-                  setMinTrials={setMinTrialsCompany}
-                />
+                {tab === "sponsors" ? (
+                  <>
+                    <div className="teSectionLabel muted slSmall" style={{ marginTop: 14 }}>
+                      Sponsor
+                    </div>
 
-                <div className="slTopPick">
-                  <div className="facet-title">Top sponsor</div>
-                  <div className="slTopPickName">
-                    {topCompany ? (
-                      <Link
-                        className="link"
-                        href={exploreHref(bioOnly, {
-                          sponsor: [topCompany.key],
+                    <ControlGroup
+                      label="Sponsor"
+                      bucketKey={bucketCompany}
+                      setBucketKey={setBucketCompany}
+                      minTrials={minTrialsCompany}
+                      setMinTrials={setMinTrialsCompany}
+                    />
+
+                    <div className="slTopPick">
+                      <div className="facet-title">Top sponsor</div>
+                      <div className="slTopPickName">
+                        {topCompany ? (
+                          <Link
+                            className="link"
+                            href={exploreHref(bioOnly, {
+                              sponsor: [topCompany.key],
+                              bucket: companyBucketList,
+                              bio: bioOnly ? true : undefined
+                            })}
+                          >
+                            {topCompany.label}
+                          </Link>
+                        ) : (
+                          <span className="muted">—</span>
+                        )}
+                      </div>
+
+                      {topCompany ? (
+                        <div className="muted slSmall" style={{ marginTop: 4 }}>
+                          {safePct(topCompany.share)} ({topCompany.inBucket}/{topCompany.total}) in {companyBucketLabel}
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <RankTable
+                      ariaLabel="Sponsor share leaders"
+                      rows={companyTable}
+                      getHref={(r) =>
+                        exploreHref(bioOnly, {
+                          sponsor: [r.key],
                           bucket: companyBucketList,
                           bio: bioOnly ? true : undefined
-                        })}
-                      >
-                        {topCompany.label}
-                      </Link>
-                    ) : (
-                      <span className="muted">—</span>
-                    )}
-                  </div>
-
-                  {topCompany ? (
-                    <div className="muted slSmall" style={{ marginTop: 4 }}>
-                      {safePct(topCompany.share)} ({topCompany.inBucket}/{topCompany.total}) in {companyBucketLabel}
+                        })
+                      }
+                    />
+                  </>
+                ) : (
+                  <>
+                    <div className="teSectionLabel muted slSmall" style={{ marginTop: 14 }}>
+                      Disease area
                     </div>
-                  ) : null}
-                </div>
 
-                <RankTable
-                  ariaLabel="Company share leaders"
-                  rows={companyTable}
-                  getHref={(r) =>
-                    exploreHref(bioOnly, {
-                      sponsor: [r.key],
-                      bucket: companyBucketList,
-                      bio: bioOnly ? true : undefined
-                    })
-                  }
-                />
-              </div>
+                    <ControlGroup
+                      label="Disease area"
+                      bucketKey={bucketArea}
+                      setBucketKey={setBucketArea}
+                      minTrials={minTrialsArea}
+                      setMinTrials={setMinTrialsArea}
+                    />
 
-              <div className="card p-4 slPanel">
-                <div className="slPanelHead">
-                  <div className="muted slSmall">Disease area</div>
-                  <div className="slPanelTitle">Which disease area has the highest share of failures…</div>
-                  <div className="muted slSmall" style={{ marginTop: 6 }}>
-                    Same share calculation, grouped by disease area within the current scope.
-                  </div>
-                </div>
+                    <div className="slTopPick">
+                      <div className="facet-title">Top disease area</div>
+                      <div className="slTopPickName">
+                        {topArea ? (
+                          <Link
+                            className="link"
+                            href={exploreHref(bioOnly, {
+                              area: [topArea.key],
+                              bucket: areaBucketList,
+                              bio: bioOnly ? true : undefined
+                            })}
+                          >
+                            {topArea.label}
+                          </Link>
+                        ) : (
+                          <span className="muted">—</span>
+                        )}
+                      </div>
 
-                <ControlGroup
-                  label="Disease area"
-                  bucketKey={bucketArea}
-                  setBucketKey={setBucketArea}
-                  minTrials={minTrialsArea}
-                  setMinTrials={setMinTrialsArea}
-                />
+                      {topArea ? (
+                        <div className="muted slSmall" style={{ marginTop: 4 }}>
+                          {safePct(topArea.share)} ({topArea.inBucket}/{topArea.total}) in {areaBucketLabel}
+                        </div>
+                      ) : null}
+                    </div>
 
-                <div className="slTopPick">
-                  <div className="facet-title">Top disease area</div>
-                  <div className="slTopPickName">
-                    {topArea ? (
-                      <Link
-                        className="link"
-                        href={exploreHref(bioOnly, {
-                          area: [topArea.key],
+                    <RankTable
+                      ariaLabel="Disease area share leaders"
+                      rows={areaTable}
+                      getHref={(r) =>
+                        exploreHref(bioOnly, {
+                          area: [r.key],
                           bucket: areaBucketList,
                           bio: bioOnly ? true : undefined
-                        })}
-                      >
-                        {topArea.label}
-                      </Link>
-                    ) : (
-                      <span className="muted">—</span>
-                    )}
-                  </div>
-
-                  {topArea ? (
-                    <div className="muted slSmall" style={{ marginTop: 4 }}>
-                      {safePct(topArea.share)} ({topArea.inBucket}/{topArea.total}) in {areaBucketLabel}
-                    </div>
-                  ) : null}
-                </div>
-
-                <RankTable
-                  ariaLabel="Disease area share leaders"
-                  rows={areaTable}
-                  getHref={(r) =>
-                    exploreHref(bioOnly, {
-                      area: [r.key],
-                      bucket: areaBucketList,
-                      bio: bioOnly ? true : undefined
-                    })
-                  }
-                />
+                        })
+                      }
+                    />
+                  </>
+                )}
               </div>
             </section>
           ) : null}
@@ -532,6 +557,12 @@ export default function TopEntitiesPage() {
             gap: 14px;
             align-items: start;
           }
+          .shareLeaders .slGrid1 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            align-items: start;
+          }
           @media (min-width: 980px) {
             .shareLeaders .slGrid2 {
               grid-template-columns: 1fr 1fr;
@@ -554,6 +585,9 @@ export default function TopEntitiesPage() {
           .shareLeaders .slGrid2 > * {
             min-width: 0;
           }
+          .shareLeaders .slGrid1 > * {
+            min-width: 0;
+          }
 
           .shareLeaders .slPanelHead {
             padding-bottom: 12px;
@@ -564,6 +598,18 @@ export default function TopEntitiesPage() {
             font-size: 16px;
             font-weight: 900;
             letter-spacing: -0.01em;
+          }
+
+          /* Tabs (Top entities) */
+          .shareLeaders .teTabs {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+          }
+          .shareLeaders .teTabBtn {
+            padding: 6px 10px;
+            font-size: 13px;
           }
           .shareLeaders .slSmall {
             font-size: 12px;
