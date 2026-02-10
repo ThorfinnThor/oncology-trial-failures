@@ -403,6 +403,13 @@ export default function OutliersPage() {
                 Identify sponsors or disease areas that appear unusually often in a specific stop-reason bucket within a comparable cohort (e.g.
                 Safety in Phase II).
               </div>
+              <div className="muted olSmall" style={{ marginTop: 8 }}>
+                Unsure how baseline, lift, shrunk rate, CI, or P(&gt;baseline) are computed? See{' '}
+                <Link className="link" href="/methods#outliers-calculations">
+                  Methods
+                </Link>
+                .
+              </div>
             </div>
 
             <div className="olHeaderRight">
