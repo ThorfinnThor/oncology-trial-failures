@@ -21,12 +21,8 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="twitter:description" content={DEFAULT_DESCRIPTION} />
       </Head>
 
-      {/* GA loads only after consent */}
       <GoogleAnalytics />
-
       <Component {...pageProps} />
-
-      {/* Banner shows only until consent cookie exists */}
       <CookieBanner />
     </>
   );
