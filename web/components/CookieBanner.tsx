@@ -29,7 +29,6 @@ async function persistConsent(consent: Consent) {
     });
     if (!res.ok) throw new Error("Failed");
   } catch {
-    // Fallback if API route fails
     setCookieClientSide("cookie_consent", consent, 180);
   }
 }
@@ -47,7 +46,7 @@ export function CookieBanner() {
     setOpen(getCookie("cookie_consent") == null);
   }, []);
 
-  // Lock scrolling while consent is required
+  // lock scroll
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
@@ -62,6 +61,7 @@ export function CookieBanner() {
   const modal = (
     <div className="cookie-consent-wrap" role="dialog" aria-modal="true" aria-label="Cookies and privacy">
       <div className="cookie-consent-overlay" aria-hidden="true" />
+
       <div className="cookie-consent-modal">
         <div className="cookie-consent-body">
           <h2 className="cookie-consent-title">Cookies &amp; privacy</h2>
@@ -78,7 +78,7 @@ export function CookieBanner() {
               type="button"
               className="btn"
               onClick={async () => {
-                await persistConsent("none");
+                await persistConsent("none");        // explicit “none”
                 notifyConsentUpdated();
                 setOpen(false);
               }}
@@ -90,7 +90,7 @@ export function CookieBanner() {
               type="button"
               className="btn"
               onClick={async () => {
-                await persistConsent("necessary");
+                await persistConsent("necessary");   // essential only
                 notifyConsentUpdated();
                 setOpen(false);
               }}
@@ -102,7 +102,7 @@ export function CookieBanner() {
               type="button"
               className="btn-primary"
               onClick={async () => {
-                await persistConsent("all");
+                await persistConsent("all");         // analytics allowed
                 notifyConsentUpdated();
                 setOpen(false);
               }}
@@ -113,12 +113,11 @@ export function CookieBanner() {
         </div>
 
         <div className="cookie-consent-links">
-          Optional: link your <a href="/privacy">Privacy Policy</a>.
+          Read our <a href="/privacy">Privacy Policy</a>.
         </div>
       </div>
     </div>
   );
 
-  // Render into <body> so it can’t be constrained by page layout
   return createPortal(modal, document.body);
 }
