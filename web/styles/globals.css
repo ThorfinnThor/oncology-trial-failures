@@ -741,3 +741,77 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
     margin-left: 0 !important;
   }
 }
+
+/* Cookie consent modal (centered + blocks interaction) */
+.cookie-consent-wrap{
+  position:fixed;
+  inset:0;
+  z-index:100000;            /* above drawers */
+  display:grid;
+  place-items:center;
+  padding:16px;
+  isolation:isolate;
+}
+
+.cookie-consent-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.55);
+}
+
+.cookie-consent-modal{
+  position:relative;
+  width:min(640px, 92vw);
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+
+.cookie-consent-body{
+  padding:18px 18px 16px;
+}
+
+.cookie-consent-title{
+  margin:0;
+  font-size:20px;
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+
+.cookie-consent-text{
+  margin-top:10px;
+  font-size:14px;
+  line-height:1.5;
+  color:rgba(15,23,42,.90);
+}
+
+.cookie-consent-note{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--text-muted);
+}
+
+.cookie-consent-actions{
+  margin-top:16px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.cookie-consent-actions .btn,
+.cookie-consent-actions .btn-primary{
+  flex:1 1 160px;
+  justify-content:center;
+}
+
+.cookie-consent-links{
+  padding:0 18px 18px;
+  font-size:12px;
+  color:var(--text-muted);
+}
+
+.cookie-consent-links a{
+  text-decoration:underline;
+}
