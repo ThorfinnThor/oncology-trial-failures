@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 type Consent = "all" | "necessary" | "none";
@@ -29,6 +29,7 @@ async function persistConsent(consent: Consent) {
     });
     if (!res.ok) throw new Error("Failed");
   } catch {
+    // Fallback if API route fails
     setCookieClientSide("cookie_consent", consent, 180);
   }
 }
@@ -39,24 +40,19 @@ function notifyConsentUpdated() {
 
 export function CookieBanner() {
   const [mounted, setMounted] = useState(false);
-  const [open, setOpen] = useState<boolean>(false);
-  const acceptRef = useRef<HTMLButtonElement | null>(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const existing = getCookie("cookie_consent");
-    setOpen(existing == null);
+    setOpen(getCookie("cookie_consent") == null);
   }, []);
 
-  // Lock scroll while the dialog is open
+  // Lock scrolling while consent is required
   useEffect(() => {
     if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const t = window.setTimeout(() => acceptRef.current?.focus(), 0);
-
     return () => {
-      window.clearTimeout(t);
       document.body.style.overflow = prev;
     };
   }, [open]);
@@ -64,82 +60,65 @@ export function CookieBanner() {
   if (!mounted || !open) return null;
 
   const modal = (
-    <div className="fixed inset-0 z-[999999]">
-      {/* overlay (NOT dismissible) */}
-      <div className="absolute inset-0 bg-black/70" />
+    <div className="cookie-consent-wrap" role="dialog" aria-modal="true" aria-label="Cookies and privacy">
+      <div className="cookie-consent-overlay" aria-hidden="true" />
+      <div className="cookie-consent-modal">
+        <div className="cookie-consent-body">
+          <h2 className="cookie-consent-title">Cookies &amp; privacy</h2>
 
-      {/* Centered modal */}
-      <div className="absolute inset-0 grid place-items-center p-4">
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="cookie-consent-title"
-          className="w-full max-w-2xl rounded-2xl border bg-white shadow-2xl"
-        >
-          <div className="p-6 sm:p-8">
-            <h2 id="cookie-consent-title" className="text-2xl font-semibold text-gray-900">
-              Cookies & privacy
-            </h2>
-
-            <p className="mt-4 text-sm leading-6 text-gray-700">
-              We use cookies for essential site functionality. With your permission, we also use{" "}
-              Google Analytics cookies to understand how the site is used and improve it.
-            </p>
-
-            <p className="mt-3 text-xs text-gray-500">Your choice is stored for 180 days.</p>
-
-            <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <button
-                type="button"
-                className="rounded-xl border bg-white px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50"
-                onClick={async () => {
-                  await persistConsent("none");
-                  notifyConsentUpdated();
-                  setOpen(false);
-                }}
-              >
-                Reject
-              </button>
-
-              <button
-                type="button"
-                className="rounded-xl border bg-white px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50"
-                onClick={async () => {
-                  await persistConsent("necessary");
-                  notifyConsentUpdated();
-                  setOpen(false);
-                }}
-              >
-                Essential only
-              </button>
-
-              <button
-                ref={acceptRef}
-                type="button"
-                className="rounded-xl bg-black px-4 py-3 text-sm font-semibold text-white hover:opacity-90"
-                onClick={async () => {
-                  await persistConsent("all");
-                  notifyConsentUpdated();
-                  setOpen(false);
-                }}
-              >
-                Accept all
-              </button>
-            </div>
-
-            <div className="mt-5 text-xs text-gray-500">
-              Optional: link your{" "}
-              <a className="underline hover:text-gray-700" href="/privacy">
-                Privacy Policy
-              </a>
-              .
-            </div>
+          <div className="cookie-consent-text">
+            We use cookies for essential site functionality. With your permission, we also use Google
+            Analytics cookies to understand how the site is used and improve it.
           </div>
+
+          <div className="cookie-consent-note">Your choice is stored for 180 days.</div>
+
+          <div className="cookie-consent-actions">
+            <button
+              type="button"
+              className="btn"
+              onClick={async () => {
+                await persistConsent("none");
+                notifyConsentUpdated();
+                setOpen(false);
+              }}
+            >
+              Reject
+            </button>
+
+            <button
+              type="button"
+              className="btn"
+              onClick={async () => {
+                await persistConsent("necessary");
+                notifyConsentUpdated();
+                setOpen(false);
+              }}
+            >
+              Essential only
+            </button>
+
+            <button
+              type="button"
+              className="btn-primary"
+              onClick={async () => {
+                await persistConsent("all");
+                notifyConsentUpdated();
+                setOpen(false);
+              }}
+            >
+              Accept all
+            </button>
+          </div>
+        </div>
+
+        <div className="cookie-consent-links">
+          Optional: link your <a href="/privacy">Privacy Policy</a>.
         </div>
       </div>
     </div>
   );
 
-  // Render into <body> so it’s centered regardless of layout wrappers/transforms
+  // Render into <body> so it can’t be constrained by page layout
   return createPortal(modal, document.body);
 }
