@@ -20,7 +20,7 @@ export default function PrivacyPolicy() {
         <div className="content">
           <h1>Privacy Policy</h1>
           <p>
-            This Privacy Policy explains how <strong>{SITE_NAME}</strong> (“we”, “us”) processes
+            This Privacy Policy explains how <strong>{SITE_NAME}</strong> ("we", "us") processes
             personal data when you use this website.
           </p>
 
@@ -38,7 +38,8 @@ export default function PrivacyPolicy() {
               temporarily for security and operational purposes.
             </li>
             <li>
-              <strong>Analytics data</strong> only if you consent to analytics cookies (see section 4).
+              <strong>Analytics data</strong> only if you consent to analytics cookies (see section
+              4).
             </li>
           </ul>
 
@@ -50,16 +51,15 @@ export default function PrivacyPolicy() {
               Values: <code>none</code>, <code>necessary</code>, <code>all</code>.
             </li>
             <li>
-              <strong>Google Analytics cookies</strong> (optional): only set if you click “Accept all”.
+              <strong>Google Analytics cookies</strong> (optional): only set if you click "Accept
+              all".
             </li>
           </ul>
 
           <h2>4. Analytics (Google Analytics)</h2>
           <p>
-            If you click “Accept all”, we load{" "}
-            <strong>:contentReference[oaicite:0]{index=0}</strong>{" "}
-            to measure website usage (e.g., page views, approximate location, device/browser).
-            We configure Google Analytics with:
+            If you click "Accept all", we load Google Analytics to measure website usage (e.g., page
+            views, approximate location, device/browser). We configure Google Analytics with:
           </p>
           <ul>
             <li>
@@ -78,8 +78,8 @@ export default function PrivacyPolicy() {
           <h2>5. Legal basis</h2>
           <ul>
             <li>
-              Essential cookie (<code>cookie_consent</code>): legitimate interest / necessary for
-              providing the service.
+              Essential cookie (<code>cookie_consent</code>): necessary to store your consent choice
+              and operate the consent mechanism.
             </li>
             <li>
               Google Analytics: consent (GDPR Art. 6(1)(a)). No analytics cookies are set unless you
