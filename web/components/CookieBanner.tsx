@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Consent = "all" | "necessary" | "none";
 
@@ -8,7 +8,6 @@ function getCookie(name: string): string | null {
 }
 
 function setCookieClientSide(name: string, value: string, days: number) {
-  // Fallback if API route fails.
   const maxAge = days * 24 * 60 * 60;
   const parts = [
     `${name}=${encodeURIComponent(value)}`,
@@ -38,9 +37,7 @@ function notifyConsentUpdated() {
 }
 
 export function CookieBanner() {
-  // null = not checked yet (prevents hydration weirdness)
   const [open, setOpen] = useState<boolean | null>(null);
-
   const acceptRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
@@ -48,59 +45,46 @@ export function CookieBanner() {
     setOpen(existing == null);
   }, []);
 
-  // Lock scroll while the dialog is open, so it feels like a real consent gate.
+  // Lock scroll while open
   useEffect(() => {
     if (open !== true) return;
-
-    const prevOverflow = document.body.style.overflow;
+    const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
-    // Focus the primary action for accessibility
     const t = window.setTimeout(() => acceptRef.current?.focus(), 0);
-
     return () => {
       window.clearTimeout(t);
-      document.body.style.overflow = prevOverflow;
+      document.body.style.overflow = prev;
     };
   }, [open]);
 
-  const description = useMemo(
-    () => ({
-      title: "Cookies & privacy",
-      body: "We use cookies for essential site functionality. With your permission, we also use Google Analytics cookies to understand how the site is used and improve it. You can choose to accept all cookies, reject non-essential cookies, or allow essential cookies only.",
-      note: "Your choice is stored for 180 days.",
-    }),
-    []
-  );
-
-  // Only remove after a click on one of the options.
   if (open !== true) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999]">
-      {/* Overlay (NOT clickable to dismiss) */}
-      <div className="absolute inset-0 bg-black/60" />
+    <div className="fixed inset-0 z-[999999]">
+      {/* overlay */}
+      <div className="fixed inset-0 bg-black/70" />
 
-      {/* Dialog container */}
-      <div className="relative flex h-full w-full items-center justify-center p-4">
+      {/* true center */}
+      <div className="fixed inset-0 grid place-items-center p-4">
         <div
           role="dialog"
           aria-modal="true"
           aria-labelledby="cookie-consent-title"
-          className="w-full max-w-xl rounded-2xl border bg-white shadow-2xl"
+          className="w-full max-w-2xl rounded-2xl border bg-white shadow-2xl"
         >
           <div className="p-6 sm:p-8">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <h2 id="cookie-consent-title" className="text-xl font-semibold text-gray-900">
-                  {description.title}
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-gray-700">{description.body}</p>
-                <p className="mt-3 text-xs text-gray-500">{description.note}</p>
-              </div>
-            </div>
+            <h2 id="cookie-consent-title" className="text-2xl font-semibold text-gray-900">
+              Cookies & privacy
+            </h2>
 
-            <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <p className="mt-4 text-sm leading-6 text-gray-700">
+              We use cookies for essential site functionality. With your permission, we also use
+              Google Analytics cookies to understand how the site is used and improve it.
+            </p>
+
+            <p className="mt-3 text-xs text-gray-500">Your choice is stored for 180 days.</p>
+
+            <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <button
                 type="button"
                 className="rounded-xl border bg-white px-4 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-50"
@@ -139,13 +123,12 @@ export function CookieBanner() {
               </button>
             </div>
 
-            {/* Optional link area (safe to keep even if you don't have /privacy yet) */}
-            <div className="mt-4 text-xs text-gray-500">
-              If you’d like, add a privacy page and link it here (e.g.,{" "}
+            <div className="mt-5 text-xs text-gray-500">
+              Optional: link your{" "}
               <a className="underline hover:text-gray-700" href="/privacy">
                 Privacy Policy
               </a>
-              ).
+              .
             </div>
           </div>
         </div>
