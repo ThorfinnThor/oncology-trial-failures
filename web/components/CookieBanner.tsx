@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Consent = "all" | "necessary" | "none";
 
@@ -37,35 +38,38 @@ function notifyConsentUpdated() {
 }
 
 export function CookieBanner() {
-  const [open, setOpen] = useState<boolean | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const acceptRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
+    setMounted(true);
     const existing = getCookie("cookie_consent");
     setOpen(existing == null);
   }, []);
 
-  // Lock scroll while open
+  // Lock scroll while the dialog is open
   useEffect(() => {
-    if (open !== true) return;
+    if (!open) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const t = window.setTimeout(() => acceptRef.current?.focus(), 0);
+
     return () => {
       window.clearTimeout(t);
       document.body.style.overflow = prev;
     };
   }, [open]);
 
-  if (open !== true) return null;
+  if (!mounted || !open) return null;
 
-  return (
+  const modal = (
     <div className="fixed inset-0 z-[999999]">
-      {/* overlay */}
-      <div className="fixed inset-0 bg-black/70" />
+      {/* overlay (NOT dismissible) */}
+      <div className="absolute inset-0 bg-black/70" />
 
-      {/* true center */}
-      <div className="fixed inset-0 grid place-items-center p-4">
+      {/* Centered modal */}
+      <div className="absolute inset-0 grid place-items-center p-4">
         <div
           role="dialog"
           aria-modal="true"
@@ -78,7 +82,7 @@ export function CookieBanner() {
             </h2>
 
             <p className="mt-4 text-sm leading-6 text-gray-700">
-              We use cookies for essential site functionality. With your permission, we also use
+              We use cookies for essential site functionality. With your permission, we also use{" "}
               Google Analytics cookies to understand how the site is used and improve it.
             </p>
 
@@ -135,4 +139,7 @@ export function CookieBanner() {
       </div>
     </div>
   );
+
+  // Render into <body> so it’s centered regardless of layout wrappers/transforms
+  return createPortal(modal, document.body);
 }
