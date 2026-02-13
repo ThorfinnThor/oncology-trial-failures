@@ -9,6 +9,12 @@ function splitCsv(v?: string | null): string[] | undefined {
   return out.length ? out : undefined;
 }
 
+function parseIntParam(v?: string | null): number | undefined {
+  if (!v) return undefined;
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) ? n : undefined;
+}
+
 export function decodeState(asPath: string): UrlState {
   // asPath may be "/explore?status=TERMINATED"
   const base = "http://localhost";
@@ -21,9 +27,19 @@ export function decodeState(asPath: string): UrlState {
   const bucket = splitCsv(u.searchParams.get("bucket"));
   const compare = splitCsv(u.searchParams.get("compare"));
 
+  // Additional facets used by Explore (and linked from other pages)
+  const sponsor = splitCsv(u.searchParams.get("sponsor"));
+  const intervention = splitCsv(u.searchParams.get("intervention"));
+  const condition = splitCsv(u.searchParams.get("condition"));
+  const country = splitCsv(u.searchParams.get("country"));
+
   const bio = u.searchParams.get("bio") === "1" ? true : undefined;
   const sort = u.searchParams.get("sort") || undefined;
   const trial = u.searchParams.get("trial") || undefined;
+
+  const page = parseIntParam(u.searchParams.get("page"));
+  const pageSize = parseIntParam(u.searchParams.get("pageSize"));
+  const view = u.searchParams.get("view") || undefined;
 
   const date_from = u.searchParams.get("date_from") || undefined;
   const date_to = u.searchParams.get("date_to") || undefined;
@@ -34,8 +50,15 @@ export function decodeState(asPath: string): UrlState {
     phase,
     area,
     bucket,
+    sponsor,
+    intervention,
+    condition,
+    country,
     bio,
     sort,
+    page,
+    pageSize,
+    view,
     trial,
     compare,
     date_from,
@@ -52,10 +75,21 @@ export function encodeState(state: UrlState): string {
   if (state.phase?.length) sp.set("phase", state.phase.join(","));
   if (state.area?.length) sp.set("area", state.area.join(","));
   if (state.bucket?.length) sp.set("bucket", state.bucket.join(","));
+
+  if (state.sponsor?.length) sp.set("sponsor", state.sponsor.join(","));
+  if (state.intervention?.length) sp.set("intervention", state.intervention.join(","));
+  if (state.condition?.length) sp.set("condition", state.condition.join(","));
+  if (state.country?.length) sp.set("country", state.country.join(","));
   if (state.compare?.length) sp.set("compare", state.compare.join(","));
 
   if (state.bio) sp.set("bio", "1");
   if (state.sort) sp.set("sort", state.sort);
+
+  if (typeof state.page === "number" && Number.isFinite(state.page)) sp.set("page", String(state.page));
+  if (typeof state.pageSize === "number" && Number.isFinite(state.pageSize))
+    sp.set("pageSize", String(state.pageSize));
+  if (state.view) sp.set("view", state.view);
+
   if (state.trial) sp.set("trial", state.trial);
 
   if (state.date_from) sp.set("date_from", state.date_from);
