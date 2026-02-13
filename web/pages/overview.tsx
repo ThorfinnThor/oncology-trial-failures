@@ -1293,6 +1293,13 @@ export default function OverviewPage() {
             scrollbar-gutter: stable; /* reserve space so vScroll and non-vScroll regions have identical inner widths */
           }
 
+          /* Desktop fix: prevent rightmost column (e.g., Bio share) from being obscured by vertical scrollbars
+             on some desktop browsers/OSes (notably Windows). Keep functionality identical; just reserve a bit of
+             internal space inside the scrollport. */
+          .hScrollMini .hScrollInner {
+            padding-right: 18px;
+          }
+
           .tblMini {
             min-width: 0; /* remove mobile overflow forcing on desktop */
             table-layout: fixed;
