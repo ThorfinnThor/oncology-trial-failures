@@ -43,10 +43,13 @@ function textIncludes(hay: string, needle: string): boolean {
   return hay.toLowerCase().includes(needle.toLowerCase());
 }
 
+function normToken(s?: string): string {
+  return (s || "").replace(/\s+/g, " ").trim().toLowerCase();
+}
+
 export function isLikelyScientificFailure(r: TrialIndexRow): boolean {
   // Use pipeline labels if available:
-  const label =
-    (r.failure_label || r.classification_label || r.failure_type || "").toUpperCase();
+  const label = (r.failure_label || r.classification_label || r.failure_type || "").toUpperCase();
 
   if (label.includes("BIOLOGICAL_FAILURE") || label.includes("SCIENTIFIC_FAILURE")) return true;
 
@@ -63,6 +66,12 @@ export function filterRows(rows: TrialIndexRow[], state: UrlState): TrialIndexRo
   const phase = state.phase?.map((s) => s.toUpperCase()) || [];
   const area = state.area || [];
   const bucket = state.bucket?.map((s) => s.toUpperCase()) || [];
+
+  // Deep-link facets (not all are exposed in the current sidebar UI)
+  const sponsor = (state.sponsor || []).map(normToken).filter(Boolean);
+  const intervention = (state.intervention || []).map(normToken).filter(Boolean);
+  const condition = (state.condition || []).map(normToken).filter(Boolean);
+  const country = (state.country || []).map(normToken).filter(Boolean);
 
   return rows.filter((r) => {
     // q search
@@ -101,6 +110,29 @@ export function filterRows(rows: TrialIndexRow[], state: UrlState): TrialIndexRo
       if (!area.includes(a)) return false;
     }
 
+    // sponsor (exact match, case-insensitive)
+    if (sponsor.length) {
+      const s = normToken(r.lead_sponsor);
+      if (!sponsor.includes(s)) return false;
+    }
+
+    // intervention / condition / country (exact match against compact index fields when available)
+    if (intervention.length) {
+      const x = normToken((r as any).intervention_first || (r as any).intervention_names);
+      if (!intervention.includes(x)) return false;
+    }
+    if (condition.length) {
+      const x = normToken((r as any).condition_first || (r as any).conditions);
+      if (!condition.includes(x)) return false;
+    }
+    if (country.length) {
+      // Some builds may not carry country in the compact index; tolerate missing.
+      const blob = normToken((r as any).countries || (r as any).country || "");
+      if (!blob) return false;
+      // If countries is a semicolon/comma list, accept any match.
+      if (!country.some((c) => blob.split(/[,;|]/).map((t: string) => normToken(t)).includes(c))) return false;
+    }
+
     // bucket
     if (bucket.length) {
       const b = reasonBucket(r).toUpperCase();
@@ -135,8 +167,10 @@ function parseDateOrZero(s?: string): number {
 export function sortRows(rows: TrialIndexRow[], sortKey: SortKey): TrialIndexRow[] {
   const out = [...rows];
   out.sort((a, b) => {
-    if (sortKey === "date_desc") return parseDateOrZero(b.last_update_post_date || b.date) - parseDateOrZero(a.last_update_post_date || a.date);
-    if (sortKey === "date_asc") return parseDateOrZero(a.last_update_post_date || a.date) - parseDateOrZero(b.last_update_post_date || b.date);
+    if (sortKey === "date_desc")
+      return parseDateOrZero(b.last_update_post_date || b.date) - parseDateOrZero(a.last_update_post_date || a.date);
+    if (sortKey === "date_asc")
+      return parseDateOrZero(a.last_update_post_date || a.date) - parseDateOrZero(b.last_update_post_date || b.date);
 
     if (sortKey === "sponsor_asc") return (a.lead_sponsor || "").localeCompare(b.lead_sponsor || "");
     if (sortKey === "sponsor_desc") return (b.lead_sponsor || "").localeCompare(a.lead_sponsor || "");
