@@ -712,6 +712,14 @@ export default function TopEntitiesPage() {
             width: 100%;
             padding-bottom: 2px;
           }
+
+          /* Desktop: keep the rightmost columns from sitting under the vertical scrollbar
+             (Windows/Chrome can overlay the scrollbar on the scrollport). */
+          @media (min-width: 721px) {
+            .shareLeaders .hScroll.vScroll .hScrollInner {
+              padding-right: 18px;
+            }
+          }
           .shareLeaders .hScrollInner > table {
             width: 100%;
           }
