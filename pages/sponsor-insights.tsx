@@ -553,7 +553,7 @@ export default function SponsorInsightsPage() {
           <header className="topbar">
             <div className="topbar-inner">
               <div className="topbar-left">
-                <Link href="/explore" className="brand">
+                <Link href="/" className="brand">
                   Clinical trial failures
                 </Link>
                                 <nav className="nav" aria-label="Primary">
@@ -598,7 +598,7 @@ export default function SponsorInsightsPage() {
           <header className="topbar">
             <div className="topbar-inner">
               <div className="topbar-left">
-                <Link href="/explore" className="brand">
+                <Link href="/" className="brand">
                   Clinical trial failures
                 </Link>
                                 <nav className="nav" aria-label="Primary">
@@ -645,7 +645,7 @@ export default function SponsorInsightsPage() {
         <header className="topbar">
           <div className="topbar-inner">
             <div className="topbar-left">
-              <Link href="/explore" className="brand">
+              <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
                               <nav className="nav" aria-label="Primary">
