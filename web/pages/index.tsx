@@ -69,14 +69,6 @@ export default function HomePage() {
                 </Link>
               </nav>
             </div>
-            <div className="topbarRight">
-              <Link href="/privacy" className="topbarBtn">
-                Privacy
-              </Link>
-              <Link href="/explore" className="topbarBtn topbarBtnPrimary">
-                Open explorer
-              </Link>
-            </div>
           </div>
         </header>
 
@@ -183,28 +175,28 @@ export default function HomePage() {
               </div>
               <div className="linkGrid">
                 <Link href="/explore" className="navCard">
-                  <strong>Explore</strong>
-                  <span>Search and filter individual clinical trial failures.</span>
+                  <span className="navCardTitle">Explore</span>
+                  <span className="navCardText">Search and filter individual clinical trial failures.</span>
                 </Link>
                 <Link href="/overview" className="navCard">
-                  <strong>Overview</strong>
-                  <span>See high-level patterns across the dataset.</span>
+                  <span className="navCardTitle">Overview</span>
+                  <span className="navCardText">See high-level patterns across the dataset.</span>
                 </Link>
                 <Link href="/sponsor-insights" className="navCard">
-                  <strong>Sponsor insights</strong>
-                  <span>Compare sponsors and repeated stop patterns.</span>
+                  <span className="navCardTitle">Sponsor insights</span>
+                  <span className="navCardText">Compare sponsors and repeated stop patterns.</span>
                 </Link>
                 <Link href="/methods" className="navCard">
-                  <strong>Methods</strong>
-                  <span>Review how records are collected and classified.</span>
+                  <span className="navCardTitle">Methods</span>
+                  <span className="navCardText">Review how records are collected and classified.</span>
                 </Link>
                 <Link href="/outliers" className="navCard">
-                  <strong>Outliers</strong>
-                  <span>Inspect unusual or extreme stop patterns worth deeper review.</span>
+                  <span className="navCardTitle">Outliers</span>
+                  <span className="navCardText">Inspect unusual or extreme stop patterns worth deeper review.</span>
                 </Link>
                 <Link href="/privacy" className="navCard">
-                  <strong>Privacy</strong>
-                  <span>Read the short privacy policy.</span>
+                  <span className="navCardTitle">Privacy</span>
+                  <span className="navCardText">Read the short privacy policy.</span>
                 </Link>
               </div>
             </div>
@@ -469,11 +461,14 @@ export default function HomePage() {
           text-decoration: none;
           min-height: 118px;
         }
-        .navCard strong {
+        .navCardTitle {
+          display: block;
           color: #0f172a;
+          font-weight: 800;
           line-height: 1.3;
         }
-        .navCard span {
+        .navCardText {
+          display: block;
           color: #475569;
           line-height: 1.6;
         }
