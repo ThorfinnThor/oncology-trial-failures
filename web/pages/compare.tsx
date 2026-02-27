@@ -25,7 +25,7 @@ export default function ComparePage() {
         <header className="topbar">
           <div className="topbar-inner">
             <div className="topbar-left">
-              <Link href="/explore" className="brand">Clinical trial failures</Link>
+              <Link href="/" className="brand">Clinical trial failures</Link>
               <nav className="nav" aria-label="Primary">
                 <Link className="navlink" href="/explore">Explore</Link>
                 <Link className="navlink" href="/overview">Overview</Link>
