@@ -3,9 +3,9 @@ import Link from "next/link";
 
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "Clinical Trial Failures | Search why clinical trials stop";
+const TITLE = "Clinical Trial Failures | Explore clinical trial failures and biological failure signals";
 const DESCRIPTION =
-  "Clinical Trial Failures is a searchable web app for exploring terminated, suspended, and withdrawn clinical trials, including likely reasons for clinical trial failure.";
+  "Clinical Trial Failures is a searchable database for terminated, suspended, and withdrawn clinical trials, with a focus on biological failure signals such as weak efficacy, futility, and safety-driven stops.";
 
 export default function HomePage() {
   const jsonLd = {
@@ -41,98 +41,213 @@ export default function HomePage() {
         />
       </Head>
 
-      <main className="homePage">
-        <header className="hero">
-          <div className="container heroInner">
-            <p className="eyebrow">Clinical trial analytics</p>
-            <h1>Clinical trial failures in one searchable database</h1>
-            <p className="lede">
-              Clinical Trial Failures is a web app for exploring terminated, suspended, and withdrawn
-              clinical trials. It helps you understand why clinical trials stop early by organizing
-              trial records into a faster, more useful interface for search, filtering, and analysis.
-            </p>
-            <div className="actions">
-              <Link href="/explore" className="primaryBtn">Explore clinical trial failures</Link>
-              <Link href="/overview" className="secondaryBtn">View overview</Link>
+      <div className="homePage">
+        <header className="topbar">
+          <div className="topbarInner">
+            <div className="topbarLeft">
+              <Link href="/" className="brand" aria-current="page">
+                Clinical trial failures
+              </Link>
+              <nav className="nav" aria-label="Primary">
+                <Link className="navlink" href="/explore">
+                  Explore
+                </Link>
+                <Link className="navlink" href="/overview">
+                  Overview
+                </Link>
+                <Link className="navlink" href="/sponsor-insights">
+                  Sponsor insights
+                </Link>
+                <Link className="navlink" href="/outliers">
+                  Outliers
+                </Link>
+                <Link className="navlink" href="/top-entities">
+                  Top entities
+                </Link>
+                <Link className="navlink" href="/methods">
+                  Methods
+                </Link>
+              </nav>
+            </div>
+            <div className="topbarRight">
+              <Link href="/privacy" className="topbarBtn">
+                Privacy
+              </Link>
+              <Link href="/explore" className="topbarBtn topbarBtnPrimary">
+                Open explorer
+              </Link>
             </div>
           </div>
         </header>
 
-        <section className="section">
-          <div className="container twoCol">
-            <div>
-              <h2>What this web app does</h2>
-              <p>
-                Instead of manually reading individual registry entries, you can search clinical trial
-                failures by phase, sponsor, condition, geography, and likely stop reason. The app is
-                designed to make failed clinical trials easier to review and compare.
-              </p>
-              <p>
-                It is useful for biotech and pharma teams, investors, consultants, and researchers who
-                want a cleaner way to study clinical trial risk, development patterns, and early stop signals.
-              </p>
-            </div>
-            <div className="featureGrid">
-              <div className="card">
-                <h3>Searchable records</h3>
-                <p>Browse terminated, suspended, and withdrawn clinical trial records in one place.</p>
+        <main>
+          <section className="hero">
+            <div className="container heroGrid">
+              <div className="heroCopy">
+                <p className="eyebrow">Search clinical trial failures</p>
+                <h1>Find the biological reasons clinical trials stop early</h1>
+                <p className="lede">
+                  Clinical Trial Failures is a searchable database of terminated, suspended, and withdrawn
+                  clinical trials. It is built to surface the strongest biological failure signals in registry
+                  text, especially weak efficacy, futility, safety issues, and other signs that an intervention
+                  did not work as intended.
+                </p>
+                <p className="supporting">
+                  Instead of reading thousands of trial records manually, you can review clinical trial failures
+                  by phase, sponsor, disease area, condition, intervention, geography, and stop reason.
+                </p>
+                <div className="actions">
+                  <Link href="/explore" className="primaryBtn">
+                    Explore clinical trial failures
+                  </Link>
+                  <Link href="/methods" className="secondaryBtn">
+                    See methodology
+                  </Link>
+                </div>
               </div>
-              <div className="card">
-                <h3>Reason-based filters</h3>
-                <p>Screen for likely efficacy, safety, operational, and other failure patterns.</p>
-              </div>
-              <div className="card">
-                <h3>Faster navigation</h3>
-                <p>Move quickly between the explorer, overview pages, methods, and sponsor insights.</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <section className="section alt">
-          <div className="container">
-            <h2>Explore the dataset</h2>
-            <div className="linkGrid">
-              <Link href="/explore" className="navCard"><strong>Explore</strong><span>Search and filter individual clinical trial failures.</span></Link>
-              <Link href="/overview" className="navCard"><strong>Overview</strong><span>See high-level patterns across the dataset.</span></Link>
-              <Link href="/sponsor-insights" className="navCard"><strong>Sponsor insights</strong><span>Compare sponsors and repeated stop patterns.</span></Link>
-              <Link href="/methods" className="navCard"><strong>Methods</strong><span>Review how records are collected and classified.</span></Link>
-              <Link href="/privacy" className="navCard"><strong>Privacy</strong><span>Read the short privacy policy.</span></Link>
+              <aside className="heroPanel" aria-label="Key analysis paths">
+                <div className="panelCard emphasisCard">
+                  <span className="panelLabel">Primary focus</span>
+                  <h2>Biological failure signals</h2>
+                  <p>
+                    Prioritize trials whose stop reasons point to efficacy, futility, or safety problems,
+                    rather than purely administrative or strategic changes.
+                  </p>
+                </div>
+                <div className="miniGrid">
+                  <div className="panelCard miniCard">
+                    <h3>Efficacy and futility</h3>
+                    <p>Screen for weak efficacy, lack of benefit, or failed endpoints.</p>
+                  </div>
+                  <div className="panelCard miniCard">
+                    <h3>Safety-driven stops</h3>
+                    <p>Review adverse events, tolerability issues, and risk signals.</p>
+                  </div>
+                  <div className="panelCard miniCard">
+                    <h3>Fast comparison</h3>
+                    <p>Compare sponsors, repeated patterns, and trial-level stop language.</p>
+                  </div>
+                  <div className="panelCard miniCard">
+                    <h3>Structured filtering</h3>
+                    <p>Filter by status, phase, disease area, reason bucket, and likely scientific failure.</p>
+                  </div>
+                </div>
+              </aside>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="section">
-          <div className="container">
-            <h2>Frequently asked questions</h2>
-            <div className="faqGrid">
-              <article className="card">
-                <h3>What counts as a clinical trial failure?</h3>
+          <section className="section">
+            <div className="container sectionGrid">
+              <div className="sectionIntro cardSurface">
+                <h2>What this web app actually helps you answer</h2>
                 <p>
-                  This site focuses on trials that were terminated, suspended, or withdrawn. Not every
-                  stopped study failed scientifically, but these records often contain the clearest signals
-                  behind clinical trial failures.
+                  The app is designed for biotech and pharma teams, investors, consultants, and researchers who
+                  want a faster way to study why clinical trials fail. The strongest use case is identifying
+                  whether a stopped study reflects a likely biological failure versus an operational, strategic,
+                  or funding decision.
                 </p>
-              </article>
-              <article className="card">
-                <h3>Why do clinical trials fail?</h3>
-                <p>
-                  Clinical trials can stop because of weak efficacy, safety issues, operational problems,
-                  funding decisions, sponsor strategy changes, or regulatory factors. The app helps surface
-                  those patterns across many studies.
-                </p>
-              </article>
-              <article className="card">
-                <h3>Who is this useful for?</h3>
-                <p>
-                  It is built for people researching failed clinical trials, including operators, analysts,
-                  investors, and researchers who want faster access to structured trial intelligence.
-                </p>
-              </article>
+                <ul className="bulletList">
+                  <li>Find failed clinical trials linked to efficacy or futility concerns.</li>
+                  <li>Separate safety-led stops from operational or sponsor-led stops.</li>
+                  <li>Trace sponsor patterns across repeated terminated, suspended, and withdrawn trials.</li>
+                  <li>Move from broad dataset views into trial-level stop language quickly.</li>
+                </ul>
+              </div>
+
+              <div className="stackGrid">
+                <div className="cardSurface">
+                  <h3>Searchable records</h3>
+                  <p>Browse terminated, suspended, and withdrawn clinical trial records in one place.</p>
+                </div>
+                <div className="cardSurface">
+                  <h3>Reason-based filtering</h3>
+                  <p>Focus on likely efficacy, safety, operational, and other failure patterns.</p>
+                </div>
+                <div className="cardSurface">
+                  <h3>Biological vs non-biological stops</h3>
+                  <p>Use the failure framing to distinguish scientific signals from administrative noise.</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
-      </main>
+          </section>
+
+          <section className="section altSection">
+            <div className="container">
+              <div className="sectionHeading">
+                <h2>Explore the dataset</h2>
+                <p>
+                  Start with the explorer, then move into summary pages to understand patterns behind clinical
+                  trial failures at both the portfolio and trial level.
+                </p>
+              </div>
+              <div className="linkGrid">
+                <Link href="/explore" className="navCard">
+                  <strong>Explore</strong>
+                  <span>Search and filter individual clinical trial failures.</span>
+                </Link>
+                <Link href="/overview" className="navCard">
+                  <strong>Overview</strong>
+                  <span>See high-level patterns across the dataset.</span>
+                </Link>
+                <Link href="/sponsor-insights" className="navCard">
+                  <strong>Sponsor insights</strong>
+                  <span>Compare sponsors and repeated stop patterns.</span>
+                </Link>
+                <Link href="/methods" className="navCard">
+                  <strong>Methods</strong>
+                  <span>Review how records are collected and classified.</span>
+                </Link>
+                <Link href="/outliers" className="navCard">
+                  <strong>Outliers</strong>
+                  <span>Inspect unusual or extreme stop patterns worth deeper review.</span>
+                </Link>
+                <Link href="/privacy" className="navCard">
+                  <strong>Privacy</strong>
+                  <span>Read the short privacy policy.</span>
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          <section className="section">
+            <div className="container">
+              <div className="sectionHeading">
+                <h2>Frequently asked questions</h2>
+                <p>
+                  These are the main questions people ask when they are researching clinical trial failures and
+                  the biological reasons trials stop.
+                </p>
+              </div>
+              <div className="faqGrid">
+                <article className="cardSurface">
+                  <h3>What counts as a clinical trial failure?</h3>
+                  <p>
+                    This site focuses on trials that were terminated, suspended, or withdrawn. Not every stopped
+                    study failed scientifically, but these records often contain the clearest signals behind
+                    clinical trial failures.
+                  </p>
+                </article>
+                <article className="cardSurface">
+                  <h3>Why do clinical trials fail?</h3>
+                  <p>
+                    Clinical trials can stop because of weak efficacy, futility, safety issues, operational
+                    problems, funding constraints, sponsor strategy changes, or regulatory factors. The app is
+                    most useful when you want to isolate probable biological failure from those other causes.
+                  </p>
+                </article>
+                <article className="cardSurface">
+                  <h3>Who is this useful for?</h3>
+                  <p>
+                    It is built for teams and researchers who want faster access to structured failed clinical
+                    trial intelligence, including operators, analysts, consultants, and investors.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
 
       <style jsx>{`
         .homePage {
@@ -140,26 +255,93 @@ export default function HomePage() {
           background: #f8fafc;
           color: #0f172a;
         }
+        .topbar {
+          background: #ffffff;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        .topbarInner,
+        .container {
+          max-width: 1180px;
+          margin: 0 auto;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .topbarInner {
+          min-height: 68px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+        }
+        .topbarLeft {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          min-width: 0;
+        }
+        .brand {
+          color: #0f172a;
+          text-decoration: none;
+          font-weight: 800;
+          font-size: 1rem;
+          white-space: nowrap;
+        }
+        .nav {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+        }
+        .navlink {
+          color: #334155;
+          text-decoration: none;
+          font-size: 0.95rem;
+        }
+        .topbarRight {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          flex-shrink: 0;
+        }
+        .topbarBtn,
+        .primaryBtn,
+        .secondaryBtn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          font-weight: 700;
+          border-radius: 12px;
+        }
+        .topbarBtn {
+          padding: 10px 14px;
+          border: 1px solid #cbd5e1;
+          color: #0f172a;
+          background: #ffffff;
+        }
+        .topbarBtnPrimary,
+        .primaryBtn {
+          background: #0f172a;
+          color: #ffffff;
+          border: 1px solid #0f172a;
+        }
         .hero {
+          padding: 36px 0 24px;
           background: linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
           border-bottom: 1px solid #e2e8f0;
         }
-        .container {
-          max-width: 1120px;
-          margin: 0 auto;
-          padding: 0 20px;
+        .heroGrid,
+        .sectionGrid {
+          display: grid;
+          gap: 24px;
+          align-items: start;
         }
-        .heroInner {
-          padding-top: 56px;
-          padding-bottom: 44px;
+        .heroGrid {
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
         }
-        .section {
-          padding: 28px 0;
-        }
-        .alt {
-          background: #ffffff;
-          border-top: 1px solid #e2e8f0;
-          border-bottom: 1px solid #e2e8f0;
+        .heroCopy {
+          padding: 10px 0;
         }
         .eyebrow {
           margin: 0 0 10px;
@@ -171,108 +353,188 @@ export default function HomePage() {
         }
         h1 {
           margin: 0;
-          max-width: 840px;
-          font-size: clamp(2rem, 6vw, 4rem);
-          line-height: 1.04;
+          max-width: 760px;
+          font-size: clamp(2rem, 5vw, 3.6rem);
+          line-height: 1.05;
         }
         h2 {
-          margin: 0 0 14px;
-          font-size: clamp(1.5rem, 4vw, 2.25rem);
+          margin: 0 0 12px;
+          font-size: clamp(1.45rem, 3.8vw, 2.4rem);
+          line-height: 1.1;
         }
         h3 {
           margin: 0 0 8px;
           font-size: 1.05rem;
-        }
-        .lede {
-          margin: 18px 0 0;
-          max-width: 760px;
-          color: #334155;
-          font-size: clamp(1rem, 2.5vw, 1.15rem);
-          line-height: 1.7;
+          line-height: 1.35;
         }
         p {
-          line-height: 1.7;
+          margin: 0;
           color: #334155;
+          line-height: 1.7;
+        }
+        .lede {
+          margin-top: 18px;
+          max-width: 760px;
+          font-size: clamp(1.02rem, 2.2vw, 1.15rem);
+        }
+        .supporting {
+          margin-top: 14px;
+          max-width: 700px;
         }
         .actions {
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
-          margin-top: 24px;
+          margin-top: 22px;
         }
         .primaryBtn,
         .secondaryBtn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
           padding: 12px 16px;
-          border-radius: 12px;
-          text-decoration: none;
-          font-weight: 700;
-        }
-        .primaryBtn {
-          background: #0f172a;
-          color: #ffffff;
         }
         .secondaryBtn {
           background: #ffffff;
           color: #0f172a;
           border: 1px solid #cbd5e1;
         }
-        .twoCol {
-          display: grid;
-          grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-          gap: 24px;
-          align-items: start;
-        }
-        .featureGrid,
-        .faqGrid,
-        .linkGrid {
+        .heroPanel,
+        .miniGrid,
+        .stackGrid,
+        .linkGrid,
+        .faqGrid {
           display: grid;
           gap: 14px;
         }
-        .featureGrid,
-        .faqGrid {
-          grid-template-columns: repeat(1, minmax(0, 1fr));
+        .heroPanel {
+          gap: 16px;
         }
-        .linkGrid {
+        .miniGrid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
-        .card,
+        .section {
+          padding: 28px 0;
+        }
+        .sectionGrid {
+          grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        }
+        .cardSurface,
+        .panelCard,
         .navCard {
           background: #ffffff;
           border: 1px solid #e2e8f0;
           border-radius: 16px;
-          padding: 16px;
+          padding: 18px;
           box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
         }
+        .emphasisCard {
+          background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+          border-color: #dbeafe;
+        }
+        .panelLabel {
+          display: inline-block;
+          margin-bottom: 8px;
+          font-size: 0.78rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          color: #475569;
+        }
+        .sectionIntro {
+          padding: 22px;
+        }
+        .bulletList {
+          margin: 16px 0 0;
+          padding-left: 18px;
+          color: #334155;
+          display: grid;
+          gap: 10px;
+        }
+        .altSection {
+          background: #ffffff;
+          border-top: 1px solid #e2e8f0;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        .sectionHeading {
+          margin-bottom: 16px;
+        }
+        .sectionHeading p {
+          max-width: 760px;
+        }
+        .linkGrid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
         .navCard {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
           text-decoration: none;
-          display: block;
+          min-height: 118px;
         }
         .navCard strong {
-          display: block;
           color: #0f172a;
-          margin-bottom: 6px;
+          line-height: 1.3;
         }
         .navCard span {
           color: #475569;
           line-height: 1.6;
         }
-        @media (max-width: 800px) {
-          .twoCol,
+        .faqGrid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        @media (max-width: 1040px) {
+          .heroGrid,
+          .sectionGrid,
+          .faqGrid {
+            grid-template-columns: 1fr;
+          }
+        }
+        @media (max-width: 900px) {
+          .topbarInner,
+          .topbarLeft {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .topbarRight {
+            width: 100%;
+            justify-content: stretch;
+          }
+          .topbarBtn {
+            flex: 1 1 auto;
+          }
+          .nav,
+          .miniGrid,
           .linkGrid {
             grid-template-columns: 1fr;
           }
-          .heroInner {
-            padding-top: 40px;
-            padding-bottom: 32px;
+          .nav {
+            display: grid;
+            gap: 10px;
+          }
+          .hero {
+            padding-top: 28px;
+          }
+        }
+        @media (max-width: 700px) {
+          .container,
+          .topbarInner {
+            padding-left: 16px;
+            padding-right: 16px;
           }
           .section {
             padding: 22px 0;
           }
+          .cardSurface,
+          .panelCard,
+          .navCard {
+            padding: 16px;
+          }
+          .actions,
+          .topbarRight {
+            display: grid;
+            grid-template-columns: 1fr;
+          }
           .primaryBtn,
-          .secondaryBtn {
+          .secondaryBtn,
+          .topbarBtn {
             width: 100%;
           }
         }
