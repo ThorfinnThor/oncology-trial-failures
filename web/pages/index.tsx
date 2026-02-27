@@ -43,8 +43,8 @@ export default function HomePage() {
 
       <div className="homePage">
         <header className="topbar">
-          <div className="topbarInner">
-            <div className="topbarLeft">
+          <div className="topbar-inner">
+            <div className="topbar-left">
               <Link href="/" className="brand" aria-current="page">
                 Clinical trial failures
               </Link>
@@ -242,81 +242,17 @@ export default function HomePage() {
       </div>
 
       <style jsx>{`
+
         .homePage {
           min-height: 100vh;
           background: #f8fafc;
           color: #0f172a;
         }
-        .topbar {
-          background: #ffffff;
-          border-bottom: 1px solid #e2e8f0;
-        }
-        .topbarInner,
         .container {
           max-width: 1180px;
           margin: 0 auto;
           padding-left: 20px;
           padding-right: 20px;
-        }
-        .topbarInner {
-          min-height: 68px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 16px;
-          padding-top: 10px;
-          padding-bottom: 10px;
-        }
-        .topbarLeft {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          min-width: 0;
-        }
-        .brand {
-          color: #0f172a;
-          text-decoration: none;
-          font-weight: 800;
-          font-size: 1rem;
-          white-space: nowrap;
-        }
-        .nav {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 14px;
-        }
-        .navlink {
-          color: #334155;
-          text-decoration: none;
-          font-size: 0.95rem;
-        }
-        .topbarRight {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          flex-shrink: 0;
-        }
-        .topbarBtn,
-        .primaryBtn,
-        .secondaryBtn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          text-decoration: none;
-          font-weight: 700;
-          border-radius: 12px;
-        }
-        .topbarBtn {
-          padding: 10px 14px;
-          border: 1px solid #cbd5e1;
-          color: #0f172a;
-          background: #ffffff;
-        }
-        .topbarBtnPrimary,
-        .primaryBtn {
-          background: #0f172a;
-          color: #ffffff;
-          border: 1px solid #0f172a;
         }
         .hero {
           padding: 36px 0 24px;
@@ -381,7 +317,18 @@ export default function HomePage() {
         }
         .primaryBtn,
         .secondaryBtn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           padding: 12px 16px;
+          text-decoration: none;
+          font-weight: 700;
+          border-radius: 12px;
+        }
+        .primaryBtn {
+          background: #0f172a;
+          color: #ffffff;
+          border: 1px solid #0f172a;
         }
         .secondaryBtn {
           background: #ffffff;
@@ -483,57 +430,83 @@ export default function HomePage() {
           }
         }
         @media (max-width: 900px) {
-          .topbarInner,
-          .topbarLeft {
-            flex-direction: column;
-            align-items: stretch;
-          }
-          .topbarRight {
-            width: 100%;
-            justify-content: stretch;
-          }
-          .topbarBtn {
-            flex: 1 1 auto;
-          }
-          .nav,
           .miniGrid,
           .linkGrid {
             grid-template-columns: 1fr;
-          }
-          .nav {
-            display: grid;
-            gap: 10px;
           }
           .hero {
             padding-top: 28px;
           }
         }
-        @media (max-width: 700px) {
-          .container,
-          .topbarInner {
+        @media (max-width: 720px) {
+          .container {
             padding-left: 16px;
             padding-right: 16px;
+          }
+          .hero {
+            padding: 20px 0 18px;
+          }
+          .heroCopy {
+            padding: 4px 0 0;
+          }
+          h1 {
+            font-size: clamp(2rem, 10vw, 2.6rem);
+            line-height: 1.08;
+          }
+          h2 {
+            font-size: clamp(1.5rem, 7vw, 2rem);
+          }
+          .lede {
+            margin-top: 14px;
+            font-size: 1rem;
+            line-height: 1.6;
+          }
+          .supporting {
+            margin-top: 12px;
+            line-height: 1.65;
           }
           .section {
             padding: 22px 0;
           }
+          .sectionHeading {
+            margin-bottom: 14px;
+          }
           .cardSurface,
           .panelCard,
-          .navCard {
+          .navCard,
+          .sectionIntro {
             padding: 16px;
           }
-          .actions,
-          .topbarRight {
+          .actions {
             display: grid;
             grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 18px;
           }
           .primaryBtn,
-          .secondaryBtn,
-          .topbarBtn {
+          .secondaryBtn {
             width: 100%;
           }
+          .miniGrid,
+          .linkGrid,
+          .faqGrid {
+            grid-template-columns: 1fr;
+          }
+          .heroPanel,
+          .stackGrid,
+          .faqGrid {
+            gap: 12px;
+          }
+          .navCard {
+            min-height: 0;
+            gap: 6px;
+          }
+          .bulletList {
+            gap: 8px;
+            margin-top: 14px;
+          }
         }
-      `}</style>
+            `}</style>
     </>
   );
 }
