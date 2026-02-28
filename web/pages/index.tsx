@@ -201,9 +201,9 @@ export default function HomePage() {
                   <span className="navCardText">Inspect unusual or extreme stop patterns worth deeper review.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
-                <Link href="/privacy" className="navCard">
-                  <span className="navCardTitle">Privacy</span>
-                  <span className="navCardText">Read the short privacy policy.</span>
+                <Link href="/top-entities" className="navCard">
+                  <span className="navCardTitle">Top entities</span>
+                  <span className="navCardText">See the sponsors, conditions, interventions, and countries that appear most often.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
               </div>
