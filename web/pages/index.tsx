@@ -440,57 +440,84 @@ export default function HomePage() {
         }
         @media (max-width: 720px) {
           .container {
-            padding-left: 16px;
-            padding-right: 16px;
+            padding-left: 14px;
+            padding-right: 14px;
+          }
+          .hero,
+          .section {
+            padding: 18px 0;
           }
           .hero {
-            padding: 20px 0 18px;
+            background: #f8fafc;
+          }
+          .altSection {
+            background: transparent;
+          }
+          .heroGrid,
+          .sectionGrid,
+          .miniGrid,
+          .stackGrid,
+          .linkGrid,
+          .faqGrid {
+            grid-template-columns: 1fr;
+            gap: 12px;
           }
           .heroCopy {
-            padding: 4px 0 0;
+            padding: 0;
           }
           h1 {
-            font-size: clamp(2rem, 10vw, 2.6rem);
+            font-size: clamp(1.9rem, 10vw, 2.45rem);
             line-height: 1.08;
+            max-width: none;
           }
           h2 {
-            font-size: clamp(1.5rem, 7vw, 2rem);
+            font-size: clamp(1.45rem, 7vw, 1.9rem);
+            line-height: 1.12;
+          }
+          h3 {
+            font-size: 1rem;
+            margin-bottom: 6px;
+          }
+          .lede,
+          .supporting,
+          .sectionHeading p {
+            max-width: none;
           }
           .lede {
-            margin-top: 14px;
+            margin-top: 12px;
             font-size: 1rem;
-            line-height: 1.6;
+            line-height: 1.58;
           }
           .supporting {
-            margin-top: 12px;
-            line-height: 1.65;
-          }
-          .section {
-            padding: 22px 0;
+            margin-top: 10px;
+            line-height: 1.6;
           }
           .sectionHeading {
-            margin-bottom: 14px;
+            margin-bottom: 12px;
+            display: grid;
+            gap: 8px;
           }
           .cardSurface,
           .panelCard,
           .navCard,
           .sectionIntro {
-            padding: 16px;
+            padding: 14px;
+            border-radius: 14px;
+          }
+          .sectionIntro {
+            display: grid;
+            gap: 10px;
           }
           .actions {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 18px;
+            gap: 8px;
+            margin-top: 16px;
           }
           .primaryBtn,
           .secondaryBtn {
             width: 100%;
-          }
-          .miniGrid,
-          .linkGrid,
-          .faqGrid {
-            grid-template-columns: 1fr;
+            min-height: 44px;
           }
           .heroPanel,
           .stackGrid,
@@ -501,9 +528,41 @@ export default function HomePage() {
             min-height: 0;
             gap: 6px;
           }
+          .navCardTitle,
+          .navCardText {
+            line-height: 1.45;
+          }
           .bulletList {
             gap: 8px;
-            margin-top: 14px;
+            margin-top: 12px;
+            padding-left: 18px;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .container {
+            padding-left: 12px;
+            padding-right: 12px;
+          }
+          .hero,
+          .section {
+            padding: 16px 0;
+          }
+          h1 {
+            font-size: clamp(1.85rem, 11vw, 2.2rem);
+          }
+          .cardSurface,
+          .panelCard,
+          .navCard,
+          .sectionIntro {
+            padding: 13px;
+          }
+          .miniGrid,
+          .stackGrid,
+          .linkGrid,
+          .faqGrid,
+          .heroPanel {
+            gap: 10px;
           }
         }
             `}</style>
