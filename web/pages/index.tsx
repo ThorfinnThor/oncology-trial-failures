@@ -188,22 +188,22 @@ export default function HomePage() {
                 </Link>
                 <Link href="/sponsor-insights" className="navCard">
                   <span className="navCardTitle">Sponsor insights</span>
-                  <span className="navCardText">Compare sponsors and repeated stop patterns.</span>
+                  <span className="navCardText">Extract key data per sponsor.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/methods" className="navCard">
                   <span className="navCardTitle">Methods</span>
-                  <span className="navCardText">Review how records are collected and classified.</span>
+                  <span className="navCardText">Review the methodology and concept.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/outliers" className="navCard">
                   <span className="navCardTitle">Outliers</span>
-                  <span className="navCardText">Inspect unusual or extreme stop patterns worth deeper review.</span>
+                  <span className="navCardText">Inspect over-represented sponsors and indications.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/top-entities" className="navCard">
                   <span className="navCardTitle">Top entities</span>
-                  <span className="navCardText">See the sponsors, conditions, interventions, and countries that appear most often.</span>
+                  <span className="navCardText">See the sponsors and disease areas that appear most often.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
               </div>
