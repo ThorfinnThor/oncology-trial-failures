@@ -89,11 +89,13 @@ export default function HomePage() {
                   by phase, sponsor, disease area, condition, intervention, geography, and stop reason.
                 </p>
                 <div className="actions">
-                  <Link href="/explore" className="primaryBtn">
-                    Explore clinical trial failures
+                  <Link href="/explore" className="primaryBtn" aria-label="Explore clinical trial failures">
+                    <span>Explore clinical trial failures</span>
+                    <span aria-hidden="true">→</span>
                   </Link>
-                  <Link href="/methods" className="secondaryBtn">
-                    See methodology
+                  <Link href="/methods" className="secondaryBtn" aria-label="See methodology">
+                    <span>See methodology</span>
+                    <span aria-hidden="true">→</span>
                   </Link>
                 </div>
               </div>
@@ -344,10 +346,13 @@ export default function HomePage() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
+          gap: 10px;
           padding: 12px 16px;
           text-decoration: none;
-          font-weight: 700;
+          font-weight: 800;
           border-radius: 12px;
+          box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+          transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
         }
         .primaryBtn {
           background: #0f172a;
@@ -357,7 +362,17 @@ export default function HomePage() {
         .secondaryBtn {
           background: #ffffff;
           color: #0f172a;
-          border: 1px solid #cbd5e1;
+          border: 1px solid #94a3b8;
+        }
+        .primaryBtn:hover,
+        .primaryBtn:focus-visible,
+        .secondaryBtn:hover,
+        .secondaryBtn:focus-visible {
+          transform: translateY(-1px);
+          box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+          text-decoration: underline;
+          text-underline-offset: 0.2em;
+          text-decoration-thickness: 1.5px;
         }
         .heroPanel,
         .miniGrid,

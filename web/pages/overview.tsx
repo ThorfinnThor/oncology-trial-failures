@@ -659,10 +659,13 @@ export default function OverviewPage() {
                 <Link className="navlink" href="/overview" aria-current="page">
                   Overview
                 </Link>
-                  <Link className="navlink" href="/outliers">
-                    Outliers
-                  </Link>
-                  <Link className="navlink" href="/top-entities">
+                <Link className="navlink" href="/sponsor-insights">
+                  Sponsor insights
+                </Link>
+                <Link className="navlink" href="/outliers">
+                  Outliers
+                </Link>
+                <Link className="navlink" href="/top-entities">
                   Top entities
                 </Link>
                 <Link className="navlink" href="/methods">

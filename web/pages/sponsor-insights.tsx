@@ -698,10 +698,10 @@ export default function SponsorInsightsPage() {
             </div>
           </header>
 
-          {/* ===== Sponsor insights ===== */}
-          <section className="section" aria-label="Sponsor insights">
+          {/* ===== Sponsor comparison ===== */}
+          <section className="section" aria-label="Sponsor comparison">
             <div className="sectionHead">
-              <h2 className="h2">Sponsor insights</h2>
+              <h2 className="h2">Sponsor comparison</h2>
               <div className="muted small">Sponsor drill-downs use Explore free-text search (q) plus bucket/phase/area where applicable.</div>
             </div>
 
