@@ -45,7 +45,7 @@ export default function HomePage() {
         <header className="topbar">
           <div className="topbar-inner">
             <div className="topbar-left">
-              <Link href="/" className="brand" aria-current="page">
+              <Link href="/" className="brand homeBrand" aria-current="page" aria-label="Go to homepage">
                 Clinical trial failures
               </Link>
               <nav className="nav" aria-label="Primary">
@@ -177,26 +177,32 @@ export default function HomePage() {
                 <Link href="/explore" className="navCard">
                   <span className="navCardTitle">Explore</span>
                   <span className="navCardText">Search and filter individual clinical trial failures.</span>
+                  <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/overview" className="navCard">
                   <span className="navCardTitle">Overview</span>
                   <span className="navCardText">See high-level patterns across the dataset.</span>
+                  <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/sponsor-insights" className="navCard">
                   <span className="navCardTitle">Sponsor insights</span>
                   <span className="navCardText">Compare sponsors and repeated stop patterns.</span>
+                  <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/methods" className="navCard">
                   <span className="navCardTitle">Methods</span>
                   <span className="navCardText">Review how records are collected and classified.</span>
+                  <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/outliers" className="navCard">
                   <span className="navCardTitle">Outliers</span>
                   <span className="navCardText">Inspect unusual or extreme stop patterns worth deeper review.</span>
+                  <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/privacy" className="navCard">
                   <span className="navCardTitle">Privacy</span>
                   <span className="navCardText">Read the short privacy policy.</span>
+                  <span className="navCardFooter">Open page →</span>
                 </Link>
               </div>
             </div>
@@ -315,6 +321,24 @@ export default function HomePage() {
           gap: 12px;
           margin-top: 22px;
         }
+        .homeBrand {
+          display: inline-flex;
+          align-items: center;
+          position: relative;
+          z-index: 2;
+          padding-right: 4px;
+        }
+        .homeBrand,
+        :global(.topbar .navlink) {
+          text-decoration-thickness: 1.5px;
+          text-underline-offset: 0.18em;
+        }
+        .homeBrand:hover,
+        .homeBrand:focus-visible,
+        :global(.topbar .navlink:hover),
+        :global(.topbar .navlink:focus-visible) {
+          text-decoration: underline;
+        }
         .primaryBtn,
         .secondaryBtn {
           display: inline-flex;
@@ -407,17 +431,37 @@ export default function HomePage() {
           gap: 8px;
           text-decoration: none;
           min-height: 118px;
+          cursor: pointer;
+          transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+        }
+        .navCard:hover,
+        .navCard:focus-visible {
+          transform: translateY(-1px);
+          border-color: #93c5fd;
+          box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
         }
         .navCardTitle {
           display: block;
           color: #0f172a;
           font-weight: 800;
           line-height: 1.3;
+          text-decoration: underline;
+          text-decoration-thickness: 1.5px;
+          text-underline-offset: 0.18em;
+          text-decoration-color: rgba(15, 23, 42, 0.28);
         }
         .navCardText {
           display: block;
           color: #475569;
           line-height: 1.6;
+        }
+        .navCardFooter {
+          display: inline-flex;
+          align-items: center;
+          margin-top: auto;
+          color: #1d4ed8;
+          font-weight: 700;
+          line-height: 1.3;
         }
         .faqGrid {
           grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -527,6 +571,9 @@ export default function HomePage() {
           .navCard {
             min-height: 0;
             gap: 6px;
+          }
+          .navCardFooter {
+            margin-top: 2px;
           }
           .navCardTitle,
           .navCardText {
