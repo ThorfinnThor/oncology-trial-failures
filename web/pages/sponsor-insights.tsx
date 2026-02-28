@@ -678,7 +678,6 @@ export default function SponsorInsightsPage() {
             <div className="headerLeft">
               <h1 className="title">Sponsor insights</h1>
               <div className="muted subtitle">
-                Sponsor drill-downs and profiles derived from stopped interventional drug/biologic trials on ClinicalTrials.gov (API v2).
               </div>
             </div>
 
