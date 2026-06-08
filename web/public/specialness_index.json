@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-06-01T12:17:40Z",
+  "generated_at_utc": "2026-06-08T11:29:55Z",
   "prior": {
     "a": 1.0,
     "b": 1.0
@@ -30,218 +30,218 @@
     "all": {
       "all": {
         "EFFICACY/FUTILITY": {
-          "n": 23266,
-          "k": 1080,
-          "rate": 0.04641966818533482
+          "n": 23319,
+          "k": 1084,
+          "rate": 0.0464856983575625
         },
         "SAFETY": {
-          "n": 23266,
-          "k": 712,
-          "rate": 0.03060259606292444
+          "n": 23319,
+          "k": 713,
+          "rate": 0.030575925211201168
         },
         "OPERATIONAL": {
-          "n": 23266,
-          "k": 11915,
-          "rate": 0.5121206911372819
+          "n": 23319,
+          "k": 11943,
+          "rate": 0.512157468159012
         },
         "REGULATORY": {
-          "n": 23266,
+          "n": 23319,
           "k": 92,
-          "rate": 0.003954268030602596
+          "rate": 0.003945280672413054
         },
         "OTHER/UNKNOWN": {
-          "n": 23266,
-          "k": 9467,
-          "rate": 0.40690277658385626
+          "n": 23319,
+          "k": 9487,
+          "rate": 0.4068356275998113
         }
       },
       "phase1": {
         "EFFICACY/FUTILITY": {
-          "n": 7123,
-          "k": 176,
-          "rate": 0.024708690158641022
+          "n": 7140,
+          "k": 178,
+          "rate": 0.02492997198879552
         },
         "SAFETY": {
-          "n": 7123,
-          "k": 259,
-          "rate": 0.03636108381300014
+          "n": 7140,
+          "k": 260,
+          "rate": 0.036414565826330535
         },
         "OPERATIONAL": {
-          "n": 7123,
-          "k": 3527,
-          "rate": 0.49515653516776637
+          "n": 7140,
+          "k": 3535,
+          "rate": 0.4950980392156863
         },
         "REGULATORY": {
-          "n": 7123,
+          "n": 7140,
           "k": 30,
-          "rate": 0.004211708549768356
+          "rate": 0.004201680672268907
         },
         "OTHER/UNKNOWN": {
-          "n": 7123,
-          "k": 3131,
-          "rate": 0.4395619823108241
+          "n": 7140,
+          "k": 3137,
+          "rate": 0.43935574229691876
         }
       },
       "phase2": {
         "EFFICACY/FUTILITY": {
-          "n": 10580,
-          "k": 592,
-          "rate": 0.05595463137996219
+          "n": 10604,
+          "k": 594,
+          "rate": 0.056016597510373446
         },
         "SAFETY": {
-          "n": 10580,
-          "k": 370,
-          "rate": 0.03497164461247637
+          "n": 10604,
+          "k": 369,
+          "rate": 0.034798189362504714
         },
         "OPERATIONAL": {
-          "n": 10580,
-          "k": 5495,
-          "rate": 0.5193761814744802
+          "n": 10604,
+          "k": 5507,
+          "rate": 0.5193323274236137
         },
         "REGULATORY": {
-          "n": 10580,
+          "n": 10604,
           "k": 41,
-          "rate": 0.00387523629489603
+          "rate": 0.0038664654847227462
         },
         "OTHER/UNKNOWN": {
-          "n": 10580,
-          "k": 4082,
-          "rate": 0.38582230623818525
+          "n": 10604,
+          "k": 4093,
+          "rate": 0.3859864202187854
         }
       },
       "phase3": {
         "EFFICACY/FUTILITY": {
-          "n": 3912,
+          "n": 3920,
           "k": 346,
-          "rate": 0.08844580777096114
+          "rate": 0.08826530612244898
         },
         "SAFETY": {
-          "n": 3912,
+          "n": 3920,
           "k": 143,
-          "rate": 0.03655419222903886
+          "rate": 0.036479591836734694
         },
         "OPERATIONAL": {
-          "n": 3912,
-          "k": 1777,
-          "rate": 0.4542433537832311
+          "n": 3920,
+          "k": 1785,
+          "rate": 0.45535714285714285
         },
         "REGULATORY": {
-          "n": 3912,
+          "n": 3920,
           "k": 22,
-          "rate": 0.005623721881390593
+          "rate": 0.005612244897959183
         },
         "OTHER/UNKNOWN": {
-          "n": 3912,
+          "n": 3920,
           "k": 1624,
-          "rate": 0.41513292433537835
+          "rate": 0.4142857142857143
         }
       },
       "phase4": {
         "EFFICACY/FUTILITY": {
-          "n": 2843,
+          "n": 2849,
           "k": 51,
-          "rate": 0.017938797045374603
+          "rate": 0.0179010179010179
         },
         "SAFETY": {
-          "n": 2843,
+          "n": 2849,
           "k": 33,
-          "rate": 0.01160745691171298
+          "rate": 0.011583011583011582
         },
         "OPERATIONAL": {
-          "n": 2843,
-          "k": 1652,
-          "rate": 0.5810763278227224
+          "n": 2849,
+          "k": 1656,
+          "rate": 0.5812565812565813
         },
         "REGULATORY": {
-          "n": 2843,
+          "n": 2849,
           "k": 6,
-          "rate": 0.002110446711220542
+          "rate": 0.002106002106002106
         },
         "OTHER/UNKNOWN": {
-          "n": 2843,
-          "k": 1101,
-          "rate": 0.3872669715089694
+          "n": 2849,
+          "k": 1103,
+          "rate": 0.38715338715338715
         }
       }
     },
     "bio": {
       "all": {
         "EFFICACY/FUTILITY": {
-          "n": 1792,
-          "k": 1080,
-          "rate": 0.6026785714285714
+          "n": 1797,
+          "k": 1084,
+          "rate": 0.6032276015581525
         },
         "SAFETY": {
-          "n": 1792,
-          "k": 712,
-          "rate": 0.39732142857142855
+          "n": 1797,
+          "k": 713,
+          "rate": 0.39677239844184753
         },
         "OPERATIONAL": {
-          "n": 1792,
+          "n": 1797,
           "k": 0,
           "rate": 0.0
         },
         "REGULATORY": {
-          "n": 1792,
+          "n": 1797,
           "k": 0,
           "rate": 0.0
         },
         "OTHER/UNKNOWN": {
-          "n": 1792,
+          "n": 1797,
           "k": 0,
           "rate": 0.0
         }
       },
       "phase1": {
         "EFFICACY/FUTILITY": {
-          "n": 435,
-          "k": 176,
-          "rate": 0.4045977011494253
+          "n": 438,
+          "k": 178,
+          "rate": 0.4063926940639269
         },
         "SAFETY": {
-          "n": 435,
-          "k": 259,
-          "rate": 0.5954022988505747
+          "n": 438,
+          "k": 260,
+          "rate": 0.593607305936073
         },
         "OPERATIONAL": {
-          "n": 435,
+          "n": 438,
           "k": 0,
           "rate": 0.0
         },
         "REGULATORY": {
-          "n": 435,
+          "n": 438,
           "k": 0,
           "rate": 0.0
         },
         "OTHER/UNKNOWN": {
-          "n": 435,
+          "n": 438,
           "k": 0,
           "rate": 0.0
         }
       },
       "phase2": {
         "EFFICACY/FUTILITY": {
-          "n": 962,
-          "k": 592,
-          "rate": 0.6153846153846154
+          "n": 963,
+          "k": 594,
+          "rate": 0.616822429906542
         },
         "SAFETY": {
-          "n": 962,
-          "k": 370,
-          "rate": 0.38461538461538464
+          "n": 963,
+          "k": 369,
+          "rate": 0.38317757009345793
         },
         "OPERATIONAL": {
-          "n": 962,
+          "n": 963,
           "k": 0,
           "rate": 0.0
         },
         "REGULATORY": {
-          "n": 962,
+          "n": 963,
           "k": 0,
           "rate": 0.0
         },
         "OTHER/UNKNOWN": {
-          "n": 962,
+          "n": 963,
           "k": 0,
           "rate": 0.0
         }
@@ -315,13 +315,13 @@
         "all": [
           {
             "group": "M.D. Anderson Cancer Center",
-            "n": 385,
+            "n": 386,
             "k": [
               7,
               8,
               198,
               1,
-              171
+              172
             ]
           },
           {
@@ -392,10 +392,10 @@
           },
           {
             "group": "Hoffmann-La Roche",
-            "n": 180,
+            "n": 181,
             "k": [
               19,
-              5,
+              6,
               63,
               0,
               93
@@ -451,9 +451,9 @@
             "k": [
               2,
               4,
-              87,
+              88,
               0,
-              37
+              36
             ]
           },
           {
@@ -502,11 +502,11 @@
           },
           {
             "group": "University of California, San Francisco",
-            "n": 119,
+            "n": 120,
             "k": [
               4,
               2,
-              71,
+              72,
               1,
               41
             ]
@@ -561,9 +561,9 @@
             "k": [
               12,
               5,
-              72,
+              73,
               0,
-              20
+              19
             ]
           },
           {
@@ -622,14 +622,14 @@
             ]
           },
           {
-            "group": "Duke University",
+            "group": "Boehringer Ingelheim",
             "n": 98,
             "k": [
-              2,
-              2,
-              63,
+              1,
+              1,
+              44,
               0,
-              31
+              52
             ]
           },
           {
@@ -644,14 +644,14 @@
             ]
           },
           {
-            "group": "Boehringer Ingelheim",
+            "group": "Duke University",
             "n": 97,
             "k": [
-              1,
-              1,
-              43,
+              2,
+              2,
+              62,
               0,
-              52
+              31
             ]
           },
           {
@@ -667,20 +667,20 @@
           },
           {
             "group": "AbbVie",
-            "n": 92,
+            "n": 93,
             "k": [
               5,
               3,
               29,
               0,
-              55
+              56
             ]
           },
           {
             "group": "Janssen Research & Development, LLC",
-            "n": 92,
+            "n": 93,
             "k": [
-              18,
+              19,
               7,
               44,
               0,
@@ -722,11 +722,11 @@
           },
           {
             "group": "University of Chicago",
-            "n": 90,
+            "n": 89,
             "k": [
               2,
               1,
-              54,
+              53,
               0,
               33
             ]
@@ -754,6 +754,17 @@
             ]
           },
           {
+            "group": "University of Washington",
+            "n": 81,
+            "k": [
+              3,
+              3,
+              57,
+              0,
+              18
+            ]
+          },
+          {
             "group": "Biogen",
             "n": 80,
             "k": [
@@ -773,17 +784,6 @@
               51,
               1,
               27
-            ]
-          },
-          {
-            "group": "University of Washington",
-            "n": 80,
-            "k": [
-              3,
-              3,
-              56,
-              0,
-              18
             ]
           },
           {
@@ -810,11 +810,11 @@
           },
           {
             "group": "University of Wisconsin, Madison",
-            "n": 74,
+            "n": 75,
             "k": [
               2,
               1,
-              46,
+              47,
               0,
               25
             ]
@@ -886,17 +886,6 @@
             ]
           },
           {
-            "group": "Fred Hutchinson Cancer Center",
-            "n": 67,
-            "k": [
-              2,
-              1,
-              49,
-              1,
-              14
-            ]
-          },
-          {
             "group": "University of California, Los Angeles",
             "n": 67,
             "k": [
@@ -919,6 +908,17 @@
             ]
           },
           {
+            "group": "Fred Hutchinson Cancer Center",
+            "n": 66,
+            "k": [
+              2,
+              1,
+              48,
+              1,
+              14
+            ]
+          },
+          {
             "group": "The Cleveland Clinic",
             "n": 65,
             "k": [
@@ -931,11 +931,11 @@
           },
           {
             "group": "University of Florida",
-            "n": 65,
+            "n": 64,
             "k": [
               1,
               0,
-              38,
+              37,
               2,
               24
             ]
@@ -985,6 +985,17 @@
             ]
           },
           {
+            "group": "City of Hope Medical Center",
+            "n": 56,
+            "k": [
+              4,
+              4,
+              23,
+              0,
+              25
+            ]
+          },
+          {
             "group": "New York State Psychiatric Institute",
             "n": 56,
             "k": [
@@ -997,11 +1008,11 @@
           },
           {
             "group": "University of Nebraska",
-            "n": 55,
+            "n": 56,
             "k": [
               1,
               5,
-              25,
+              26,
               0,
               24
             ]
@@ -1037,17 +1048,6 @@
               22,
               0,
               28
-            ]
-          },
-          {
-            "group": "City of Hope Medical Center",
-            "n": 52,
-            "k": [
-              2,
-              4,
-              23,
-              0,
-              23
             ]
           },
           {
@@ -1315,6 +1315,17 @@
             ]
           },
           {
+            "group": "University of Pittsburgh",
+            "n": 42,
+            "k": [
+              1,
+              2,
+              19,
+              0,
+              20
+            ]
+          },
+          {
             "group": "Georgetown University",
             "n": 41,
             "k": [
@@ -1323,17 +1334,6 @@
               27,
               0,
               9
-            ]
-          },
-          {
-            "group": "University of Pittsburgh",
-            "n": 41,
-            "k": [
-              1,
-              2,
-              18,
-              0,
-              20
             ]
           },
           {
@@ -1356,6 +1356,17 @@
               26,
               1,
               11
+            ]
+          },
+          {
+            "group": "University of California, Davis",
+            "n": 39,
+            "k": [
+              1,
+              0,
+              28,
+              0,
+              10
             ]
           },
           {
@@ -1411,17 +1422,6 @@
               15,
               0,
               21
-            ]
-          },
-          {
-            "group": "University of California, Davis",
-            "n": 38,
-            "k": [
-              1,
-              0,
-              27,
-              0,
-              10
             ]
           },
           {
@@ -1568,6 +1568,17 @@
             ]
           },
           {
+            "group": "University of Rochester",
+            "n": 34,
+            "k": [
+              2,
+              0,
+              20,
+              0,
+              12
+            ]
+          },
+          {
             "group": "Loma Linda University",
             "n": 33,
             "k": [
@@ -1607,17 +1618,6 @@
               1,
               0,
               20,
-              0,
-              12
-            ]
-          },
-          {
-            "group": "University of Rochester",
-            "n": 33,
-            "k": [
-              2,
-              0,
-              19,
               0,
               12
             ]
@@ -1799,6 +1799,17 @@
             ]
           },
           {
+            "group": "Chia Tai Tianqing Pharmaceutical Group Co., Ltd.",
+            "n": 28,
+            "k": [
+              0,
+              0,
+              18,
+              0,
+              10
+            ]
+          },
+          {
             "group": "Teva Branded Pharmaceutical Products R&D, Inc.",
             "n": 28,
             "k": [
@@ -1832,17 +1843,6 @@
             ]
           },
           {
-            "group": "Chia Tai Tianqing Pharmaceutical Group Co., Ltd.",
-            "n": 27,
-            "k": [
-              0,
-              0,
-              17,
-              0,
-              10
-            ]
-          },
-          {
             "group": "Insel Gruppe AG, University Hospital Bern",
             "n": 27,
             "k": [
@@ -1851,6 +1851,17 @@
               14,
               0,
               12
+            ]
+          },
+          {
+            "group": "McMaster University",
+            "n": 27,
+            "k": [
+              0,
+              0,
+              18,
+              0,
+              9
             ]
           },
           {
@@ -1906,17 +1917,6 @@
               12,
               0,
               8
-            ]
-          },
-          {
-            "group": "McMaster University",
-            "n": 26,
-            "k": [
-              0,
-              0,
-              17,
-              0,
-              9
             ]
           },
           {
@@ -2228,6 +2228,17 @@
             ]
           },
           {
+            "group": "University of Oklahoma",
+            "n": 22,
+            "k": [
+              1,
+              0,
+              12,
+              1,
+              8
+            ]
+          },
+          {
             "group": "Boston Medical Center",
             "n": 21,
             "k": [
@@ -2280,17 +2291,6 @@
               4,
               0,
               14
-            ]
-          },
-          {
-            "group": "University of Oklahoma",
-            "n": 21,
-            "k": [
-              1,
-              0,
-              12,
-              1,
-              7
             ]
           },
           {
@@ -2569,6 +2569,17 @@
             ]
           },
           {
+            "group": "National Institute on Drug Abuse (NIDA)",
+            "n": 18,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              15
+            ]
+          },
+          {
             "group": "PTC Therapeutics",
             "n": 18,
             "k": [
@@ -2690,17 +2701,6 @@
             ]
           },
           {
-            "group": "National Institute on Drug Abuse (NIDA)",
-            "n": 17,
-            "k": [
-              0,
-              0,
-              3,
-              0,
-              14
-            ]
-          },
-          {
             "group": "Nationwide Children's Hospital",
             "n": 17,
             "k": [
@@ -2731,6 +2731,28 @@
               9,
               0,
               7
+            ]
+          },
+          {
+            "group": "University Hospital, Montpellier",
+            "n": 17,
+            "k": [
+              1,
+              0,
+              4,
+              0,
+              12
+            ]
+          },
+          {
+            "group": "University of Calgary",
+            "n": 17,
+            "k": [
+              1,
+              0,
+              10,
+              0,
+              6
             ]
           },
           {
@@ -2954,28 +2976,6 @@
             ]
           },
           {
-            "group": "University Hospital, Montpellier",
-            "n": 16,
-            "k": [
-              1,
-              0,
-              4,
-              0,
-              11
-            ]
-          },
-          {
-            "group": "University of Calgary",
-            "n": 16,
-            "k": [
-              1,
-              0,
-              9,
-              0,
-              6
-            ]
-          },
-          {
             "group": "Asan Medical Center",
             "n": 15,
             "k": [
@@ -3127,6 +3127,17 @@
               14,
               0,
               0
+            ]
+          },
+          {
+            "group": "Boston University",
+            "n": 14,
+            "k": [
+              0,
+              0,
+              9,
+              0,
+              5
             ]
           },
           {
@@ -3295,17 +3306,6 @@
             ]
           },
           {
-            "group": "Boston University",
-            "n": 13,
-            "k": [
-              0,
-              0,
-              9,
-              0,
-              4
-            ]
-          },
-          {
             "group": "Debiopharm International SA",
             "n": 13,
             "k": [
@@ -3413,6 +3413,17 @@
               11,
               0,
               2
+            ]
+          },
+          {
+            "group": "Sanofi Pasteur, a Sanofi Company",
+            "n": 13,
+            "k": [
+              0,
+              2,
+              11,
+              0,
+              0
             ]
           },
           {
@@ -3534,6 +3545,17 @@
               4,
               0,
               8
+            ]
+          },
+          {
+            "group": "BioCryst Pharmaceuticals",
+            "n": 12,
+            "k": [
+              1,
+              0,
+              10,
+              0,
+              1
             ]
           },
           {
@@ -3713,17 +3735,6 @@
             ]
           },
           {
-            "group": "Sanofi Pasteur, a Sanofi Company",
-            "n": 12,
-            "k": [
-              0,
-              2,
-              10,
-              0,
-              0
-            ]
-          },
-          {
             "group": "Sheba Medical Center",
             "n": 12,
             "k": [
@@ -3823,12 +3834,12 @@
             ]
           },
           {
-            "group": "BioCryst Pharmaceuticals",
+            "group": "Celularity Incorporated",
             "n": 11,
             "k": [
-              1,
               0,
-              9,
+              0,
+              10,
               0,
               1
             ]
@@ -3999,6 +4010,17 @@
             ]
           },
           {
+            "group": "Universitätsklinikum Hamburg-Eppendorf",
+            "n": 11,
+            "k": [
+              0,
+              0,
+              9,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Wayne State University",
             "n": 11,
             "k": [
@@ -4029,17 +4051,6 @@
               8,
               0,
               2
-            ]
-          },
-          {
-            "group": "Celularity Incorporated",
-            "n": 10,
-            "k": [
-              0,
-              0,
-              9,
-              0,
-              1
             ]
           },
           {
@@ -4197,6 +4208,17 @@
             ]
           },
           {
+            "group": "Peking Union Medical College Hospital",
+            "n": 10,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              7
+            ]
+          },
+          {
             "group": "Peking University",
             "n": 10,
             "k": [
@@ -4230,18 +4252,18 @@
             ]
           },
           {
-            "group": "University of Massachusetts, Worcester",
+            "group": "Second Affiliated Hospital, School of Medicine, Zhejiang University",
             "n": 10,
             "k": [
               0,
               0,
-              8,
+              3,
               0,
-              2
+              7
             ]
           },
           {
-            "group": "Universitätsklinikum Hamburg-Eppendorf",
+            "group": "University of Massachusetts, Worcester",
             "n": 10,
             "k": [
               0,
@@ -4505,17 +4527,6 @@
             ]
           },
           {
-            "group": "Second Affiliated Hospital, School of Medicine, Zhejiang University",
-            "n": 9,
-            "k": [
-              0,
-              0,
-              3,
-              0,
-              6
-            ]
-          },
-          {
             "group": "Shanghai Junshi Bioscience Co., Ltd.",
             "n": 9,
             "k": [
@@ -4583,6 +4594,17 @@
           },
           {
             "group": "United States Naval Medical Center, San Diego",
+            "n": 9,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              6
+            ]
+          },
+          {
+            "group": "University Hospital, Bordeaux",
             "n": 9,
             "k": [
               0,
@@ -4667,6 +4689,17 @@
               4,
               0,
               4
+            ]
+          },
+          {
+            "group": "Beijing Boren Hospital",
+            "n": 8,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              7
             ]
           },
           {
@@ -4810,17 +4843,6 @@
               2,
               0,
               6
-            ]
-          },
-          {
-            "group": "Grifols Therapeutics LLC",
-            "n": 8,
-            "k": [
-              2,
-              0,
-              3,
-              0,
-              3
             ]
           },
           {
@@ -5187,17 +5209,6 @@
             ]
           },
           {
-            "group": "University Hospital, Bordeaux",
-            "n": 8,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              6
-            ]
-          },
-          {
             "group": "University at Buffalo",
             "n": 8,
             "k": [
@@ -5341,17 +5352,6 @@
             ]
           },
           {
-            "group": "Beijing Boren Hospital",
-            "n": 7,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              7
-            ]
-          },
-          {
             "group": "Biosplice Therapeutics, Inc.",
             "n": 7,
             "k": [
@@ -5462,6 +5462,17 @@
             ]
           },
           {
+            "group": "Grifols Therapeutics LLC",
+            "n": 7,
+            "k": [
+              2,
+              0,
+              2,
+              0,
+              3
+            ]
+          },
+          {
             "group": "Henan Cancer Hospital",
             "n": 7,
             "k": [
@@ -5503,6 +5514,17 @@
               4,
               0,
               1
+            ]
+          },
+          {
+            "group": "Institut National de la Santé Et de la Recherche Médicale, France",
+            "n": 7,
+            "k": [
+              1,
+              0,
+              2,
+              0,
+              4
             ]
           },
           {
@@ -6463,17 +6485,6 @@
             ]
           },
           {
-            "group": "Institut National de la Santé Et de la Recherche Médicale, France",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              4
-            ]
-          },
-          {
             "group": "Institut Paoli-Calmettes",
             "n": 6,
             "k": [
@@ -6669,17 +6680,6 @@
               4,
               0,
               2
-            ]
-          },
-          {
-            "group": "Peking Union Medical College Hospital",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              3,
-              0,
-              3
             ]
           },
           {
@@ -7409,7 +7409,7 @@
             ]
           },
           {
-            "group": "Endo Pharmaceuticals",
+            "group": "Endo USA Inc., a Keenova Therapeutics Company",
             "n": 5,
             "k": [
               0,
@@ -8311,6 +8311,17 @@
             ]
           },
           {
+            "group": "Universitair Ziekenhuis Brussel",
+            "n": 5,
+            "k": [
+              0,
+              0,
+              5,
+              0,
+              0
+            ]
+          },
+          {
             "group": "University Hospital Muenster",
             "n": 5,
             "k": [
@@ -8385,6 +8396,17 @@
               0,
               0,
               5
+            ]
+          },
+          {
+            "group": "University of Southampton",
+            "n": 5,
+            "k": [
+              0,
+              0,
+              4,
+              0,
+              1
             ]
           },
           {
@@ -8591,9 +8613,9 @@
             "k": [
               0,
               0,
-              3,
+              4,
               0,
-              1
+              0
             ]
           },
           {
@@ -8880,6 +8902,17 @@
               2,
               0,
               2
+            ]
+          },
+          {
+            "group": "BeOne Medicines",
+            "n": 4,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              1
             ]
           },
           {
@@ -10335,6 +10368,17 @@
             ]
           },
           {
+            "group": "RenJi Hospital",
+            "n": 4,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              4
+            ]
+          },
+          {
             "group": "Rhode Island Hospital",
             "n": 4,
             "k": [
@@ -10728,17 +10772,6 @@
               0,
               0,
               4
-            ]
-          },
-          {
-            "group": "University of Southampton",
-            "n": 4,
-            "k": [
-              0,
-              0,
-              3,
-              0,
-              1
             ]
           },
           {
@@ -11414,17 +11447,6 @@
           },
           {
             "group": "Baylor Breast Care Center",
-            "n": 3,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              1
-            ]
-          },
-          {
-            "group": "BeOne Medicines",
             "n": 3,
             "k": [
               0,
@@ -12403,6 +12425,17 @@
             ]
           },
           {
+            "group": "Herbert Lyerly",
+            "n": 3,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Holostem s.r.l.",
             "n": 3,
             "k": [
@@ -12631,6 +12664,17 @@
               2,
               0,
               1
+            ]
+          },
+          {
+            "group": "Instituto Grifols, S.A.",
+            "n": 3,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              0
             ]
           },
           {
@@ -13800,17 +13844,6 @@
             ]
           },
           {
-            "group": "RenJi Hospital",
-            "n": 3,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              3
-            ]
-          },
-          {
             "group": "Repare Therapeutics",
             "n": 3,
             "k": [
@@ -14347,6 +14380,17 @@
               2,
               0,
               1
+            ]
+          },
+          {
+            "group": "The First Affiliated Hospital of Soochow University",
+            "n": 3,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              3
             ]
           },
           {
@@ -17342,6 +17386,17 @@
             ]
           },
           {
+            "group": "Dong-A ST Co., Ltd.",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              1
+            ]
+          },
+          {
             "group": "Dorothy Sipkins, MD, PhD",
             "n": 2,
             "k": [
@@ -18101,6 +18156,17 @@
             ]
           },
           {
+            "group": "GCS Ramsay Santé pour l'Enseignement et la Recherche",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              2,
+              0,
+              0
+            ]
+          },
+          {
             "group": "GH Research Ireland Limited",
             "n": 2,
             "k": [
@@ -18717,17 +18783,6 @@
             ]
           },
           {
-            "group": "Herbert Lyerly",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              0
-            ]
-          },
-          {
             "group": "Heron Therapeutics",
             "n": 2,
             "k": [
@@ -19088,17 +19143,6 @@
               1,
               0,
               1
-            ]
-          },
-          {
-            "group": "Instituto Grifols, S.A.",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              0
             ]
           },
           {
@@ -19539,6 +19583,17 @@
               2,
               0,
               0
+            ]
+          },
+          {
+            "group": "Johnson & Johnson Taiwan Ltd",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
             ]
           },
           {
@@ -21159,6 +21214,17 @@
             ]
           },
           {
+            "group": "NovoCure GmbH",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              1
+            ]
+          },
+          {
             "group": "Numab Therapeutics AG",
             "n": 2,
             "k": [
@@ -21585,6 +21651,17 @@
               2,
               0,
               0
+            ]
+          },
+          {
+            "group": "Petrov, Andrey",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
             ]
           },
           {
@@ -23007,6 +23084,17 @@
             ]
           },
           {
+            "group": "Sound Pharmaceuticals, Incorporated",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Spanish Cooperative Group for the Treatment of Digestive Tumours (TTD)",
             "n": 2,
             "k": [
@@ -23931,17 +24019,6 @@
             ]
           },
           {
-            "group": "Universitair Ziekenhuis Brussel",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              0
-            ]
-          },
-          {
             "group": "University College Dublin",
             "n": 2,
             "k": [
@@ -24558,6 +24635,17 @@
             ]
           },
           {
+            "group": "Xiaojun Chen",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Xinhua Hospital, Shanghai Jiao Tong University School of Medicine",
             "n": 2,
             "k": [
@@ -24698,6 +24786,17 @@
               1,
               0,
               1
+            ]
+          },
+          {
+            "group": "photonamic GmbH & Co. KG",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              2,
+              0,
+              0
             ]
           },
           {
@@ -25219,6 +25318,17 @@
           },
           {
             "group": "Abfero Pharmaceuticals, Inc",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "group": "Abhay Singh, MD MPH",
             "n": 1,
             "k": [
               0,
@@ -26692,6 +26802,17 @@
             ]
           },
           {
+            "group": "Ancora Heart, Inc.",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Andes Biotechnologies",
             "n": 1,
             "k": [
@@ -27503,17 +27624,6 @@
               0,
               0,
               1
-            ]
-          },
-          {
-            "group": "Arnaud Bewley, MD",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
             ]
           },
           {
@@ -32170,6 +32280,17 @@
             ]
           },
           {
+            "group": "Consorcio Centro de Investigación Biomédica en Red (CIBER)",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Constantinos Hadjipanayis",
             "n": 1,
             "k": [
@@ -33425,17 +33546,6 @@
           },
           {
             "group": "Dong Jie",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "Dong-A ST Co., Ltd.",
             "n": 1,
             "k": [
               0,
@@ -35833,6 +35943,17 @@
             ]
           },
           {
+            "group": "Fundació Institut Germans Trias i Pujol",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Fundación Eduardo Anitua",
             "n": 1,
             "k": [
@@ -35999,17 +36120,6 @@
           },
           {
             "group": "GC Cell Corporation",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "GCS Ramsay Santé pour l'Enseignement et la Recherche",
             "n": 1,
             "k": [
               0,
@@ -40945,17 +41055,6 @@
               0,
               0,
               0
-            ]
-          },
-          {
-            "group": "Johnson & Johnson Taiwan Ltd",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
             ]
           },
           {
@@ -47064,17 +47163,6 @@
             ]
           },
           {
-            "group": "NovoCure GmbH",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
-            ]
-          },
-          {
             "group": "Novome Biotechnologies Inc",
             "n": 1,
             "k": [
@@ -48568,17 +48656,6 @@
               1,
               0,
               0
-            ]
-          },
-          {
-            "group": "Petrov, Andrey",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
             ]
           },
           {
@@ -54753,17 +54830,6 @@
             ]
           },
           {
-            "group": "The First Affiliated Hospital of Soochow University",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
-            ]
-          },
-          {
             "group": "The Florey Institute of Neuroscience and Mental Health",
             "n": 1,
             "k": [
@@ -55601,6 +55667,17 @@
           },
           {
             "group": "Triemli Hospital",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "group": "Trieu, Nguyen Thi, M.D.",
             "n": 1,
             "k": [
               0,
@@ -58141,17 +58218,6 @@
             ]
           },
           {
-            "group": "Xiaojun Chen",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
-            ]
-          },
-          {
             "group": "Xiaoli Fan",
             "n": 1,
             "k": [
@@ -58933,17 +58999,6 @@
             ]
           },
           {
-            "group": "photonamic GmbH & Co. KG",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
-            ]
-          },
-          {
             "group": "shmuel fuchs",
             "n": 1,
             "k": [
@@ -59013,13 +59068,13 @@
           },
           {
             "group": "M.D. Anderson Cancer Center",
-            "n": 162,
+            "n": 163,
             "k": [
               0,
               3,
               82,
               1,
-              76
+              77
             ]
           },
           {
@@ -59123,10 +59178,10 @@
           },
           {
             "group": "Hoffmann-La Roche",
-            "n": 52,
+            "n": 53,
             "k": [
               1,
-              3,
+              4,
               19,
               0,
               29
@@ -59134,24 +59189,24 @@
           },
           {
             "group": "Boehringer Ingelheim",
-            "n": 51,
+            "n": 52,
             "k": [
               1,
               1,
-              24,
+              25,
               0,
               25
             ]
           },
           {
             "group": "AbbVie",
-            "n": 47,
+            "n": 48,
             "k": [
               0,
               1,
               10,
               0,
-              36
+              37
             ]
           },
           {
@@ -59233,11 +59288,11 @@
           },
           {
             "group": "Fred Hutchinson Cancer Center",
-            "n": 39,
+            "n": 38,
             "k": [
               0,
               0,
-              32,
+              31,
               1,
               6
             ]
@@ -59331,6 +59386,17 @@
             ]
           },
           {
+            "group": "City of Hope Medical Center",
+            "n": 34,
+            "k": [
+              3,
+              2,
+              12,
+              0,
+              17
+            ]
+          },
+          {
             "group": "Northwestern University",
             "n": 34,
             "k": [
@@ -59375,17 +59441,6 @@
             ]
           },
           {
-            "group": "City of Hope Medical Center",
-            "n": 31,
-            "k": [
-              1,
-              2,
-              12,
-              0,
-              16
-            ]
-          },
-          {
             "group": "Masonic Cancer Center, University of Minnesota",
             "n": 31,
             "k": [
@@ -59408,23 +59463,23 @@
             ]
           },
           {
+            "group": "University of California, San Francisco",
+            "n": 30,
+            "k": [
+              1,
+              0,
+              21,
+              0,
+              8
+            ]
+          },
+          {
             "group": "Sanofi",
             "n": 29,
             "k": [
               3,
               2,
-              15,
-              0,
-              9
-            ]
-          },
-          {
-            "group": "University of California, San Francisco",
-            "n": 29,
-            "k": [
-              1,
-              0,
-              20,
+              16,
               0,
               8
             ]
@@ -59497,11 +59552,11 @@
           },
           {
             "group": "University of Wisconsin, Madison",
-            "n": 25,
+            "n": 26,
             "k": [
               0,
               1,
-              13,
+              14,
               0,
               11
             ]
@@ -59529,10 +59584,10 @@
             ]
           },
           {
-            "group": "University of Florida",
-            "n": 24,
+            "group": "Jonsson Comprehensive Cancer Center",
+            "n": 23,
             "k": [
-              1,
+              0,
               0,
               15,
               0,
@@ -59540,12 +59595,12 @@
             ]
           },
           {
-            "group": "Jonsson Comprehensive Cancer Center",
+            "group": "University of Florida",
             "n": 23,
             "k": [
+              1,
               0,
-              0,
-              15,
+              14,
               0,
               8
             ]
@@ -59628,6 +59683,17 @@
             ]
           },
           {
+            "group": "University of Nebraska",
+            "n": 20,
+            "k": [
+              0,
+              1,
+              7,
+              0,
+              12
+            ]
+          },
+          {
             "group": "University of North Carolina, Chapel Hill",
             "n": 20,
             "k": [
@@ -59672,25 +59738,25 @@
             ]
           },
           {
-            "group": "Duke University",
-            "n": 19,
+            "group": "Chia Tai Tianqing Pharmaceutical Group Co., Ltd.",
+            "n": 18,
             "k": [
               0,
               0,
-              13,
+              11,
               0,
-              6
+              7
             ]
           },
           {
-            "group": "University of Nebraska",
-            "n": 19,
+            "group": "Duke University",
+            "n": 18,
             "k": [
               0,
-              1,
-              6,
               0,
-              12
+              12,
+              0,
+              6
             ]
           },
           {
@@ -59713,17 +59779,6 @@
               6,
               0,
               11
-            ]
-          },
-          {
-            "group": "Chia Tai Tianqing Pharmaceutical Group Co., Ltd.",
-            "n": 17,
-            "k": [
-              0,
-              0,
-              10,
-              0,
-              7
             ]
           },
           {
@@ -60134,6 +60189,17 @@
             ]
           },
           {
+            "group": "University of Rochester",
+            "n": 11,
+            "k": [
+              0,
+              0,
+              6,
+              0,
+              5
+            ]
+          },
+          {
             "group": "VA Office of Research and Development",
             "n": 11,
             "k": [
@@ -60340,17 +60406,6 @@
               4,
               0,
               6
-            ]
-          },
-          {
-            "group": "University of Rochester",
-            "n": 10,
-            "k": [
-              0,
-              0,
-              5,
-              0,
-              5
             ]
           },
           {
@@ -60706,6 +60761,17 @@
             ]
           },
           {
+            "group": "Beijing Boren Hospital",
+            "n": 7,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              6
+            ]
+          },
+          {
             "group": "Bellicum Pharmaceuticals",
             "n": 7,
             "k": [
@@ -60747,6 +60813,17 @@
               0,
               0,
               7
+            ]
+          },
+          {
+            "group": "Celularity Incorporated",
+            "n": 7,
+            "k": [
+              0,
+              0,
+              6,
+              0,
+              1
             ]
           },
           {
@@ -60981,17 +61058,6 @@
             ]
           },
           {
-            "group": "Beijing Boren Hospital",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              6
-            ]
-          },
-          {
             "group": "BioMarin Pharmaceutical",
             "n": 6,
             "k": [
@@ -61033,17 +61099,6 @@
               2,
               0,
               4
-            ]
-          },
-          {
-            "group": "Celularity Incorporated",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              5,
-              0,
-              1
             ]
           },
           {
@@ -61872,6 +61927,17 @@
             ]
           },
           {
+            "group": "University of Oklahoma",
+            "n": 5,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              4
+            ]
+          },
+          {
             "group": "Wondercel Biotech (ShenZhen)",
             "n": 5,
             "k": [
@@ -62001,6 +62067,17 @@
               2,
               0,
               2
+            ]
+          },
+          {
+            "group": "BeOne Medicines",
+            "n": 4,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              1
             ]
           },
           {
@@ -62664,17 +62741,6 @@
             ]
           },
           {
-            "group": "University of Oklahoma",
-            "n": 4,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              3
-            ]
-          },
-          {
             "group": "University of Saskatchewan",
             "n": 4,
             "k": [
@@ -63002,17 +63068,6 @@
               0,
               0,
               3
-            ]
-          },
-          {
-            "group": "BeOne Medicines",
-            "n": 3,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              1
             ]
           },
           {
@@ -66834,6 +66889,17 @@
           },
           {
             "group": "Pennington Biomedical Research Center",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
+            ]
+          },
+          {
+            "group": "Petrov, Andrey",
             "n": 2,
             "k": [
               0,
@@ -71828,6 +71894,17 @@
           },
           {
             "group": "Dompé Farmaceutici S.p.A",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "group": "Dong-A ST Co., Ltd.",
             "n": 1,
             "k": [
               0,
@@ -78537,17 +78614,6 @@
             ]
           },
           {
-            "group": "Petrov, Andrey",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
-            ]
-          },
-          {
             "group": "Pharmaceutical Research Unit, Jordan",
             "n": 1,
             "k": [
@@ -79260,6 +79326,17 @@
               1,
               0,
               0
+            ]
+          },
+          {
+            "group": "RenJi Hospital",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              1
             ]
           },
           {
@@ -82046,6 +82123,17 @@
             ]
           },
           {
+            "group": "Universitair Ziekenhuis Brussel",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "University Children's Hospital, Zurich",
             "n": 1,
             "k": [
@@ -83468,13 +83556,13 @@
         "phase2": [
           {
             "group": "M.D. Anderson Cancer Center",
-            "n": 253,
+            "n": 254,
             "k": [
               6,
               5,
               131,
               0,
-              111
+              112
             ]
           },
           {
@@ -83582,9 +83670,9 @@
             "k": [
               2,
               0,
-              43,
+              44,
               0,
-              20
+              19
             ]
           },
           {
@@ -83721,11 +83809,11 @@
           },
           {
             "group": "University of Chicago",
-            "n": 47,
+            "n": 46,
             "k": [
               2,
               0,
-              30,
+              29,
               0,
               15
             ]
@@ -83885,6 +83973,28 @@
             ]
           },
           {
+            "group": "University of Wisconsin, Madison",
+            "n": 38,
+            "k": [
+              2,
+              1,
+              27,
+              0,
+              8
+            ]
+          },
+          {
+            "group": "Janssen Research & Development, LLC",
+            "n": 37,
+            "k": [
+              10,
+              2,
+              15,
+              0,
+              10
+            ]
+          },
+          {
             "group": "University of Michigan Rogel Cancer Center",
             "n": 37,
             "k": [
@@ -83893,28 +84003,6 @@
               21,
               0,
               14
-            ]
-          },
-          {
-            "group": "University of Wisconsin, Madison",
-            "n": 37,
-            "k": [
-              2,
-              1,
-              26,
-              0,
-              8
-            ]
-          },
-          {
-            "group": "Janssen Research & Development, LLC",
-            "n": 36,
-            "k": [
-              9,
-              2,
-              15,
-              0,
-              10
             ]
           },
           {
@@ -84050,17 +84138,6 @@
             ]
           },
           {
-            "group": "University of Florida",
-            "n": 30,
-            "k": [
-              0,
-              0,
-              19,
-              1,
-              10
-            ]
-          },
-          {
             "group": "University of Miami",
             "n": 30,
             "k": [
@@ -84124,6 +84201,17 @@
               15,
               0,
               14
+            ]
+          },
+          {
+            "group": "University of Florida",
+            "n": 29,
+            "k": [
+              0,
+              0,
+              18,
+              1,
+              10
             ]
           },
           {
@@ -84248,6 +84336,17 @@
             ]
           },
           {
+            "group": "City of Hope Medical Center",
+            "n": 24,
+            "k": [
+              1,
+              3,
+              11,
+              0,
+              9
+            ]
+          },
+          {
             "group": "University of California, San Diego",
             "n": 24,
             "k": [
@@ -84289,17 +84388,6 @@
               12,
               1,
               9
-            ]
-          },
-          {
-            "group": "City of Hope Medical Center",
-            "n": 23,
-            "k": [
-              1,
-              3,
-              11,
-              0,
-              8
             ]
           },
           {
@@ -84380,6 +84468,17 @@
             ]
           },
           {
+            "group": "University of Nebraska",
+            "n": 22,
+            "k": [
+              1,
+              5,
+              11,
+              0,
+              5
+            ]
+          },
+          {
             "group": "VA Office of Research and Development",
             "n": 22,
             "k": [
@@ -84424,17 +84523,6 @@
             ]
           },
           {
-            "group": "University of Nebraska",
-            "n": 21,
-            "k": [
-              1,
-              5,
-              10,
-              0,
-              5
-            ]
-          },
-          {
             "group": "Brown University",
             "n": 20,
             "k": [
@@ -84454,6 +84542,17 @@
               15,
               0,
               4
+            ]
+          },
+          {
+            "group": "Chia Tai Tianqing Pharmaceutical Group Co., Ltd.",
+            "n": 19,
+            "k": [
+              0,
+              0,
+              11,
+              0,
+              8
             ]
           },
           {
@@ -84501,17 +84600,6 @@
             ]
           },
           {
-            "group": "Chia Tai Tianqing Pharmaceutical Group Co., Ltd.",
-            "n": 18,
-            "k": [
-              0,
-              0,
-              10,
-              0,
-              8
-            ]
-          },
-          {
             "group": "Eisai Inc.",
             "n": 18,
             "k": [
@@ -84553,6 +84641,17 @@
               10,
               0,
               8
+            ]
+          },
+          {
+            "group": "University of California, Davis",
+            "n": 18,
+            "k": [
+              0,
+              0,
+              14,
+              0,
+              4
             ]
           },
           {
@@ -84619,17 +84718,6 @@
               9,
               0,
               8
-            ]
-          },
-          {
-            "group": "University of California, Davis",
-            "n": 17,
-            "k": [
-              0,
-              0,
-              13,
-              0,
-              4
             ]
           },
           {
@@ -84985,6 +85073,17 @@
             ]
           },
           {
+            "group": "University of Pittsburgh",
+            "n": 13,
+            "k": [
+              0,
+              0,
+              6,
+              0,
+              7
+            ]
+          },
+          {
             "group": "Vanderbilt University Medical Center",
             "n": 13,
             "k": [
@@ -85158,17 +85257,6 @@
               9,
               0,
               3
-            ]
-          },
-          {
-            "group": "University of Pittsburgh",
-            "n": 12,
-            "k": [
-              0,
-              0,
-              5,
-              0,
-              7
             ]
           },
           {
@@ -85986,6 +86074,17 @@
             ]
           },
           {
+            "group": "Celularity Incorporated",
+            "n": 7,
+            "k": [
+              0,
+              0,
+              6,
+              0,
+              1
+            ]
+          },
+          {
             "group": "Children's Hospital of Fudan University",
             "n": 7,
             "k": [
@@ -86071,6 +86170,17 @@
               2,
               0,
               5
+            ]
+          },
+          {
+            "group": "National Institute on Drug Abuse (NIDA)",
+            "n": 7,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              4
             ]
           },
           {
@@ -86181,6 +86291,17 @@
               3,
               0,
               3
+            ]
+          },
+          {
+            "group": "University Hospital, Bordeaux",
+            "n": 7,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              4
             ]
           },
           {
@@ -86300,17 +86421,6 @@
               2,
               0,
               3,
-              0,
-              1
-            ]
-          },
-          {
-            "group": "Celularity Incorporated",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              5,
               0,
               1
             ]
@@ -86580,17 +86690,6 @@
             ]
           },
           {
-            "group": "National Institute on Drug Abuse (NIDA)",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              3,
-              0,
-              3
-            ]
-          },
-          {
             "group": "Novartis",
             "n": 6,
             "k": [
@@ -86702,17 +86801,6 @@
           },
           {
             "group": "UCB Biopharma SRL",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              4
-            ]
-          },
-          {
-            "group": "University Hospital, Bordeaux",
             "n": 6,
             "k": [
               0,
@@ -87171,6 +87259,17 @@
               4,
               0,
               1
+            ]
+          },
+          {
+            "group": "Peking Union Medical College Hospital",
+            "n": 5,
+            "k": [
+              0,
+              0,
+              2,
+              0,
+              3
             ]
           },
           {
@@ -87966,6 +88065,17 @@
             ]
           },
           {
+            "group": "Institut National de la Santé Et de la Recherche Médicale, France",
+            "n": 4,
+            "k": [
+              1,
+              0,
+              0,
+              0,
+              3
+            ]
+          },
+          {
             "group": "Institut de Recherches Cliniques de Montreal",
             "n": 4,
             "k": [
@@ -88571,6 +88681,17 @@
             ]
           },
           {
+            "group": "Universitair Ziekenhuis Brussel",
+            "n": 4,
+            "k": [
+              0,
+              0,
+              4,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Universitaire Ziekenhuizen KU Leuven",
             "n": 4,
             "k": [
@@ -88689,6 +88810,17 @@
               3,
               1,
               0
+            ]
+          },
+          {
+            "group": "University of Southampton",
+            "n": 4,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              1
             ]
           },
           {
@@ -89638,17 +89770,6 @@
             ]
           },
           {
-            "group": "Institut National de la Santé Et de la Recherche Médicale, France",
-            "n": 3,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              3
-            ]
-          },
-          {
             "group": "Institut Paoli-Calmettes",
             "n": 3,
             "k": [
@@ -90244,17 +90365,6 @@
           },
           {
             "group": "Ottawa Hospital Research Institute",
-            "n": 3,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              1
-            ]
-          },
-          {
-            "group": "Peking Union Medical College Hospital",
             "n": 3,
             "k": [
               0,
@@ -90878,17 +90988,6 @@
               3,
               0,
               0
-            ]
-          },
-          {
-            "group": "University of Southampton",
-            "n": 3,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              1
             ]
           },
           {
@@ -91890,6 +91989,17 @@
               0,
               0,
               2
+            ]
+          },
+          {
+            "group": "Boston University",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              1
             ]
           },
           {
@@ -92917,17 +93027,6 @@
           },
           {
             "group": "Genenta Science",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "Genprex, Inc.",
             "n": 2,
             "k": [
               0,
@@ -94610,6 +94709,17 @@
             ]
           },
           {
+            "group": "NovoCure GmbH",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              1
+            ]
+          },
+          {
             "group": "OSI Pharmaceuticals",
             "n": 2,
             "k": [
@@ -95644,6 +95754,17 @@
             ]
           },
           {
+            "group": "Sound Pharmaceuticals, Incorporated",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Spanish Cooperative Group for the Treatment of Digestive Tumours (TTD)",
             "n": 2,
             "k": [
@@ -96048,6 +96169,17 @@
               2,
               0,
               0
+            ]
+          },
+          {
+            "group": "The First Affiliated Hospital of Soochow University",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
             ]
           },
           {
@@ -96678,6 +96810,17 @@
             ]
           },
           {
+            "group": "Xiaojun Chen",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Xinqiao Hospital of Chongqing",
             "n": 2,
             "k": [
@@ -96785,6 +96928,17 @@
               1,
               0,
               1
+            ]
+          },
+          {
+            "group": "photonamic GmbH & Co. KG",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              2,
+              0,
+              0
             ]
           },
           {
@@ -97141,6 +97295,17 @@
           },
           {
             "group": "Abfero Pharmaceuticals, Inc",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "group": "Abhay Singh, MD MPH",
             "n": 1,
             "k": [
               0,
@@ -98658,17 +98823,6 @@
             ]
           },
           {
-            "group": "Arnaud Bewley, MD",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
-            ]
-          },
-          {
             "group": "Arrevus Inc.",
             "n": 1,
             "k": [
@@ -99843,17 +99997,6 @@
               0,
               0,
               1
-            ]
-          },
-          {
-            "group": "Boston University",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
             ]
           },
           {
@@ -102970,7 +103113,7 @@
             ]
           },
           {
-            "group": "Endo Pharmaceuticals",
+            "group": "Endo USA Inc., a Keenova Therapeutics Company",
             "n": 1,
             "k": [
               0,
@@ -103520,17 +103663,6 @@
             ]
           },
           {
-            "group": "Filipa Lynce, MD",
-            "n": 1,
-            "k": [
-              0,
-              1,
-              0,
-              0,
-              0
-            ]
-          },
-          {
             "group": "Finch Research and Development LLC.",
             "n": 1,
             "k": [
@@ -103869,6 +104001,17 @@
               0,
               0,
               1
+            ]
+          },
+          {
+            "group": "Fundació Institut Germans Trias i Pujol",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
             ]
           },
           {
@@ -104232,6 +104375,17 @@
               0,
               0,
               1
+            ]
+          },
+          {
+            "group": "Genprex, Inc.",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
             ]
           },
           {
@@ -105167,6 +105321,17 @@
               0,
               0,
               1
+            ]
+          },
+          {
+            "group": "Herbert Lyerly",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
             ]
           },
           {
@@ -110621,17 +110786,6 @@
               1,
               0,
               0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "NovoCure GmbH",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
               0,
               0
             ]
@@ -116104,17 +116258,6 @@
             ]
           },
           {
-            "group": "Universitair Ziekenhuis Brussel",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
-            ]
-          },
-          {
             "group": "Universiti Sains Malaysia",
             "n": 1,
             "k": [
@@ -117413,17 +117556,6 @@
             ]
           },
           {
-            "group": "Xiaojun Chen",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
-            ]
-          },
-          {
             "group": "Xinhua Hospital, Shanghai Jiao Tong University School of Medicine",
             "n": 1,
             "k": [
@@ -117850,17 +117982,6 @@
               0,
               0,
               1
-            ]
-          },
-          {
-            "group": "photonamic GmbH & Co. KG",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              0
             ]
           },
           {
@@ -118542,9 +118663,9 @@
             "k": [
               0,
               1,
-              5,
+              6,
               0,
-              4
+              3
             ]
           },
           {
@@ -118611,6 +118732,17 @@
               5,
               0,
               4
+            ]
+          },
+          {
+            "group": "Sanofi Pasteur, a Sanofi Company",
+            "n": 9,
+            "k": [
+              0,
+              2,
+              7,
+              0,
+              0
             ]
           },
           {
@@ -118798,17 +118930,6 @@
               6,
               0,
               2
-            ]
-          },
-          {
-            "group": "Sanofi Pasteur, a Sanofi Company",
-            "n": 8,
-            "k": [
-              0,
-              2,
-              6,
-              0,
-              0
             ]
           },
           {
@@ -119241,6 +119362,17 @@
             ]
           },
           {
+            "group": "BioCryst Pharmaceuticals",
+            "n": 5,
+            "k": [
+              1,
+              0,
+              3,
+              0,
+              1
+            ]
+          },
+          {
             "group": "Boston Children's Hospital",
             "n": 5,
             "k": [
@@ -119582,6 +119714,17 @@
             ]
           },
           {
+            "group": "Universitätsklinikum Hamburg-Eppendorf",
+            "n": 5,
+            "k": [
+              0,
+              0,
+              5,
+              0,
+              0
+            ]
+          },
+          {
             "group": "VA Office of Research and Development",
             "n": 5,
             "k": [
@@ -119631,9 +119774,9 @@
             "k": [
               0,
               0,
-              3,
+              4,
               0,
-              1
+              0
             ]
           },
           {
@@ -119656,17 +119799,6 @@
               1,
               0,
               3
-            ]
-          },
-          {
-            "group": "BioCryst Pharmaceuticals",
-            "n": 4,
-            "k": [
-              1,
-              0,
-              2,
-              0,
-              1
             ]
           },
           {
@@ -119769,7 +119901,7 @@
             ]
           },
           {
-            "group": "Endo Pharmaceuticals",
+            "group": "Endo USA Inc., a Keenova Therapeutics Company",
             "n": 4,
             "k": [
               0,
@@ -120242,17 +120374,6 @@
             ]
           },
           {
-            "group": "Universitätsklinikum Hamburg-Eppendorf",
-            "n": 4,
-            "k": [
-              0,
-              0,
-              4,
-              0,
-              0
-            ]
-          },
-          {
             "group": "AIO-Studien-gGmbH",
             "n": 3,
             "k": [
@@ -120561,17 +120682,6 @@
             ]
           },
           {
-            "group": "Grifols Therapeutics LLC",
-            "n": 3,
-            "k": [
-              1,
-              0,
-              1,
-              0,
-              1
-            ]
-          },
-          {
             "group": "HaEmek Medical Center, Israel",
             "n": 3,
             "k": [
@@ -120635,6 +120745,17 @@
               2,
               0,
               1
+            ]
+          },
+          {
+            "group": "Instituto Grifols, S.A.",
+            "n": 3,
+            "k": [
+              0,
+              0,
+              3,
+              0,
+              0
             ]
           },
           {
@@ -120998,6 +121119,17 @@
               0,
               0,
               3
+            ]
+          },
+          {
+            "group": "Peking Union Medical College Hospital",
+            "n": 3,
+            "k": [
+              0,
+              0,
+              2,
+              0,
+              1
             ]
           },
           {
@@ -122486,6 +122618,17 @@
             ]
           },
           {
+            "group": "Grifols Therapeutics LLC",
+            "n": 2,
+            "k": [
+              1,
+              0,
+              0,
+              0,
+              1
+            ]
+          },
+          {
             "group": "Guerbet",
             "n": 2,
             "k": [
@@ -122714,17 +122857,6 @@
               1,
               0,
               1
-            ]
-          },
-          {
-            "group": "Instituto Grifols, S.A.",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              0
             ]
           },
           {
@@ -123286,17 +123418,6 @@
               1,
               0,
               1
-            ]
-          },
-          {
-            "group": "Peking Union Medical College Hospital",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              2,
-              0,
-              0
             ]
           },
           {
@@ -124177,6 +124298,17 @@
               2,
               0,
               0
+            ]
+          },
+          {
+            "group": "Xiaojun Chen",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
             ]
           },
           {
@@ -126611,6 +126743,17 @@
             ]
           },
           {
+            "group": "Consorcio Centro de Investigación Biomédica en Red (CIBER)",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "ContraFect",
             "n": 1,
             "k": [
@@ -127932,6 +128075,17 @@
           },
           {
             "group": "GBG Forschungs GmbH",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "group": "GCS Ramsay Santé pour l'Enseignement et la Recherche",
             "n": 1,
             "k": [
               0,
@@ -134586,6 +134740,17 @@
             ]
           },
           {
+            "group": "University Hospital, Bordeaux",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "University Hospital, Geneva",
             "n": 1,
             "k": [
@@ -135192,17 +135357,6 @@
           },
           {
             "group": "Xian-Janssen Pharmaceutical Ltd.",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
-            ]
-          },
-          {
-            "group": "Xiaojun Chen",
             "n": 1,
             "k": [
               0,
@@ -136128,6 +136282,17 @@
             ]
           },
           {
+            "group": "McMaster University",
+            "n": 8,
+            "k": [
+              0,
+              0,
+              6,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Medical University of Vienna",
             "n": 8,
             "k": [
@@ -136238,17 +136403,6 @@
             ]
           },
           {
-            "group": "McMaster University",
-            "n": 7,
-            "k": [
-              0,
-              0,
-              5,
-              0,
-              2
-            ]
-          },
-          {
             "group": "Medical University of South Carolina",
             "n": 7,
             "k": [
@@ -136334,6 +136488,17 @@
               3,
               0,
               4
+            ]
+          },
+          {
+            "group": "University of Washington",
+            "n": 7,
+            "k": [
+              0,
+              0,
+              6,
+              0,
+              1
             ]
           },
           {
@@ -136557,6 +136722,17 @@
             ]
           },
           {
+            "group": "University of Calgary",
+            "n": 6,
+            "k": [
+              0,
+              0,
+              5,
+              0,
+              1
+            ]
+          },
+          {
             "group": "University of Kansas Medical Center",
             "n": 6,
             "k": [
@@ -136587,17 +136763,6 @@
               3,
               0,
               3
-            ]
-          },
-          {
-            "group": "University of Washington",
-            "n": 6,
-            "k": [
-              0,
-              0,
-              5,
-              0,
-              1
             ]
           },
           {
@@ -136807,17 +136972,6 @@
               3,
               0,
               2
-            ]
-          },
-          {
-            "group": "University of Calgary",
-            "n": 5,
-            "k": [
-              0,
-              0,
-              4,
-              0,
-              1
             ]
           },
           {
@@ -138798,6 +138952,17 @@
               1,
               0,
               1
+            ]
+          },
+          {
+            "group": "Johnson & Johnson Taiwan Ltd",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              2
             ]
           },
           {
@@ -143091,17 +143256,6 @@
             ]
           },
           {
-            "group": "Johnson & Johnson Taiwan Ltd",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              0,
-              0,
-              1
-            ]
-          },
-          {
             "group": "Jonathan A. Javitch, MD, PhD",
             "n": 1,
             "k": [
@@ -144851,6 +145005,17 @@
             ]
           },
           {
+            "group": "Peking Union Medical College Hospital",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              1
+            ]
+          },
+          {
             "group": "Peking University People's Hospital",
             "n": 1,
             "k": [
@@ -146413,6 +146578,17 @@
             ]
           },
           {
+            "group": "Trieu, Nguyen Thi, M.D.",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Tulane University School of Medicine",
             "n": 1,
             "k": [
@@ -147386,68 +147562,68 @@
         "all": [
           {
             "group": "Oncology",
-            "n": 7789,
+            "n": 7812,
             "k": [
-              298,
-              273,
-              4135,
+              301,
+              274,
+              4146,
               15,
-              3068
+              3076
             ]
           },
           {
             "group": "Other",
-            "n": 5715,
+            "n": 5727,
             "k": [
               255,
               128,
-              2778,
+              2785,
               35,
-              2519
+              2524
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 1690,
+            "n": 1695,
             "k": [
               84,
               58,
-              824,
+              829,
               14,
               710
             ]
           },
           {
             "group": "Gastroenterology & Hepatology",
-            "n": 1512,
+            "n": 1513,
             "k": [
               88,
               52,
               778,
               7,
-              587
+              588
             ]
           },
           {
             "group": "Cardiovascular",
-            "n": 1279,
+            "n": 1280,
             "k": [
               50,
               32,
-              722,
+              723,
               5,
               470
             ]
           },
           {
             "group": "Neurology",
-            "n": 986,
+            "n": 987,
             "k": [
               91,
               27,
               489,
               4,
-              375
+              376
             ]
           },
           {
@@ -147463,22 +147639,22 @@
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 654,
+            "n": 657,
             "k": [
               40,
               26,
-              327,
+              328,
               1,
-              260
+              262
             ]
           },
           {
             "group": "Respiratory",
-            "n": 624,
+            "n": 625,
             "k": [
               37,
               24,
-              304,
+              305,
               2,
               257
             ]
@@ -147500,27 +147676,27 @@
             "k": [
               24,
               10,
-              245,
+              246,
               2,
-              192
+              191
             ]
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 328,
+            "n": 332,
             "k": [
               11,
               19,
               176,
               0,
-              122
+              126
             ]
           },
           {
             "group": "Dermatology",
-            "n": 311,
+            "n": 312,
             "k": [
-              27,
+              28,
               4,
               176,
               0,
@@ -147540,11 +147716,11 @@
           },
           {
             "group": "Musculoskeletal",
-            "n": 250,
+            "n": 251,
             "k": [
               4,
               5,
-              127,
+              128,
               1,
               113
             ]
@@ -147553,46 +147729,46 @@
         "phase1": [
           {
             "group": "Oncology",
-            "n": 3616,
+            "n": 3628,
             "k": [
-              81,
-              136,
-              1863,
+              83,
+              137,
+              1868,
               10,
-              1526
+              1530
             ]
           },
           {
             "group": "Other",
-            "n": 1437,
+            "n": 1439,
             "k": [
               37,
               49,
-              629,
+              631,
               8,
               714
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 392,
+            "n": 393,
             "k": [
               5,
               15,
-              176,
+              177,
               4,
               192
             ]
           },
           {
             "group": "Gastroenterology & Hepatology",
-            "n": 385,
+            "n": 386,
             "k": [
               15,
               16,
               201,
               3,
-              150
+              151
             ]
           },
           {
@@ -147630,13 +147806,13 @@
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 154,
+            "n": 155,
             "k": [
               6,
               7,
               85,
               0,
-              56
+              57
             ]
           },
           {
@@ -147720,33 +147896,33 @@
         "phase2": [
           {
             "group": "Oncology",
-            "n": 4483,
+            "n": 4494,
             "k": [
-              203,
-              159,
-              2431,
+              204,
+              158,
+              2437,
               8,
-              1682
+              1687
             ]
           },
           {
             "group": "Other",
-            "n": 2060,
+            "n": 2066,
             "k": [
               122,
               62,
-              1017,
+              1020,
               16,
-              843
+              846
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 773,
+            "n": 775,
             "k": [
               43,
               25,
-              401,
+              403,
               4,
               300
             ]
@@ -147764,13 +147940,13 @@
           },
           {
             "group": "Neurology",
-            "n": 448,
+            "n": 449,
             "k": [
               47,
               14,
               217,
               2,
-              168
+              169
             ]
           },
           {
@@ -147841,20 +148017,20 @@
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 145,
+            "n": 147,
             "k": [
               3,
               6,
               83,
               0,
-              53
+              55
             ]
           },
           {
             "group": "Dermatology",
-            "n": 132,
+            "n": 133,
             "k": [
-              21,
+              22,
               2,
               67,
               0,
@@ -147874,11 +148050,11 @@
           },
           {
             "group": "Musculoskeletal",
-            "n": 90,
+            "n": 91,
             "k": [
               4,
               2,
-              46,
+              47,
               0,
               38
             ]
@@ -147887,33 +148063,33 @@
         "phase3": [
           {
             "group": "Other",
-            "n": 1027,
+            "n": 1030,
             "k": [
               83,
               16,
-              470,
+              473,
               8,
               450
             ]
           },
           {
             "group": "Oncology",
-            "n": 666,
+            "n": 667,
             "k": [
               57,
               31,
-              291,
+              292,
               0,
               287
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 449,
+            "n": 451,
             "k": [
               41,
               19,
-              198,
+              200,
               7,
               184
             ]
@@ -147974,6 +148150,17 @@
             ]
           },
           {
+            "group": "Respiratory",
+            "n": 142,
+            "k": [
+              15,
+              9,
+              61,
+              0,
+              57
+            ]
+          },
+          {
             "group": "Immunology & Autoimmune",
             "n": 141,
             "k": [
@@ -147985,36 +148172,25 @@
             ]
           },
           {
-            "group": "Respiratory",
-            "n": 141,
-            "k": [
-              15,
-              9,
-              60,
-              0,
-              57
-            ]
-          },
-          {
             "group": "Renal & Urology",
             "n": 109,
             "k": [
               8,
               3,
-              57,
+              58,
               0,
-              41
+              40
             ]
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 71,
+            "n": 72,
             "k": [
               7,
               9,
               36,
               0,
-              19
+              20
             ]
           },
           {
@@ -148054,11 +148230,11 @@
         "phase4": [
           {
             "group": "Other",
-            "n": 1076,
+            "n": 1077,
             "k": [
               23,
               11,
-              592,
+              593,
               4,
               446
             ]
@@ -148076,11 +148252,11 @@
           },
           {
             "group": "Infectious Disease",
-            "n": 208,
+            "n": 209,
             "k": [
               2,
               3,
-              130,
+              131,
               0,
               73
             ]
@@ -148119,6 +148295,17 @@
             ]
           },
           {
+            "group": "Oncology",
+            "n": 124,
+            "k": [
+              2,
+              2,
+              69,
+              0,
+              51
+            ]
+          },
+          {
             "group": "Neurology",
             "n": 123,
             "k": [
@@ -148130,25 +148317,14 @@
             ]
           },
           {
-            "group": "Oncology",
-            "n": 123,
-            "k": [
-              2,
-              2,
-              68,
-              0,
-              51
-            ]
-          },
-          {
             "group": "Immunology & Autoimmune",
-            "n": 111,
+            "n": 113,
             "k": [
               0,
               1,
-              67,
+              68,
               0,
-              43
+              44
             ]
           },
           {
@@ -148208,13 +148384,13 @@
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 35,
+            "n": 36,
             "k": [
               0,
               2,
               19,
               0,
-              14
+              15
             ]
           }
         ]
@@ -148268,6 +148444,17 @@
             ]
           },
           {
+            "group": "Janssen Research & Development, LLC",
+            "n": 26,
+            "k": [
+              19,
+              7,
+              0,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Gilead Sciences",
             "n": 25,
             "k": [
@@ -148279,22 +148466,11 @@
             ]
           },
           {
-            "group": "Janssen Research & Development, LLC",
+            "group": "Hoffmann-La Roche",
             "n": 25,
             "k": [
-              18,
-              7,
-              0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "Hoffmann-La Roche",
-            "n": 24,
-            "k": [
               19,
-              5,
+              6,
               0,
               0,
               0
@@ -148510,6 +148686,17 @@
             ]
           },
           {
+            "group": "City of Hope Medical Center",
+            "n": 8,
+            "k": [
+              4,
+              4,
+              0,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Masonic Cancer Center, University of Minnesota",
             "n": 8,
             "k": [
@@ -148647,17 +148834,6 @@
             "k": [
               3,
               3,
-              0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "City of Hope Medical Center",
-            "n": 6,
-            "k": [
-              2,
-              4,
               0,
               0,
               0
@@ -153790,6 +153966,17 @@
             ]
           },
           {
+            "group": "Institut National de la Santé Et de la Recherche Médicale, France",
+            "n": 1,
+            "k": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Institut de Médecine et d'Epidémiologie Appliquée - Fondation Internationale Léon M'Ba",
             "n": 1,
             "k": [
@@ -157411,6 +157598,28 @@
             ]
           },
           {
+            "group": "City of Hope Medical Center",
+            "n": 5,
+            "k": [
+              3,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "group": "Hoffmann-La Roche",
+            "n": 5,
+            "k": [
+              1,
+              4,
+              0,
+              0,
+              0
+            ]
+          },
+          {
             "group": "ImmunityBio, Inc.",
             "n": 5,
             "k": [
@@ -157481,28 +157690,6 @@
             "n": 4,
             "k": [
               2,
-              2,
-              0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "Hoffmann-La Roche",
-            "n": 4,
-            "k": [
-              1,
-              3,
-              0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "City of Hope Medical Center",
-            "n": 3,
-            "k": [
-              1,
               2,
               0,
               0,
@@ -160328,6 +160515,17 @@
             ]
           },
           {
+            "group": "Janssen Research & Development, LLC",
+            "n": 12,
+            "k": [
+              10,
+              2,
+              0,
+              0,
+              0
+            ]
+          },
+          {
             "group": "National Institute of Allergy and Infectious Diseases (NIAID)",
             "n": 12,
             "k": [
@@ -160344,17 +160542,6 @@
             "k": [
               8,
               3,
-              0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "Janssen Research & Development, LLC",
-            "n": 11,
-            "k": [
-              9,
-              2,
               0,
               0,
               0
@@ -163012,17 +163199,6 @@
             ]
           },
           {
-            "group": "Filipa Lynce, MD",
-            "n": 1,
-            "k": [
-              0,
-              1,
-              0,
-              0,
-              0
-            ]
-          },
-          {
             "group": "First Affiliated Hospital Xi'an Jiaotong University",
             "n": 1,
             "k": [
@@ -163574,6 +163750,17 @@
           },
           {
             "group": "Institut Bergonié",
+            "n": 1,
+            "k": [
+              1,
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          {
+            "group": "Institut National de la Santé Et de la Recherche Médicale, France",
             "n": 1,
             "k": [
               1,
@@ -169797,10 +169984,10 @@
         "all": [
           {
             "group": "Oncology",
-            "n": 571,
+            "n": 575,
             "k": [
-              298,
-              273,
+              301,
+              274,
               0,
               0,
               0
@@ -169929,9 +170116,9 @@
           },
           {
             "group": "Dermatology",
-            "n": 31,
+            "n": 32,
             "k": [
-              27,
+              28,
               4,
               0,
               0,
@@ -169964,10 +170151,10 @@
         "phase1": [
           {
             "group": "Oncology",
-            "n": 217,
+            "n": 220,
             "k": [
-              81,
-              136,
+              83,
+              137,
               0,
               0,
               0
@@ -170122,8 +170309,8 @@
             "group": "Oncology",
             "n": 362,
             "k": [
-              203,
-              159,
+              204,
+              158,
               0,
               0,
               0
@@ -170208,9 +170395,9 @@
           },
           {
             "group": "Dermatology",
-            "n": 23,
+            "n": 24,
             "k": [
-              21,
+              22,
               2,
               0,
               0,
