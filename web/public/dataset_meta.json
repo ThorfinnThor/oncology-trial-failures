@@ -1,31 +1,31 @@
 {
-  "version": "2026-06-12",
-  "generated_at_utc": "2026-06-15T12:49:29Z",
+  "version": "2026-06-22",
+  "generated_at_utc": "2026-06-22T12:33:45Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 23350,
-    "max_last_update_post_date": "2026-06-12"
+    "record_count": 23394,
+    "max_last_update_post_date": "2026-06-22"
   },
   "biological_failure": {
-    "record_count": 1799,
-    "max_last_update_post_date": "2026-06-11"
+    "record_count": 1802,
+    "max_last_update_post_date": "2026-06-22"
   },
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 7825
+      "count": 7846
     },
     {
       "area": "Other",
-      "count": 5733
+      "count": 5741
     },
     {
       "area": "Infectious Disease",
-      "count": 1697
+      "count": 1700
     },
     {
       "area": "Gastroenterology & Hepatology",
-      "count": 1514
+      "count": 1516
     },
     {
       "area": "Cardiovascular",
@@ -37,19 +37,19 @@
     },
     {
       "area": "Endocrine & Metabolic",
-      "count": 794
+      "count": 795
     },
     {
       "area": "Immunology & Autoimmune",
-      "count": 658
+      "count": 659
     },
     {
       "area": "Respiratory",
-      "count": 625
+      "count": 626
     },
     {
       "area": "Psychiatry & Mental Health",
-      "count": 605
+      "count": 606
     }
   ],
   "notes": "Disease areas are keyword-based mappings from conditions/MeSH terms; countries are trial site countries."
