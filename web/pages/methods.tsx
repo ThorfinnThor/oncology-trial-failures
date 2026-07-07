@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import { loadMeta } from "@/lib/data";
 import { DatasetMeta } from "@/lib/types";
 
+const TITLE = "Methods and data sources — Clinical trial failures";
+const DESCRIPTION =
+  "Review the Clinical Trial Failures methodology, source data, reason buckets, limitations, and verification guidance for stopped clinical trial records.";
+
 export default function MethodsPage() {
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
 
@@ -29,7 +33,12 @@ export default function MethodsPage() {
   return (
     <>
       <Head>
-        <title>Methods — Clinical trial failures</title>
+        <title>{TITLE}</title>
+        <meta name="description" content={DESCRIPTION} />
+        <meta property="og:title" content={TITLE} />
+        <meta property="og:description" content={DESCRIPTION} />
+        <meta name="twitter:title" content={TITLE} />
+        <meta name="twitter:description" content={DESCRIPTION} />
       </Head>
 
       <header className="topbar">
@@ -93,7 +102,32 @@ export default function MethodsPage() {
             <h2 className="h2">Data sources</h2>
             <p className="muted">
               Primary source is ClinicalTrials.gov registry metadata as recorded by sponsors and investigators.
+              The site uses registry fields such as status, phase, sponsor, condition, intervention, dates, and
+              the reported stop-reason text when available.
             </p>
+            <div className="trustPanel">
+              <div>
+                <div className="trustTitle">Primary record</div>
+                <p className="muted">
+                  Use each trial's NCT identifier to verify details directly in ClinicalTrials.gov before making
+                  medical, scientific, or commercial decisions.
+                </p>
+              </div>
+              <div>
+                <div className="trustTitle">Analytical label</div>
+                <p className="muted">
+                  Failure buckets are screening labels derived from structured fields and text. They should be
+                  treated as research signals, not definitive clinical conclusions.
+                </p>
+              </div>
+              <div>
+                <div className="trustTitle">Version awareness</div>
+                <p className="muted">
+                  Registry records can change over time. Check the dataset version and generation timestamp
+                  shown above when comparing results.
+                </p>
+              </div>
+            </div>
 
             <h2 id="scientific-failure" className="h2">
               Likely scientific failure
@@ -198,6 +232,7 @@ export default function MethodsPage() {
               <li>Registry stop reasons can be incomplete or inconsistently reported.</li>
               <li>Some trials stop for non-scientific reasons (enrollment, funding, strategic decisions).</li>
               <li>Labels are probabilistic and should be verified against primary sources.</li>
+              <li>The site is for research support only and is not medical advice.</li>
             </ul>
 
             <div style={{ marginTop: 18 }}>
@@ -231,6 +266,25 @@ export default function MethodsPage() {
         .h2 {
           margin: 18px 0 6px;
           font-size: 15px;
+          font-weight: 850;
+        }
+        .trustPanel {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+          margin-top: 14px;
+        }
+        .trustPanel > div {
+          min-width: 0;
+          padding: 14px;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          background: #f8fafc;
+        }
+        .trustTitle {
+          margin-bottom: 6px;
+          color: #0f172a;
+          font-size: 13px;
           font-weight: 850;
         }
         .h3 {
@@ -277,6 +331,11 @@ export default function MethodsPage() {
         .body :global(code.eq) {
           white-space: normal;
           display: inline-block;
+        }
+        @media (max-width: 760px) {
+          .trustPanel {
+            grid-template-columns: 1fr;
+          }
         }
       `}</style>
     </>

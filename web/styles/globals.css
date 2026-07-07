@@ -530,6 +530,7 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    padding: 0;
     gap: 10px;
   }
 
@@ -605,6 +606,7 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
   .topbar-inner {
     flex-direction: column;
     align-items: stretch;
+    padding: 0;
     gap: 8px; /* was 10px */
   }
 
@@ -742,11 +744,11 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
   }
 }
 
-/* Cookie consent modal (centered + blocks interaction) */
+/* Cookie consent modal */
 .cookie-consent-wrap{
   position:fixed;
   inset:0;
-  z-index:100000;            /* above drawers */
+  z-index:100000;
   display:grid;
   place-items:center;
   padding:16px;
@@ -756,35 +758,36 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
 .cookie-consent-overlay{
   position:absolute;
   inset:0;
-  background:rgba(0,0,0,.55);
+  background:rgba(15,23,42,.58);
 }
 
 .cookie-consent-modal{
   position:relative;
-  width:min(640px, 92vw);
+  width:min(720px, calc(100vw - 32px));
+  max-height:calc(100dvh - 32px);
   background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:18px;
-  box-shadow:var(--shadow);
-  overflow:hidden;
+  border:1px solid rgba(15,23,42,.14);
+  border-radius:12px;
+  box-shadow:0 24px 60px rgba(15,23,42,.24);
+  overflow:auto;
 }
 
 .cookie-consent-body{
-  padding:18px 18px 16px;
+  padding:20px 20px 16px;
 }
 
 .cookie-consent-title{
   margin:0;
-  font-size:20px;
+  font-size:22px;
   font-weight:800;
-  letter-spacing:-.01em;
+  line-height:1.15;
 }
 
 .cookie-consent-text{
   margin-top:10px;
   font-size:14px;
-  line-height:1.5;
-  color:rgba(15,23,42,.90);
+  line-height:1.55;
+  color:rgba(15,23,42,.92);
 }
 
 .cookie-consent-note{
@@ -795,19 +798,19 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
 
 .cookie-consent-actions{
   margin-top:16px;
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
   gap:10px;
 }
 
 .cookie-consent-actions .btn,
 .cookie-consent-actions .btn-primary{
-  flex:1 1 160px;
+  width:100%;
   justify-content:center;
 }
 
 .cookie-consent-links{
-  padding:0 18px 18px;
+  padding:0 20px 18px;
   font-size:12px;
   color:var(--text-muted);
 }
@@ -816,74 +819,26 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
   text-decoration:underline;
 }
 
-/* Cookie consent modal (centered + blocks interaction) */
-.cookie-consent-wrap{
-  position: fixed;
-  inset: 0;
-  z-index: 100000;
-  display: grid;
-  place-items: center;
-  padding: 16px;
-  isolation: isolate;
-}
+@media (max-width:720px){
+  .cookie-consent-wrap{
+    align-items:end;
+    padding:10px;
+  }
 
-.cookie-consent-overlay{
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.60);
-}
+  .cookie-consent-modal{
+    width:100%;
+    max-height:calc(100dvh - 20px);
+  }
 
-.cookie-consent-modal{
-  position: relative;
-  width: min(720px, 92vw);
-  background: white;
-  border: 1px solid rgba(0,0,0,.12);
-  border-radius: 18px;
-  box-shadow: 0 24px 60px rgba(0,0,0,.25);
-  overflow: hidden;
-}
+  .cookie-consent-body{
+    padding:18px 16px 14px;
+  }
 
-.cookie-consent-body{
-  padding: 20px 20px 16px;
-}
+  .cookie-consent-actions{
+    grid-template-columns:1fr;
+  }
 
-.cookie-consent-title{
-  margin: 0;
-  font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-}
-
-.cookie-consent-text{
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(15,23,42,.92);
-}
-
-.cookie-consent-note{
-  margin-top: 10px;
-  font-size: 12px;
-  color: rgba(15,23,42,.65);
-}
-
-.cookie-consent-actions{
-  margin-top: 16px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.cookie-consent-actions button{
-  flex: 1 1 180px;
-}
-
-.cookie-consent-links{
-  padding: 0 20px 18px;
-  font-size: 12px;
-  color: rgba(15,23,42,.65);
-}
-
-.cookie-consent-links a{
-  text-decoration: underline;
+  .cookie-consent-links{
+    padding:0 16px 16px;
+  }
 }

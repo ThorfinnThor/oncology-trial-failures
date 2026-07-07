@@ -18,6 +18,10 @@ import CompareModal from "@/components/CompareModal";
 import DownloadMenu from "@/components/DownloadMenu";
 import { Facet, ScientificFailureToggle } from "@/components/FacetRail";
 
+const TITLE = "Explore clinical trial failures | Search stopped clinical trials";
+const DESCRIPTION =
+  "Search, filter, compare, and export terminated, suspended, and withdrawn clinical trials by sponsor, phase, disease area, intervention, and stop reason.";
+
 function uniq(arr: string[]) {
   return Array.from(new Set(arr)).filter(Boolean);
 }
@@ -150,7 +154,12 @@ export default function ExplorePage() {
   return (
     <>
       <Head>
-        <title>Clinical trial failures</title>
+        <title>{TITLE}</title>
+        <meta name="description" content={DESCRIPTION} />
+        <meta property="og:title" content={TITLE} />
+        <meta property="og:description" content={DESCRIPTION} />
+        <meta name="twitter:title" content={TITLE} />
+        <meta name="twitter:description" content={DESCRIPTION} />
       </Head>
 
       <div className="min-h-screen">

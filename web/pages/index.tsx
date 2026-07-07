@@ -6,20 +6,43 @@ const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "Clinical Trial Failures | Explore clinical trial failures and biological failure signals";
 const DESCRIPTION =
   "Clinical Trial Failures is a searchable database for terminated, suspended, and withdrawn clinical trials, with a focus on biological failure signals such as weak efficacy, futility, and safety-driven stops.";
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export default function HomePage() {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: SITE_NAME,
-    url: SITE_URL,
-    description: DESCRIPTION,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${SITE_URL}/explore?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: SITE_URL,
+      description: DESCRIPTION,
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${SITE_URL}/explore?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
     },
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      name: "Clinical trial failure signals",
+      description:
+        "A structured view of terminated, suspended, and withdrawn clinical trial records with stop-reason classifications.",
+      url: SITE_URL,
+      isBasedOn: "ClinicalTrials.gov registry records",
+      creator: {
+        "@type": "Organization",
+        name: SITE_NAME,
+      },
+      keywords: [
+        "clinical trial failures",
+        "terminated clinical trials",
+        "withdrawn clinical trials",
+        "oncology clinical trials",
+        "ClinicalTrials.gov",
+      ],
+    },
+  ];
 
   return (
     <>
@@ -32,9 +55,14 @@ export default function HomePage() {
         <meta property="og:description" content={DESCRIPTION} />
         <meta property="og:url" content={SITE_URL} />
         <meta property="og:type" content="website" />
+        <meta property="og:image" content={OG_IMAGE} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Clinical Trial Failures database preview" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESCRIPTION} />
+        <meta name="twitter:image" content={OG_IMAGE} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -98,6 +126,20 @@ export default function HomePage() {
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
+                <dl className="trustStrip" aria-label="Dataset trust summary">
+                  <div>
+                    <dt>Primary source</dt>
+                    <dd>ClinicalTrials.gov registry records</dd>
+                  </div>
+                  <div>
+                    <dt>Scope</dt>
+                    <dd>Terminated, suspended, and withdrawn trials</dd>
+                  </div>
+                  <div>
+                    <dt>Use with care</dt>
+                    <dd>Classification is an analytical signal, not medical advice</dd>
+                  </div>
+                </dl>
               </div>
 
               <aside className="heroPanel" aria-label="Key analysis paths">
@@ -210,6 +252,42 @@ export default function HomePage() {
             </div>
           </section>
 
+          <section className="section trustSection">
+            <div className="container">
+              <div className="sectionHeading">
+                <h2>Source, scope, and verification</h2>
+                <p>
+                  Medical and clinical-trial data needs context. This site summarizes registry records and
+                  highlights likely failure signals, but each trial should still be verified against its primary
+                  ClinicalTrials.gov record and related sponsor publications.
+                </p>
+              </div>
+              <div className="trustGrid">
+                <article className="cardSurface">
+                  <h3>Registry-based source</h3>
+                  <p>
+                    Records are derived from structured trial registry fields and sponsor-provided stop
+                    language where available.
+                  </p>
+                </article>
+                <article className="cardSurface">
+                  <h3>Transparent classification</h3>
+                  <p>
+                    Stop reasons are grouped into practical buckets such as efficacy/futility, safety,
+                    operational, enrollment, funding, regulatory, and other/unknown.
+                  </p>
+                </article>
+                <article className="cardSurface">
+                  <h3>Research support only</h3>
+                  <p>
+                    The labels are screening signals for analysis. They are not clinical guidance, investment
+                    advice, or a substitute for reviewing primary source documents.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </section>
+
           <section className="section">
             <div className="container">
               <div className="sectionHeading">
@@ -257,14 +335,15 @@ export default function HomePage() {
           color: #0f172a;
         }
         .container {
-          max-width: 1180px;
+          width: 100%;
+          max-width: 1160px;
           margin: 0 auto;
           padding-left: 20px;
           padding-right: 20px;
         }
         .hero {
-          padding: 36px 0 24px;
-          background: linear-gradient(180deg, #ffffff 0%, #eef4ff 100%);
+          padding: 32px 0 24px;
+          background: linear-gradient(180deg, #ffffff 0%, #f2f6ff 100%);
           border-bottom: 1px solid #e2e8f0;
         }
         .heroGrid,
@@ -274,7 +353,8 @@ export default function HomePage() {
           align-items: start;
         }
         .heroGrid {
-          grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+          grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+          gap: 28px;
         }
         .heroCopy {
           padding: 10px 0;
@@ -289,9 +369,9 @@ export default function HomePage() {
         }
         h1 {
           margin: 0;
-          max-width: 760px;
-          font-size: clamp(2rem, 5vw, 3.6rem);
-          line-height: 1.05;
+          max-width: 720px;
+          font-size: clamp(2.15rem, 4.6vw, 3.25rem);
+          line-height: 1.07;
         }
         h2 {
           margin: 0 0 12px;
@@ -309,9 +389,9 @@ export default function HomePage() {
           line-height: 1.7;
         }
         .lede {
-          margin-top: 18px;
-          max-width: 760px;
-          font-size: clamp(1.02rem, 2.2vw, 1.15rem);
+          margin-top: 16px;
+          max-width: 720px;
+          font-size: clamp(1rem, 2vw, 1.1rem);
         }
         .supporting {
           margin-top: 14px;
@@ -321,28 +401,56 @@ export default function HomePage() {
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
-          margin-top: 22px;
+          margin-top: 20px;
         }
-        .homeBrand {
+        .trustStrip {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          margin: 22px 0 0;
+        }
+        .trustStrip div {
+          min-width: 0;
+          padding: 12px;
+          border: 1px solid #dbeafe;
+          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.82);
+        }
+        .trustStrip dt {
+          margin: 0 0 4px;
+          color: #475569;
+          font-size: 0.72rem;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .trustStrip dd {
+          margin: 0;
+          color: #0f172a;
+          font-size: 0.88rem;
+          font-weight: 700;
+          line-height: 1.35;
+        }
+        :global(.homePage .homeBrand) {
           display: inline-flex;
           align-items: center;
           position: relative;
           z-index: 2;
           padding-right: 4px;
         }
-        .homeBrand,
+        :global(.homePage .homeBrand),
         :global(.topbar .navlink) {
           text-decoration-thickness: 1.5px;
           text-underline-offset: 0.18em;
         }
-        .homeBrand:hover,
-        .homeBrand:focus-visible,
+        :global(.homePage .homeBrand:hover),
+        :global(.homePage .homeBrand:focus-visible),
         :global(.topbar .navlink:hover),
         :global(.topbar .navlink:focus-visible) {
           text-decoration: underline;
         }
-        .primaryBtn,
-        .secondaryBtn {
+        :global(.homePage .primaryBtn),
+        :global(.homePage .secondaryBtn) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -354,20 +462,20 @@ export default function HomePage() {
           box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
           transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
         }
-        .primaryBtn {
+        :global(.homePage .primaryBtn) {
           background: #0f172a;
           color: #ffffff;
           border: 1px solid #0f172a;
         }
-        .secondaryBtn {
+        :global(.homePage .secondaryBtn) {
           background: #ffffff;
           color: #0f172a;
           border: 1px solid #94a3b8;
         }
-        .primaryBtn:hover,
-        .primaryBtn:focus-visible,
-        .secondaryBtn:hover,
-        .secondaryBtn:focus-visible {
+        :global(.homePage .primaryBtn:hover),
+        :global(.homePage .primaryBtn:focus-visible),
+        :global(.homePage .secondaryBtn:hover),
+        :global(.homePage .secondaryBtn:focus-visible) {
           transform: translateY(-1px);
           box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
           text-decoration: underline;
@@ -387,21 +495,32 @@ export default function HomePage() {
         }
         .miniGrid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+          align-items: stretch;
         }
         .section {
-          padding: 28px 0;
+          padding: 34px 0;
         }
         .sectionGrid {
           grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
         }
         .cardSurface,
         .panelCard,
-        .navCard {
+        :global(.homePage .navCard) {
           background: #ffffff;
           border: 1px solid #e2e8f0;
-          border-radius: 16px;
+          border-radius: 12px;
           padding: 18px;
           box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+        }
+        .panelCard,
+        .cardSurface {
+          min-width: 0;
+        }
+        .miniCard,
+        .stackGrid .cardSurface,
+        .faqGrid .cardSurface,
+        .trustGrid .cardSurface {
+          height: 100%;
         }
         .emphasisCard {
           background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
@@ -438,24 +557,24 @@ export default function HomePage() {
           max-width: 760px;
         }
         .linkGrid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-template-columns: repeat(3, minmax(0, 1fr));
         }
-        .navCard {
+        :global(.homePage .navCard) {
           display: flex;
           flex-direction: column;
           gap: 8px;
           text-decoration: none;
-          min-height: 118px;
+          min-height: 132px;
           cursor: pointer;
           transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
         }
-        .navCard:hover,
-        .navCard:focus-visible {
+        :global(.homePage .navCard:hover),
+        :global(.homePage .navCard:focus-visible) {
           transform: translateY(-1px);
           border-color: #93c5fd;
           box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
         }
-        .navCardTitle {
+        :global(.homePage .navCardTitle) {
           display: block;
           color: #0f172a;
           font-weight: 800;
@@ -465,12 +584,12 @@ export default function HomePage() {
           text-underline-offset: 0.18em;
           text-decoration-color: rgba(15, 23, 42, 0.28);
         }
-        .navCardText {
+        :global(.homePage .navCardText) {
           display: block;
           color: #475569;
           line-height: 1.6;
         }
-        .navCardFooter {
+        :global(.homePage .navCardFooter) {
           display: inline-flex;
           align-items: center;
           margin-top: auto;
@@ -481,10 +600,16 @@ export default function HomePage() {
         .faqGrid {
           grid-template-columns: repeat(3, minmax(0, 1fr));
         }
+        .trustGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+        }
         @media (max-width: 1040px) {
           .heroGrid,
           .sectionGrid,
-          .faqGrid {
+          .faqGrid,
+          .trustGrid {
             grid-template-columns: 1fr;
           }
         }
@@ -517,9 +642,15 @@ export default function HomePage() {
           .miniGrid,
           .stackGrid,
           .linkGrid,
-          .faqGrid {
+          .faqGrid,
+          .trustGrid {
             grid-template-columns: 1fr;
             gap: 12px;
+          }
+          .trustStrip {
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-top: 16px;
           }
           .heroCopy {
             padding: 0;
@@ -558,10 +689,10 @@ export default function HomePage() {
           }
           .cardSurface,
           .panelCard,
-          .navCard,
+          :global(.homePage .navCard),
           .sectionIntro {
             padding: 14px;
-            border-radius: 14px;
+            border-radius: 12px;
           }
           .sectionIntro {
             display: grid;
@@ -573,8 +704,8 @@ export default function HomePage() {
             gap: 8px;
             margin-top: 16px;
           }
-          .primaryBtn,
-          .secondaryBtn {
+          :global(.homePage .primaryBtn),
+          :global(.homePage .secondaryBtn) {
             width: 100%;
             min-height: 44px;
           }
@@ -583,15 +714,15 @@ export default function HomePage() {
           .faqGrid {
             gap: 12px;
           }
-          .navCard {
+          :global(.homePage .navCard) {
             min-height: 0;
             gap: 6px;
           }
-          .navCardFooter {
+          :global(.homePage .navCardFooter) {
             margin-top: 2px;
           }
-          .navCardTitle,
-          .navCardText {
+          :global(.homePage .navCardTitle),
+          :global(.homePage .navCardText) {
             line-height: 1.45;
           }
           .bulletList {
@@ -615,7 +746,7 @@ export default function HomePage() {
           }
           .cardSurface,
           .panelCard,
-          .navCard,
+          :global(.homePage .navCard),
           .sectionIntro {
             padding: 13px;
           }
