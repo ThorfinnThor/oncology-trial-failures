@@ -8,6 +8,31 @@ import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
+const TITLE = "Clinical trial failure overview | Dataset patterns and stop reasons";
+const DESCRIPTION =
+  "Review high-level patterns across stopped clinical trials, including status, phase, reason buckets, disease areas, and likely biological failure signals.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/overview`;
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
+function OverviewSeoHead() {
+  return (
+    <Head>
+      <title>{TITLE}</title>
+      <meta name="description" content={DESCRIPTION} />
+      <meta name="robots" content="index,follow" />
+      <link rel="canonical" href={CANONICAL_URL} />
+      <meta property="og:title" content={TITLE} />
+      <meta property="og:description" content={DESCRIPTION} />
+      <meta property="og:url" content={CANONICAL_URL} />
+      <meta property="og:image" content={OG_IMAGE} />
+      <meta name="twitter:title" content={TITLE} />
+      <meta name="twitter:description" content={DESCRIPTION} />
+      <meta name="twitter:image" content={OG_IMAGE} />
+    </Head>
+  );
+}
+
 /**
  * Mobile responsiveness strategy (robust on iOS Safari):
  * - Any truly wide content is inside an explicit horizontal scroll region with touch-friendly settings.
@@ -550,9 +575,7 @@ export default function OverviewPage() {
   if (loading) {
     return (
       <>
-        <Head>
-          <title>Overview — Clinical trial failures</title>
-        </Head>
+        <OverviewSeoHead />
         <div className="min-h-screen">
           <header className="topbar">
             <div className="topbar-inner">
@@ -595,9 +618,7 @@ export default function OverviewPage() {
   if (err) {
     return (
       <>
-        <Head>
-          <title>Overview — Clinical trial failures</title>
-        </Head>
+        <OverviewSeoHead />
         <div className="min-h-screen">
           <header className="topbar">
             <div className="topbar-inner">
@@ -641,9 +662,7 @@ export default function OverviewPage() {
 
   return (
     <>
-      <Head>
-        <title>Overview — Clinical trial failures</title>
-      </Head>
+      <OverviewSeoHead />
 
       <div className="min-h-screen">
         <header className="topbar">

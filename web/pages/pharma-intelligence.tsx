@@ -7,7 +7,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
       destination: "/overview",
-      permanent: false,
+      permanent: true,
     },
   };
 };

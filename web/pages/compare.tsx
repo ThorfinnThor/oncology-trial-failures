@@ -8,6 +8,12 @@ import { useRouter } from "next/router";
 import { decodeState } from "@/lib/urlState";
 import { UrlState } from "@/lib/types";
 
+const TITLE = "Compare selected clinical trial failures";
+const DESCRIPTION =
+  "Compare selected stopped clinical trials side by side. This utility page is intended for active app users rather than search indexing.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/compare`;
+
 export default function ComparePage() {
   const router = useRouter();
 
@@ -18,7 +24,10 @@ export default function ComparePage() {
   return (
     <>
       <Head>
-        <title>Compare • Clinical trial failures</title>
+        <title>{TITLE}</title>
+        <meta name="description" content={DESCRIPTION} />
+        <meta name="robots" content="noindex,follow" />
+        <link rel="canonical" href={CANONICAL_URL} />
       </Head>
 
       <div className="min-h-screen">

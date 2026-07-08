@@ -8,6 +8,13 @@ import { loadSpecialness } from "@/lib/data";
 import { UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 
+const TITLE = "Clinical trial failure outliers | Sponsors and disease areas";
+const DESCRIPTION =
+  "Find sponsors and disease areas that appear unusually often in specific clinical trial stop-reason buckets, with shrinkage-adjusted outlier calculations.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/outliers`;
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 type ScopeKey = "all" | "bio";
 type GroupByKey = "company" | "disease_area";
 type PhaseKey = "all" | "phase1" | "phase2" | "phase3" | "phase4";
@@ -361,7 +368,17 @@ export default function OutliersPage() {
   return (
     <>
       <Head>
-        <title>Outliers — Clinical trial failures</title>
+        <title>{TITLE}</title>
+        <meta name="description" content={DESCRIPTION} />
+        <meta name="robots" content="index,follow" />
+        <link rel="canonical" href={CANONICAL_URL} />
+        <meta property="og:title" content={TITLE} />
+        <meta property="og:description" content={DESCRIPTION} />
+        <meta property="og:url" content={CANONICAL_URL} />
+        <meta property="og:image" content={OG_IMAGE} />
+        <meta name="twitter:title" content={TITLE} />
+        <meta name="twitter:description" content={DESCRIPTION} />
+        <meta name="twitter:image" content={OG_IMAGE} />
       </Head>
 
       <div className="outliers min-h-screen">

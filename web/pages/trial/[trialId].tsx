@@ -10,6 +10,9 @@ import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
+const SITE_URL = "https://clinicaltrialfailures.com";
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 type TrialPageProps = {
   initialMeta: DatasetMeta | null;
   initialTrial: TrialDetail | null;
@@ -99,15 +102,22 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
         .replace(/\s+/g, " ")
         .slice(0, 180)
     : "Trial detail for a stopped clinical trial.";
+  const canonicalUrl = trialId ? `${SITE_URL}/trial/${encodeURIComponent(trialId)}` : `${SITE_URL}/explore`;
 
   return (
     <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
+        <meta name="robots" content={trial ? "index,follow" : "noindex,follow"} />
+        <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={OG_IMAGE} />
         <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={OG_IMAGE} />
       </Head>
 
       <div className="min-h-screen">

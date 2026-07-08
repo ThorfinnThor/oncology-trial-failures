@@ -8,6 +8,31 @@ import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 
+const TITLE = "Sponsor insights for stopped clinical trials | Clinical Trial Failures";
+const DESCRIPTION =
+  "Compare sponsors across stopped clinical trials, including stop reasons, phases, disease areas, and likely biological failure signals.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/sponsor-insights`;
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
+function SponsorInsightsSeoHead() {
+  return (
+    <Head>
+      <title>{TITLE}</title>
+      <meta name="description" content={DESCRIPTION} />
+      <meta name="robots" content="index,follow" />
+      <link rel="canonical" href={CANONICAL_URL} />
+      <meta property="og:title" content={TITLE} />
+      <meta property="og:description" content={DESCRIPTION} />
+      <meta property="og:url" content={CANONICAL_URL} />
+      <meta property="og:image" content={OG_IMAGE} />
+      <meta name="twitter:title" content={TITLE} />
+      <meta name="twitter:description" content={DESCRIPTION} />
+      <meta name="twitter:image" content={OG_IMAGE} />
+    </Head>
+  );
+}
+
 /**
  * Mobile responsiveness strategy (robust on iOS Safari):
  * - Any truly wide content is inside an explicit horizontal scroll region with touch-friendly settings.
@@ -546,9 +571,7 @@ export default function SponsorInsightsPage() {
   if (loading) {
     return (
       <>
-        <Head>
-          <title>Sponsor insights — Clinical trial failures</title>
-        </Head>
+        <SponsorInsightsSeoHead />
         <div className="min-h-screen">
           <header className="topbar">
             <div className="topbar-inner">
@@ -591,9 +614,7 @@ export default function SponsorInsightsPage() {
   if (err) {
     return (
       <>
-        <Head>
-          <title>Sponsor insights — Clinical trial failures</title>
-        </Head>
+        <SponsorInsightsSeoHead />
         <div className="min-h-screen">
           <header className="topbar">
             <div className="topbar-inner">
@@ -637,9 +658,7 @@ export default function SponsorInsightsPage() {
 
   return (
     <>
-      <Head>
-        <title>Sponsor insights — Clinical trial failures</title>
-      </Head>
+      <SponsorInsightsSeoHead />
 
       <div className="min-h-screen">
         <header className="topbar">

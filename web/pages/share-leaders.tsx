@@ -7,7 +7,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     redirect: {
       destination: "/top-entities",
-      permanent: false,
+      permanent: true,
     },
   };
 };

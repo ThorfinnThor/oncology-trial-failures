@@ -10,6 +10,9 @@ import { DatasetMeta } from "@/lib/types";
 const TITLE = "Methods and data sources — Clinical trial failures";
 const DESCRIPTION =
   "Review the Clinical Trial Failures methodology, source data, reason buckets, limitations, and verification guidance for stopped clinical trial records.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/methods`;
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export default function MethodsPage() {
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
@@ -35,10 +38,15 @@ export default function MethodsPage() {
       <Head>
         <title>{TITLE}</title>
         <meta name="description" content={DESCRIPTION} />
+        <meta name="robots" content="index,follow" />
+        <link rel="canonical" href={CANONICAL_URL} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />
+        <meta property="og:url" content={CANONICAL_URL} />
+        <meta property="og:image" content={OG_IMAGE} />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESCRIPTION} />
+        <meta name="twitter:image" content={OG_IMAGE} />
       </Head>
 
       <header className="topbar">

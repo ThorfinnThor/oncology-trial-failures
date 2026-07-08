@@ -1,16 +1,28 @@
 import Head from "next/head";
 import Link from "next/link";
 
+const TITLE = "Privacy | Clinical Trial Failures";
+const DESCRIPTION =
+  "Short privacy policy for Clinical Trial Failures, including cookies, analytics, and data handling.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/privacy`;
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 export default function PrivacyPage() {
   return (
     <>
       <Head>
-        <title>Privacy | Clinical Trial Failures</title>
-        <meta
-          name="description"
-          content="Short privacy policy for Clinical Trial Failures, including cookies, analytics, and data handling."
-        />
+        <title>{TITLE}</title>
+        <meta name="description" content={DESCRIPTION} />
         <meta name="robots" content="index,follow" />
+        <link rel="canonical" href={CANONICAL_URL} />
+        <meta property="og:title" content={TITLE} />
+        <meta property="og:description" content={DESCRIPTION} />
+        <meta property="og:url" content={CANONICAL_URL} />
+        <meta property="og:image" content={OG_IMAGE} />
+        <meta name="twitter:title" content={TITLE} />
+        <meta name="twitter:description" content={DESCRIPTION} />
+        <meta name="twitter:image" content={OG_IMAGE} />
       </Head>
 
       <main className="privacy-page">

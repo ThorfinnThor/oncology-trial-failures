@@ -21,6 +21,9 @@ import { Facet, ScientificFailureToggle } from "@/components/FacetRail";
 const TITLE = "Explore clinical trial failures | Search stopped clinical trials";
 const DESCRIPTION =
   "Search, filter, compare, and export terminated, suspended, and withdrawn clinical trials by sponsor, phase, disease area, intervention, and stop reason.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/explore`;
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 function uniq(arr: string[]) {
   return Array.from(new Set(arr)).filter(Boolean);
@@ -156,10 +159,15 @@ export default function ExplorePage() {
       <Head>
         <title>{TITLE}</title>
         <meta name="description" content={DESCRIPTION} />
+        <meta name="robots" content="index,follow" />
+        <link rel="canonical" href={CANONICAL_URL} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />
+        <meta property="og:url" content={CANONICAL_URL} />
+        <meta property="og:image" content={OG_IMAGE} />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESCRIPTION} />
+        <meta name="twitter:image" content={OG_IMAGE} />
       </Head>
 
       <div className="min-h-screen">

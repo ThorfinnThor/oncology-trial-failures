@@ -2,22 +2,11 @@
 
 import type { GetServerSideProps } from "next";
 
-function getBaseUrl(req: any) {
-  const proto =
-    (req.headers["x-forwarded-proto"] as string) ||
-    (req.connection?.encrypted ? "https" : "http");
-  const host =
-    (req.headers["x-forwarded-host"] as string) ||
-    (req.headers["host"] as string);
-  return `${proto}://${host}`;
-}
+const SITE_URL = "https://clinicaltrialfailures.com";
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  const baseUrl = getBaseUrl(req);
-
+export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   // Keep this intentionally small to avoid indexing faceted/query URLs.
-  // Trial detail pages are not included because the app currently loads them client-side;
-  // including them in a sitemap won’t help much unless you later SSR/SSG those pages.
+  // Trial detail pages are intentionally omitted because there can be many of them.
   const paths = [
     "/",
     "/explore",
@@ -26,7 +15,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     "/top-entities",
     "/outliers",
     "/methods",
-    "/compare",
+    "/privacy",
   ];
 
   const now = new Date().toISOString();
@@ -38,7 +27,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       .map((p) => {
         return (
           `  <url>\n` +
-          `    <loc>${baseUrl}${p}</loc>\n` +
+          `    <loc>${SITE_URL}${p}</loc>\n` +
           `    <lastmod>${now}</lastmod>\n` +
           `  </url>\n`
         );

@@ -23,17 +23,12 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="theme-color" content="#f8fafc" />
         <meta property="og:site_name" content={DEFAULT_TITLE} />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={DEFAULT_TITLE} />
-        <meta property="og:description" content={DEFAULT_DESCRIPTION} />
-        <meta property="og:url" content={SITE_URL} />
         <meta property="og:image" content={OG_IMAGE} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content="Clinical Trial Failures database preview" />
         <meta name="robots" content="index,follow" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={DEFAULT_TITLE} />
-        <meta name="twitter:description" content={DEFAULT_DESCRIPTION} />
         <meta name="twitter:image" content={OG_IMAGE} />
       </Head>
 

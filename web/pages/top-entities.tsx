@@ -9,6 +9,13 @@ import { TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, reasonBucket } from "@/lib/filtering";
 
+const TITLE = "Top sponsors and disease areas in stopped clinical trials";
+const DESCRIPTION =
+  "See top sponsors and disease areas across stopped clinical trials, with filters for efficacy, safety, operational, and regulatory stop-reason buckets.";
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/top-entities`;
+const OG_IMAGE = `${SITE_URL}/og-image.png`;
+
 type BucketOption = {
   key: string;
   label: string;
@@ -314,7 +321,17 @@ export default function TopEntitiesPage() {
   return (
     <>
       <Head>
-        <title>Top entities — Clinical trial failures</title>
+        <title>{TITLE}</title>
+        <meta name="description" content={DESCRIPTION} />
+        <meta name="robots" content="index,follow" />
+        <link rel="canonical" href={CANONICAL_URL} />
+        <meta property="og:title" content={TITLE} />
+        <meta property="og:description" content={DESCRIPTION} />
+        <meta property="og:url" content={CANONICAL_URL} />
+        <meta property="og:image" content={OG_IMAGE} />
+        <meta name="twitter:title" content={TITLE} />
+        <meta name="twitter:description" content={DESCRIPTION} />
+        <meta name="twitter:image" content={OG_IMAGE} />
       </Head>
 
       <div className="shareLeaders min-h-screen">
