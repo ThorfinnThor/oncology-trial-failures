@@ -39,12 +39,18 @@ export default function GuidesMenu() {
   }, [open]);
 
   return (
-    <div className={`guidesMenu${open ? " guidesMenuOpen" : ""}`} ref={menuRef}>
+    <div
+      className={`guidesMenu${open ? " guidesMenuOpen" : ""}`}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      ref={menuRef}
+    >
       <button
         type="button"
         className="navlink guidesSummary"
         aria-expanded={open}
         aria-haspopup="menu"
+        onFocus={() => setOpen(true)}
         onClick={() => setOpen((value) => !value)}
       >
         Guides
