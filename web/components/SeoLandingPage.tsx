@@ -176,6 +176,64 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
             </div>
           </section>
 
+          {page.dataInsights ? (
+            <section className="seoSection seoDataSection">
+              <div className="seoContainer">
+                <div className="seoSectionHeading">
+                  <p className="seoEyebrow">Original dataset signals</p>
+                  <h2>{page.dataInsights.heading}</h2>
+                  <p>{page.dataInsights.intro}</p>
+                </div>
+
+                <div className="seoMetricGrid" aria-label="Dataset metrics">
+                  {page.dataInsights.metrics.map((metric) => (
+                    <article className="seoMetricCard" key={metric.label}>
+                      <span>{metric.label}</span>
+                      <strong>{metric.value}</strong>
+                      <p>{metric.detail}</p>
+                    </article>
+                  ))}
+                </div>
+
+                <div className="seoDistributionGrid">
+                  {page.dataInsights.distributions.map((distribution) => (
+                    <article className="seoDistributionCard" key={distribution.heading}>
+                      <h3>{distribution.heading}</h3>
+                      <dl>
+                        {distribution.items.map((item) => (
+                          <div key={`${distribution.heading}-${item.label}`}>
+                            <dt>{item.label}</dt>
+                            <dd>{item.value}</dd>
+                          </div>
+                        ))}
+                      </dl>
+                    </article>
+                  ))}
+                </div>
+
+                <div className="seoExamples">
+                  <h3>Example records to verify</h3>
+                  <div className="seoExampleGrid">
+                    {page.dataInsights.examples.map((example) => (
+                      <article className="seoExampleCard" key={example.nctId}>
+                        <span className="seoExampleId">{example.nctId}</span>
+                        <h4>{example.title}</h4>
+                        <p className="seoExampleReason">{example.reason}</p>
+                        <p>{example.summary}</p>
+                        <Link href={example.href} className="seoExampleLink">
+                          <span>Open trial record</span>
+                          <span aria-hidden="true">→</span>
+                        </Link>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+
+                <p className="seoSourceNote">{page.dataInsights.sourceNote}</p>
+              </div>
+            </section>
+          ) : null}
+
           <section className="seoSection seoAlt">
             <div className="seoContainer">
               <div className="seoSectionHeading">
@@ -349,6 +407,10 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
           border-top: 1px solid #dbeafe;
           border-bottom: 1px solid #dbeafe;
         }
+        .seoDataSection {
+          background: #ffffff;
+          border-top: 1px solid #e2e8f0;
+        }
         .seoContentGrid {
           display: grid;
           grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
@@ -378,11 +440,120 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
           max-width: 720px;
           margin-bottom: 18px;
         }
+        .seoMetricGrid,
+        .seoDistributionGrid,
         .seoRelatedGrid,
         .seoFaqGrid {
           display: grid;
+          gap: 14px;
+        }
+        .seoMetricGrid,
+        .seoRelatedGrid,
+        .seoFaqGrid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .seoDistributionGrid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          margin-top: 14px;
+        }
+        .seoMetricCard,
+        .seoDistributionCard,
+        .seoExampleCard {
+          min-width: 0;
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-radius: 12px;
+          padding: 18px;
+        }
+        .seoMetricCard span,
+        .seoExampleId {
+          display: block;
+          color: #475569;
+          font-size: 0.76rem;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .seoMetricCard strong {
+          display: block;
+          margin-top: 8px;
+          color: #0f172a;
+          font-size: clamp(1.45rem, 3vw, 2.05rem);
+          line-height: 1.1;
+        }
+        .seoMetricCard p {
+          margin-top: 8px;
+        }
+        .seoDistributionCard dl {
+          display: grid;
+          gap: 10px;
+          margin: 0;
+        }
+        .seoDistributionCard div {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 12px;
+          align-items: start;
+          padding-top: 10px;
+          border-top: 1px solid #e2e8f0;
+        }
+        .seoDistributionCard dt {
+          min-width: 0;
+          color: #334155;
+          font-weight: 700;
+          line-height: 1.35;
+        }
+        .seoDistributionCard dd {
+          margin: 0;
+          color: #0f172a;
+          font-weight: 850;
+          white-space: nowrap;
+        }
+        .seoExamples {
+          margin-top: 18px;
+        }
+        .seoExampleGrid {
+          display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 14px;
+          margin-top: 12px;
+        }
+        .seoExampleCard {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+        .seoExampleCard h4 {
+          margin: 0;
+          color: #0f172a;
+          font-size: 1rem;
+          line-height: 1.35;
+        }
+        .seoExampleReason {
+          color: #1d4ed8;
+          font-size: 0.84rem;
+          font-weight: 800;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+        }
+        :global(.seoPage .seoExampleLink) {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: auto;
+          color: #1d4ed8;
+          font-weight: 800;
+          text-decoration: none;
+        }
+        :global(.seoPage .seoExampleLink:hover),
+        :global(.seoPage .seoExampleLink:focus-visible) {
+          text-decoration: underline;
+          text-underline-offset: 0.2em;
+        }
+        .seoSourceNote {
+          margin-top: 16px;
+          color: #475569;
+          font-size: 0.92rem;
         }
         :global(.seoPage .seoRelatedCard) {
           display: flex;
@@ -423,6 +594,9 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
         @media (max-width: 900px) {
           .seoHeroGrid,
           .seoContentGrid,
+          .seoMetricGrid,
+          .seoDistributionGrid,
+          .seoExampleGrid,
           .seoRelatedGrid,
           .seoFaqGrid {
             grid-template-columns: 1fr;

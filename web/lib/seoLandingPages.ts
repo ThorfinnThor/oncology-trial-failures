@@ -17,6 +17,30 @@ export type SeoLandingPageConfig = {
     label: string;
     text: string;
   }>;
+  dataInsights?: {
+    heading: string;
+    intro: string;
+    sourceNote: string;
+    metrics: Array<{
+      label: string;
+      value: string;
+      detail: string;
+    }>;
+    distributions: Array<{
+      heading: string;
+      items: Array<{
+        label: string;
+        value: string;
+      }>;
+    }>;
+    examples: Array<{
+      nctId: string;
+      title: string;
+      reason: string;
+      summary: string;
+      href: string;
+    }>;
+  };
   faqs: Array<{
     question: string;
     answer: string;
@@ -71,6 +95,64 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       { href: "/failed-clinical-trials", label: "Failed clinical trials", text: "Review how failure language appears in stopped trials." },
       { href: "/oncology-clinical-trial-failures", label: "Oncology trial failures", text: "Focus on oncology-specific failure patterns." },
     ],
+    dataInsights: {
+      heading: "What the current stopped-trial dataset shows",
+      intro:
+        "The database currently contains 23,452 stopped trial records from ClinicalTrials.gov. The useful SEO point is also the useful research point: most stopped trials are not automatically biological failures, so the page separates status from interpreted stop reason.",
+      sourceNote:
+        "Counts are generated from the site's current ClinicalTrials.gov-derived stopped-trial dataset. Because registry records can change, use these figures as research signals and verify important records at the source NCT page.",
+      metrics: [
+        { label: "Stopped records", value: "23,452", detail: "Trials marked terminated, withdrawn, or suspended." },
+        { label: "Likely biological failures", value: "1,813", detail: "Records classified as efficacy/futility or safety-driven biological failure signals." },
+        { label: "Biological share", value: "8%", detail: "A reminder that many stopped trials are operational, strategic, or unclear." },
+      ],
+      distributions: [
+        {
+          heading: "Top stop-reason buckets",
+          items: [
+            { label: "Operational", value: "12,013" },
+            { label: "Other/unknown", value: "9,534" },
+            { label: "Efficacy/futility", value: "1,096" },
+            { label: "Safety", value: "717" },
+          ],
+        },
+        {
+          heading: "Largest disease areas",
+          items: [
+            { label: "Oncology", value: "7,871" },
+            { label: "Other", value: "5,755" },
+            { label: "Infectious disease", value: "1,700" },
+            { label: "Gastroenterology and hepatology", value: "1,519" },
+          ],
+        },
+      ],
+      examples: [
+        {
+          nctId: "NCT07014735",
+          title: "Effect of Hyperglycaemia and Moxifloxacin on QTc Interval in T2DM",
+          reason: "Efficacy/futility",
+          summary:
+            "The registry stop language says the study was terminated early on futility grounds, making it a clear example of a trial-level scientific stop signal.",
+          href: "/trial/NCT07014735",
+        },
+        {
+          nctId: "NCT05999968",
+          title: "Abemaciclib plus darolutamide in prostate cancer after initial treatment",
+          reason: "Efficacy/futility",
+          summary:
+            "The record links termination to a related study that did not meet its primary endpoint, which is useful context for interpreting the stopped program.",
+          href: "/trial/NCT05999968",
+        },
+        {
+          nctId: "NCT04867837",
+          title: "OCTAPLEX in patients with acute major bleeding on DOAC therapy",
+          reason: "Efficacy/futility",
+          summary:
+            "The stop language references an interim analysis and futility based on treatment effect size, a good example of why source context matters.",
+          href: "/trial/NCT04867837",
+        },
+      ],
+    },
     faqs: [
       {
         question: "Is every terminated clinical trial a failure?",
@@ -134,6 +216,63 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       { href: "/terminated-clinical-trials", label: "Terminated clinical trials", text: "Learn how termination differs from scientific failure." },
       { href: "/outliers", label: "Outliers", text: "Find over-represented sponsors and disease areas." },
     ],
+    dataInsights: {
+      heading: "Failure reasons in the stopped-trial dataset",
+      intro:
+        "The current dataset shows why a single phrase like clinical trial failure is too broad. Operational stops dominate the stopped-trial universe, while efficacy/futility and safety records are smaller but more directly relevant to biological failure analysis.",
+      sourceNote:
+        "The reason buckets are analytical classifications based on ClinicalTrials.gov registry fields and sponsor-provided stop language. They are designed for screening and should not replace primary source review.",
+      metrics: [
+        { label: "Operational stops", value: "12,013", detail: "The largest bucket in the current stopped-trial dataset." },
+        { label: "Efficacy/futility stops", value: "1,096", detail: "Records with weak efficacy, futility, or endpoint-related signals." },
+        { label: "Safety stops", value: "717", detail: "Records where safety, toxicity, or risk-benefit language is the key signal." },
+      ],
+      distributions: [
+        {
+          heading: "Status mix",
+          items: [
+            { label: "Terminated", value: "16,085" },
+            { label: "Withdrawn", value: "6,782" },
+            { label: "Suspended", value: "585" },
+          ],
+        },
+        {
+          heading: "Common phases",
+          items: [
+            { label: "Phase 2", value: "10,664" },
+            { label: "Phase 1", value: "6,570" },
+            { label: "Phase 3", value: "3,949" },
+            { label: "Phase 4", value: "2,858" },
+          ],
+        },
+      ],
+      examples: [
+        {
+          nctId: "NCT07014735",
+          title: "Effect of Hyperglycaemia and Moxifloxacin on QTc Interval in T2DM",
+          reason: "Efficacy/futility",
+          summary:
+            "This record shows direct futility language, which is one of the clearest reasons a trial may stop for scientific rather than purely operational reasons.",
+          href: "/trial/NCT07014735",
+        },
+        {
+          nctId: "NCT05999968",
+          title: "Abemaciclib plus darolutamide in prostate cancer after initial treatment",
+          reason: "Efficacy/futility",
+          summary:
+            "This example shows how one stopped record can depend on the outcome of a related study, which is why program-level context matters.",
+          href: "/trial/NCT05999968",
+        },
+        {
+          nctId: "NCT04867837",
+          title: "OCTAPLEX in patients with acute major bleeding on DOAC therapy",
+          reason: "Efficacy/futility",
+          summary:
+            "The stop reason mentions interim analysis and futility, showing why trial design and analysis timing should be checked before interpretation.",
+          href: "/trial/NCT04867837",
+        },
+      ],
+    },
     faqs: [
       {
         question: "What is the most common reason clinical trials fail?",
@@ -197,6 +336,64 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       { href: "/explore", label: "Explore", text: "Search and filter stopped trial records." },
       { href: "/methods", label: "Methods", text: "Review source data and classification limits." },
     ],
+    dataInsights: {
+      heading: "Likely biological failures in the dataset",
+      intro:
+        "For this page, the strongest original-data view is the subset classified as likely biological failure. These are records where the stop language points toward efficacy/futility or safety rather than enrollment, funding, strategy, or operations.",
+      sourceNote:
+        "The biological-failure subset is a screening layer over ClinicalTrials.gov records. A record can still require publication, protocol, endpoint, and sponsor-disclosure review before being treated as a definitive failed trial.",
+      metrics: [
+        { label: "Biological-failure records", value: "1,813", detail: "Stopped trials classified as efficacy/futility or safety signals." },
+        { label: "Efficacy/futility", value: "1,096", detail: "The larger scientific-failure bucket in this subset." },
+        { label: "Safety", value: "717", detail: "Records where safety or risk-benefit language drove the classification." },
+      ],
+      distributions: [
+        {
+          heading: "Top phases in biological failures",
+          items: [
+            { label: "Phase 2", value: "970" },
+            { label: "Phase 3", value: "493" },
+            { label: "Phase 1", value: "430" },
+            { label: "Phase 4", value: "85" },
+          ],
+        },
+        {
+          heading: "Largest disease areas",
+          items: [
+            { label: "Oncology", value: "581" },
+            { label: "Other", value: "385" },
+            { label: "Infectious disease", value: "144" },
+            { label: "Gastroenterology and hepatology", value: "140" },
+          ],
+        },
+      ],
+      examples: [
+        {
+          nctId: "NCT07014735",
+          title: "Effect of Hyperglycaemia and Moxifloxacin on QTc Interval in T2DM",
+          reason: "Efficacy/futility",
+          summary:
+            "A direct futility stop signal, useful for users searching for failed clinical trials where the registry language points to scientific performance.",
+          href: "/trial/NCT07014735",
+        },
+        {
+          nctId: "NCT05999968",
+          title: "Abemaciclib plus darolutamide in prostate cancer after initial treatment",
+          reason: "Efficacy/futility",
+          summary:
+            "The trial record connects termination to a related study missing its primary endpoint, making it relevant to program-level failure research.",
+          href: "/trial/NCT05999968",
+        },
+        {
+          nctId: "NCT04867837",
+          title: "OCTAPLEX in patients with acute major bleeding on DOAC therapy",
+          reason: "Efficacy/futility",
+          summary:
+            "The stop language references futility at interim analysis, a common phrase pattern in likely biological-failure records.",
+          href: "/trial/NCT04867837",
+        },
+      ],
+    },
     faqs: [
       {
         question: "What is the difference between a failed trial and a stopped trial?",
@@ -260,6 +457,64 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       { href: "/clinical-trial-futility", label: "Clinical trial futility", text: "Study futility and weak efficacy signals." },
       { href: "/sponsor-insights", label: "Sponsor insights", text: "Compare stopped trials by sponsor." },
     ],
+    dataInsights: {
+      heading: "Oncology-specific stopped-trial signals",
+      intro:
+        "Oncology is the largest disease area in the broader stopped-trial dataset. The current oncology slice includes many operational and unclear stops, but also hundreds of records with efficacy/futility or safety signals that deserve deeper review.",
+      sourceNote:
+        "Oncology counts use the site's disease-area matching across ClinicalTrials.gov-derived records. Cancer trial interpretation can be highly context-dependent because biomarkers, combinations, and standards of care change quickly.",
+      metrics: [
+        { label: "Oncology-related records", value: "8,814", detail: "Stopped trials matched to oncology or cancer-related disease-area language." },
+        { label: "Likely biological failures", value: "665", detail: "Oncology records classified as efficacy/futility or safety signals." },
+        { label: "Biological share", value: "8%", detail: "Many stopped oncology studies are operational, strategic, or unclear rather than direct scientific failures." },
+      ],
+      distributions: [
+        {
+          heading: "Common oncology conditions",
+          items: [
+            { label: "Breast cancer", value: "471" },
+            { label: "Multiple myeloma", value: "290" },
+            { label: "Prostate cancer", value: "275" },
+            { label: "Melanoma", value: "216" },
+          ],
+        },
+        {
+          heading: "Top oncology phases",
+          items: [
+            { label: "Phase 2", value: "5,106" },
+            { label: "Phase 1", value: "3,748" },
+            { label: "Phase 3", value: "775" },
+            { label: "Early phase 1", value: "243" },
+          ],
+        },
+      ],
+      examples: [
+        {
+          nctId: "NCT05491317",
+          title: "Immunoradiotherapy combinations in metastatic solid tumors",
+          reason: "Efficacy/futility",
+          summary:
+            "The registry reason says the sponsor did not proceed to randomized Phase 2 due to lack of efficacy, a concrete oncology failure signal.",
+          href: "/trial/NCT05491317",
+        },
+        {
+          nctId: "NCT01012297",
+          title: "Gemcitabine and docetaxel with or without bevacizumab",
+          reason: "Efficacy/futility",
+          summary:
+            "This cancer trial closed early for futility, making it useful for users studying endpoint and efficacy-related oncology stops.",
+          href: "/trial/NCT01012297",
+        },
+        {
+          nctId: "NCT00253318",
+          title: "RAD001 plus docetaxel in metastatic breast cancer",
+          reason: "Safety",
+          summary:
+            "The stop language combines toxicity and lack of efficacy, showing why oncology failures often need both safety and efficacy context.",
+          href: "/trial/NCT00253318",
+        },
+      ],
+    },
     faqs: [
       {
         question: "Are all oncology trial failures caused by lack of efficacy?",
@@ -323,6 +578,64 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       { href: "/why-clinical-trials-fail", label: "Why trials fail", text: "Learn common failure categories." },
       { href: "/explore", label: "Explore", text: "Filter stopped trial records." },
     ],
+    dataInsights: {
+      heading: "What termination records show",
+      intro:
+        "The terminated-trials slice is the largest status group in the database. It is useful for SEO and research because users often search termination status directly, but the dataset shows why termination must be paired with reason classification.",
+      sourceNote:
+        "Termination counts are based on the ClinicalTrials.gov overall status field. The interpretation of why a terminated trial stopped comes from sponsor-provided stop text and the site's reason-bucket classification.",
+      metrics: [
+        { label: "Terminated records", value: "16,085", detail: "Trials with overall status TERMINATED in the current dataset." },
+        { label: "Biological failures", value: "1,677", detail: "Terminated records classified as efficacy/futility or safety signals." },
+        { label: "Biological share", value: "10%", detail: "Termination is not the same as scientific failure." },
+      ],
+      distributions: [
+        {
+          heading: "Termination reason buckets",
+          items: [
+            { label: "Operational", value: "8,613" },
+            { label: "Other/unknown", value: "5,749" },
+            { label: "Efficacy/futility", value: "1,043" },
+            { label: "Safety", value: "634" },
+          ],
+        },
+        {
+          heading: "Top terminated-trial phases",
+          items: [
+            { label: "Phase 2", value: "7,513" },
+            { label: "Phase 1", value: "4,612" },
+            { label: "Phase 3", value: "2,819" },
+            { label: "Phase 4", value: "1,811" },
+          ],
+        },
+      ],
+      examples: [
+        {
+          nctId: "NCT07014735",
+          title: "Effect of Hyperglycaemia and Moxifloxacin on QTc Interval in T2DM",
+          reason: "Efficacy/futility",
+          summary:
+            "A terminated record whose stop language directly references futility, illustrating why the reason field is more informative than status alone.",
+          href: "/trial/NCT07014735",
+        },
+        {
+          nctId: "NCT05999968",
+          title: "Abemaciclib plus darolutamide in prostate cancer after initial treatment",
+          reason: "Efficacy/futility",
+          summary:
+            "A terminated oncology-related record connected to a related study missing its primary endpoint.",
+          href: "/trial/NCT05999968",
+        },
+        {
+          nctId: "NCT04867837",
+          title: "OCTAPLEX in patients with acute major bleeding on DOAC therapy",
+          reason: "Efficacy/futility",
+          summary:
+            "This terminated trial references interim-analysis futility, a stronger scientific signal than termination status alone.",
+          href: "/trial/NCT04867837",
+        },
+      ],
+    },
     faqs: [
       {
         question: "Does terminated mean the drug failed?",
@@ -386,6 +699,63 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       { href: "/clinical-trial-failures", label: "Clinical trial failures", text: "Search the broader failure database." },
       { href: "/outliers", label: "Outliers", text: "Find over-represented futility patterns." },
     ],
+    dataInsights: {
+      heading: "Futility and weak-efficacy records",
+      intro:
+        "The futility page now uses a targeted dataset slice: records with futility, lack-of-efficacy, failed-endpoint, insufficient-benefit, or related weak-efficacy language. This makes the page materially different from a generic definition of futility.",
+      sourceNote:
+        "The futility slice is based on registry stop language and reason-bucket signals. Use it to find candidate records, then verify the NCT entry, endpoint design, interim-analysis rules, and any sponsor publications.",
+      metrics: [
+        { label: "Futility-related records", value: "1,251", detail: "Stopped records matching futility or related weak-efficacy language." },
+        { label: "Likely biological failures", value: "1,112", detail: "Records in this slice classified as efficacy/futility or safety biological signals." },
+        { label: "Biological share", value: "89%", detail: "Futility language is much more concentrated in scientific-failure records than the full dataset." },
+      ],
+      distributions: [
+        {
+          heading: "Futility-related status mix",
+          items: [
+            { label: "Terminated", value: "1,189" },
+            { label: "Withdrawn", value: "43" },
+            { label: "Suspended", value: "19" },
+          ],
+        },
+        {
+          heading: "Top phases in futility records",
+          items: [
+            { label: "Phase 2", value: "671" },
+            { label: "Phase 3", value: "382" },
+            { label: "Phase 1", value: "214" },
+            { label: "Phase 4", value: "69" },
+          ],
+        },
+      ],
+      examples: [
+        {
+          nctId: "NCT07014735",
+          title: "Effect of Hyperglycaemia and Moxifloxacin on QTc Interval in T2DM",
+          reason: "Efficacy/futility",
+          summary:
+            "The trial was terminated early on futility grounds, making it a direct example for users searching clinical trial futility.",
+          href: "/trial/NCT07014735",
+        },
+        {
+          nctId: "NCT05999968",
+          title: "Abemaciclib plus darolutamide in prostate cancer after initial treatment",
+          reason: "Efficacy/futility",
+          summary:
+            "The record ties termination to a related study missing its primary endpoint, an adjacent weak-efficacy signal.",
+          href: "/trial/NCT05999968",
+        },
+        {
+          nctId: "NCT04867837",
+          title: "OCTAPLEX in patients with acute major bleeding on DOAC therapy",
+          reason: "Efficacy/futility",
+          summary:
+            "The stop language mentions futility based on treatment effect size at interim analysis, which is exactly the kind of record this page surfaces.",
+          href: "/trial/NCT04867837",
+        },
+      ],
+    },
     faqs: [
       {
         question: "Is futility the same as lack of efficacy?",
