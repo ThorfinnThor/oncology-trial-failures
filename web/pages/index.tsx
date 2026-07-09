@@ -249,6 +249,46 @@ export default function HomePage() {
                   <span className="navCardFooter">Open page →</span>
                 </Link>
               </div>
+
+              <div className="sectionHeading guideHeading">
+                <h2>Clinical trial failure research guides</h2>
+                <p>
+                  These focused pages explain the language people use when researching clinical trial failures,
+                  failed clinical trials, termination reasons, oncology trial stops, and futility signals.
+                </p>
+              </div>
+              <div className="linkGrid">
+                <Link href="/clinical-trial-failures" className="navCard">
+                  <span className="navCardTitle">Clinical trial failures</span>
+                  <span className="navCardText">Search stopped trials and understand failure signals.</span>
+                  <span className="navCardFooter">Open guide →</span>
+                </Link>
+                <Link href="/why-clinical-trials-fail" className="navCard">
+                  <span className="navCardTitle">Why clinical trials fail</span>
+                  <span className="navCardText">Compare efficacy, safety, enrollment, funding, and operational causes.</span>
+                  <span className="navCardFooter">Open guide →</span>
+                </Link>
+                <Link href="/failed-clinical-trials" className="navCard">
+                  <span className="navCardTitle">Failed clinical trials</span>
+                  <span className="navCardText">Review how failure language appears in registry records.</span>
+                  <span className="navCardFooter">Open guide →</span>
+                </Link>
+                <Link href="/oncology-clinical-trial-failures" className="navCard">
+                  <span className="navCardTitle">Oncology trial failures</span>
+                  <span className="navCardText">Focus on cancer trial stops and biological failure patterns.</span>
+                  <span className="navCardFooter">Open guide →</span>
+                </Link>
+                <Link href="/terminated-clinical-trials" className="navCard">
+                  <span className="navCardTitle">Terminated clinical trials</span>
+                  <span className="navCardText">Separate terminated status from scientific failure.</span>
+                  <span className="navCardFooter">Open guide →</span>
+                </Link>
+                <Link href="/clinical-trial-futility" className="navCard">
+                  <span className="navCardTitle">Clinical trial futility</span>
+                  <span className="navCardText">Search weak efficacy and failed endpoint signals.</span>
+                  <span className="navCardFooter">Open guide →</span>
+                </Link>
+              </div>
             </div>
           </section>
 
@@ -552,6 +592,9 @@ export default function HomePage() {
         }
         .sectionHeading {
           margin-bottom: 16px;
+        }
+        .guideHeading {
+          margin-top: 30px;
         }
         .sectionHeading p {
           max-width: 760px;

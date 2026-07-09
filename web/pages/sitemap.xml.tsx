@@ -16,6 +16,12 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/outliers",
     "/methods",
     "/privacy",
+    "/clinical-trial-failures",
+    "/why-clinical-trials-fail",
+    "/failed-clinical-trials",
+    "/oncology-clinical-trial-failures",
+    "/terminated-clinical-trials",
+    "/clinical-trial-futility",
   ];
 
   const now = new Date().toISOString();
