@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import GuidesMenu from "./GuidesMenu";
+
 type Props = {
   q: string;
   setQ: (v: string) => void;
@@ -24,6 +26,7 @@ export function TopBar({ q, setQ, onCopyLink, onExport, onReset }: Props) {
               <Link className="text-gray-700 hover:underline" href="/overview">
                 Overview
               </Link>
+              <GuidesMenu />
               <Link className="text-gray-700 hover:underline" href="/sponsor-insights">
                 Sponsor insights
               </Link>

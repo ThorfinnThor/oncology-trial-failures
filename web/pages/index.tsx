@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 
+import GuidesMenu from "../components/GuidesMenu";
+
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "Clinical Trial Failures | Explore clinical trial failures and biological failure signals";
@@ -83,6 +85,7 @@ export default function HomePage() {
                 <Link className="navlink" href="/overview">
                   Overview
                 </Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">
                   Sponsor insights
                 </Link>
@@ -250,7 +253,7 @@ export default function HomePage() {
                 </Link>
               </div>
 
-              <div className="sectionHeading guideHeading">
+              <div className="sectionHeading guideHeading" id="research-guides">
                 <h2>Clinical trial failure research guides</h2>
                 <p>
                   These focused pages explain the language people use when researching clinical trial failures,

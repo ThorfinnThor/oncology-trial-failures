@@ -8,6 +8,7 @@ import { loadIndex } from "@/lib/data";
 import { TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, reasonBucket } from "@/lib/filtering";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const TITLE = "Top sponsors and disease areas in stopped clinical trials";
 const DESCRIPTION =
@@ -348,6 +349,7 @@ export default function TopEntitiesPage() {
                 <Link className="navlink" href="/overview">
                   Overview
                 </Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">
                   Sponsor insights
                 </Link>

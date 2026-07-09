@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import { loadMeta } from "@/lib/data";
 import { DatasetMeta } from "@/lib/types";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const TITLE = "Methods and data sources — Clinical trial failures";
 const DESCRIPTION =
@@ -62,6 +63,7 @@ export default function MethodsPage() {
               <Link className="navlink" href="/overview">
                 Overview
               </Link>
+              <GuidesMenu />
               <Link className="navlink" href="/sponsor-insights">
                 Sponsor insights
               </Link>

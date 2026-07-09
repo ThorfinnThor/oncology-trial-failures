@@ -7,6 +7,7 @@ import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const TITLE = "Sponsor insights for stopped clinical trials | Clinical Trial Failures";
 const DESCRIPTION =
@@ -586,6 +587,7 @@ export default function SponsorInsightsPage() {
                   <Link className="navlink" href="/overview">
                     Overview
                   </Link>
+                  <GuidesMenu />
                   <Link className="navlink" href="/sponsor-insights" aria-current="page">
                     Sponsor insights
                   </Link>
@@ -629,6 +631,7 @@ export default function SponsorInsightsPage() {
                   <Link className="navlink" href="/overview">
                     Overview
                   </Link>
+                  <GuidesMenu />
                   <Link className="navlink" href="/sponsor-insights" aria-current="page">
                     Sponsor insights
                   </Link>
@@ -674,6 +677,7 @@ export default function SponsorInsightsPage() {
                   <Link className="navlink" href="/overview">
                     Overview
                   </Link>
+                  <GuidesMenu />
                   <Link className="navlink" href="/sponsor-insights" aria-current="page">
                     Sponsor insights
                   </Link>

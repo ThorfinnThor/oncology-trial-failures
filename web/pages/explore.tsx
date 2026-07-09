@@ -17,6 +17,7 @@ import DetailsDrawer from "@/components/DetailsDrawer";
 import CompareModal from "@/components/CompareModal";
 import DownloadMenu from "@/components/DownloadMenu";
 import { Facet, ScientificFailureToggle } from "@/components/FacetRail";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const TITLE = "Explore clinical trial failures | Search stopped clinical trials";
 const DESCRIPTION =
@@ -184,6 +185,7 @@ export default function ExplorePage() {
                 <Link className="navlink" href="/overview">
                   Overview
                 </Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">
                   Sponsor insights
                 </Link>

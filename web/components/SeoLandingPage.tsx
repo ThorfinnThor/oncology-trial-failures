@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
+import GuidesMenu from "./GuidesMenu";
 import { OG_IMAGE, SITE_URL, type SeoLandingPageConfig } from "../lib/seoLandingPages";
 
 type SeoLandingPageProps = {
@@ -100,6 +101,7 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
                 <Link className="navlink" href="/overview">
                   Overview
                 </Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">
                   Sponsor insights
                 </Link>

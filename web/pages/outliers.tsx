@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from "react";
 import { loadSpecialness } from "@/lib/data";
 import { UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const TITLE = "Clinical trial failure outliers | Sponsors and disease areas";
 const DESCRIPTION =
@@ -395,6 +396,7 @@ export default function OutliersPage() {
                 <Link className="navlink" href="/overview">
                   Overview
                 </Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">
                   Sponsor insights
                 </Link>

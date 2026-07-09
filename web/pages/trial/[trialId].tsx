@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -134,6 +135,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                 <Link className="navlink" href="/overview">
                   Overview
                 </Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">
                   Sponsor insights
                 </Link>

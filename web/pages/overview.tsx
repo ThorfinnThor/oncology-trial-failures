@@ -7,6 +7,7 @@ import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const TITLE = "Clinical trial failure overview | Dataset patterns and stop reasons";
 const DESCRIPTION =
@@ -590,6 +591,7 @@ export default function OverviewPage() {
                   <Link className="navlink" href="/overview" aria-current="page">
                     Overview
                   </Link>
+                  <GuidesMenu />
                   <Link className="navlink" href="/sponsor-insights">
                     Sponsor insights
                   </Link>
@@ -633,6 +635,7 @@ export default function OverviewPage() {
                   <Link className="navlink" href="/overview" aria-current="page">
                     Overview
                   </Link>
+                  <GuidesMenu />
                   <Link className="navlink" href="/sponsor-insights">
                     Sponsor insights
                   </Link>
@@ -678,6 +681,7 @@ export default function OverviewPage() {
                 <Link className="navlink" href="/overview" aria-current="page">
                   Overview
                 </Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">
                   Sponsor insights
                 </Link>

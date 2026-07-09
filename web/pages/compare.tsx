@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 
 import { decodeState } from "@/lib/urlState";
 import { UrlState } from "@/lib/types";
+import GuidesMenu from "@/components/GuidesMenu";
 
 const TITLE = "Compare selected clinical trial failures";
 const DESCRIPTION =
@@ -38,6 +39,7 @@ export default function ComparePage() {
               <nav className="nav" aria-label="Primary">
                 <Link className="navlink" href="/explore">Explore</Link>
                 <Link className="navlink" href="/overview">Overview</Link>
+                <GuidesMenu />
                 <Link className="navlink" href="/sponsor-insights">Sponsor insights</Link>
                 <Link className="navlink" href="/outliers">Outliers</Link>
                 <Link className="navlink" href="/top-entities">Top entities</Link>
