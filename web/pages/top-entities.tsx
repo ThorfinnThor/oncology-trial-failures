@@ -609,6 +609,10 @@ export default function TopEntitiesPage() {
           }
 
           .shareLeaders .slPanelHead {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 6px 16px;
             padding-bottom: 12px;
             border-bottom: 1px solid var(--border);
           }
@@ -625,6 +629,9 @@ export default function TopEntitiesPage() {
             gap: 8px;
             align-items: center;
             flex-wrap: wrap;
+            grid-column: 2;
+            grid-row: 1 / span 2;
+            margin-top: 0 !important;
           }
           .shareLeaders .teTabBtn {
             padding: 6px 10px;
@@ -632,6 +639,10 @@ export default function TopEntitiesPage() {
           }
           .shareLeaders .slSmall {
             font-size: 12px;
+          }
+          .shareLeaders .slPanelHead > .muted:last-child {
+            grid-column: 1 / -1;
+            margin-top: 4px !important;
           }
 
           /* Controls */
@@ -656,6 +667,16 @@ export default function TopEntitiesPage() {
             .shareLeaders .slControls {
               flex-direction: column;
               align-items: stretch;
+            }
+            .shareLeaders .slPanel {
+              padding: 14px !important;
+            }
+            .shareLeaders .slPanelHead {
+              display: block;
+              padding-bottom: 10px;
+            }
+            .shareLeaders .teTabs {
+              margin-top: 10px !important;
             }
             .shareLeaders .slMinTrials {
               width: 100%;

@@ -671,11 +671,21 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
 
   /* Force nav to align to left and remove any leftover justification */
   .nav {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    flex-wrap: nowrap;
     justify-content: flex-start !important;
     align-items: center;
-    gap: 8px 10px;
+    gap: 8px;
     margin: 0;
-    padding: 0;
+    padding: 0 0 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
   }
 
   /* Make each nav item consistent height to prevent “baseline wobble” */
@@ -691,7 +701,8 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
   }
 
   .guidesMenu {
-    width: 100%;
+    width: auto;
+    flex: 0 0 auto;
   }
 
   .guidesSummary {
@@ -700,12 +711,15 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
   }
 
   .guidesPanel {
-    position: static;
-    width: 100%;
-    max-width: 360px;
-    margin-top: 6px;
+    position: fixed;
+    top: 64px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+    margin-top: 0;
     grid-template-columns: 1fr;
-    box-shadow: none;
+    box-shadow: 0 18px 46px rgba(15,23,42,.14);
   }
 
   .navlink[aria-current="page"] {

@@ -1621,6 +1621,8 @@ export default function SponsorInsightsPage() {
         }
 
         .sCard {
+          display: flex;
+          flex-direction: column;
           background: var(--surface-2);
           border: 1px solid var(--border);
           border-radius: 18px;
@@ -1784,12 +1786,12 @@ export default function SponsorInsightsPage() {
         @media (min-width: 1100px) {
           .sponsorLayout {
             display: grid;
-            grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) minmax(0, 1.65fr);
+            grid-template-columns: repeat(12, minmax(0, 1fr));
             grid-template-areas:
-              "summary summary areas"
-              "buckets phases areas";
+              "summary summary summary summary summary summary areas areas areas areas areas areas"
+              "buckets buckets buckets buckets buckets buckets phases phases phases phases phases phases";
             gap: 16px;
-            align-items: start;
+            align-items: stretch;
           }
           .sSummary {
             grid-area: summary;
@@ -1802,16 +1804,34 @@ export default function SponsorInsightsPage() {
           }
           .sAreas {
             grid-area: areas;
-            align-self: start;
           }
           .sScroll {
-            max-height: 520px;
+            max-height: 360px;
           }
         }
 
         @media (max-width: 420px) {
           .sKpis {
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 7px;
+          }
+          .sCard {
+            border-radius: 14px;
+            padding: 12px;
+          }
+          .sSummary {
+            padding: 13px;
+          }
+          .sKpi {
+            padding: 8px 7px;
+            border-radius: 11px;
+          }
+          .sKpiLabel {
+            font-size: 10px;
+            letter-spacing: 0.04em;
+          }
+          .sKpiVal {
+            font-size: 16px;
           }
         }
 

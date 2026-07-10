@@ -599,24 +599,24 @@ export default function OutliersPage() {
           }
 
           .outliers .olControls {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 12px;
             align-items: flex-end;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
           }
           .outliers .olControl {
-            min-width: 190px;
+            min-width: 0;
           }
           .outliers .olMin {
-            width: 190px;
+            width: 100%;
           }
 
           .outliers .olTopPick {
             border: 1px dashed var(--border);
             border-radius: 14px;
-            padding: 12px;
-            margin: 12px 0 14px;
+            padding: 11px 12px;
+            margin: 10px 0 14px;
             background: rgba(15, 23, 42, 0.02);
           }
           .outliers .olTopPickName {
@@ -712,7 +712,7 @@ export default function OutliersPage() {
               align-items: flex-start;
             }
             .outliers .olControl {
-              min-width: 100%;
+              min-width: 0;
             }
             .outliers .select,
             .outliers .olMin {

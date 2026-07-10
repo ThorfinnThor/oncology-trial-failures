@@ -569,8 +569,8 @@ export default function OverviewPage() {
 
   // Precompute for wide table min-width (desktop)
   const matrixMinWidth = useMemo(() => {
-    // Phase col (~180) + per-bucket col (~150)
-    return 180 + displayedBuckets.length * 150;
+    // Phase col + per-bucket columns; keep desktop scroll regions compact.
+    return 150 + displayedBuckets.length * 128;
   }, [displayedBuckets.length]);
 
   if (loading) {
@@ -1601,12 +1601,12 @@ export default function OverviewPage() {
         .tblMatrix {
           width: 100%;
           border-collapse: collapse;
-          font-size: 13px;
+          font-size: 12px;
         }
         .tblMatrix th,
         .tblMatrix td {
           border-bottom: 1px solid var(--border);
-          padding: 9px 10px;
+          padding: 8px 8px;
           vertical-align: top;
         }
         .tblMatrix th {
@@ -1618,10 +1618,10 @@ export default function OverviewPage() {
           white-space: nowrap;
         }
         .bucketHead {
-          min-width: 150px;
+          min-width: 128px;
         }
         .phaseCell {
-          min-width: 180px;
+          min-width: 150px;
         }
         .matrixCell {
           min-width: 150px;
