@@ -146,6 +146,15 @@ export default function HomePage() {
               </div>
 
               <aside className="heroPanel" aria-label="Key analysis paths">
+                <figure className="heroVisual" aria-label="Clinical trial failure analytics visual">
+                  <img
+                    src="/images/clinical-trial-failures-hero-v12.webp"
+                    alt="Color-coded biomedical sample tubes in a laboratory rack"
+                    width={2000}
+                    height={1333}
+                    loading="eager"
+                  />
+                </figure>
                 <div className="panelCard emphasisCard">
                   <span className="panelLabel">Primary focus</span>
                   <h2>Biological failure signals</h2>
@@ -297,13 +306,24 @@ export default function HomePage() {
 
           <section className="section trustSection">
             <div className="container">
-              <div className="sectionHeading">
-                <h2>Source, scope, and verification</h2>
-                <p>
-                  Medical and clinical-trial data needs context. This site summarizes registry records and
-                  highlights likely failure signals, but each trial should still be verified against its primary
-                  ClinicalTrials.gov record and related sponsor publications.
-                </p>
+              <div className="trustIntroGrid">
+                <div className="sectionHeading">
+                  <h2>Source, scope, and verification</h2>
+                  <p>
+                    Medical and clinical-trial data needs context. This site summarizes registry records and
+                    highlights likely failure signals, but each trial should still be verified against its primary
+                    ClinicalTrials.gov record and related sponsor publications.
+                  </p>
+                </div>
+                <figure className="trustVisual" aria-label="Methodology and source verification visual">
+                  <img
+                    src="/images/clinical-trial-methodology-v12.webp"
+                    alt="Close-up analytics screen with charts used to review clinical trial data patterns"
+                    width={2000}
+                    height={1439}
+                    loading="lazy"
+                  />
+                </figure>
               </div>
               <div className="trustGrid">
                 <article className="cardSurface">
@@ -385,9 +405,23 @@ export default function HomePage() {
           padding-right: 20px;
         }
         .hero {
+          position: relative;
+          overflow: hidden;
           padding: 32px 0 24px;
           background: linear-gradient(180deg, #ffffff 0%, #f2f6ff 100%);
           border-bottom: 1px solid #e2e8f0;
+        }
+        .hero::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.9) 42%, rgba(242,246,255,0.44) 100%);
+          pointer-events: none;
+        }
+        .hero .container {
+          position: relative;
+          z-index: 2;
         }
         .heroGrid,
         .sectionGrid {
@@ -536,6 +570,46 @@ export default function HomePage() {
         .heroPanel {
           gap: 16px;
         }
+        .heroVisual,
+        .trustVisual {
+          margin: 0;
+          overflow: hidden;
+          border: 1px solid #dbeafe;
+          border-radius: 12px;
+          background: #ffffff;
+          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+        }
+        .heroVisual {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 0;
+          width: min(58vw, 820px);
+          aspect-ratio: 16 / 9;
+          border: 0;
+          border-radius: 0;
+          box-shadow: none;
+          opacity: 0.82;
+          pointer-events: none;
+        }
+        .trustVisual {
+          aspect-ratio: 16 / 9;
+          align-self: start;
+        }
+        .heroVisual img,
+        .trustVisual img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .heroVisual img {
+          object-position: 58% center;
+        }
+        .trustVisual img {
+          object-position: center;
+        }
         .miniGrid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
           align-items: stretch;
@@ -651,9 +725,17 @@ export default function HomePage() {
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 14px;
         }
+        .trustIntroGrid {
+          display: grid;
+          grid-template-columns: minmax(0, 0.92fr) minmax(300px, 0.72fr);
+          gap: 22px;
+          align-items: center;
+          margin-bottom: 16px;
+        }
         @media (max-width: 1040px) {
           .heroGrid,
           .sectionGrid,
+          .trustIntroGrid,
           .faqGrid,
           .trustGrid {
             grid-template-columns: 1fr;
@@ -679,6 +761,10 @@ export default function HomePage() {
           }
           .hero {
             background: #f8fafc;
+            overflow: visible;
+          }
+          .hero::before {
+            display: none;
           }
           .altSection {
             background: transparent;
@@ -689,6 +775,7 @@ export default function HomePage() {
           .stackGrid,
           .linkGrid,
           .faqGrid,
+          .trustIntroGrid,
           .trustGrid {
             grid-template-columns: 1fr;
             gap: 12px;
@@ -759,6 +846,24 @@ export default function HomePage() {
           .stackGrid,
           .faqGrid {
             gap: 12px;
+          }
+          .heroVisual,
+          .trustVisual {
+            border-radius: 12px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+          }
+          .heroVisual {
+            position: static;
+            width: 100%;
+            opacity: 1;
+            border: 1px solid #dbeafe;
+            order: -1;
+          }
+          .heroVisual img {
+            object-position: 62% center;
+          }
+          .miniGrid {
+            display: none;
           }
           :global(.homePage .navCard) {
             min-height: 0;

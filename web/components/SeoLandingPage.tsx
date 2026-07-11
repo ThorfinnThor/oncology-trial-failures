@@ -132,15 +132,26 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
                 </div>
               </div>
 
-              <aside className="seoSignalCard" aria-label="Key points">
-                <span className="seoCardLabel">Fast summary</span>
-                <h2>What to know</h2>
-                <ul>
-                  {page.keyPoints.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              </aside>
+              <div className="seoHeroSide">
+                <figure className="seoHeroImage" aria-label="Clinical trial failure guide visual">
+                  <img
+                    src="/images/clinical-trial-failures-guides-v12.webp"
+                    alt="Laptop showing an analytics dashboard for reviewing research data"
+                    width={2000}
+                    height={1425}
+                    loading="eager"
+                  />
+                </figure>
+                <aside className="seoSignalCard" aria-label="Key points">
+                  <span className="seoCardLabel">Fast summary</span>
+                  <h2>What to know</h2>
+                  <ul>
+                    {page.keyPoints.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </aside>
+              </div>
             </div>
           </section>
 
@@ -295,6 +306,27 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
           grid-template-columns: minmax(0, 1.08fr) minmax(280px, 0.72fr);
           gap: 28px;
           align-items: start;
+        }
+        .seoHeroSide {
+          display: grid;
+          gap: 14px;
+          min-width: 0;
+        }
+        .seoHeroImage {
+          margin: 0;
+          overflow: hidden;
+          aspect-ratio: 16 / 9;
+          border: 1px solid #dbeafe;
+          border-radius: 12px;
+          background: #ffffff;
+          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+        }
+        .seoHeroImage img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: 62% center;
         }
         .seoEyebrow,
         .seoCardLabel {
@@ -614,6 +646,13 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
           }
           .seoHero {
             padding-top: 26px;
+          }
+          .seoHeroSide {
+            gap: 12px;
+          }
+          .seoHeroImage {
+            border-radius: 12px;
+            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
           }
           .seoSection {
             padding: 28px 0;
