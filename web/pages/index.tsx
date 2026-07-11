@@ -163,25 +163,26 @@ export default function HomePage() {
                     rather than purely administrative or strategic changes.
                   </p>
                 </div>
-                <div className="miniGrid">
-                  <div className="panelCard miniCard">
-                    <h3>Efficacy and futility</h3>
-                    <p>Screen for weak efficacy, lack of benefit, or failed endpoints.</p>
-                  </div>
-                  <div className="panelCard miniCard">
-                    <h3>Safety-driven stops</h3>
-                    <p>Review adverse events, tolerability issues, and risk signals.</p>
-                  </div>
-                  <div className="panelCard miniCard">
-                    <h3>Fast comparison</h3>
-                    <p>Compare sponsors, repeated patterns, and trial-level stop language.</p>
-                  </div>
-                  <div className="panelCard miniCard">
-                    <h3>Structured filtering</h3>
-                    <p>Filter by status, phase, disease area, reason bucket, and likely scientific failure.</p>
-                  </div>
-                </div>
               </aside>
+
+              <div className="miniGrid" aria-label="Core analysis shortcuts">
+                <div className="panelCard miniCard">
+                  <h3>Efficacy and futility</h3>
+                  <p>Screen for weak efficacy, lack of benefit, or failed endpoints.</p>
+                </div>
+                <div className="panelCard miniCard">
+                  <h3>Safety-driven stops</h3>
+                  <p>Review adverse events, tolerability issues, and risk signals.</p>
+                </div>
+                <div className="panelCard miniCard">
+                  <h3>Fast comparison</h3>
+                  <p>Compare sponsors, repeated patterns, and trial-level stop language.</p>
+                </div>
+                <div className="panelCard miniCard">
+                  <h3>Structured filtering</h3>
+                  <p>Filter by status, phase, disease area, reason bucket, and likely scientific failure.</p>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -602,7 +603,8 @@ export default function HomePage() {
           object-position: center;
         }
         .miniGrid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
+          grid-column: 1 / -1;
+          grid-template-columns: repeat(4, minmax(0, 1fr));
           align-items: stretch;
         }
         .section {
@@ -731,9 +733,11 @@ export default function HomePage() {
           .trustGrid {
             grid-template-columns: 1fr;
           }
+          .miniGrid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
         }
         @media (max-width: 900px) {
-          .miniGrid,
           .linkGrid {
             grid-template-columns: 1fr;
           }
