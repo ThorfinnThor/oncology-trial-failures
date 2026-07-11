@@ -569,6 +569,7 @@ export default function HomePage() {
         }
         .heroPanel {
           gap: 16px;
+          min-width: 0;
         }
         .heroVisual,
         .trustVisual {
@@ -580,18 +581,8 @@ export default function HomePage() {
           box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
         }
         .heroVisual {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          z-index: 0;
-          width: min(58vw, 820px);
           aspect-ratio: 16 / 9;
-          border: 0;
-          border-radius: 0;
-          box-shadow: none;
-          opacity: 0.82;
-          pointer-events: none;
+          align-self: start;
         }
         .trustVisual {
           aspect-ratio: 16 / 9;
@@ -853,10 +844,7 @@ export default function HomePage() {
             box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
           }
           .heroVisual {
-            position: static;
             width: 100%;
-            opacity: 1;
-            border: 1px solid #dbeafe;
             order: -1;
           }
           .heroVisual img {
