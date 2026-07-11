@@ -1789,7 +1789,7 @@ export default function SponsorInsightsPage() {
             grid-template-columns: repeat(12, minmax(0, 1fr));
             grid-template-areas:
               "summary summary summary summary summary summary areas areas areas areas areas areas"
-              "buckets buckets buckets buckets buckets buckets phases phases phases phases phases phases";
+              "buckets buckets buckets phases phases phases areas areas areas areas areas areas";
             gap: 16px;
             align-items: stretch;
           }
@@ -1804,6 +1804,13 @@ export default function SponsorInsightsPage() {
           }
           .sAreas {
             grid-area: areas;
+          }
+          .sCard {
+            height: 100%;
+          }
+          .sAreas .sScroll {
+            flex: 1 1 auto;
+            max-height: none;
           }
           .sScroll {
             max-height: 360px;

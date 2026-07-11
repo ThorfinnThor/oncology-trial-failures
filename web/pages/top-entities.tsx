@@ -549,6 +549,7 @@ export default function TopEntitiesPage() {
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 14px;
+            flex-wrap: wrap;
           }
           .shareLeaders .slTitle {
             margin: 0;
@@ -600,6 +601,7 @@ export default function TopEntitiesPage() {
           .shareLeaders .slPanel {
             padding: 18px !important;
             min-width: 0;
+            overflow: hidden;
           }
           .shareLeaders .slGrid2 > * {
             min-width: 0;
@@ -648,9 +650,9 @@ export default function TopEntitiesPage() {
           /* Controls */
           .shareLeaders .slControls {
             margin-top: 14px;
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 12px;
-            flex-wrap: wrap;
             align-items: flex-end;
           }
           .shareLeaders .slControl {
@@ -665,7 +667,7 @@ export default function TopEntitiesPage() {
           }
           @media (max-width: 520px) {
             .shareLeaders .slControls {
-              flex-direction: column;
+              grid-template-columns: 1fr;
               align-items: stretch;
             }
             .shareLeaders .slPanel {

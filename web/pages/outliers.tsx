@@ -573,6 +573,7 @@ export default function OutliersPage() {
             justify-content: space-between;
             gap: 12px;
             margin-bottom: 14px;
+            flex-wrap: wrap;
           }
           .outliers .olTitle {
             margin: 0;
@@ -596,11 +597,12 @@ export default function OutliersPage() {
 
           .outliers .olPanel {
             padding: 16px;
+            min-width: 0;
           }
 
           .outliers .olControls {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
             gap: 12px;
             align-items: flex-end;
             margin-bottom: 14px;
@@ -713,6 +715,9 @@ export default function OutliersPage() {
             }
             .outliers .olControl {
               min-width: 0;
+            }
+            .outliers .olPanel {
+              padding: 12px;
             }
             .outliers .select,
             .outliers .olMin {

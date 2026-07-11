@@ -2163,6 +2163,30 @@ export default function OverviewPage() {
             font-size: 18px;
           }
         }
+
+        @media (min-width: 981px) {
+          .grid2 {
+            align-items: stretch;
+          }
+          .grid2 > :global(.card) {
+            height: 100%;
+            min-width: 0;
+          }
+          .sectionHead {
+            min-height: 28px;
+          }
+        }
+
+        @media (max-width: 720px) {
+          .sectionHead {
+            align-items: flex-start;
+            gap: 6px;
+            margin-bottom: 8px;
+          }
+          .headerRight {
+            margin-top: 10px;
+          }
+        }
       `}</style>
     </>
   );

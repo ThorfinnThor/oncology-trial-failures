@@ -922,3 +922,20 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
     padding:0 16px 16px;
   }
 }
+
+/* Final shared polish: keep mobile control rows compact and prevent card overflow. */
+@media (max-width: 720px) {
+  .card {
+    border-radius: 14px;
+  }
+
+  .btn,
+  .btn-primary,
+  .input {
+    min-height: 42px;
+  }
+
+  .chip {
+    max-width: 100%;
+  }
+}

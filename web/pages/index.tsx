@@ -606,10 +606,10 @@ export default function HomePage() {
           align-items: stretch;
         }
         .section {
-          padding: 34px 0;
+          padding: 30px 0;
         }
         .hero + .section {
-          padding-top: 18px;
+          padding-top: 24px;
         }
         .sectionGrid {
           grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
@@ -661,6 +661,9 @@ export default function HomePage() {
         .sectionIntro {
           padding: 22px;
           height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
         .stackGrid {
           grid-template-rows: repeat(3, minmax(0, 1fr));
@@ -843,6 +846,7 @@ export default function HomePage() {
           .sectionIntro {
             display: grid;
             gap: 10px;
+            justify-content: stretch;
           }
           .actions {
             display: grid;
