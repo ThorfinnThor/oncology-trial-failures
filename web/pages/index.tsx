@@ -155,14 +155,6 @@ export default function HomePage() {
                     loading="eager"
                   />
                 </figure>
-                <div className="panelCard emphasisCard">
-                  <span className="panelLabel">Primary focus</span>
-                  <h2>Biological failure signals</h2>
-                  <p>
-                    Prioritize trials whose stop reasons point to efficacy, futility, or safety problems,
-                    rather than purely administrative or strategic changes.
-                  </p>
-                </div>
               </aside>
 
               <div className="miniGrid" aria-label="Core analysis shortcuts">
@@ -408,7 +400,7 @@ export default function HomePage() {
         .hero {
           position: relative;
           overflow: hidden;
-          padding: 32px 0 24px;
+          padding: 32px 0 12px;
           background: linear-gradient(180deg, #ffffff 0%, #f2f6ff 100%);
           border-bottom: 1px solid #e2e8f0;
         }
@@ -428,11 +420,17 @@ export default function HomePage() {
         .sectionGrid {
           display: grid;
           gap: 24px;
-          align-items: start;
+        }
+        .heroGrid {
+          align-items: stretch;
+        }
+        .sectionGrid {
+          align-items: stretch;
         }
         .heroGrid {
           grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
           gap: 28px;
+          row-gap: 16px;
         }
         .heroCopy {
           padding: 10px 0;
@@ -569,8 +567,8 @@ export default function HomePage() {
           gap: 14px;
         }
         .heroPanel {
-          gap: 16px;
           min-width: 0;
+          height: 100%;
         }
         .heroVisual,
         .trustVisual {
@@ -610,6 +608,9 @@ export default function HomePage() {
         .section {
           padding: 34px 0;
         }
+        .hero + .section {
+          padding-top: 18px;
+        }
         .sectionGrid {
           grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
         }
@@ -635,6 +636,18 @@ export default function HomePage() {
         .emphasisCard {
           background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
           border-color: #dbeafe;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .emphasisCard h2 {
+          font-size: clamp(1.55rem, 3vw, 2rem);
+        }
+        @media (min-width: 1041px) {
+          .heroVisual {
+            height: 100%;
+            aspect-ratio: auto;
+          }
         }
         .panelLabel {
           display: inline-block;
@@ -647,6 +660,11 @@ export default function HomePage() {
         }
         .sectionIntro {
           padding: 22px;
+          height: 100%;
+        }
+        .stackGrid {
+          grid-template-rows: repeat(3, minmax(0, 1fr));
+          height: 100%;
         }
         .bulletList {
           margin: 16px 0 0;
