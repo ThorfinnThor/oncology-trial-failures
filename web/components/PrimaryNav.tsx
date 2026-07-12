@@ -6,6 +6,7 @@ export type PrimaryNavItem =
   | "explore"
   | "overview"
   | "guides"
+  | "insights"
   | "sponsor-insights"
   | "outliers"
   | "top-entities"
@@ -29,6 +30,9 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
         Overview
       </Link>
       <GuidesMenu active={active === "guides"} />
+      <Link className="navlink" href="/insights" aria-current={current(active, "insights")}>
+        Insights
+      </Link>
       <Link className="navlink" href="/sponsor-insights" aria-current={current(active, "sponsor-insights")}>
         Sponsor insights
       </Link>

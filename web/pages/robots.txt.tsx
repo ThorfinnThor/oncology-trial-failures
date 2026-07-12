@@ -12,6 +12,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     `User-agent: *\n` +
     `Disallow: /api/\n` +
     `\n` +
+    `LLMs: ${SITE_URL}/llms.txt\n` +
     `Sitemap: ${SITE_URL}/sitemap.xml\n`;
 
   res.setHeader("Content-Type", "text/plain; charset=utf-8");

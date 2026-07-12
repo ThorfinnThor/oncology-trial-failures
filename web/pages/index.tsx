@@ -226,6 +226,11 @@ export default function HomePage() {
                   <span className="navCardText">Open sponsor-specific stopped-trial evidence pages.</span>
                   <span className="navCardFooter">Open hubs →</span>
                 </Link>
+                <Link href="/insights" className="navCard">
+                  <span className="navCardTitle">Insights</span>
+                  <span className="navCardText">Read data-backed notes from the stopped-trial database.</span>
+                  <span className="navCardFooter">Open insights →</span>
+                </Link>
                 <Link href="/methods" className="navCard">
                   <span className="navCardTitle">Methods</span>
                   <span className="navCardText">Review how the classifications and source checks work.</span>
@@ -245,6 +250,31 @@ export default function HomePage() {
                   <span className="navCardTitle">Top entities</span>
                   <span className="navCardText">See the sponsors and disease areas that appear most often.</span>
                   <span className="navCardFooter">Open page →</span>
+                </Link>
+              </div>
+
+              <div className="sectionHeading guideHeading" id="latest-insights">
+                <h2>Latest data-backed insights</h2>
+                <p>
+                  These are not generic blog posts. Each note uses numbers from the stopped-trial database and
+                  links back into the source views.
+                </p>
+              </div>
+              <div className="linkGrid">
+                <Link href="/insights/terminated-clinical-trials-are-not-always-failures" className="navCard">
+                  <span className="navCardTitle">Terminated trials are not always failures</span>
+                  <span className="navCardText">Why stopped status and scientific failure are not the same thing.</span>
+                  <span className="navCardFooter">Read insight →</span>
+                </Link>
+                <Link href="/insights/oncology-phase-2-clinical-trial-failure-signals" className="navCard">
+                  <span className="navCardTitle">Oncology Phase II failure signals</span>
+                  <span className="navCardText">A focused look at oncology stops, futility, and safety signals.</span>
+                  <span className="navCardFooter">Read insight →</span>
+                </Link>
+                <Link href="/methods" className="navCard">
+                  <span className="navCardTitle">How to read the numbers</span>
+                  <span className="navCardText">Review the source, classification buckets, and limits.</span>
+                  <span className="navCardFooter">Open methods →</span>
                 </Link>
               </div>
 

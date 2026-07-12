@@ -4,6 +4,7 @@ import type { GetServerSideProps } from "next";
 
 import { trialPath } from "@/lib/seoUrls";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "@/lib/seoHubs";
+import { INSIGHT_ARTICLES, insightPath } from "@/lib/insights";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 
@@ -33,6 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/overview",
     "/failures",
     "/sponsors",
+    "/insights",
     "/sponsor-insights",
     "/top-entities",
     "/outliers",
@@ -63,6 +65,10 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     ...buildSponsorHubs(rows).map((hub) => ({
       loc: `${SITE_URL}${hub.path}`,
       lastmod,
+    })),
+    ...INSIGHT_ARTICLES.map((article) => ({
+      loc: `${SITE_URL}${insightPath(article)}`,
+      lastmod: new Date(article.datePublished).toISOString(),
     })),
     ...indexableTrialRows(rows).map((row) => ({
       loc: `${SITE_URL}${trialPath(row)}`,
