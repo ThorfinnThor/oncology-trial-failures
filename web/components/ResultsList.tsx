@@ -3,6 +3,7 @@ import { useCallback, useMemo, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { trialPath } from "@/lib/seoUrls";
 
 function phaseClass(phaseKey: string) {
   const p = (phaseKey || "").toUpperCase();
@@ -94,7 +95,7 @@ export default function ResultsList({
                 <div className="m-head">
                   <div className="m-id">
                     <Link
-                      href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
+                      href={`${trialPath(r)}?from=${encodeURIComponent(fromHref)}`}
                       className="link"
                     >
                       {r.nct_id}
