@@ -14,6 +14,13 @@ const DESCRIPTION =
   "Browse indexable clinical trial failure hubs by disease area, phase, and stop reason, with grouped ClinicalTrials.gov-derived stopped trial records.";
 const CANONICAL_URL = `${SITE_URL}/failures`;
 
+function kindLabel(kind: string): string {
+  if (kind === "area") return "Disease area";
+  if (kind === "phase") return "Trial phase";
+  if (kind === "reason") return "Stop reason";
+  return "Failure hub";
+}
+
 export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
   return (
     <>
@@ -44,18 +51,18 @@ export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
             </div>
           </div>
         </header>
-        <main className="page">
-          <section className="card p-4" style={{ maxWidth: 1120, margin: "0 auto" }}>
+        <main className="page failureDirectoryPage">
+          <section className="card p-4 directoryHero">
             <p className="facet-title">Failure hubs</p>
-            <h1 style={{ margin: "0 0 10px", fontSize: 30 }}>Clinical trial failure hubs</h1>
-            <p className="muted" style={{ lineHeight: 1.65 }}>
+            <h1>Clinical trial failure hubs</h1>
+            <p className="muted directoryIntro">
               Browse grouped pages for stopped clinical trials by disease area, phase, and stop-reason signal.
               These pages summarize slices of the dataset and link to crawlable trial records.
             </p>
             <div className="hubDirGrid">
               {hubs.map((hub) => (
                 <Link className="hubDirCard" href={hub.path} key={hub.path}>
-                  <span>{hub.kind}</span>
+                  <span className="hubDirType">{kindLabel(hub.kind)}</span>
                   <strong>{hub.h1}</strong>
                   <p>{hub.description}</p>
                   <em>{hub.total.toLocaleString()} trials</em>
@@ -65,14 +72,28 @@ export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
           </section>
         </main>
       </div>
-      <style jsx>{`
-        .hubDirGrid {
+      <style jsx global>{`
+        .failureDirectoryPage .directoryHero {
+          max-width: 1120px;
+          margin: 0 auto;
+        }
+        .failureDirectoryPage h1 {
+          margin: 0 0 10px;
+          font-size: 30px;
+          line-height: 1.12;
+          letter-spacing: 0;
+        }
+        .failureDirectoryPage .directoryIntro {
+          max-width: 960px;
+          line-height: 1.65;
+        }
+        .failureDirectoryPage .hubDirGrid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 12px;
           margin-top: 18px;
         }
-        .hubDirCard {
+        .failureDirectoryPage .hubDirCard {
           display: flex;
           flex-direction: column;
           gap: 8px;
@@ -81,31 +102,49 @@ export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
           border-radius: 12px;
           padding: 14px;
           background: #fff;
+          color: var(--text);
+          text-decoration: none;
+          box-shadow: 0 14px 30px rgba(15, 23, 42, 0.04);
+          transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
         }
-        .hubDirCard span {
+        .failureDirectoryPage .hubDirCard:hover,
+        .failureDirectoryPage .hubDirCard:focus-visible {
+          border-color: rgba(79, 70, 229, 0.35);
+          box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+          transform: translateY(-1px);
+          outline: none;
+        }
+        .failureDirectoryPage .hubDirType {
+          display: block;
           color: var(--text-muted);
           font-size: 11px;
           font-weight: 900;
           letter-spacing: 0.06em;
           text-transform: uppercase;
         }
-        .hubDirCard strong {
+        .failureDirectoryPage .hubDirCard strong {
+          display: block;
           color: var(--accent);
           line-height: 1.25;
+          font-size: 16px;
         }
-        .hubDirCard p {
+        .failureDirectoryPage .hubDirCard p {
           margin: 0;
           color: var(--text-muted);
           line-height: 1.45;
         }
-        .hubDirCard em {
+        .failureDirectoryPage .hubDirCard em {
           margin-top: auto;
           font-style: normal;
           font-weight: 900;
+          color: var(--text);
         }
         @media (max-width: 900px) {
-          .hubDirGrid {
+          .failureDirectoryPage .hubDirGrid {
             grid-template-columns: 1fr;
+          }
+          .failureDirectoryPage h1 {
+            font-size: 26px;
           }
         }
       `}</style>
