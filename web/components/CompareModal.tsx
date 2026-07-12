@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { trialPath } from "@/lib/seoUrls";
 
 type Props = {
   open: boolean;
@@ -153,7 +154,7 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
                     <div key={t.nct_id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
                       <span className="chip">{t.nct_id}</span>
                       <Link
-                        href={`/trial/${encodeURIComponent(t.nct_id)}`}
+                        href={trialPath(t)}
                         target="_blank"
                         style={{ fontSize: 12, fontWeight: 900, color: "var(--accent)" }}
                       >

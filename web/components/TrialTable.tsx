@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { trialPath } from "@/lib/seoUrls";
 
 type Props = {
   rows: TrialIndexRow[];
@@ -46,7 +47,7 @@ export default function TrialTable({ rows, fromHref, onOpenPanel }: Props) {
                 <td className="p-3 align-top">
                   <div className="text-sm font-semibold">
                     <Link
-                      href={`/trial/${encodeURIComponent(r.nct_id)}${fromHref ? `?from=${encodeURIComponent(fromHref)}` : ""}`}
+                      href={`${trialPath(r)}${fromHref ? `?from=${encodeURIComponent(fromHref)}` : ""}`}
                       className="text-[var(--accent)]"
                     >
                       {r.nct_id}

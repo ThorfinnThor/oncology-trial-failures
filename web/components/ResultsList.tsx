@@ -51,6 +51,13 @@ export default function ResultsList({
   });
 
   const items = rowVirtualizer.getVirtualItems();
+  const renderedItems =
+    items.length > 0
+      ? items
+      : rows.slice(0, Math.min(rows.length, 50)).map((_, index) => ({
+          index,
+          start: index * 285,
+        }));
 
   const measureItem = useCallback(
     (el: HTMLDivElement | null) => {
@@ -70,7 +77,7 @@ export default function ResultsList({
       }}
     >
       <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-        {items.map((v) => {
+        {renderedItems.map((v) => {
           const r = rows[v.index];
           const checked = selected.has(r.nct_id);
           const p = parsePhases(r.phases || "")[0] || "UNKNOWN";

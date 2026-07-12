@@ -9,6 +9,8 @@ import { useEffect, useMemo, useState } from "react";
 import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { extractNctId, trialPath } from "@/lib/seoUrls";
+import { isIndexableTrial } from "@/lib/seoHubs";
 import GuidesMenu from "@/components/GuidesMenu";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -52,10 +54,11 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps) {
   const router = useRouter();
 
-  const trialId = useMemo(
+  const trialParam = useMemo(
     () => (router.query.trialId ? String(router.query.trialId) : initialTrial?.nct_id || ""),
     [router.query.trialId, initialTrial]
   );
+  const trialId = useMemo(() => extractNctId(trialParam), [trialParam]);
   const from = useMemo(
     () => (router.query.from ? String(router.query.from) : "/explore"),
     [router.query.from]
@@ -92,33 +95,81 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   );
   const bucket = useMemo(() => (trial ? reasonBucket(trial) : "OTHER/UNKNOWN"), [trial]);
 
-  const title = trialId
-    ? `${trialId} — Clinical trial failures`
-    : "Trial — Clinical trial failures";
+  const phaseText = phaseLabel(phaseKey);
+  const conditionText = trial?.condition_first || trial?.conditions || "stopped clinical trial";
+  const interventionText = trial?.intervention_first || trial?.intervention_names || trial?.brief_title || trialId;
+  const sponsorText = trial?.lead_sponsor || "the listed sponsor";
+  const stopReasonText = (trial?.why_stopped || trial?.why_stopped_short || bucket || "stopped early").trim();
+
+  const title = trial
+    ? `${trial.nct_id}: ${interventionText} ${conditionText} trial | Clinical Trial Failures`
+    : trialId
+      ? `${trialId} clinical trial record | Clinical Trial Failures`
+      : "Trial record | Clinical Trial Failures";
 
   const description = trial
-    ? `${trial.brief_title || trial.nct_id} — ${bucket}. ${
-        (trial.why_stopped || trial.why_stopped_short || "").trim() || "Stopped early."
-      }`
+    ? `${interventionText} — ${phaseText} ${conditionText} trial by ${sponsorText}, stopped for ${stopReasonText}. See the source record and failure signals.`
         .replace(/\s+/g, " ")
-        .slice(0, 180)
+        .slice(0, 170)
     : "Trial detail for a stopped clinical trial.";
-  const canonicalUrl = trialId ? `${SITE_URL}/trial/${encodeURIComponent(trialId)}` : `${SITE_URL}/explore`;
+  const canonicalUrl = trial ? `${SITE_URL}${trialPath(trial)}` : trialId ? `${SITE_URL}/trial/${encodeURIComponent(trialId)}` : `${SITE_URL}/explore`;
+  const indexable = trial ? isIndexableTrial(trial) : false;
+
+  const jsonLd = trial
+    ? [
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+            { "@type": "ListItem", position: 2, name: "Explore", item: `${SITE_URL}/explore` },
+            { "@type": "ListItem", position: 3, name: trial.nct_id, item: canonicalUrl },
+          ],
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "MedicalStudy",
+          name: trial.brief_title || trial.nct_id,
+          identifier: trial.nct_id,
+          url: canonicalUrl,
+          description,
+          sponsor: trial.lead_sponsor
+            ? {
+                "@type": "Organization",
+                name: trial.lead_sponsor,
+              }
+            : undefined,
+          studySubject: conditionText,
+          status: trial.overall_status || undefined,
+        },
+      ]
+    : [];
 
   return (
     <>
       <Head>
         <title>{title}</title>
         <meta name="description" content={description} />
-        <meta name="robots" content={trial ? "index,follow" : "noindex,follow"} />
+        <meta name="robots" content={indexable ? "index,follow" : "noindex,follow"} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:type" content="article" />
         <meta property="og:image" content={OG_IMAGE} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content="Clinical Trial Failures database preview" />
+        <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={OG_IMAGE} />
+        {trial ? (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        ) : null}
       </Head>
 
       <div className="min-h-screen">
@@ -166,11 +217,21 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
 
             {trial && (
               <>
+                <nav className="muted" aria-label="Breadcrumb" style={{ fontSize: 13, marginBottom: 12 }}>
+                  <Link className="link" href="/">
+                    Home
+                  </Link>{" "}
+                  /{" "}
+                  <Link className="link" href="/explore">
+                    Explore
+                  </Link>{" "}
+                  / <span>{trial.nct_id}</span>
+                </nav>
                 <div className="card p-4">
                   <div className="muted" style={{ fontSize: 12 }}>
                     Trial
                   </div>
-                  <div style={{ fontSize: 22, fontWeight: 900, marginTop: 4 }}>{trial.nct_id}</div>
+                  <h1 style={{ fontSize: 22, fontWeight: 900, margin: "4px 0 0" }}>{trial.nct_id}</h1>
                   <div style={{ fontSize: 18, fontWeight: 800, marginTop: 10, lineHeight: 1.25 }}>
                     {trial.brief_title || "—"}
                   </div>
@@ -272,7 +333,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<TrialPageProps> = async (ctx) => {
-  const trialId = String(ctx.params?.trialId || "").trim();
+  const trialId = extractNctId(String(ctx.params?.trialId || "").trim());
   if (!trialId) return { notFound: true };
 
   const { loadMetaServer, loadDetailServer } = await import("@/lib/server-data");

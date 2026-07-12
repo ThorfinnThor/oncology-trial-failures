@@ -2,6 +2,7 @@
 
 import Head from "next/head";
 import Link from "next/link";
+import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
@@ -30,14 +31,20 @@ function uniq(arr: string[]) {
   return Array.from(new Set(arr)).filter(Boolean);
 }
 
-export default function ExplorePage() {
+type ExplorePageProps = {
+  initialMeta: DatasetMeta | null;
+  initialRows: TrialIndexRow[];
+  initialTotal: number;
+};
+
+export default function ExplorePage({ initialMeta, initialRows, initialTotal }: ExplorePageProps) {
   const router = useRouter();
 
   const state: UrlState = useMemo(() => decodeState(router.asPath), [router.asPath]);
 
-  const [meta, setMeta] = useState<DatasetMeta | null>(null);
-  const [allRows, setAllRows] = useState<TrialIndexRow[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [meta, setMeta] = useState<DatasetMeta | null>(initialMeta);
+  const [allRows, setAllRows] = useState<TrialIndexRow[]>(initialRows);
+  const [loading, setLoading] = useState(initialRows.length === 0);
   const [err, setErr] = useState<string | null>(null);
 
   const [qInput, setQInput] = useState(state.q || "");
@@ -154,6 +161,21 @@ export default function ExplorePage() {
 
   const fromHref = useMemo(() => `/explore${encodeState(state)}`, [state]);
   const compareCount = (state.compare || []).length;
+  const hasActiveFilters = !!(
+    state.q ||
+    state.status?.length ||
+    state.phase?.length ||
+    state.area?.length ||
+    state.bucket?.length ||
+    state.sponsor?.length ||
+    state.intervention?.length ||
+    state.condition?.length ||
+    state.country?.length ||
+    state.bio ||
+    state.date_from ||
+    state.date_to
+  );
+  const displayedCount = allRows.length === initialRows.length && !hasActiveFilters ? initialTotal : rows.length;
 
   return (
     <>
@@ -256,9 +278,18 @@ export default function ExplorePage() {
 
             <section className="content">
               <div className="card pad-16">
+                <div style={{ marginBottom: 12 }}>
+                  <h1 style={{ margin: 0, fontSize: 24, lineHeight: 1.15 }}>
+                    Explore terminated, suspended, and withdrawn clinical trials
+                  </h1>
+                  <p className="muted" style={{ marginTop: 6, fontSize: 13, lineHeight: 1.45 }}>
+                    Search the ClinicalTrials.gov-derived stopped-trial dataset by sponsor, phase, disease area,
+                    intervention, status, and classified stop reason.
+                  </p>
+                </div>
                 <div className="results-header">
                   <div className="results-count">
-                    <span className="count">{rows.length.toLocaleString()}</span> results
+                    <span className="count">{displayedCount.toLocaleString()}</span> results
                   </div>
 
                   <div className="results-controls">
@@ -373,3 +404,19 @@ export default function ExplorePage() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps<ExplorePageProps> = async () => {
+  const { loadMetaServer, loadIndexServer } = await import("@/lib/server-data");
+  const { sortRows } = await import("@/lib/filtering");
+  const [meta, rows] = await Promise.all([loadMetaServer(), loadIndexServer()]);
+  const initialRows = sortRows(rows, "date_desc").slice(0, 50);
+
+  return {
+    props: {
+      initialMeta: meta,
+      initialRows,
+      initialTotal: rows.length,
+    },
+    revalidate: 24 * 60 * 60,
+  };
+};

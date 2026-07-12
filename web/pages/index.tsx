@@ -5,9 +5,9 @@ import GuidesMenu from "../components/GuidesMenu";
 
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "Clinical Trial Failures | Explore clinical trial failures and biological failure signals";
+const TITLE = "Clinical Trial Failures Database | Why Trials Stop Early";
 const DESCRIPTION =
-  "Clinical Trial Failures is a searchable database for terminated, suspended, and withdrawn clinical trials, with a focus on biological failure signals such as weak efficacy, futility, and safety-driven stops.";
+  "Search clinical trial failures, terminated trials, and why trials stop early using ClinicalTrials.gov-derived stop reasons and failure signals.";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export default function HomePage() {
@@ -233,14 +233,29 @@ export default function HomePage() {
                   <span className="navCardText">See high-level patterns across the dataset.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
+                <Link href="/failures" className="navCard">
+                  <span className="navCardTitle">Failure hubs</span>
+                  <span className="navCardText">Browse disease, phase, and stop-reason landing pages.</span>
+                  <span className="navCardFooter">Open hubs →</span>
+                </Link>
                 <Link href="/sponsor-insights" className="navCard">
                   <span className="navCardTitle">Sponsor insights</span>
                   <span className="navCardText">Extract key data per sponsor.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
+                <Link href="/sponsors" className="navCard">
+                  <span className="navCardTitle">Sponsor hubs</span>
+                  <span className="navCardText">Open crawlable sponsor-specific stopped-trial pages.</span>
+                  <span className="navCardFooter">Open hubs →</span>
+                </Link>
                 <Link href="/methods" className="navCard">
                   <span className="navCardTitle">Methods</span>
                   <span className="navCardText">Review the methodology and concept.</span>
+                  <span className="navCardFooter">Open page →</span>
+                </Link>
+                <Link href="/about" className="navCard">
+                  <span className="navCardTitle">About and data trust</span>
+                  <span className="navCardText">Review source, scope, limitations, and trust notes.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/outliers" className="navCard">

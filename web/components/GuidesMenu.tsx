@@ -2,12 +2,15 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 const GUIDE_LINKS = [
+  { href: "/failures", label: "Failure hubs" },
+  { href: "/sponsors", label: "Sponsor hubs" },
   { href: "/clinical-trial-failures", label: "Clinical trial failures" },
   { href: "/why-clinical-trials-fail", label: "Why trials fail" },
   { href: "/failed-clinical-trials", label: "Failed clinical trials" },
   { href: "/oncology-clinical-trial-failures", label: "Oncology failures" },
   { href: "/terminated-clinical-trials", label: "Terminated trials" },
   { href: "/clinical-trial-futility", label: "Futility signals" },
+  { href: "/about", label: "About and data trust" },
 ];
 
 export default function GuidesMenu() {

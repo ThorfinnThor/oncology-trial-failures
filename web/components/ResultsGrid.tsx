@@ -3,6 +3,7 @@ import { useCallback, useMemo, useRef } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { trialPath } from "@/lib/seoUrls";
 
 function phaseClass(phaseKey: string) {
   const p = (phaseKey || "").toUpperCase();
@@ -60,6 +61,13 @@ export default function ResultsGrid({
   });
 
   const items = rowVirtualizer.getVirtualItems();
+  const renderedItems =
+    items.length > 0
+      ? items
+      : rows.slice(0, Math.min(rows.length, 50)).map((_, index) => ({
+          index,
+          start: index * 104,
+        }));
 
   const measureRow = useCallback(
     (el: HTMLDivElement | null) => {
@@ -135,7 +143,7 @@ export default function ResultsGrid({
 
         {/* Virtualized body */}
         <div style={{ position: "relative", height: rowVirtualizer.getTotalSize(), minWidth: MIN_WIDTH }}>
-          {items.map((v) => {
+          {renderedItems.map((v) => {
             const r = rows[v.index];
             const checked = selected.has(r.nct_id);
             const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
@@ -171,7 +179,7 @@ export default function ResultsGrid({
 
                 <div className="td trial">
                   <Link
-                    href={`/trial/${encodeURIComponent(r.nct_id)}?from=${encodeURIComponent(fromHref)}`}
+                    href={`${trialPath(r)}?from=${encodeURIComponent(fromHref)}`}
                     className="link"
                   >
                     {r.nct_id}
