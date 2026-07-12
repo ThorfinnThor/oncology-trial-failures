@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-const GUIDE_LINKS = [
+export const GUIDE_LINKS = [
   { href: "/failures", label: "Failure hubs" },
   { href: "/sponsors", label: "Sponsor hubs" },
   { href: "/clinical-trial-failures", label: "Clinical trial failures" },
