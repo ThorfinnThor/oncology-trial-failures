@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import GuidesMenu from "@/components/GuidesMenu";
+import PrimaryNav from "@/components/PrimaryNav";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "About Clinical Trial Failures | Source, scope, and data trust";
@@ -65,21 +65,7 @@ export default function AboutPage() {
               <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">
-                  Explore
-                </Link>
-                <Link className="navlink" href="/overview">
-                  Overview
-                </Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/sponsor-insights">
-                  Sponsor insights
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+              <PrimaryNav active="guides" />
             </div>
           </div>
         </header>

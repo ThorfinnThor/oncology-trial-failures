@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 
-import GuidesMenu from "@/components/GuidesMenu";
+import PrimaryNav from "@/components/PrimaryNav";
 import { buildFailureHubs, OG_IMAGE, SITE_URL } from "@/lib/seoHubs";
 
 type FailureDirectoryProps = {
@@ -42,12 +42,7 @@ export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
               <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">Explore</Link>
-                <Link className="navlink" href="/overview">Overview</Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/methods">Methods</Link>
-              </nav>
+              <PrimaryNav active="guides" />
             </div>
           </div>
         </header>

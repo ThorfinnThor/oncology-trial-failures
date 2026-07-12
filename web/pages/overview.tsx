@@ -7,7 +7,7 @@ import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
-import GuidesMenu from "@/components/GuidesMenu";
+import PrimaryNav from "@/components/PrimaryNav";
 
 const TITLE = "Clinical trial failure overview | Dataset patterns and stop reasons";
 const DESCRIPTION =
@@ -584,27 +584,7 @@ export default function OverviewPage() {
                 <Link href="/" className="brand">
                   Clinical trial failures
                 </Link>
-                <nav className="nav" aria-label="Primary">
-                  <Link className="navlink" href="/explore">
-                    Explore
-                  </Link>
-                  <Link className="navlink" href="/overview" aria-current="page">
-                    Overview
-                  </Link>
-                  <GuidesMenu />
-                  <Link className="navlink" href="/sponsor-insights">
-                    Sponsor insights
-                  </Link>
-                  <Link className="navlink" href="/outliers">
-                    Outliers
-                  </Link>
-                  <Link className="navlink" href="/top-entities">
-                    Top entities
-                  </Link>
-                  <Link className="navlink" href="/methods">
-                    Methods
-                  </Link>
-                </nav>
+                <PrimaryNav active="overview" />
               </div>
             </div>
           </header>
@@ -628,27 +608,7 @@ export default function OverviewPage() {
                 <Link href="/" className="brand">
                   Clinical trial failures
                 </Link>
-                <nav className="nav" aria-label="Primary">
-                  <Link className="navlink" href="/explore">
-                    Explore
-                  </Link>
-                  <Link className="navlink" href="/overview" aria-current="page">
-                    Overview
-                  </Link>
-                  <GuidesMenu />
-                  <Link className="navlink" href="/sponsor-insights">
-                    Sponsor insights
-                  </Link>
-                  <Link className="navlink" href="/outliers">
-                    Outliers
-                  </Link>
-                  <Link className="navlink" href="/top-entities">
-                    Top entities
-                  </Link>
-                  <Link className="navlink" href="/methods">
-                    Methods
-                  </Link>
-                </nav>
+                <PrimaryNav active="overview" />
               </div>
             </div>
           </header>
@@ -674,27 +634,7 @@ export default function OverviewPage() {
               <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">
-                  Explore
-                </Link>
-                <Link className="navlink" href="/overview" aria-current="page">
-                  Overview
-                </Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/sponsor-insights">
-                  Sponsor insights
-                </Link>
-                <Link className="navlink" href="/outliers">
-                  Outliers
-                </Link>
-                <Link className="navlink" href="/top-entities">
-                  Top entities
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+              <PrimaryNav active="overview" />
             </div>
           </div>
         </header>

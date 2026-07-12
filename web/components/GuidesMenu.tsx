@@ -13,7 +13,11 @@ const GUIDE_LINKS = [
   { href: "/about", label: "About and data trust" },
 ];
 
-export default function GuidesMenu() {
+type GuidesMenuProps = {
+  active?: boolean;
+};
+
+export default function GuidesMenu({ active = false }: GuidesMenuProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -53,6 +57,7 @@ export default function GuidesMenu() {
         className="navlink guidesSummary"
         aria-expanded={open}
         aria-haspopup="menu"
+        aria-current={active ? "page" : undefined}
         onFocus={() => setOpen(true)}
         onClick={() => setOpen((value) => !value)}
       >

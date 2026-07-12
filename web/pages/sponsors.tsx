@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 
-import GuidesMenu from "@/components/GuidesMenu";
+import PrimaryNav from "@/components/PrimaryNav";
 import { buildSponsorHubs, OG_IMAGE, SITE_URL } from "@/lib/seoHubs";
 
 type SponsorDirectoryProps = {
@@ -35,12 +35,7 @@ export default function SponsorDirectoryPage({ hubs }: SponsorDirectoryProps) {
               <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">Explore</Link>
-                <Link className="navlink" href="/sponsor-insights">Sponsor insights</Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/methods">Methods</Link>
-              </nav>
+              <PrimaryNav active="guides" />
             </div>
           </div>
         </header>

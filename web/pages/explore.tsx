@@ -18,7 +18,7 @@ import DetailsDrawer from "@/components/DetailsDrawer";
 import CompareModal from "@/components/CompareModal";
 import DownloadMenu from "@/components/DownloadMenu";
 import { Facet, ScientificFailureToggle } from "@/components/FacetRail";
-import GuidesMenu from "@/components/GuidesMenu";
+import PrimaryNav from "@/components/PrimaryNav";
 
 const TITLE = "Explore clinical trial failures | Search stopped clinical trials";
 const DESCRIPTION =
@@ -200,27 +200,7 @@ export default function ExplorePage({ initialMeta, initialRows, initialTotal }: 
               <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore" aria-current="page">
-                  Explore
-                </Link>
-                <Link className="navlink" href="/overview">
-                  Overview
-                </Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/sponsor-insights">
-                  Sponsor insights
-                </Link>
-                <Link className="navlink" href="/outliers">
-                  Outliers
-                </Link>
-                <Link className="navlink" href="/top-entities">
-                  Top entities
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+              <PrimaryNav active="explore" />
             </div>
 
             <div className="topbar-center">

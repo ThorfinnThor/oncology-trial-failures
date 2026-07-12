@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import GuidesMenu from "@/components/GuidesMenu";
+import PrimaryNav from "@/components/PrimaryNav";
 import type { TrialIndexRow } from "@/lib/types";
 import { displayHubRows, hubStats, OG_IMAGE, SITE_URL, trialListItem, type HubStats } from "@/lib/seoHubs";
 
@@ -90,21 +90,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, parentHref
               <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">
-                  Explore
-                </Link>
-                <Link className="navlink" href="/overview">
-                  Overview
-                </Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/sponsor-insights">
-                  Sponsor insights
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+              <PrimaryNav active="guides" />
             </div>
           </div>
         </header>

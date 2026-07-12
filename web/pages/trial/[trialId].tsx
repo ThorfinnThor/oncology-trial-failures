@@ -11,7 +11,7 @@ import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
 import { isIndexableTrial } from "@/lib/seoHubs";
-import GuidesMenu from "@/components/GuidesMenu";
+import PrimaryNav from "@/components/PrimaryNav";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -179,27 +179,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
               <Link href="/" className="brand">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">
-                  Explore
-                </Link>
-                <Link className="navlink" href="/overview">
-                  Overview
-                </Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/sponsor-insights">
-                  Sponsor insights
-                </Link>
-                <Link className="navlink" href="/outliers">
-                  Outliers
-                </Link>
-                <Link className="navlink" href="/top-entities">
-                  Top entities
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+              <PrimaryNav />
             </div>
 
             <div className="topbar-right">

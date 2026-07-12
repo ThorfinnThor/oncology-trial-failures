@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import GuidesMenu from "./GuidesMenu";
+import PrimaryNav from "./PrimaryNav";
 import { OG_IMAGE, SITE_URL, type SeoLandingPageConfig } from "../lib/seoLandingPages";
 
 type SeoLandingPageProps = {
@@ -94,21 +94,7 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
               <Link href="/" className="brand" aria-label="Go to homepage">
                 Clinical trial failures
               </Link>
-              <nav className="nav" aria-label="Primary">
-                <Link className="navlink" href="/explore">
-                  Explore
-                </Link>
-                <Link className="navlink" href="/overview">
-                  Overview
-                </Link>
-                <GuidesMenu />
-                <Link className="navlink" href="/sponsor-insights">
-                  Sponsor insights
-                </Link>
-                <Link className="navlink" href="/methods">
-                  Methods
-                </Link>
-              </nav>
+              <PrimaryNav active="guides" />
             </div>
           </div>
         </header>
