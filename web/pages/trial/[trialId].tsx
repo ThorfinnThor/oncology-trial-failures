@@ -60,18 +60,6 @@ function registryUrl(trial: TrialDetail) {
   return trial.url || `https://clinicaltrials.gov/study/${encodeURIComponent(trial.nct_id)}`;
 }
 
-function pubmedUrl(trial: TrialDetail) {
-  const query = [trial.nct_id, trial.brief_title, trial.lead_sponsor].filter(Boolean).join(" ");
-  return `https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(query)}`;
-}
-
-function fdaUrl(trial: TrialDetail) {
-  const query = [trial.intervention_first || trial.intervention_names, trial.lead_sponsor, trial.nct_id]
-    .filter(Boolean)
-    .join(" ");
-  return `https://www.fda.gov/search?s=${encodeURIComponent(query)}`;
-}
-
 export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps) {
   const router = useRouter();
 
@@ -135,14 +123,6 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
     : "Trial detail for a stopped clinical trial.";
   const canonicalUrl = trial ? `${SITE_URL}${trialPath(trial)}` : trialId ? `${SITE_URL}/trial/${encodeURIComponent(trialId)}` : `${SITE_URL}/explore`;
   const indexable = trial ? isIndexableTrial(trial) : false;
-  const citationText = trial
-    ? `Clinical Trial Failures. ${trial.nct_id}: ${cleanText(trial.brief_title, "Stopped clinical trial record")}. ${canonicalUrl}`
-    : "";
-
-  async function copyCitation() {
-    if (!citationText || typeof navigator === "undefined") return;
-    await navigator.clipboard?.writeText(citationText);
-  }
 
   const jsonLd = trial
     ? [
@@ -316,9 +296,6 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                         <strong>Stop-reason classification:</strong> <span>{bucket}</span>
                       </p>
                     </article>
-                    <button className="terminalButton ghost" type="button" onClick={copyCitation}>
-                      Copy citation for reports
-                    </button>
                   </aside>
 
                   <section className="terminalPanel classificationPanel">
@@ -355,31 +332,6 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                   </section>
                 </div>
 
-                <section className="terminalPanel verificationPanel">
-                  <div>
-                    <div className="panelLabel">Cross-reference and analysis</div>
-                    <h2>Cite and verify this stopped-trial record</h2>
-                    <p>
-                      Use this page as a screening and citation aid, then verify important findings against the
-                      primary registry record and related external sources.
-                    </p>
-                  </div>
-                  <div className="verificationActions">
-                    <button className="terminalButton" type="button" onClick={copyCitation}>
-                      Copy citation
-                    </button>
-                    <a className="terminalButton primary" href={registryUrl(trial)} target="_blank" rel="noreferrer">
-                      Verify ClinicalTrials.gov
-                    </a>
-                    <a className="terminalButton" href={pubmedUrl(trial)} target="_blank" rel="noreferrer">
-                      Search PubMed
-                    </a>
-                    <a className="terminalButton" href={fdaUrl(trial)} target="_blank" rel="noreferrer">
-                      Search FDA
-                    </a>
-                  </div>
-                </section>
-
                 <section className="terminalPanel provenancePanel">
                   <div className="panelLabel">Provenance</div>
                   <dl className="provenanceList">
@@ -400,6 +352,9 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                       <dd>Analytical screening signal, not medical advice.</dd>
                     </div>
                   </dl>
+                  <a className="sourceTextLink" href={registryUrl(trial)} target="_blank" rel="noreferrer">
+                    View primary ClinicalTrials.gov record
+                  </a>
                 </section>
               </>
             )}
@@ -556,31 +511,6 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
           line-height: 1.35;
           word-break: break-word;
         }
-        .trialTerminal .verificationPanel {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 18px;
-          margin-top: 16px;
-        }
-        .trialTerminal .verificationPanel h2 {
-          margin: 6px 0 0;
-          font-size: 18px;
-          line-height: 1.2;
-        }
-        .trialTerminal .verificationPanel p {
-          max-width: 620px;
-          margin: 6px 0 0;
-          color: #64748b;
-          font-size: 14px;
-          line-height: 1.5;
-        }
-        .trialTerminal .verificationActions {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: flex-end;
-          gap: 9px;
-        }
         .trialTerminal .terminalButton {
           display: inline-flex;
           align-items: center;
@@ -620,9 +550,22 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
         .trialTerminal .provenancePanel {
           margin-top: 16px;
         }
+        .trialTerminal .sourceTextLink {
+          display: inline-flex;
+          margin-top: 14px;
+          color: #2563eb;
+          font-size: 13px;
+          font-weight: 850;
+          text-decoration: none;
+        }
+        .trialTerminal .sourceTextLink:hover,
+        .trialTerminal .sourceTextLink:focus-visible {
+          text-decoration: underline;
+          text-underline-offset: 0.18em;
+          outline: none;
+        }
         @media (max-width: 900px) {
-          .trialTerminal .terminalHeroTop,
-          .trialTerminal .verificationPanel {
+          .trialTerminal .terminalHeroTop {
             align-items: flex-start;
             flex-direction: column;
           }
@@ -630,9 +573,6 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
           .trialTerminal .terminalMetaGrid,
           .trialTerminal .provenanceList {
             grid-template-columns: 1fr;
-          }
-          .trialTerminal .verificationActions {
-            justify-content: flex-start;
           }
           .trialTerminal h1 {
             font-size: 30px;

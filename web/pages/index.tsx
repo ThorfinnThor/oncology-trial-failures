@@ -124,16 +124,53 @@ export default function HomePage() {
                 </dl>
               </div>
 
-              <aside className="heroPanel" aria-label="Key analysis paths">
-                <figure className="heroVisual" aria-label="Clinical trial failure analytics visual">
-                  <img
-                    src="/images/clinical-trial-failures-hero-v12.webp"
-                    alt="Color-coded biomedical sample tubes in a laboratory rack"
-                    width={2000}
-                    height={1333}
-                    loading="eager"
-                  />
-                </figure>
+              <aside className="heroPanel" aria-label="Clinical trial failure data terminal preview">
+                <div className="terminalPreview">
+                  <div className="terminalChrome">
+                    <span />
+                    <span />
+                    <span />
+                    <strong>failure-signal-terminal</strong>
+                  </div>
+                  <div className="terminalCommand">
+                    <span>$</span> query stopped_trials where reason in efficacy,futility,safety
+                  </div>
+                  <dl className="terminalStats">
+                    <div>
+                      <dt>Stopped records</dt>
+                      <dd>23,452</dd>
+                    </div>
+                    <div>
+                      <dt>Likely biological</dt>
+                      <dd>1,813</dd>
+                    </div>
+                    <div>
+                      <dt>Biological share</dt>
+                      <dd>8%</dd>
+                    </div>
+                  </dl>
+                  <div className="terminalRows" aria-label="Example data rows">
+                    <div>
+                      <span>NCT07014735</span>
+                      <strong>Efficacy/futility</strong>
+                      <em>source-linked</em>
+                    </div>
+                    <div>
+                      <span>NCT05999968</span>
+                      <strong>Endpoint signal</strong>
+                      <em>oncology</em>
+                    </div>
+                    <div>
+                      <span>NCT04867837</span>
+                      <strong>Interim futility</strong>
+                      <em>verified</em>
+                    </div>
+                  </div>
+                  <div className="terminalFooter">
+                    <span>ClinicalTrials.gov derived</span>
+                    <span>Preclassified tables</span>
+                  </div>
+                </div>
               </aside>
 
               <div className="miniGrid" aria-label="Core analysis shortcuts">
@@ -380,7 +417,9 @@ export default function HomePage() {
 
         .homePage {
           min-height: 100vh;
-          background: #f8fafc;
+          background:
+            radial-gradient(circle at 82% 0%, rgba(37, 99, 235, 0.10), transparent 34%),
+            linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
           color: #0f172a;
         }
         .container {
@@ -394,7 +433,9 @@ export default function HomePage() {
           position: relative;
           overflow: hidden;
           padding: 32px 0 12px;
-          background: linear-gradient(180deg, #ffffff 0%, #f2f6ff 100%);
+          background:
+            linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 245, 249, 0.92) 100%),
+            linear-gradient(135deg, rgba(15, 23, 42, 0.04), rgba(37, 99, 235, 0.08));
           border-bottom: 1px solid #e2e8f0;
         }
         .hero::before {
@@ -562,6 +603,136 @@ export default function HomePage() {
         .heroPanel {
           min-width: 0;
           height: 100%;
+        }
+        .terminalPreview {
+          height: 100%;
+          min-height: 410px;
+          border: 1px solid rgba(100, 116, 139, 0.34);
+          border-radius: 14px;
+          background: #0f172a;
+          color: #e2e8f0;
+          box-shadow: 0 24px 55px rgba(15, 23, 42, 0.22);
+          overflow: hidden;
+        }
+        .terminalChrome {
+          display: flex;
+          align-items: center;
+          gap: 7px;
+          min-height: 42px;
+          border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+          background: rgba(15, 23, 42, 0.92);
+          padding: 0 14px;
+        }
+        .terminalChrome span {
+          width: 9px;
+          height: 9px;
+          border-radius: 999px;
+          background: #64748b;
+        }
+        .terminalChrome span:nth-child(1) {
+          background: #fb7185;
+        }
+        .terminalChrome span:nth-child(2) {
+          background: #facc15;
+        }
+        .terminalChrome span:nth-child(3) {
+          background: #34d399;
+        }
+        .terminalChrome strong {
+          margin-left: 8px;
+          color: #94a3b8;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+          font-size: 12px;
+          letter-spacing: 0;
+        }
+        .terminalCommand {
+          margin: 18px 18px 0;
+          border: 1px solid rgba(148, 163, 184, 0.24);
+          border-radius: 10px;
+          background: rgba(2, 6, 23, 0.62);
+          padding: 12px;
+          color: #cbd5e1;
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+        .terminalCommand span {
+          color: #60a5fa;
+          font-weight: 900;
+        }
+        .terminalStats {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          margin: 16px 18px 0;
+        }
+        .terminalStats div {
+          border: 1px solid rgba(148, 163, 184, 0.24);
+          border-radius: 10px;
+          background: rgba(30, 41, 59, 0.72);
+          padding: 12px;
+        }
+        .terminalStats dt {
+          color: #94a3b8;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .terminalStats dd {
+          margin: 6px 0 0;
+          color: #f8fafc;
+          font-size: 22px;
+          font-weight: 950;
+          letter-spacing: 0;
+        }
+        .terminalRows {
+          display: grid;
+          gap: 8px;
+          margin: 16px 18px 0;
+        }
+        .terminalRows div {
+          display: grid;
+          grid-template-columns: 1fr 1fr auto;
+          gap: 10px;
+          align-items: center;
+          border: 1px solid rgba(148, 163, 184, 0.20);
+          border-radius: 10px;
+          background: rgba(15, 23, 42, 0.70);
+          padding: 10px 12px;
+        }
+        .terminalRows span,
+        .terminalRows em {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+          font-size: 11px;
+          letter-spacing: 0;
+        }
+        .terminalRows span {
+          color: #93c5fd;
+          font-weight: 900;
+        }
+        .terminalRows strong {
+          color: #f8fafc;
+          font-size: 12px;
+        }
+        .terminalRows em {
+          color: #94a3b8;
+          font-style: normal;
+        }
+        .terminalFooter {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin: 16px 18px 18px;
+        }
+        .terminalFooter span {
+          border: 1px solid rgba(96, 165, 250, 0.25);
+          border-radius: 999px;
+          background: rgba(37, 99, 235, 0.16);
+          color: #bfdbfe;
+          padding: 6px 9px;
+          font-size: 11px;
+          font-weight: 850;
         }
         .heroVisual,
         .trustVisual {
@@ -858,13 +1029,22 @@ export default function HomePage() {
             gap: 12px;
           }
           .heroVisual,
+          .terminalPreview,
           .trustVisual {
             border-radius: 12px;
             box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
           }
-          .heroVisual {
+          .heroVisual,
+          .terminalPreview {
             width: 100%;
             order: -1;
+          }
+          .terminalPreview {
+            min-height: 0;
+          }
+          .terminalStats,
+          .terminalRows div {
+            grid-template-columns: 1fr;
           }
           .heroVisual img {
             object-position: 62% center;
