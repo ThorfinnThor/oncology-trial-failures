@@ -5,9 +5,9 @@ import GuidesMenu from "../components/GuidesMenu";
 
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "Clinical Trial Failures Database | Why Trials Stop Early";
+const TITLE = "Clinical Trial Failures Database | Ready-to-use stopped trial evidence";
 const DESCRIPTION =
-  "Search clinical trial failures, terminated trials, and why trials stop early using ClinicalTrials.gov-derived stop reasons and failure signals.";
+  "Use a ready-to-use clinical trial failure database with preclassified stop reasons, one-click evidence links, sponsor tables, and ClinicalTrials.gov source records.";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 export default function HomePage() {
@@ -107,21 +107,20 @@ export default function HomePage() {
           <section className="hero">
             <div className="container heroGrid">
               <div className="heroCopy">
-                <p className="eyebrow">Search clinical trial failures</p>
-                <h1>Find the biological reasons clinical trials stop early</h1>
+                <p className="eyebrow">Ready-to-use clinical trial failure database</p>
+                <h1>Find stopped clinical trials with one-click evidence</h1>
                 <p className="lede">
-                  Clinical Trial Failures is a searchable database of terminated, suspended, and withdrawn
-                  clinical trials. It is built to surface the strongest biological failure signals in registry
-                  text, especially weak efficacy, futility, safety issues, and other signs that an intervention
-                  did not work as intended.
+                  Clinical Trial Failures turns ClinicalTrials.gov stop records into a practical research
+                  database. Search terminated, suspended, and withdrawn trials with preclassified failure
+                  reasons, trial-level evidence, sponsor views, and ready-to-use tables.
                 </p>
                 <p className="supporting">
-                  Instead of reading thousands of trial records manually, you can review clinical trial failures
-                  by phase, sponsor, disease area, condition, intervention, geography, and stop reason.
+                  Instead of reading thousands of registry entries manually, move from a broad question to the
+                  exact stopped trials, source links, and failure signals that support your analysis.
                 </p>
                 <div className="actions">
                   <Link href="/explore" className="primaryBtn" aria-label="Explore clinical trial failures">
-                    <span>Explore clinical trial failures</span>
+                    <span>Open the database</span>
                     <span aria-hidden="true">→</span>
                   </Link>
                   <Link href="/methods" className="secondaryBtn" aria-label="See methodology">
@@ -135,12 +134,12 @@ export default function HomePage() {
                     <dd>ClinicalTrials.gov registry records</dd>
                   </div>
                   <div>
-                    <dt>Scope</dt>
-                    <dd>Terminated, suspended, and withdrawn trials</dd>
+                    <dt>Ready tables</dt>
+                    <dd>Preclassified stop reasons and sponsor views</dd>
                   </div>
                   <div>
-                    <dt>Use with care</dt>
-                    <dd>Classification is an analytical signal, not medical advice</dd>
+                    <dt>Evidence links</dt>
+                    <dd>One-click path from summary to trial record</dd>
                   </div>
                 </dl>
               </div>
@@ -159,19 +158,19 @@ export default function HomePage() {
 
               <div className="miniGrid" aria-label="Core analysis shortcuts">
                 <div className="panelCard miniCard">
-                  <h3>Efficacy and futility</h3>
-                  <p>Screen for weak efficacy, lack of benefit, or failed endpoints.</p>
+                  <h3>Preclassified stop reasons</h3>
+                  <p>Screen efficacy, futility, safety, operational, and unknown stop signals.</p>
                 </div>
                 <div className="panelCard miniCard">
-                  <h3>Safety-driven stops</h3>
-                  <p>Review adverse events, tolerability issues, and risk signals.</p>
+                  <h3>One-click evidence</h3>
+                  <p>Jump from summary tables to the trial-level stop language and source record.</p>
                 </div>
                 <div className="panelCard miniCard">
-                  <h3>Fast comparison</h3>
-                  <p>Compare sponsors, repeated patterns, and trial-level stop language.</p>
+                  <h3>Sponsor-ready views</h3>
+                  <p>Compare sponsors, repeated patterns, disease areas, and stopped programs.</p>
                 </div>
                 <div className="panelCard miniCard">
-                  <h3>Structured filtering</h3>
+                  <h3>Exportable analysis</h3>
                   <p>Filter by status, phase, disease area, reason bucket, and likely scientific failure.</p>
                 </div>
               </div>
@@ -181,33 +180,32 @@ export default function HomePage() {
           <section className="section">
             <div className="container sectionGrid">
               <div className="sectionIntro cardSurface">
-                <h2>What this web app actually helps you answer</h2>
+                <h2>Ready-to-use evidence for trial failure research</h2>
                 <p>
-                  The app is designed for biotech and pharma teams, investors, consultants, and researchers who
-                  want a faster way to study why clinical trials fail. The strongest use case is identifying
-                  whether a stopped study reflects a likely biological failure versus an operational, strategic,
-                  or funding decision.
+                  The database is designed for biotech and pharma teams, investors, consultants, and researchers
+                  who need fast evidence on why clinical trials stop. The strongest use case is separating likely
+                  biological failure from operational, strategic, enrollment, or funding decisions.
                 </p>
                 <ul className="bulletList">
-                  <li>Find failed clinical trials linked to efficacy or futility concerns.</li>
-                  <li>Separate safety-led stops from operational or sponsor-led stops.</li>
-                  <li>Trace sponsor patterns across repeated terminated, suspended, and withdrawn trials.</li>
-                  <li>Move from broad dataset views into trial-level stop language quickly.</li>
+                  <li>Find failed clinical trials linked to efficacy, futility, or safety concerns.</li>
+                  <li>Open the trial-level evidence behind each stop-reason classification.</li>
+                  <li>Trace sponsor patterns across repeated terminated, suspended, and withdrawn programs.</li>
+                  <li>Move from broad tables into specific NCT records without rebuilding the dataset yourself.</li>
                 </ul>
               </div>
 
               <div className="stackGrid">
                 <div className="cardSurface">
-                  <h3>Searchable records</h3>
+                  <h3>Searchable stopped-trial database</h3>
                   <p>Browse terminated, suspended, and withdrawn clinical trial records in one place.</p>
                 </div>
                 <div className="cardSurface">
-                  <h3>Reason-based filtering</h3>
-                  <p>Focus on likely efficacy, safety, operational, and other failure patterns.</p>
+                  <h3>Prebuilt failure tables</h3>
+                  <p>Use ready views by sponsor, disease area, phase, and stop-reason bucket.</p>
                 </div>
                 <div className="cardSurface">
                   <h3>Biological vs non-biological stops</h3>
-                  <p>Use the failure framing to distinguish scientific signals from administrative noise.</p>
+                  <p>Separate scientific signals from operational, funding, and administrative noise.</p>
                 </div>
               </div>
             </div>
@@ -216,51 +214,51 @@ export default function HomePage() {
           <section className="section altSection">
             <div className="container">
               <div className="sectionHeading">
-                <h2>Explore the dataset</h2>
+                <h2>Explore ready-to-use tables</h2>
                 <p>
-                  Start with the explorer, then move into summary pages to understand patterns behind clinical
-                  trial failures at both the portfolio and trial level.
+                  Start with the searchable database, then move into prebuilt summary pages for sponsors,
+                  disease areas, phases, stop reasons, and individual trial evidence.
                 </p>
               </div>
               <div className="linkGrid">
                 <Link href="/explore" className="navCard">
                   <span className="navCardTitle">Explore</span>
-                  <span className="navCardText">Search and filter individual clinical trial failures.</span>
-                  <span className="navCardFooter">Open page →</span>
+                  <span className="navCardText">Search and filter stopped trials with preclassified reasons.</span>
+                  <span className="navCardFooter">Open database →</span>
                 </Link>
                 <Link href="/overview" className="navCard">
                   <span className="navCardTitle">Overview</span>
-                  <span className="navCardText">See high-level patterns across the dataset.</span>
+                  <span className="navCardText">See high-level patterns across the stopped-trial dataset.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/failures" className="navCard">
                   <span className="navCardTitle">Failure hubs</span>
-                  <span className="navCardText">Browse disease, phase, and stop-reason landing pages.</span>
+                  <span className="navCardText">Browse disease, phase, and stop-reason evidence pages.</span>
                   <span className="navCardFooter">Open hubs →</span>
                 </Link>
                 <Link href="/sponsor-insights" className="navCard">
                   <span className="navCardTitle">Sponsor insights</span>
-                  <span className="navCardText">Extract key data per sponsor.</span>
+                  <span className="navCardText">Extract sponsor-level stop patterns and evidence tables.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/sponsors" className="navCard">
                   <span className="navCardTitle">Sponsor hubs</span>
-                  <span className="navCardText">Open crawlable sponsor-specific stopped-trial pages.</span>
+                  <span className="navCardText">Open sponsor-specific stopped-trial evidence pages.</span>
                   <span className="navCardFooter">Open hubs →</span>
                 </Link>
                 <Link href="/methods" className="navCard">
                   <span className="navCardTitle">Methods</span>
-                  <span className="navCardText">Review the methodology and concept.</span>
+                  <span className="navCardText">Review how the classifications and source checks work.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/about" className="navCard">
                   <span className="navCardTitle">About and data trust</span>
-                  <span className="navCardText">Review source, scope, limitations, and trust notes.</span>
+                  <span className="navCardText">Review source, scope, limitations, and medical-data trust notes.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/outliers" className="navCard">
                   <span className="navCardTitle">Outliers</span>
-                  <span className="navCardText">Inspect over-represented sponsors and indications.</span>
+                  <span className="navCardText">Inspect over-represented sponsors, indications, and stop patterns.</span>
                   <span className="navCardFooter">Open page →</span>
                 </Link>
                 <Link href="/top-entities" className="navCard">
@@ -273,14 +271,14 @@ export default function HomePage() {
               <div className="sectionHeading guideHeading" id="research-guides">
                 <h2>Clinical trial failure research guides</h2>
                 <p>
-                  These focused pages explain the language people use when researching clinical trial failures,
-                  failed clinical trials, termination reasons, oncology trial stops, and futility signals.
+                  These focused pages translate common search terms into data-backed views of clinical trial
+                  failures, stopped studies, termination reasons, oncology trial stops, and futility signals.
                 </p>
               </div>
               <div className="linkGrid">
                 <Link href="/clinical-trial-failures" className="navCard">
                   <span className="navCardTitle">Clinical trial failures</span>
-                  <span className="navCardText">Search stopped trials and understand failure signals.</span>
+                  <span className="navCardText">Use the database to find stopped trials and evidence signals.</span>
                   <span className="navCardFooter">Open guide →</span>
                 </Link>
                 <Link href="/why-clinical-trials-fail" className="navCard">
@@ -290,7 +288,7 @@ export default function HomePage() {
                 </Link>
                 <Link href="/failed-clinical-trials" className="navCard">
                   <span className="navCardTitle">Failed clinical trials</span>
-                  <span className="navCardText">Review how failure language appears in registry records.</span>
+                  <span className="navCardText">Review how failure language appears in source registry records.</span>
                   <span className="navCardFooter">Open guide →</span>
                 </Link>
                 <Link href="/oncology-clinical-trial-failures" className="navCard">
@@ -300,12 +298,12 @@ export default function HomePage() {
                 </Link>
                 <Link href="/terminated-clinical-trials" className="navCard">
                   <span className="navCardTitle">Terminated clinical trials</span>
-                  <span className="navCardText">Separate terminated status from scientific failure.</span>
+                  <span className="navCardText">Separate terminated status from scientific failure evidence.</span>
                   <span className="navCardFooter">Open guide →</span>
                 </Link>
                 <Link href="/clinical-trial-futility" className="navCard">
                   <span className="navCardTitle">Clinical trial futility</span>
-                  <span className="navCardText">Search weak efficacy and failed endpoint signals.</span>
+                  <span className="navCardText">Search weak efficacy, futility, and failed endpoint signals.</span>
                   <span className="navCardFooter">Open guide →</span>
                 </Link>
               </div>

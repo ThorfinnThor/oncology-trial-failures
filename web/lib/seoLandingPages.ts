@@ -53,19 +53,19 @@ export const OG_IMAGE = `${SITE_URL}/og-image.png`;
 export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
   clinicalTrialFailures: {
     slug: "/clinical-trial-failures",
-    title: "Clinical trial failures | Database, reasons, and failure signals",
+    title: "Clinical trial failures | Ready-to-use failure database and evidence",
     metaDescription:
-      "Explore clinical trial failures with a searchable database of terminated, suspended, and withdrawn trials, including efficacy, futility, safety, and operational stop reasons.",
-    eyebrow: "Clinical trial failures",
-    h1: "Clinical trial failures: search stopped trials and failure signals",
+      "Explore a ready-to-use clinical trial failure database with preclassified stop reasons, one-click evidence links, sponsor tables, and ClinicalTrials.gov source records.",
+    eyebrow: "Ready-to-use failure database",
+    h1: "Clinical trial failures: search stopped trials with evidence",
     lede:
-      "Clinical trial failures are often hidden in registry text, status changes, and sponsor-provided stop reasons. This guide explains how to use the Clinical Trial Failures database to study terminated, suspended, and withdrawn trials and separate likely biological failure from operational or strategic stops.",
-    primaryCta: { href: "/explore", label: "Search the failure database" },
+      "Clinical trial failures are often hidden in registry text, status changes, and sponsor-provided stop reasons. This guide explains how to use the Clinical Trial Failures database to search terminated, suspended, and withdrawn trials with preclassified failure reasons, trial-level evidence, and source links.",
+    primaryCta: { href: "/explore", label: "Open the database" },
     secondaryCta: { href: "/methods", label: "Review the methodology" },
     keyPoints: [
-      "Search stopped clinical trials from ClinicalTrials.gov registry records.",
-      "Filter by phase, sponsor, disease area, intervention, status, and stop reason.",
-      "Distinguish likely efficacy, futility, and safety signals from non-biological stops.",
+      "Search stopped clinical trials from ClinicalTrials.gov registry records in one place.",
+      "Use ready-made tables by phase, sponsor, disease area, intervention, status, and stop reason.",
+      "Open one-click evidence links to distinguish likely efficacy, futility, and safety signals from non-biological stops.",
     ],
     sections: [
       {
@@ -79,26 +79,26 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
         heading: "Why a searchable clinical trial failure database helps",
         body: [
           "ClinicalTrials.gov includes structured fields and free-text sponsor explanations, but the reasons behind trial stops are not always standardized. One sponsor may write lack of efficacy, another may write futility, and another may describe an endpoint or safety issue in longer language.",
-          "Clinical Trial Failures brings those records into a workflow built for scanning, filtering, comparison, and export. Researchers can move from a broad market question to a specific set of stopped trials and then verify each primary record.",
+          "Clinical Trial Failures turns those records into a ready-to-use workflow for scanning, filtering, comparison, and export. Researchers can move from a broad market question to a specific evidence table, then verify each primary record.",
         ],
       },
       {
         heading: "How to interpret the results",
         body: [
-          "Use the labels as screening signals, not final judgments. A stopped trial may have multiple causes, and registry text can be incomplete. The strongest workflow is to use the database to find candidate records, then review the original ClinicalTrials.gov entry and any related sponsor publications.",
+          "Use the labels as screening signals, not final judgments. A stopped trial may have multiple causes, and registry text can be incomplete. The strongest workflow is to use the database to find candidate records, open the trial-level evidence, then review the original ClinicalTrials.gov entry and any related sponsor publications.",
           "For medical and investment decisions, treat the database as research support. It is designed to reduce search time and surface patterns, not to replace primary source review.",
         ],
       },
     ],
     related: [
       { href: "/why-clinical-trials-fail", label: "Why clinical trials fail", text: "Understand common failure categories." },
-      { href: "/failed-clinical-trials", label: "Failed clinical trials", text: "Review how failure language appears in stopped trials." },
+      { href: "/failed-clinical-trials", label: "Failed clinical trials", text: "Review how failure language appears in source records." },
       { href: "/oncology-clinical-trial-failures", label: "Oncology trial failures", text: "Focus on oncology-specific failure patterns." },
     ],
     dataInsights: {
       heading: "What the current stopped-trial dataset shows",
       intro:
-        "The database currently contains 23,452 stopped trial records from ClinicalTrials.gov. The useful SEO point is also the useful research point: most stopped trials are not automatically biological failures, so the page separates status from interpreted stop reason.",
+        "The database currently contains 23,452 stopped trial records from ClinicalTrials.gov. The useful SEO point is also the useful research point: most stopped trials are not automatically biological failures, so the page separates status from interpreted stop reason and links back to trial-level evidence.",
       sourceNote:
         "Counts are generated from the site's current ClinicalTrials.gov-derived stopped-trial dataset. Because registry records can change, use these figures as research signals and verify important records at the source NCT page.",
       metrics: [
@@ -174,19 +174,19 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
 
   whyClinicalTrialsFail: {
     slug: "/why-clinical-trials-fail",
-    title: "Why clinical trials fail | Efficacy, futility, safety, and operations",
+    title: "Why clinical trials fail | Evidence tables for stopped trials",
     metaDescription:
-      "Learn why clinical trials fail, including lack of efficacy, futility, safety events, enrollment problems, funding, strategy, and operational stop reasons.",
-    eyebrow: "Reasons trials fail",
-    h1: "Why clinical trials fail: common reasons trials stop early",
+      "Use evidence-backed tables to study why clinical trials fail, including efficacy, futility, safety, enrollment, funding, strategy, and operational stop reasons.",
+    eyebrow: "Failure reason evidence",
+    h1: "Why clinical trials fail: evidence tables for stopped trials",
     lede:
-      "Clinical trials fail for different reasons. Some failures are biological, such as weak efficacy or safety problems. Others are practical, such as enrollment, funding, sponsor strategy, or operational execution. Understanding the difference is essential when studying stopped trials.",
+      "Clinical trials fail for different reasons. Some failures are biological, such as weak efficacy or safety problems. Others are practical, such as enrollment, funding, sponsor strategy, or operational execution. This database helps you separate those patterns with ready-to-use stopped-trial tables and source evidence.",
     primaryCta: { href: "/overview", label: "See dataset patterns" },
-    secondaryCta: { href: "/explore", label: "Filter stopped trials" },
+    secondaryCta: { href: "/explore", label: "Open the database" },
     keyPoints: [
       "Biological failure often appears as lack of efficacy, futility, failed endpoints, or safety concerns.",
       "Non-biological stops can reflect enrollment, funding, sponsor strategy, or operational constraints.",
-      "Registry text should be treated as a signal that needs primary source verification.",
+      "Registry text should be treated as a signal that needs one-click source verification.",
     ],
     sections: [
       {
