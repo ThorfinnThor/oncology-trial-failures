@@ -545,9 +545,6 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   ))}
                 </ul>
               </div>
-              <Link href="/explore" className="primaryBtn footerCta">
-                Open the database <span aria-hidden="true">→</span>
-              </Link>
             </div>
           </footer>
         </main>
@@ -566,7 +563,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .container {
           width: 100%;
-          max-width: 1180px;
+          max-width: 1240px;
           margin: 0 auto;
           padding-left: 20px;
           padding-right: 20px;
@@ -582,8 +579,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .heroGrid {
           display: grid;
-          grid-template-columns: minmax(360px, 0.88fr) minmax(560px, 1.12fr);
-          gap: clamp(32px, 4vw, 52px);
+          grid-template-columns: minmax(380px, 0.84fr) minmax(620px, 1.16fr);
+          gap: clamp(30px, 3.4vw, 44px);
           align-items: start;
         }
 
@@ -1095,15 +1092,15 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .homeFooter {
-          padding: 26px 0;
+          padding: 30px 0;
           border-top: 1px solid #dbe4f0;
           background: #ffffff;
         }
 
         .footerInner {
           display: grid;
-          grid-template-columns: minmax(230px, 1fr) minmax(230px, max-content) minmax(330px, auto) auto;
-          gap: 28px;
+          grid-template-columns: minmax(260px, 1fr) minmax(190px, auto) minmax(360px, auto);
+          gap: 42px;
           align-items: start;
         }
 
@@ -1114,10 +1111,10 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .footerLinks {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 14px;
-          align-content: flex-start;
+          display: grid;
+          grid-template-columns: repeat(2, max-content);
+          gap: 10px 18px;
+          justify-content: start;
           color: #475569;
           font-weight: 750;
         }
@@ -1164,12 +1161,6 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         :global(.homePage .footerGuideLinks a:hover),
         :global(.homePage .footerGuideLinks a:focus-visible) {
           text-decoration: underline;
-        }
-
-        .footerCta {
-          align-self: start;
-          min-height: 42px;
-          padding: 10px 14px;
         }
 
         :global(.homePage .homeBrand),
@@ -1225,14 +1216,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
           .actions,
           .primaryBtn,
-          .secondaryBtn,
-          .footerCta {
+          .secondaryBtn {
             width: 100%;
           }
 
           .primaryBtn,
-          .secondaryBtn,
-          .footerCta {
+          .secondaryBtn {
             justify-content: center;
           }
 
