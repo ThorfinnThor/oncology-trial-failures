@@ -1102,9 +1102,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .footerInner {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) minmax(180px, auto) minmax(220px, auto) auto;
-          gap: 18px;
-          align-items: center;
+          grid-template-columns: minmax(230px, 1fr) minmax(230px, max-content) minmax(330px, auto) auto;
+          gap: 28px;
+          align-items: start;
         }
 
         .footerInner p {
@@ -1117,8 +1117,13 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           display: flex;
           flex-wrap: wrap;
           gap: 14px;
+          align-content: flex-start;
           color: #475569;
           font-weight: 750;
+        }
+
+        .footerGuideLinks {
+          min-width: 330px;
         }
 
         .footerGuideLinks h3 {
@@ -1162,6 +1167,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .footerCta {
+          align-self: start;
           min-height: 42px;
           padding: 10px 14px;
         }

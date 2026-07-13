@@ -49,7 +49,6 @@ export default function GuidesMenu({ active = false }: GuidesMenuProps) {
     <div
       className={`guidesMenu${open ? " guidesMenuOpen" : ""}`}
       onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
       ref={menuRef}
     >
       <button
