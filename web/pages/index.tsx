@@ -1,16 +1,221 @@
+import fs from "fs";
+import path from "path";
+
 import Head from "next/head";
 import Link from "next/link";
+import type { GetStaticProps } from "next";
 
-import PrimaryNav from "../components/PrimaryNav";
+import PrimaryNav from "@/components/PrimaryNav";
+import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { trialPath } from "@/lib/seoUrls";
+import type { TrialIndexRow } from "@/lib/types";
 
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "Clinical Trial Failures Database | Ready-to-use stopped trial evidence";
+const ORG_NAME = "Clinical Trial Failures";
+const TITLE = "Clinical Trial Failures Database | Why clinical trials stop";
 const DESCRIPTION =
-  "Use a ready-to-use clinical trial failure database with preclassified stop reasons, one-click evidence links, sponsor tables, and ClinicalTrials.gov source records.";
+  "Search stopped clinical trials from ClinicalTrials.gov. Find terminated, suspended, and withdrawn studies by likely stop reason, sponsor, phase, and source evidence.";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
-export default function HomePage() {
+type SampleTrial = {
+  nctId: string;
+  title: string;
+  sponsor: string;
+  phase: string;
+  status: string;
+  bucket: string;
+  stopLanguage: string;
+  href: string;
+};
+
+type HomeStats = {
+  trialCount: number;
+  scientificCount: number;
+  updated: string;
+  updatedIso: string;
+  source: string;
+};
+
+type HomePageProps = {
+  stats: HomeStats;
+  sampleTrials: SampleTrial[];
+};
+
+function asString(value: unknown): string {
+  if (value == null) return "";
+  if (Array.isArray(value)) return value.filter(Boolean).join("; ");
+  if (typeof value === "string") return value;
+  return String(value);
+}
+
+function firstFromSemicolon(value: string): string {
+  return value
+    .split(";")
+    .map((part) => part.trim())
+    .filter(Boolean)[0] || "";
+}
+
+function mapRawTrial(row: any): TrialIndexRow {
+  const phasesRaw =
+    row.phases ??
+    row.phase ??
+    row.phase_list ??
+    row.phase_raw ??
+    row.phases_raw ??
+    "";
+
+  const conditionsRaw =
+    row.conditions ??
+    row.condition ??
+    row.condition_list ??
+    row.condition_name ??
+    row.condition_names ??
+    row.condition_terms ??
+    "";
+
+  const interventionsRaw =
+    row.intervention_names ??
+    row.interventions ??
+    row.intervention ??
+    row.intervention_list ??
+    row.intervention_name ??
+    "";
+
+  const whyRaw =
+    row.why_stopped ??
+    row.why_stopped_reason ??
+    row.why_stopped_text ??
+    row.reason_stopped ??
+    row.reason ??
+    "";
+
+  return {
+    nct_id: asString(row.nct_id).trim(),
+    brief_title: asString(row.brief_title || row.title || row.official_title || "").trim(),
+    overall_status: asString(row.overall_status || row.status || "").trim(),
+    phases: asString(phasesRaw).trim(),
+    disease_area: asString(row.disease_area ?? row.area ?? row.condition_area ?? row.therapeutic_area ?? "Other").trim(),
+    lead_sponsor: asString(row.lead_sponsor || row.sponsor || row.organization || "").trim(),
+    collaborators: asString(row.collaborators || row.collab || "").trim(),
+    condition_first: firstFromSemicolon(asString(conditionsRaw)),
+    intervention_first: firstFromSemicolon(asString(interventionsRaw)),
+    why_stopped_short: asString(whyRaw).trim(),
+    classification_label: asString(row.classification_label || row.label || "").trim(),
+    classification_reason: asString(row.classification_reason || row.reason_bucket || "").trim(),
+    classification_confidence: asString(row.classification_confidence || row.confidence || "").trim(),
+    classification_evidence: asString(row.classification_evidence || row.evidence || "").trim(),
+    last_update_post_date: asString(row.last_update_post_date || row.last_update || row.updated || "").trim(),
+    url: row.url || (row.nct_id ? `https://clinicaltrials.gov/study/${encodeURIComponent(row.nct_id)}` : ""),
+  };
+}
+
+function compactNumber(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
+function cleanDateLabel(value: string): string {
+  if (!value) return "latest dataset";
+  return value.slice(0, 10);
+}
+
+function excerpt(value: string, maxLength = 120): string {
+  const clean = value.replace(/\s+/g, " ").trim();
+  if (clean.length <= maxLength) return clean;
+  return `${clean.slice(0, maxLength - 1).trim()}...`;
+}
+
+function bucketClass(bucket: string): string {
+  const normalized = bucket.toUpperCase();
+  if (normalized === "SAFETY") return "reasonTag reasonTagSafety";
+  if (normalized === "EFFICACY/FUTILITY") return "reasonTag reasonTagEfficacy";
+  if (normalized === "FUNDING") return "reasonTag reasonTagFunding";
+  if (normalized === "OPERATIONAL") return "reasonTag reasonTagOps";
+  if (normalized === "REGULATORY") return "reasonTag reasonTagRegulatory";
+  return "reasonTag reasonTagOther";
+}
+
+function bucketLabel(bucket: string): string {
+  if (bucket.toUpperCase() === "EFFICACY/FUTILITY") return "Efficacy / futility";
+  if (bucket.toUpperCase() === "OTHER/UNKNOWN") return "Other / unknown";
+  return bucket.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function buildSampleTrials(rows: TrialIndexRow[]): SampleTrial[] {
+  const bucketOrder = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "FUNDING", "REGULATORY"];
+  const chosen: SampleTrial[] = [];
+  const seen = new Set<string>();
+
+  for (const wantedBucket of bucketOrder) {
+    const row = rows.find((candidate) => {
+      if (!candidate.nct_id || seen.has(candidate.nct_id)) return false;
+      if (reasonBucket(candidate).toUpperCase() !== wantedBucket) return false;
+      if (!candidate.lead_sponsor || !candidate.why_stopped_short) return false;
+      if ((candidate.why_stopped_short || "").length < 18) return false;
+      return true;
+    });
+
+    if (!row) continue;
+    seen.add(row.nct_id);
+    const phaseKey = parsePhases(row.phases || "")[0] || "UNKNOWN";
+    chosen.push({
+      nctId: row.nct_id,
+      title: row.brief_title || row.nct_id,
+      sponsor: row.lead_sponsor || "Unknown sponsor",
+      phase: phaseLabel(phaseKey),
+      status: row.overall_status || "Stopped",
+      bucket: reasonBucket(row),
+      stopLanguage: excerpt(row.why_stopped_short || "", 118),
+      href: trialPath(row),
+    });
+  }
+
+  return chosen.slice(0, 5);
+}
+
+export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
+  const metaPath = path.join(process.cwd(), "public", "dataset_meta.json");
+  const dataPath = path.join(process.cwd(), "public", "all_stopped_trials.json");
+
+  const meta = JSON.parse(fs.readFileSync(metaPath, "utf8"));
+  const rawRows = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+  const rows = rawRows.map(mapRawTrial).filter((row: TrialIndexRow) => row.nct_id);
+
+  const stats: HomeStats = {
+    trialCount: meta?.all?.record_count || rows.length,
+    scientificCount: meta?.biological_failure?.record_count || rows.filter((row: TrialIndexRow) => reasonBucket(row) === "EFFICACY/FUTILITY").length,
+    updated: cleanDateLabel(meta?.all?.max_last_update_post_date || meta?.version || ""),
+    updatedIso: cleanDateLabel(meta?.all?.max_last_update_post_date || meta?.version || ""),
+    source: meta?.source || "ClinicalTrials.gov",
+  };
+
+  return {
+    props: {
+      stats,
+      sampleTrials: buildSampleTrials(rows),
+    },
+  };
+};
+
+export default function HomePage({ stats, sampleTrials }: HomePageProps) {
+  const faqItems = [
+    {
+      question: "What counts as a clinical trial failure?",
+      answer:
+        "This site starts with stopped studies: terminated, suspended, and withdrawn clinical trials. Not every stopped trial is a failed drug or failed biology, so each record is classified as a screening signal rather than a final judgment.",
+    },
+    {
+      question: "Why do clinical trials stop?",
+      answer:
+        "Trials can stop because of efficacy or futility signals, safety issues, operational problems, enrollment constraints, funding, sponsor strategy, regulatory issues, or unclear reasons in the registry record.",
+    },
+    {
+      question: "Who is this for?",
+      answer:
+        "It is built for biotech and pharma teams, investors, consultants, analysts, and researchers who need fast evidence on whether a stopped trial looks like biological failure or something more operational.",
+    },
+  ];
+
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -27,22 +232,32 @@ export default function HomePage() {
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Clinical trial failure signals",
+      name: "Clinical Trial Failures Database",
       description:
-        "A structured view of terminated, suspended, and withdrawn clinical trial records with stop-reason classifications.",
-      url: SITE_URL,
-      isBasedOn: "ClinicalTrials.gov registry records",
+        "A searchable database of terminated, suspended, and withdrawn clinical trials derived from ClinicalTrials.gov, each classified by likely stop reason and linked to its source NCT record.",
+      url: `${SITE_URL}/explore`,
+      isBasedOn: "https://clinicaltrials.gov",
+      keywords: ["clinical trial failures", "terminated trials", "trial futility", "stopped clinical trials"],
       creator: {
         "@type": "Organization",
-        name: SITE_NAME,
+        name: ORG_NAME,
       },
-      keywords: [
-        "clinical trial failures",
-        "terminated clinical trials",
-        "withdrawn clinical trials",
-        "oncology clinical trials",
-        "ClinicalTrials.gov",
-      ],
+      dateModified: stats.updatedIso,
+      license: "https://clinicaltrials.gov/about-site/terms-conditions",
+      measurementTechnique: "Rule-based classification of public ClinicalTrials.gov stopped-trial records",
+      variableMeasured: ["overall status", "clinical phase", "sponsor", "therapeutic area", "stop reason", "classification bucket"],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqItems.map((item) => ({
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.answer,
+        },
+      })),
     },
   ];
 
@@ -83,870 +298,865 @@ export default function HomePage() {
           </div>
         </header>
 
-        <main>
-          <section className="hero">
+        <main className="homeMain">
+          <section className="hero" aria-labelledby="home-hero-title">
             <div className="container heroGrid">
               <div className="heroCopy">
-                <p className="eyebrow">Ready-to-use clinical trial failure database</p>
-                <h1>Find stopped clinical trials with one-click evidence</h1>
+                <p className="eyebrow">Clinical trial failure database</p>
+                <h1 id="home-hero-title">Why clinical trials stop - sorted, sourced, searchable</h1>
                 <p className="lede">
-                  Clinical Trial Failures turns ClinicalTrials.gov stop records into a practical research
-                  database. Search terminated, suspended, and withdrawn trials with preclassified failure
-                  reasons, trial-level evidence, sponsor views, and ready-to-use tables.
+                  We turn raw ClinicalTrials.gov stop records into a searchable database of terminated,
+                  suspended, and withdrawn trials - each tagged with a likely stop reason and linked back to
+                  its source NCT record.
                 </p>
-                <p className="supporting">
-                  Instead of reading thousands of registry entries manually, move from a broad question to the
-                  exact stopped trials, source links, and failure signals that support your analysis.
-                </p>
+
                 <div className="actions">
-                  <Link href="/explore" className="primaryBtn" aria-label="Explore clinical trial failures">
+                  <Link href="/explore" className="primaryBtn" aria-label="Open the clinical trial failure database">
                     <span>Open the database</span>
                     <span aria-hidden="true">→</span>
                   </Link>
-                  <Link href="/methods" className="secondaryBtn" aria-label="See methodology">
-                    <span>See methodology</span>
+                  <Link href="/methods" className="secondaryBtn" aria-label="Read how classification works">
+                    <span>How classification works</span>
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
-                <dl className="trustStrip" aria-label="Dataset trust summary">
-                  <div>
-                    <dt>Primary source</dt>
-                    <dd>ClinicalTrials.gov registry records</dd>
-                  </div>
-                  <div>
-                    <dt>Ready tables</dt>
-                    <dd>Preclassified stop reasons and sponsor views</dd>
-                  </div>
-                  <div>
-                    <dt>Evidence links</dt>
-                    <dd>One-click path from summary to trial record</dd>
-                  </div>
-                </dl>
-              </div>
 
-              <aside className="heroPanel" aria-label="Key analysis paths">
-                <figure className="heroVisual" aria-label="Clinical trial failure analytics visual">
-                  <img
-                    src="/images/clinical-trial-failures-hero-v12.webp"
-                    alt="Color-coded biomedical sample tubes in a laboratory rack"
-                    width={2000}
-                    height={1333}
-                    loading="eager"
-                  />
-                </figure>
-              </aside>
-
-              <div className="miniGrid" aria-label="Core analysis shortcuts">
-                <div className="panelCard miniCard">
-                  <h3>Preclassified stop reasons</h3>
-                  <p>Screen efficacy, futility, safety, operational, and unknown stop signals.</p>
-                </div>
-                <div className="panelCard miniCard">
-                  <h3>One-click evidence</h3>
-                  <p>Jump from summary tables to the trial-level stop language and source record.</p>
-                </div>
-                <div className="panelCard miniCard">
-                  <h3>Sponsor-ready views</h3>
-                  <p>Compare sponsors, repeated patterns, disease areas, and stopped programs.</p>
-                </div>
-                <div className="panelCard miniCard">
-                  <h3>Exportable analysis</h3>
-                  <p>Filter by status, phase, disease area, reason bucket, and likely scientific failure.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section className="section">
-            <div className="container sectionGrid">
-              <div className="sectionIntro cardSurface">
-                <h2>Ready-to-use evidence for trial failure research</h2>
-                <p>
-                  The database is designed for biotech and pharma teams, investors, consultants, and researchers
-                  who need fast evidence on why clinical trials stop. The strongest use case is separating likely
-                  biological failure from operational, strategic, enrollment, or funding decisions.
-                </p>
-                <ul className="bulletList">
-                  <li>Find failed clinical trials linked to efficacy, futility, or safety concerns.</li>
-                  <li>Open the trial-level evidence behind each stop-reason classification.</li>
-                  <li>Trace sponsor patterns across repeated terminated, suspended, and withdrawn programs.</li>
-                  <li>Move from broad tables into specific NCT records without rebuilding the dataset yourself.</li>
+                <ul className="trustStrip" aria-label="Dataset facts">
+                  <li>
+                    <strong>{compactNumber(stats.trialCount)}</strong> stopped trials
+                  </li>
+                  <li>
+                    Updated <strong>{stats.updated}</strong>
+                  </li>
+                  <li>Sourced from {stats.source}</li>
                 </ul>
               </div>
 
-              <div className="stackGrid">
-                <div className="cardSurface">
-                  <h3>Searchable stopped-trial database</h3>
-                  <p>Browse terminated, suspended, and withdrawn clinical trial records in one place.</p>
+              <figure className="previewCard" aria-label="Sample of stopped trial records">
+                <div className="previewBar" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
                 </div>
-                <div className="cardSurface">
-                  <h3>Prebuilt failure tables</h3>
-                  <p>Use ready views by sponsor, disease area, phase, and stop-reason bucket.</p>
+                <div className="tableScroll">
+                  <table className="sampleTable">
+                    <caption>Every classification links back to the primary registry record.</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">NCT ID</th>
+                        <th scope="col">Sponsor / phase</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Stop reason and source language</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sampleTrials.map((trial) => (
+                        <tr key={trial.nctId}>
+                          <td>
+                            <Link href={trial.href}>{trial.nctId}</Link>
+                          </td>
+                          <td>
+                            <strong>{trial.sponsor}</strong>
+                            <span className="tableSubline">{trial.phase}</span>
+                          </td>
+                          <td>{trial.status}</td>
+                          <td>
+                            <div className="reasonCell">
+                              <span className={bucketClass(trial.bucket)}>{bucketLabel(trial.bucket)}</span>
+                              <span>{trial.stopLanguage}</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-                <div className="cardSurface">
-                  <h3>Biological vs non-biological stops</h3>
-                  <p>Separate scientific signals from operational, funding, and administrative noise.</p>
-                </div>
-              </div>
+              </figure>
             </div>
           </section>
 
-          <section className="section altSection">
+          <section className="section" aria-labelledby="capabilities-title">
             <div className="container">
-              <div className="sectionHeading">
-                <h2>Explore ready-to-use tables</h2>
+              <div className="sectionHeader">
+                <p className="eyebrow">What it does</p>
+                <h2 id="capabilities-title">A faster way to move from stopped trial to usable evidence</h2>
                 <p>
-                  Start with the searchable database, then move into prebuilt summary pages for sponsors,
-                  disease areas, phases, stop reasons, and individual trial evidence.
+                  Built for biotech and pharma teams, investors, and analysts who need to separate biological
+                  failure from operational, funding, and strategic decisions.
                 </p>
               </div>
-              <div className="linkGrid">
-                <Link href="/explore" className="navCard">
-                  <span className="navCardTitle">Explore</span>
-                  <span className="navCardText">Search and filter stopped trials with preclassified reasons.</span>
-                  <span className="navCardFooter">Open database →</span>
-                </Link>
-                <Link href="/overview" className="navCard">
-                  <span className="navCardTitle">Overview</span>
-                  <span className="navCardText">See high-level patterns across the stopped-trial dataset.</span>
-                  <span className="navCardFooter">Open page →</span>
-                </Link>
-                <Link href="/failures" className="navCard">
-                  <span className="navCardTitle">Failure hubs</span>
-                  <span className="navCardText">Browse disease, phase, and stop-reason evidence pages.</span>
-                  <span className="navCardFooter">Open hubs →</span>
-                </Link>
-                <Link href="/sponsor-insights" className="navCard">
-                  <span className="navCardTitle">Sponsor insights</span>
-                  <span className="navCardText">Extract sponsor-level stop patterns and evidence tables.</span>
-                  <span className="navCardFooter">Open page →</span>
-                </Link>
-                <Link href="/sponsors" className="navCard">
-                  <span className="navCardTitle">Sponsor hubs</span>
-                  <span className="navCardText">Open sponsor-specific stopped-trial evidence pages.</span>
-                  <span className="navCardFooter">Open hubs →</span>
-                </Link>
-                <Link href="/insights" className="navCard">
-                  <span className="navCardTitle">Insights</span>
-                  <span className="navCardText">Read data-backed notes from the stopped-trial database.</span>
-                  <span className="navCardFooter">Open insights →</span>
-                </Link>
-                <Link href="/methods" className="navCard">
-                  <span className="navCardTitle">Methods</span>
-                  <span className="navCardText">Review how the classifications and source checks work.</span>
-                  <span className="navCardFooter">Open page →</span>
-                </Link>
-                <Link href="/about" className="navCard">
-                  <span className="navCardTitle">About and data trust</span>
-                  <span className="navCardText">Review source, scope, limitations, and medical-data trust notes.</span>
-                  <span className="navCardFooter">Open page →</span>
-                </Link>
-                <Link href="/outliers" className="navCard">
-                  <span className="navCardTitle">Outliers</span>
-                  <span className="navCardText">Inspect over-represented sponsors, indications, and stop patterns.</span>
-                  <span className="navCardFooter">Open page →</span>
-                </Link>
-                <Link href="/top-entities" className="navCard">
-                  <span className="navCardTitle">Top entities</span>
-                  <span className="navCardText">See the sponsors and disease areas that appear most often.</span>
-                  <span className="navCardFooter">Open page →</span>
-                </Link>
-              </div>
 
-              <div className="sectionHeading guideHeading" id="latest-insights">
-                <h2>Latest data-backed insights</h2>
-                <p>
-                  These are not generic blog posts. Each note uses numbers from the stopped-trial database and
-                  links back into the source views.
-                </p>
-              </div>
-              <div className="linkGrid">
-                <Link href="/insights/terminated-clinical-trials-are-not-always-failures" className="navCard">
-                  <span className="navCardTitle">Terminated trials are not always failures</span>
-                  <span className="navCardText">Why stopped status and scientific failure are not the same thing.</span>
-                  <span className="navCardFooter">Read insight →</span>
-                </Link>
-                <Link href="/insights/oncology-phase-2-clinical-trial-failure-signals" className="navCard">
-                  <span className="navCardTitle">Oncology Phase II failure signals</span>
-                  <span className="navCardText">A focused look at oncology stops, futility, and safety signals.</span>
-                  <span className="navCardFooter">Read insight →</span>
-                </Link>
-                <Link href="/methods" className="navCard">
-                  <span className="navCardTitle">How to read the numbers</span>
-                  <span className="navCardText">Review the source, classification buckets, and limits.</span>
-                  <span className="navCardFooter">Open methods →</span>
-                </Link>
-              </div>
-
-              <div className="sectionHeading guideHeading" id="research-guides">
-                <h2>Clinical trial failure research guides</h2>
-                <p>
-                  These focused pages translate common search terms into data-backed views of clinical trial
-                  failures, stopped studies, termination reasons, oncology trial stops, and futility signals.
-                </p>
-              </div>
-              <div className="linkGrid">
-                <Link href="/clinical-trial-failures" className="navCard">
-                  <span className="navCardTitle">Clinical trial failures</span>
-                  <span className="navCardText">Use the database to find stopped trials and evidence signals.</span>
-                  <span className="navCardFooter">Open guide →</span>
-                </Link>
-                <Link href="/why-clinical-trials-fail" className="navCard">
-                  <span className="navCardTitle">Why clinical trials fail</span>
-                  <span className="navCardText">Compare efficacy, safety, enrollment, funding, and operational causes.</span>
-                  <span className="navCardFooter">Open guide →</span>
-                </Link>
-                <Link href="/failed-clinical-trials" className="navCard">
-                  <span className="navCardTitle">Failed clinical trials</span>
-                  <span className="navCardText">Review how failure language appears in source registry records.</span>
-                  <span className="navCardFooter">Open guide →</span>
-                </Link>
-                <Link href="/oncology-clinical-trial-failures" className="navCard">
-                  <span className="navCardTitle">Oncology trial failures</span>
-                  <span className="navCardText">Focus on cancer trial stops and biological failure patterns.</span>
-                  <span className="navCardFooter">Open guide →</span>
-                </Link>
-                <Link href="/terminated-clinical-trials" className="navCard">
-                  <span className="navCardTitle">Terminated clinical trials</span>
-                  <span className="navCardText">Separate terminated status from scientific failure evidence.</span>
-                  <span className="navCardFooter">Open guide →</span>
-                </Link>
-                <Link href="/clinical-trial-futility" className="navCard">
-                  <span className="navCardTitle">Clinical trial futility</span>
-                  <span className="navCardText">Search weak efficacy, futility, and failed endpoint signals.</span>
-                  <span className="navCardFooter">Open guide →</span>
-                </Link>
-              </div>
-            </div>
-          </section>
-
-          <section className="section trustSection">
-            <div className="container">
-              <div className="trustIntroGrid">
-                <div className="sectionHeading">
-                  <h2>Source, scope, and verification</h2>
+              <div className="capabilityGrid">
+                <article className="infoCard">
+                  <h3>Preclassified stop reasons</h3>
                   <p>
-                    Medical and clinical-trial data needs context. This site summarizes registry records and
-                    highlights likely failure signals, but each trial should still be verified against its primary
-                    ClinicalTrials.gov record and related sponsor publications.
-                  </p>
-                </div>
-                <figure className="trustVisual" aria-label="Methodology and source verification visual">
-                  <img
-                    src="/images/clinical-trial-methodology-v12.webp"
-                    alt="Close-up analytics screen with charts used to review clinical trial data patterns"
-                    width={2000}
-                    height={1439}
-                    loading="lazy"
-                  />
-                </figure>
-              </div>
-              <div className="trustGrid">
-                <article className="cardSurface">
-                  <h3>Registry-based source</h3>
-                  <p>
-                    Records are derived from structured trial registry fields and sponsor-provided stop
-                    language where available.
+                    Review efficacy, futility, safety, operational, funding, regulatory, and unknown signals
+                    without starting from raw registry text.
                   </p>
                 </article>
-                <article className="cardSurface">
-                  <h3>Transparent classification</h3>
+                <article className="infoCard">
+                  <h3>One-click to evidence</h3>
                   <p>
-                    Stop reasons are grouped into practical buckets such as efficacy/futility, safety,
-                    operational, enrollment, funding, regulatory, and other/unknown.
+                    Jump from any row to the exact stop language, the NCT detail page, and the primary source
+                    record when you need to verify the signal.
                   </p>
                 </article>
-                <article className="cardSurface">
-                  <h3>Research support only</h3>
+                <article className="infoCard">
+                  <h3>Sponsor and pattern views</h3>
                   <p>
-                    The labels are screening signals for analysis. They are not clinical guidance, investment
-                    advice, or a substitute for reviewing primary source documents.
+                    Trace repeated stops across sponsors, phases, disease areas, and likely scientific failure
+                    buckets.
                   </p>
                 </article>
               </div>
             </div>
           </section>
 
-          <section className="section">
+          <section className="section softSection" aria-labelledby="deep-dives-title">
             <div className="container">
-              <div className="sectionHeading">
-                <h2>Frequently asked questions</h2>
+              <div className="sectionHeader">
+                <p className="eyebrow">Deep dives</p>
+                <h2 id="deep-dives-title">Useful entry points, not keyword clutter</h2>
                 <p>
-                  These are the main questions people ask when they are researching clinical trial failures and
-                  the biological reasons trials stop.
+                  These pages cover the core research angles while keeping the homepage focused on the actual
+                  data product.
                 </p>
+              </div>
+
+              <div className="deepDiveGrid">
+                <Link href="/insights/terminated-clinical-trials-are-not-always-failures" className="deepDiveCard">
+                  <span className="deepDiveKicker">Strongest angle</span>
+                  <span className="deepDiveTitle">Terminated does not always mean failed</span>
+                  <span className="deepDiveText">Use stopped-trial status carefully before calling something a drug failure.</span>
+                  <span className="deepDiveAction">Read insight →</span>
+                </Link>
+                <Link href="/why-clinical-trials-fail" className="deepDiveCard">
+                  <span className="deepDiveKicker">Guide</span>
+                  <span className="deepDiveTitle">Why trials fail</span>
+                  <span className="deepDiveText">Compare efficacy, safety, enrollment, funding, and operational causes.</span>
+                  <span className="deepDiveAction">Open guide →</span>
+                </Link>
+                <Link href="/oncology-clinical-trial-failures" className="deepDiveCard">
+                  <span className="deepDiveKicker">Therapeutic area</span>
+                  <span className="deepDiveTitle">Oncology trial stops</span>
+                  <span className="deepDiveText">Focus on cancer trial terminations, futility, and safety patterns.</span>
+                  <span className="deepDiveAction">Open guide →</span>
+                </Link>
+                <Link href="/clinical-trial-futility" className="deepDiveCard">
+                  <span className="deepDiveKicker">Signal type</span>
+                  <span className="deepDiveTitle">Futility and failed endpoints</span>
+                  <span className="deepDiveText">Find weak efficacy and futility language in stopped study records.</span>
+                  <span className="deepDiveAction">Open guide →</span>
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          <section className="section" aria-labelledby="trust-title">
+            <div className="container trustGrid">
+              <div className="trustCopy">
+                <p className="eyebrow">Trust and method</p>
+                <h2 id="trust-title">Medical-data shortcuts still need source discipline</h2>
+                <p>
+                  The database is derived from public ClinicalTrials.gov records. Classifications are screening
+                  signals for analysis - not clinical guidance, investment advice, or a substitute for the primary
+                  source record.
+                </p>
+              </div>
+              <div className="methodCard">
+                <dl>
+                  <div>
+                    <dt>Dataset version</dt>
+                    <dd>{stats.updated}</dd>
+                  </div>
+                  <div>
+                    <dt>Stopped records</dt>
+                    <dd>{compactNumber(stats.trialCount)}</dd>
+                  </div>
+                  <div>
+                    <dt>Likely biological signals</dt>
+                    <dd>{compactNumber(stats.scientificCount)}</dd>
+                  </div>
+                  <div>
+                    <dt>Primary source</dt>
+                    <dd>{stats.source}</dd>
+                  </div>
+                  <div>
+                    <dt>Built by</dt>
+                    <dd>{ORG_NAME}</dd>
+                  </div>
+                </dl>
+                <Link href="/about" className="textLink">
+                  About and data trust →
+                </Link>
+              </div>
+            </div>
+          </section>
+
+          <section className="section faqSection" aria-labelledby="faq-title">
+            <div className="container">
+              <div className="sectionHeader">
+                <p className="eyebrow">FAQ</p>
+                <h2 id="faq-title">Three questions before using the data</h2>
               </div>
               <div className="faqGrid">
-                <article className="cardSurface">
-                  <h3>What counts as a clinical trial failure?</h3>
-                  <p>
-                    This site focuses on trials that were terminated, suspended, or withdrawn. Not every stopped
-                    study failed scientifically, but these records often contain the clearest signals behind
-                    clinical trial failures.
-                  </p>
-                </article>
-                <article className="cardSurface">
-                  <h3>Why do clinical trials fail?</h3>
-                  <p>
-                    Clinical trials can stop because of weak efficacy, futility, safety issues, operational
-                    problems, funding constraints, sponsor strategy changes, or regulatory factors. The app is
-                    most useful when you want to isolate probable biological failure from those other causes.
-                  </p>
-                </article>
-                <article className="cardSurface">
-                  <h3>Who is this useful for?</h3>
-                  <p>
-                    It is built for teams and researchers who want faster access to structured failed clinical
-                    trial intelligence, including operators, analysts, consultants, and investors.
-                  </p>
-                </article>
+                {faqItems.map((item) => (
+                  <article className="infoCard" key={item.question}>
+                    <h3>{item.question}</h3>
+                    <p>{item.answer}</p>
+                  </article>
+                ))}
               </div>
             </div>
           </section>
+
+          <footer className="homeFooter">
+            <div className="container footerInner">
+              <div>
+                <strong>{SITE_NAME}</strong>
+                <p>Stopped clinical trials, sorted by likely reason and source evidence.</p>
+              </div>
+              <div className="footerLinks" aria-label="Footer links">
+                <Link href="/explore">Database</Link>
+                <Link href="/methods">Methods</Link>
+                <Link href="/insights">Insights</Link>
+                <Link href="/about">About</Link>
+              </div>
+              <Link href="/explore" className="primaryBtn footerCta">
+                Open the database <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+          </footer>
         </main>
       </div>
 
       <style jsx>{`
-
         .homePage {
           min-height: 100vh;
           background: #f8fafc;
           color: #0f172a;
         }
+
+        .homeMain {
+          background: #f8fafc;
+        }
+
         .container {
           width: 100%;
-          max-width: 1160px;
+          max-width: 1120px;
           margin: 0 auto;
           padding-left: 20px;
           padding-right: 20px;
         }
+
         .hero {
-          position: relative;
-          overflow: hidden;
-          padding: 32px 0 12px;
-          background: linear-gradient(180deg, #ffffff 0%, #f2f6ff 100%);
+          padding: clamp(44px, 7vw, 82px) 0 clamp(34px, 5vw, 58px);
+          background:
+            radial-gradient(circle at 10% 12%, rgba(59, 130, 246, 0.08), transparent 30%),
+            linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
           border-bottom: 1px solid #e2e8f0;
         }
-        .hero::before {
-          content: "";
-          position: absolute;
-          inset: 0;
-          z-index: 1;
-          background: linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.9) 42%, rgba(242,246,255,0.44) 100%);
-          pointer-events: none;
-        }
-        .hero .container {
-          position: relative;
-          z-index: 2;
-        }
-        .heroGrid,
-        .sectionGrid {
+
+        .heroGrid {
           display: grid;
-          gap: 24px;
+          grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
+          gap: clamp(28px, 5vw, 54px);
+          align-items: center;
         }
-        .heroGrid {
-          align-items: stretch;
-        }
-        .sectionGrid {
-          align-items: stretch;
-        }
-        .heroGrid {
-          grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-          gap: 28px;
-          row-gap: 16px;
-        }
-        .heroCopy {
-          padding: 10px 0;
-        }
+
         .eyebrow {
-          margin: 0 0 10px;
+          margin: 0 0 12px;
+          color: #475569;
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 850;
           letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: #475569;
         }
-        h1 {
-          margin: 0;
-          max-width: 720px;
-          font-size: clamp(2.15rem, 4.6vw, 3.25rem);
-          line-height: 1.07;
-        }
-        h2 {
-          margin: 0 0 12px;
-          font-size: clamp(1.45rem, 3.8vw, 2.4rem);
-          line-height: 1.1;
-        }
-        h3 {
-          margin: 0 0 8px;
-          font-size: 1.05rem;
-          line-height: 1.35;
-        }
+
+        h1,
+        h2,
+        h3,
         p {
           margin: 0;
+        }
+
+        h1 {
+          max-width: 680px;
+          font-size: clamp(2.35rem, 5vw, 4.35rem);
+          font-weight: 850;
+          line-height: 1.03;
+          letter-spacing: 0;
+        }
+
+        h2 {
+          max-width: 780px;
+          font-size: clamp(1.75rem, 3.2vw, 2.65rem);
+          font-weight: 850;
+          line-height: 1.08;
+          letter-spacing: 0;
+        }
+
+        h3 {
+          color: #0f172a;
+          font-size: 1.05rem;
+          font-weight: 850;
+          line-height: 1.3;
+        }
+
+        p {
           color: #334155;
           line-height: 1.7;
         }
+
         .lede {
-          margin-top: 16px;
-          max-width: 720px;
-          font-size: clamp(1rem, 2vw, 1.1rem);
+          margin-top: 18px;
+          max-width: 640px;
+          font-size: clamp(1.02rem, 1.65vw, 1.18rem);
         }
-        .supporting {
-          margin-top: 14px;
-          max-width: 700px;
-        }
+
         .actions {
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
-          margin-top: 20px;
+          margin-top: 26px;
         }
-        .trustStrip {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 10px;
-          margin: 22px 0 0;
-        }
-        .trustStrip div {
-          min-width: 0;
-          padding: 12px;
-          border: 1px solid #dbeafe;
-          border-radius: 12px;
-          background: rgba(255, 255, 255, 0.82);
-        }
-        .trustStrip dt {
-          margin: 0 0 4px;
-          color: #475569;
-          font-size: 0.72rem;
-          font-weight: 800;
-          letter-spacing: 0.06em;
-          text-transform: uppercase;
-        }
-        .trustStrip dd {
-          margin: 0;
-          color: #0f172a;
-          font-size: 0.88rem;
-          font-weight: 700;
-          line-height: 1.35;
-        }
-        :global(.homePage .homeBrand) {
+
+        .primaryBtn,
+        .secondaryBtn {
           display: inline-flex;
           align-items: center;
-          position: relative;
-          z-index: 2;
-          padding-right: 4px;
+          justify-content: center;
+          gap: 9px;
+          min-height: 46px;
+          padding: 12px 17px;
+          border-radius: 12px;
+          font-weight: 850;
+          line-height: 1.1;
         }
-        :global(.homePage .homeBrand),
-        :global(.topbar .navlink) {
-          text-decoration-thickness: 1.5px;
+
+        .primaryBtn {
+          background: #0f172a;
+          color: #ffffff;
+          border: 1px solid #0f172a;
+          box-shadow: 0 12px 26px rgba(15, 23, 42, 0.16);
+        }
+
+        .secondaryBtn {
+          background: #ffffff;
+          color: #0f172a;
+          border: 1px solid #cbd5e1;
+        }
+
+        .primaryBtn:hover,
+        .secondaryBtn:hover,
+        .textLink:hover,
+        .deepDiveCard:hover .deepDiveAction,
+        .footerLinks a:hover {
+          text-decoration: underline;
           text-underline-offset: 0.18em;
         }
-        :global(.homePage .homeBrand:hover),
-        :global(.homePage .homeBrand:focus-visible),
-        :global(.topbar .navlink:hover),
-        :global(.topbar .navlink:focus-visible) {
-          text-decoration: underline;
-        }
+
         :global(.homePage .primaryBtn),
         :global(.homePage .secondaryBtn) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          gap: 10px;
-          padding: 12px 16px;
-          text-decoration: none;
-          font-weight: 800;
+          gap: 9px;
+          min-height: 46px;
+          padding: 12px 17px;
           border-radius: 12px;
-          box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
-          transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+          font-weight: 850;
+          line-height: 1.1;
         }
+
         :global(.homePage .primaryBtn) {
           background: #0f172a;
           color: #ffffff;
           border: 1px solid #0f172a;
+          box-shadow: 0 12px 26px rgba(15, 23, 42, 0.16);
         }
+
         :global(.homePage .secondaryBtn) {
           background: #ffffff;
           color: #0f172a;
-          border: 1px solid #94a3b8;
+          border: 1px solid #cbd5e1;
         }
+
         :global(.homePage .primaryBtn:hover),
-        :global(.homePage .primaryBtn:focus-visible),
         :global(.homePage .secondaryBtn:hover),
-        :global(.homePage .secondaryBtn:focus-visible) {
-          transform: translateY(-1px);
-          box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+        :global(.homePage .textLink:hover),
+        :global(.homePage .deepDiveCard:hover .deepDiveAction),
+        :global(.homePage .footerLinks a:hover),
+        :global(.homePage .sampleTable a:hover) {
           text-decoration: underline;
-          text-underline-offset: 0.2em;
-          text-decoration-thickness: 1.5px;
-        }
-        .heroPanel,
-        .miniGrid,
-        .stackGrid,
-        .linkGrid,
-        .faqGrid {
-          display: grid;
-          gap: 14px;
-        }
-        .heroPanel {
-          min-width: 0;
-          height: 100%;
-        }
-        .heroVisual,
-        .trustVisual {
-          margin: 0;
-          overflow: hidden;
-          border: 1px solid #dbeafe;
-          border-radius: 12px;
-          background: #ffffff;
-          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
-        }
-        .heroVisual {
-          aspect-ratio: 16 / 9;
-          align-self: start;
-        }
-        .trustVisual {
-          aspect-ratio: 16 / 9;
-          align-self: start;
-        }
-        .heroVisual img,
-        .trustVisual img {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .heroVisual img {
-          object-position: 58% center;
-        }
-        .trustVisual img {
-          object-position: center;
-        }
-        .miniGrid {
-          grid-column: 1 / -1;
-          grid-template-columns: repeat(4, minmax(0, 1fr));
-          align-items: stretch;
-        }
-        .section {
-          padding: 30px 0;
-        }
-        .hero + .section {
-          padding-top: 24px;
-        }
-        .sectionGrid {
-          grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-        }
-        .cardSurface,
-        .panelCard,
-        :global(.homePage .navCard) {
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          border-radius: 12px;
-          padding: 18px;
-          box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
-        }
-        .panelCard,
-        .cardSurface {
-          min-width: 0;
-        }
-        .miniCard,
-        .stackGrid .cardSurface,
-        .faqGrid .cardSurface,
-        .trustGrid .cardSurface {
-          height: 100%;
-        }
-        .emphasisCard {
-          background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-          border-color: #dbeafe;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-        .emphasisCard h2 {
-          font-size: clamp(1.55rem, 3vw, 2rem);
-        }
-        @media (min-width: 1041px) {
-          .heroVisual {
-            height: 100%;
-            aspect-ratio: auto;
-          }
-        }
-        .panelLabel {
-          display: inline-block;
-          margin-bottom: 8px;
-          font-size: 0.78rem;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.06em;
-          color: #475569;
-        }
-        .sectionIntro {
-          padding: 22px;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-        .stackGrid {
-          grid-template-rows: repeat(3, minmax(0, 1fr));
-          height: 100%;
-        }
-        .bulletList {
-          margin: 16px 0 0;
-          padding-left: 18px;
-          color: #334155;
-          display: grid;
-          gap: 10px;
-        }
-        .altSection {
-          background: #ffffff;
-          border-top: 1px solid #e2e8f0;
-          border-bottom: 1px solid #e2e8f0;
-        }
-        .sectionHeading {
-          margin-bottom: 16px;
-        }
-        .guideHeading {
-          margin-top: 30px;
-        }
-        .sectionHeading p {
-          max-width: 760px;
-        }
-        .linkGrid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-        :global(.homePage .navCard) {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          text-decoration: none;
-          min-height: 132px;
-          cursor: pointer;
-          transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
-        }
-        :global(.homePage .navCard:hover),
-        :global(.homePage .navCard:focus-visible) {
-          transform: translateY(-1px);
-          border-color: #93c5fd;
-          box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
-        }
-        :global(.homePage .navCardTitle) {
-          display: block;
-          color: #0f172a;
-          font-weight: 800;
-          line-height: 1.3;
-          text-decoration: underline;
-          text-decoration-thickness: 1.5px;
           text-underline-offset: 0.18em;
-          text-decoration-color: rgba(15, 23, 42, 0.28);
         }
-        :global(.homePage .navCardText) {
-          display: block;
-          color: #475569;
-          line-height: 1.6;
+
+        .trustStrip {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          list-style: none;
+          margin: 24px 0 0;
+          padding: 0;
         }
-        :global(.homePage .navCardFooter) {
+
+        .trustStrip li {
           display: inline-flex;
           align-items: center;
-          margin-top: auto;
-          color: #1d4ed8;
-          font-weight: 700;
-          line-height: 1.3;
+          gap: 4px;
+          min-height: 34px;
+          padding: 7px 10px;
+          border: 1px solid #dbeafe;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.76);
+          color: #475569;
+          font-size: 13px;
+          font-weight: 750;
         }
+
+        .trustStrip strong {
+          color: #0f172a;
+        }
+
+        .previewCard {
+          margin: 0;
+          overflow: hidden;
+          border: 1px solid #d6e0ef;
+          border-radius: 16px;
+          background: #ffffff;
+          box-shadow: 0 22px 60px rgba(15, 23, 42, 0.1);
+        }
+
+        .previewBar {
+          display: flex;
+          gap: 7px;
+          padding: 12px 14px;
+          border-bottom: 1px solid #e2e8f0;
+          background: #f8fafc;
+        }
+
+        .previewBar span {
+          width: 10px;
+          height: 10px;
+          border-radius: 999px;
+          background: #cbd5e1;
+        }
+
+        .tableScroll {
+          overflow-x: auto;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .sampleTable {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+          table-layout: fixed;
+        }
+
+        .sampleTable caption {
+          caption-side: bottom;
+          padding: 12px 14px;
+          border-top: 1px solid #e2e8f0;
+          color: #64748b;
+          text-align: left;
+          font-size: 13px;
+          line-height: 1.45;
+        }
+
+        .sampleTable th,
+        .sampleTable td {
+          padding: 11px 12px;
+          border-bottom: 1px solid #e2e8f0;
+          text-align: left;
+          vertical-align: top;
+        }
+
+        .sampleTable th {
+          color: #64748b;
+          font-size: 11px;
+          font-weight: 850;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+
+        .sampleTable td {
+          color: #0f172a;
+          line-height: 1.35;
+          font-variant-numeric: tabular-nums;
+        }
+
+        .sampleTable tbody tr:last-child td {
+          border-bottom: 0;
+        }
+
+        .sampleTable a {
+          color: #4338ca;
+          font-weight: 850;
+        }
+
+        :global(.homePage .sampleTable a) {
+          color: #4338ca;
+          font-weight: 850;
+        }
+
+        .sampleTable th:nth-child(1),
+        .sampleTable td:nth-child(1) {
+          width: 22%;
+        }
+
+        .sampleTable th:nth-child(2),
+        .sampleTable td:nth-child(2) {
+          width: 24%;
+        }
+
+        .sampleTable th:nth-child(3),
+        .sampleTable td:nth-child(3) {
+          width: 16%;
+        }
+
+        .sampleTable th:nth-child(4),
+        .sampleTable td:nth-child(4) {
+          width: 38%;
+        }
+
+        .sampleTable strong,
+        .tableSubline,
+        .reasonCell {
+          display: block;
+        }
+
+        .sampleTable strong {
+          font-weight: 850;
+        }
+
+        .tableSubline {
+          margin-top: 4px;
+          color: #64748b;
+        }
+
+        .reasonCell {
+          display: grid;
+          gap: 7px;
+        }
+
+        .reasonTag {
+          display: inline-flex;
+          align-items: center;
+          min-height: 24px;
+          padding: 4px 8px;
+          border-radius: 999px;
+          font-size: 12px;
+          font-weight: 850;
+          white-space: nowrap;
+        }
+
+        .reasonTagEfficacy {
+          background: rgba(79, 70, 229, 0.12);
+          color: #3730a3;
+        }
+
+        .reasonTagSafety {
+          background: rgba(244, 63, 94, 0.12);
+          color: #9f1239;
+        }
+
+        .reasonTagOps {
+          background: rgba(100, 116, 139, 0.12);
+          color: #334155;
+        }
+
+        .reasonTagFunding {
+          background: rgba(245, 158, 11, 0.16);
+          color: #92400e;
+        }
+
+        .reasonTagRegulatory {
+          background: rgba(14, 165, 233, 0.13);
+          color: #075985;
+        }
+
+        .reasonTagOther {
+          background: rgba(15, 23, 42, 0.06);
+          color: #334155;
+        }
+
+        .section {
+          padding: clamp(48px, 7vw, 84px) 0;
+        }
+
+        .softSection {
+          background: #eef4fb;
+          border-top: 1px solid #dbe4f0;
+          border-bottom: 1px solid #dbe4f0;
+        }
+
+        .sectionHeader {
+          max-width: 760px;
+          margin-bottom: 24px;
+        }
+
+        .sectionHeader p,
+        .trustCopy p {
+          margin-top: 14px;
+          font-size: 1rem;
+        }
+
+        .capabilityGrid,
+        .deepDiveGrid,
+        .faqGrid {
+          display: grid;
+          gap: 14px;
+        }
+
+        .capabilityGrid,
         .faqGrid {
           grid-template-columns: repeat(3, minmax(0, 1fr));
         }
+
+        .deepDiveGrid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .infoCard,
+        .deepDiveCard,
+        .methodCard {
+          border: 1px solid #dbe4f0;
+          border-radius: 14px;
+          background: #ffffff;
+          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+        }
+
+        .infoCard {
+          padding: 20px;
+        }
+
+        .infoCard p {
+          margin-top: 10px;
+        }
+
+        .deepDiveCard {
+          display: flex;
+          min-height: 230px;
+          flex-direction: column;
+          gap: 10px;
+          padding: 18px;
+          color: inherit;
+        }
+
+        :global(.homePage .deepDiveCard) {
+          display: flex;
+          min-height: 230px;
+          flex-direction: column;
+          gap: 10px;
+          padding: 18px;
+          color: inherit;
+          border: 1px solid #dbe4f0;
+          border-radius: 14px;
+          background: #ffffff;
+          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
+        }
+
+        .deepDiveKicker {
+          color: #64748b;
+          font-size: 11px;
+          font-weight: 850;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+
+        .deepDiveTitle {
+          color: #0f172a;
+          font-size: 1.05rem;
+          font-weight: 850;
+          line-height: 1.25;
+        }
+
+        .deepDiveText {
+          color: #334155;
+          line-height: 1.55;
+        }
+
+        .deepDiveAction {
+          margin-top: auto;
+          color: #4338ca;
+          font-weight: 850;
+        }
+
         .trustGrid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 14px;
+          grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.7fr);
+          gap: 26px;
+          align-items: start;
         }
-        .trustIntroGrid {
+
+        .methodCard {
+          padding: 20px;
+        }
+
+        .methodCard dl {
           display: grid;
-          grid-template-columns: minmax(0, 0.92fr) minmax(300px, 0.72fr);
-          gap: 22px;
+          gap: 12px;
+          margin: 0;
+        }
+
+        .methodCard div {
+          display: grid;
+          grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr);
+          gap: 12px;
+          padding-bottom: 12px;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .methodCard div:last-child {
+          border-bottom: 0;
+          padding-bottom: 0;
+        }
+
+        .methodCard dt {
+          color: #64748b;
+          font-size: 12px;
+          font-weight: 850;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+
+        .methodCard dd {
+          margin: 0;
+          color: #0f172a;
+          font-weight: 850;
+          line-height: 1.4;
+        }
+
+        .textLink {
+          display: inline-flex;
+          margin-top: 18px;
+          color: #4338ca;
+          font-weight: 850;
+        }
+
+        :global(.homePage .textLink) {
+          display: inline-flex;
+          margin-top: 18px;
+          color: #4338ca;
+          font-weight: 850;
+        }
+
+        .faqSection {
+          padding-top: 0;
+        }
+
+        .homeFooter {
+          padding: 26px 0;
+          border-top: 1px solid #dbe4f0;
+          background: #ffffff;
+        }
+
+        .footerInner {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto auto;
+          gap: 18px;
           align-items: center;
-          margin-bottom: 16px;
         }
-        @media (max-width: 1040px) {
-          .heroGrid,
-          .sectionGrid,
-          .trustIntroGrid,
-          .faqGrid,
-          .trustGrid {
-            grid-template-columns: 1fr;
-          }
-          .miniGrid {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-          }
+
+        .footerInner p {
+          margin-top: 4px;
+          color: #64748b;
+          font-size: 14px;
         }
+
+        .footerLinks {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 14px;
+          color: #475569;
+          font-weight: 750;
+        }
+
+        :global(.homePage .footerLinks a) {
+          color: #475569;
+          font-weight: 750;
+        }
+
+        .footerCta {
+          min-height: 42px;
+          padding: 10px 14px;
+        }
+
+        :global(.homePage .homeBrand),
+        :global(.homePage .navlink) {
+          text-decoration-thickness: 1.5px;
+          text-underline-offset: 0.18em;
+        }
+
+        :global(.homePage .homeBrand:hover),
+        :global(.homePage .homeBrand:focus-visible),
+        :global(.homePage .navlink:hover),
+        :global(.homePage .navlink:focus-visible) {
+          text-decoration: underline;
+        }
+
         @media (max-width: 900px) {
-          .linkGrid {
+          .heroGrid,
+          .trustGrid,
+          .footerInner {
             grid-template-columns: 1fr;
           }
-          .hero {
-            padding-top: 28px;
+
+          .capabilityGrid,
+          .deepDiveGrid,
+          .faqGrid {
+            grid-template-columns: 1fr;
+          }
+
+          .footerLinks {
+            justify-content: flex-start;
           }
         }
-        @media (max-width: 720px) {
+
+        @media (max-width: 640px) {
           .container {
             padding-left: 14px;
             padding-right: 14px;
           }
-          .hero,
-          .section {
-            padding: 18px 0;
-          }
-          .hero {
-            background: #f8fafc;
-            overflow: visible;
-          }
-          .hero::before {
-            display: none;
-          }
-          .altSection {
-            background: transparent;
-          }
-          .heroGrid,
-          .sectionGrid,
-          .miniGrid,
-          .stackGrid,
-          .linkGrid,
-          .faqGrid,
-          .trustIntroGrid,
-          .trustGrid {
-            grid-template-columns: 1fr;
-            gap: 12px;
-          }
-          .trustStrip {
-            grid-template-columns: 1fr;
-            gap: 8px;
-            margin-top: 16px;
-          }
-          .heroCopy {
-            padding: 0;
-          }
-          h1 {
-            font-size: clamp(1.9rem, 10vw, 2.45rem);
-            line-height: 1.08;
-            max-width: none;
-          }
-          h2 {
-            font-size: clamp(1.45rem, 7vw, 1.9rem);
-            line-height: 1.12;
-          }
-          h3 {
-            font-size: 1rem;
-            margin-bottom: 6px;
-          }
-          .lede,
-          .supporting,
-          .sectionHeading p {
-            max-width: none;
-          }
-          .lede {
-            margin-top: 12px;
-            font-size: 1rem;
-            line-height: 1.58;
-          }
-          .supporting {
-            margin-top: 10px;
-            line-height: 1.6;
-          }
-          .sectionHeading {
-            margin-bottom: 12px;
-            display: grid;
-            gap: 8px;
-          }
-          .cardSurface,
-          .panelCard,
-          :global(.homePage .navCard),
-          .sectionIntro {
-            padding: 14px;
-            border-radius: 12px;
-          }
-          .sectionIntro {
-            display: grid;
-            gap: 10px;
-            justify-content: stretch;
-          }
-          .actions {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 8px;
-            margin-top: 16px;
-          }
-          :global(.homePage .primaryBtn),
-          :global(.homePage .secondaryBtn) {
-            width: 100%;
-            min-height: 44px;
-          }
-          .heroPanel,
-          .stackGrid,
-          .faqGrid {
-            gap: 12px;
-          }
-          .heroVisual,
-          .trustVisual {
-            border-radius: 12px;
-            box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
-          }
-          .heroVisual {
-            width: 100%;
-            order: -1;
-          }
-          .heroVisual img {
-            object-position: 62% center;
-          }
-          .miniGrid {
-            display: none;
-          }
-          :global(.homePage .navCard) {
-            min-height: 0;
-            gap: 6px;
-          }
-          :global(.homePage .navCardFooter) {
-            margin-top: 2px;
-          }
-          :global(.homePage .navCardTitle),
-          :global(.homePage .navCardText) {
-            line-height: 1.45;
-          }
-          .bulletList {
-            gap: 8px;
-            margin-top: 12px;
-            padding-left: 18px;
-          }
-        }
 
-        @media (max-width: 520px) {
-          .container {
-            padding-left: 12px;
-            padding-right: 12px;
+          .hero {
+            padding-top: 30px;
           }
-          .hero,
-          .section {
-            padding: 16px 0;
-          }
+
           h1 {
-            font-size: clamp(1.85rem, 11vw, 2.2rem);
+            font-size: clamp(2.05rem, 12vw, 2.85rem);
           }
-          .cardSurface,
-          .panelCard,
-          :global(.homePage .navCard),
-          .sectionIntro {
-            padding: 13px;
+
+          .actions,
+          .primaryBtn,
+          .secondaryBtn,
+          .footerCta {
+            width: 100%;
           }
-          .miniGrid,
-          .stackGrid,
-          .linkGrid,
-          .faqGrid,
-          .heroPanel {
-            gap: 10px;
+
+          .primaryBtn,
+          .secondaryBtn,
+          .footerCta {
+            justify-content: center;
+          }
+
+          .trustStrip {
+            display: grid;
+            grid-template-columns: 1fr;
+          }
+
+          .sampleTable {
+            min-width: 680px;
+          }
+
+          .methodCard div {
+            grid-template-columns: 1fr;
+            gap: 4px;
           }
         }
-            `}</style>
+      `}</style>
     </>
   );
 }
