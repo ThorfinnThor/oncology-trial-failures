@@ -1,8 +1,10 @@
 import Head from "next/head";
 import Link from "next/link";
+import type { GetStaticProps } from "next";
 
 import PrimaryNav from "@/components/PrimaryNav";
-import { INSIGHT_ARTICLES, INSIGHTS_BASE_URL, insightPath } from "@/lib/insights";
+import { hydrateInsightArticles, INSIGHTS_BASE_URL, insightPath, type InsightArticle } from "@/lib/insights";
+import { buildInsightStats } from "@/lib/insightStats";
 
 const TITLE = "Clinical trial failure insights | Data-backed research notes";
 const DESCRIPTION =
@@ -10,7 +12,20 @@ const DESCRIPTION =
 const CANONICAL_URL = `${INSIGHTS_BASE_URL}/insights`;
 const OG_IMAGE = `${INSIGHTS_BASE_URL}/og-image.png`;
 
-export default function InsightsIndexPage() {
+type InsightsIndexPageProps = {
+  articles: InsightArticle[];
+};
+
+export const getStaticProps: GetStaticProps<InsightsIndexPageProps> = async () => {
+  const stats = await buildInsightStats();
+  return {
+    props: {
+      articles: hydrateInsightArticles(stats),
+    },
+  };
+};
+
+export default function InsightsIndexPage({ articles }: InsightsIndexPageProps) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -19,7 +34,7 @@ export default function InsightsIndexPage() {
     url: CANONICAL_URL,
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: INSIGHT_ARTICLES.map((article, index) => ({
+      itemListElement: articles.map((article, index) => ({
         "@type": "ListItem",
         position: index + 1,
         url: `${INSIGHTS_BASE_URL}${insightPath(article)}`,
@@ -69,7 +84,7 @@ export default function InsightsIndexPage() {
           </section>
 
           <section className="insightsGrid" aria-label="Insight articles">
-            {INSIGHT_ARTICLES.map((article) => (
+            {articles.map((article) => (
               <Link href={insightPath(article)} className="insightCard card p-4" key={article.slug}>
                 <span className="facet-title">{article.eyebrow}</span>
                 <h2>{article.title}</h2>

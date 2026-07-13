@@ -1,5 +1,30 @@
 export const INSIGHTS_BASE_URL = "https://clinicaltrialfailures.com";
 
+export type InsightStats = {
+  total: number;
+  statuses: {
+    terminated: number;
+    withdrawn: number;
+    suspended: number;
+  };
+  buckets: Record<string, number>;
+  topAreas: Record<string, number>;
+  scientificCount: number;
+  scientificShare: string;
+  oncology: {
+    total: number;
+    buckets: Record<string, number>;
+    scientificCount: number;
+    phase2Total: number;
+    phase2Buckets: Record<string, number>;
+    topSponsors: Array<{ label: string; count: number }>;
+  };
+};
+
+function formatInsightCount(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
 export type InsightTable = {
   heading: string;
   columns: [string, string];
@@ -258,8 +283,206 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
   },
 ];
 
-export function getInsightBySlug(slug: string): InsightArticle | undefined {
-  return INSIGHT_ARTICLES.find((article) => article.slug === slug);
+function n(value: number): string {
+  return formatInsightCount(value);
+}
+
+function b(stats: Pick<InsightStats, "buckets">, bucket: string): number {
+  return stats.buckets[bucket] || 0;
+}
+
+function hydrateTerminatedArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const efficacy = b(stats, "EFFICACY/FUTILITY");
+  const safety = b(stats, "SAFETY");
+  const operational = b(stats, "OPERATIONAL");
+  const other = b(stats, "OTHER/UNKNOWN");
+  const regulatory = b(stats, "REGULATORY");
+
+  return {
+    ...article,
+    metaDescription: `A data-backed explanation of why terminated clinical trials should not automatically be treated as scientific failures, using ${n(stats.total)} stopped trial records.`,
+    facts: [
+      `The current dataset contains ${n(stats.total)} stopped clinical trial records.`,
+      `${n(stats.statuses.terminated)} records are terminated, ${n(stats.statuses.withdrawn)} are withdrawn, and ${n(stats.statuses.suspended)} are suspended.`,
+      `Only ${n(stats.scientificCount)} records, or ${stats.scientificShare}, are classified as likely biological failure signals from efficacy/futility or safety language.`,
+      `Operational stop reasons are the largest bucket with ${n(operational)} records.`,
+      `Other or unclear stop reasons account for ${n(other)} records, which is why source review still matters.`,
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading !== "What the stopped-trial dataset shows") return section;
+      return {
+        ...section,
+        body: [
+          `Across ${n(stats.total)} stopped records, operational reasons dominate. There are ${n(operational)} operational stops, compared with ${n(efficacy)} efficacy/futility stops and ${n(safety)} safety stops.`,
+          "That does not mean efficacy and safety failures are rare in absolute terms. It means they are much smaller than the full universe of terminated, withdrawn, and suspended trial records. The useful workflow is to separate status from reason before drawing conclusions.",
+        ],
+      };
+    }),
+    tables: [
+      {
+        heading: "Stopped trial status mix",
+        columns: ["Status", "Records"],
+        rows: [
+          ["Terminated", n(stats.statuses.terminated)],
+          ["Withdrawn", n(stats.statuses.withdrawn)],
+          ["Suspended", n(stats.statuses.suspended)],
+        ],
+      },
+      {
+        heading: "Stop-reason buckets",
+        columns: ["Reason bucket", "Records"],
+        rows: [
+          ["Operational", n(operational)],
+          ["Other/unknown", n(other)],
+          ["Efficacy/futility", n(efficacy)],
+          ["Safety", n(safety)],
+          ["Regulatory", n(regulatory)],
+        ],
+      },
+    ],
+  };
+}
+
+function hydrateOncologyArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const oncology = stats.oncology;
+  const operational = oncology.buckets.OPERATIONAL || 0;
+  const other = oncology.buckets["OTHER/UNKNOWN"] || 0;
+  const efficacy = oncology.buckets["EFFICACY/FUTILITY"] || 0;
+  const safety = oncology.buckets.SAFETY || 0;
+  const regulatory = oncology.buckets.REGULATORY || 0;
+
+  const phase2Operational = oncology.phase2Buckets.OPERATIONAL || 0;
+  const phase2Other = oncology.phase2Buckets["OTHER/UNKNOWN"] || 0;
+  const phase2Efficacy = oncology.phase2Buckets["EFFICACY/FUTILITY"] || 0;
+  const phase2Safety = oncology.phase2Buckets.SAFETY || 0;
+  const phase2Regulatory = oncology.phase2Buckets.REGULATORY || 0;
+
+  const topSponsorNames = oncology.topSponsors.slice(0, 3).map((item) => item.label).join(", ");
+  const topSponsorSentence = oncology.topSponsors.length
+    ? `The largest oncology sponsors by stopped-record count include ${topSponsorNames}.`
+    : "The largest oncology sponsors by stopped-record count update with the current dataset.";
+
+  return {
+    ...article,
+    facts: [
+      `Oncology accounts for ${n(oncology.total)} stopped records in the current dataset.`,
+      `Oncology has ${n(oncology.scientificCount)} likely biological failure signals: ${n(efficacy)} efficacy/futility and ${n(safety)} safety records.`,
+      `Phase II appears in ${n(oncology.phase2Total)} oncology stopped records.`,
+      `Within oncology Phase II records, ${n(phase2Efficacy)} are efficacy/futility and ${n(phase2Safety)} are safety stops.`,
+      topSponsorSentence,
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "Why oncology Phase II is worth separating") {
+        return {
+          ...section,
+          body: [
+            `Oncology is not just another disease area in this dataset. It is the largest one, with ${n(oncology.total)} stopped records. That makes it useful for search demand, but also easy to misread if everything is grouped together.`,
+            "Phase II is especially important because it often sits between early safety/tolerability work and larger confirmatory trials. A stop at this point can be a stronger signal about efficacy, futility, dose, endpoint, or patient-selection problems.",
+          ],
+        };
+      }
+
+      if (section.heading === "What the oncology slice shows") {
+        return {
+          ...section,
+          body: [
+            `In oncology, operational and unclear stop reasons are still the biggest groups: ${n(operational)} operational records and ${n(other)} other/unknown records. But the biological signal is large enough to study directly, with ${n(efficacy)} efficacy/futility stops and ${n(safety)} safety stops.`,
+            "That is why the oncology view should not be just a list of terminated cancer trials. It should separate scientific signals from administrative noise.",
+          ],
+        };
+      }
+
+      if (section.heading === "The Phase II signal") {
+        return {
+          ...section,
+          body: [
+            `Phase II appears in ${n(oncology.phase2Total)} oncology stopped records. Inside that slice, the dataset includes ${n(phase2Efficacy)} efficacy/futility stops and ${n(phase2Safety)} safety stops.`,
+            "Those are the records I would inspect first when looking for failed endpoints, weak activity, tolerability problems, or early signs that a program was not strong enough to continue.",
+          ],
+        };
+      }
+
+      if (section.heading === "Sponsor context matters") {
+        return {
+          ...section,
+          body: [
+            `The largest oncology stopped-trial sponsor counts include ${oncology.topSponsors
+              .map((item) => `${item.label} with ${n(item.count)} records`)
+              .join(", ")}.`,
+            "Those counts should not be read as a simple ranking of bad performance. Large research centers and active sponsors naturally run more studies. The better use is comparison inside a reason bucket, phase, and disease context.",
+          ],
+        };
+      }
+
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Oncology stop-reason buckets",
+        columns: ["Reason bucket", "Oncology records"],
+        rows: [
+          ["Operational", n(operational)],
+          ["Other/unknown", n(other)],
+          ["Efficacy/futility", n(efficacy)],
+          ["Safety", n(safety)],
+          ["Regulatory", n(regulatory)],
+        ],
+      },
+      {
+        heading: "Oncology Phase II stop signals",
+        columns: ["Reason bucket", "Phase II oncology records"],
+        rows: [
+          ["Operational", n(phase2Operational)],
+          ["Other/unknown", n(phase2Other)],
+          ["Efficacy/futility", n(phase2Efficacy)],
+          ["Safety", n(phase2Safety)],
+          ["Regulatory", n(phase2Regulatory)],
+        ],
+      },
+      {
+        heading: "Largest oncology stopped-trial sponsor counts",
+        columns: ["Sponsor", "Oncology stopped records"],
+        rows: oncology.topSponsors.map((item) => [item.label, n(item.count)]),
+      },
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "How many oncology stopped trial records are in the dataset?") {
+        return {
+          ...faq,
+          answer: `The current dataset contains ${n(oncology.total)} oncology stopped trial records.`,
+        };
+      }
+
+      if (faq.question === "How many oncology records are likely biological failure signals?") {
+        return {
+          ...faq,
+          answer: `There are ${n(oncology.scientificCount)} oncology records classified as likely biological failure signals: ${n(efficacy)} efficacy/futility records and ${n(safety)} safety records.`,
+        };
+      }
+
+      return faq;
+    }),
+  };
+}
+
+export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "terminated-clinical-trials-are-not-always-failures") {
+    return hydrateTerminatedArticle(article, stats);
+  }
+  if (article.slug === "oncology-phase-2-clinical-trial-failure-signals") {
+    return hydrateOncologyArticle(article, stats);
+  }
+  return article;
+}
+
+export function hydrateInsightArticles(stats: InsightStats): InsightArticle[] {
+  return INSIGHT_ARTICLES.map((article) => hydrateInsightArticle(article, stats));
+}
+
+export function getInsightBySlug(slug: string, stats?: InsightStats): InsightArticle | undefined {
+  const article = INSIGHT_ARTICLES.find((item) => item.slug === slug);
+  if (!article || !stats) return article;
+  return hydrateInsightArticle(article, stats);
 }
 
 export function insightPath(article: Pick<InsightArticle, "slug">): string {

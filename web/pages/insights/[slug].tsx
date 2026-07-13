@@ -2,6 +2,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 
 import InsightArticlePage from "@/components/InsightArticlePage";
 import { getInsightBySlug, INSIGHT_ARTICLES, type InsightArticle } from "@/lib/insights";
+import { buildInsightStats } from "@/lib/insightStats";
 
 type InsightPageProps = {
   article: InsightArticle;
@@ -22,7 +23,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps<InsightPageProps> = async (ctx) => {
   const slug = String(ctx.params?.slug || "");
-  const article = getInsightBySlug(slug);
+  const stats = await buildInsightStats();
+  const article = getInsightBySlug(slug, stats);
   if (!article) return { notFound: true };
 
   return {

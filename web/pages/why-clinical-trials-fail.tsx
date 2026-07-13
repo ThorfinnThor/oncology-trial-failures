@@ -1,6 +1,22 @@
-import SeoLandingPage from "../components/SeoLandingPage";
-import { SEO_LANDING_PAGES } from "../lib/seoLandingPages";
+import type { GetStaticProps } from "next";
 
-export default function WhyClinicalTrialsFailPage() {
-  return <SeoLandingPage page={SEO_LANDING_PAGES.whyClinicalTrialsFail} />;
+import SeoLandingPage from "../components/SeoLandingPage";
+import { hydrateSeoLandingPage, SEO_LANDING_PAGES, type SeoLandingPageConfig } from "../lib/seoLandingPages";
+import { buildInsightStats } from "../lib/insightStats";
+
+type PageProps = {
+  page: SeoLandingPageConfig;
+};
+
+export const getStaticProps: GetStaticProps<PageProps> = async () => {
+  const stats = await buildInsightStats();
+  return {
+    props: {
+      page: hydrateSeoLandingPage(SEO_LANDING_PAGES.whyClinicalTrialsFail, stats),
+    },
+  };
+};
+
+export default function WhyClinicalTrialsFailPage({ page }: PageProps) {
+  return <SeoLandingPage page={page} />;
 }

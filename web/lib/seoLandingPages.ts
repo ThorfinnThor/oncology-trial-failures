@@ -1,3 +1,5 @@
+import type { InsightStats } from "./insights";
+
 export type SeoLandingPageConfig = {
   slug: string;
   title: string;
@@ -775,3 +777,47 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
     ],
   },
 };
+
+function fmt(value: number): string {
+  return value.toLocaleString("en-US");
+}
+
+function replaceDatasetNumbers(text: string, stats: InsightStats): string {
+  const replacements: Array<[string, string]> = [
+    ["23,452", fmt(stats.total)],
+    ["1,813", fmt(stats.scientificCount)],
+    ["8%", stats.scientificShare],
+    ["16,085", fmt(stats.statuses.terminated)],
+    ["6,782", fmt(stats.statuses.withdrawn)],
+    ["585", fmt(stats.statuses.suspended)],
+    ["12,013", fmt(stats.buckets.OPERATIONAL || 0)],
+    ["9,534", fmt(stats.buckets["OTHER/UNKNOWN"] || 0)],
+    ["1,096", fmt(stats.buckets["EFFICACY/FUTILITY"] || 0)],
+    ["717", fmt(stats.buckets.SAFETY || 0)],
+    ["92", fmt(stats.buckets.REGULATORY || 0)],
+    ["7,871", fmt(stats.topAreas.Oncology || stats.oncology.total)],
+    ["5,755", fmt(stats.topAreas.Other || 0)],
+    ["1,700", fmt(stats.topAreas["Infectious Disease"] || 0)],
+    ["1,519", fmt(stats.topAreas["Gastroenterology & Hepatology"] || 0)],
+    ["581", fmt(stats.oncology.scientificCount)],
+    ["304", fmt(stats.oncology.buckets["EFFICACY/FUTILITY"] || 0)],
+    ["277", fmt(stats.oncology.buckets.SAFETY || 0)],
+  ];
+
+  return replacements.reduce((out, [from, to]) => out.replaceAll(from, to), text);
+}
+
+function hydrateValue<T>(value: T, stats: InsightStats): T {
+  if (typeof value === "string") return replaceDatasetNumbers(value, stats) as T;
+  if (Array.isArray(value)) return value.map((item) => hydrateValue(item, stats)) as T;
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, child]) => [key, hydrateValue(child, stats)])
+    ) as T;
+  }
+  return value;
+}
+
+export function hydrateSeoLandingPage(page: SeoLandingPageConfig, stats: InsightStats): SeoLandingPageConfig {
+  return hydrateValue(page, stats);
+}
