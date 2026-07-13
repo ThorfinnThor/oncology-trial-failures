@@ -8,6 +8,18 @@
   --text:#0f172a;
   --text-muted:rgba(15,23,42,.66);
   --accent:#4f46e5;
+  --reason-efficacy-bg:rgba(59,130,246,.12);
+  --reason-efficacy-border:rgba(59,130,246,.24);
+  --reason-efficacy-text:rgba(30,64,175,.98);
+  --reason-safety-bg:rgba(244,63,94,.12);
+  --reason-safety-border:rgba(244,63,94,.22);
+  --reason-safety-text:rgba(159,18,57,.95);
+  --reason-operational-bg:rgba(100,116,139,.12);
+  --reason-operational-border:rgba(100,116,139,.22);
+  --reason-operational-text:rgba(51,65,85,.98);
+  --reason-funding-bg:rgba(245,158,11,.16);
+  --reason-funding-border:rgba(245,158,11,.28);
+  --reason-funding-text:rgba(146,64,14,.98);
   --shadow-soft: 0 10px 30px rgba(15,23,42,.06);
   --shadow: 0 18px 70px rgba(15,23,42,.18);
 }
@@ -100,13 +112,13 @@ a{color:inherit;text-decoration:none}
 .chip-phase-4{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.22);color:rgba(146,64,14,.95)}
 
 /* Bucket colors */
-.chip-bucket-safety{background:rgba(244,63,94,.12);border-color:rgba(244,63,94,.22);color:rgba(159,18,57,.95)}
-.chip-bucket-efficacy{background:rgba(79,70,229,.12);border-color:rgba(79,70,229,.22);color:rgba(49,46,129,.95)}
+.chip-bucket-safety{background:var(--reason-safety-bg);border-color:var(--reason-safety-border);color:var(--reason-safety-text)}
+.chip-bucket-efficacy{background:var(--reason-efficacy-bg);border-color:var(--reason-efficacy-border);color:var(--reason-efficacy-text)}
 .chip-bucket-enrollment{background:rgba(234,179,8,.14);border-color:rgba(234,179,8,.24);color:rgba(146,64,14,.95)}
-.chip-bucket-funding{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.22);color:rgba(154,52,18,.95)}
+.chip-bucket-funding{background:var(--reason-funding-bg);border-color:var(--reason-funding-border);color:var(--reason-funding-text)}
 .chip-bucket-regulatory{background:rgba(14,165,233,.12);border-color:rgba(14,165,233,.22);color:rgba(7,89,133,.95)}
 .chip-bucket-strategic{background:rgba(217,70,239,.12);border-color:rgba(217,70,239,.22);color:rgba(134,25,143,.95)}
-.chip-bucket-operational{background:rgba(20,184,166,.12);border-color:rgba(20,184,166,.24);color:rgba(15,118,110,.98)}
+.chip-bucket-operational{background:var(--reason-operational-bg);border-color:var(--reason-operational-border);color:var(--reason-operational-text)}
 
 /* Topbar + layout */
 .topbar{
@@ -179,7 +191,6 @@ a{color:inherit;text-decoration:none}
 }
 .primaryNavWrap{display:flex;align-items:center;min-width:0}
 .mobileNavToggle{display:none}
-.mobileGuideLinks{display:none}
 .topbar-center{flex:1;max-width:560px;min-width:260px}
 .topbar-right{display:flex;align-items:center;gap:10px}
 
@@ -1025,45 +1036,34 @@ On wide screens this can still squeeze the left block; so we wrap into 2 rows:
   }
 
   .primaryNav .guidesMenu {
-    display: none;
+    display: block;
+    width: 100%;
   }
 
-  .mobileGuideLinks {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 4px;
-    padding: 8px;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    border-radius: 12px;
-    background: rgba(15, 23, 42, 0.025);
-  }
-
-  .mobileGuideTitle {
-    padding: 2px 4px 6px;
-    color: var(--text-muted);
-    font-size: 11px;
-    font-weight: 850;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .mobileGuideLink {
-    display: flex;
-    align-items: center;
-    min-height: 38px;
-    padding: 9px 10px;
-    border-radius: 9px;
-    color: rgba(15, 23, 42, 0.82);
-    font-size: 14px;
-    font-weight: 720;
+  .primaryNav .guidesSummary {
+    width: 100%;
+    height: auto;
+    min-height: 40px;
+    justify-content: flex-start;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-weight: 750;
     line-height: 1.2;
   }
 
-  .mobileGuideLink:hover,
-  .mobileGuideLink:focus-visible {
-    color: var(--text);
-    background: rgba(15, 23, 42, 0.04);
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
+  .primaryNav .guidesPanel {
+    position: static;
+    width: 100%;
+    max-width: none;
+    margin: 4px 0 0;
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: none;
+    background: rgba(15, 23, 42, 0.025);
+  }
+
+  .primaryNav .guidesPanelLink {
+    min-height: 38px;
+    padding: 9px 10px;
   }
 }
