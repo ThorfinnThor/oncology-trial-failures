@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 
+import { GUIDE_LINKS } from "@/components/GuidesMenu";
 import PrimaryNav from "@/components/PrimaryNav";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { trialPath } from "@/lib/seoUrls";
@@ -214,6 +215,10 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
       answer:
         "It is built for biotech and pharma teams, investors, consultants, analysts, and researchers who need fast evidence on whether a stopped trial looks like biological failure or something more operational.",
     },
+    {
+      question: "Is it free?",
+      answer: "Yes, the database is free to use, with no account required.",
+    },
   ];
 
   const jsonLd = [
@@ -246,6 +251,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
       license: "https://clinicaltrials.gov/about-site/terms-conditions",
       measurementTechnique: "Rule-based classification of public ClinicalTrials.gov stopped-trial records",
       variableMeasured: ["overall status", "clinical phase", "sponsor", "therapeutic area", "stop reason", "classification bucket"],
+      isAccessibleForFree: true,
     },
     {
       "@context": "https://schema.org",
@@ -320,6 +326,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
+                <p className="ctaNote">Free · no sign-up required</p>
 
                 <ul className="trustStrip" aria-label="Dataset facts">
                   <li>
@@ -329,6 +336,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                     Updated <strong>{stats.updated}</strong>
                   </li>
                   <li>Sourced from {stats.source}</li>
+                  <li>
+                    <strong>Free to use</strong>
+                  </li>
                 </ul>
               </div>
 
@@ -377,7 +387,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
           <section className="section" aria-labelledby="capabilities-title">
             <div className="container">
-              <div className="sectionHeader">
+              <div className="sectionHeader sectionHeaderWide">
                 <p className="eyebrow">What it does</p>
                 <h2 id="capabilities-title">A faster way to move from stopped trial to usable evidence</h2>
                 <p>
@@ -414,7 +424,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
           <section className="section softSection" aria-labelledby="deep-dives-title">
             <div className="container">
-              <div className="sectionHeader">
+              <div className="sectionHeader sectionHeaderWide">
                 <p className="eyebrow">Deep dives</p>
                 <h2 id="deep-dives-title">Useful entry points, not keyword clutter</h2>
                 <p>
@@ -449,6 +459,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   <span className="deepDiveAction">Open guide →</span>
                 </Link>
               </div>
+              <Link href="/clinical-trial-failures" className="allGuidesLink">
+                See all guides →
+              </Link>
             </div>
           </section>
 
@@ -495,7 +508,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
           <section className="section faqSection" aria-labelledby="faq-title">
             <div className="container">
-              <div className="sectionHeader">
+              <div className="sectionHeader sectionHeaderWide">
                 <p className="eyebrow">FAQ</p>
                 <h2 id="faq-title">Three questions before using the data</h2>
               </div>
@@ -522,6 +535,16 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 <Link href="/insights">Insights</Link>
                 <Link href="/about">About</Link>
               </div>
+              <div className="footerGuideLinks" aria-label="Guide links">
+                <h3>Guides</h3>
+                <ul>
+                  {GUIDE_LINKS.map((link) => (
+                    <li key={link.href}>
+                      <Link href={link.href}>{link.label}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
               <Link href="/explore" className="primaryBtn footerCta">
                 Open the database <span aria-hidden="true">→</span>
               </Link>
@@ -543,14 +566,14 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .container {
           width: 100%;
-          max-width: 1120px;
+          max-width: 1180px;
           margin: 0 auto;
           padding-left: 20px;
           padding-right: 20px;
         }
 
         .hero {
-          padding: clamp(44px, 7vw, 82px) 0 clamp(34px, 5vw, 58px);
+          padding: clamp(38px, 5.8vw, 70px) 0 clamp(34px, 5vw, 56px);
           background:
             radial-gradient(circle at 10% 12%, rgba(59, 130, 246, 0.08), transparent 30%),
             linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
@@ -559,9 +582,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .heroGrid {
           display: grid;
-          grid-template-columns: minmax(0, 0.98fr) minmax(0, 1.02fr);
-          gap: clamp(28px, 5vw, 54px);
-          align-items: center;
+          grid-template-columns: minmax(360px, 0.88fr) minmax(560px, 1.12fr);
+          gap: clamp(32px, 4vw, 52px);
+          align-items: start;
         }
 
         .eyebrow {
@@ -581,18 +604,18 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         h1 {
-          max-width: 680px;
-          font-size: clamp(2.35rem, 5vw, 4.35rem);
+          max-width: 600px;
+          font-size: clamp(2.25rem, 3.45vw, 3.45rem);
           font-weight: 850;
-          line-height: 1.03;
+          line-height: 1.06;
           letter-spacing: 0;
         }
 
         h2 {
-          max-width: 780px;
-          font-size: clamp(1.75rem, 3.2vw, 2.65rem);
+          max-width: 1040px;
+          font-size: clamp(1.75rem, 3vw, 2.55rem);
           font-weight: 850;
-          line-height: 1.08;
+          line-height: 1.12;
           letter-spacing: 0;
         }
 
@@ -610,7 +633,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .lede {
           margin-top: 18px;
-          max-width: 640px;
+          max-width: 590px;
           font-size: clamp(1.02rem, 1.65vw, 1.18rem);
         }
 
@@ -619,6 +642,13 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           flex-wrap: wrap;
           gap: 12px;
           margin-top: 26px;
+        }
+
+        .ctaNote {
+          margin-top: 10px;
+          color: #64748b;
+          font-size: 14px;
+          font-weight: 750;
         }
 
         .primaryBtn,
@@ -693,8 +723,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .trustStrip {
-          display: flex;
-          flex-wrap: wrap;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 8px;
           list-style: none;
           margin: 24px 0 0;
@@ -704,6 +734,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .trustStrip li {
           display: inline-flex;
           align-items: center;
+          justify-content: center;
           gap: 4px;
           min-height: 34px;
           padding: 7px 10px;
@@ -713,6 +744,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           color: #475569;
           font-size: 13px;
           font-weight: 750;
+          text-align: center;
         }
 
         .trustStrip strong {
@@ -722,6 +754,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .previewCard {
           margin: 0;
           overflow: hidden;
+          min-width: 0;
           border: 1px solid #d6e0ef;
           border-radius: 16px;
           background: #ffffff;
@@ -751,7 +784,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .sampleTable {
           width: 100%;
           border-collapse: collapse;
-          font-size: 13px;
+          font-size: 12.5px;
           table-layout: fixed;
         }
 
@@ -767,7 +800,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .sampleTable th,
         .sampleTable td {
-          padding: 11px 12px;
+          padding: 10px 11px;
           border-bottom: 1px solid #e2e8f0;
           text-align: left;
           vertical-align: top;
@@ -803,22 +836,22 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .sampleTable th:nth-child(1),
         .sampleTable td:nth-child(1) {
-          width: 22%;
+          width: 21%;
         }
 
         .sampleTable th:nth-child(2),
         .sampleTable td:nth-child(2) {
-          width: 24%;
+          width: 25%;
         }
 
         .sampleTable th:nth-child(3),
         .sampleTable td:nth-child(3) {
-          width: 16%;
+          width: 14%;
         }
 
         .sampleTable th:nth-child(4),
         .sampleTable td:nth-child(4) {
-          width: 38%;
+          width: 40%;
         }
 
         .sampleTable strong,
@@ -853,23 +886,23 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .reasonTagEfficacy {
-          background: rgba(79, 70, 229, 0.12);
-          color: #3730a3;
+          background: var(--reason-efficacy-bg);
+          color: var(--reason-efficacy-text);
         }
 
         .reasonTagSafety {
-          background: rgba(244, 63, 94, 0.12);
-          color: #9f1239;
+          background: var(--reason-safety-bg);
+          color: var(--reason-safety-text);
         }
 
         .reasonTagOps {
-          background: rgba(100, 116, 139, 0.12);
-          color: #334155;
+          background: var(--reason-operational-bg);
+          color: var(--reason-operational-text);
         }
 
         .reasonTagFunding {
-          background: rgba(245, 158, 11, 0.16);
-          color: #92400e;
+          background: var(--reason-funding-bg);
+          color: var(--reason-funding-text);
         }
 
         .reasonTagRegulatory {
@@ -883,7 +916,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .section {
-          padding: clamp(48px, 7vw, 84px) 0;
+          padding: clamp(38px, 5.2vw, 66px) 0;
         }
 
         .softSection {
@@ -893,8 +926,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .sectionHeader {
-          max-width: 760px;
+          max-width: 820px;
           margin-bottom: 24px;
+        }
+
+        .sectionHeaderWide {
+          max-width: 1040px;
         }
 
         .sectionHeader p,
@@ -910,9 +947,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           gap: 14px;
         }
 
-        .capabilityGrid,
-        .faqGrid {
+        .capabilityGrid {
           grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .faqGrid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
         .deepDiveGrid {
@@ -938,7 +978,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .deepDiveCard {
           display: flex;
-          min-height: 230px;
+          min-height: 218px;
           flex-direction: column;
           gap: 10px;
           padding: 18px;
@@ -947,7 +987,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         :global(.homePage .deepDiveCard) {
           display: flex;
-          min-height: 230px;
+          min-height: 218px;
           flex-direction: column;
           gap: 10px;
           padding: 18px;
@@ -980,6 +1020,13 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .deepDiveAction {
           margin-top: auto;
+          color: #4338ca;
+          font-weight: 850;
+        }
+
+        .allGuidesLink {
+          display: inline-flex;
+          margin-top: 18px;
           color: #4338ca;
           font-weight: 850;
         }
@@ -1055,7 +1102,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .footerInner {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) auto auto;
+          grid-template-columns: minmax(0, 1fr) minmax(180px, auto) minmax(220px, auto) auto;
           gap: 18px;
           align-items: center;
         }
@@ -1074,9 +1121,44 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           font-weight: 750;
         }
 
+        .footerGuideLinks h3 {
+          margin: 0 0 8px;
+          color: #0f172a;
+          font-size: 14px;
+          font-weight: 850;
+        }
+
+        .footerGuideLinks ul {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 6px 12px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .footerGuideLinks a {
+          color: #475569;
+          font-size: 13px;
+          font-weight: 750;
+        }
+
         :global(.homePage .footerLinks a) {
           color: #475569;
           font-weight: 750;
+        }
+
+        :global(.homePage .allGuidesLink),
+        :global(.homePage .footerGuideLinks a) {
+          text-decoration-thickness: 1.5px;
+          text-underline-offset: 0.18em;
+        }
+
+        :global(.homePage .allGuidesLink:hover),
+        :global(.homePage .allGuidesLink:focus-visible),
+        :global(.homePage .footerGuideLinks a:hover),
+        :global(.homePage .footerGuideLinks a:focus-visible) {
+          text-decoration: underline;
         }
 
         .footerCta {
@@ -1102,6 +1184,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           .trustGrid,
           .footerInner {
             grid-template-columns: 1fr;
+          }
+
+          .heroCopy,
+          h1,
+          .lede {
+            max-width: none;
           }
 
           .capabilityGrid,

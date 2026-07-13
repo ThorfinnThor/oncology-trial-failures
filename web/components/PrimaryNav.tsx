@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-import GuidesMenu, { GUIDE_LINKS } from "@/components/GuidesMenu";
+import GuidesMenu from "@/components/GuidesMenu";
 
 export type PrimaryNavItem =
   | "explore"
@@ -49,14 +49,6 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
           Overview
         </Link>
         <GuidesMenu active={active === "guides"} />
-        <div className="mobileGuideLinks" aria-label="Guides">
-          <div className="mobileGuideTitle">Guides</div>
-          {GUIDE_LINKS.map((link) => (
-            <Link className="mobileGuideLink" href={link.href} key={link.href} onClick={closeMobileNav}>
-              {link.label}
-            </Link>
-          ))}
-        </div>
         <Link className="navlink" href="/insights" aria-current={current(active, "insights")} onClick={closeMobileNav}>
           Insights
         </Link>
