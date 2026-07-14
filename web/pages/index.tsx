@@ -324,17 +324,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
-                <p className="ctaNote">Free to use · no sign-up required</p>
-
-                <ul className="trustStrip" aria-label="Dataset facts">
-                  <li>
-                    <strong>{compactNumber(stats.trialCount)}</strong> stopped-trial records
-                  </li>
-                  <li>
-                    Updated <strong>{stats.updated}</strong>
-                  </li>
-                  <li>{stats.source}</li>
-                </ul>
+                <div className="sourceNote" aria-label="Dataset facts">
+                  <strong>Free to use. No sign-up required.</strong>
+                  <span>
+                    {compactNumber(stats.trialCount)} stopped-trial records · Updated {stats.updated} · {stats.source}
+                  </span>
+                </div>
               </div>
 
               <figure className="previewCard" aria-label="Sample of stopped trial records">
@@ -628,13 +623,6 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           margin-top: 26px;
         }
 
-        .ctaNote {
-          margin-top: 10px;
-          color: #64748b;
-          font-size: 14px;
-          font-weight: 750;
-        }
-
         .primaryBtn,
         .secondaryBtn {
           display: inline-flex;
@@ -706,43 +694,26 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           text-underline-offset: 0.18em;
         }
 
-        .trustStrip {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 6px 12px;
-          list-style: none;
+        .sourceNote {
+          display: grid;
+          gap: 3px;
           max-width: 600px;
-          margin: 18px 0 0;
-          padding: 0;
-        }
-
-        .trustStrip li {
-          display: inline-flex;
-          align-items: center;
-          justify-content: flex-start;
-          gap: 6px;
-          min-height: 0;
-          padding: 0;
-          border: 0;
-          border-radius: 0;
-          background: transparent;
+          margin-top: 18px;
+          padding-left: 14px;
+          border-left: 3px solid #bfdbfe;
           color: #475569;
-          font-size: 13px;
+          font-size: 13.5px;
           font-weight: 650;
-          line-height: 1.35;
-          text-align: left;
+          line-height: 1.45;
         }
 
-        .trustStrip li + li::before {
-          content: "";
-          width: 4px;
-          height: 4px;
-          border-radius: 999px;
-          background: #94a3b8;
-        }
-
-        .trustStrip strong {
+        .sourceNote strong {
           color: #0f172a;
+          font-weight: 800;
+        }
+
+        .sourceNote span {
+          color: #475569;
         }
 
         .previewCard {
@@ -1197,14 +1168,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             justify-content: center;
           }
 
-          .trustStrip {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-          }
-
-          .trustStrip li + li::before {
-            display: none;
+          .sourceNote {
+            max-width: none;
           }
 
           .sampleTable {
