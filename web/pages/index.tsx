@@ -1116,7 +1116,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           gap: 10px 18px;
           justify-content: start;
           color: #475569;
-          font-weight: 750;
+          font-size: 15px;
+          font-weight: 700;
+          line-height: 1.45;
         }
 
         .footerGuideLinks {
@@ -1126,8 +1128,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .footerGuideLinks h3 {
           margin: 0 0 8px;
           color: #0f172a;
-          font-size: 14px;
-          font-weight: 850;
+          font-size: 15px;
+          font-weight: 700;
+          line-height: 1.45;
         }
 
         .footerGuideLinks ul {
@@ -1141,13 +1144,16 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .footerGuideLinks a {
           color: #475569;
-          font-size: 13px;
-          font-weight: 750;
+          font-size: 15px;
+          font-weight: 400;
+          line-height: 1.45;
         }
 
         :global(.homePage .footerLinks a) {
           color: #475569;
-          font-weight: 750;
+          font-size: 15px;
+          font-weight: 700;
+          line-height: 1.45;
         }
 
         :global(.homePage .allGuidesLink),
