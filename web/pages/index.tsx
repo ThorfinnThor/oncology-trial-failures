@@ -308,11 +308,10 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             <div className="container heroGrid">
               <div className="heroCopy">
                 <p className="eyebrow">Clinical trial failure database</p>
-                <h1 id="home-hero-title">Why clinical trials stop - sorted, sourced, searchable</h1>
+                <h1 id="home-hero-title">Stopped clinical trials, searchable by reason</h1>
                 <p className="lede">
-                  We turn raw ClinicalTrials.gov stop records into a searchable database of terminated,
-                  suspended, and withdrawn trials - each tagged with a likely stop reason and linked back to
-                  its source NCT record.
+                  Explore terminated, suspended, and withdrawn studies from ClinicalTrials.gov. Filter by sponsor,
+                  phase, disease area, intervention, and the stated reason a trial stopped.
                 </p>
 
                 <div className="actions">
@@ -321,23 +320,20 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                     <span aria-hidden="true">→</span>
                   </Link>
                   <Link href="/methods" className="secondaryBtn" aria-label="Read how classification works">
-                    <span>How classification works</span>
+                    <span>View methodology</span>
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
-                <p className="ctaNote">Free · no sign-up required</p>
+                <p className="ctaNote">Free to use · no sign-up required</p>
 
                 <ul className="trustStrip" aria-label="Dataset facts">
                   <li>
-                    <strong>{compactNumber(stats.trialCount)}</strong> stopped trials
+                    <strong>{compactNumber(stats.trialCount)}</strong> stopped-trial records
                   </li>
                   <li>
                     Updated <strong>{stats.updated}</strong>
                   </li>
-                  <li>Sourced from {stats.source}</li>
-                  <li>
-                    <strong>Free to use</strong>
-                  </li>
+                  <li>{stats.source}</li>
                 </ul>
               </div>
 
@@ -592,10 +588,10 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         h1 {
-          max-width: 600px;
-          font-size: clamp(2.25rem, 3.45vw, 3.45rem);
+          max-width: 620px;
+          font-size: clamp(2.2rem, 3.1vw, 3.1rem);
           font-weight: 850;
-          line-height: 1.06;
+          line-height: 1.08;
           letter-spacing: 0;
         }
 
@@ -621,8 +617,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .lede {
           margin-top: 18px;
-          max-width: 590px;
-          font-size: clamp(1.02rem, 1.65vw, 1.18rem);
+          max-width: 600px;
+          font-size: clamp(1rem, 1.35vw, 1.12rem);
         }
 
         .actions {
@@ -711,28 +707,33 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .trustStrip {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 8px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px 14px;
           list-style: none;
-          margin: 24px 0 0;
-          padding: 0;
+          max-width: 600px;
+          margin: 22px 0 0;
+          padding: 14px 16px;
+          border: 1px solid #dbeafe;
+          border-radius: 16px;
+          background: rgba(255, 255, 255, 0.72);
         }
 
         .trustStrip li {
           display: inline-flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
           gap: 4px;
-          min-height: 34px;
-          padding: 7px 10px;
-          border: 1px solid #dbeafe;
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.76);
+          min-height: 0;
+          padding: 0;
+          border: 0;
+          border-radius: 0;
+          background: transparent;
           color: #475569;
           font-size: 13px;
-          font-weight: 750;
-          text-align: center;
+          font-weight: 650;
+          line-height: 1.35;
+          text-align: left;
         }
 
         .trustStrip strong {
@@ -1192,8 +1193,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           }
 
           .trustStrip {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
           }
 
           .sampleTable {
