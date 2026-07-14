@@ -5,7 +5,6 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 
-import { GUIDE_LINKS } from "@/components/GuidesMenu";
 import PrimaryNav from "@/components/PrimaryNav";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { trialPath } from "@/lib/seoUrls";
@@ -531,19 +530,11 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
               </div>
               <div className="footerLinks" aria-label="Footer links">
                 <Link href="/explore">Database</Link>
+                <Link href="/overview">Overview</Link>
                 <Link href="/methods">Methods</Link>
                 <Link href="/insights">Insights</Link>
+                <Link href="/sponsor-insights">Sponsor insights</Link>
                 <Link href="/about">About</Link>
-              </div>
-              <div className="footerGuideLinks" aria-label="Guide links">
-                <h3>Guides</h3>
-                <ul>
-                  {GUIDE_LINKS.map((link) => (
-                    <li key={link.href}>
-                      <Link href={link.href}>{link.label}</Link>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
           </footer>
@@ -1099,8 +1090,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .footerInner {
           display: grid;
-          grid-template-columns: minmax(260px, 1fr) minmax(190px, auto) minmax(360px, auto);
-          gap: 42px;
+          grid-template-columns: minmax(260px, 1fr) minmax(360px, auto);
+          gap: 48px;
           align-items: start;
         }
 
@@ -1112,40 +1103,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
         .footerLinks {
           display: grid;
-          grid-template-columns: repeat(2, max-content);
+          grid-template-columns: repeat(3, max-content);
           gap: 10px 18px;
           justify-content: start;
           color: #475569;
           font-size: 15px;
           font-weight: 700;
-          line-height: 1.45;
-        }
-
-        .footerGuideLinks {
-          min-width: 330px;
-        }
-
-        .footerGuideLinks h3 {
-          margin: 0 0 8px;
-          color: #0f172a;
-          font-size: 15px;
-          font-weight: 700;
-          line-height: 1.45;
-        }
-
-        .footerGuideLinks ul {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 6px 12px;
-          margin: 0;
-          padding: 0;
-          list-style: none;
-        }
-
-        .footerGuideLinks a {
-          color: #475569;
-          font-size: 15px;
-          font-weight: 400;
           line-height: 1.45;
         }
 
@@ -1156,16 +1119,13 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           line-height: 1.45;
         }
 
-        :global(.homePage .allGuidesLink),
-        :global(.homePage .footerGuideLinks a) {
+        :global(.homePage .allGuidesLink) {
           text-decoration-thickness: 1.5px;
           text-underline-offset: 0.18em;
         }
 
         :global(.homePage .allGuidesLink:hover),
-        :global(.homePage .allGuidesLink:focus-visible),
-        :global(.homePage .footerGuideLinks a:hover),
-        :global(.homePage .footerGuideLinks a:focus-visible) {
+        :global(.homePage .allGuidesLink:focus-visible) {
           text-decoration: underline;
         }
 
