@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Clinical Trial Failures icon</title>
+  <desc id="desc">A simple pill mark for clinical trial failure analysis.</desc>
+  <rect width="512" height="512" rx="108" fill="#0f172a"/>
+  <g transform="rotate(-35 256 256)">
+    <rect x="126" y="196" width="260" height="120" rx="60" fill="#e0f2fe"/>
+    <path d="M256 196H326C359.137 196 386 222.863 386 256C386 289.137 359.137 316 326 316H256Z" fill="#fb7185"/>
+    <path d="M256 204V308" stroke="#0f172a" stroke-width="16" stroke-linecap="round" opacity="0.35"/>
+  </g>
+</svg>
