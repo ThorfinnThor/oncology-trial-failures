@@ -320,7 +320,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                     <span aria-hidden="true">→</span>
                   </Link>
                   <Link href="/methods" className="secondaryBtn" aria-label="Read how classification works">
-                    <span>View methodology</span>
+                    <span>How classification works</span>
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
@@ -709,21 +709,18 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .trustStrip {
           display: flex;
           flex-wrap: wrap;
-          gap: 8px 14px;
+          gap: 6px 12px;
           list-style: none;
           max-width: 600px;
-          margin: 22px 0 0;
-          padding: 14px 16px;
-          border: 1px solid #dbeafe;
-          border-radius: 16px;
-          background: rgba(255, 255, 255, 0.72);
+          margin: 18px 0 0;
+          padding: 0;
         }
 
         .trustStrip li {
           display: inline-flex;
           align-items: center;
           justify-content: flex-start;
-          gap: 4px;
+          gap: 6px;
           min-height: 0;
           padding: 0;
           border: 0;
@@ -734,6 +731,14 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           font-weight: 650;
           line-height: 1.35;
           text-align: left;
+        }
+
+        .trustStrip li + li::before {
+          content: "";
+          width: 4px;
+          height: 4px;
+          border-radius: 999px;
+          background: #94a3b8;
         }
 
         .trustStrip strong {
@@ -1196,6 +1201,10 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+          }
+
+          .trustStrip li + li::before {
+            display: none;
           }
 
           .sampleTable {
