@@ -7,6 +7,7 @@ export type SeoLandingPageConfig = {
   eyebrow: string;
   h1: string;
   lede: string;
+  quickAnswer: string;
   primaryCta: { href: string; label: string };
   secondaryCta: { href: string; label: string };
   keyPoints: string[];
@@ -55,13 +56,15 @@ export const OG_IMAGE = `${SITE_URL}/og-image.png`;
 export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
   clinicalTrialFailures: {
     slug: "/clinical-trial-failures",
-    title: "Clinical trial failures | Ready-to-use failure database and evidence",
+    title: "Clinical trial failures database | 23,452 stopped trial records",
     metaDescription:
-      "Explore a ready-to-use clinical trial failure database with preclassified stop reasons, one-click evidence links, sponsor tables, and ClinicalTrials.gov source records.",
+      "Search 23,452 stopped clinical trial records with preclassified stop reasons, one-click evidence links, sponsor tables, and ClinicalTrials.gov source records.",
     eyebrow: "Ready-to-use failure database",
     h1: "Clinical trial failures: search stopped trials with evidence",
     lede:
       "Clinical trial failures are often hidden in registry text, status changes, and sponsor-provided stop reasons. This guide explains how to use the Clinical Trial Failures database to search terminated, suspended, and withdrawn trials with preclassified failure reasons, trial-level evidence, and source links.",
+    quickAnswer:
+      "Clinical trial failure is not a single status field. This site starts with 23,452 terminated, suspended, and withdrawn trial records, then separates likely biological failure signals from operational, strategic, funding, enrollment, and unclear stops.",
     primaryCta: { href: "/explore", label: "Open the database" },
     secondaryCta: { href: "/methods", label: "Review the methodology" },
     keyPoints: [
@@ -176,13 +179,15 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
 
   whyClinicalTrialsFail: {
     slug: "/why-clinical-trials-fail",
-    title: "Why clinical trials fail | Evidence tables for stopped trials",
+    title: "Why clinical trials fail | Evidence from 23,452 stopped trials",
     metaDescription:
-      "Use evidence-backed tables to study why clinical trials fail, including efficacy, futility, safety, enrollment, funding, strategy, and operational stop reasons.",
+      "See why clinical trials fail using 23,452 stopped-trial records, including efficacy, futility, safety, enrollment, funding, strategy, and operational stop reasons.",
     eyebrow: "Failure reason evidence",
     h1: "Why clinical trials fail: evidence tables for stopped trials",
     lede:
       "Clinical trials fail for different reasons. Some failures are biological, such as weak efficacy or safety problems. Others are practical, such as enrollment, funding, sponsor strategy, or operational execution. This database helps you separate those patterns with ready-to-use stopped-trial tables and source evidence.",
+    quickAnswer:
+      "Clinical trials fail because the intervention may not show enough benefit, may create safety risk, or because the study cannot continue for enrollment, funding, operational, regulatory, or sponsor-strategy reasons. The database keeps these reasons separate so a stopped trial is not automatically treated as a failed drug.",
     primaryCta: { href: "/overview", label: "See dataset patterns" },
     secondaryCta: { href: "/explore", label: "Open the database" },
     keyPoints: [
@@ -250,28 +255,28 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       ],
       examples: [
         {
-          nctId: "NCT07014735",
-          title: "Effect of Hyperglycaemia and Moxifloxacin on QTc Interval in T2DM",
+          nctId: "NCT03008616",
+          title: "AMAG-423 in antepartum subjects with severe preeclampsia",
           reason: "Efficacy/futility",
           summary:
-            "This record shows direct futility language, which is one of the clearest reasons a trial may stop for scientific rather than purely operational reasons.",
-          href: "/trial/NCT07014735",
+            "The DSMB recommended stopping early for futility with no safety concerns raised, showing a clean efficacy/futility stop pattern.",
+          href: "/trial/NCT03008616",
         },
         {
-          nctId: "NCT05999968",
-          title: "Abemaciclib plus darolutamide in prostate cancer after initial treatment",
-          reason: "Efficacy/futility",
+          nctId: "NCT03290092",
+          title: "Taselisib in overgrowth",
+          reason: "Safety",
           summary:
-            "This example shows how one stopped record can depend on the outcome of a related study, which is why program-level context matters.",
-          href: "/trial/NCT05999968",
+            "The registry says the trial was stopped early for safety reasons after two SUSARs, showing how adverse-event language changes the interpretation.",
+          href: "/trial/NCT03290092",
         },
         {
-          nctId: "NCT04867837",
-          title: "OCTAPLEX in patients with acute major bleeding on DOAC therapy",
-          reason: "Efficacy/futility",
+          nctId: "NCT03454893",
+          title: "AVR-RD-01 for treatment-naive subjects with classic Fabry disease",
+          reason: "Strategic",
           summary:
-            "The stop reason mentions interim analysis and futility, showing why trial design and analysis timing should be checked before interpretation.",
-          href: "/trial/NCT04867837",
+            "The sponsor deprioritized the Fabry disease program, which is important because not every stopped trial reflects a biological failure.",
+          href: "/trial/NCT03454893",
         },
       ],
     },
@@ -296,13 +301,15 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
 
   failedClinicalTrials: {
     slug: "/failed-clinical-trials",
-    title: "Failed clinical trials | Search terminated and withdrawn trial records",
+    title: "Failed clinical trials | Search 1,813 biological failure signals",
     metaDescription:
-      "Search failed clinical trials and clinical trial fails across terminated, suspended, and withdrawn records with reason buckets for efficacy, safety, enrollment, and operations.",
+      "Search failed clinical trials across 23,452 stopped records, including 1,813 likely biological failure signals tied to efficacy, futility, and safety.",
     eyebrow: "Failed clinical trials",
     h1: "Failed clinical trials and clinical trial fails: how to search the evidence",
     lede:
       "People often search for failed clinical trials or clinical trial fails when they want to know why a program stopped. The useful answer is usually not one record, but a structured view of status, phase, sponsor, disease area, intervention, and stop reason.",
+    quickAnswer:
+      "A failed clinical trial is best treated as an interpretation, not just a registry label. In this dataset, the most direct failure signals are 1,813 stopped records classified as efficacy/futility or safety-related biological failure signals.",
     primaryCta: { href: "/explore", label: "Search failed trials" },
     secondaryCta: { href: "/top-entities", label: "See top entities" },
     keyPoints: [
@@ -371,28 +378,28 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       ],
       examples: [
         {
-          nctId: "NCT07014735",
-          title: "Effect of Hyperglycaemia and Moxifloxacin on QTc Interval in T2DM",
-          reason: "Efficacy/futility",
+          nctId: "NCT04165031",
+          title: "LY3499446 in advanced solid tumors with KRAS G12C mutation",
+          reason: "Safety",
           summary:
-            "A direct futility stop signal, useful for users searching for failed clinical trials where the registry language points to scientific performance.",
-          href: "/trial/NCT07014735",
+            "The trial was terminated because of an unexpected toxicity finding, a concrete example of safety-driven clinical trial failure language.",
+          href: "/trial/NCT04165031",
         },
         {
-          nctId: "NCT05999968",
-          title: "Abemaciclib plus darolutamide in prostate cancer after initial treatment",
+          nctId: "NCT04981717",
+          title: "Anti-Fel d 1 antibodies in cat-allergic patients with allergic rhinitis",
           reason: "Efficacy/futility",
           summary:
-            "The trial record connects termination to a related study missing its primary endpoint, making it relevant to program-level failure research.",
-          href: "/trial/NCT05999968",
+            "The registry stop reason states lack of efficacy, which is exactly the type of record users expect when searching failed clinical trials.",
+          href: "/trial/NCT04981717",
         },
         {
-          nctId: "NCT04867837",
-          title: "OCTAPLEX in patients with acute major bleeding on DOAC therapy",
+          nctId: "NCT00574275",
+          title: "Aflibercept with gemcitabine in metastatic pancreatic cancer",
           reason: "Efficacy/futility",
           summary:
-            "The stop language references futility at interim analysis, a common phrase pattern in likely biological-failure records.",
-          href: "/trial/NCT04867837",
+            "The Data Monitoring Committee concluded the study would be unable to demonstrate improved survival, a strong endpoint-related failure signal.",
+          href: "/trial/NCT00574275",
         },
       ],
     },
@@ -417,13 +424,15 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
 
   oncologyClinicalTrialFailures: {
     slug: "/oncology-clinical-trial-failures",
-    title: "Oncology clinical trial failures | Search stopped cancer trials",
+    title: "Oncology clinical trial failures | 7,871 stopped cancer trials",
     metaDescription:
-      "Explore oncology clinical trial failures and stopped cancer trials, including efficacy, futility, safety, enrollment, and operational stop reasons.",
+      "Explore 7,871 oncology clinical trial failure records and stopped cancer trials, including efficacy, futility, safety, enrollment, and operational stop reasons.",
     eyebrow: "Oncology trial failures",
     h1: "Oncology clinical trial failures: search stopped cancer trials",
     lede:
       "Oncology is one of the most active clinical research areas, and stopped cancer trials can reveal important biological, safety, and development signals. This page explains how to study oncology clinical trial failures using structured registry data.",
+    quickAnswer:
+      "Oncology is the largest disease area in the stopped-trial dataset. The current oncology slice contains 7,871 stopped records, including 581 records classified as likely biological failure signals from efficacy/futility or safety language.",
     primaryCta: { href: "/explore?q=oncology", label: "Search oncology failures" },
     secondaryCta: { href: "/overview", label: "See overview patterns" },
     keyPoints: [
@@ -466,7 +475,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       sourceNote:
         "Oncology counts use the site's disease-area matching across ClinicalTrials.gov-derived records. Cancer trial interpretation can be highly context-dependent because biomarkers, combinations, and standards of care change quickly.",
       metrics: [
-        { label: "Oncology-related records", value: "8,814", detail: "Stopped trials matched to oncology or cancer-related disease-area language." },
+        { label: "Oncology-related records", value: "7,871", detail: "Stopped trials matched to oncology or cancer-related disease-area language." },
         { label: "Likely biological failures", value: "665", detail: "Oncology records classified as efficacy/futility or safety signals." },
         { label: "Biological share", value: "8%", detail: "Many stopped oncology studies are operational, strategic, or unclear rather than direct scientific failures." },
       ],
@@ -492,6 +501,14 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
       ],
       examples: [
         {
+          nctId: "NCT04165031",
+          title: "LY3499446 in advanced solid tumors with KRAS G12C mutation",
+          reason: "Safety",
+          summary:
+            "This oncology record was terminated because of an unexpected toxicity finding, a clear safety-driven cancer trial stop signal.",
+          href: "/trial/NCT04165031",
+        },
+        {
           nctId: "NCT05491317",
           title: "Immunoradiotherapy combinations in metastatic solid tumors",
           reason: "Efficacy/futility",
@@ -506,14 +523,6 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
           summary:
             "This cancer trial closed early for futility, making it useful for users studying endpoint and efficacy-related oncology stops.",
           href: "/trial/NCT01012297",
-        },
-        {
-          nctId: "NCT00253318",
-          title: "RAD001 plus docetaxel in metastatic breast cancer",
-          reason: "Safety",
-          summary:
-            "The stop language combines toxicity and lack of efficacy, showing why oncology failures often need both safety and efficacy context.",
-          href: "/trial/NCT00253318",
         },
       ],
     },
@@ -538,13 +547,15 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
 
   terminatedClinicalTrials: {
     slug: "/terminated-clinical-trials",
-    title: "Terminated clinical trials | Search termination reasons and patterns",
+    title: "Terminated clinical trials | 16,085 termination reason records",
     metaDescription:
-      "Search terminated clinical trials and compare termination reasons, including efficacy, futility, safety, enrollment, funding, sponsor strategy, and operational stops.",
+      "Search 16,085 terminated clinical trials and compare termination reasons, including efficacy, futility, safety, enrollment, funding, strategy, and operations.",
     eyebrow: "Terminated clinical trials",
     h1: "Terminated clinical trials: search reasons and failure patterns",
     lede:
       "Terminated clinical trials are a critical source of development intelligence, but termination does not always mean scientific failure. This guide explains how to interpret terminated trial records and compare termination reasons.",
+    quickAnswer:
+      "Terminated clinical trial means the study ended before planned completion. It does not automatically mean the drug failed. In the current dataset, 16,085 records are terminated, but only a subset point to efficacy/futility or safety-related biological failure.",
     primaryCta: { href: "/explore", label: "Search terminated trials" },
     secondaryCta: { href: "/methods", label: "Understand reason buckets" },
     keyPoints: [
@@ -659,13 +670,15 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
 
   clinicalTrialFutility: {
     slug: "/clinical-trial-futility",
-    title: "Clinical trial futility | Search futility and weak efficacy signals",
+    title: "Clinical trial futility | Search 1,096 efficacy and futility signals",
     metaDescription:
-      "Learn what clinical trial futility means and search stopped trials with futility, weak efficacy, lack of benefit, and failed endpoint signals.",
+      "Learn what clinical trial futility means and search 1,096 efficacy/futility signals with weak efficacy, lack of benefit, and failed endpoint language.",
     eyebrow: "Clinical trial futility",
     h1: "Clinical trial futility: search weak efficacy and failed endpoint signals",
     lede:
       "Clinical trial futility usually means the accumulating evidence suggests a study is unlikely to meet its endpoint or show sufficient benefit. Futility stops are among the clearest registry signals of likely biological or efficacy failure.",
+    quickAnswer:
+      "Clinical trial futility usually means the available data suggest a study is unlikely to show the planned treatment effect. In the current stopped-trial dataset, 1,096 records fall into the efficacy/futility bucket, making this one of the clearest scientific-failure signals to review.",
     primaryCta: { href: "/explore?q=futility", label: "Search futility records" },
     secondaryCta: { href: "/why-clinical-trials-fail", label: "Why trials fail" },
     keyPoints: [

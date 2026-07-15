@@ -106,6 +106,10 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
                 <p className="seoEyebrow">{page.eyebrow}</p>
                 <h1>{page.h1}</h1>
                 <p className="seoLede">{page.lede}</p>
+                <aside className="seoQuickAnswer" data-ai-summary="true" aria-label="Quick answer">
+                  <span>Quick answer</span>
+                  <p>{page.quickAnswer}</p>
+                </aside>
                 <div className="seoActions">
                   <Link href={page.primaryCta.href} className="seoPrimaryBtn">
                     <span>{page.primaryCta.label}</span>
@@ -355,6 +359,30 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
           margin-top: 16px;
           max-width: 760px;
           font-size: clamp(1rem, 2vw, 1.1rem);
+        }
+        .seoQuickAnswer {
+          max-width: 760px;
+          margin-top: 18px;
+          padding: 16px 18px;
+          border: 1px solid #bfdbfe;
+          border-left: 4px solid #2563eb;
+          border-radius: 12px;
+          background: #ffffff;
+          box-shadow: 0 10px 24px rgba(37, 99, 235, 0.07);
+        }
+        .seoQuickAnswer span {
+          display: block;
+          margin-bottom: 6px;
+          color: #1d4ed8;
+          font-size: 0.76rem;
+          font-weight: 850;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .seoQuickAnswer p {
+          color: #1e293b;
+          font-weight: 650;
+          line-height: 1.58;
         }
         .seoActions {
           display: flex;
