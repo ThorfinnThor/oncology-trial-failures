@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@/styles/globals.css";
 
 import { CookieBanner } from "@/components/CookieBanner";
@@ -42,6 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Component {...pageProps} />
       <CookieBanner />
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }
