@@ -19,6 +19,22 @@ export type InsightStats = {
     phase2Buckets: Record<string, number>;
     topSponsors: Array<{ label: string; count: number }>;
   };
+  signalComparison: {
+    efficacy: {
+      total: number;
+      statuses: Record<string, number>;
+      phases: Array<{ label: string; count: number }>;
+      topAreas: Array<{ label: string; count: number }>;
+      topSponsors: Array<{ label: string; count: number }>;
+    };
+    safety: {
+      total: number;
+      statuses: Record<string, number>;
+      phases: Array<{ label: string; count: number }>;
+      topAreas: Array<{ label: string; count: number }>;
+      topSponsors: Array<{ label: string; count: number }>;
+    };
+  };
 };
 
 function formatInsightCount(value: number): string {
@@ -281,6 +297,119 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
       },
     ],
   },
+  {
+    slug: "efficacy-vs-safety-clinical-trial-failure-signals",
+    title: "Efficacy vs safety clinical trial failure signals",
+    metaDescription:
+      "A data-backed comparison of efficacy/futility and safety stop reasons in stopped clinical trials, using ClinicalTrials.gov-derived records.",
+    eyebrow: "Failure signal comparison",
+    dek:
+      "Efficacy/futility and safety are the two buckets closest to biological clinical trial failure signals. They are useful together, but they do not mean the same thing.",
+    datePublished: "2026-07-15",
+    readingTime: "7 min read",
+    keyword: "clinical trial failure signals",
+    facts: [
+      "The dataset contains 1,096 efficacy/futility records and 717 safety records.",
+      "Efficacy/futility records are mostly terminated trials, with 1,043 terminated records.",
+      "Safety records include 634 terminated, 64 withdrawn, and 19 suspended records.",
+      "Oncology is the largest disease area in both signal types.",
+      "Phase II is the largest phase group for both efficacy/futility and safety signals.",
+    ],
+    sections: [
+      {
+        heading: "The short version",
+        body: [
+          "If I had to separate clinical trial failure signals into two practical groups, I would start here: efficacy/futility and safety. They are both closer to biological risk than an operational or unclear stop reason.",
+          "But they are not interchangeable. An efficacy or futility stop usually asks whether the treatment worked well enough. A safety stop asks whether the risk profile made continuing hard to justify.",
+        ],
+      },
+      {
+        heading: "Why this distinction matters",
+        body: [
+          "A trial can stop because the drug did not show enough benefit, because adverse events changed the risk-benefit picture, or because the registry language points to tolerability problems. Those are different analytical stories.",
+          "For research, investing, competitive intelligence, or target evaluation, that difference matters. Calling everything a failed clinical trial hides the most useful part of the evidence: what kind of failure signal appeared.",
+        ],
+      },
+      {
+        heading: "What the dataset shows",
+        body: [
+          "In the current stopped-trial dataset, efficacy/futility signals are larger than safety signals. That does not make safety less important. It means the two should be reviewed side by side, not collapsed into one vague failure bucket.",
+          "Most records in both groups are terminated trials. Still, withdrawn and suspended records appear in both buckets, which is another reminder that trial status alone is not enough. The stop reason is doing the real work.",
+        ],
+      },
+      {
+        heading: "How I would use this",
+        body: [
+          "For a fast screen, I would first filter to efficacy/futility when I care about weak activity, endpoint failure, lack of benefit, or futility language. Then I would filter to safety when I care about adverse events, toxicity, tolerability, or risk signals.",
+          "After that, I would read the source language. The classification is a starting point for analysis, not a substitute for the ClinicalTrials.gov record.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Signal counts by stop-reason type",
+        columns: ["Signal type", "Records"],
+        rows: [
+          ["Efficacy/futility", "1,096"],
+          ["Safety", "717"],
+        ],
+      },
+      {
+        heading: "Status mix inside each signal",
+        columns: ["Status", "Records"],
+        rows: [
+          ["Efficacy/futility terminated", "1,043"],
+          ["Efficacy/futility withdrawn", "34"],
+          ["Efficacy/futility suspended", "19"],
+          ["Safety terminated", "634"],
+          ["Safety withdrawn", "64"],
+          ["Safety suspended", "19"],
+        ],
+      },
+      {
+        heading: "Top disease areas",
+        columns: ["Disease area", "Records"],
+        rows: [
+          ["Efficacy/futility: Oncology", "304"],
+          ["Safety: Oncology", "277"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: "/explore?bucket=EFFICACY%2FFUTILITY",
+        label: "Explore efficacy/futility signals",
+        text: "Open records where the stop reason points toward weak efficacy, futility, or lack of benefit.",
+      },
+      {
+        href: "/explore?bucket=SAFETY",
+        label: "Explore safety signals",
+        text: "Open records where the stop reason points toward adverse events, toxicity, or tolerability concerns.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review how source language is mapped into analytical stop-reason buckets.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Are efficacy/futility and safety both clinical trial failure signals?",
+        answer:
+          "Yes, they can both be useful biological failure signals, but they point to different questions: whether the intervention worked well enough, and whether the risk profile was acceptable.",
+      },
+      {
+        question: "Is a safety stop worse than an efficacy stop?",
+        answer:
+          "Not automatically. The interpretation depends on the intervention, patient population, disease severity, dose, alternatives, and exact source language.",
+      },
+      {
+        question: "Should I count all terminated trials as efficacy failures?",
+        answer:
+          "No. Terminated status only says the study stopped early. The stop reason is needed before calling it an efficacy, safety, operational, or unclear signal.",
+      },
+    ],
+  },
 ];
 
 function n(value: number): string {
@@ -465,12 +594,84 @@ function hydrateOncologyArticle(article: InsightArticle, stats: InsightStats): I
   };
 }
 
+function formatStatusRows(signalLabel: string, statuses: Record<string, number>): Array<[string, string]> {
+  return [
+    [`${signalLabel} terminated`, n(statuses.TERMINATED || 0)],
+    [`${signalLabel} withdrawn`, n(statuses.WITHDRAWN || 0)],
+    [`${signalLabel} suspended`, n(statuses.SUSPENDED || 0)],
+  ];
+}
+
+function formatTopRows(prefix: string, rows: Array<{ label: string; count: number }>, limit = 5): Array<[string, string]> {
+  return rows.slice(0, limit).map((row) => [`${prefix}: ${row.label}`, n(row.count)]);
+}
+
+function hydrateSignalComparisonArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const efficacy = stats.signalComparison.efficacy;
+  const safety = stats.signalComparison.safety;
+  const efficacyTopArea = efficacy.topAreas[0];
+  const safetyTopArea = safety.topAreas[0];
+  const efficacyTopPhase = efficacy.phases[0];
+  const safetyTopPhase = safety.phases[0];
+
+  return {
+    ...article,
+    facts: [
+      `The dataset contains ${n(efficacy.total)} efficacy/futility records and ${n(safety.total)} safety records.`,
+      `Efficacy/futility records are mostly terminated trials, with ${n(efficacy.statuses.TERMINATED || 0)} terminated records.`,
+      `Safety records include ${n(safety.statuses.TERMINATED || 0)} terminated, ${n(safety.statuses.WITHDRAWN || 0)} withdrawn, and ${n(safety.statuses.SUSPENDED || 0)} suspended records.`,
+      `${efficacyTopArea?.label || "Oncology"} is the largest efficacy/futility disease area with ${n(efficacyTopArea?.count || 0)} records; ${safetyTopArea?.label || "Oncology"} is the largest safety disease area with ${n(safetyTopArea?.count || 0)} records.`,
+      `${efficacyTopPhase?.label || "Phase II"} is the largest efficacy/futility phase group, while ${safetyTopPhase?.label || "Phase II"} is the largest safety phase group.`,
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "What the dataset shows") {
+        return {
+          ...section,
+          body: [
+            `In the current stopped-trial dataset, efficacy/futility signals are larger than safety signals: ${n(efficacy.total)} efficacy/futility records versus ${n(safety.total)} safety records. That does not make safety less important. It means the two should be reviewed side by side, not collapsed into one vague failure bucket.`,
+            `Most records in both groups are terminated trials: ${n(efficacy.statuses.TERMINATED || 0)} efficacy/futility records and ${n(safety.statuses.TERMINATED || 0)} safety records. Still, withdrawn and suspended records appear in both buckets, which is another reminder that trial status alone is not enough. The stop reason is doing the real work.`,
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Signal counts by stop-reason type",
+        columns: ["Signal type", "Records"],
+        rows: [
+          ["Efficacy/futility", n(efficacy.total)],
+          ["Safety", n(safety.total)],
+        ],
+      },
+      {
+        heading: "Status mix inside each signal",
+        columns: ["Status", "Records"],
+        rows: [...formatStatusRows("Efficacy/futility", efficacy.statuses), ...formatStatusRows("Safety", safety.statuses)],
+      },
+      {
+        heading: "Top disease areas",
+        columns: ["Disease area", "Records"],
+        rows: [...formatTopRows("Efficacy/futility", efficacy.topAreas), ...formatTopRows("Safety", safety.topAreas)],
+      },
+      {
+        heading: "Phase mix",
+        columns: ["Phase", "Records"],
+        rows: [...formatTopRows("Efficacy/futility", efficacy.phases, 4), ...formatTopRows("Safety", safety.phases, 4)],
+      },
+    ],
+  };
+}
+
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   if (article.slug === "terminated-clinical-trials-are-not-always-failures") {
     return hydrateTerminatedArticle(article, stats);
   }
   if (article.slug === "oncology-phase-2-clinical-trial-failure-signals") {
     return hydrateOncologyArticle(article, stats);
+  }
+  if (article.slug === "efficacy-vs-safety-clinical-trial-failure-signals") {
+    return hydrateSignalComparisonArticle(article, stats);
   }
   return article;
 }
