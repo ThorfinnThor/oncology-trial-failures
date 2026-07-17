@@ -158,12 +158,31 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
             <section className="card p-4 insightLinks">
               <h2>Continue from here</h2>
               <div className="insightLinkGrid">
-                {article.links.map((link) => (
-                  <Link href={link.href} className="insightLinkCard" key={link.href}>
-                    <strong>{link.label}</strong>
-                    <span>{link.text}</span>
-                  </Link>
-                ))}
+                {article.links.map((link) => {
+                  const isExternal = /^https?:\/\//.test(link.href);
+                  const content = (
+                    <>
+                      <strong>{link.label}</strong>
+                      <span>{link.text}</span>
+                    </>
+                  );
+
+                  return isExternal ? (
+                    <a
+                      href={link.href}
+                      className="insightLinkCard"
+                      key={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <Link href={link.href} className="insightLinkCard" key={link.href}>
+                      {content}
+                    </Link>
+                  );
+                })}
               </div>
             </section>
 

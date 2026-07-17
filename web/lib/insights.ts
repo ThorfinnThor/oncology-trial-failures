@@ -75,6 +75,135 @@ export type InsightArticle = {
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
   {
+    slug: "why-i-would-not-bet-on-clinical-trial-outcomes",
+    title: "Why I would not bet on clinical trial outcomes",
+    metaDescription:
+      "A cautious response to clinical trial prediction markets, Kalshi's biotech pilot, and why betting on trial outcomes should not replace source evidence.",
+    eyebrow: "Prediction markets and evidence",
+    dek:
+      "Kalshi's biotech pilot is interesting, but it also makes me uneasy. Clinical trials are not sports scores. They are medical evidence, patient risk, endpoint design, safety context, and source documents.",
+    datePublished: "2026-07-17",
+    readingTime: "7 min read",
+    keyword: "clinical trial prediction markets",
+    facts: [
+      "Kalshi has announced a pilot for markets tied to clinical trial outcomes and FDA regulatory decisions.",
+      "I do not think clinical trial outcomes should be treated like casual betting events.",
+      "Clinical Trial Failures is not a prediction market, betting service, investment advisory service, or medical advisory service.",
+      "The current database contains 23,452 stopped clinical trial records from ClinicalTrials.gov-derived data.",
+      "Only 1,813 stopped records are classified as likely biological failure signals, which is why context matters before calling any trial a failure.",
+    ],
+    sections: [
+      {
+        heading: "The short version",
+        body: [
+          "I understand why prediction markets around clinical trials are getting attention. A visible probability can feel cleaner than rumor, selective sponsor language, or private expert calls.",
+          "But I do not think it is a good idea to turn clinical trial outcomes into something people casually bet on. A trial result is not just a yes/no event. It sits inside endpoint design, patient selection, safety, statistics, and medical need.",
+        ],
+      },
+      {
+        heading: "Why this feels different",
+        body: [
+          "There are prediction markets for elections, economic releases, sports, weather, and a lot of other things. Clinical trials feel different to me because the underlying event involves patients, experimental medicines, disease severity, and future treatment options.",
+          "That does not mean people should not analyze probabilities. Of course they will. But there is a big difference between careful probability thinking and a product experience that makes medical outcomes feel like a tradeable game.",
+        ],
+      },
+      {
+        heading: "The dangerous shortcut",
+        body: [
+          "The shortcut is that a market price starts to look like truth. It is not. A price can show what a group of traders currently believes or is willing to risk. It cannot tell you whether an endpoint is clinically meaningful, whether a subgroup matters, whether the safety profile is acceptable, or whether the sponsor's summary is complete.",
+          "Clinical evidence still lives in slower places: the ClinicalTrials.gov record, the registered endpoint, protocol details, FDA documents, advisory committee materials, publications, and sponsor disclosures.",
+        ],
+      },
+      {
+        heading: "What this has to do with clinical trial failures",
+        body: [
+          "The same issue already exists in stopped-trial data. A terminated trial is not automatically a failed drug. A failed endpoint is not automatically a failed mechanism. A futility stop in one population does not prove that the intervention can never work anywhere.",
+          "That is the reason this site separates stopped status from stop reason. The goal is to make source-linked evidence easier to inspect, not to flatten complex clinical development into a yes/no outcome.",
+        ],
+      },
+      {
+        heading: "Where this site stands",
+        body: [
+          "Clinical Trial Failures is not built to tell anyone what to bet on. It is not a prediction market, not an odds page, not a stock tip service, and not medical advice.",
+          "The position is simpler: if clinical trial probabilities become more visible, then the source evidence layer becomes more important, not less important. People need to understand what the trial actually measured before they treat any probability as meaningful.",
+        ],
+      },
+      {
+        heading: "The practical takeaway",
+        body: [
+          "My view is that clinical trial prediction markets should be approached with real caution. They may create useful public signals, but they can also make complex medical evidence look deceptively simple.",
+          "The better habit is still boring and necessary: check the endpoint, phase, disease context, sponsor language, stop reason, safety profile, and source record before drawing a conclusion.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "What a market price can and cannot tell you",
+        columns: ["Market signal", "Missing clinical context"],
+        rows: [
+          ["What traders currently expect", "Whether the endpoint is clinically meaningful."],
+          ["A probability attached to a defined event", "Whether the patient population, comparator, and effect size matter."],
+          ["A fast public signal", "Whether safety, tolerability, or subgroup data change the interpretation."],
+          ["A tradable view", "Whether source documents support the simple yes/no framing."],
+        ],
+      },
+      {
+        heading: "Why historical context matters",
+        columns: ["Dataset signal", "Current records"],
+        rows: [
+          ["Stopped clinical trial records", "23,452"],
+          ["Likely biological failure signals", "1,813"],
+          ["Efficacy/futility signals", "1,096"],
+          ["Safety signals", "717"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: "/clinical-trial-failures",
+        label: "Clinical trial failures guide",
+        text: "Understand why stopped status and failure reason should not be collapsed into one simple label.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review how source language is mapped into analytical stop-reason buckets.",
+      },
+      {
+        href: "/insights/terminated-clinical-trials-are-not-always-failures",
+        label: "Terminated does not always mean failed",
+        text: "Read why terminated trial status should not be over-interpreted.",
+      },
+      {
+        href: "https://news.kalshi.com/p/kalshi-biotech-prediction-markets",
+        label: "Kalshi announcement",
+        text: "Read the announcement this article is responding to.",
+      },
+      {
+        href: "https://www.appliedxl.com/faq",
+        label: "AppliedXL FAQ",
+        text: "Review the public FAQ about resolution infrastructure and safeguards.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is Clinical Trial Failures a prediction market?",
+        answer:
+          "No. Clinical Trial Failures is an evidence and research tool. It is not a prediction market, betting service, investment advisory service, or medical advisory service.",
+      },
+      {
+        question: "Can a prediction market price replace clinical trial evidence?",
+        answer:
+          "No. A market price can reflect expectations, but it cannot replace endpoint review, source documents, safety context, FDA materials, publications, or careful clinical interpretation.",
+      },
+      {
+        question: "Why mention Kalshi at all?",
+        answer:
+          "Because clinical trial prediction markets are becoming part of the public discussion. The responsible response is to explain why source evidence matters and why this site is not built to encourage betting on medical outcomes.",
+      },
+    ],
+  },
+  {
     slug: "terminated-clinical-trials-are-not-always-failures",
     title: "Terminated clinical trials are not always clinical trial failures",
     metaDescription:
@@ -663,7 +792,39 @@ function hydrateSignalComparisonArticle(article: InsightArticle, stats: InsightS
   };
 }
 
+function hydratePredictionMarketsArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const efficacy = b(stats, "EFFICACY/FUTILITY");
+  const safety = b(stats, "SAFETY");
+
+  return {
+    ...article,
+    facts: [
+      "Kalshi has announced a pilot for markets tied to clinical trial outcomes and FDA regulatory decisions.",
+      "I do not think clinical trial outcomes should be treated like casual betting events.",
+      "Clinical Trial Failures is not a prediction market, betting service, investment advisory service, or medical advisory service.",
+      `The current database contains ${n(stats.total)} stopped clinical trial records from ClinicalTrials.gov-derived data.`,
+      `Only ${n(stats.scientificCount)} stopped records are classified as likely biological failure signals, which is why context matters before calling any trial a failure.`,
+    ],
+    tables: [
+      article.tables[0],
+      {
+        heading: "Why historical context matters",
+        columns: ["Dataset signal", "Current records"],
+        rows: [
+          ["Stopped clinical trial records", n(stats.total)],
+          ["Likely biological failure signals", n(stats.scientificCount)],
+          ["Efficacy/futility signals", n(efficacy)],
+          ["Safety signals", n(safety)],
+        ],
+      },
+    ],
+  };
+}
+
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "why-i-would-not-bet-on-clinical-trial-outcomes") {
+    return hydratePredictionMarketsArticle(article, stats);
+  }
   if (article.slug === "terminated-clinical-trials-are-not-always-failures") {
     return hydrateTerminatedArticle(article, stats);
   }
