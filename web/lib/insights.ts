@@ -769,6 +769,15 @@ function b(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
 
+function insightDateTime(article: Pick<InsightArticle, "datePublished">): number {
+  const value = Date.parse(article.datePublished);
+  return Number.isFinite(value) ? value : 0;
+}
+
+export function sortInsightArticlesByDate<T extends Pick<InsightArticle, "datePublished" | "slug">>(articles: T[]): T[] {
+  return [...articles].sort((a, b) => insightDateTime(b) - insightDateTime(a) || a.slug.localeCompare(b.slug));
+}
+
 function hydrateTerminatedArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const efficacy = b(stats, "EFFICACY/FUTILITY");
   const safety = b(stats, "SAFETY");
@@ -1140,7 +1149,7 @@ export function hydrateInsightArticle(article: InsightArticle, stats: InsightSta
 }
 
 export function hydrateInsightArticles(stats: InsightStats): InsightArticle[] {
-  return INSIGHT_ARTICLES.map((article) => hydrateInsightArticle(article, stats));
+  return sortInsightArticlesByDate(INSIGHT_ARTICLES.map((article) => hydrateInsightArticle(article, stats)));
 }
 
 export function getInsightBySlug(slug: string, stats?: InsightStats): InsightArticle | undefined {

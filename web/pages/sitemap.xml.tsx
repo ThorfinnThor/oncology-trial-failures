@@ -4,7 +4,7 @@ import type { GetServerSideProps } from "next";
 
 import { trialPath } from "@/lib/seoUrls";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "@/lib/seoHubs";
-import { INSIGHT_ARTICLES, insightPath } from "@/lib/insights";
+import { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } from "@/lib/insights";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 
@@ -69,7 +69,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       loc: `${SITE_URL}${hub.path}`,
       lastmod,
     })),
-    ...INSIGHT_ARTICLES.map((article) => ({
+    ...sortInsightArticlesByDate(INSIGHT_ARTICLES).map((article) => ({
       loc: `${SITE_URL}${insightPath(article)}`,
       lastmod: new Date(article.datePublished).toISOString(),
     })),

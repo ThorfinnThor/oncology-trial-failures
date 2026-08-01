@@ -1,9 +1,9 @@
 import type { GetServerSideProps } from "next";
 
-import { INSIGHT_ARTICLES, INSIGHTS_BASE_URL, insightPath } from "@/lib/insights";
+import { INSIGHT_ARTICLES, INSIGHTS_BASE_URL, insightPath, sortInsightArticlesByDate } from "@/lib/insights";
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const articleLines = INSIGHT_ARTICLES.map(
+  const articleLines = sortInsightArticlesByDate(INSIGHT_ARTICLES).map(
     (article) =>
       `- ${article.title}: ${INSIGHTS_BASE_URL}${insightPath(article)}\n  ${article.metaDescription}`
   ).join("\n");
