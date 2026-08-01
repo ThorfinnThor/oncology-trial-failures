@@ -9,7 +9,11 @@ const DESCRIPTION =
   "Contact Clinical Trial Failures for data corrections, source issues, methodology questions, and website feedback.";
 const CANONICAL_URL = `${SITE_URL}/contact`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
-const GITHUB_ISSUES_URL = "https://github.com/ThorfinnThor/oncology-trial-failures/issues";
+const CONTACT_EMAIL = "contact@clinicaltrialfailures.com";
+const DATA_CORRECTION_MAILTO =
+  `mailto:${CONTACT_EMAIL}?subject=Clinical%20Trial%20Failures%20data%20correction&body=Please%20include%3A%0A-%20NCT%20ID%3A%0A-%20Page%20URL%3A%0A-%20Current%20source%20text%3A%0A-%20Suggested%20correction%3A%0A-%20Primary%20source%20link%3A`;
+const WEBSITE_FEEDBACK_MAILTO =
+  `mailto:${CONTACT_EMAIL}?subject=Clinical%20Trial%20Failures%20website%20feedback&body=Please%20include%3A%0A-%20Page%20URL%3A%0A-%20Browser%20and%20device%3A%0A-%20What%20is%20broken%20or%20unclear%3A`;
 
 export default function ContactPage() {
   const jsonLd = [
@@ -80,6 +84,9 @@ export default function ContactPage() {
                 Use this page for data corrections, source questions, methodology feedback, and website issues.
                 For any trial-specific concern, please include the NCT ID and the exact source text you want reviewed.
               </p>
+              <p className="contactEmail">
+                Email: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+              </p>
             </header>
 
             <section className="contactGrid" aria-label="Contact options">
@@ -89,8 +96,8 @@ export default function ContactPage() {
                   If a record looks incomplete, misclassified, or outdated, please verify the ClinicalTrials.gov
                   source page first and include the NCT ID, the current source text, and the correction you suggest.
                 </p>
-                <a href={GITHUB_ISSUES_URL} target="_blank" rel="noopener noreferrer">
-                  Open a correction issue →
+                <a href={DATA_CORRECTION_MAILTO}>
+                  Email a correction →
                 </a>
               </div>
 
@@ -110,8 +117,8 @@ export default function ContactPage() {
                   If something is broken, unclear, or hard to use on mobile or desktop, send the page URL,
                   browser, device, and a short description of the issue.
                 </p>
-                <a href={GITHUB_ISSUES_URL} target="_blank" rel="noopener noreferrer">
-                  Report a website issue →
+                <a href={WEBSITE_FEEDBACK_MAILTO}>
+                  Email website feedback →
                 </a>
               </div>
             </section>
@@ -159,12 +166,27 @@ export default function ContactPage() {
         }
 
         .contactHeader p,
+        .contactEmail,
         .contactCard p,
         .contactNote p {
           margin: 0;
           color: #334155;
           font-size: 16px;
           line-height: 1.7;
+        }
+
+        .contactEmail {
+          margin-top: 12px;
+          font-weight: 800;
+        }
+
+        .contactEmail a {
+          color: #3730a3;
+          text-decoration: none;
+        }
+
+        .contactEmail a:hover {
+          text-decoration: underline;
         }
 
         .contactGrid {
