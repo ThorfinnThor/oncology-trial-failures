@@ -31,6 +31,44 @@ function phaseGroup(row: TrialIndexRow): string {
   return phases.map(phaseLabel).join(" + ");
 }
 
+function rowText(row: TrialIndexRow): string {
+  return [
+    row.why_stopped_short,
+    (row as { why_stopped?: string }).why_stopped,
+    row.brief_title,
+    (row as { official_title?: string }).official_title,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase();
+}
+
+function isEndpointSignal(row: TrialIndexRow): boolean {
+  const bucket = reasonBucket(row).toUpperCase();
+  if (bucket === "EFFICACY/FUTILITY") return true;
+
+  const text = rowText(row);
+  return /primary endpoint|endpoint|lack of efficacy|futility|lack of benefit|survival benefit|treatment effect|failed to meet|insufficient efficacy|not meet/.test(text);
+}
+
+function isEnrollmentSignal(row: TrialIndexRow): boolean {
+  const bucket = reasonBucket(row).toUpperCase();
+  if (bucket === "ENROLLMENT") return true;
+
+  const text = rowText(row);
+  return /enroll|recruit|accrual|accrue|slow accrual|insufficient accrual|unable to recruit|poor recruitment/.test(text);
+}
+
+function signalSlice(rows: TrialIndexRow[]) {
+  return {
+    total: rows.length,
+    statuses: countBy(rows, (row) => (row.overall_status || "").toUpperCase()),
+    phases: topCounts(rows, phaseGroup, 8),
+    topAreas: topCounts(rows, (row) => row.disease_area || "Other", 8),
+    topSponsors: topCounts(rows, (row) => row.lead_sponsor || "Unknown sponsor", 8),
+  };
+}
+
 export function bucketCount(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
@@ -49,6 +87,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const oncologyPhase2Buckets = countBy(oncologyPhase2Rows, (row) => reasonBucket(row).toUpperCase());
   const efficacyRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "EFFICACY/FUTILITY");
   const safetyRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "SAFETY");
+  const endpointRows = rows.filter(isEndpointSignal);
+  const enrollmentRows = rows.filter(isEnrollmentSignal);
 
   return {
     total: rows.length,
@@ -70,20 +110,10 @@ export async function buildInsightStats(): Promise<InsightStats> {
       topSponsors: topCounts(oncologyRows, (row) => row.lead_sponsor || "Unknown sponsor", 5),
     },
     signalComparison: {
-      efficacy: {
-        total: efficacyRows.length,
-        statuses: countBy(efficacyRows, (row) => (row.overall_status || "").toUpperCase()),
-        phases: topCounts(efficacyRows, phaseGroup, 8),
-        topAreas: topCounts(efficacyRows, (row) => row.disease_area || "Other", 8),
-        topSponsors: topCounts(efficacyRows, (row) => row.lead_sponsor || "Unknown sponsor", 8),
-      },
-      safety: {
-        total: safetyRows.length,
-        statuses: countBy(safetyRows, (row) => (row.overall_status || "").toUpperCase()),
-        phases: topCounts(safetyRows, phaseGroup, 8),
-        topAreas: topCounts(safetyRows, (row) => row.disease_area || "Other", 8),
-        topSponsors: topCounts(safetyRows, (row) => row.lead_sponsor || "Unknown sponsor", 8),
-      },
+      efficacy: signalSlice(efficacyRows),
+      safety: signalSlice(safetyRows),
     },
+    endpointSignals: signalSlice(endpointRows),
+    enrollmentSignals: signalSlice(enrollmentRows),
   };
 }

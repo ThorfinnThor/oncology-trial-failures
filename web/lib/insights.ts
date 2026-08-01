@@ -35,6 +35,16 @@ export type InsightStats = {
       topSponsors: Array<{ label: string; count: number }>;
     };
   };
+  endpointSignals: InsightSignalSlice;
+  enrollmentSignals: InsightSignalSlice;
+};
+
+export type InsightSignalSlice = {
+  total: number;
+  statuses: Record<string, number>;
+  phases: Array<{ label: string; count: number }>;
+  topAreas: Array<{ label: string; count: number }>;
+  topSponsors: Array<{ label: string; count: number }>;
 };
 
 function formatInsightCount(value: number): string {
@@ -200,6 +210,216 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
         question: "Why mention Kalshi at all?",
         answer:
           "Because clinical trial prediction markets are becoming part of the public discussion. The responsible response is to explain why source evidence matters and why this site is not built to encourage betting on medical outcomes.",
+      },
+    ],
+  },
+  {
+    slug: "failed-endpoint-clinical-trial-signals",
+    title: "Failed endpoint clinical trial signals: how I would search them",
+    metaDescription:
+      "A data-backed guide to failed endpoint clinical trial signals, using stopped trial records with futility, weak efficacy, and endpoint-related source language.",
+    eyebrow: "Endpoint failure signals",
+    dek:
+      "A failed endpoint is one of the cleaner signals in clinical trial failure analysis, but it still needs context. The useful workflow is to find the source language, then verify what the trial actually measured.",
+    datePublished: "2026-08-01",
+    readingTime: "6 min read",
+    keyword: "failed endpoint clinical trial",
+    facts: [
+      "The current database contains 1,420 stopped records with endpoint, efficacy, futility, or weak-benefit language.",
+      "1,352 of those records are terminated, 49 are withdrawn, and 19 are suspended.",
+      "Oncology is the largest disease area in this slice with 416 records.",
+      "Endpoint failure language can mean lack of efficacy, futility, no treatment effect, missed endpoints, or insufficient benefit.",
+      "The classification is a screening signal and should be verified against the original NCT record.",
+    ],
+    sections: [
+      {
+        heading: "The short version",
+        body: [
+          "When people search for a failed endpoint clinical trial, they are usually looking for something more specific than a terminated trial. They want to know whether the study missed an endpoint, stopped for futility, showed weak efficacy, or failed to show enough benefit to continue.",
+          "That is why this slice matters. It is narrower than all stopped trials and closer to the question people actually care about: did the clinical evidence support the intervention in that setting?",
+        ],
+      },
+      {
+        heading: "Why endpoint language is useful",
+        body: [
+          "Endpoint-related stop language is useful because it tends to sit closer to the scientific result than broad administrative language. Phrases like lack of efficacy, futility, failed to meet endpoint, no survival benefit, or insufficient treatment effect are stronger signals than a status field alone.",
+          "Still, I would not treat one sentence in a registry record as the final answer. Endpoint design, statistical assumptions, interim-analysis rules, patient selection, and the comparator all affect what the stop reason actually means.",
+        ],
+      },
+      {
+        heading: "How I would use the database",
+        body: [
+          "I would start with endpoint and futility language, then filter by disease area, phase, sponsor, and intervention. After that, I would open the NCT record and look for the primary endpoint, enrollment size, status history, and any sponsor disclosure or publication.",
+          "This is especially useful when you want to understand whether a mechanism struggled repeatedly, whether a sponsor has repeated weak-efficacy stops, or whether one disease area is unusually hard for a modality.",
+        ],
+      },
+      {
+        heading: "What not to do",
+        body: [
+          "Do not turn every endpoint-related stop into a simple failed drug label. A Phase 2 futility stop in one population may still leave room for another dose, biomarker group, combination, or endpoint strategy.",
+          "The better wording is usually more precise: endpoint failure signal, futility signal, weak-efficacy signal, or stopped trial with endpoint-related source language.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Endpoint-related stopped records",
+        columns: ["Dataset signal", "Current records"],
+        rows: [
+          ["Endpoint, efficacy, or futility signals", "1,420"],
+          ["Terminated", "1,352"],
+          ["Withdrawn", "49"],
+          ["Suspended", "19"],
+        ],
+      },
+      {
+        heading: "Largest disease areas",
+        columns: ["Disease area", "Records"],
+        rows: [
+          ["Oncology", "416"],
+          ["Neurology", "109"],
+          ["Infectious Disease", "108"],
+          ["Gastroenterology & Hepatology", "105"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: "/failed-endpoint-clinical-trials",
+        label: "Failed endpoint landing page",
+        text: "Open the SEO guide and dataset summary for endpoint-related clinical trial failures.",
+      },
+      {
+        href: "/clinical-trial-futility",
+        label: "Clinical trial futility",
+        text: "Review futility and weak-efficacy records in the broader database.",
+      },
+      {
+        href: "/explore?bucket=EFFICACY%2FFUTILITY",
+        label: "Explore efficacy/futility records",
+        text: "Filter the database to records closer to endpoint and efficacy failure signals.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a failed endpoint the same as a failed clinical trial?",
+        answer:
+          "Not always. A failed endpoint is a strong evidence signal, but the interpretation depends on endpoint design, patient population, phase, comparator, and source documentation.",
+      },
+      {
+        question: "What phrases should I search for?",
+        answer:
+          "Useful terms include lack of efficacy, futility, failed endpoint, failed to meet endpoint, insufficient benefit, no treatment effect, and no survival benefit.",
+      },
+      {
+        question: "Where should I verify the result?",
+        answer:
+          "Start with the NCT record, then check protocol details, endpoints, publications, sponsor disclosures, and regulatory documents where available.",
+      },
+    ],
+  },
+  {
+    slug: "enrollment-failure-clinical-trials",
+    title: "Enrollment failure in clinical trials is not the same as drug failure",
+    metaDescription:
+      "A data-backed explanation of enrollment failure in clinical trials, using stopped records with recruitment, accrual, and enrollment-related source language.",
+    eyebrow: "Enrollment failure signals",
+    dek:
+      "Enrollment failure is one of the most common reasons trials stop, but it should not be confused with biological failure. It often says more about feasibility than whether a drug works.",
+    datePublished: "2026-08-01",
+    readingTime: "6 min read",
+    keyword: "enrollment failure clinical trials",
+    facts: [
+      "The current database contains 7,156 stopped records with enrollment, recruitment, or accrual-related language.",
+      "5,458 of those records are terminated, 1,581 are withdrawn, and 117 are suspended.",
+      "Oncology is the largest disease area in this enrollment-related slice with 2,576 records.",
+      "Enrollment failure can reflect feasibility, trial design, competition, site activation, patient availability, or changing standards of care.",
+      "These records are useful, but they should not be read as automatic proof that an intervention failed biologically.",
+    ],
+    sections: [
+      {
+        heading: "The short version",
+        body: [
+          "Enrollment failure is a real clinical development problem, but it is not the same thing as a failed drug. A trial can stop because it cannot recruit enough patients, even if the intervention was never properly tested.",
+          "That distinction is important. If you mix enrollment stops with efficacy or safety failures, you can make the wrong conclusion about a sponsor, disease area, target, or drug class.",
+        ],
+      },
+      {
+        heading: "What enrollment failure can mean",
+        body: [
+          "Enrollment-related stop language can include slow accrual, poor recruitment, insufficient accrual, unable to enroll, or sites not recruiting as planned. Those phrases often point to feasibility and execution problems rather than a biological signal.",
+          "Sometimes that feasibility problem is still highly informative. It can show that a patient population is too narrow, the trial burden is too high, the competitive landscape changed, or the protocol did not fit clinical reality.",
+        ],
+      },
+      {
+        heading: "Why oncology shows up so often",
+        body: [
+          "Oncology is the largest disease area in the enrollment-related slice. That makes sense: cancer studies can involve biomarker restrictions, competing trials, fast-moving standards of care, narrow eligibility, and complex treatment pathways.",
+          "An oncology enrollment stop should therefore be read carefully. It may tell you something about study feasibility, not necessarily whether the therapy could work.",
+        ],
+      },
+      {
+        heading: "How I would analyze it",
+        body: [
+          "I would group enrollment stops by disease area, phase, sponsor, and condition, then look for repeats. One enrollment stop is a single operational story. Repeated enrollment stops in the same niche may be a real development warning.",
+          "The useful question is not simply did the trial fail. The better question is what failed: biology, safety, recruitment, trial design, or sponsor execution?",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Enrollment-related stopped records",
+        columns: ["Dataset signal", "Current records"],
+        rows: [
+          ["Enrollment, recruitment, or accrual signals", "7,156"],
+          ["Terminated", "5,458"],
+          ["Withdrawn", "1,581"],
+          ["Suspended", "117"],
+        ],
+      },
+      {
+        heading: "Largest disease areas",
+        columns: ["Disease area", "Records"],
+        rows: [
+          ["Oncology", "2,576"],
+          ["Infectious Disease", "478"],
+          ["Gastroenterology & Hepatology", "478"],
+          ["Cardiovascular", "440"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: "/clinical-trial-enrollment-failure",
+        label: "Enrollment failure landing page",
+        text: "Open the SEO guide and dataset summary for recruitment and accrual-related stops.",
+      },
+      {
+        href: "/terminated-clinical-trials",
+        label: "Terminated clinical trials",
+        text: "See why status alone is not enough to interpret stopped trials.",
+      },
+      {
+        href: "/explore?q=enrollment",
+        label: "Search enrollment records",
+        text: "Use the database to inspect enrollment and recruitment stop language directly.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is enrollment failure a clinical trial failure?",
+        answer:
+          "Yes, it can be a trial execution failure, but it is not automatically a biological or drug failure.",
+      },
+      {
+        question: "Why do trials fail to enroll?",
+        answer:
+          "Common reasons include narrow eligibility, competing trials, patient availability, site activation problems, trial burden, changed standard of care, or sponsor execution issues.",
+      },
+      {
+        question: "How should I compare enrollment stops?",
+        answer:
+          "Compare them by disease area, phase, sponsor, condition, and repeated patterns, then verify the source NCT records before drawing conclusions.",
       },
     ],
   },
@@ -792,6 +1012,82 @@ function hydrateSignalComparisonArticle(article: InsightArticle, stats: InsightS
   };
 }
 
+function hydrateEndpointArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const endpoint = stats.endpointSignals;
+  const topArea = endpoint.topAreas[0];
+
+  return {
+    ...article,
+    facts: [
+      `The current database contains ${n(endpoint.total)} stopped records with endpoint, efficacy, futility, or weak-benefit language.`,
+      `${n(endpoint.statuses.TERMINATED || 0)} of those records are terminated, ${n(endpoint.statuses.WITHDRAWN || 0)} are withdrawn, and ${n(endpoint.statuses.SUSPENDED || 0)} are suspended.`,
+      `${topArea?.label || "Oncology"} is the largest disease area in this slice with ${n(topArea?.count || 0)} records.`,
+      "Endpoint failure language can mean lack of efficacy, futility, no treatment effect, missed endpoints, or insufficient benefit.",
+      "The classification is a screening signal and should be verified against the original NCT record.",
+    ],
+    tables: [
+      {
+        heading: "Endpoint-related stopped records",
+        columns: ["Dataset signal", "Current records"],
+        rows: [
+          ["Endpoint, efficacy, or futility signals", n(endpoint.total)],
+          ["Terminated", n(endpoint.statuses.TERMINATED || 0)],
+          ["Withdrawn", n(endpoint.statuses.WITHDRAWN || 0)],
+          ["Suspended", n(endpoint.statuses.SUSPENDED || 0)],
+        ],
+      },
+      {
+        heading: "Largest disease areas",
+        columns: ["Disease area", "Records"],
+        rows: endpoint.topAreas.slice(0, 6).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Largest sponsor counts",
+        columns: ["Sponsor", "Records"],
+        rows: endpoint.topSponsors.slice(0, 6).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+  };
+}
+
+function hydrateEnrollmentArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const enrollment = stats.enrollmentSignals;
+  const topArea = enrollment.topAreas[0];
+
+  return {
+    ...article,
+    facts: [
+      `The current database contains ${n(enrollment.total)} stopped records with enrollment, recruitment, or accrual-related language.`,
+      `${n(enrollment.statuses.TERMINATED || 0)} of those records are terminated, ${n(enrollment.statuses.WITHDRAWN || 0)} are withdrawn, and ${n(enrollment.statuses.SUSPENDED || 0)} are suspended.`,
+      `${topArea?.label || "Oncology"} is the largest disease area in this enrollment-related slice with ${n(topArea?.count || 0)} records.`,
+      "Enrollment failure can reflect feasibility, trial design, competition, site activation, patient availability, or changing standards of care.",
+      "These records are useful, but they should not be read as automatic proof that an intervention failed biologically.",
+    ],
+    tables: [
+      {
+        heading: "Enrollment-related stopped records",
+        columns: ["Dataset signal", "Current records"],
+        rows: [
+          ["Enrollment, recruitment, or accrual signals", n(enrollment.total)],
+          ["Terminated", n(enrollment.statuses.TERMINATED || 0)],
+          ["Withdrawn", n(enrollment.statuses.WITHDRAWN || 0)],
+          ["Suspended", n(enrollment.statuses.SUSPENDED || 0)],
+        ],
+      },
+      {
+        heading: "Largest disease areas",
+        columns: ["Disease area", "Records"],
+        rows: enrollment.topAreas.slice(0, 6).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Largest sponsor counts",
+        columns: ["Sponsor", "Records"],
+        rows: enrollment.topSponsors.slice(0, 6).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+  };
+}
+
 function hydratePredictionMarketsArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const efficacy = b(stats, "EFFICACY/FUTILITY");
   const safety = b(stats, "SAFETY");
@@ -824,6 +1120,12 @@ function hydratePredictionMarketsArticle(article: InsightArticle, stats: Insight
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   if (article.slug === "why-i-would-not-bet-on-clinical-trial-outcomes") {
     return hydratePredictionMarketsArticle(article, stats);
+  }
+  if (article.slug === "failed-endpoint-clinical-trial-signals") {
+    return hydrateEndpointArticle(article, stats);
+  }
+  if (article.slug === "enrollment-failure-clinical-trials") {
+    return hydrateEnrollmentArticle(article, stats);
   }
   if (article.slug === "terminated-clinical-trials-are-not-always-failures") {
     return hydrateTerminatedArticle(article, stats);
