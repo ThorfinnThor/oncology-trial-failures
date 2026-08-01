@@ -526,6 +526,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 <Link href="/insights">Insights</Link>
                 <Link href="/sponsor-insights">Sponsor insights</Link>
                 <Link href="/about">About</Link>
+                <Link href="/contact">Contact</Link>
+                <Link href="/privacy">Privacy Policy</Link>
               </div>
             </div>
           </footer>

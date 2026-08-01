@@ -123,6 +123,13 @@ export default function AboutPage() {
                 and use the methods page as the reference for how classifications are assigned. Corrections should
                 be based on primary registry text or source documents.
               </p>
+              <p style={{ marginTop: 10 }}>
+                For corrections, methodology questions, or website feedback, use the{" "}
+                <Link className="link" href="/contact">
+                  Contact page
+                </Link>
+                .
+              </p>
             </section>
           </article>
         </main>

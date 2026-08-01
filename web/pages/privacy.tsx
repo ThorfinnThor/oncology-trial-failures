@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
-const TITLE = "Privacy | Clinical Trial Failures";
+const TITLE = "Privacy Policy | Clinical Trial Failures";
 const DESCRIPTION =
   "Short privacy policy for Clinical Trial Failures, including cookies, analytics, and data handling.";
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
         <div className="privacy-shell">
           <header className="privacy-header">
             <Link href="/" className="back-link">← Home</Link>
-            <h1>Privacy</h1>
+            <h1>Privacy Policy</h1>
             <p>
               Clinical Trial Failures is an informational website. You can browse the site without
               creating an account or submitting personal information.
@@ -65,6 +65,14 @@ export default function PrivacyPage() {
             <p>
               This policy may be updated as the site changes. Continued use of the site means you accept
               the current version published here.
+            </p>
+          </section>
+
+          <section>
+            <h2>Contact</h2>
+            <p>
+              For privacy questions or website feedback, please use the{" "}
+              <Link href="/contact">Contact page</Link>.
             </p>
           </section>
         </div>

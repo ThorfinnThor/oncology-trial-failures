@@ -15,6 +15,8 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     `- Database explorer: ${INSIGHTS_BASE_URL}/explore\n` +
     `- Methods and source notes: ${INSIGHTS_BASE_URL}/methods\n` +
     `- About and data trust: ${INSIGHTS_BASE_URL}/about\n` +
+    `- Contact and corrections: ${INSIGHTS_BASE_URL}/contact\n` +
+    `- Privacy Policy: ${INSIGHTS_BASE_URL}/privacy\n` +
     `- Failure hubs: ${INSIGHTS_BASE_URL}/failures\n` +
     `- Sponsor hubs: ${INSIGHTS_BASE_URL}/sponsors\n` +
     `- Research insights: ${INSIGHTS_BASE_URL}/insights\n\n` +
