@@ -3,10 +3,11 @@ import Link from "next/link";
 
 const TITLE = "Privacy Policy | Clinical Trial Failures";
 const DESCRIPTION =
-  "Short privacy policy for Clinical Trial Failures, including cookies, analytics, and data handling.";
+  "Privacy Policy for Clinical Trial Failures, including analytics, cookies, public registry data, contact messages, and user rights.";
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/privacy`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
+const CONTACT_EMAIL = "contact@clinicaltrialfailures.com";
 
 export default function PrivacyPage() {
   return (
@@ -34,29 +35,132 @@ export default function PrivacyPage() {
               Clinical Trial Failures is an informational website. You can browse the site without
               creating an account or submitting personal information.
             </p>
+            <p className="privacy-updated">Last updated: August 1, 2026</p>
           </header>
 
           <section>
-            <h2>What we collect</h2>
+            <h2>Who operates this site</h2>
             <p>
-              We may use essential site cookies and basic privacy-friendly analytics to understand
-              page usage, improve performance, and maintain the service.
+              Clinical Trial Failures is operated as a research-support website at{" "}
+              <Link href="/">clinicaltrialfailures.com</Link>. For privacy questions, corrections, or
+              website feedback, use the <Link href="/contact">Contact page</Link> or email{" "}
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
             </p>
           </section>
 
           <section>
-            <h2>What we do not require</h2>
+            <h2>What we collect from visitors</h2>
             <p>
-              We do not require sign-up, and we do not ask for names, addresses, or other direct
-              personal details to use the core web app.
+              You do not need an account to use the site. We do not ask for your name, address, medical
+              history, or other direct personal details to browse the database.
+            </p>
+            <p>
+              Like most websites, the hosting provider may process limited technical data needed to
+              serve the site, such as IP address, browser type, device information, requested page path,
+              referring page, and timestamps.
             </p>
           </section>
 
           <section>
-            <h2>Third-party services</h2>
+            <h2>Analytics and performance measurement</h2>
             <p>
-              If analytics or infrastructure providers are used, they may process limited technical
-              data such as IP address, browser type, or page path to operate the service.
+              The site may use Vercel Web Analytics and Vercel Speed Insights to understand page views,
+              performance, and basic usage patterns. These tools help us see which pages are useful,
+              whether pages load quickly, and where technical problems occur.
+            </p>
+            <p>
+              Analytics data is used in aggregate to improve the website. It is not used to provide
+              medical advice, make clinical decisions, identify individual visitors, or sell visitor data.
+            </p>
+          </section>
+
+          <section>
+            <h2>Cookies and local storage</h2>
+            <p>
+              The site may use essential cookies or browser storage for basic functionality, such as
+              remembering cookie-consent choices. If analytics are enabled, analytics providers may use
+              privacy-preserving mechanisms to measure visits and performance.
+            </p>
+          </section>
+
+          <section>
+            <h2>Public clinical trial data</h2>
+            <p>
+              The database is derived from public ClinicalTrials.gov registry records and related public
+              fields such as trial status, sponsor, phase, disease area, condition, intervention, and
+              sponsor-provided stop-reason language.
+            </p>
+            <p>
+              The site does not collect patient-level medical records from visitors. Trial records should
+              be treated as public registry information and verified against the original ClinicalTrials.gov
+              source page before important use.
+            </p>
+          </section>
+
+          <section>
+            <h2>Contact messages</h2>
+            <p>
+              If you contact us by email or through a feedback link, we may receive your email address,
+              message content, and any information you choose to include, such as an NCT ID, page URL,
+              correction request, browser, or device details.
+            </p>
+            <p>
+              We use contact messages only to respond, review corrections, improve the site, and maintain
+              a reasonable record of the request.
+            </p>
+          </section>
+
+          <section>
+            <h2>What we do not sell</h2>
+            <p>
+              We do not sell visitor personal information. We do not use visitor information for medical
+              profiling, clinical recommendations, or targeted medical advertising.
+            </p>
+          </section>
+
+          <section>
+            <h2>Data retention</h2>
+            <p>
+              Technical logs and analytics data may be retained by infrastructure and analytics providers
+              according to their normal service settings. Contact messages may be retained as long as
+              reasonably needed to handle the request, maintain records, or improve the service.
+            </p>
+          </section>
+
+          <section>
+            <h2>Your choices and rights</h2>
+            <p>
+              You can browse the site without contacting us. You can also use browser controls to block
+              cookies, clear local storage, or limit tracking. Depending on where you live, you may have
+              rights to request access, correction, deletion, or restriction of personal information you
+              have provided to us.
+            </p>
+          </section>
+
+          <section>
+            <h2>Security</h2>
+            <p>
+              We use normal website infrastructure and security practices for a public informational site.
+              No website can guarantee perfect security, so do not send sensitive personal medical
+              information through feedback links.
+            </p>
+          </section>
+
+          <section>
+            <h2>Children</h2>
+            <p>
+              This site is intended for professional and research use. It is not directed to children, and
+              we do not knowingly collect personal information from children.
+            </p>
+          </section>
+
+          <section>
+            <h2>Legal note</h2>
+            <p>
+              This policy is intended to clearly explain the site's privacy practices, but it is not legal
+              advice. If the project becomes commercial, collects more personal data, or adds forms,
+              subscriptions, payments, or user accounts, the policy should be reviewed by a qualified
+              privacy professional.
             </p>
           </section>
 
@@ -65,14 +169,6 @@ export default function PrivacyPage() {
             <p>
               This policy may be updated as the site changes. Continued use of the site means you accept
               the current version published here.
-            </p>
-          </section>
-
-          <section>
-            <h2>Contact</h2>
-            <p>
-              For privacy questions or website feedback, please use the{" "}
-              <Link href="/contact">Contact page</Link>.
             </p>
           </section>
         </div>
@@ -105,6 +201,15 @@ export default function PrivacyPage() {
         h1 { margin: 0 0 10px; }
         h2 { margin: 20px 0 8px; font-size: 1.1rem; }
         p { margin: 0; line-height: 1.7; color: #334155; }
+        p + p { margin-top: 10px; }
+        a { color: #3730a3; font-weight: 700; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .privacy-updated {
+          margin-top: 12px;
+          color: #64748b;
+          font-size: 0.95rem;
+          font-weight: 700;
+        }
       `}</style>
     </>
   );
