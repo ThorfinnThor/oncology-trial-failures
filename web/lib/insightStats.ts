@@ -1,5 +1,6 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
 import type { InsightStats } from "./insights";
+import { trialPath } from "./seoUrls";
 import { loadIndexServer } from "./server-data";
 import type { TrialIndexRow } from "./types";
 
@@ -86,6 +87,7 @@ function latestUpdateSlice(rows: TrialIndexRow[]) {
       buckets: {},
       topAreas: [],
       topSponsors: [],
+      notableRecords: [],
     };
   }
 
@@ -96,6 +98,28 @@ function latestUpdateSlice(rows: TrialIndexRow[]) {
     const value = (row.last_update_post_date || "").slice(0, 10);
     return value >= startDate && value <= endDate;
   });
+  const notableRecords = recentRows
+    .filter((row) => {
+      const bucket = reasonBucket(row).toUpperCase();
+      return bucket === "EFFICACY/FUTILITY" || bucket === "SAFETY";
+    })
+    .sort((a, b) => {
+      const byDate = (b.last_update_post_date || "").localeCompare(a.last_update_post_date || "");
+      return byDate || a.nct_id.localeCompare(b.nct_id);
+    })
+    .slice(0, 8)
+    .map((row) => ({
+      nctId: row.nct_id,
+      title: row.brief_title || row.nct_id,
+      sponsor: row.lead_sponsor || "Unknown sponsor",
+      phase: phaseGroup(row),
+      area: row.disease_area || "Other",
+      status: row.overall_status || "Stopped",
+      bucket: reasonBucket(row),
+      why: row.why_stopped_short || "No short stop-reason text is available in the compact dataset.",
+      updated: (row.last_update_post_date || "").slice(0, 10),
+      href: trialPath(row),
+    }));
 
   return {
     startDate,
@@ -106,6 +130,7 @@ function latestUpdateSlice(rows: TrialIndexRow[]) {
     buckets: countBy(recentRows, (row) => reasonBucket(row).toUpperCase()),
     topAreas: topCounts(recentRows, (row) => row.disease_area || "Other", 6),
     topSponsors: topCounts(recentRows, (row) => row.lead_sponsor || "Unknown sponsor", 6),
+    notableRecords,
   };
 }
 
@@ -129,6 +154,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const safetyRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "SAFETY");
   const endpointRows = rows.filter(isEndpointSignal);
   const enrollmentRows = rows.filter(isEnrollmentSignal);
+  const operationalRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OPERATIONAL");
   const latestUpdates = latestUpdateSlice(rows);
 
   return {
@@ -156,6 +182,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
     },
     endpointSignals: signalSlice(endpointRows),
     enrollmentSignals: signalSlice(enrollmentRows),
+    operationalSignals: signalSlice(operationalRows),
     latestUpdates,
   };
 }

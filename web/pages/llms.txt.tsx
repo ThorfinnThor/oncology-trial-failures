@@ -20,6 +20,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     `- Failure hubs: ${INSIGHTS_BASE_URL}/failures\n` +
     `- Sponsor hubs: ${INSIGHTS_BASE_URL}/sponsors\n` +
     `- Research insights: ${INSIGHTS_BASE_URL}/insights\n\n` +
+    `- Latest two-week stopped trial report: ${INSIGHTS_BASE_URL}/reports/latest-two-week-stopped-trial-updates\n\n` +
     `## Current research notes\n\n` +
     `${articleLines}\n\n` +
     `## Dataset context\n\n` +

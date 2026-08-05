@@ -81,6 +81,9 @@ export default function InsightsIndexPage({ articles }: InsightsIndexPageProps) 
               Short, data-backed notes from the stopped-trial database. The goal is simple: use real numbers
               from the dataset, then link back to the records and methodology.
             </p>
+            <Link href="/reports/latest-two-week-stopped-trial-updates" className="latestReportLink">
+              Open the automatically calculated two-week report →
+            </Link>
           </section>
 
           <section className="insightsGrid" aria-label="Insight articles">
@@ -114,6 +117,17 @@ export default function InsightsIndexPage({ articles }: InsightsIndexPageProps) 
           margin: 12px 0 0;
           color: var(--text-muted);
           line-height: 1.65;
+        }
+        .insightsIndex .latestReportLink {
+          display: inline-flex;
+          margin-top: 16px;
+          color: var(--accent);
+          font-weight: 850;
+        }
+        .insightsIndex .latestReportLink:hover,
+        .insightsIndex .latestReportLink:focus-visible {
+          text-decoration: underline;
+          text-underline-offset: .18em;
         }
         .insightsIndex .insightsGrid {
           display: grid;

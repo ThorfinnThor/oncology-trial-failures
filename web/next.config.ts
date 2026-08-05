@@ -9,6 +9,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/insights/latest-stopped-clinical-trial-updates-two-week-review",
+        destination: "/reports/latest-two-week-stopped-trial-updates",
+        permanent: true,
+      },
+      {
         source: "/methodology",
         destination: "/methods",
         permanent: true,

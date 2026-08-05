@@ -37,6 +37,7 @@ export type InsightStats = {
   };
   endpointSignals: InsightSignalSlice;
   enrollmentSignals: InsightSignalSlice;
+  operationalSignals: InsightSignalSlice;
   latestUpdates: {
     startDate: string;
     endDate: string;
@@ -46,6 +47,18 @@ export type InsightStats = {
     buckets: Record<string, number>;
     topAreas: Array<{ label: string; count: number }>;
     topSponsors: Array<{ label: string; count: number }>;
+    notableRecords: Array<{
+      nctId: string;
+      title: string;
+      sponsor: string;
+      phase: string;
+      area: string;
+      status: string;
+      bucket: string;
+      why: string;
+      updated: string;
+      href: string;
+    }>;
   };
 };
 
@@ -95,87 +108,87 @@ export type InsightArticle = {
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
   {
-    slug: "latest-stopped-clinical-trial-updates-two-week-review",
-    title: "Latest stopped clinical trial updates: a two-week data review",
+    slug: "operational-reasons-dominate-stopped-clinical-trials",
+    title: "Operational reasons dominate stopped clinical trials",
     metaDescription:
-      "A data-backed review of the latest two-week window of terminated, suspended, and withdrawn clinical trial updates in the Clinical Trial Failures database.",
-    eyebrow: "Latest dataset review",
+      "A data-backed analysis of operational clinical trial stops, including their share of the database, status mix, disease areas, and sponsor patterns.",
+    eyebrow: "Operational failure patterns",
     dek:
-      "What changed in the newest two-week window of the database, which stop reasons appeared most often, and which records deserve closer source review.",
+      "The largest stop-reason group in the database is operational, not efficacy or safety. That changes how stopped clinical trials should be interpreted.",
     datePublished: "2026-08-05",
     readingTime: "7 min read",
-    keyword: "new failed clinical trials",
+    keyword: "operational clinical trial failure",
     facts: [],
     sections: [
       {
-        heading: "What this update actually measures",
+        heading: "The strongest result in the database",
         body: [
-          "This review covers stopped clinical trial records whose ClinicalTrials.gov update date falls inside the latest fourteen-day window available in the current ingest. It includes terminated, suspended, and withdrawn studies.",
-          "Updated does not necessarily mean newly created. A sponsor can revise an older registry record, change its status, or add a clearer stop reason. Until consecutive dataset snapshots are compared by NCT ID, the honest description is recently updated stopped records rather than brand-new failures.",
+          "The clearest high-level finding is that operational reasons account for more stopped trial records than efficacy, futility, or safety signals. That is not a small technical distinction. It changes what the word failure should mean when someone searches a registry of terminated, suspended, and withdrawn studies.",
+          "A stopped study may reflect recruitment, feasibility, site execution, logistics, sponsor decisions, or an unclear administrative history. Those outcomes matter, but they do not automatically show that a drug or biological hypothesis failed.",
         ],
       },
       {
-        heading: "The main pattern in the latest window",
+        heading: "What counts as an operational stop",
         body: [
-          "The largest group is not automatically the most scientifically important group. Operational and unclear reasons can dominate a short update window, while efficacy, futility, and safety records form a smaller but more biologically relevant subset.",
-          "That distinction is the reason this database separates status from stop reason. A terminated study caused by enrollment or funding does not tell the same story as a trial stopped after an interim analysis for futility or a safety concern.",
+          "Operational source language can describe poor recruitment, low accrual, site problems, feasibility concerns, supply constraints, study-design changes, or a sponsor decision that is not presented as an efficacy or safety result.",
+          "These records are still useful evidence. Repeated enrollment or execution problems can show that a development strategy is difficult to run in practice. The careful conclusion is operational failure or feasibility risk, not automatic drug failure.",
         ],
       },
       {
-        heading: "Which records I would read first",
+        heading: "Why status alone gives the wrong answer",
         body: [
-          "I would begin with efficacy/futility and safety classifications, then open the original NCT records. The useful details are the sponsor's exact wording, the study phase, the intervention, the endpoint context, and whether the decision followed a planned interim analysis or an external recommendation.",
-          "I would then review repeated patterns by sponsor and disease area. One stop is a case. Several related stops can become a signal, but only after checking that the records refer to comparable interventions, populations, and development questions.",
+          "Terminated, suspended, and withdrawn are registry statuses. They tell us that a study did not continue as originally planned, but they do not explain why. The stop-reason language is where the scientific or operational interpretation begins.",
+          "This is why a count of terminated trials by sponsor is easy to misuse. Large organizations run more studies, academic centers often manage complex investigator-led programs, and operational stops can dominate the total. A useful comparison needs a denominator and a reason classification.",
         ],
       },
       {
-        heading: "What not to conclude from a two-week window",
+        heading: "Where operational stops concentrate",
         body: [
-          "A short update window is useful for monitoring, not for declaring that one sponsor, disease area, or drug class performs worse than another. Registry updates arrive unevenly, large sponsors run more studies, and some records are revised long after the underlying decision.",
-          "The right use is triage: identify records worth opening, preserve the source wording, and compare the latest window with a longer historical baseline.",
+          "The disease-area and sponsor tables below show where operational records are most visible in the current database. They should be read as workload and pattern indicators, not league tables of poor performance.",
+          "The better research question is whether a disease area, study phase, patient population, or sponsor repeatedly encounters the same feasibility problem. That is more informative than treating every stop as one undifferentiated failure event.",
         ],
       },
       {
-        heading: "How this becomes a useful recurring report",
+        heading: "How I would use this result",
         body: [
-          "A biweekly report should separate genuinely new NCT IDs from older records that were updated. That requires preserving the prior ingest and comparing it with the current one. The report can then show new stopped studies, changed classifications, important efficacy or safety signals, and links to every primary record.",
-          "This article is generated from the latest available ingest window. The counts and leading categories update with the database, while the interpretation remains deliberately cautious.",
+          "I would first separate operational records from efficacy/futility and safety records. Then I would filter by sponsor, phase, disease area, and intervention, looking for repeated wording or related study designs.",
+          "Finally, I would open the source NCT records. The classification is a screening layer that makes a large dataset usable; the registry language remains the primary evidence for any important conclusion.",
         ],
       },
     ],
     tables: [],
     links: [
       {
-        href: "/explore",
-        label: "Open the current database",
-        text: "Search the current stopped-trial records and verify individual NCT source pages.",
+        href: "/explore?bucket=OPERATIONAL",
+        label: "Explore operational stops",
+        text: "Open the operational slice and inspect source-linked stopped trial records.",
       },
       {
         href: "/methods",
         label: "How classification works",
-        text: "See how stop-reason language is grouped into efficacy, safety, operational, regulatory, and other signals.",
+        text: "See how source language is separated into operational, efficacy, safety, regulatory, and other signals.",
       },
       {
-        href: "/insights/terminated-clinical-trials-are-not-always-failures",
-        label: "Terminated does not always mean failed",
-        text: "Understand why trial status and scientific failure should not be treated as the same thing.",
+        href: "/reports/latest-two-week-stopped-trial-updates",
+        label: "Latest two-week report",
+        text: "Review the automatically calculated latest update window and its notable source records.",
       },
     ],
     faqs: [
       {
-        question: "Are these all newly failed clinical trials?",
+        question: "Is an operational stop a clinical trial failure?",
         answer:
-          "No. They are stopped trial records updated during the latest two-week ingest window. Some may be newly added, while others are older records that were revised.",
+          "It can be an execution or feasibility failure, but it is not automatically evidence that the intervention failed biologically.",
       },
       {
-        question: "Which stop reasons are closest to biological failure?",
+        question: "Why are operational records so common?",
         answer:
-          "Efficacy/futility and safety classifications are the closest screening signals, but every important conclusion should still be verified against the original registry record.",
+          "Clinical trials are difficult to recruit and operate. Feasibility, site execution, logistics, study design, funding, and sponsor decisions can stop a study before biology is fully tested.",
       },
       {
-        question: "Will this report update after a new ingest?",
+        question: "Should sponsors be ranked by operational stop count?",
         answer:
-          "Yes. The date window, counts, status mix, reason mix, disease areas, and sponsors are calculated from the current dataset during the site build.",
+          "Not without context. Larger and more active sponsors naturally run more trials, so counts should be compared with total volume, phase, disease area, and source wording.",
       },
     ],
   },
@@ -1221,69 +1234,59 @@ function hydratePredictionMarketsArticle(article: InsightArticle, stats: Insight
   };
 }
 
-function hydrateLatestUpdatesArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
-  const latest = stats.latestUpdates;
-  const statusRows = Object.entries(latest.statuses)
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  const bucketRows = Object.entries(latest.buckets)
-    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
-  const topBucket = bucketRows[0];
-  const topArea = latest.topAreas[0];
-  const scientificShare = latest.total ? `${((latest.scientificCount / latest.total) * 100).toFixed(1)}%` : "0.0%";
+function hydrateOperationalArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const operational = stats.operationalSignals;
+  const operationalShare = stats.total ? `${((operational.total / stats.total) * 100).toFixed(1)}%` : "0.0%";
+  const topArea = operational.topAreas[0];
+  const topSponsor = operational.topSponsors[0];
 
   return {
     ...article,
-    metaDescription: `A data-backed review of ${n(latest.total)} stopped clinical trial records updated from ${latest.startDate} to ${latest.endDate}, including statuses, stop reasons, disease areas, and sponsors.`,
-    dek: `${n(latest.total)} stopped trial records were updated from ${latest.startDate} to ${latest.endDate}. Here is what changed, what looks scientifically relevant, and what still needs source verification.`,
+    metaDescription: `A data-backed analysis of ${n(operational.total)} operational clinical trial stops, representing ${operationalShare} of ${n(stats.total)} stopped records in the current database.`,
+    dek: `${n(operational.total)} records, or ${operationalShare} of the stopped-trial database, are classified as operational. That is the strongest reason not to treat every stopped trial as a failed drug.`,
     facts: [
-      `The latest complete fourteen-day dataset window runs from ${latest.startDate} through ${latest.endDate}.`,
-      `${n(latest.total)} terminated, suspended, or withdrawn trial records were updated during that period.`,
-      `${n(latest.scientificCount)} records, or ${scientificShare}, were classified as likely efficacy/futility or safety signals.`,
-      topBucket ? `${topBucket[0]} was the largest stop-reason group with ${n(topBucket[1])} records.` : "No stop-reason group was available for this window.",
-      topArea ? `${topArea.label} was the largest disease-area slice with ${n(topArea.count)} updated records.` : "No disease-area slice was available for this window.",
+      `The current database contains ${n(stats.total)} terminated, suspended, and withdrawn trial records.`,
+      `${n(operational.total)} records, or ${operationalShare}, are classified as operational stops.`,
+      `${n(operational.statuses.TERMINATED || 0)} operational records are terminated, ${n(operational.statuses.WITHDRAWN || 0)} are withdrawn, and ${n(operational.statuses.SUSPENDED || 0)} are suspended.`,
+      topArea ? `${topArea.label} is the largest operational disease-area slice with ${n(topArea.count)} records.` : "No disease-area slice is available.",
+      topSponsor ? `${topSponsor.label} has the largest operational stopped-record count in this dataset with ${n(topSponsor.count)} records.` : "No sponsor count is available.",
     ],
-    sections: article.sections.map((section) => {
-      if (section.heading !== "The main pattern in the latest window") return section;
-      const efficacy = latest.buckets["EFFICACY/FUTILITY"] || 0;
-      const safety = latest.buckets.SAFETY || 0;
-      const operational = latest.buckets.OPERATIONAL || 0;
-      const unclear = latest.buckets["OTHER/UNKNOWN"] || 0;
-      return {
-        ...section,
-        body: [
-          `The latest window contains ${n(operational)} operational records and ${n(unclear)} other or unclear records. By comparison, ${n(efficacy)} records carry efficacy/futility signals and ${n(safety)} carry safety signals.`,
-          `Together, efficacy/futility and safety account for ${n(latest.scientificCount)} records, or ${scientificShare} of the update window. That smaller subset is where I would begin a biological-failure review, while keeping the sponsor's source language and trial context in view.`,
-        ],
-      };
-    }),
     tables: [
       {
-        heading: "Status mix in the latest update window",
-        columns: ["Trial status", "Updated records"],
-        rows: statusRows.map(([label, count]) => [label, n(count)]),
+        heading: "Operational stop status mix",
+        columns: ["Trial status", "Operational records"],
+        rows: [
+          ["Terminated", n(operational.statuses.TERMINATED || 0)],
+          ["Withdrawn", n(operational.statuses.WITHDRAWN || 0)],
+          ["Suspended", n(operational.statuses.SUSPENDED || 0)],
+        ],
       },
       {
-        heading: "Stop-reason mix",
-        columns: ["Reason classification", "Updated records"],
-        rows: bucketRows.map(([label, count]) => [label, n(count)]),
+        heading: "Operational stops compared with biological signals",
+        columns: ["Reason classification", "Current records"],
+        rows: [
+          ["Operational", n(operational.total)],
+          ["Efficacy/futility", n(stats.buckets["EFFICACY/FUTILITY"] || 0)],
+          ["Safety", n(stats.buckets.SAFETY || 0)],
+        ],
       },
       {
-        heading: "Largest disease-area slices",
-        columns: ["Disease area", "Updated records"],
-        rows: latest.topAreas.map((item) => [item.label, n(item.count)]),
+        heading: "Largest operational disease-area slices",
+        columns: ["Disease area", "Operational records"],
+        rows: operational.topAreas.slice(0, 6).map((item): [string, string] => [item.label, n(item.count)]),
       },
       {
-        heading: "Sponsors with the most updated stopped records",
-        columns: ["Sponsor", "Updated records"],
-        rows: latest.topSponsors.map((item) => [item.label, n(item.count)]),
+        heading: "Largest operational sponsor counts",
+        columns: ["Sponsor", "Operational records"],
+        rows: operational.topSponsors.slice(0, 6).map((item): [string, string] => [item.label, n(item.count)]),
       },
     ],
   };
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
-  if (article.slug === "latest-stopped-clinical-trial-updates-two-week-review") {
-    return hydrateLatestUpdatesArticle(article, stats);
+  if (article.slug === "operational-reasons-dominate-stopped-clinical-trials") {
+    return hydrateOperationalArticle(article, stats);
   }
   if (article.slug === "why-i-would-not-bet-on-clinical-trial-outcomes") {
     return hydratePredictionMarketsArticle(article, stats);

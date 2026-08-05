@@ -35,6 +35,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/failures",
     "/sponsors",
     "/insights",
+    "/reports/latest-two-week-stopped-trial-updates",
     "/sponsor-insights",
     "/top-entities",
     "/outliers",
