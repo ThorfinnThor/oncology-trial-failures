@@ -308,11 +308,24 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             <div className="container heroGrid">
               <div className="heroCopy">
                 <p className="eyebrow">Clinical trial failure database</p>
-                <h1 id="home-hero-title">Stopped clinical trials, searchable by reason</h1>
+                <h1 id="home-hero-title">Find why clinical trials stop</h1>
                 <p className="lede">
-                  Explore terminated, suspended, and withdrawn studies from ClinicalTrials.gov. Filter by sponsor,
-                  phase, disease area, intervention, and the stated reason a trial stopped.
+                  Search terminated, suspended, and withdrawn studies by sponsor, phase, disease area, drug,
+                  and likely stop reason.
                 </p>
+
+                <form className="homeSearch" action="/explore" method="get" role="search">
+                  <label className="sr-only" htmlFor="home-search">
+                    Search clinical trial failures
+                  </label>
+                  <input
+                    id="home-search"
+                    name="q"
+                    type="search"
+                    placeholder="Search NCT ID, sponsor, drug, disease area..."
+                  />
+                  <button type="submit">Search</button>
+                </form>
 
                 <div className="actions">
                   <Link href="/explore" className="primaryBtn" aria-label="Open the clinical trial failure database">
@@ -324,11 +337,19 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
-                <div className="sourceNote" aria-label="Dataset facts">
-                  <strong>Free to use. No sign-up required.</strong>
-                  <span>
-                    {compactNumber(stats.trialCount)} stopped-trial records · Updated {stats.updated} · {stats.source}
-                  </span>
+                <div className="heroStats" aria-label="Dataset facts">
+                  <div>
+                    <strong>{compactNumber(stats.trialCount)}</strong>
+                    <span>stopped-trial records</span>
+                  </div>
+                  <div>
+                    <strong>{compactNumber(stats.scientificCount)}</strong>
+                    <span>likely biological signals</span>
+                  </div>
+                  <div>
+                    <strong>{stats.updated}</strong>
+                    <span>latest dataset update</span>
+                  </div>
                 </div>
               </div>
 
@@ -379,10 +400,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             <div className="container">
               <div className="sectionHeader sectionHeaderWide">
                 <p className="eyebrow">What it does</p>
-                <h2 id="capabilities-title">A faster way to move from stopped trial to usable evidence</h2>
+                <h2 id="capabilities-title">Search. Filter. Verify.</h2>
                 <p>
-                  Built for biotech and pharma teams, investors, and analysts who need to separate biological
-                  failure from operational, funding, and strategic decisions.
+                  Fewer explanations on the homepage, more direct paths into the data.
                 </p>
               </div>
 
@@ -390,22 +410,19 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 <article className="infoCard">
                   <h3>Preclassified stop reasons</h3>
                   <p>
-                    Review efficacy, futility, safety, operational, funding, regulatory, and unknown signals
-                    without starting from raw registry text.
+                    Review efficacy, futility, safety, operational, funding, regulatory, and unknown signals.
                   </p>
                 </article>
                 <article className="infoCard">
                   <h3>One-click to evidence</h3>
                   <p>
-                    Jump from any row to the exact stop language, the NCT detail page, and the primary source
-                    record when you need to verify the signal.
+                    Open the NCT page, stop language, and source-linked trial detail from any record.
                   </p>
                 </article>
                 <article className="infoCard">
                   <h3>Sponsor and pattern views</h3>
                   <p>
-                    Trace repeated stops across sponsors, phases, disease areas, and likely scientific failure
-                    buckets.
+                    Compare repeated stops by sponsor, phase, disease area, and reason bucket.
                   </p>
                 </article>
               </div>
@@ -416,10 +433,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             <div className="container">
               <div className="sectionHeader sectionHeaderWide">
                 <p className="eyebrow">Deep dives</p>
-                <h2 id="deep-dives-title">Useful entry points, not keyword clutter</h2>
+                <h2 id="deep-dives-title">Useful entry points</h2>
                 <p>
-                  These pages cover the core research angles while keeping the homepage focused on the actual
-                  data product.
+                  Data-led pages for the most common research questions.
                 </p>
               </div>
 
@@ -442,11 +458,23 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   <span className="deepDiveText">Focus on cancer trial terminations, futility, and safety patterns.</span>
                   <span className="deepDiveAction">Open guide →</span>
                 </Link>
-                <Link href="/clinical-trial-futility" className="deepDiveCard">
-                  <span className="deepDiveKicker">Signal type</span>
-                  <span className="deepDiveTitle">Futility and failed endpoints</span>
-                  <span className="deepDiveText">Find weak efficacy and futility language in stopped study records.</span>
-                  <span className="deepDiveAction">Open guide →</span>
+                <Link href="/top-10-oncology-clinical-trial-failures" className="deepDiveCard">
+                  <span className="deepDiveKicker">Top list</span>
+                  <span className="deepDiveTitle">Top oncology failure signals</span>
+                  <span className="deepDiveText">Rank oncology drugs and interventions by stopped-trial evidence.</span>
+                  <span className="deepDiveAction">Open ranking →</span>
+                </Link>
+                <Link href="/top-10-neurology-clinical-trial-failures" className="deepDiveCard">
+                  <span className="deepDiveKicker">Top list</span>
+                  <span className="deepDiveTitle">Top neurology failure signals</span>
+                  <span className="deepDiveText">Review neurology interventions with repeated biological stop signals.</span>
+                  <span className="deepDiveAction">Open ranking →</span>
+                </Link>
+                <Link href="/top-10-pharma-companies-clinical-trial-failure-share" className="deepDiveCard">
+                  <span className="deepDiveKicker">Sponsor ranking</span>
+                  <span className="deepDiveTitle">Pharma companies by failure share</span>
+                  <span className="deepDiveText">Compare likely biological stop signals against sponsor stopped-trial volume.</span>
+                  <span className="deepDiveAction">Open ranking →</span>
                 </Link>
               </div>
               <Link href="/clinical-trial-failures" className="allGuidesLink">
@@ -616,6 +644,85 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           margin-top: 18px;
           max-width: 600px;
           font-size: clamp(1rem, 1.35vw, 1.12rem);
+        }
+
+        .homeSearch {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 10px;
+          max-width: 640px;
+          margin-top: 22px;
+          padding: 8px;
+          border: 1px solid #cbd5e1;
+          border-radius: 15px;
+          background: #ffffff;
+          box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+        }
+
+        .homeSearch input {
+          min-width: 0;
+          border: 0;
+          outline: 0;
+          padding: 12px 12px;
+          color: #0f172a;
+          font-size: 15px;
+          background: transparent;
+        }
+
+        .homeSearch input::placeholder {
+          color: #94a3b8;
+        }
+
+        .homeSearch button {
+          border: 1px solid #0f172a;
+          border-radius: 11px;
+          background: #0f172a;
+          color: #ffffff;
+          padding: 0 18px;
+          font-weight: 850;
+          cursor: pointer;
+        }
+
+        .homeSearch button:hover,
+        .homeSearch button:focus-visible {
+          filter: brightness(0.96);
+        }
+
+        .heroStats {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          max-width: 640px;
+          margin-top: 18px;
+        }
+
+        .heroStats div {
+          min-width: 0;
+          border: 1px solid #dbe4f0;
+          border-radius: 13px;
+          background: #ffffff;
+          padding: 13px 14px;
+          box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+        }
+
+        .heroStats strong,
+        .heroStats span {
+          display: block;
+        }
+
+        .heroStats strong {
+          color: #0f172a;
+          font-size: 1.2rem;
+          font-weight: 900;
+          line-height: 1.05;
+        }
+
+        .heroStats span {
+          margin-top: 6px;
+          color: #64748b;
+          font-size: 12px;
+          font-weight: 750;
+          line-height: 1.25;
         }
 
         .actions {
@@ -923,7 +1030,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .deepDiveGrid {
-          grid-template-columns: repeat(4, minmax(0, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
         }
 
         .infoCard,
@@ -1161,7 +1268,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
           .actions,
           .primaryBtn,
-          .secondaryBtn {
+          .secondaryBtn,
+          .homeSearch {
             width: 100%;
           }
 
@@ -1170,8 +1278,21 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             justify-content: center;
           }
 
-          .sourceNote {
+          .homeSearch {
+            grid-template-columns: 1fr;
+          }
+
+          .homeSearch button {
+            min-height: 44px;
+          }
+
+          .sourceNote,
+          .heroStats {
             max-width: none;
+          }
+
+          .heroStats {
+            grid-template-columns: 1fr;
           }
 
           .sampleTable {

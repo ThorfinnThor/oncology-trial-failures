@@ -5,7 +5,6 @@ import GuidesMenu from "./GuidesMenu";
 type Props = {
   q: string;
   setQ: (v: string) => void;
-
   onCopyLink: () => void;
   onExport: () => void;
   onReset: () => void;
@@ -16,7 +15,6 @@ export function TopBar({ q, setQ, onCopyLink, onExport, onReset }: Props) {
     <header className="sticky top-0 z-40 border-b bg-white/90 backdrop-blur">
       <div className="mx-auto max-w-[1600px] px-4 py-3">
         <div className="grid grid-cols-1 gap-3 xl:grid-cols-[260px_1fr_360px] xl:items-center">
-          {/* Left: name + nav */}
           <div className="flex items-center justify-between xl:justify-start gap-3">
             <div className="text-sm font-semibold text-gray-900">Clinical trial failures</div>
             <nav className="flex items-center gap-3 text-sm">
@@ -42,19 +40,19 @@ export function TopBar({ q, setQ, onCopyLink, onExport, onReset }: Props) {
             </nav>
           </div>
 
-          {/* Center: global search */}
           <div className="xl:px-4">
-            <label className="sr-only" htmlFor="globalSearch">Search</label>
+            <label className="sr-only" htmlFor="globalSearch">
+              Search
+            </label>
             <input
               id="globalSearch"
               className="w-full rounded-xl border px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
-              placeholder="Search trials, drugs, sponsors, conditions, NCT…"
+              placeholder="Search trials, drugs, sponsors, conditions, NCT..."
               value={q}
               onChange={(e) => setQ(e.target.value)}
             />
           </div>
 
-          {/* Right: actions */}
           <div className="flex flex-wrap justify-end gap-2">
             <button
               className="rounded-xl border bg-white px-3 py-2 text-sm font-semibold text-gray-800 hover:bg-gray-50"

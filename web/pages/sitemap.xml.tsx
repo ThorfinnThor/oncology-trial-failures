@@ -48,6 +48,9 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/clinical-trial-futility",
     "/failed-endpoint-clinical-trials",
     "/clinical-trial-enrollment-failure",
+    "/top-10-oncology-clinical-trial-failures",
+    "/top-10-neurology-clinical-trial-failures",
+    "/top-10-pharma-companies-clinical-trial-failure-share",
     "/about",
     "/contact",
   ];

@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const TITLE = "Privacy Policy | Clinical Trial Failures";
 const DESCRIPTION =
-  "Privacy Policy for Clinical Trial Failures, including analytics, cookies, public registry data, contact messages, and user rights.";
+  "Privacy Policy for Clinical Trial Failures, including GDPR rights, analytics, cookies, public registry data, advertising, affiliate links, contact messages, and user rights.";
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/privacy`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -35,16 +35,21 @@ export default function PrivacyPage() {
               Clinical Trial Failures is an informational website. You can browse the site without
               creating an account or submitting personal information.
             </p>
-            <p className="privacy-updated">Last updated: August 1, 2026</p>
+            <p className="privacy-updated">Last updated: August 4, 2026</p>
           </header>
 
           <section>
-            <h2>Who operates this site</h2>
+            <h2>Who operates this site and controller role</h2>
             <p>
               Clinical Trial Failures is operated as a research-support website at{" "}
               <Link href="/">clinicaltrialfailures.com</Link>. For privacy questions, corrections, or
               website feedback, use the <Link href="/contact">Contact page</Link> or email{" "}
               <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+            </p>
+            <p>
+              If you are located in the European Economic Area, the United Kingdom, or Switzerland, the
+              website operator is the controller for personal data processed through this website, unless
+              a third-party service states that it acts as an independent controller for its own processing.
             </p>
           </section>
 
@@ -75,11 +80,69 @@ export default function PrivacyPage() {
           </section>
 
           <section>
+            <h2>Legal bases under the GDPR</h2>
+            <p>
+              Where the GDPR applies, technical processing that is strictly necessary to serve the website
+              may be based on legitimate interests in operating a secure and functional informational
+              website. Optional analytics, advertising cookies, personalized advertising, newsletter
+              subscriptions, or similar non-essential processing should be based on consent where required
+              by EU or German law.
+            </p>
+            <p>
+              You can withdraw consent through the relevant consent controls when those features are
+              available, or by changing your browser settings. Withdrawal does not affect processing that
+              happened before consent was withdrawn.
+            </p>
+          </section>
+
+          <section>
             <h2>Cookies and local storage</h2>
             <p>
               The site may use essential cookies or browser storage for basic functionality, such as
               remembering cookie-consent choices. If analytics are enabled, analytics providers may use
               privacy-preserving mechanisms to measure visits and performance.
+            </p>
+            <p>
+              If advertising, affiliate tracking, embedded media, or newsletter forms are added, additional
+              cookies or similar technologies may be used only where legally allowed and, where required,
+              after consent.
+            </p>
+          </section>
+
+          <section>
+            <h2>Advertising, Google AdSense, and consent in Europe</h2>
+            <p>
+              The site may in the future display advertising, including Google AdSense. Personalized
+              advertising for users in the EEA, the United Kingdom, and Switzerland should not be enabled
+              unless the site uses a Google-certified Consent Management Platform integrated with the
+              applicable IAB Transparency and Consent Framework, or another Google-supported consent
+              setup that satisfies Google's publisher requirements.
+            </p>
+            <p>
+              Google may process data such as cookie identifiers, device information, IP address, page
+              URL, approximate location, ad interactions, and consent signals to deliver, measure, and
+              protect ads. If advertising is enabled, users should be shown a consent choice before
+              non-essential advertising cookies or personalized ad processing are used where consent is
+              required.
+            </p>
+            <p>
+              Until a compliant consent setup is in place, the conservative approach for a Germany-based
+              operator is to avoid personalized advertising for EEA, UK, and Swiss visitors and to avoid
+              loading non-essential ad tracking before consent.
+            </p>
+          </section>
+
+          <section>
+            <h2>Affiliate links</h2>
+            <p>
+              The site may in the future include affiliate links or referral links. If you click an
+              affiliate link, the destination website or affiliate network may process information such as
+              the referring page, click time, device information, and purchase or sign-up activity to
+              attribute a referral. Affiliate links do not change the price for the visitor unless stated
+              otherwise.
+            </p>
+            <p>
+              If affiliate links are added, they should be clearly disclosed near the relevant content.
             </p>
           </section>
 
@@ -135,6 +198,23 @@ export default function PrivacyPage() {
               rights to request access, correction, deletion, or restriction of personal information you
               have provided to us.
             </p>
+            <p>
+              If the GDPR applies, you may also have the right to data portability, the right to object to
+              processing based on legitimate interests, the right to withdraw consent, and the right to
+              lodge a complaint with a supervisory authority. In Germany, this is usually the data
+              protection authority for the federal state connected to the operator or your place of
+              residence.
+            </p>
+          </section>
+
+          <section>
+            <h2>International transfers and third-party providers</h2>
+            <p>
+              Hosting, analytics, email, newsletter, advertising, and infrastructure providers may process
+              data in countries outside the EEA. Where required, transfers should rely on appropriate
+              safeguards such as adequacy decisions, standard contractual clauses, or provider-specific
+              transfer mechanisms.
+            </p>
           </section>
 
           <section>
@@ -158,9 +238,10 @@ export default function PrivacyPage() {
             <h2>Legal note</h2>
             <p>
               This policy is intended to clearly explain the site's privacy practices, but it is not legal
-              advice. If the project becomes commercial, collects more personal data, or adds forms,
-              subscriptions, payments, or user accounts, the policy should be reviewed by a qualified
-              privacy professional.
+              advice. Because the operator is based in Europe and because AdSense, affiliate tracking,
+              and newsletter tools can trigger GDPR and German TTDSG consent duties, the policy and
+              consent setup should be reviewed by a qualified privacy professional before monetization
+              or personalized advertising is enabled.
             </p>
           </section>
 
