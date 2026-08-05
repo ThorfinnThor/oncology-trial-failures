@@ -589,9 +589,34 @@ export default function OverviewPage() {
             </div>
           </header>
 
-          <div className="page">
-            <div className="card p-4">Loading…</div>
-          </div>
+          <main className="page">
+            <section className="card p-4" aria-labelledby="overview-loading-title">
+              <p className="facet-title">Dataset overview</p>
+              <h1 id="overview-loading-title" style={{ margin: "4px 0 10px", fontSize: 30, lineHeight: 1.12 }}>
+                Clinical trial failure overview
+              </h1>
+              <p className="muted" style={{ maxWidth: 820, margin: 0, lineHeight: 1.65 }}>
+                Review high-level patterns across terminated, suspended, and withdrawn interventional
+                drug and biologic trials. The overview summarizes trial status, phase, stop-reason
+                classification, disease area, sponsor, and likely biological failure signals from the
+                ClinicalTrials.gov-derived dataset.
+              </p>
+              <nav aria-label="Overview links" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 }}>
+                <Link className="btn btn-primary" href="/explore">
+                  Explore the database
+                </Link>
+                <Link className="btn" href="/failures">
+                  Browse failure hubs
+                </Link>
+                <Link className="btn" href="/methods">
+                  How classification works
+                </Link>
+              </nav>
+              <p className="muted" style={{ margin: "16px 0 0", fontSize: 13 }} aria-live="polite">
+                Loading the current dataset summary…
+              </p>
+            </section>
+          </main>
         </div>
       </>
     );

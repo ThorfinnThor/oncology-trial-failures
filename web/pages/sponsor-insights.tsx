@@ -585,9 +585,39 @@ export default function SponsorInsightsPage() {
             </div>
           </header>
 
-          <div className="page">
-            <div className="card p-4">Loading…</div>
-          </div>
+          <main className="page">
+            <section className="card p-4" aria-labelledby="sponsor-insights-loading-title">
+              <p className="facet-title">Sponsor analysis</p>
+              <h1
+                id="sponsor-insights-loading-title"
+                style={{ margin: "4px 0 10px", fontSize: 30, lineHeight: 1.12 }}
+              >
+                Sponsor insights for stopped clinical trials
+              </h1>
+              <p className="muted" style={{ maxWidth: 840, margin: 0, lineHeight: 1.65 }}>
+                Compare sponsors across terminated, suspended, and withdrawn clinical trial records.
+                The interactive analysis summarizes stop reasons, phases, disease areas, and likely
+                biological failure signals while linking researchers back to the underlying database.
+              </p>
+              <nav
+                aria-label="Sponsor analysis links"
+                style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 }}
+              >
+                <Link className="btn btn-primary" href="/sponsors">
+                  Browse sponsor hubs
+                </Link>
+                <Link className="btn" href="/explore">
+                  Explore trial records
+                </Link>
+                <Link className="btn" href="/methods">
+                  How classification works
+                </Link>
+              </nav>
+              <p className="muted" style={{ margin: "16px 0 0", fontSize: 13 }} aria-live="polite">
+                Loading the current sponsor analysis…
+              </p>
+            </section>
+          </main>
         </div>
       </>
     );
@@ -641,6 +671,7 @@ export default function SponsorInsightsPage() {
             <div className="headerLeft">
               <h1 className="title">Sponsor insights</h1>
               <div className="muted subtitle">
+                Compare stopped-trial patterns by sponsor, phase, disease area, and classified stop reason.
               </div>
             </div>
 
