@@ -198,28 +198,6 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 };
 
 export default function HomePage({ stats, sampleTrials }: HomePageProps) {
-  const faqItems = [
-    {
-      question: "What counts as a clinical trial failure?",
-      answer:
-        "This site starts with stopped studies: terminated, suspended, and withdrawn clinical trials. Not every stopped trial is a failed drug or failed biology, so each record is classified as a screening signal rather than a final judgment.",
-    },
-    {
-      question: "Why do clinical trials stop?",
-      answer:
-        "Trials can stop because of efficacy or futility signals, safety issues, operational problems, enrollment constraints, funding, sponsor strategy, regulatory issues, or unclear reasons in the registry record.",
-    },
-    {
-      question: "Who is this for?",
-      answer:
-        "It is built for biotech and pharma teams, investors, consultants, analysts, and researchers who need fast evidence on whether a stopped trial looks like biological failure or something more operational.",
-    },
-    {
-      question: "Is it free?",
-      answer: "Yes, the database is free to use, with no account required.",
-    },
-  ];
-
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -251,18 +229,6 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
       measurementTechnique: "Rule-based classification of public ClinicalTrials.gov stopped-trial records",
       variableMeasured: ["overall status", "clinical phase", "sponsor", "therapeutic area", "stop reason", "classification bucket"],
       isAccessibleForFree: true,
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      mainEntity: faqItems.map((item) => ({
-        "@type": "Question",
-        name: item.question,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: item.answer,
-        },
-      })),
     },
   ];
 
@@ -464,34 +430,10 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   <span className="deepDiveText">Rank oncology drugs and interventions by stopped-trial evidence.</span>
                   <span className="deepDiveAction">Open ranking →</span>
                 </Link>
-                <Link href="/top-10-neurology-clinical-trial-failures" className="deepDiveCard">
-                  <span className="deepDiveKicker">Top list</span>
-                  <span className="deepDiveTitle">Top neurology failure signals</span>
-                  <span className="deepDiveText">Review neurology interventions with repeated biological stop signals.</span>
-                  <span className="deepDiveAction">Open ranking →</span>
-                </Link>
                 <Link href="/top-10-pharma-companies-clinical-trial-failure-share" className="deepDiveCard">
                   <span className="deepDiveKicker">Sponsor ranking</span>
                   <span className="deepDiveTitle">Pharma companies by failure share</span>
                   <span className="deepDiveText">Compare likely biological stop signals against sponsor stopped-trial volume.</span>
-                  <span className="deepDiveAction">Open ranking →</span>
-                </Link>
-                <Link href="/top-10-infectious-disease-clinical-trial-failures" className="deepDiveCard">
-                  <span className="deepDiveKicker">Therapeutic area</span>
-                  <span className="deepDiveTitle">Infectious disease stops</span>
-                  <span className="deepDiveText">Review intervention-level signals in infectious disease stopped trials.</span>
-                  <span className="deepDiveAction">Open ranking →</span>
-                </Link>
-                <Link href="/top-10-phase-2-clinical-trial-failure-signals" className="deepDiveCard">
-                  <span className="deepDiveKicker">Phase ranking</span>
-                  <span className="deepDiveTitle">Phase II failure signals</span>
-                  <span className="deepDiveText">Find repeated stop signals before pivotal development.</span>
-                  <span className="deepDiveAction">Open ranking →</span>
-                </Link>
-                <Link href="/top-10-safety-driven-clinical-trial-failures" className="deepDiveCard">
-                  <span className="deepDiveKicker">Signal type</span>
-                  <span className="deepDiveTitle">Safety-driven stops</span>
-                  <span className="deepDiveText">Focus on toxicity, tolerability, and risk-related stop language.</span>
                   <span className="deepDiveAction">Open ranking →</span>
                 </Link>
               </div>
@@ -538,23 +480,6 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 <Link href="/about" className="textLink">
                   About and data trust →
                 </Link>
-              </div>
-            </div>
-          </section>
-
-          <section className="section faqSection" aria-labelledby="faq-title">
-            <div className="container">
-              <div className="sectionHeader sectionHeaderWide">
-                <p className="eyebrow">FAQ</p>
-                <h2 id="faq-title">Three questions before using the data</h2>
-              </div>
-              <div className="faqGrid">
-                {faqItems.map((item) => (
-                  <article className="infoCard" key={item.question}>
-                    <h3>{item.question}</h3>
-                    <p>{item.answer}</p>
-                  </article>
-                ))}
               </div>
             </div>
           </section>
@@ -1033,8 +958,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         .capabilityGrid,
-        .deepDiveGrid,
-        .faqGrid {
+        .deepDiveGrid {
           display: grid;
           gap: 14px;
         }
@@ -1043,12 +967,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           grid-template-columns: repeat(3, minmax(0, 1fr));
         }
 
-        .faqGrid {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
         .deepDiveGrid {
-          grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+          grid-template-columns: repeat(5, minmax(0, 1fr));
         }
 
         .infoCard,
@@ -1182,10 +1102,6 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           font-weight: 850;
         }
 
-        .faqSection {
-          padding-top: 0;
-        }
-
         .homeFooter {
           padding: 30px 0;
           border-top: 1px solid #dbe4f0;
@@ -1224,6 +1140,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         }
 
         :global(.homePage .allGuidesLink) {
+          display: flex;
+          width: max-content;
+          margin-top: 20px;
           text-decoration-thickness: 1.5px;
           text-underline-offset: 0.18em;
         }
@@ -1259,10 +1178,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             max-width: none;
           }
 
-          .capabilityGrid,
-          .deepDiveGrid,
-          .faqGrid {
+          .capabilityGrid {
             grid-template-columns: 1fr;
+          }
+
+          .deepDiveGrid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
           }
 
           .footerLinks {
@@ -1310,6 +1231,10 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           }
 
           .heroStats {
+            grid-template-columns: 1fr;
+          }
+
+          .deepDiveGrid {
             grid-template-columns: 1fr;
           }
 

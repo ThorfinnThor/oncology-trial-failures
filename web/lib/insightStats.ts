@@ -69,6 +69,46 @@ function signalSlice(rows: TrialIndexRow[]) {
   };
 }
 
+function latestUpdateSlice(rows: TrialIndexRow[]) {
+  const dates = rows
+    .map((row) => (row.last_update_post_date || "").slice(0, 10))
+    .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value))
+    .sort();
+  const endDate = dates[dates.length - 1] || "";
+
+  if (!endDate) {
+    return {
+      startDate: "",
+      endDate: "",
+      total: 0,
+      scientificCount: 0,
+      statuses: {},
+      buckets: {},
+      topAreas: [],
+      topSponsors: [],
+    };
+  }
+
+  const start = new Date(`${endDate}T00:00:00Z`);
+  start.setUTCDate(start.getUTCDate() - 13);
+  const startDate = start.toISOString().slice(0, 10);
+  const recentRows = rows.filter((row) => {
+    const value = (row.last_update_post_date || "").slice(0, 10);
+    return value >= startDate && value <= endDate;
+  });
+
+  return {
+    startDate,
+    endDate,
+    total: recentRows.length,
+    scientificCount: recentRows.filter(isLikelyScientificFailure).length,
+    statuses: countBy(recentRows, (row) => (row.overall_status || "").toUpperCase()),
+    buckets: countBy(recentRows, (row) => reasonBucket(row).toUpperCase()),
+    topAreas: topCounts(recentRows, (row) => row.disease_area || "Other", 6),
+    topSponsors: topCounts(recentRows, (row) => row.lead_sponsor || "Unknown sponsor", 6),
+  };
+}
+
 export function bucketCount(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
@@ -89,6 +129,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const safetyRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "SAFETY");
   const endpointRows = rows.filter(isEndpointSignal);
   const enrollmentRows = rows.filter(isEnrollmentSignal);
+  const latestUpdates = latestUpdateSlice(rows);
 
   return {
     total: rows.length,
@@ -115,5 +156,6 @@ export async function buildInsightStats(): Promise<InsightStats> {
     },
     endpointSignals: signalSlice(endpointRows),
     enrollmentSignals: signalSlice(enrollmentRows),
+    latestUpdates,
   };
 }

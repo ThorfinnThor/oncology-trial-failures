@@ -207,8 +207,14 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
 
       <style jsx global>{`
         .insightPage .insightArticle {
-          max-width: 960px;
+          max-width: 1040px;
           margin: 0 auto;
+        }
+        .insightPage .insightHero,
+        .insightPage .insightFacts,
+        .insightPage .insightLinks,
+        .insightPage .insightTables > .card {
+          padding: clamp(20px, 2.5vw, 26px);
         }
         .insightPage .insightBreadcrumb {
           color: var(--text-muted);
@@ -259,7 +265,8 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
           line-height: 1.55;
         }
         .insightPage .insightSection {
-          margin-top: 24px;
+          margin-top: 26px;
+          padding: 0 clamp(18px, 2.5vw, 26px);
         }
         .insightPage .insightSection h2,
         .insightPage .insightTables h2,
@@ -334,7 +341,8 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
           line-height: 1.45;
         }
         .insightPage .insightFaq {
-          margin-top: 24px;
+          margin-top: 26px;
+          padding: 0 clamp(18px, 2.5vw, 26px);
         }
         .insightPage details {
           border: 1px solid var(--border);
@@ -357,6 +365,7 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
         }
         .insightPage .insightSource {
           margin: 22px 0 0;
+          padding: 0 clamp(18px, 2.5vw, 26px);
           color: var(--text-muted);
           font-size: 13px;
           line-height: 1.6;
@@ -364,6 +373,18 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
         @media (max-width: 760px) {
           .insightPage .insightLinkGrid {
             grid-template-columns: 1fr;
+          }
+          .insightPage .insightHero,
+          .insightPage .insightFacts,
+          .insightPage .insightLinks,
+          .insightPage .insightTables > .card {
+            padding: 18px;
+          }
+          .insightPage .insightSection,
+          .insightPage .insightFaq,
+          .insightPage .insightSource {
+            padding-left: 2px;
+            padding-right: 2px;
           }
         }
       `}</style>

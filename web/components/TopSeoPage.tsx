@@ -197,18 +197,21 @@ export default function TopSeoPage({
 
       <style jsx>{`
         .topSeoArticle {
-          max-width: 1080px;
+          max-width: 1160px;
           margin: 0 auto;
+        }
+        .topSeoHero {
+          padding: clamp(22px, 3vw, 32px);
         }
         .topSeoHero h1 {
           margin: 0;
-          max-width: 900px;
+          max-width: 1040px;
           font-size: clamp(2rem, 4.8vw, 3.35rem);
           line-height: 1.05;
           letter-spacing: 0;
         }
         .topSeoLede {
-          max-width: 820px;
+          max-width: 940px;
           margin: 14px 0 0;
           color: var(--text-muted);
           font-size: 17px;
@@ -221,6 +224,8 @@ export default function TopSeoPage({
           margin-top: 18px;
         }
         .topSeoSummary div {
+          display: grid;
+          align-content: start;
           border: 1px solid var(--border);
           border-radius: 12px;
           background: var(--surface-2);
@@ -247,8 +252,9 @@ export default function TopSeoPage({
           line-height: 1.4;
         }
         .topSeoSection {
-          max-width: 880px;
-          margin: 24px auto 0;
+          width: 100%;
+          margin: 26px 0 0;
+          padding: 0 clamp(16px, 2.4vw, 28px);
         }
         .topSeoSection h2,
         .topSeoTableCard h2,
@@ -270,7 +276,8 @@ export default function TopSeoPage({
           margin-top: 12px;
         }
         .topSeoTableCard {
-          margin-top: 24px;
+          margin-top: 26px;
+          padding: clamp(18px, 2.4vw, 26px);
         }
         .topSeoTableWrap {
           margin-top: 14px;
@@ -315,7 +322,14 @@ export default function TopSeoPage({
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 14px;
-          margin-top: 24px;
+          margin-top: 26px;
+        }
+        .topSeoExamples article {
+          display: flex;
+          min-width: 0;
+          height: 100%;
+          flex-direction: column;
+          padding: 20px;
         }
         .topSeoExamples h3 {
           margin: 0 0 10px;
@@ -324,10 +338,12 @@ export default function TopSeoPage({
         }
         .topSeoExamples .link {
           display: inline-flex;
-          margin-top: 12px;
+          margin-top: auto;
+          padding-top: 14px;
         }
         .topSeoRelated {
-          margin-top: 24px;
+          margin-top: 26px;
+          padding: clamp(18px, 2.4vw, 26px);
         }
         .topSeoRelated div {
           display: grid;
@@ -335,6 +351,9 @@ export default function TopSeoPage({
           gap: 12px;
         }
         .topSeoRelated a {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
           border: 1px solid var(--border);
           border-radius: 12px;
           padding: 13px;
@@ -359,6 +378,14 @@ export default function TopSeoPage({
           .topSeoExamples,
           .topSeoRelated div {
             grid-template-columns: 1fr;
+          }
+          .topSeoSection {
+            padding: 0 18px;
+          }
+          .topSeoHero,
+          .topSeoTableCard,
+          .topSeoRelated {
+            padding: 18px;
           }
         }
       `}</style>
