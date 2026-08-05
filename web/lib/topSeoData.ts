@@ -95,6 +95,46 @@ export function topInterventionsByArea(rows: TrialIndexRow[], area: string, limi
     .map((row, index) => ({ ...row, rank: index + 1 }));
 }
 
+export function topInterventionsByPhase(rows: TrialIndexRow[], phaseNeedle: string, limit = 10): TopListRow[] {
+  const phaseRows = rows.filter((row) =>
+    parsePhases(row.phases || "")
+      .map((phase) => phaseLabel(phase).toLowerCase())
+      .some((phase) => phase === phaseNeedle.toLowerCase())
+  );
+  const groups = new Map<string, TrialIndexRow[]>();
+
+  for (const row of phaseRows) {
+    for (const intervention of splitInterventions(row).slice(0, 3)) {
+      const current = groups.get(intervention) || [];
+      current.push(row);
+      groups.set(intervention, current);
+    }
+  }
+
+  return buildRows(groups, 2)
+    .sort((a, b) => b.scientific - a.scientific || b.total - a.total || a.label.localeCompare(b.label))
+    .slice(0, limit)
+    .map((row, index) => ({ ...row, rank: index + 1 }));
+}
+
+export function topInterventionsByReason(rows: TrialIndexRow[], reason: string, limit = 10): TopListRow[] {
+  const reasonRows = rows.filter((row) => reasonBucket(row).toUpperCase() === reason.toUpperCase());
+  const groups = new Map<string, TrialIndexRow[]>();
+
+  for (const row of reasonRows) {
+    for (const intervention of splitInterventions(row).slice(0, 3)) {
+      const current = groups.get(intervention) || [];
+      current.push(row);
+      groups.set(intervention, current);
+    }
+  }
+
+  return buildRows(groups, 2)
+    .sort((a, b) => b.total - a.total || b.scientific - a.scientific || a.label.localeCompare(b.label))
+    .slice(0, limit)
+    .map((row, index) => ({ ...row, rank: index + 1 }));
+}
+
 export function topSponsorsByBiologicalShare(rows: TrialIndexRow[], limit = 10, minTotal = 25): TopListRow[] {
   const groups = new Map<string, TrialIndexRow[]>();
 
@@ -115,6 +155,37 @@ export function topSponsorsByBiologicalShare(rows: TrialIndexRow[], limit = 10, 
     })
     .slice(0, limit)
     .map((row, index) => ({ ...row, rank: index + 1 }));
+}
+
+export function phaseSummary(rows: TrialIndexRow[], phaseNeedle: string) {
+  const phaseRows = rows.filter((row) =>
+    parsePhases(row.phases || "")
+      .map((phase) => phaseLabel(phase).toLowerCase())
+      .some((phase) => phase === phaseNeedle.toLowerCase())
+  );
+  const biological = phaseRows.filter(isBiological);
+  const efficacy = phaseRows.filter((row) => reasonBucket(row).toUpperCase() === "EFFICACY/FUTILITY").length;
+  const safety = phaseRows.filter((row) => reasonBucket(row).toUpperCase() === "SAFETY").length;
+  return {
+    phase: phaseNeedle,
+    total: phaseRows.length,
+    biological: biological.length,
+    efficacy,
+    safety,
+    share: phaseRows.length ? `${Math.round((biological.length / phaseRows.length) * 100)}%` : "0%",
+  };
+}
+
+export function reasonSummary(rows: TrialIndexRow[], reason: string) {
+  const reasonRows = rows.filter((row) => reasonBucket(row).toUpperCase() === reason.toUpperCase());
+  const areas = new Set(reasonRows.map((row) => norm(row.disease_area)).filter(Boolean));
+  const sponsors = new Set(reasonRows.map((row) => norm(row.lead_sponsor)).filter(Boolean));
+  return {
+    reason,
+    total: reasonRows.length,
+    areas: areas.size,
+    sponsors: sponsors.size,
+  };
 }
 
 export function areaSummary(rows: TrialIndexRow[], area: string) {

@@ -476,6 +476,24 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   <span className="deepDiveText">Compare likely biological stop signals against sponsor stopped-trial volume.</span>
                   <span className="deepDiveAction">Open ranking →</span>
                 </Link>
+                <Link href="/top-10-infectious-disease-clinical-trial-failures" className="deepDiveCard">
+                  <span className="deepDiveKicker">Therapeutic area</span>
+                  <span className="deepDiveTitle">Infectious disease stops</span>
+                  <span className="deepDiveText">Review intervention-level signals in infectious disease stopped trials.</span>
+                  <span className="deepDiveAction">Open ranking →</span>
+                </Link>
+                <Link href="/top-10-phase-2-clinical-trial-failure-signals" className="deepDiveCard">
+                  <span className="deepDiveKicker">Phase ranking</span>
+                  <span className="deepDiveTitle">Phase II failure signals</span>
+                  <span className="deepDiveText">Find repeated stop signals before pivotal development.</span>
+                  <span className="deepDiveAction">Open ranking →</span>
+                </Link>
+                <Link href="/top-10-safety-driven-clinical-trial-failures" className="deepDiveCard">
+                  <span className="deepDiveKicker">Signal type</span>
+                  <span className="deepDiveTitle">Safety-driven stops</span>
+                  <span className="deepDiveText">Focus on toxicity, tolerability, and risk-related stop language.</span>
+                  <span className="deepDiveAction">Open ranking →</span>
+                </Link>
               </div>
               <Link href="/clinical-trial-failures" className="allGuidesLink">
                 See all guides →
