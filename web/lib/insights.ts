@@ -38,6 +38,19 @@ export type InsightStats = {
   endpointSignals: InsightSignalSlice;
   enrollmentSignals: InsightSignalSlice;
   operationalSignals: InsightSignalSlice;
+  withdrawnSignals: InsightSignalSlice & {
+    scientificCount: number;
+    scientificShare: string;
+    buckets: Record<string, number>;
+  };
+  diseaseAreaSignalShares: Array<{
+    label: string;
+    total: number;
+    scientificCount: number;
+    scientificShare: string;
+    efficacyCount: number;
+    safetyCount: number;
+  }>;
   latestUpdates: {
     startDate: string;
     endDate: string;
@@ -107,6 +120,190 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "oncology-volume-vs-biological-failure-signal-share",
+    title: "Oncology has the most stopped trials, but not the highest biological-signal share",
+    metaDescription:
+      "A data-backed comparison of biological clinical trial failure signals by disease area, including efficacy, futility, and safety classifications.",
+    eyebrow: "Disease-area comparison",
+    dek:
+      "Oncology dominates the stopped-trial database by volume. Once the numbers are adjusted for the size of each disease-area slice, a different pattern appears.",
+    datePublished: "2026-08-10",
+    readingTime: "7 min read",
+    keyword: "clinical trial failure signals by disease area",
+    facts: [],
+    sections: [
+      {
+        heading: "The short version",
+        body: [
+          "Oncology is the largest disease area in the stopped-trial database. That makes it the easiest area to notice, search, and quote. It does not automatically make oncology the disease area with the highest concentration of likely biological failure signals.",
+          "When I compare efficacy/futility and safety classifications with the total number of stopped records in each sufficiently large disease-area slice, several smaller areas rank above oncology by share. This is a useful reminder that volume and concentration answer different questions.",
+        ],
+      },
+      {
+        heading: "Volume and share answer different questions",
+        body: [
+          "Raw volume tells us where the database contains the most stopped trials. Share asks a narrower question: among stopped records in one disease area, what proportion carries source language classified as efficacy/futility or safety? Both views are useful, but they should not be substituted for each other.",
+          "A large area can produce many scientific failure signals while still having a lower signal share because it also contains a very large number of operational, strategic, enrollment, regulatory, or unclear stops. A smaller area can have fewer signals in absolute terms but a higher concentration within its stopped-trial slice.",
+        ],
+      },
+      {
+        heading: "Why oncology volume can be misleading",
+        body: [
+          "Oncology has more stopped records than any other disease area in this dataset. It also has substantial efficacy and safety counts. If I looked only at totals, I might conclude that oncology is the clearest failure area. The denominator changes that interpretation.",
+          "Cancer development includes a wide variety of mechanisms, combinations, investigator-led studies, biomarker populations, and operationally complex protocols. The large denominator includes many stops that do not establish failed biology. That is why the share of classified biological signals is more informative than the headline count alone.",
+        ],
+      },
+      {
+        heading: "What a higher share does and does not mean",
+        body: [
+          "A higher share means that efficacy/futility or safety language appears more often within the stopped records assigned to that disease area. It does not mean that drugs in that disease area have a higher overall clinical failure rate. We do not have the full denominator of all successful, ongoing, and completed trials in this analysis.",
+          "The ranking is therefore a stopped-trial signal comparison, not a probability of technical success and not a league table of therapeutic quality. It is best used to decide where source-level review may be especially valuable.",
+        ],
+      },
+      {
+        heading: "How I would use this result",
+        body: [
+          "I would use the disease-area comparison as a triage layer. First identify areas with a meaningful record count and a comparatively high signal share. Then separate efficacy/futility from safety, because those categories can imply very different development problems.",
+          "After that, I would move to phase, intervention, sponsor, and individual NCT records. The useful question is not simply which area ranks first. It is whether the pattern persists inside a comparable phase, modality, mechanism, or patient population.",
+        ],
+      },
+      {
+        heading: "The limits of the comparison",
+        body: [
+          "Disease areas are assigned through a keyword-based taxonomy derived from conditions and MeSH terms. Some trials span more than one clinical area, and the primary assignment can simplify that complexity. Classification is also based on registry language, which can be brief or incomplete.",
+          "To reduce unstable small-sample rankings, this comparison includes only disease areas with at least 200 stopped records. Even with that threshold, every percentage should be read as an analytical screening signal and verified against the underlying trial records.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/oncology-clinical-trial-failures",
+        label: "Oncology clinical trial failures",
+        text: "Review the oncology-specific dataset, definitions, and source-linked records.",
+      },
+      {
+        href: "/explore?bio=true",
+        label: "Explore biological signals",
+        text: "Open likely scientific failure records and refine them by disease area, phase, or sponsor.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "See how registry stop language is mapped into efficacy, safety, operational, and other categories.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Which disease area has the most stopped clinical trials?",
+        answer:
+          "Oncology has the largest stopped-trial volume in the current dataset. That does not mean it has the highest share of efficacy or safety signals within its disease-area slice.",
+      },
+      {
+        question: "Is this a clinical trial failure-rate ranking?",
+        answer:
+          "No. The denominator contains stopped trials only. It does not include every successful, completed, or ongoing trial, so the percentages must not be interpreted as overall failure rates.",
+      },
+      {
+        question: "Why exclude disease areas with fewer than 200 records?",
+        answer:
+          "The minimum-record threshold reduces rankings driven by very small samples. It does not remove all uncertainty, but it makes comparisons more stable and useful.",
+      },
+    ],
+  },
+  {
+    slug: "withdrawn-clinical-trials-rarely-show-biological-failure-signals",
+    title: "Withdrawn clinical trials rarely show biological failure signals",
+    metaDescription:
+      "A data-backed analysis of withdrawn clinical trials, including efficacy, safety, operational, and unknown stop-reason signals.",
+    eyebrow: "Withdrawn trial patterns",
+    dek:
+      "Withdrawn status sounds conclusive, but the underlying registry language is usually not an efficacy or safety failure signal. The distinction matters.",
+    datePublished: "2026-08-10",
+    readingTime: "7 min read",
+    keyword: "withdrawn clinical trials",
+    facts: [],
+    sections: [
+      {
+        heading: "The headline result",
+        body: [
+          "Withdrawn is one of the three stopped statuses covered by this database, alongside terminated and suspended. It is also one of the easiest labels to over-interpret. In the current data, only a small share of withdrawn records carries stop language classified as efficacy/futility or safety.",
+          "Most withdrawn records fall into operational or other/unknown classifications. That does not make them unimportant. It means the status field alone is weak evidence for the claim that a drug, target, or biological hypothesis failed.",
+        ],
+      },
+      {
+        heading: "Why withdrawal often happens before evidence exists",
+        body: [
+          "A withdrawn study may never begin enrollment, may fail to activate sites, may lose funding, or may be abandoned after a sponsor or investigator decision. In those cases, the intervention may never have received a meaningful clinical test.",
+          "This is different from a trial that enrolls patients and stops after a futility analysis, missed endpoint, or safety concern. Both records are stopped, but the evidence content is not comparable.",
+        ],
+      },
+      {
+        heading: "Why other or unknown is so common",
+        body: [
+          "ClinicalTrials.gov stop explanations vary enormously. Some are detailed and explicit. Others are short, administrative, or absent. A large other/unknown bucket therefore reflects both genuine ambiguity and limitations in the source text.",
+          "I would rather keep an unclear record visibly unclear than force it into efficacy or safety. That makes the database more conservative, even though it produces a less satisfying headline classification.",
+        ],
+      },
+      {
+        heading: "The small scientific subset still matters",
+        body: [
+          "A minority of withdrawn records does contain efficacy or safety language. Those cases deserve attention because they differ from the dominant withdrawal pattern. They should be opened individually and checked against enrollment history, dates, endpoints, sponsor disclosures, and the source record.",
+          "The right interpretation is not that withdrawn trials never contain biological evidence. It is that biological evidence is unusual enough within this status group that it should be demonstrated, not assumed.",
+        ],
+      },
+      {
+        heading: "How I would review a withdrawn trial",
+        body: [
+          "I would start by checking whether anyone was enrolled. Next I would read the official why-stopped field, compare the start and update dates, inspect the phase, and identify whether the sponsor described an operational, strategic, efficacy, or safety reason.",
+          "If the record contains only a generic explanation, I would avoid a failed-drug label. A more accurate description may be withdrawn before enrollment, withdrawn for feasibility, withdrawn by sponsor decision, or withdrawn for an unclear reason.",
+        ],
+      },
+      {
+        heading: "What this result cannot prove",
+        body: [
+          "This analysis does not prove that the interventions in withdrawn trials work. Absence of an efficacy or safety failure signal is not evidence of success. It often means that the available record does not support either conclusion.",
+          "The database is a screening and research tool. It helps separate the strength of the available stop signal, but final interpretation still requires the original registry entry and any associated primary documents.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/explore?status=WITHDRAWN",
+        label: "Explore withdrawn trials",
+        text: "Search withdrawn records by sponsor, phase, disease area, intervention, and stop reason.",
+      },
+      {
+        href: "/insights/terminated-clinical-trials-are-not-always-failures",
+        label: "Terminated does not always mean failed",
+        text: "Compare withdrawn records with the interpretation problems around terminated trial status.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review the conservative rules used to classify efficacy, safety, operational, regulatory, and unclear reasons.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does withdrawn mean a clinical trial failed?",
+        answer:
+          "Not by itself. A withdrawn trial may stop before enrollment or for operational, funding, strategic, or unclear reasons. The source explanation must be reviewed before drawing a biological conclusion.",
+      },
+      {
+        question: "Can a withdrawn trial contain a safety or efficacy signal?",
+        answer:
+          "Yes, but those signals are a small minority in the current withdrawn-trial slice. They should be verified individually against the original registry record and related documents.",
+      },
+      {
+        question: "Does no biological failure signal mean the intervention worked?",
+        answer:
+          "No. It only means the available stop language was not classified as efficacy/futility or safety. It is not evidence of clinical success.",
+      },
+    ],
+  },
   {
     slug: "operational-reasons-dominate-stopped-clinical-trials",
     title: "Operational reasons dominate stopped clinical trials",
@@ -1284,7 +1481,127 @@ function hydrateOperationalArticle(article: InsightArticle, stats: InsightStats)
   };
 }
 
+function hydrateDiseaseAreaShareArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const areas = stats.diseaseAreaSignalShares;
+  const leader = areas[0];
+  const oncology = areas.find((item) => item.label === "Oncology");
+  const leaderFact = leader
+    ? `${leader.label} has the highest biological-signal share among disease areas with at least 200 stopped records: ${leader.scientificShare} (${n(leader.scientificCount)} of ${n(leader.total)}).`
+    : "No disease-area comparison is available in the current dataset.";
+  const oncologyFact = oncology
+    ? `Oncology is the largest disease-area slice with ${n(oncology.total)} stopped records, including ${n(oncology.scientificCount)} biological signals, a ${oncology.scientificShare} share.`
+    : "The oncology slice is not available in the current dataset.";
+
+  return {
+    ...article,
+    metaDescription: leader && oncology
+      ? `Oncology has ${n(oncology.total)} stopped trials, but ${leader.label} leads disease areas with at least 200 records by biological-signal share at ${leader.scientificShare}.`
+      : article.metaDescription,
+    dek: leader && oncology
+      ? `Oncology contains ${n(oncology.total)} stopped records, but its ${oncology.scientificShare} biological-signal share does not lead the disease-area comparison. ${leader.label} ranks highest among areas with at least 200 records.`
+      : article.dek,
+    facts: [
+      `The current database contains ${n(stats.total)} stopped clinical trial records across its disease-area taxonomy.`,
+      oncologyFact,
+      leaderFact,
+      "The comparison includes only disease areas with at least 200 stopped records to reduce small-sample distortion.",
+      "These percentages describe efficacy/futility and safety signals within stopped records; they are not overall clinical trial failure rates.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading !== "The short version" || !leader || !oncology) return section;
+      return {
+        ...section,
+        body: [
+          `Oncology is the largest disease area in the stopped-trial database with ${n(oncology.total)} records. That makes it the easiest area to notice, search, and quote. It does not make oncology the disease area with the highest concentration of likely biological failure signals: ${n(oncology.scientificCount)} oncology records are classified as efficacy/futility or safety, a ${oncology.scientificShare} share.`,
+          `${leader.label} ranks highest among disease areas with at least 200 stopped records, with ${n(leader.scientificCount)} biological signals among ${n(leader.total)} records (${leader.scientificShare}). This is a useful reminder that volume and concentration answer different questions.`,
+        ],
+      };
+    }),
+    tables: [
+      {
+        heading: "Biological-signal share by disease area",
+        columns: ["Disease area", "Signals / stopped records"],
+        rows: areas.slice(0, 10).map((item): [string, string] => [
+          item.label,
+          `${item.scientificShare} (${n(item.scientificCount)} / ${n(item.total)})`,
+        ]),
+      },
+      {
+        heading: "Efficacy and safety composition",
+        columns: ["Disease area", "Efficacy / safety"],
+        rows: areas.slice(0, 10).map((item): [string, string] => [
+          item.label,
+          `${n(item.efficacyCount)} / ${n(item.safetyCount)}`,
+        ]),
+      },
+    ],
+  };
+}
+
+function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const withdrawn = stats.withdrawnSignals;
+  const operational = withdrawn.buckets.OPERATIONAL || 0;
+  const other = withdrawn.buckets["OTHER/UNKNOWN"] || 0;
+  const efficacy = withdrawn.buckets["EFFICACY/FUTILITY"] || 0;
+  const safety = withdrawn.buckets.SAFETY || 0;
+  const regulatory = withdrawn.buckets.REGULATORY || 0;
+
+  return {
+    ...article,
+    metaDescription: `Only ${withdrawn.scientificShare} of ${n(withdrawn.total)} withdrawn clinical trial records in the current database carry efficacy/futility or safety failure signals.`,
+    dek: `Only ${n(withdrawn.scientificCount)} of ${n(withdrawn.total)} withdrawn records (${withdrawn.scientificShare}) carry efficacy/futility or safety signals. Withdrawn status alone is weak evidence of drug failure.`,
+    facts: [
+      `The current database contains ${n(withdrawn.total)} withdrawn clinical trial records.`,
+      `${n(withdrawn.scientificCount)} withdrawn records, or ${withdrawn.scientificShare}, are classified as likely biological failure signals.`,
+      `${n(efficacy)} withdrawn records carry efficacy/futility signals and ${n(safety)} carry safety signals.`,
+      `Operational reasons account for ${n(operational)} withdrawn records, while ${n(other)} are classified as other or unknown.`,
+      withdrawn.topAreas[0]
+        ? `${withdrawn.topAreas[0].label} is the largest withdrawn disease-area slice with ${n(withdrawn.topAreas[0].count)} records.`
+        : "No withdrawn disease-area slice is available.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading !== "The headline result") return section;
+      return {
+        ...section,
+        body: [
+          `Withdrawn is one of the three stopped statuses covered by this database, alongside terminated and suspended. It is also one of the easiest labels to over-interpret. Only ${n(withdrawn.scientificCount)} of ${n(withdrawn.total)} withdrawn records (${withdrawn.scientificShare}) carry stop language classified as efficacy/futility or safety.`,
+          `Most withdrawn records fall into operational (${n(operational)}) or other/unknown (${n(other)}) classifications. That does not make them unimportant. It means the status field alone is weak evidence for the claim that a drug, target, or biological hypothesis failed.`,
+        ],
+      };
+    }),
+    tables: [
+      {
+        heading: "Withdrawn trial stop-reason mix",
+        columns: ["Reason classification", "Withdrawn records"],
+        rows: [
+          ["Other/unknown", n(other)],
+          ["Operational", n(operational)],
+          ["Safety", n(safety)],
+          ["Regulatory", n(regulatory)],
+          ["Efficacy/futility", n(efficacy)],
+        ],
+      },
+      {
+        heading: "Largest withdrawn phase groups",
+        columns: ["Phase", "Withdrawn records"],
+        rows: withdrawn.phases.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Largest withdrawn disease-area slices",
+        columns: ["Disease area", "Withdrawn records"],
+        rows: withdrawn.topAreas.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+  };
+}
+
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "oncology-volume-vs-biological-failure-signal-share") {
+    return hydrateDiseaseAreaShareArticle(article, stats);
+  }
+  if (article.slug === "withdrawn-clinical-trials-rarely-show-biological-failure-signals") {
+    return hydrateWithdrawnArticle(article, stats);
+  }
   if (article.slug === "operational-reasons-dominate-stopped-clinical-trials") {
     return hydrateOperationalArticle(article, stats);
   }

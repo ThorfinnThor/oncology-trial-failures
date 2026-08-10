@@ -34,6 +34,11 @@ from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 import requests
 
+try:
+    from ingest_changes import build_ingest_change_report
+except ImportError:
+    from scripts.ingest_changes import build_ingest_change_report
+
 BASE_URL = "https://clinicaltrials.gov/api/v2/studies"
 
 MAX_STUDIES_TOTAL = int(os.getenv("MAX_STUDIES_TOTAL", "50000"))
@@ -1068,7 +1073,7 @@ def write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
             w.writerow(r)
 
 
-def write_json(path: str, rows: List[Dict[str, Any]]) -> None:
+def write_json(path: str, rows: Any) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(rows, f, ensure_ascii=False, indent=2)
@@ -1084,6 +1089,17 @@ def compute_top_areas(rows: List[Dict[str, Any]], top_n: int = 10) -> List[Dict[
 
 
 def main() -> None:
+    previous_records: Optional[List[Dict[str, Any]]] = None
+    previous_path = "data/all_stopped_trials.json"
+    if os.path.exists(previous_path):
+        try:
+            with open(previous_path, "r", encoding="utf-8") as f:
+                loaded_previous = json.load(f)
+            if isinstance(loaded_previous, list):
+                previous_records = loaded_previous
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"Warning: could not read previous ingest snapshot: {exc}")
+
     overrides = load_overrides(OVERRIDES_PATH)
 
     session = requests.Session()
@@ -1121,10 +1137,13 @@ def main() -> None:
         and r.get("classification_confidence") in ("HIGH", "MEDIUM")
     ]
 
+    ingest_changes = build_ingest_change_report(previous_records, all_records)
+
     write_csv("data/all_stopped_trials.csv", all_records)
     write_csv("data/biological_failure_trials.csv", biological_only)
     write_json("data/all_stopped_trials.json", all_records)
     write_json("data/biological_failure_trials.json", biological_only)
+    write_json("data/ingest_changes.json", ingest_changes)
 
     top_10 = compute_top_areas(all_records, top_n=10)
     print("Top 10 disease areas:")
@@ -1133,6 +1152,12 @@ def main() -> None:
 
     print(f"Total records (all stopped): {len(all_records)}")
     print(f"Biological failures (HIGH/MEDIUM): {len(biological_only)}")
+    print(
+        "Ingest changes: "
+        f"{ingest_changes['summary']['new_records']} new, "
+        f"{ingest_changes['summary']['updated_records']} updated, "
+        f"{ingest_changes['summary']['status_changes']} status changes"
+    )
 
 
 if __name__ == "__main__":

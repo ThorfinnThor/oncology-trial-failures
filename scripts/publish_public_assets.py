@@ -9,6 +9,7 @@ ROOT_ALL_CSV = "data/all_stopped_trials.csv"
 
 ROOT_BIO_JSON = "data/biological_failure_trials.json"
 ROOT_BIO_CSV = "data/biological_failure_trials.csv"
+ROOT_CHANGES_JSON = "data/ingest_changes.json"
 
 PUBLIC_DIR = os.path.join("web", "public")
 
@@ -19,6 +20,7 @@ PUBLIC_BIO_JSON = os.path.join(PUBLIC_DIR, "biological_failure_trials.json")
 PUBLIC_BIO_CSV = os.path.join(PUBLIC_DIR, "biological_failure_trials.csv")
 
 PUBLIC_META = os.path.join(PUBLIC_DIR, "dataset_meta.json")
+PUBLIC_CHANGES_JSON = os.path.join(PUBLIC_DIR, "ingest_changes.json")
 
 PUBLIC_SPECIALNESS = os.path.join(PUBLIC_DIR, "specialness_index.json")
 
@@ -88,6 +90,9 @@ def main() -> None:
     with open(PUBLIC_META, "w", encoding="utf-8") as f:
         json.dump(meta, f, ensure_ascii=False, indent=2)
 
+    if os.path.exists(ROOT_CHANGES_JSON):
+        shutil.copyfile(ROOT_CHANGES_JSON, PUBLIC_CHANGES_JSON)
+
     # Build and publish enrichment/outlier aggregates used by /outliers
     try:
         # When invoked as: python scripts/publish_public_assets.py
@@ -108,6 +113,8 @@ def main() -> None:
     if os.path.exists(ROOT_BIO_CSV):
         print(f"Wrote: {PUBLIC_BIO_CSV}")
     print(f"Wrote: {PUBLIC_META}")
+    if os.path.exists(ROOT_CHANGES_JSON):
+        print(f"Wrote: {PUBLIC_CHANGES_JSON}")
 
 
 if __name__ == "__main__":

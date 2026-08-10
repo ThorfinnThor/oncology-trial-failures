@@ -18,12 +18,73 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 from scripts.fetch_ctgov_oncology_failures import classify_why_stopped
+from scripts.ingest_changes import build_ingest_change_report
 
 GOLDEN_PATH = "tests/golden_why_stopped.csv"
 
 
+def test_ingest_changes(failures: List[str]) -> None:
+    previous = [
+        {
+            "nct_id": "NCT00000001",
+            "overall_status": "SUSPENDED",
+            "classification_reason": "OPERATIONAL",
+            "last_update_post_date": "2026-07-01",
+        },
+        {
+            "nct_id": "NCT00000002",
+            "overall_status": "TERMINATED",
+            "classification_reason": "SAFETY",
+            "last_update_post_date": "2026-07-01",
+        },
+        {
+            "nct_id": "NCT00000003",
+            "overall_status": "WITHDRAWN",
+            "classification_reason": "OTHER/UNKNOWN",
+            "last_update_post_date": "2026-07-01",
+        },
+    ]
+    current = [
+        {
+            "nct_id": "NCT00000001",
+            "overall_status": "TERMINATED",
+            "classification_reason": "EFFICACY/FUTILITY",
+            "last_update_post_date": "2026-08-01",
+        },
+        {
+            "nct_id": "NCT00000002",
+            "overall_status": "TERMINATED",
+            "classification_reason": "SAFETY",
+            "last_update_post_date": "2026-07-01",
+        },
+        {
+            "nct_id": "NCT00000004",
+            "overall_status": "TERMINATED",
+            "classification_label": "BIOLOGICAL_FAILURE",
+            "classification_reason": "SAFETY",
+            "last_update_post_date": "2026-08-02",
+        },
+    ]
+    report = build_ingest_change_report(previous, current, "2026-08-06T00:00:00Z")
+    expected = {
+        "new_records": 1,
+        "new_scientific_signals": 1,
+        "updated_records": 1,
+        "status_changes": 1,
+        "classification_changes": 1,
+        "removed_records": 1,
+    }
+    if report["summary"] != expected:
+        failures.append(
+            "[Ingest snapshot] Expected "
+            f"{expected}, got {report['summary']}"
+        )
+
+
 def main() -> None:
     failures: List[str] = []
+
+    test_ingest_changes(failures)
 
     with open(GOLDEN_PATH, "r", encoding="utf-8", newline="") as f:
         reader = csv.DictReader(f)

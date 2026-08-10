@@ -70,6 +70,35 @@ function signalSlice(rows: TrialIndexRow[]) {
   };
 }
 
+function diseaseAreaSignalShares(rows: TrialIndexRow[], minimumRecords = 200) {
+  const grouped = new Map<string, TrialIndexRow[]>();
+  for (const row of rows) {
+    const label = row.disease_area || "Other";
+    const group = grouped.get(label) || [];
+    group.push(row);
+    grouped.set(label, group);
+  }
+
+  return [...grouped.entries()]
+    .filter(([, areaRows]) => areaRows.length >= minimumRecords)
+    .map(([label, areaRows]) => {
+      const scientificCount = areaRows.filter(isLikelyScientificFailure).length;
+      return {
+        label,
+        total: areaRows.length,
+        scientificCount,
+        scientificShare: pct(scientificCount, areaRows.length),
+        efficacyCount: areaRows.filter((row) => reasonBucket(row).toUpperCase() === "EFFICACY/FUTILITY").length,
+        safetyCount: areaRows.filter((row) => reasonBucket(row).toUpperCase() === "SAFETY").length,
+      };
+    })
+    .sort((a, b) => {
+      const shareA = a.total ? a.scientificCount / a.total : 0;
+      const shareB = b.total ? b.scientificCount / b.total : 0;
+      return shareB - shareA || b.total - a.total || a.label.localeCompare(b.label);
+    });
+}
+
 function latestUpdateSlice(rows: TrialIndexRow[]) {
   const dates = rows
     .map((row) => (row.last_update_post_date || "").slice(0, 10))
@@ -155,6 +184,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const endpointRows = rows.filter(isEndpointSignal);
   const enrollmentRows = rows.filter(isEnrollmentSignal);
   const operationalRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OPERATIONAL");
+  const withdrawnRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "WITHDRAWN");
+  const withdrawnScientificCount = withdrawnRows.filter(isLikelyScientificFailure).length;
   const latestUpdates = latestUpdateSlice(rows);
 
   return {
@@ -183,6 +214,13 @@ export async function buildInsightStats(): Promise<InsightStats> {
     endpointSignals: signalSlice(endpointRows),
     enrollmentSignals: signalSlice(enrollmentRows),
     operationalSignals: signalSlice(operationalRows),
+    withdrawnSignals: {
+      ...signalSlice(withdrawnRows),
+      scientificCount: withdrawnScientificCount,
+      scientificShare: pct(withdrawnScientificCount, withdrawnRows.length),
+      buckets: countBy(withdrawnRows, (row) => reasonBucket(row).toUpperCase()),
+    },
+    diseaseAreaSignalShares: diseaseAreaSignalShares(rows),
     latestUpdates,
   };
 }

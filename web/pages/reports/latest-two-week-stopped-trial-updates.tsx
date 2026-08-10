@@ -4,7 +4,13 @@ import type { GetStaticProps } from "next";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import { buildInsightStats } from "@/lib/insightStats";
+import {
+  loadIngestChangesServer,
+  type IngestChangeRecord,
+  type IngestChangeReport,
+} from "@/lib/ingestChanges";
 import type { InsightStats } from "@/lib/insights";
+import { trialPath } from "@/lib/seoUrls";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const PATH = "/reports/latest-two-week-stopped-trial-updates";
@@ -13,6 +19,7 @@ const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 type ReportProps = {
   report: InsightStats["latestUpdates"];
+  changes: IngestChangeReport | null;
 };
 
 function number(value: number): string {
@@ -35,21 +42,41 @@ function sortedEntries(values: Record<string, number>) {
 }
 
 function reasonClass(bucket: string): string {
-  return bucket.toUpperCase() === "SAFETY" ? "reportReason reportReasonSafety" : "reportReason reportReasonEfficacy";
+  const normalized = bucket.toUpperCase();
+  if (normalized === "SAFETY") return "reportReason reportReasonSafety";
+  if (normalized === "EFFICACY/FUTILITY") return "reportReason reportReasonEfficacy";
+  return "reportReason reportReasonNeutral";
+}
+
+function changeRecordHref(record: IngestChangeRecord): string {
+  return trialPath({
+    nct_id: record.nct_id,
+    brief_title: record.brief_title,
+    condition_first: record.conditions,
+    intervention_first: record.intervention_names,
+  });
 }
 
 export const getStaticProps: GetStaticProps<ReportProps> = async () => {
-  const stats = await buildInsightStats();
+  const [stats, changes] = await Promise.all([buildInsightStats(), loadIngestChangesServer()]);
   return {
-    props: { report: stats.latestUpdates },
+    props: { report: stats.latestUpdates, changes },
   };
 };
 
-export default function LatestTwoWeekReport({ report }: ReportProps) {
+export default function LatestTwoWeekReport({ report, changes }: ReportProps) {
   const title = `Latest stopped clinical trial updates: ${report.startDate} to ${report.endDate}`;
   const description = `A source-linked report covering ${number(report.total)} stopped clinical trial records updated from ${report.startDate} to ${report.endDate}. Automatically recalculated from the latest ingest.`;
   const scientificShare = report.total ? `${((report.scientificCount / report.total) * 100).toFixed(1)}%` : "0.0%";
   const exploreHref = `/explore?date_from=${encodeURIComponent(report.startDate)}&date_to=${encodeURIComponent(report.endDate)}&sort=date_desc`;
+  const hasSnapshot = Boolean(changes?.has_previous_snapshot);
+  const notableNewRecords = [...(changes?.new_records || [])]
+    .sort((a, b) => {
+      const aScientific = ["EFFICACY/FUTILITY", "SAFETY"].includes(a.classification_reason) ? 1 : 0;
+      const bScientific = ["EFFICACY/FUTILITY", "SAFETY"].includes(b.classification_reason) ? 1 : 0;
+      return bScientific - aScientific || b.last_update_post_date.localeCompare(a.last_update_post_date);
+    })
+    .slice(0, 8);
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -122,17 +149,100 @@ export default function LatestTwoWeekReport({ report }: ReportProps) {
               </div>
 
               <aside className="reportDefinition" data-ai-summary="true">
-                <span>Important definition</span>
-                <p>
-                  These are recently <strong>updated</strong> stopped records. They are not necessarily newly created NCT IDs.
-                  A true new-record count requires comparison with the previous ingest snapshot.
-                </p>
+                <span>{hasSnapshot ? "Snapshot comparison active" : "Baseline being established"}</span>
+                {hasSnapshot ? (
+                  <p>
+                    New records are NCT IDs present in this stopped-trial ingest but absent from the immediately preceding snapshot.
+                    This means newly tracked here, not necessarily newly registered on ClinicalTrials.gov.
+                  </p>
+                ) : (
+                  <p>
+                    The next scheduled ingest will compare against the current repository snapshot. Until then, the report below
+                    transparently shows recently <strong>updated</strong> stopped records.
+                  </p>
+                )}
               </aside>
             </header>
 
+            <section className="reportSnapshot" aria-labelledby="snapshot-title">
+              <div className="reportSectionHeading">
+                <p className="facet-title">Ingest-to-ingest comparison</p>
+                <h2 id="snapshot-title">What changed in the latest dataset ingest</h2>
+                <p>
+                  This block is generated from an exact NCT-ID comparison with the previous stored snapshot. It separates newly
+                  tracked stopped trials from records whose registry data merely changed.
+                </p>
+              </div>
+
+              {hasSnapshot && changes ? (
+                <>
+                  <div className="reportMetrics reportSnapshotMetrics" aria-label="Latest ingest changes">
+                    <article>
+                      <span>New stopped records</span>
+                      <strong>{number(changes.summary.new_records)}</strong>
+                      <p>NCT IDs absent from the preceding stopped-trial snapshot.</p>
+                    </article>
+                    <article>
+                      <span>New scientific signals</span>
+                      <strong>{number(changes.summary.new_scientific_signals)}</strong>
+                      <p>New efficacy/futility or safety-classified records.</p>
+                    </article>
+                    <article>
+                      <span>Updated records</span>
+                      <strong>{number(changes.summary.updated_records)}</strong>
+                      <p>Existing NCT IDs with changed tracked source fields.</p>
+                    </article>
+                    <article>
+                      <span>Status changes</span>
+                      <strong>{number(changes.summary.status_changes)}</strong>
+                      <p>Existing records whose stopped status changed.</p>
+                    </article>
+                  </div>
+
+                  {notableNewRecords.length ? (
+                    <div className="reportRecordList reportNewRecordList">
+                      {notableNewRecords.map((record) => (
+                        <article className="reportRecord card" key={record.nct_id}>
+                          <div className="reportRecordTop">
+                            <Link href={changeRecordHref(record)} className="reportNct">{record.nct_id}</Link>
+                            <span className={reasonClass(record.classification_reason)}>
+                              {record.classification_reason || "OTHER/UNKNOWN"}
+                            </span>
+                          </div>
+                          <h3>{record.brief_title || record.nct_id}</h3>
+                          <dl>
+                            <div><dt>Sponsor</dt><dd>{record.lead_sponsor || "Unknown sponsor"}</dd></div>
+                            <div><dt>Phase</dt><dd>{record.phases || "Unknown"}</dd></div>
+                            <div><dt>Disease area</dt><dd>{record.disease_area || "Other"}</dd></div>
+                            <div><dt>Updated</dt><dd>{record.last_update_post_date || "Unknown"}</dd></div>
+                          </dl>
+                          <div className="reportReasonText">
+                            <span>Registry stop language</span>
+                            <p>{record.why_stopped || "No stop-reason text was supplied in the registry record."}</p>
+                          </div>
+                          <Link href={changeRecordHref(record)} className="reportRecordLink">
+                            Open source-linked trial detail →
+                          </Link>
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="reportEmpty card">
+                      No new stopped-trial NCT IDs were found in this ingest. Existing records may still have been updated.
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="reportEmpty card">
+                  No previous snapshot comparison is available yet. This is expected before the first ingest after deployment;
+                  the next automated run will populate this section without any manual editing.
+                </div>
+              )}
+            </section>
+
             <section className="reportMetrics" aria-label="Report summary">
               <article>
-                <span>Updated stopped records</span>
+                <span>14-day updated records</span>
                 <strong>{number(report.total)}</strong>
                 <p>Terminated, suspended, or withdrawn records in the window.</p>
               </article>
@@ -155,7 +265,7 @@ export default function LatestTwoWeekReport({ report }: ReportProps) {
 
             <section className="reportSection" aria-labelledby="notable-records-title">
               <div className="reportSectionHeading">
-                <p className="facet-title">Source-linked records</p>
+                <p className="facet-title">14-day update window</p>
                 <h2 id="notable-records-title">Notable efficacy and safety updates</h2>
                 <p>
                   These records are selected from the latest window because their stop language is classified as efficacy/futility or safety.
@@ -249,6 +359,7 @@ export default function LatestTwoWeekReport({ report }: ReportProps) {
         .reportPage .reportReason { display: inline-flex; border-radius: 999px; padding: 5px 9px; font-size: 11px; font-weight: 900; }
         .reportPage .reportReasonEfficacy { background: var(--reason-efficacy-bg); color: var(--reason-efficacy-text); }
         .reportPage .reportReasonSafety { background: var(--reason-safety-bg); color: var(--reason-safety-text); }
+        .reportPage .reportReasonNeutral { background: #eef2f7; color: #475569; }
         .reportPage .reportRecord h3 { margin: 13px 0 0; font-size: 18px; line-height: 1.3; }
         .reportPage .reportRecord dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; margin: 16px 0 0; }
         .reportPage .reportRecord dl div { min-width: 0; }
@@ -268,6 +379,10 @@ export default function LatestTwoWeekReport({ report }: ReportProps) {
         .reportPage .reportTables dd { font-weight: 900; font-variant-numeric: tabular-nums; }
         .reportPage .reportNote { margin-top: 16px; padding: 20px; }
         .reportPage .reportNote p { max-width: 900px; margin: 0; color: var(--text-muted); line-height: 1.68; }
+        .reportPage .reportSnapshot { margin-top: 32px; }
+        .reportPage .reportSnapshotMetrics { margin-top: 16px; }
+        .reportPage .reportNewRecordList { margin-top: 16px; }
+        .reportPage .reportEmpty { margin-top: 16px; padding: 18px; color: var(--text-muted); line-height: 1.6; }
         @media (max-width: 860px) {
           .reportPage .reportHero, .reportPage .reportMetrics, .reportPage .reportRecordList, .reportPage .reportTables { grid-template-columns: 1fr; }
           .reportPage .reportMetrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
