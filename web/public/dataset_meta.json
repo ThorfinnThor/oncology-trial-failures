@@ -1,35 +1,35 @@
 {
-  "version": "2026-07-31",
-  "generated_at_utc": "2026-08-03T10:13:41Z",
+  "version": "2026-08-07",
+  "generated_at_utc": "2026-08-10T08:11:41Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 23575,
-    "max_last_update_post_date": "2026-07-31"
+    "record_count": 23593,
+    "max_last_update_post_date": "2026-08-07"
   },
   "biological_failure": {
-    "record_count": 1819,
-    "max_last_update_post_date": "2026-07-31"
+    "record_count": 1818,
+    "max_last_update_post_date": "2026-08-06"
   },
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 7924
+      "count": 7932
     },
     {
       "area": "Other",
-      "count": 5781
+      "count": 5785
     },
     {
       "area": "Infectious Disease",
-      "count": 1704
+      "count": 1705
     },
     {
       "area": "Gastroenterology & Hepatology",
-      "count": 1527
+      "count": 1528
     },
     {
       "area": "Cardiovascular",
-      "count": 1292
+      "count": 1293
     },
     {
       "area": "Neurology",
@@ -37,11 +37,11 @@
     },
     {
       "area": "Endocrine & Metabolic",
-      "count": 799
+      "count": 800
     },
     {
       "area": "Immunology & Autoimmune",
-      "count": 668
+      "count": 669
     },
     {
       "area": "Respiratory",
