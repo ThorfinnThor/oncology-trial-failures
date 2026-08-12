@@ -99,6 +99,27 @@ function diseaseAreaSignalShares(rows: TrialIndexRow[], minimumRecords = 200) {
     });
 }
 
+function phaseSignalComparison(rows: TrialIndexRow[]) {
+  const phaseKeys = ["EARLY_PHASE1", "PHASE1", "PHASE2", "PHASE3", "PHASE4"];
+  return phaseKeys.map((key) => {
+    const phaseRows = rows.filter((row) => parsePhases(row.phases || "").includes(key));
+    const scientificCount = phaseRows.filter(isLikelyScientificFailure).length;
+    const buckets = countBy(phaseRows, (row) => reasonBucket(row).toUpperCase());
+    return {
+      key,
+      label: phaseLabel(key),
+      total: phaseRows.length,
+      scientificCount,
+      scientificShare: pct(scientificCount, phaseRows.length),
+      efficacyCount: buckets["EFFICACY/FUTILITY"] || 0,
+      safetyCount: buckets.SAFETY || 0,
+      operationalCount: buckets.OPERATIONAL || 0,
+      otherCount: buckets["OTHER/UNKNOWN"] || 0,
+      regulatoryCount: buckets.REGULATORY || 0,
+    };
+  });
+}
+
 function latestUpdateSlice(rows: TrialIndexRow[]) {
   const dates = rows
     .map((row) => (row.last_update_post_date || "").slice(0, 10))
@@ -221,6 +242,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
       buckets: countBy(withdrawnRows, (row) => reasonBucket(row).toUpperCase()),
     },
     diseaseAreaSignalShares: diseaseAreaSignalShares(rows),
+    phaseSignalComparison: phaseSignalComparison(rows),
     latestUpdates,
   };
 }

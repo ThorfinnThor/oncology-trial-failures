@@ -51,6 +51,18 @@ export type InsightStats = {
     efficacyCount: number;
     safetyCount: number;
   }>;
+  phaseSignalComparison: Array<{
+    key: string;
+    label: string;
+    total: number;
+    scientificCount: number;
+    scientificShare: string;
+    efficacyCount: number;
+    safetyCount: number;
+    operationalCount: number;
+    otherCount: number;
+    regulatoryCount: number;
+  }>;
   latestUpdates: {
     startDate: string;
     endDate: string;
@@ -120,6 +132,190 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "phase-3-clinical-trial-failure-signals",
+    title: "Phase III stopped trials carry the strongest biological-signal share",
+    metaDescription:
+      "A data-backed analysis of Phase III clinical trial failure signals, including efficacy, futility, safety, operational, and unclear stop reasons.",
+    eyebrow: "Phase III failure signals",
+    dek:
+      "Phase III has the highest biological-signal share among the major trial phases in the stopped-trial database. Most Phase III stops still require more careful interpretation.",
+    datePublished: "2026-08-12",
+    readingTime: "7 min read",
+    keyword: "Phase 3 clinical trial failures",
+    facts: [],
+    sections: [
+      {
+        heading: "The headline result",
+        body: [
+          "Phase III is where clinical development becomes expensive, confirmatory, and much more visible. In the current stopped-trial database, Phase III also has the highest share of records classified as likely biological failure signals among the major development phases.",
+          "That result is directionally plausible, but it needs careful wording. It does not mean that Phase III trials have a particular overall failure rate. The denominator here contains stopped trials only. It tells us how stop reasons are distributed inside that stopped-trial slice.",
+        ],
+      },
+      {
+        heading: "Why Phase III stop reasons matter",
+        body: [
+          "A Phase III program usually tests a more mature clinical hypothesis in a larger population, often against a comparator and with endpoints intended to support regulatory decisions. When such a trial stops for futility, insufficient efficacy, a missed endpoint, or safety, the signal can carry more development weight than a vague administrative stop.",
+          "That still does not make every Phase III termination a failed drug. Sponsor strategy, recruitment, funding, feasibility, changes in standard of care, and incomplete registry explanations remain part of the dataset. Status and reason must be separated before interpreting the program.",
+        ],
+      },
+      {
+        heading: "Efficacy is the larger scientific signal",
+        body: [
+          "Within stopped Phase III records, efficacy and futility signals appear more often than safety signals. That makes sense for a phase designed to test whether an intervention provides enough benefit in a defined population and endpoint framework.",
+          "The difference matters analytically. A futility or missed-efficacy signal raises questions about treatment effect, endpoint assumptions, comparator performance, or patient selection. A safety stop raises a different set of questions around toxicity, exposure, benefit-risk, and monitoring decisions.",
+        ],
+      },
+      {
+        heading: "Operational and unclear stops still dominate",
+        body: [
+          "Even in Phase III, likely biological signals are not the majority of stopped records. Operational and other/unknown reasons together account for most of the slice. That prevents a simple conversion from stopped status to failed intervention.",
+          "The other/unknown category is especially important. Registry explanations can be generic, short, or absent. A conservative database should preserve that uncertainty rather than manufacture a scientific explanation the source does not support.",
+        ],
+      },
+      {
+        heading: "How I would review a stopped Phase III trial",
+        body: [
+          "I would begin with the exact why-stopped language and then verify the registered primary endpoint, statistical design, interim-analysis plan, enrollment, and comparator. Next I would look for sponsor disclosures, publications, regulatory documents, and any timing mismatch between the public announcement and registry update.",
+          "For comparative work, I would keep disease area and modality constant. Comparing an oncology combination trial with an infectious-disease vaccine or cardiovascular outcomes study can hide more than it reveals. Phase alone is useful, but it is not enough context.",
+        ],
+      },
+      {
+        heading: "What this analysis cannot tell us",
+        body: [
+          "This dataset does not contain the full denominator of all Phase III trials that succeeded, completed normally, or remain ongoing. It therefore cannot estimate the probability that a Phase III trial will fail or establish the probability of technical and regulatory success.",
+          "The result is best treated as a composition analysis of stopped records. It helps identify where source language points toward efficacy or safety and where the available explanation remains operational or unclear.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/failures/phase-3",
+        label: "Open the Phase III failure hub",
+        text: "Browse stopped Phase III records with sponsors, disease areas, and source-linked stop reasons.",
+      },
+      {
+        href: "/explore?phase=PHASE3&bio=true",
+        label: "Explore Phase III biological signals",
+        text: "Filter the database to Phase III records classified as likely scientific failure signals.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review how efficacy, safety, operational, regulatory, and unclear signals are assigned.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do Phase III trials have the highest clinical failure rate?",
+        answer:
+          "This analysis cannot answer that question because it contains stopped trials only. It shows that Phase III has the highest biological-signal share within the stopped records of the major phases.",
+      },
+      {
+        question: "Are most stopped Phase III trials biological failures?",
+        answer:
+          "No. Operational and other or unknown stop reasons still make up most stopped Phase III records in the database.",
+      },
+      {
+        question: "Which biological signal is more common in stopped Phase III trials?",
+        answer:
+          "Efficacy and futility signals are more common than safety signals in the current stopped Phase III slice.",
+      },
+    ],
+  },
+  {
+    slug: "safety-vs-efficacy-signals-by-clinical-trial-phase",
+    title: "Safety dominates Phase I signals; efficacy dominates Phase II and III",
+    metaDescription:
+      "Compare safety and efficacy clinical trial failure signals across Phase I, Phase II, and Phase III stopped trial records.",
+    eyebrow: "Failure signals by phase",
+    dek:
+      "The composition of biological failure signals changes across development: safety is more common in Phase I, while efficacy and futility dominate in Phase II and III.",
+    datePublished: "2026-08-12",
+    readingTime: "7 min read",
+    keyword: "clinical trial failure signals by phase",
+    facts: [],
+    sections: [
+      {
+        heading: "The pattern across development",
+        body: [
+          "The biological failure signal is not the same at every stage of clinical development. In the current stopped-trial data, safety signals outnumber efficacy and futility signals in Phase I. The relationship reverses in Phase II and becomes wider in Phase III.",
+          "This is one of the clearest phase-level patterns in the database. It also matches the different questions the phases are designed to answer: early development emphasizes tolerability, exposure, and dose, while later development increasingly tests whether benefit is strong and reliable enough.",
+        ],
+      },
+      {
+        heading: "Why Phase I looks different",
+        body: [
+          "Phase I trials are commonly built around safety, tolerability, pharmacokinetics, dose escalation, and dose selection. A safety-led stop is therefore closer to the central purpose of the phase than it would be in many later-stage programs.",
+          "That does not mean every Phase I safety signal invalidates the mechanism. Toxicity can depend on dose, schedule, formulation, combination partner, route of administration, or patient population. The trial-level context still determines how broadly the result should be interpreted.",
+        ],
+      },
+      {
+        heading: "Why efficacy becomes more visible in Phase II",
+        body: [
+          "Phase II is often the point where a program must demonstrate enough activity to justify larger and more expensive studies. Futility analyses, weak treatment effects, insufficient responses, and endpoint problems therefore become more visible in the stop language.",
+          "The shift from safety to efficacy signals should not be read as proof that safety no longer matters. It shows that efficacy and futility become the more common classified biological reason within the stopped Phase II records.",
+        ],
+      },
+      {
+        heading: "The gap widens in Phase III",
+        body: [
+          "By Phase III, efficacy and futility signals substantially outnumber safety signals in the stopped-trial slice. Confirmatory designs are intended to establish clinically and statistically meaningful benefit, so an efficacy-led stop can become a decisive program signal.",
+          "Safety remains material, particularly when larger populations or longer exposure reveal risks that were not clear earlier. But in this database, the balance of classified biological stops moves increasingly toward efficacy as development advances.",
+        ],
+      },
+      {
+        heading: "Why absolute counts need denominators",
+        body: [
+          "There are more records in some phases than others, and trials can carry more than one phase label. Raw counts therefore need both a phase denominator and a clear definition of the signal being counted.",
+          "The tables below show counts and signal shares within stopped records. They do not represent the failure probability of all trials entering each phase, and they should not be compared directly with industry success-rate studies that use different cohorts and denominators.",
+        ],
+      },
+      {
+        heading: "How I would use the phase pattern",
+        body: [
+          "For early-stage research, I would inspect safety language, dose-limiting toxicity, exposure, and whether the issue appears molecule-specific or mechanism-related. For Phase II and III, I would begin with endpoint design, futility rules, patient selection, comparator performance, and whether the effect size was clinically meaningful.",
+          "The phase pattern is a useful prior for where to look, not a substitute for source review. The decisive evidence remains in the trial record, protocol, results, sponsor communication, publication, and regulatory history.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/insights/efficacy-vs-safety-clinical-trial-failure-signals",
+        label: "Efficacy versus safety signals",
+        text: "Read the broader comparison of the two biological stop-reason categories.",
+      },
+      {
+        href: "/explore?bio=true",
+        label: "Explore biological failure signals",
+        text: "Filter likely scientific signals by phase, disease area, sponsor, and status.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review the definitions and limitations behind the phase-level signal counts.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Which failure signal is more common in stopped Phase I trials?",
+        answer:
+          "Safety signals are more common than efficacy or futility signals in the current stopped Phase I records.",
+      },
+      {
+        question: "When do efficacy signals become more common than safety signals?",
+        answer:
+          "In this dataset, efficacy and futility signals outnumber safety signals in Phase II and Phase III stopped records.",
+      },
+      {
+        question: "Are these overall clinical trial failure rates by phase?",
+        answer:
+          "No. They describe the composition of stopped records only and do not include every successful, completed, or ongoing trial entering each phase.",
+      },
+    ],
+  },
   {
     slug: "oncology-volume-vs-biological-failure-signal-share",
     title: "Oncology has the most stopped trials, but not the highest biological-signal share",
@@ -1538,6 +1734,121 @@ function hydrateDiseaseAreaShareArticle(article: InsightArticle, stats: InsightS
   };
 }
 
+function hydratePhaseThreeArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const phaseThree = stats.phaseSignalComparison.find((phase) => phase.key === "PHASE3");
+  const rankedMajorPhases = stats.phaseSignalComparison
+    .filter((phase) => ["PHASE1", "PHASE2", "PHASE3", "PHASE4"].includes(phase.key))
+    .sort((a, b) => {
+      const shareA = a.total ? a.scientificCount / a.total : 0;
+      const shareB = b.total ? b.scientificCount / b.total : 0;
+      return shareB - shareA;
+    });
+
+  if (!phaseThree) return article;
+
+  return {
+    ...article,
+    metaDescription: `${n(phaseThree.scientificCount)} of ${n(phaseThree.total)} stopped Phase III trial records (${phaseThree.scientificShare}) carry efficacy/futility or safety signals in the current database.`,
+    dek: `${n(phaseThree.scientificCount)} of ${n(phaseThree.total)} stopped Phase III records (${phaseThree.scientificShare}) carry efficacy/futility or safety signals, the highest share among the major development phases.`,
+    facts: [
+      `The current database contains ${n(phaseThree.total)} stopped records that include a Phase III label.`,
+      `${n(phaseThree.scientificCount)} Phase III records, or ${phaseThree.scientificShare}, are classified as likely biological failure signals.`,
+      `Efficacy/futility accounts for ${n(phaseThree.efficacyCount)} Phase III records, compared with ${n(phaseThree.safetyCount)} safety records.`,
+      `Operational reasons account for ${n(phaseThree.operationalCount)} stopped Phase III records, while ${n(phaseThree.otherCount)} are other or unknown.`,
+      "The denominator contains stopped Phase III records only, so this is not an overall Phase III failure rate.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading !== "The headline result") return section;
+      return {
+        ...section,
+        body: [
+          `Phase III is where clinical development becomes expensive, confirmatory, and much more visible. In the current stopped-trial database, ${n(phaseThree.scientificCount)} of ${n(phaseThree.total)} Phase III records (${phaseThree.scientificShare}) are classified as likely biological failure signals. That is the highest share among the major development phases represented here.`,
+          "The result is directionally useful, but it needs careful wording. It does not mean that Phase III trials have that overall failure rate. The denominator contains stopped trials only. It tells us how stop reasons are distributed inside the stopped Phase III slice.",
+        ],
+      };
+    }),
+    tables: [
+      {
+        heading: "Stopped Phase III reason mix",
+        columns: ["Reason classification", "Phase III records"],
+        rows: [
+          ["Operational", n(phaseThree.operationalCount)],
+          ["Other/unknown", n(phaseThree.otherCount)],
+          ["Efficacy/futility", n(phaseThree.efficacyCount)],
+          ["Safety", n(phaseThree.safetyCount)],
+          ["Regulatory", n(phaseThree.regulatoryCount)],
+        ],
+      },
+      {
+        heading: "Biological-signal share across major phases",
+        columns: ["Development phase", "Signals / stopped records"],
+        rows: rankedMajorPhases.map((phase): [string, string] => [
+          phase.label,
+          `${phase.scientificShare} (${n(phase.scientificCount)} / ${n(phase.total)})`,
+        ]),
+      },
+    ],
+  };
+}
+
+function hydratePhaseSignalShiftArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const phases = stats.phaseSignalComparison.filter((phase) =>
+    ["PHASE1", "PHASE2", "PHASE3"].includes(phase.key)
+  );
+  const phaseOne = phases.find((phase) => phase.key === "PHASE1");
+  const phaseTwo = phases.find((phase) => phase.key === "PHASE2");
+  const phaseThree = phases.find((phase) => phase.key === "PHASE3");
+  if (!phaseOne || !phaseTwo || !phaseThree) return article;
+
+  const phaseOneSafetyShare = phaseOne.scientificCount
+    ? `${((phaseOne.safetyCount / phaseOne.scientificCount) * 100).toFixed(1)}%`
+    : "0.0%";
+  const phaseThreeEfficacyShare = phaseThree.scientificCount
+    ? `${((phaseThree.efficacyCount / phaseThree.scientificCount) * 100).toFixed(1)}%`
+    : "0.0%";
+
+  return {
+    ...article,
+    metaDescription: `Safety leads efficacy ${n(phaseOne.safetyCount)} to ${n(phaseOne.efficacyCount)} in stopped Phase I records, while efficacy leads in Phase II and Phase III.`,
+    dek: `Safety accounts for ${phaseOneSafetyShare} of Phase I biological signals. In Phase III, efficacy/futility accounts for ${phaseThreeEfficacyShare}. The composition changes as development advances.`,
+    facts: [
+      `Phase I has ${n(phaseOne.safetyCount)} safety signals and ${n(phaseOne.efficacyCount)} efficacy/futility signals among stopped records.`,
+      `${phaseOneSafetyShare} of classified Phase I biological signals are safety-related.`,
+      `Phase II has ${n(phaseTwo.efficacyCount)} efficacy/futility signals and ${n(phaseTwo.safetyCount)} safety signals.`,
+      `Phase III has ${n(phaseThree.efficacyCount)} efficacy/futility signals and ${n(phaseThree.safetyCount)} safety signals.`,
+      "These are signal counts inside stopped records, not overall failure probabilities for trials entering each phase.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading !== "The pattern across development") return section;
+      return {
+        ...section,
+        body: [
+          `The biological failure signal is not the same at every stage of clinical development. In Phase I stopped records, safety signals outnumber efficacy/futility ${n(phaseOne.safetyCount)} to ${n(phaseOne.efficacyCount)}. The relationship reverses in Phase II (${n(phaseTwo.efficacyCount)} efficacy/futility versus ${n(phaseTwo.safetyCount)} safety) and becomes wider in Phase III (${n(phaseThree.efficacyCount)} versus ${n(phaseThree.safetyCount)}).`,
+          "This is one of the clearest phase-level patterns in the database. It also matches the different questions the phases are designed to answer: early development emphasizes tolerability, exposure, and dose, while later development increasingly tests whether benefit is strong and reliable enough.",
+        ],
+      };
+    }),
+    tables: [
+      {
+        heading: "Safety versus efficacy signals by phase",
+        columns: ["Development phase", "Efficacy / safety"],
+        rows: phases.map((phase): [string, string] => [
+          phase.label,
+          `${n(phase.efficacyCount)} / ${n(phase.safetyCount)}`,
+        ]),
+      },
+      {
+        heading: "Biological signals within stopped records",
+        columns: ["Development phase", "Signals / stopped records"],
+        rows: phases.map((phase): [string, string] => [
+          phase.label,
+          `${phase.scientificShare} (${n(phase.scientificCount)} / ${n(phase.total)})`,
+        ]),
+      },
+    ],
+  };
+}
+
 function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const withdrawn = stats.withdrawnSignals;
   const operational = withdrawn.buckets.OPERATIONAL || 0;
@@ -1596,6 +1907,12 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "phase-3-clinical-trial-failure-signals") {
+    return hydratePhaseThreeArticle(article, stats);
+  }
+  if (article.slug === "safety-vs-efficacy-signals-by-clinical-trial-phase") {
+    return hydratePhaseSignalShiftArticle(article, stats);
+  }
   if (article.slug === "oncology-volume-vs-biological-failure-signal-share") {
     return hydrateDiseaseAreaShareArticle(article, stats);
   }
