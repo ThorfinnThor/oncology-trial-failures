@@ -18,6 +18,10 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     `- Contact and corrections: ${INSIGHTS_BASE_URL}/contact\n` +
     `- Privacy Policy: ${INSIGHTS_BASE_URL}/privacy\n` +
     `- Failure hubs: ${INSIGHTS_BASE_URL}/failures\n` +
+    `- Clinical trial failures by phase: ${INSIGHTS_BASE_URL}/clinical-trial-failures-by-phase\n` +
+    `- Clinical trial failures by disease area: ${INSIGHTS_BASE_URL}/clinical-trial-failures-by-disease-area\n` +
+    `- Terminated vs withdrawn vs suspended trials: ${INSIGHTS_BASE_URL}/terminated-vs-withdrawn-vs-suspended-clinical-trials\n` +
+    `- Clinical trial stop reasons: ${INSIGHTS_BASE_URL}/clinical-trial-stop-reasons\n` +
     `- Sponsor hubs: ${INSIGHTS_BASE_URL}/sponsors\n` +
     `- Research insights: ${INSIGHTS_BASE_URL}/insights\n\n` +
     `- Latest two-week stopped trial report: ${INSIGHTS_BASE_URL}/reports/latest-two-week-stopped-trial-updates\n\n` +

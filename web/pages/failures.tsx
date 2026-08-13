@@ -14,6 +14,29 @@ const DESCRIPTION =
   "Browse indexable clinical trial failure hubs by disease area, phase, and stop reason, with grouped ClinicalTrials.gov-derived stopped trial records.";
 const CANONICAL_URL = `${SITE_URL}/failures`;
 
+const REFERENCE_PAGES = [
+  {
+    href: "/clinical-trial-failures-by-phase",
+    label: "Failures by clinical phase",
+    text: "Compare Phase I-IV stopped-trial volume and biological signal share.",
+  },
+  {
+    href: "/clinical-trial-failures-by-disease-area",
+    label: "Failures by disease area",
+    text: "Compare oncology, neurology, cardiovascular, infectious disease, and other areas.",
+  },
+  {
+    href: "/terminated-vs-withdrawn-vs-suspended-clinical-trials",
+    label: "Stopped-study statuses",
+    text: "Understand terminated, withdrawn, and suspended records side by side.",
+  },
+  {
+    href: "/clinical-trial-stop-reasons",
+    label: "Clinical trial stop reasons",
+    text: "Compare efficacy, safety, operational, regulatory, and unclear classifications.",
+  },
+];
+
 function kindLabel(kind: string): string {
   if (kind === "area") return "Disease area";
   if (kind === "phase") return "Trial phase";
@@ -54,6 +77,22 @@ export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
               Browse grouped pages for stopped clinical trials by disease area, phase, and stop-reason signal.
               These pages summarize slices of the dataset and link to crawlable trial records.
             </p>
+            <div className="referenceDirectory" aria-labelledby="reference-directory-title">
+              <div className="referenceDirectoryIntro">
+                <span>Data reference pages</span>
+                <h2 id="reference-directory-title">Compare the dataset before opening individual records</h2>
+                <p>These evergreen tables answer broader research questions and update with each published ingest.</p>
+              </div>
+              <div className="referenceDirectoryGrid">
+                {REFERENCE_PAGES.map((item) => (
+                  <Link href={item.href} key={item.href}>
+                    <strong>{item.label}</strong>
+                    <span>{item.text}</span>
+                    <em>Open comparison →</em>
+                  </Link>
+                ))}
+              </div>
+            </div>
             <div className="hubDirGrid">
               {hubs.map((hub) => (
                 <Link className="hubDirCard" href={hub.path} key={hub.path}>
@@ -81,6 +120,65 @@ export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
         .failureDirectoryPage .directoryIntro {
           max-width: 960px;
           line-height: 1.65;
+        }
+        .failureDirectoryPage .referenceDirectory {
+          display: grid;
+          grid-template-columns: minmax(220px, 0.62fr) minmax(0, 1.38fr);
+          gap: 18px;
+          margin-top: 20px;
+          border-block: 1px solid var(--border);
+          padding: 20px 0;
+        }
+        .failureDirectoryPage .referenceDirectoryIntro span {
+          color: var(--text-muted);
+          font-size: 11px;
+          font-weight: 900;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .failureDirectoryPage .referenceDirectoryIntro h2 {
+          margin: 7px 0 0;
+          font-size: 20px;
+          line-height: 1.22;
+        }
+        .failureDirectoryPage .referenceDirectoryIntro p {
+          margin: 8px 0 0;
+          color: var(--text-muted);
+          font-size: 13px;
+          line-height: 1.5;
+        }
+        .failureDirectoryPage .referenceDirectoryGrid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
+        }
+        .failureDirectoryPage .referenceDirectoryGrid a {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 13px;
+          color: var(--text);
+          text-decoration: none;
+        }
+        .failureDirectoryPage .referenceDirectoryGrid a:hover {
+          border-color: rgba(79, 70, 229, 0.35);
+          background: var(--surface-2);
+        }
+        .failureDirectoryPage .referenceDirectoryGrid span {
+          margin-top: 6px;
+          color: var(--text-muted);
+          font-size: 12px;
+          line-height: 1.4;
+        }
+        .failureDirectoryPage .referenceDirectoryGrid em {
+          margin-top: auto;
+          padding-top: 9px;
+          color: var(--accent);
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 850;
         }
         .failureDirectoryPage .hubDirGrid {
           display: grid;
@@ -135,11 +233,19 @@ export default function FailureDirectoryPage({ hubs }: FailureDirectoryProps) {
           color: var(--text);
         }
         @media (max-width: 900px) {
+          .failureDirectoryPage .referenceDirectory {
+            grid-template-columns: 1fr;
+          }
           .failureDirectoryPage .hubDirGrid {
             grid-template-columns: 1fr;
           }
           .failureDirectoryPage h1 {
             font-size: 26px;
+          }
+        }
+        @media (max-width: 620px) {
+          .failureDirectoryPage .referenceDirectoryGrid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
