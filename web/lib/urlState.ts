@@ -25,7 +25,7 @@ export function decodeState(asPath: string): UrlState {
   const phase = splitCsv(u.searchParams.get("phase"));
   const area = splitCsv(u.searchParams.get("area"));
   const bucket = splitCsv(u.searchParams.get("bucket"));
-  const compare = splitCsv(u.searchParams.get("compare"));
+  const compare = splitCsv(u.searchParams.get("compare"))?.slice(0, 5);
 
   // Additional facets used by Explore (and linked from other pages)
   const sponsor = splitCsv(u.searchParams.get("sponsor"));

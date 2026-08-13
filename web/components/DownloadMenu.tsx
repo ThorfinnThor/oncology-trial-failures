@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { downloadTrials, DownloadFormat, DownloadScope } from "@/lib/download";
+import { useDialogBehavior } from "@/hooks/useDialogBehavior";
 
 export default function DownloadMenu({
   meta,
@@ -21,6 +22,7 @@ export default function DownloadMenu({
   const [open, setOpen] = useState(false);
   const [scope, setScope] = useState<DownloadScope>("filtered");
   const [format, setFormat] = useState<DownloadFormat>("csv");
+  const dialogRef = useDialogBehavior(open, () => setOpen(false));
 
   // Portal target (client-only)
   const [portalEl, setPortalEl] = useState<HTMLElement | null>(null);
@@ -40,30 +42,6 @@ export default function DownloadMenu({
     await downloadTrials(meta, state, rows, scope, format);
     setOpen(false);
   }
-
-  // Lock background scroll (iOS-friendly)
-  useEffect(() => {
-    if (!open) return;
-
-    const prevOverflow = document.body.style.overflow;
-    const prevPos = document.body.style.position;
-    const prevTop = document.body.style.top;
-    const prevWidth = document.body.style.width;
-
-    const scrollY = window.scrollY;
-    document.body.style.overflow = "hidden";
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
-
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      document.body.style.position = prevPos;
-      document.body.style.top = prevTop;
-      document.body.style.width = prevWidth;
-      window.scrollTo(0, scrollY);
-    };
-  }, [open]);
 
   const OptionRow = ({
     checked,
@@ -100,7 +78,14 @@ export default function DownloadMenu({
   );
 
   const drawer = (
-    <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Download trials">
+    <div
+      ref={dialogRef}
+      className="drawer-wrap"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Download trials"
+      tabIndex={-1}
+    >
       <div className="overlay" onClick={() => setOpen(false)} />
 
       <div className="drawer-panel">

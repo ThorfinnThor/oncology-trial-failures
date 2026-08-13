@@ -56,7 +56,7 @@ export function CookieBanner() {
     };
   }, [open]);
 
-  if (!mounted || !open) return null;
+  if (!mounted) return null;
 
   const modal = (
     <div className="cookie-consent-wrap" role="dialog" aria-modal="true" aria-label="Cookies and privacy">
@@ -119,5 +119,16 @@ export function CookieBanner() {
     </div>
   );
 
-  return createPortal(modal, document.body);
+  if (open) return createPortal(modal, document.body);
+
+  return (
+    <button
+      type="button"
+      className="privacyChoicesButton"
+      onClick={() => setOpen(true)}
+      aria-label="Open privacy and cookie choices"
+    >
+      Privacy choices
+    </button>
+  );
 }

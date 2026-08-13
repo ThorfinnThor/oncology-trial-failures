@@ -1,0 +1,13 @@
+Clinical Trial Failures v67 - upload instructions
+
+This package contains only the 13 changed or new files, so it stays below GitHub's 100-file browser-upload limit.
+
+1. Extract clinicaltrialfailures-functional-fixes-v67-upload.zip.
+2. Open the extracted upload-functional-fixes-v67 folder.
+3. Drag the web folder into the root of the GitHub repository.
+4. GitHub should show files under web/components, web/hooks, web/lib, web/pages, and web/styles.
+5. Enter this commit message: Fix functional QA issues (v67)
+6. Click Commit changes.
+7. Wait for the Vercel deployment to finish.
+
+Important: keep the folder structure exactly as supplied. Existing files with the same names must be replaced.

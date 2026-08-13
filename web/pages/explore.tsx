@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, SortKey, UrlState } from "@/lib/types";
@@ -19,6 +19,7 @@ import CompareModal from "@/components/CompareModal";
 import DownloadMenu from "@/components/DownloadMenu";
 import { Facet, ScientificFailureToggle } from "@/components/FacetRail";
 import PrimaryNav from "@/components/PrimaryNav";
+import { useDialogBehavior } from "@/hooks/useDialogBehavior";
 
 const TITLE = "Explore clinical trial failures | Search stopped clinical trials";
 const DESCRIPTION =
@@ -39,8 +40,16 @@ type ExplorePageProps = {
 
 export default function ExplorePage({ initialMeta, initialRows, initialTotal }: ExplorePageProps) {
   const router = useRouter();
+  const [urlStateReady, setUrlStateReady] = useState(false);
 
-  const state: UrlState = useMemo(() => decodeState(router.asPath), [router.asPath]);
+  useEffect(() => {
+    if (router.isReady) setUrlStateReady(true);
+  }, [router.isReady]);
+
+  const state: UrlState = useMemo(
+    () => (urlStateReady ? decodeState(router.asPath) : { sort: "date_desc" }),
+    [router.asPath, urlStateReady]
+  );
 
   const [meta, setMeta] = useState<DatasetMeta | null>(initialMeta);
   const [allRows, setAllRows] = useState<TrialIndexRow[]>(initialRows);
@@ -87,6 +96,23 @@ export default function ExplorePage({ initialMeta, initialRows, initialTotal }: 
 
   const [compareOpen, setCompareOpen] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const didHandleInitialCompare = useRef(false);
+  const filterDialogRef = useDialogBehavior(filtersOpen, () => setFiltersOpen(false));
+
+  useEffect(() => {
+    if (!urlStateReady || didHandleInitialCompare.current) return;
+    didHandleInitialCompare.current = true;
+    const initialCompare = decodeState(router.asPath).compare || [];
+    const rawCompare = new URL(router.asPath, "http://localhost").searchParams
+      .get("compare")
+      ?.split(",")
+      .filter(Boolean) || [];
+    if (rawCompare.length > 5) {
+      const normalized = decodeState(router.asPath);
+      void router.replace(`/explore${encodeState(normalized)}`, undefined, { shallow: true });
+    }
+    if (initialCompare.length >= 2) setCompareOpen(true);
+  }, [urlStateReady]);
 
   function updateState(patch: Partial<UrlState>) {
     const base: UrlState = decodeState(router.asPath);
@@ -226,6 +252,12 @@ export default function ExplorePage({ initialMeta, initialRows, initialTotal }: 
                 Compare ({compareCount})
               </button>
 
+              {compareCount === 5 ? (
+                <span className="muted" role="status" style={{ fontSize: 12, fontWeight: 750 }}>
+                  Maximum 5 selected
+                </span>
+              ) : null}
+
               <DownloadMenu meta={meta} state={state} allRows={allRows} filteredRows={rows} selectedRows={compareRows} />
 
               <button className="btn" onClick={resetAll} type="button">
@@ -288,25 +320,39 @@ export default function ExplorePage({ initialMeta, initialRows, initialTotal }: 
                 {err && <div className="error">{err}</div>}
                 {loading && <div className="muted">Loading dataset…</div>}
 
-                <div className="table-wrap desktop-only">
-                  <ResultsGrid
-                    rows={rows}
-                    selectedIds={state.compare || []}
-                    onToggleSelect={toggleCompare}
-                    onOpenPanel={(id) => updateState({ trial: id })}
-                    fromHref={fromHref}
-                  />
-                </div>
+                {!loading && !err && rows.length === 0 ? (
+                  <div className="card p-4" role="status" style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 18, fontWeight: 900 }}>No matching trials</div>
+                    <p className="muted" style={{ margin: "8px auto 14px", maxWidth: 520, lineHeight: 1.5 }}>
+                      Try a broader search or remove one or more filters.
+                    </p>
+                    <button className="btn" type="button" onClick={resetAll}>
+                      Clear search and filters
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className="table-wrap desktop-only">
+                      <ResultsGrid
+                        rows={rows}
+                        selectedIds={state.compare || []}
+                        onToggleSelect={toggleCompare}
+                        onOpenPanel={(id) => updateState({ trial: id })}
+                        fromHref={fromHref}
+                      />
+                    </div>
 
-                <div className="mobile-only">
-                  <ResultsList
-                    rows={rows}
-                    selectedIds={state.compare || []}
-                    onToggleSelect={toggleCompare}
-                    onOpenPanel={(id) => updateState({ trial: id })}
-                    fromHref={fromHref}
-                  />
-                </div>
+                    <div className="mobile-only">
+                      <ResultsList
+                        rows={rows}
+                        selectedIds={state.compare || []}
+                        onToggleSelect={toggleCompare}
+                        onOpenPanel={(id) => updateState({ trial: id })}
+                        fromHref={fromHref}
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </section>
           </div>
@@ -314,7 +360,14 @@ export default function ExplorePage({ initialMeta, initialRows, initialTotal }: 
 
         {/* Mobile filters drawer (same content as left rail) */}
         {filtersOpen && (
-          <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Filters">
+          <div
+            ref={filterDialogRef}
+            className="drawer-wrap"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Filters"
+            tabIndex={-1}
+          >
             <div className="overlay" onClick={() => setFiltersOpen(false)} />
             <div className="drawer-panel drawer-panel-left">
               <div className="drawer-hd">

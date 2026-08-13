@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { loadDetail } from "@/lib/data";
 import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { useDialogBehavior } from "@/hooks/useDialogBehavior";
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -28,6 +29,7 @@ export default function DetailsDrawer({
   meta: DatasetMeta | null;
   fromHref: string;
 }) {
+  const dialogRef = useDialogBehavior(open, onClose);
   const [detail, setDetail] = useState<TrialDetail | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
@@ -64,7 +66,14 @@ export default function DetailsDrawer({
   if (!open) return null;
 
   return (
-    <div className="drawer-wrap" role="dialog" aria-modal="true" aria-label="Trial details">
+    <div
+      ref={dialogRef}
+      className="drawer-wrap"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Trial details"
+      tabIndex={-1}
+    >
       <div className="overlay" onClick={onClose} />
 
       <div className="drawer-panel">

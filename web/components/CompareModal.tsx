@@ -4,6 +4,7 @@ import Link from "next/link";
 import { TrialIndexRow } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { trialPath } from "@/lib/seoUrls";
+import { useDialogBehavior } from "@/hooks/useDialogBehavior";
 
 type Props = {
   open: boolean;
@@ -80,6 +81,7 @@ function fieldRow(label: string, renderCells: React.ReactNode[]) {
 }
 
 export default function CompareModal({ open, onClose, trials, onRemove }: Props) {
+  const dialogRef = useDialogBehavior(open, onClose);
   if (!open) return null;
 
   const cols = trials.slice(0, 5);
@@ -112,7 +114,14 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
   ));
 
   return (
-    <div className="modal-wrap" role="dialog" aria-modal="true" aria-label="Compare selected trials">
+    <div
+      ref={dialogRef}
+      className="modal-wrap"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Compare selected trials"
+      tabIndex={-1}
+    >
       <div className="overlay" onClick={onClose} />
 
       <div className="modal">

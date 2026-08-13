@@ -212,9 +212,7 @@ code,kbd,pre,samp{font-family:var(--font-mono)}
   border-radius:12px;
   box-shadow:0 18px 46px rgba(15,23,42,.14);
 }
-.guidesMenuOpen .guidesPanel,
-.guidesMenu:hover .guidesPanel,
-.guidesMenu:focus-within .guidesPanel{display:grid}
+.guidesMenuOpen .guidesPanel{display:grid}
 .guidesPanelLink{
   display:block;
   padding:9px 10px;
@@ -230,6 +228,28 @@ code,kbd,pre,samp{font-family:var(--font-mono)}
   background:rgba(15,23,42,.04);
   text-decoration:underline;
   text-underline-offset:.18em;
+}
+
+.privacyChoicesButton{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  z-index:70;
+  min-height:36px;
+  padding:8px 12px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--surface);
+  color:var(--text-muted);
+  box-shadow:0 8px 24px rgba(15,23,42,.10);
+  font:inherit;
+  font-size:12px;
+  font-weight:750;
+  cursor:pointer;
+}
+.privacyChoicesButton:hover,.privacyChoicesButton:focus-visible{
+  color:var(--text);
+  border-color:rgba(79,70,229,.35);
 }
 .primaryNavWrap{display:flex;align-items:center;min-width:0}
 .mobileNavToggle{display:none}

@@ -2,7 +2,7 @@
 
 import Head from "next/head";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 
 import { decodeState } from "@/lib/urlState";
@@ -17,10 +17,24 @@ const CANONICAL_URL = `${SITE_URL}/compare`;
 
 export default function ComparePage() {
   const router = useRouter();
+  const [urlStateReady, setUrlStateReady] = useState(false);
+
+  useEffect(() => {
+    if (router.isReady) setUrlStateReady(true);
+  }, [router.isReady]);
 
   // decodeState expects an asPath (e.g. "/compare?compare=A,B")
-  const state: UrlState = useMemo(() => decodeState(router.asPath), [router.asPath]);
+  const state: UrlState = useMemo(
+    () => (urlStateReady ? decodeState(router.asPath) : {}),
+    [router.asPath, urlStateReady]
+  );
   const ids: string[] = (state.compare ?? []).slice(0, 5);
+  const compareQuery = ids.join(",");
+
+  useEffect(() => {
+    if (!urlStateReady || !compareQuery || ids.length < 2) return;
+    void router.replace(`/explore?compare=${encodeURIComponent(compareQuery)}`);
+  }, [compareQuery, ids.length, urlStateReady]);
 
   return (
     <>
@@ -40,7 +54,7 @@ export default function ComparePage() {
             </div>
 
             <div className="topbar-right">
-              <Link className="btn" href={`/explore${router.asPath.includes("?") ? router.asPath.slice(router.asPath.indexOf("?")) : ""}`}>Back</Link>
+              <Link className="btn" href={ids.length ? `/explore?compare=${encodeURIComponent(ids.join(","))}` : "/explore"}>Back</Link>
             </div>
           </div>
         </header>
@@ -55,24 +69,17 @@ export default function ComparePage() {
           </div>
 
           <div className="mt-4 rounded-2xl border border-[var(--border)] bg-white p-4 shadow-[var(--shadow-soft)] text-sm">
-            {ids.length < 2 ? (
-              <div className="text-[var(--text-muted)]">Select at least 2 trials in Explore.</div>
+            {!urlStateReady ? (
+              <div className="text-[var(--text-muted)]">Preparing comparison…</div>
+            ) : ids.length < 2 ? (
+              <div className="space-y-3">
+                <div className="text-[var(--text-muted)]">Select at least 2 trials in Explore.</div>
+                <Link className="btn" href="/explore">Open Explore</Link>
+              </div>
             ) : (
-              <div className="space-y-2">
-                <div className="font-semibold">Selected:</div>
-                <div className="flex flex-wrap gap-2">
-                  {ids.map((id: string) => (
-                    <span
-                      key={id}
-                      className="rounded-full border border-[var(--border)] bg-[var(--surface-2)] px-3 py-1 text-xs font-semibold"
-                    >
-                      {id}
-                    </span>
-                  ))}
-                </div>
-                <div className="text-[var(--text-muted)]">
-                  This page is intentionally lightweight. Use “Open full page” from Explore for complete details.
-                </div>
+              <div className="space-y-2" role="status">
+                <div className="font-semibold">Opening the side-by-side comparison…</div>
+                <div className="text-[var(--text-muted)]">You will be redirected to the working comparison view in Explore.</div>
               </div>
             )}
           </div>

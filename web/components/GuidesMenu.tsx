@@ -48,7 +48,6 @@ export default function GuidesMenu({ active = false }: GuidesMenuProps) {
   return (
     <div
       className={`guidesMenu${open ? " guidesMenuOpen" : ""}`}
-      onMouseEnter={() => setOpen(true)}
       ref={menuRef}
     >
       <button
@@ -56,15 +55,21 @@ export default function GuidesMenu({ active = false }: GuidesMenuProps) {
         className="navlink guidesSummary"
         aria-expanded={open}
         aria-haspopup="menu"
+        aria-controls="clinical-trial-failure-guides"
         aria-current={active ? "page" : undefined}
-        onFocus={() => setOpen(true)}
         onClick={() => setOpen((value) => !value)}
       >
         Guides
       </button>
-      <div className="guidesPanel" aria-label="Clinical trial failure guides">
+      <div
+        id="clinical-trial-failure-guides"
+        className="guidesPanel"
+        role="menu"
+        aria-label="Clinical trial failure guides"
+        hidden={!open}
+      >
         {GUIDE_LINKS.map((link) => (
-          <Link href={link.href} className="guidesPanelLink" key={link.href} onClick={() => setOpen(false)}>
+          <Link href={link.href} className="guidesPanelLink" role="menuitem" key={link.href} onClick={() => setOpen(false)}>
             {link.label}
           </Link>
         ))}

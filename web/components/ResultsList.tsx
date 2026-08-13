@@ -80,6 +80,7 @@ export default function ResultsList({
         {renderedItems.map((v) => {
           const r = rows[v.index];
           const checked = selected.has(r.nct_id);
+          const selectionDisabled = !checked && selected.size >= 5;
           const p = parsePhases(r.phases || "")[0] || "UNKNOWN";
           const bucket = reasonBucket(r);
           const why = (r.why_stopped_short || "").trim();
@@ -116,6 +117,8 @@ export default function ResultsList({
                     <input
                       type="checkbox"
                       checked={checked}
+                      disabled={selectionDisabled}
+                      title={selectionDisabled ? "You can compare up to 5 trials." : undefined}
                       onClick={(e) => e.stopPropagation()}
                       onChange={() => onToggleSelect(r.nct_id)}
                       aria-label={`Select ${r.nct_id}`}
