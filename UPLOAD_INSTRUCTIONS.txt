@@ -1,13 +1,25 @@
-Clinical Trial Failures v67 - upload instructions
+CLINICALTRIALFAILURES.COM - VERSION 68
 
-This package contains only the 13 changed or new files, so it stays below GitHub's 100-file browser-upload limit.
+This package contains only the two files changed for the new insight articles.
+It is intentionally small enough for GitHub's browser uploader.
 
-1. Extract clinicaltrialfailures-functional-fixes-v67-upload.zip.
-2. Open the extracted upload-functional-fixes-v67 folder.
-3. Drag the web folder into the root of the GitHub repository.
-4. GitHub should show files under web/components, web/hooks, web/lib, web/pages, and web/styles.
-5. Enter this commit message: Fix functional QA issues (v67)
-6. Click Commit changes.
-7. Wait for the Vercel deployment to finish.
+UPLOAD STEPS
+1. Extract clinicaltrialfailures-two-new-insights-v68-upload.zip.
+2. Open your oncology-trial-failures GitHub repository.
+3. Click Add file, then Upload files.
+4. Open the extracted upload-two-insights-v68 folder.
+5. Drag the web folder into GitHub's upload area.
+6. Confirm that GitHub shows these paths:
+   web/lib/insights.ts
+   web/lib/insightStats.ts
+7. Enter this commit message:
+   Add two data-backed insight articles (v68)
+8. Click Commit changes.
+9. Wait for Vercel to deploy the commit.
 
-Important: keep the folder structure exactly as supplied. Existing files with the same names must be replaced.
+NEW PAGES
+- /insights/suspended-clinical-trials-rarely-mean-drug-failure
+- /insights/safety-vs-efficacy-clinical-trial-signals-by-disease-area
+
+The article values and tables are recalculated from the current dataset during
+every build after an ingest. No .github files were changed.

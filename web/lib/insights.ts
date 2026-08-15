@@ -43,6 +43,11 @@ export type InsightStats = {
     scientificShare: string;
     buckets: Record<string, number>;
   };
+  suspendedSignals: InsightSignalSlice & {
+    scientificCount: number;
+    scientificShare: string;
+    buckets: Record<string, number>;
+  };
   diseaseAreaSignalShares: Array<{
     label: string;
     total: number;
@@ -132,6 +137,190 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "suspended-clinical-trials-rarely-mean-drug-failure",
+    title: "Suspended clinical trials rarely mean the drug has failed",
+    metaDescription:
+      "A data-backed analysis of suspended clinical trials, their stop reasons, and why suspended status alone is weak evidence of drug failure.",
+    eyebrow: "Suspended trial analysis",
+    dek:
+      "Suspended trials are often treated as hidden failures. The current data tells a more cautious story: operational and unclear reasons dominate this status.",
+    datePublished: "2026-08-15",
+    readingTime: "7 min read",
+    keyword: "suspended clinical trials",
+    facts: [],
+    sections: [
+      {
+        heading: "The result is more mundane than the label sounds",
+        body: [
+          "Suspended is a dramatic word. It can make a trial look as if a safety problem or failed biological hypothesis has already been established. In practice, the status only tells us that the study has been halted and may resume. The reason field is what determines whether the record points toward the intervention, the trial operation, or an unresolved situation.",
+          "In the current stopped-trial database, the large majority of suspended records do not carry efficacy/futility or safety classifications. Most are operational or remain other/unknown. That makes suspended status a useful alert, but a poor conclusion on its own.",
+        ],
+      },
+      {
+        heading: "Why a suspension can happen",
+        body: [
+          "A study can be suspended because of site, supply, staffing, funding, regulatory, recruitment, or administrative problems. Public-health disruptions and temporary pauses can also appear in the source text. None of these explanations proves that the intervention failed to work or created an unacceptable risk.",
+          "There are also genuine biological signals in the suspended slice. Safety reviews, adverse events, emerging futility, or insufficient benefit can lead to a halt while investigators or regulators evaluate what happened. Those records deserve immediate attention, but they should be isolated from the much larger operational and unclear group.",
+        ],
+      },
+      {
+        heading: "Safety and efficacy signals are evenly split",
+        body: [
+          "Within the small biological-signal subset, safety and efficacy/futility appear in equal numbers in the current dataset. That balance is different from the full stopped-trial database, where efficacy/futility is the larger biological category.",
+          "The distinction matters. A safety suspension raises questions about adverse events, dose, exposure, monitoring, and benefit-risk. An efficacy or futility suspension raises questions about treatment effect, endpoint assumptions, interim evidence, and whether continuing the study remains justified.",
+        ],
+      },
+      {
+        heading: "The unknown group needs restraint",
+        body: [
+          "Other/unknown is the largest reason bucket among suspended records. It contains cases where the registry language is too limited or too generic for a defensible classification. That is not missing work that should be filled with an assumption. It is uncertainty in the source data that should remain visible.",
+          "When I see a suspended study in that bucket, I would open the original ClinicalTrials.gov record first. I would then check the update history, sponsor disclosures, regulator notices, publications, and whether the study later resumed, terminated, or changed status.",
+        ],
+      },
+      {
+        heading: "How I would use suspended records",
+        body: [
+          "For screening, suspended trials are useful because they identify programs where something interrupted execution. I would filter them by reason category, then compare phase, disease area, sponsor context, and the exact source language. A safety-tagged Phase I suspension is a different research problem from an operational Phase III pause.",
+          "For reporting, I would never write that a drug failed simply because one study is suspended. A more accurate statement names the status, quotes or paraphrases the registered reason, and makes clear whether the classification is biological, operational, regulatory, or uncertain.",
+        ],
+      },
+      {
+        heading: "What this analysis does not measure",
+        body: [
+          "This is an analysis of suspended records inside a stopped-trial database. It does not measure how often all clinical trials become suspended, how often suspended studies restart, or the probability that a suspended program eventually succeeds or fails.",
+          "The value is narrower and practical: it shows why status and reason must be separated. Suspended tells us where to look. The source explanation tells us what, if anything, can responsibly be inferred.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/explore?status=SUSPENDED",
+        label: "Explore suspended trials",
+        text: "Open the current suspended-trial records and inspect their source-linked stop reasons.",
+      },
+      {
+        href: "/explore?status=SUSPENDED&bucket=SAFETY",
+        label: "Review suspended safety signals",
+        text: "Narrow the database to suspended records classified from safety-related language.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "See how status, source language, and analytical reason buckets are kept separate.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does a suspended clinical trial mean the drug failed?",
+        answer:
+          "No. Suspended status means the study has been halted and may resume. The registered reason must be reviewed before interpreting the suspension as biological, operational, regulatory, or unclear.",
+      },
+      {
+        question: "Are suspended trials usually stopped for safety?",
+        answer:
+          "Not in this dataset. Operational and other or unknown explanations are much more common than safety classifications among suspended records.",
+      },
+      {
+        question: "Can a suspended clinical trial restart?",
+        answer:
+          "Yes. Suspension is not necessarily a final status. Researchers should check the current registry record and its update history before relying on an older status snapshot.",
+      },
+    ],
+  },
+  {
+    slug: "safety-vs-efficacy-clinical-trial-signals-by-disease-area",
+    title: "Safety and efficacy failure signals change by disease area",
+    metaDescription:
+      "A data-backed comparison of safety versus efficacy and futility signals across clinical trial disease areas, using stopped ClinicalTrials.gov records.",
+    eyebrow: "Disease-area signal mix",
+    dek:
+      "A biological failure signal is not the same across therapeutic areas. Some stopped-trial slices lean toward safety; others are dominated by efficacy and futility.",
+    datePublished: "2026-08-15",
+    readingTime: "8 min read",
+    keyword: "clinical trial failure signals by disease area",
+    facts: [],
+    sections: [
+      {
+        heading: "The same failure label can hide different problems",
+        body: [
+          "It is tempting to combine efficacy, futility, and safety into one biological-failure number. That is useful for a first filter, but it hides an important difference. A study that stops because benefit is insufficient is not the same analytical event as a study that stops because toxicity or tolerability changes the benefit-risk balance.",
+          "The current database shows that the mix between these signals changes across disease areas. Among areas with at least 200 stopped records, some have more safety than efficacy/futility signals. Others show the reverse by a wide margin.",
+        ],
+      },
+      {
+        heading: "Non-oncology hematology leans toward safety",
+        body: [
+          "Non-oncology hematology has the clearest safety-heavy biological-signal mix in the comparison. This does not establish that hematology trials are generally less safe. The denominator contains stopped records only, and the biological-signal subset is much smaller than the full disease-area slice.",
+          "What it does show is that, when a stopped non-oncology hematology record carries a biological classification in this dataset, safety appears more often than efficacy/futility. That makes benefit-risk language and the exact safety evidence especially important starting points for review.",
+        ],
+      },
+      {
+        heading: "Neurology points much more strongly toward efficacy",
+        body: [
+          "Neurology sits on the other side of the comparison. Efficacy and futility signals substantially outnumber safety signals within its stopped records. This can direct the research workflow toward endpoints, treatment effect, futility analyses, patient selection, and whether a program produced enough measurable benefit.",
+          "Again, the pattern is descriptive rather than predictive. It does not tell us the probability that a new neurology trial will fail. It tells us what kinds of explanations appear in the stopped neurology records captured by the database.",
+        ],
+      },
+      {
+        heading: "Oncology is large and relatively balanced",
+        body: [
+          "Oncology contributes by far the largest number of biological signals in absolute terms. Its safety and efficacy counts are also much closer together than in neurology or dermatology. That scale makes oncology useful for subgroup analysis, but raw counts should not be confused with a higher underlying risk.",
+          "Because oncology contains many phases, modalities, indications, combinations, and sponsor types, the next useful step is usually to narrow the slice. Phase, intervention, condition, and source wording can change the interpretation substantially.",
+        ],
+      },
+      {
+        heading: "Why percentages need a minimum denominator",
+        body: [
+          "Very small categories can produce dramatic percentages from only a few records. To reduce that distortion, this comparison includes disease areas with at least 200 stopped trials. Even then, I would read both the percentage and the underlying counts.",
+          "A safety share based on dozens of biological signals is less stable than one based on hundreds. The table therefore reports efficacy and safety counts together instead of presenting a percentage without its denominator.",
+        ],
+      },
+      {
+        heading: "How to use the comparison responsibly",
+        body: [
+          "I would use this analysis to choose the first question, not the final answer. In a safety-heavy area, start with dose, adverse events, monitoring, exposure, and benefit-risk. In an efficacy-heavy area, start with endpoints, effect size, futility rules, population selection, and comparator performance.",
+          "Every important conclusion should still return to the individual NCT record and supporting evidence. These classifications organize public source language into a searchable research signal. They do not replace clinical, statistical, or regulatory review.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/explore?area=Hematology%20%28non-onc%29&bucket=SAFETY",
+        label: "Explore hematology safety signals",
+        text: "Review non-oncology hematology records classified from safety-related stop language.",
+      },
+      {
+        href: "/explore?area=Neurology&bucket=EFFICACY%2FFUTILITY",
+        label: "Explore neurology efficacy signals",
+        text: "Open neurology records where the source language points toward efficacy or futility.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review the definitions, limitations, and source-verification workflow behind the comparison.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Which disease area has the most safety-heavy biological signal mix?",
+        answer:
+          "Among disease areas with at least 200 stopped records in the current dataset, non-oncology hematology has the highest safety share within its efficacy/futility and safety signal subset.",
+      },
+      {
+        question: "Does this show which therapeutic area has the highest trial failure rate?",
+        answer:
+          "No. The database contains stopped trials rather than all initiated trials, so it cannot estimate an overall failure rate by therapeutic area.",
+      },
+      {
+        question: "Why compare counts as well as percentages?",
+        answer:
+          "Percentages can look unstable when the underlying biological-signal count is small. Counts show the denominator and make differences between disease areas easier to interpret responsibly.",
+      },
+    ],
+  },
   {
     slug: "phase-3-clinical-trial-failure-signals",
     title: "Phase III stopped trials carry the strongest biological-signal share",
@@ -1266,6 +1455,11 @@ function n(value: number): string {
   return formatInsightCount(value);
 }
 
+function pctFromCounts(part: number, total: number): string {
+  if (!total) return "0.0%";
+  return `${((part / total) * 100).toFixed(1)}%`;
+}
+
 function b(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
@@ -1849,6 +2043,199 @@ function hydratePhaseSignalShiftArticle(article: InsightArticle, stats: InsightS
   };
 }
 
+function hydrateSuspendedArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const suspended = stats.suspendedSignals;
+  const operational = suspended.buckets.OPERATIONAL || 0;
+  const other = suspended.buckets["OTHER/UNKNOWN"] || 0;
+  const efficacy = suspended.buckets["EFFICACY/FUTILITY"] || 0;
+  const safety = suspended.buckets.SAFETY || 0;
+  const regulatory = suspended.buckets.REGULATORY || 0;
+  const operationalOrUnknown = operational + other;
+  const operationalOrUnknownShare = pctFromCounts(operationalOrUnknown, suspended.total);
+
+  return {
+    ...article,
+    metaDescription: `Only ${suspended.scientificShare} of ${n(suspended.total)} suspended clinical trial records in the current database carry efficacy/futility or safety signals.`,
+    dek: `Only ${n(suspended.scientificCount)} of ${n(suspended.total)} suspended records (${suspended.scientificShare}) carry efficacy/futility or safety signals. Operational and unclear reasons account for ${operationalOrUnknownShare}.`,
+    facts: [
+      `The current database contains ${n(suspended.total)} suspended clinical trial records.`,
+      `${n(suspended.scientificCount)} suspended records, or ${suspended.scientificShare}, are classified as likely biological failure signals.`,
+      `${n(operationalOrUnknown)} suspended records (${operationalOrUnknownShare}) are operational or other/unknown.`,
+      `Safety and efficacy/futility are evenly split at ${n(safety)} suspended records each.`,
+      suspended.topAreas[0]
+        ? `${suspended.topAreas[0].label} is the largest suspended disease-area slice with ${n(suspended.topAreas[0].count)} records.`
+        : "No suspended disease-area slice is available.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "The result is more mundane than the label sounds") {
+        return {
+          ...section,
+          body: [
+            `Suspended is a dramatic word. It can make a trial look as if a safety problem or failed biological hypothesis has already been established. In the current database, however, only ${n(suspended.scientificCount)} of ${n(suspended.total)} suspended records (${suspended.scientificShare}) carry efficacy/futility or safety classifications.`,
+            `Operational and other/unknown reasons account for ${n(operationalOrUnknown)} records (${operationalOrUnknownShare}). That makes suspended status a useful alert, but a poor conclusion on its own. The reason field is what determines whether a record points toward the intervention, trial execution, or unresolved source language.`,
+          ],
+        };
+      }
+      if (section.heading === "Safety and efficacy signals are evenly split") {
+        return {
+          ...section,
+          body: [
+            `Within the small biological-signal subset, safety and efficacy/futility are evenly split at ${n(safety)} records each. That balance is different from the full stopped-trial database, where efficacy/futility is the larger biological category.`,
+            "The distinction matters. A safety suspension raises questions about adverse events, dose, exposure, monitoring, and benefit-risk. An efficacy or futility suspension raises questions about treatment effect, endpoint assumptions, interim evidence, and whether continuing the study remains justified.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Suspended trial reason mix",
+        columns: ["Reason classification", "Suspended records"],
+        rows: [
+          ["Other/unknown", n(other)],
+          ["Operational", n(operational)],
+          ["Efficacy/futility", n(efficacy)],
+          ["Safety", n(safety)],
+          ["Regulatory", n(regulatory)],
+        ],
+      },
+      {
+        heading: "Largest suspended disease-area slices",
+        columns: ["Disease area", "Suspended records"],
+        rows: suspended.topAreas.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Largest suspended phase groups",
+        columns: ["Phase", "Suspended records"],
+        rows: suspended.phases.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "Are suspended trials usually stopped for safety?") {
+        return {
+          ...faq,
+          answer: `No. Only ${n(safety)} of ${n(suspended.total)} suspended records in the current dataset are classified as safety signals. Operational and other or unknown explanations account for ${n(operationalOrUnknown)} records.`,
+        };
+      }
+      return faq;
+    }),
+  };
+}
+
+function hydrateDiseaseAreaSignalMixArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const areas = stats.diseaseAreaSignalShares.filter((area) => area.scientificCount > 0);
+  const bySafetyShare = [...areas].sort((a, b) => {
+    const shareA = a.safetyCount / a.scientificCount;
+    const shareB = b.safetyCount / b.scientificCount;
+    return shareB - shareA || b.scientificCount - a.scientificCount;
+  });
+  const byEfficacyShare = [...areas].sort((a, b) => {
+    const shareA = a.efficacyCount / a.scientificCount;
+    const shareB = b.efficacyCount / b.scientificCount;
+    return shareB - shareA || b.scientificCount - a.scientificCount;
+  });
+  const safetyLeader = bySafetyShare[0];
+  const efficacyLeader = byEfficacyShare[0];
+  const neurology = areas.find((area) => area.label === "Neurology");
+  const oncology = areas.find((area) => area.label === "Oncology");
+
+  const mixFact = (area: (typeof areas)[number], signal: "safety" | "efficacy") => {
+    const count = signal === "safety" ? area.safetyCount : area.efficacyCount;
+    return `${pctFromCounts(count, area.scientificCount)} (${n(count)} of ${n(area.scientificCount)})`;
+  };
+
+  return {
+    ...article,
+    metaDescription: safetyLeader && efficacyLeader
+      ? `${safetyLeader.label} has the most safety-heavy biological signal mix, while ${efficacyLeader.label} leans most strongly toward efficacy among disease areas with 200+ stopped records.`
+      : article.metaDescription,
+    dek: safetyLeader && efficacyLeader
+      ? `${safetyLeader.label} has the most safety-heavy biological-signal mix in the comparison. ${efficacyLeader.label} sits at the efficacy-heavy end. The reason mix changes materially by disease area.`
+      : article.dek,
+    facts: [
+      safetyLeader
+        ? `${safetyLeader.label} has the highest safety share among biological signals: ${mixFact(safetyLeader, "safety")}.`
+        : "No safety-share leader is available in the current dataset.",
+      efficacyLeader
+        ? `${efficacyLeader.label} has the highest efficacy/futility share among biological signals: ${mixFact(efficacyLeader, "efficacy")}.`
+        : "No efficacy-share leader is available in the current dataset.",
+      neurology
+        ? `Neurology contains ${n(neurology.efficacyCount)} efficacy/futility signals and ${n(neurology.safetyCount)} safety signals.`
+        : "No neurology signal slice is available.",
+      oncology
+        ? `Oncology contributes ${n(oncology.efficacyCount)} efficacy/futility and ${n(oncology.safetyCount)} safety signals, the largest absolute biological-signal count.`
+        : "No oncology signal slice is available.",
+      "The comparison includes disease areas with at least 200 stopped records and does not estimate overall clinical trial failure rates.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "Non-oncology hematology leans toward safety" && safetyLeader) {
+        return {
+          ...section,
+          heading: `${safetyLeader.label} leans toward safety`,
+          body: [
+            `${safetyLeader.label} has the clearest safety-heavy biological-signal mix in the comparison. Safety accounts for ${mixFact(safetyLeader, "safety")}, compared with ${n(safetyLeader.efficacyCount)} efficacy/futility signals.`,
+            `This does not establish that ${safetyLeader.label.toLowerCase()} trials are generally less safe. The denominator contains stopped records only, and the biological-signal subset contains ${n(safetyLeader.scientificCount)} records. It shows what kind of source explanation appears more often when a stopped record in this slice carries a biological classification.`,
+          ],
+        };
+      }
+      if (section.heading === "Neurology points much more strongly toward efficacy" && neurology) {
+        return {
+          ...section,
+          body: [
+            `Neurology sits toward the efficacy-heavy side of the comparison. Its stopped records contain ${n(neurology.efficacyCount)} efficacy/futility signals and ${n(neurology.safetyCount)} safety signals. Efficacy therefore represents ${mixFact(neurology, "efficacy")} of its biological-signal subset.`,
+            "That can direct the research workflow toward endpoints, treatment effect, futility analyses, patient selection, and whether a program produced enough measurable benefit. The pattern remains descriptive rather than predictive: it does not estimate the chance that a new neurology trial will fail.",
+          ],
+        };
+      }
+      if (section.heading === "Oncology is large and relatively balanced" && oncology) {
+        return {
+          ...section,
+          body: [
+            `Oncology contributes by far the largest number of biological signals in absolute terms: ${n(oncology.efficacyCount)} efficacy/futility and ${n(oncology.safetyCount)} safety records. Safety represents ${mixFact(oncology, "safety")} of that subset, making the mix much more balanced than in neurology or dermatology.`,
+            "That scale makes oncology useful for subgroup analysis, but raw counts should not be confused with a higher underlying risk. Phase, intervention, condition, and source wording can all change the interpretation substantially.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Disease areas ranked by safety share",
+        columns: ["Disease area", "Safety / biological signals"],
+        rows: bySafetyShare.slice(0, 10).map((area): [string, string] => [
+          area.label,
+          `${pctFromCounts(area.safetyCount, area.scientificCount)} (${n(area.safetyCount)} / ${n(area.scientificCount)})`,
+        ]),
+      },
+      {
+        heading: "Disease areas ranked by efficacy share",
+        columns: ["Disease area", "Efficacy / biological signals"],
+        rows: byEfficacyShare.slice(0, 10).map((area): [string, string] => [
+          area.label,
+          `${pctFromCounts(area.efficacyCount, area.scientificCount)} (${n(area.efficacyCount)} / ${n(area.scientificCount)})`,
+        ]),
+      },
+      {
+        heading: "Absolute biological-signal counts",
+        columns: ["Disease area", "Efficacy / safety"],
+        rows: [...areas]
+          .sort((a, b) => b.scientificCount - a.scientificCount)
+          .slice(0, 10)
+          .map((area): [string, string] => [area.label, `${n(area.efficacyCount)} / ${n(area.safetyCount)}`]),
+      },
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "Which disease area has the most safety-heavy biological signal mix?" && safetyLeader) {
+        return {
+          ...faq,
+          answer: `Among disease areas with at least 200 stopped records, ${safetyLeader.label} has the highest safety share in the current dataset: ${mixFact(safetyLeader, "safety")}.`,
+        };
+      }
+      return faq;
+    }),
+  };
+}
+
 function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const withdrawn = stats.withdrawnSignals;
   const operational = withdrawn.buckets.OPERATIONAL || 0;
@@ -1907,6 +2294,12 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "suspended-clinical-trials-rarely-mean-drug-failure") {
+    return hydrateSuspendedArticle(article, stats);
+  }
+  if (article.slug === "safety-vs-efficacy-clinical-trial-signals-by-disease-area") {
+    return hydrateDiseaseAreaSignalMixArticle(article, stats);
+  }
   if (article.slug === "phase-3-clinical-trial-failure-signals") {
     return hydratePhaseThreeArticle(article, stats);
   }

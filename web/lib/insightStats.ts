@@ -207,6 +207,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const operationalRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OPERATIONAL");
   const withdrawnRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "WITHDRAWN");
   const withdrawnScientificCount = withdrawnRows.filter(isLikelyScientificFailure).length;
+  const suspendedRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "SUSPENDED");
+  const suspendedScientificCount = suspendedRows.filter(isLikelyScientificFailure).length;
   const latestUpdates = latestUpdateSlice(rows);
 
   return {
@@ -240,6 +242,12 @@ export async function buildInsightStats(): Promise<InsightStats> {
       scientificCount: withdrawnScientificCount,
       scientificShare: pct(withdrawnScientificCount, withdrawnRows.length),
       buckets: countBy(withdrawnRows, (row) => reasonBucket(row).toUpperCase()),
+    },
+    suspendedSignals: {
+      ...signalSlice(suspendedRows),
+      scientificCount: suspendedScientificCount,
+      scientificShare: pct(suspendedScientificCount, suspendedRows.length),
+      buckets: countBy(suspendedRows, (row) => reasonBucket(row).toUpperCase()),
     },
     diseaseAreaSignalShares: diseaseAreaSignalShares(rows),
     phaseSignalComparison: phaseSignalComparison(rows),
