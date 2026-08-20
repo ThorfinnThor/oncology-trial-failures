@@ -205,6 +205,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const endpointRows = rows.filter(isEndpointSignal);
   const enrollmentRows = rows.filter(isEnrollmentSignal);
   const operationalRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OPERATIONAL");
+  const regulatoryRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "REGULATORY");
+  const unknownRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OTHER/UNKNOWN");
   const withdrawnRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "WITHDRAWN");
   const withdrawnScientificCount = withdrawnRows.filter(isLikelyScientificFailure).length;
   const suspendedRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "SUSPENDED");
@@ -237,6 +239,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
     endpointSignals: signalSlice(endpointRows),
     enrollmentSignals: signalSlice(enrollmentRows),
     operationalSignals: signalSlice(operationalRows),
+    regulatorySignals: signalSlice(regulatoryRows),
+    unknownSignals: signalSlice(unknownRows),
     withdrawnSignals: {
       ...signalSlice(withdrawnRows),
       scientificCount: withdrawnScientificCount,

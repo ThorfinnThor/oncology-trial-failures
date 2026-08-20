@@ -38,6 +38,8 @@ export type InsightStats = {
   endpointSignals: InsightSignalSlice;
   enrollmentSignals: InsightSignalSlice;
   operationalSignals: InsightSignalSlice;
+  regulatorySignals: InsightSignalSlice;
+  unknownSignals: InsightSignalSlice;
   withdrawnSignals: InsightSignalSlice & {
     scientificCount: number;
     scientificShare: string;
@@ -137,6 +139,282 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "could-clinical-trial-betting-hedge-risk-for-patients",
+    title: "Could clinical trial betting act as insurance for patients?",
+    metaDescription:
+      "A critical review of the argument that Kalshi or other clinical trial prediction markets could let patients hedge the risk that an experimental drug fails.",
+    eyebrow: "Prediction markets and patients",
+    dek:
+      "The patient-hedge argument is more thoughtful than ordinary speculation: if the drug works, the participant may benefit; if it fails, a market payout could help the family. But that does not make a bet equivalent to insurance.",
+    datePublished: "2026-08-20",
+    readingTime: "8 min read",
+    keyword: "clinical trial betting for patients",
+    facts: [],
+    sections: [
+      {
+        heading: "The strongest argument for these markets",
+        body: [
+          "Most criticism of clinical trial prediction markets begins with the obvious concern: money tied to a trial result can create incentives around an experiment whose first obligation is to patients and reliable evidence. That concern is valid. Still, there is a more sympathetic argument worth taking seriously.",
+          "A participant may enter a trial hoping that an experimental drug extends life or improves health. If the trial succeeds, the hoped-for benefit is medical. If it fails, a position paying out on failure could leave money for the participant or family. Framed this way, the contract looks less like entertainment and more like an event-specific hedge.",
+        ],
+      },
+      {
+        heading: "Why the insurance analogy feels plausible",
+        body: [
+          "Insurance transfers a defined financial risk. The proposed hedge tries to do something similar: offset disappointment from one outcome with a payout from the opposite outcome. It also recognizes a real asymmetry. Trial participants accept visits, uncertainty, inconvenience, and sometimes substantial physical burdens, while the broader system captures much of the scientific and commercial value.",
+          "The argument therefore points to a legitimate problem. Participants and families can bear costs that standard reimbursement does not fully address. The difficult question is whether a tradable prediction contract is a defensible way to correct that imbalance.",
+        ],
+      },
+      {
+        heading: "A prediction-market position is not insurance",
+        body: [
+          "The analogy breaks down quickly. Insurance has defined coverage, regulated disclosures, underwriting rules, and a payout tied to the policyholder's loss. A prediction-market contract pays according to narrowly written resolution criteria. A Phase III trial could meet its primary endpoint while one participant receives no benefit. It could miss the endpoint while that participant improves. The market event and the patient's outcome are not the same thing.",
+          "The hedge is also not guaranteed. The participant must choose a contract, position size, timing, and price, and can lose the stake. A family facing serious illness should not need trading skill, spare capital, or tolerance for gambling risk to receive support for contributing to research.",
+        ],
+      },
+      {
+        heading: "The current platforms do not offer this patient hedge",
+        body: [
+          "Kalshi and AppliedXL launched a limited biopharma pilot in July 2026 covering selected clinical trial outcomes and FDA decisions. The initial design focuses on clearly defined late-stage events and public resolution sources. Importantly, Kalshi says trial participants are barred from trading, and clinical-trial markets are listed only after enrollment has closed.",
+          "Polymarket has also carried biopharma-related contracts. Endpoint Arena entered the field with trial-focused markets but, at the time of reporting, used paper trading rather than real money. These are not patient insurance products. They are forecasting or trading venues with different rules, access models, and regulatory positions.",
+        ],
+      },
+      {
+        heading: "The integrity problem remains",
+        body: [
+          "Allowing enrolled participants to take positions would create the very conflict the hedge is meant to soften. Trial behavior can affect adherence, reporting, retention, endpoint assessment, and data quality. Even when one person cannot change the result, a financial interest in failure or success complicates informed consent and public trust.",
+          "The risk is not limited to deliberate manipulation. Market prices could influence participant expectations, investigator behavior, enrollment, or the interpretation of ambiguous outcomes. A price is a view produced by traders. It is not clinical evidence, a prognosis, or a substitute for the protocol and source data.",
+        ],
+      },
+      {
+        heading: "The better answer is direct participant protection",
+        body: [
+          "I do not dismiss the hedge argument as crass. It identifies something important: participants should not carry research burdens while being left financially exposed. I simply do not think a wager is the right mechanism.",
+          "A better system would provide transparent compensation for time and inconvenience, travel and wage support, treatment for research-related injury, post-trial access where appropriate, and clearly funded family support. Those benefits can be guaranteed without asking a patient to bet against the study they joined. Prediction markets may produce an additional public signal, but they should remain separate from patient protection and clinical decision-making.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "https://www.appliedxl.com/research/appliedxl-kalshi-partnership",
+        label: "Read the Kalshi and AppliedXL pilot description",
+        text: "Review the official description of market selection, evidence sources, resolution, and responsibilities.",
+      },
+      {
+        href: "https://www.appliedxl.com/research/biopharma-public-probability",
+        label: "Read Biopharma's Public Probability",
+        text: "See the partnership's own discussion of possible uses, limitations, safeguards, and ethical risks.",
+      },
+      {
+        href: "/insights/why-i-would-not-bet-on-clinical-trial-outcomes",
+        label: "Why I would not bet on trial outcomes",
+        text: "Read the broader argument for keeping prediction-market prices separate from clinical evidence.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can clinical trial participants trade on Kalshi's trial markets?",
+        answer:
+          "Kalshi has said participants in the relevant trials are barred from trading in its initial biopharma markets. The initial trial contracts are also listed after enrollment has closed.",
+      },
+      {
+        question: "Is betting on trial failure the same as buying insurance?",
+        answer:
+          "No. A prediction contract settles on defined market criteria rather than the individual patient's medical or financial loss, and the trader can lose the money used to take the position.",
+      },
+      {
+        question: "Could prediction markets still provide useful information?",
+        answer:
+          "They may provide a market-implied probability for a narrowly defined event, but its quality depends on participation, liquidity, information, contract design, and trader independence. It is not clinical evidence or medical advice.",
+      },
+    ],
+  },
+  {
+    slug: "unknown-clinical-trial-stop-reasons-are-a-data-signal",
+    title: "Unknown clinical trial stop reasons are a result, not missing analysis",
+    metaDescription:
+      "A data-backed analysis of other and unknown clinical trial stop reasons, and why uncertain registry language should not be converted into a false failure claim.",
+    eyebrow: "Limits of stop-reason data",
+    dek:
+      "A large share of stopped trial records does not support a confident efficacy, safety, operational, or regulatory explanation. Preserving that uncertainty is part of reliable analysis.",
+    datePublished: "2026-08-20",
+    readingTime: "7 min read",
+    keyword: "unknown clinical trial stop reasons",
+    facts: [],
+    sections: [
+      {
+        heading: "The largest classification is uncertainty",
+        body: [
+          "A stopped clinical trial looks like a simple event until the reason field is opened. Some records contain a clear explanation: insufficient efficacy, a safety concern, slow recruitment, funding, or a strategic decision. Many do not.",
+          "Other/unknown is the largest stop-reason bucket in the current database. That is not an invitation to guess. It is a measurable result about the limits of public registry language and the confidence that can reasonably be attached to it.",
+        ],
+      },
+      {
+        heading: "Why records remain unknown",
+        body: [
+          "Registry explanations can be absent, generic, circular, or too short to separate scientific from non-scientific causes. A phrase such as sponsor decision or study stopped may be factually true without explaining whether efficacy, safety, enrollment, strategy, or another issue drove the decision.",
+          "The public record can also lag behind company announcements or omit details available in publications, conference presentations, regulatory documents, or investor disclosures. The compact source field should not be made more precise than the evidence allows.",
+        ],
+      },
+      {
+        heading: "Unknown does not mean harmless",
+        body: [
+          "An unknown classification does not prove that the stop was administrative. Some of these records may involve efficacy or safety issues that are not described clearly enough in the registry. Others may be routine operational decisions. The category contains uncertainty, not reassurance.",
+          "That is why it should remain searchable and visible. Hiding unknowns would make the classified groups look more complete than they are and could produce false confidence in disease-area, sponsor, or phase comparisons.",
+        ],
+      },
+      {
+        heading: "The status mix shows why wording matters",
+        body: [
+          "Other/unknown records appear across terminated, withdrawn, and suspended statuses. Status does not resolve the ambiguity. A terminated record can have an unclear reason, just as a withdrawn record can contain a specific safety or efficacy explanation.",
+          "The correct analytical sequence is status first, reason second, source verification third. Reversing that sequence encourages the common mistake of treating every terminated trial as a failed drug.",
+        ],
+      },
+      {
+        heading: "How I would investigate an unknown record",
+        body: [
+          "I would begin with the original ClinicalTrials.gov page and update history. Next I would search the exact NCT ID in sponsor releases, publications, regulatory material, conference abstracts, and archived program descriptions. Dates matter because a registry update may follow the underlying decision by weeks or months.",
+          "If the evidence still does not support a defensible reason, I would leave the record unknown. A transparent limitation is more useful than a confident label manufactured from weak text.",
+        ],
+      },
+      {
+        heading: "Why this improves the database",
+        body: [
+          "A high-quality database is not the one that assigns the most labels. It is the one that distinguishes evidence from inference and inference from absence. Preserving other/unknown protects the more specific efficacy, safety, operational, and regulatory categories from contamination.",
+          "It also identifies where better disclosure would create the most value. The unknown bucket is therefore both a limitation and a research agenda: it shows where the public evidence is not yet strong enough for the conclusion people often want to draw.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/explore?bucket=OTHER%2FUNKNOWN",
+        label: "Explore other and unknown records",
+        text: "Review stopped records where the available source language does not support a more specific classification.",
+      },
+      {
+        href: "/clinical-trial-stop-reasons",
+        label: "Compare all stop-reason categories",
+        text: "See how efficacy, safety, operational, regulatory, and unclear reasons differ.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review the conservative rules used to preserve uncertainty in the source data.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Why are so many clinical trial stop reasons unknown?",
+        answer:
+          "Many registry records contain no explanation or language that is too general to separate scientific, operational, strategic, or regulatory causes confidently.",
+      },
+      {
+        question: "Does other or unknown mean the drug did not fail?",
+        answer:
+          "No. It means the available source language does not support a confident classification. The underlying reason may be scientific or non-scientific and requires additional evidence.",
+      },
+      {
+        question: "Should unknown records be excluded from analysis?",
+        answer:
+          "Usually not. Excluding them can exaggerate the apparent completeness of classified results. They should be reported transparently and separated from more specific categories.",
+      },
+    ],
+  },
+  {
+    slug: "regulatory-clinical-trial-stops-are-not-safety-failures",
+    title: "Regulatory clinical trial stops are rare and not the same as safety failures",
+    metaDescription:
+      "A data-backed review of regulatory clinical trial stops by status, phase, and disease area, and why a regulatory stop should not automatically be called a safety failure.",
+    eyebrow: "Regulatory stop signals",
+    dek:
+      "Regulatory classifications form a very small slice of stopped trial records. They deserve direct source review rather than being folded into safety or biological failure counts.",
+    datePublished: "2026-08-20",
+    readingTime: "7 min read",
+    keyword: "regulatory clinical trial stops",
+    facts: [],
+    sections: [
+      {
+        heading: "A small category with outsized ambiguity",
+        body: [
+          "Regulatory language attracts attention because it can suggest a clinical hold, an authority request, an approval issue, or another formal intervention. But regulatory is one of the smallest reason categories in the stopped-trial database.",
+          "That small count makes careful interpretation more important, not less. A regulatory action can arise from safety, manufacturing, documentation, protocol, compliance, or information requirements. The label identifies the decision context; it does not by itself establish biological failure.",
+        ],
+      },
+      {
+        heading: "Regulatory and safety answer different questions",
+        body: [
+          "Safety describes the substantive concern identified in the stop language: adverse events, toxicity, tolerability, or benefit-risk. Regulatory describes the role of an authority or formal regulatory process in the pause or stop. A record can involve both ideas, but a single analytical bucket should reflect the strongest explicit evidence available.",
+          "Collapsing every regulatory stop into safety would inflate safety counts and erase cases driven by nonclinical, quality, procedural, or documentation issues. It would also imply more certainty about causation than the registry text may provide.",
+        ],
+      },
+      {
+        heading: "The status distribution is unusually balanced",
+        body: [
+          "Unlike many other stop-reason categories, regulatory records are distributed relatively evenly between terminated and withdrawn studies, with a smaller suspended group. This is a reminder that regulatory language does not map neatly to one trial status.",
+          "A withdrawn study may never begin enrollment, a suspended study may potentially resume, and a terminated study has stopped early. The regulatory context and the study status need to be read together.",
+        ],
+      },
+      {
+        heading: "Phase II is the largest phase slice",
+        body: [
+          "Phase II contributes the largest phase group among regulatory-classified records, followed by Phase I and Phase III. Those counts do not establish that one phase is more exposed to regulatory intervention because the database does not contain the denominator of all trials in each phase.",
+          "They are useful for triage. A Phase I regulatory stop may direct attention toward dose, early safety, manufacturing, or protocol issues. A later-stage stop may require review of endpoint, benefit-risk, authority correspondence, or program-level decisions.",
+        ],
+      },
+      {
+        heading: "What to verify in the primary sources",
+        body: [
+          "I would look for the exact authority action, the date it occurred, whether the hold was full or partial, the sponsor's stated cause, and whether the action was later lifted. ClinicalTrials.gov may not contain the entire regulatory history.",
+          "FDA notices, sponsor filings, trial updates, regulator databases, and subsequent protocol changes can materially change the interpretation. If the public record only says regulatory reasons, the analysis should not invent a safety mechanism.",
+        ],
+      },
+      {
+        heading: "The responsible conclusion",
+        body: [
+          "Regulatory stops are important signals for investigation, but weak standalone evidence for a claim that the drug failed. Their low frequency also means that isolated records or sponsor counts can be misleading without context.",
+          "The right wording names the registered status and regulatory classification, then describes the documented reason with its source. Safety, efficacy, and biological failure should be added only when the underlying evidence supports them.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/explore?bucket=REGULATORY",
+        label: "Explore regulatory stop signals",
+        text: "Open regulatory-classified records and verify the source language behind each stop.",
+      },
+      {
+        href: "/explore?bucket=SAFETY",
+        label: "Compare safety stop signals",
+        text: "Review the separate category for adverse-event, toxicity, tolerability, and benefit-risk language.",
+      },
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "See how regulatory and safety language are separated in the database.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Is a regulatory clinical trial stop automatically a safety failure?",
+        answer:
+          "No. Regulatory actions can involve safety, but they may also involve manufacturing, protocol, documentation, compliance, or other requirements. The primary source must establish the reason.",
+      },
+      {
+        question: "Are regulatory stops common in the database?",
+        answer:
+          "No. Regulatory-classified records form a very small share of the current stopped-trial dataset.",
+      },
+      {
+        question: "Can a regulatory hold be lifted?",
+        answer:
+          "Yes. Some regulatory pauses can be resolved. Researchers should verify the current trial status and subsequent authority or sponsor updates rather than relying on an older snapshot.",
+      },
+    ],
+  },
   {
     slug: "suspended-clinical-trials-rarely-mean-drug-failure",
     title: "Suspended clinical trials rarely mean the drug has failed",
@@ -2043,6 +2321,181 @@ function hydratePhaseSignalShiftArticle(article: InsightArticle, stats: InsightS
   };
 }
 
+function hydratePatientHedgeArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  return {
+    ...article,
+    facts: [
+      "Kalshi and AppliedXL launched a limited pilot for selected clinical trial outcomes and FDA decisions in July 2026.",
+      "Kalshi says participants in the relevant trials are barred from trading, and initial trial markets are listed after enrollment closes.",
+      "Polymarket has carried biopharma-related contracts, while Endpoint Arena entered the field using paper trading rather than real-money positions.",
+      `The current Clinical Trial Failures database contains ${n(stats.total)} stopped records, but only ${n(stats.scientificCount)} (${stats.scientificShare}) carry efficacy/futility or safety signals.`,
+      "A market-implied probability is not clinical evidence, a patient prognosis, insurance, or medical advice.",
+    ],
+    tables: [
+      {
+        heading: "What the current platforms actually provide",
+        columns: ["Platform", "Relevant model"],
+        rows: [
+          ["Kalshi", "Real-money event contracts; limited biopharma pilot with participant restrictions"],
+          ["Polymarket", "Prediction contracts, including biopharma and FDA-related events"],
+          ["Endpoint Arena", "Trial-focused forecasting in pilot mode using paper trading"],
+        ],
+      },
+      {
+        heading: "Why historical context still matters",
+        columns: ["Dataset signal", "Current records"],
+        rows: [
+          ["Stopped clinical trial records", n(stats.total)],
+          ["Likely biological failure signals", n(stats.scientificCount)],
+          ["Efficacy/futility signals", n(stats.buckets["EFFICACY/FUTILITY"] || 0)],
+          ["Safety signals", n(stats.buckets.SAFETY || 0)],
+        ],
+      },
+    ],
+  };
+}
+
+function hydrateUnknownReasonsArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const unknown = stats.unknownSignals;
+  const share = pctFromCounts(unknown.total, stats.total);
+  const terminated = unknown.statuses.TERMINATED || 0;
+  const withdrawn = unknown.statuses.WITHDRAWN || 0;
+  const suspended = unknown.statuses.SUSPENDED || 0;
+
+  return {
+    ...article,
+    metaDescription: `${n(unknown.total)} stopped clinical trial records (${share}) remain other or unknown because the available source language does not support a confident failure classification.`,
+    dek: `${n(unknown.total)} stopped records, or ${share} of the current database, remain other or unknown. Preserving that uncertainty is part of reliable analysis, not unfinished classification work.`,
+    facts: [
+      `The current database contains ${n(unknown.total)} other/unknown records, representing ${share} of ${n(stats.total)} stopped trials.`,
+      `${n(terminated)} other/unknown records are terminated, ${n(withdrawn)} are withdrawn, and ${n(suspended)} are suspended.`,
+      unknown.topAreas[0]
+        ? `${unknown.topAreas[0].label} is the largest disease-area slice with ${n(unknown.topAreas[0].count)} other/unknown records.`
+        : "No disease-area slice is available.",
+      unknown.phases[0]
+        ? `${unknown.phases[0].label} is the largest phase group with ${n(unknown.phases[0].count)} other/unknown records.`
+        : "No phase group is available.",
+      "Other/unknown means the public source does not support a more specific label; it does not prove a scientific or non-scientific cause.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading !== "The largest classification is uncertainty") return section;
+      return {
+        ...section,
+        body: [
+          `A stopped clinical trial looks like a simple event until the reason field is opened. In the current database, ${n(unknown.total)} of ${n(stats.total)} records (${share}) remain other or unknown because the available text does not support a defensible efficacy, safety, operational, or regulatory classification.`,
+          "That is not an invitation to guess or an indication that analysis is incomplete. It is a measurable result about the limits of public registry language and the confidence that can reasonably be attached to it.",
+        ],
+      };
+    }),
+    tables: [
+      {
+        heading: "Other and unknown records by status",
+        columns: ["Trial status", "Other/unknown records"],
+        rows: [
+          ["Terminated", n(terminated)],
+          ["Withdrawn", n(withdrawn)],
+          ["Suspended", n(suspended)],
+        ],
+      },
+      {
+        heading: "Largest other/unknown disease-area slices",
+        columns: ["Disease area", "Other/unknown records"],
+        rows: unknown.topAreas.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Largest other/unknown phase groups",
+        columns: ["Phase", "Other/unknown records"],
+        rows: unknown.phases.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "Why are so many clinical trial stop reasons unknown?") {
+        return {
+          ...faq,
+          answer: `${n(unknown.total)} records (${share}) are currently other or unknown. Many contain no explanation or language too general to separate scientific, operational, strategic, or regulatory causes confidently.`,
+        };
+      }
+      return faq;
+    }),
+  };
+}
+
+function hydrateRegulatoryStopsArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const regulatory = stats.regulatorySignals;
+  const share = pctFromCounts(regulatory.total, stats.total);
+  const terminated = regulatory.statuses.TERMINATED || 0;
+  const withdrawn = regulatory.statuses.WITHDRAWN || 0;
+  const suspended = regulatory.statuses.SUSPENDED || 0;
+
+  return {
+    ...article,
+    metaDescription: `Only ${n(regulatory.total)} stopped clinical trial records (${share}) are classified as regulatory in the current database. Regulatory action is not automatically a safety failure.`,
+    dek: `Only ${n(regulatory.total)} of ${n(stats.total)} stopped records (${share}) are classified as regulatory. They deserve source review rather than being folded into safety or biological failure counts.`,
+    facts: [
+      `The current database contains ${n(regulatory.total)} regulatory-classified records, representing ${share} of all stopped records.`,
+      `${n(terminated)} regulatory records are terminated, ${n(withdrawn)} are withdrawn, and ${n(suspended)} are suspended.`,
+      regulatory.phases[0]
+        ? `${regulatory.phases[0].label} is the largest regulatory phase group with ${n(regulatory.phases[0].count)} records.`
+        : "No regulatory phase group is available.",
+      regulatory.topAreas[0]
+        ? `${regulatory.topAreas[0].label} is the largest disease-area slice with ${n(regulatory.topAreas[0].count)} regulatory records.`
+        : "No regulatory disease-area slice is available.",
+      "Regulatory identifies a decision context and should not be converted into a safety or biological-failure claim without supporting source evidence.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "A small category with outsized ambiguity") {
+        return {
+          ...section,
+          body: [
+            `Regulatory language attracts attention because it can suggest a clinical hold, an authority request, an approval issue, or another formal intervention. Yet only ${n(regulatory.total)} of ${n(stats.total)} stopped records (${share}) are classified as regulatory in the current database.`,
+            "That small count makes careful interpretation more important, not less. A regulatory action can arise from safety, manufacturing, documentation, protocol, compliance, or information requirements. The label identifies the decision context; it does not by itself establish biological failure.",
+          ],
+        };
+      }
+      if (section.heading === "The status distribution is unusually balanced") {
+        return {
+          ...section,
+          body: [
+            `Regulatory records are distributed relatively evenly between terminated (${n(terminated)}) and withdrawn (${n(withdrawn)}) studies, with ${n(suspended)} suspended records. This is a reminder that regulatory language does not map neatly to one trial status.`,
+            "A withdrawn study may never begin enrollment, a suspended study may potentially resume, and a terminated study has stopped early. The regulatory context and the study status need to be read together.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Regulatory records by status",
+        columns: ["Trial status", "Regulatory records"],
+        rows: [
+          ["Terminated", n(terminated)],
+          ["Withdrawn", n(withdrawn)],
+          ["Suspended", n(suspended)],
+        ],
+      },
+      {
+        heading: "Largest regulatory phase groups",
+        columns: ["Phase", "Regulatory records"],
+        rows: regulatory.phases.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Largest regulatory disease-area slices",
+        columns: ["Disease area", "Regulatory records"],
+        rows: regulatory.topAreas.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "Are regulatory stops common in the database?") {
+        return {
+          ...faq,
+          answer: `No. The current database contains ${n(regulatory.total)} regulatory-classified records, representing ${share} of ${n(stats.total)} stopped trials.`,
+        };
+      }
+      return faq;
+    }),
+  };
+}
+
 function hydrateSuspendedArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const suspended = stats.suspendedSignals;
   const operational = suspended.buckets.OPERATIONAL || 0;
@@ -2294,6 +2747,15 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "could-clinical-trial-betting-hedge-risk-for-patients") {
+    return hydratePatientHedgeArticle(article, stats);
+  }
+  if (article.slug === "unknown-clinical-trial-stop-reasons-are-a-data-signal") {
+    return hydrateUnknownReasonsArticle(article, stats);
+  }
+  if (article.slug === "regulatory-clinical-trial-stops-are-not-safety-failures") {
+    return hydrateRegulatoryStopsArticle(article, stats);
+  }
   if (article.slug === "suspended-clinical-trials-rarely-mean-drug-failure") {
     return hydrateSuspendedArticle(article, stats);
   }

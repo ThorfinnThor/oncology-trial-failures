@@ -1,25 +1,23 @@
-CLINICALTRIALFAILURES.COM - VERSION 68
+CLINICALTRIALFAILURES.COM - VERSION 70
 
-This package contains only the two files changed for the new insight articles.
-It is intentionally small enough for GitHub's browser uploader.
+This package adds three new insight articles:
+- A critical review of the patient-hedge argument for clinical trial markets
+- A data analysis of other and unknown stop reasons
+- A data analysis of regulatory clinical trial stops
 
 UPLOAD STEPS
-1. Extract clinicaltrialfailures-two-new-insights-v68-upload.zip.
-2. Open your oncology-trial-failures GitHub repository.
+1. Extract clinicaltrialfailures-three-new-insights-v70-upload.zip.
+2. Open your oncology-trial-failures repository on GitHub.
 3. Click Add file, then Upload files.
-4. Open the extracted upload-two-insights-v68 folder.
+4. Open the extracted upload-three-insights-v70 folder.
 5. Drag the web folder into GitHub's upload area.
 6. Confirm that GitHub shows these paths:
    web/lib/insights.ts
    web/lib/insightStats.ts
 7. Enter this commit message:
-   Add two data-backed insight articles (v68)
-8. Click Commit changes.
-9. Wait for Vercel to deploy the commit.
+   Add three research insight articles (v70)
+8. Click Commit changes and wait for Vercel to redeploy.
 
-NEW PAGES
-- /insights/suspended-clinical-trials-rarely-mean-drug-failure
-- /insights/safety-vs-efficacy-clinical-trial-signals-by-disease-area
-
-The article values and tables are recalculated from the current dataset during
-every build after an ingest. No .github files were changed.
+The dataset-derived facts and tables are recalculated during every site build
+after an ingest. Sitemap.xml and llms.txt include the new articles automatically.
+No .github files were changed.
