@@ -332,4 +332,164 @@ Across the first 400 records, the dominant remediation priorities are:
 
 ## Batch 3 — records 401–600
 
-_Status: not yet audited._
+Batch boundary: record 401 is `NCT02982694`; record 600 is `NCT05817058`.
+
+### Summary
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 112 | 56.0% |
+| Definitely misclassified | 70 | 35.0% |
+| Ambiguous / multiple plausible causes / non-failure | 18 | 9.0% |
+| Needs change or manual review | 88 | 44.0% |
+
+### Main finding
+
+Batch 3 confirms the pattern from Batches 1 and 2. Of the 70 definite errors, 42 (60.0%) are `OTHER/UNKNOWN` records with a clearly operational cause, while 18 (25.7%) are labeled `OPERATIONAL` even though the text gives only a decision or action and no causal reason. In total, 60 of 70 definite errors (85.7%) remain concentrated at the `OPERATIONAL` versus `OTHER/UNKNOWN` boundary.
+
+### A. `OTHER/UNKNOWN` that should be `OPERATIONAL` — 42
+
+#### Business / strategy / development program
+
+- `NCT04000529` — business reasons
+- `NCT05168202` — business objectives have changed
+- `NCT05870748` — strategic business considerations / development deprioritized; explicitly not safety/efficacy related
+- `NCT06270082` — limited resources and strategic priorities
+- `NCT05588609` — changes in organizational priorities
+- `NCT03446040` — business objectives have changed
+- `NCT06285097` — strategic business reasons; explicitly not safety/efficacy related
+- `NCT04762602` — strategic evaluation of clinical development; no safety concerns
+- `NCT04855136` — business objectives have changed
+- `NCT05707676` — adjustment of sponsor development strategy
+- `NCT06226766` — strategic realignment of clinical-trial priorities
+- `NCT03843918` — company strategy caused termination of Phase 2
+- `NCT03838367` — business reasons
+- `NCT04502082` — sponsor redirected development effort to the pediatric study
+- `NCT05662670` — R&D strategy adjustment
+- `NCT06016270` — company strategy
+- `NCT05577715` — business objectives have changed
+- `NCT03149575` — change in clinical development plan
+- `NCT04815083` — closure of sponsor's business
+- `NCT05490043` — adjustment of investigational-drug development strategy
+- `NCT03114319` — business reasons; explicitly not safety related
+- `NCT05208177` — R&D strategy adjustment
+- `NCT02784795` — business considerations
+- `NCT05149807` — R&D strategy adjustment
+- `NCT06321068` — company R&D strategy adjustment
+- `NCT02900651` — business reasons; explicitly not safety/tolerability related
+- `NCT05743036` — change in therapeutic landscape
+- `NCT05248789` — strategy adjustment
+- `NCT03194646` — change in development program
+- `NCT03249792` — business reasons
+
+#### Recruitment / participation / feasibility
+
+- `NCT04216472` — `<75% participation`
+- `NCT03948529` — inclusion difficulties
+- `NCT07166367` — difficulty enrolling patients with the disease under study
+- `NCT03769532` — feasibility
+- `NCT05026736` — PI request plus `<75% participation`
+- `NCT05623488` — feasibility concerns
+- `NCT03579446` — `<75% participation`
+
+#### Protocol / administration / resources / manufacturing
+
+- `NCT05358808` — deficiencies in the study protocol
+- `NCT03347617` — principal-investigator transition
+- `NCT05834569` — challenges completing the research-registration process
+- `NCT03015792` — drug company declined to fund the Phase 2 portion
+- `NCT06343376` — manufacturing issues
+
+### B. `OPERATIONAL` that should be `OTHER/UNKNOWN` — 18
+
+These records identify a decision-maker or an action, but do not supply the actual causal reason.
+
+- `NCT05961839` — Company decision
+- `NCT05445609` — sponsor memo pauses enrollment across vidutolimod studies; actual reason absent
+- `NCT02967692` — Sponsor decision
+- `NCT04023331` — Sponsor decision
+- `NCT05128773` — sponsor decision; only says it was not safety related
+- `NCT06175221` — sponsor decision
+- `NCT04278144` — Sponsor Decision
+- `NCT04630353` — Sponsor decision
+- `NCT04418167` — Sponsor decision
+- `NCT04887831` — sponsor no longer pursuing the indication; discontinuation action is given, but not the underlying reason
+- `NCT05245071` — sponsor decision; not related to safety
+- `NCT05633160` — Sponsor Decision
+- `NCT05071053` — sponsor decision; not related to safety
+- `NCT05883449` — due to sponsor decision
+- `NCT07121829` — Sponsor decision
+- `NCT05011058` — Sponsor Decision
+- `NCT04579679` — Sponsor decision
+- `NCT05376345` — per sponsor request
+
+### C. Missed `EFFICACY/FUTILITY` — 6
+
+- `NCT02982694` — interim efficacy was inferior to expected and very unlikely to reverse with full completion
+- `NCT06056310` — lack of evidence of efficacy / meaningful clinical benefit; explicitly no major safety concern
+- `NCT05678257` — pre-planned analysis concluded that the trial was unlikely to achieve its primary objective of superior PFS
+- `NCT03860844` — Stage 2 efficacy criteria not met; explicitly not a safety stop
+- `NCT05220098` — terminated due to limited anti-cancer activity
+- `NCT05420636` — closed because of low probability of successful outcomes
+
+### D. Missed `SAFETY` — 3
+
+- `NCT05904496` — clinical development stopped because of an imbalanced benefit/risk profile
+- `NCT06171789` — overall benefit-risk profile no longer supports continuation
+- `NCT06376253` — termination due to lack of tolerability
+
+### E. Missed `REGULATORY` — 1
+
+- `NCT02742883` — `Clinical Hold`
+
+### F. Ambiguous / mixed-cause / planned-success / non-failure cases — 18
+
+- `NCT06516510` — interim data indicate that the study will not adequately inform the development program; no safety issue, but the precise scientific failure is not stated
+- `NCT05821777` — decision based jointly on unspecified data and the competitive landscape; biological versus strategic causality cannot be separated
+- `NCT03769181` — some cohorts failed pre-planned interim criteria while others fulfilled them and were stopped by sponsor decision
+- `NCT03108495` — required number of events for endpoint evaluation had been reached; looks like an event-driven study milestone rather than failure
+- `NCT05733351` — study terminated to review safety data; a safety review alone does not establish an adverse safety finding
+- `NCT04478266` — termination followed IDMC review of prespecified interim efficacy data and no new safety signal, but the actual negative efficacy result is not explicitly stated
+- `NCT06232044` — end of the Phase I portion of the study; protocol milestone, not evidence of failure
+- `NCT06639958` — all potential pilot-phase patients had been enrolled; planned milestone
+- `NCT00766142` — external evidence of no efficacy in KRAS-mutant disease led to eligibility restriction, followed by very slow inclusion; biological and operational factors coexist
+- `NCT03646123` — sponsor believed enough data had been collected to demonstrate safety and efficacy; explicitly not a safety/efficacy concern
+- `NCT01703754` — SRC review, dose reductions and sponsor termination of development coexist, but the actual causal reason is not sufficiently explicit
+- `NCT04951778` — efficacy endpoint was met, but the dosing regimen was considered unsuitable for further development
+- `NCT05328908` — inability to meet protocol objectives; too nonspecific to distinguish efficacy/futility from operational inability
+- `NCT04141995` — both low accrual and futility explicitly caused closure
+- `NCT06158100` — funding-sponsor decision following review of efficacy data from other trials; the efficacy result/direction itself is not stated
+- `NCT05369000` — intended Phase 1/2 trial never progressed to Phase 2; no causal reason for the stage transition is supplied
+- `NCT05571293` — study paused to review safety data; review does not itself prove a safety failure
+- `NCT04904185` — evaluation of Step A did not support adding pembrolizumab in Step B, but the actual go/no-go criterion is not stated
+
+### Classifier issues reinforced or newly exposed by Batch 3
+
+1. **Decision/action vocabulary still causes structural false positives.** `Sponsor decision`, `sponsor request`, `company decision`, `PI request`, and similar phrases must not define an operational cause by themselves.
+2. **`interim analysis` must not independently imply efficacy failure.** Require an explicit negative outcome such as futility, failure to meet a criterion/endpoint, insufficient efficacy, or low probability of success.
+3. **`clinical hold` currently collides between `SAFETY` and `REGULATORY`.** Under the audit taxonomy, an explicit clinical hold is regulatory unless the text separately establishes an underlying safety failure. The classifier's precedence and term placement should be corrected accordingly.
+4. **Benefit-risk and tolerability language needs explicit biological handling.** `imbalanced benefit/risk`, `benefit-risk profile no longer supports continuation`, and `lack of tolerability` should map to `SAFETY` under the current taxonomy.
+5. **Program/portfolio/strategy vocabulary remains incompletely normalized.** R&D realignment, development-strategy changes, organizational priorities, business closure, and therapeutic-landscape changes are operational when explicitly causal.
+6. **Action versus cause applies beyond sponsor decisions.** `No longer pursuing an indication`, `program discontinued`, or `enrollment paused` describes what happened; it is not automatically the causal reason.
+7. **The committed generated data still appears stale relative to current classifier code.** Multiple terms already present in the current classifier remain `OTHER/UNKNOWN` in the committed JSON, so a clean versioned regeneration is required before post-fix performance measurement.
+
+---
+
+## Cumulative status — records 1–600
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 343 | 57.17% |
+| Definitely misclassified | 215 | 35.83% |
+| Ambiguous / multiple plausible causes / non-failure | 42 | 7.00% |
+| Needs change or manual review | 257 | 42.83% |
+
+Of the 215 definite errors across the first 600 records:
+
+- 142 (66.0%) are `OTHER/UNKNOWN → OPERATIONAL`;
+- 47 (21.9%) are `OPERATIONAL → OTHER/UNKNOWN`;
+- 17 (7.9%) are missed `EFFICACY/FUTILITY`;
+- 6 (2.8%) are missed `SAFETY`;
+- 3 (1.4%) are missed `REGULATORY`.
+
+Thus 189 of 215 definite errors (87.9%) remain variants of the same core problem: separating a real operational cause from a mere decision-maker/action statement.
