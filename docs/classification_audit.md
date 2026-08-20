@@ -652,3 +652,167 @@ Of the 283 definite errors across the first 800 records:
 - 2 (0.7%) are inverse biological false positives.
 
 Thus 246 of 283 definite errors (86.9%) remain variants of the same core problem: separating a real operational cause from a mere decision-maker/action statement.
+
+---
+
+## Batch 5 — records 801–1000
+
+Batch boundary: record 801 is `NCT05447663`; record 1000 is `NCT03727061`.
+
+### Summary
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 113 | 56.5% |
+| Definitely misclassified | 64 | 32.0% |
+| Ambiguous / multiple plausible causes / non-failure | 23 | 11.5% |
+| Needs change or manual review | 87 | 43.5% |
+
+### Main finding
+
+Batch 5 again shows the same structural classifier problem. Of the 64 definite errors, 35 are `OTHER/UNKNOWN → OPERATIONAL` and 21 are `OPERATIONAL → OTHER/UNKNOWN`. These 56 records account for 87.5% of all definite Batch 5 errors.
+
+### A. `OTHER/UNKNOWN` that should be `OPERATIONAL` — 35
+
+#### Business / strategy / development
+
+- `NCT04570631` — strategic considerations
+- `NCT06214793` — company acquisition followed by leadership decision not to move forward
+- `NCT04464798` — business objectives have changed
+- `NCT05840510` — business objectives have changed
+- `NCT03110107` — business objectives have changed
+- `NCT02875223` — business objectives have changed
+- `NCT04893759` — company strategy
+- `NCT03486067` — business objectives have changed
+- `NCT06094296` — business objectives have changed
+- `NCT05179239` — development-strategy adjustment
+- `NCT02974725` — business reasons
+- `NCT04764474` — strategic evaluation of clinical development
+- `NCT05609942` — alignment of strategic priorities
+- `NCT04556617` — business realignment
+- `NCT03038230` — strategic considerations
+- `NCT04853329` — business reasons
+- `NCT04553692` — strategic corporate pivot
+- `NCT04975399` — business objectives have changed
+- `NCT05543629` — business objectives have changed
+- `NCT05293912` — adjustment of clinical development plan
+
+#### Staffing / supply / manufacturing / funding
+
+- `NCT00195091` — PI left MSKCC
+- `NCT02991651` — study drug supply expired; no replacement manufactured
+- `NCT05038644` — study drug expired
+- `NCT01386710` — PI left institution
+- `NCT05355597` — physician left institution
+- `NCT05737706` — formulation challenges
+- `NCT06281106` — external research funds canceled
+- `NCT04239040` — manufacturing issues
+
+#### Recruitment / feasibility / protocol / external environment
+
+- `NCT03286114` — lack of patient population
+- `NCT00238355` — competing study at site
+- `NCT06001372` — feasibility challenges
+- `NCT03492125` — major protocol revisions; replacement study planned
+- `NCT04786964` — regional political conflict
+- `NCT04450836` — external trial results changed clinical management and made continued inclusion impractical
+- `NCT05375708` — pilot findings required major study-design overhaul
+
+### B. `OPERATIONAL` that should be `OTHER/UNKNOWN` — 21
+
+- `NCT04427072` — company decision; only adds that it was not safety related
+- `NCT03490838` — sponsor decision; Phase II was not initiated, but the causal reason is absent
+- `NCT02047500` — company decision to discontinue clinical development; underlying reason absent
+- `NCT05618613` — sponsor decision to discontinue development; underlying reason absent
+- `NCT04827576` — sponsor decision to terminate study
+- `NCT05571969` — Company Decision
+- `NCT05494762` — Sponsor decision
+- `NCT05374538` — Sponsor decision
+- `NCT04301011` — Sponsor decision
+- `NCT04006119` — Sponsor Decision
+- `NCT04925986` — sponsor decision based on unspecified data from other trials
+- `NCT03975387` — Sponsor Decision
+- `NCT03690869` — Sponsor Decision
+- `NCT04625205` — sponsor decision
+- `NCT05695898` — sponsor decision
+- `NCT04382898` — sponsor decision
+- `NCT04778410` — sponsor decision
+- `NCT04101357` — sponsor decision
+- `NCT04419389` — sponsor decision
+- `NCT05446129` — Company decision
+- `NCT05166577` — Sponsor Decision
+
+### C. Missed `EFFICACY/FUTILITY` — 5
+
+- `NCT04171219` — no PR/CR in Stage 1, therefore no progression to Stage 2
+- `NCT03596073` — required cytokine induction not observed at interim analysis; continuation not justified
+- `NCT05904236` — lack of demonstrated clinical activity
+- `NCT04084366` — expected therapeutic potential not shown
+- `NCT03520790` — Phase II not pursued due to explicitly stated futility based on another therapeutic trial
+
+### D. Missed `SAFETY` — 1
+
+- `NCT04251065` — unacceptable level of relevant toxicities triggered statistical stopping rules and DSMB-recommended termination
+
+### E. Missed `REGULATORY` — 2
+
+- `NCT04973930` — HHS Office for Human Research Protections FWA restriction plus IRB pause caused suspension
+- `NCT03764540` — explicit approval by regulatory authorities made continuation unnecessary
+
+### F. Ambiguous / mixed-cause / planned-success / non-failure cases — 23
+
+- `NCT00635167` — PI closure with final report submitted; likely administrative completion rather than failure
+- `NCT03994705` — Phase 1 enrollment completed, followed by discontinuation of further development without a causal reason
+- `NCT03456700` — closure based on interim-analysis results, but the direction/nature of the results is not stated
+- `NCT04732286` — study completed as pre-specified in the protocol; non-failure
+- `NCT04853043` — slow recruitment, funding concerns, and poor response to treatment are all explicit
+- `NCT01324635` — Arm A reached its goal while Arm B had poor accrual
+- `NCT00640978` — significant adverse effects and futility are both explicit
+- `NCT00253318` — toxicity and lack of efficacy are both explicit
+- `NCT04435691` — malformed participation wording (`75% > Participants`) prevents confident automatic interpretation
+- `NCT04047797` — `Administratively Complete` combined with low participation; completion and operational failure signals are mixed
+- `NCT05787496` — program reprioritization plus limited clinical activity
+- `NCT04875806` — limited Phase 1 activity plus prioritization of another program
+- `NCT04870112` — Part 1 completed, Part 2 was not initiated, with no safety/clinical concerns stated; program-stage/non-failure pattern
+- `NCT04485416` — PI discretion plus CAPA review; compliance/quality versus administrative causality is unclear
+- `NCT03452592` — indication already approved for marketing; development milestone rather than trial failure
+- `NCT02973763` — indication already approved for marketing; development milestone rather than trial failure
+- `NCT03127449` — indication already approved for marketing; development milestone rather than trial failure
+- `NCT04896658` — FDA withdrawal, lack of enrollment, and availability of safer BCMA therapies are all explicit
+- `NCT04108481` — DSMC-directed closure without the underlying safety/futility reason
+- `NCT05494866` — lack of efficacy paired with high toxicity
+- `NCT04298983` — `Abemaciclib efficacy` supplies no polarity/direction and cannot support a confident efficacy-failure assignment
+- `NCT04586270` — safety profile, absence of encouraging anti-tumor activity, and strategic decision are jointly cited
+- `NCT05770882` — `overall profile does not support development`, but the relevant dimension is unspecified
+
+### Classifier issues reinforced or newly exposed by Batch 5
+
+1. **Use a two-layer representation: action versus cause.** `Terminated`, `enrollment stopped`, `sponsor decision`, `program discontinued`, or `did not proceed to Phase 2` describe an action/state transition. The causal layer should separately identify `futility`, `toxicity`, `funding`, `poor accrual`, `strategy`, `manufacturing`, or regulatory action.
+2. **Multi-cause records should be preserved rather than forcibly flattened.** Safety + efficacy and operational + efficacy combinations recur often enough to justify either multiple cause tags or a dedicated mixed-cause flag.
+3. **Operational vocabulary still needs broader coverage.** Acquisition/leadership changes, formulation problems, canceled external research funds, political conflict, clinical-development-plan adjustments, and protocol-overhaul language are recurring misses.
+4. **Regulatory logic should distinguish concrete authority actions from regulatory context.** OHRP/FWA restrictions, explicit regulator approvals/withdrawals, clinical holds, and authority requests are concrete regulatory triggers; a changed regulatory landscape by itself is not.
+5. **Regulatory success can be a non-failure milestone.** Marketing approval can make continued enrollment unnecessary without indicating scientific or operational failure.
+6. **Biological evidence must outrank the operational action it causes.** `Enrollment terminated because of unacceptable toxicity` is `SAFETY`; the enrollment action must not dominate the causal signal.
+7. **The non-failure/milestone category is now strongly supported.** Protocol-complete studies, marketing approvals, completed early phases, reached goals, and similar planned/successful outcomes should not be forced into a failure taxonomy.
+
+---
+
+## Cumulative status — records 1–1000
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 575 | 57.5% |
+| Definitely misclassified | 347 | 34.7% |
+| Ambiguous / multiple plausible causes / non-failure | 78 | 7.8% |
+| Needs change or manual review | 425 | 42.5% |
+
+Of the 347 definite errors across the first 1000 records:
+
+- 215 (62.0%) are `OTHER/UNKNOWN → OPERATIONAL`;
+- 87 (25.1%) are `OPERATIONAL → OTHER/UNKNOWN`;
+- 28 (8.1%) are missed `EFFICACY/FUTILITY`;
+- 10 (2.9%) are missed `SAFETY`;
+- 5 (1.4%) are missed `REGULATORY`;
+- 2 (0.6%) are inverse biological false positives.
+
+Thus 302 of 347 definite errors (87.0%) remain variants of the same core problem: separating a real operational cause from a mere decision-maker/action statement.
