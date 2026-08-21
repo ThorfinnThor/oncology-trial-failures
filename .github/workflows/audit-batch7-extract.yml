@@ -1,9 +1,9 @@
 name: Audit Batch 7 Extract
 
 on:
-  push:
+  pull_request:
     branches:
-      - tmp/audit-batch7-extract-20260821
+      - audit/batch-3
   workflow_dispatch:
 
 permissions:
@@ -20,8 +20,7 @@ jobs:
           import json
           from pathlib import Path
 
-          src = Path('data/all_oncology_stopped_trials.json')
-          rows = json.loads(src.read_text(encoding='utf-8'))
+          rows = json.loads(Path('data/all_oncology_stopped_trials.json').read_text(encoding='utf-8'))
           batch = rows[1200:1400]
           assert len(batch) == 200, len(batch)
           Path('audit_batch7_records_1201_1400.json').write_text(
