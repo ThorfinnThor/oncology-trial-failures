@@ -1,0 +1,58 @@
+name: Temporary Batch 7 audit extraction
+
+on:
+  push:
+    branches:
+      - tmp/audit-batch6-extract-20260821
+    paths:
+      - .github/workflows/audit-batch7-extract.yml
+
+permissions:
+  contents: write
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp/audit-batch6-extract-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Extract records 1201-1400
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          src = Path('data/all_oncology_stopped_trials.json')
+          rows = json.loads(src.read_text())
+          keep = [
+              'nct_id', 'brief_title', 'overall_status', 'why_stopped',
+              'classification_label', 'classification_reason',
+              'classification_confidence', 'classification_evidence',
+              'disease_area', 'phases', 'lead_sponsor', 'conditions',
+              'intervention_names', 'last_update_post_date'
+          ]
+          records = [
+              {key: row.get(key, '') for key in keep}
+              for row in rows[1200:1400]
+          ]
+          out = {
+              'source_record_start': 1201,
+              'source_record_end': 1400,
+              'count': len(records),
+              'records': records,
+          }
+          Path('data/audit_batch7_records.json').write_text(
+              json.dumps(out, indent=2, ensure_ascii=False) + '\n'
+          )
+          PY
+      - name: Commit extraction
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add data/audit_batch7_records.json
+          git commit -m 'chore: extract Batch 7 audit records'
+          git push origin HEAD:tmp/audit-batch6-extract-20260821
