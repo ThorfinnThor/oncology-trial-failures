@@ -1,0 +1,39 @@
+name: Audit Batch 7 Extract
+
+on:
+  push:
+    branches:
+      - tmp/audit-batch7-extract-20260821
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract records 1201-1400
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          src = Path('data/all_oncology_stopped_trials.json')
+          rows = json.loads(src.read_text(encoding='utf-8'))
+          batch = rows[1200:1400]
+          assert len(batch) == 200, len(batch)
+          Path('audit_batch7_records_1201_1400.json').write_text(
+              json.dumps(batch, ensure_ascii=False, indent=2),
+              encoding='utf-8'
+          )
+          print('records:', len(batch))
+          print('first:', batch[0].get('nct_id') or batch[0].get('nctId'))
+          print('last:', batch[-1].get('nct_id') or batch[-1].get('nctId'))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-batch7-records-1201-1400
+          path: audit_batch7_records_1201_1400.json
+          retention-days: 1
