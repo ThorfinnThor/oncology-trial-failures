@@ -1,16 +1,15 @@
 name: Extract audit batch 6
 
 on:
-  push:
+  pull_request:
     branches:
-      - "tmp/audit-batch6-extract-20260821"
+      - audit/batch-3
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   extract:
-    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -49,11 +48,9 @@ jobs:
           print(out[0]['nct_id'], out[-1]['nct_id'])
           PY
 
-      - name: Commit extract
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/audit_batch6_extract.json
-          git diff --cached --quiet && exit 0
-          git commit -m "Extract audit batch 6"
-          git push
+      - name: Upload extract
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-batch6-extract
+          path: data/audit_batch6_extract.json
+          if-no-files-found: error
