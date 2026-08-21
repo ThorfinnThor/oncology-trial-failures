@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - "tmp/audit-batch6-extract-20260821"
-    paths:
-      - ".github/workflows/extract-audit-batch6.yml"
 
 permissions:
   contents: write
 
 jobs:
   extract:
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
