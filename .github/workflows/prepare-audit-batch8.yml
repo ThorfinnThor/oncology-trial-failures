@@ -1,0 +1,82 @@
+name: Prepare audit batch 8
+
+on:
+  push:
+    branches:
+      - tmp/audit-batch8-extract-20260821
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out temporary audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: tmp/audit-batch8-extract-20260821
+          fetch-depth: 0
+
+      - name: Merge audit docs and extract records 1401-1600
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          main_path = Path('docs/classification_audit.md')
+          parts = [main_path.read_text(encoding='utf-8').rstrip()]
+
+          headings = {
+              6: '## Batch 6 — records 1001–1200',
+              7: '## Batch 7 — records 1201–1400',
+          }
+
+          for batch_no in (6, 7):
+              path = Path(f'docs/classification_audit_batch{batch_no}.md')
+              text = path.read_text(encoding='utf-8').strip()
+              lines = text.splitlines()
+              if not lines:
+                  raise RuntimeError(f'{path} is empty')
+              lines[0] = headings[batch_no]
+              parts.append('\n'.join(lines))
+
+          merged = '\n\n---\n\n'.join(parts).rstrip() + '\n'
+          main_path.write_text(merged, encoding='utf-8')
+          Path('docs/classification_audit_batch6.md').unlink()
+          Path('docs/classification_audit_batch7.md').unlink()
+
+          data_path = Path('data/all_oncology_stopped_trials.json')
+          records = json.loads(data_path.read_text(encoding='utf-8'))
+          selected = records[1400:1600]
+          if len(selected) != 200:
+              raise RuntimeError(f'Expected 200 Batch 8 records, got {len(selected)}')
+
+          slim = []
+          for record_number, record in enumerate(selected, start=1401):
+              slim.append({
+                  'record_number': record_number,
+                  'nct_id': record.get('nct_id') or record.get('nctId') or record.get('nct_number') or record.get('id'),
+                  'why_stopped': record.get('why_stopped'),
+                  'classification_label': record.get('classification_label'),
+                  'classification_reason': record.get('classification_reason'),
+                  'classification_confidence': record.get('classification_confidence'),
+              })
+
+          out_path = Path('docs/_audit_batch8_records.json')
+          out_path.write_text(json.dumps(slim, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          print(f'Merged audit docs; extracted {len(slim)} records.')
+          print(f'Batch 8 boundary: {slim[0]["nct_id"]} -> {slim[-1]["nct_id"]}')
+          PY
+
+      - name: Commit prepared audit input
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- docs/classification_audit.md docs/classification_audit_batch6.md docs/classification_audit_batch7.md docs/_audit_batch8_records.json
+          git commit -m "Prepare merged audit and batch 8 input"
+          git push origin HEAD:tmp/audit-batch8-extract-20260821
