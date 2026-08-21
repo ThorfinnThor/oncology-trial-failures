@@ -420,7 +420,7 @@ These records identify a decision-maker or an action, but do not supply the actu
 - `NCT05883449` — due to sponsor decision
 - `NCT07121829` — Sponsor decision
 - `NCT05011058` — Sponsor Decision
-- `NCT04579679` — Sponsor decision
+- `NCT04579679` — sponsor decision
 - `NCT05376345` — per sponsor request
 
 ### C. Missed `EFFICACY/FUTILITY` — 6
@@ -1421,7 +1421,7 @@ The remaining 18 definite errors are 13 missed `EFFICACY/FUTILITY` cases, two mi
 - `NCT04211922` (record 1742) — sponsor R&D strategy adjustment
 - `NCT06377722` (record 1743) — achieved sample count was below the planned 50; accrual/sample shortfall
 - `NCT04429321` (record 1744) — failure to accrue
-- `NCT04808362` (record 1751) — sponsor terminated for business reasons
+- `NCT04879017` (record 1751) — sponsor terminated for business reasons
 - `NCT03601507` (record 1770) — Novartis withdrew support for the trial
 - `NCT05134194` (record 1774) — sponsor R&D strategy adjustment
 - `NCT05148533` (record 1779) — company development-strategy adjustment
