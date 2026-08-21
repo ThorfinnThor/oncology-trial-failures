@@ -1,30 +1,22 @@
-const crypto = require('crypto');
-const fs = require('fs');
-const path = require('path');
+const { spawnSync } = require('child_process');
 
-const file = path.resolve(__dirname, '../../docs/classification_audit.md');
-const data = fs.readFileSync(file);
-const blockSize = 4096;
-const logChunkSize = 700;
-const gitHeader = Buffer.from(`blob ${data.length}\0`, 'utf8');
-
-console.log(
-  `AUDIT_DOC_META\t${JSON.stringify({
-    bytes: data.length,
-    sha256: crypto.createHash('sha256').update(data).digest('hex'),
-    gitBlobSha1: crypto.createHash('sha1').update(gitHeader).update(data).digest('hex'),
-    blockSize,
-    blockCount: Math.ceil(data.length / blockSize),
-    logChunkSize,
-  })}`,
+const result = spawnSync(
+  'git',
+  ['push', '--dry-run', 'origin', 'HEAD:refs/heads/tmp/audit-batch10-vercel-probe'],
+  { encoding: 'utf8' },
 );
 
-for (const blockIndex of [11, 13, 16]) {
-  const offset = blockIndex * blockSize;
-  const block = data.subarray(offset, Math.min(offset + blockSize, data.length));
-  const encoded = block.toString('base64');
-  for (let chunkIndex = 0; chunkIndex * logChunkSize < encoded.length; chunkIndex += 1) {
-    const chunk = encoded.slice(chunkIndex * logChunkSize, (chunkIndex + 1) * logChunkSize);
-    console.log(`AUDIT_DOC_CHUNK\t${blockIndex}\t${chunkIndex}\t${chunk}`);
-  }
-}
+const sanitize = (value) =>
+  String(value || '')
+    .replace(/https?:\/\/[^\s]+/g, '<redacted-url>')
+    .replace(/github_pat_[A-Za-z0-9_]+/g, '<redacted-token>')
+    .trim();
+
+console.log(
+  `AUDIT_GIT_PUSH_PROBE\t${JSON.stringify({
+    status: result.status,
+    signal: result.signal,
+    stdout: sanitize(result.stdout),
+    stderr: sanitize(result.stderr),
+  })}`,
+);
