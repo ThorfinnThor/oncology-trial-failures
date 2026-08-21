@@ -34,11 +34,11 @@ jobs:
 
           test -f "$section"
           cat "$section" >> docs/classification_audit.md
-          rm "$section" "$workflow"
+          git rm -- "$section" "$workflow"
+          git add -- docs/classification_audit.md
 
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
           git diff --cached --check
           git commit -m 'docs: add classification audit batch 10'
           git push origin HEAD:audit/batch-10
