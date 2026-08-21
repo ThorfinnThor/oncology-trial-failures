@@ -17,9 +17,8 @@ console.log(
   })}`,
 );
 
-for (let offset = 0, index = 0; offset < data.length; offset += blockSize, index += 1) {
+for (const index of [11, 13, 16]) {
+  const offset = index * blockSize;
   const block = data.subarray(offset, Math.min(offset + blockSize, data.length));
-  console.log(
-    `AUDIT_DOC_HASH\t${index}\t${crypto.createHash('sha256').update(block).digest('hex')}`,
-  );
+  console.log(`AUDIT_DOC_BLOCK\t${index}\t${block.toString('base64')}`);
 }
