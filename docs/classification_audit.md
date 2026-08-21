@@ -420,7 +420,7 @@ These records identify a decision-maker or an action, but do not supply the actu
 - `NCT05883449` — due to sponsor decision
 - `NCT07121829` — Sponsor decision
 - `NCT05011058` — Sponsor Decision
-- `NCT04579679` — sponsor decision
+- `NCT04579679` — Sponsor decision
 - `NCT05376345` — per sponsor request
 
 ### C. Missed `EFFICACY/FUTILITY` — 6
