@@ -1,6 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // /trial/[trialId] reads a computed shard path at runtime. Explicitly include
+  // only these data assets in that route's server trace so Vercel can serve a
+  // ~100 KB shard without falling back to the full dataset.
+  outputFileTracingIncludes: {
+    "/trial/*": [
+      "./public/trial-shards/**/*.json",
+      "./public/trials-index.json",
+      "./public/dataset_meta.json",
+    ],
+  },
   async redirects() {
     return [
       {
