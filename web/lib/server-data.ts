@@ -13,17 +13,51 @@ let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
 const _detailShards = new Map<string, TrialDetail[]>();
 
-async function readJsonFile<T>(relPathFromWeb: string): Promise<T> {
-  const abs = path.join(process.cwd(), relPathFromWeb);
-  const raw = await fs.readFile(abs, "utf8");
-  return JSON.parse(raw) as T;
+type StaticAssetsBinding = {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+};
+
+type CloudflareGlobal = typeof globalThis & {
+  [key: symbol]:
+    | {
+        env?: {
+          ASSETS?: StaticAssetsBinding;
+        };
+      }
+    | undefined;
+};
+
+/**
+ * Read generated data in both supported runtimes. Node/Vercel exposes the
+ * repository filesystem; Cloudflare Workers exposes public files via ASSETS.
+ */
+export async function readJsonServerAsset<T>(relPathFromWeb: string): Promise<T> {
+  const abs = path.join(/* turbopackIgnore: true */ process.cwd(), relPathFromWeb);
+  try {
+    const raw = await fs.readFile(abs, "utf8");
+    return JSON.parse(raw) as T;
+  } catch (fileError) {
+    const cloudflareGlobal = globalThis as CloudflareGlobal;
+    const context = cloudflareGlobal[Symbol.for("__cloudflare-context__")];
+    const assets = context?.env?.ASSETS;
+
+    if (!assets) throw fileError;
+
+    const assetPath = relPathFromWeb.replace(/^public\/?/, "");
+    const response = await assets.fetch(new URL(`/${assetPath}`, "https://assets.local"));
+    if (!response.ok) {
+      throw new Error(`Unable to load /${assetPath} from Cloudflare assets (${response.status})`);
+    }
+
+    return (await response.json()) as T;
+  }
 }
 
 export async function loadMetaServer(): Promise<DatasetMeta> {
   if (_meta) return _meta;
 
   try {
-    const m = await readJsonFile<any>("public/dataset_meta.json");
+    const m = await readJsonServerAsset<any>("public/dataset_meta.json");
     _meta = {
       version: m.version || m.generated_at_utc || "Dataset",
       source: m.source || "ClinicalTrials.gov",
@@ -45,7 +79,7 @@ export async function loadMetaServer(): Promise<DatasetMeta> {
 export async function loadIndexServer(): Promise<TrialIndexRow[]> {
   if (_index) return _index;
 
-  _index = (await readJsonFile<TrialIndexRow[]>("public/trials-index.json")).filter(
+  _index = (await readJsonServerAsset<TrialIndexRow[]>("public/trials-index.json")).filter(
     (row) => row.nct_id
   );
   return _index;
@@ -60,7 +94,7 @@ export async function loadDetailServer(nctId: string): Promise<TrialDetail | nul
 
   if (!rows) {
     try {
-      rows = await readJsonFile<TrialDetail[]>(`public/trial-shards/${key}.json`);
+      rows = await readJsonServerAsset<TrialDetail[]>(`public/trial-shards/${key}.json`);
       _detailShards.set(key, rows);
     } catch {
       rows = undefined;

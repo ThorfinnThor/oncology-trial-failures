@@ -1,6 +1,3 @@
-import fs from "fs";
-import path from "path";
-
 import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
@@ -41,74 +38,6 @@ type HomePageProps = {
   stats: HomeStats;
   sampleTrials: SampleTrial[];
 };
-
-function asString(value: unknown): string {
-  if (value == null) return "";
-  if (Array.isArray(value)) return value.filter(Boolean).join("; ");
-  if (typeof value === "string") return value;
-  return String(value);
-}
-
-function firstFromSemicolon(value: string): string {
-  return value
-    .split(";")
-    .map((part) => part.trim())
-    .filter(Boolean)[0] || "";
-}
-
-function mapRawTrial(row: any): TrialIndexRow {
-  const phasesRaw =
-    row.phases ??
-    row.phase ??
-    row.phase_list ??
-    row.phase_raw ??
-    row.phases_raw ??
-    "";
-
-  const conditionsRaw =
-    row.conditions ??
-    row.condition ??
-    row.condition_list ??
-    row.condition_name ??
-    row.condition_names ??
-    row.condition_terms ??
-    "";
-
-  const interventionsRaw =
-    row.intervention_names ??
-    row.interventions ??
-    row.intervention ??
-    row.intervention_list ??
-    row.intervention_name ??
-    "";
-
-  const whyRaw =
-    row.why_stopped ??
-    row.why_stopped_reason ??
-    row.why_stopped_text ??
-    row.reason_stopped ??
-    row.reason ??
-    "";
-
-  return {
-    nct_id: asString(row.nct_id).trim(),
-    brief_title: asString(row.brief_title || row.title || row.official_title || "").trim(),
-    overall_status: asString(row.overall_status || row.status || "").trim(),
-    phases: asString(phasesRaw).trim(),
-    disease_area: asString(row.disease_area ?? row.area ?? row.condition_area ?? row.therapeutic_area ?? "Other").trim(),
-    lead_sponsor: asString(row.lead_sponsor || row.sponsor || row.organization || "").trim(),
-    collaborators: asString(row.collaborators || row.collab || "").trim(),
-    condition_first: firstFromSemicolon(asString(conditionsRaw)),
-    intervention_first: firstFromSemicolon(asString(interventionsRaw)),
-    why_stopped_short: asString(whyRaw).trim(),
-    classification_label: asString(row.classification_label || row.label || "").trim(),
-    classification_reason: asString(row.classification_reason || row.reason_bucket || "").trim(),
-    classification_confidence: asString(row.classification_confidence || row.confidence || "").trim(),
-    classification_evidence: asString(row.classification_evidence || row.evidence || "").trim(),
-    last_update_post_date: asString(row.last_update_post_date || row.last_update || row.updated || "").trim(),
-    url: row.url || (row.nct_id ? `https://clinicaltrials.gov/study/${encodeURIComponent(row.nct_id)}` : ""),
-  };
-}
 
 function compactNumber(value: number): string {
   return value.toLocaleString("en-US");
@@ -174,16 +103,17 @@ function buildSampleTrials(rows: TrialIndexRow[]): SampleTrial[] {
 }
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
-  const metaPath = path.join(process.cwd(), "public", "dataset_meta.json");
-  const dataPath = path.join(process.cwd(), "public", "all_stopped_trials.json");
-
-  const meta = JSON.parse(fs.readFileSync(metaPath, "utf8"));
-  const rawRows = JSON.parse(fs.readFileSync(dataPath, "utf8"));
-  const rows = rawRows.map(mapRawTrial).filter((row: TrialIndexRow) => row.nct_id);
+  const { loadIndexServer, readJsonServerAsset } = await import("@/lib/server-data");
+  const [meta, rows] = await Promise.all([
+    readJsonServerAsset<any>("public/dataset_meta.json"),
+    loadIndexServer(),
+  ]);
 
   const stats: HomeStats = {
     trialCount: meta?.all?.record_count || rows.length,
-    scientificCount: meta?.biological_failure?.record_count || rows.filter((row: TrialIndexRow) => reasonBucket(row) === "EFFICACY/FUTILITY").length,
+    scientificCount:
+      meta?.biological_failure?.record_count ||
+      rows.filter((row) => ["EFFICACY/FUTILITY", "SAFETY"].includes(reasonBucket(row))).length,
     updated: cleanDateLabel(meta?.all?.max_last_update_post_date || meta?.version || ""),
     updatedIso: cleanDateLabel(meta?.all?.max_last_update_post_date || meta?.version || ""),
     source: meta?.source || "ClinicalTrials.gov",

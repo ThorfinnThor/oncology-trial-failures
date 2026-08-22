@@ -1,5 +1,4 @@
-import path from "path";
-import { promises as fs } from "fs";
+import { readJsonServerAsset } from "./server-data";
 
 export type IngestChangeRecord = {
   nct_id: string;
@@ -46,14 +45,13 @@ export type IngestChangeReport = {
 
 export async function loadIngestChangesServer(): Promise<IngestChangeReport | null> {
   const candidates = [
-    path.join(process.cwd(), "public", "ingest_changes.json"),
-    path.join(process.cwd(), "public", "data", "ingest_changes.json"),
+    "public/ingest_changes.json",
+    "public/data/ingest_changes.json",
   ];
 
-  for (const filePath of candidates) {
+  for (const assetPath of candidates) {
     try {
-      const raw = await fs.readFile(filePath, "utf8");
-      const parsed = JSON.parse(raw) as IngestChangeReport;
+      const parsed = await readJsonServerAsset<IngestChangeReport>(assetPath);
       if (parsed && parsed.schema_version === 1 && parsed.summary) return parsed;
     } catch {
       // The first deployment establishes the baseline; the next ingest creates this file.
