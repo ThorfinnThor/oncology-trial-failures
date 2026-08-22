@@ -1,8 +1,14 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const root = path.join(__dirname, '..', '..');
 const base = fs.readFileSync(path.join(root, 'docs', 'classification_audit.md'), 'utf8');
 const append = fs.readFileSync(path.join(root, 'docs', 'batch18_append.tmp.md'), 'utf8');
 const out = base.replace(/\s*$/, '') + '\n' + append;
 fs.writeFileSync(path.join(__dirname, '..', 'public', 'batch18-final.md'), out);
-console.log('[BATCH18_FINAL] bytes=' + Buffer.byteLength(out) + ' sha1=' + require('crypto').createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${Buffer.byteLength(out)}\0`), Buffer.from(out)])).digest('hex'));
+const gitBlob = Buffer.concat([Buffer.from(`blob ${Buffer.byteLength(out)}\0`), Buffer.from(out)]);
+console.log('[BATCH18_FINAL] bytes=' + Buffer.byteLength(out) + ' sha1=' + crypto.createHash('sha1').update(gitBlob).digest('hex'));
+const b64 = Buffer.from(out).toString('base64');
+const chunkSize = 16000;
+const total = Math.ceil(b64.length / chunkSize);
+for (let i = 0; i < total; i++) console.log(`[BATCH18_B64 ${i + 1}/${total}] ${b64.slice(i * chunkSize, (i + 1) * chunkSize)}`);
