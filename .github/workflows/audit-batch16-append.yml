@@ -1,0 +1,48 @@
+name: Apply Batch 16 audit documentation
+
+on:
+  push:
+    branches:
+      - audit/batch-16
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-batch16-append
+  cancel-in-progress: false
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/batch-16
+          fetch-depth: 0
+
+      - name: Append validated Batch 16 section
+        shell: bash
+        run: |
+          set -euo pipefail
+          section='docs/.classification_audit_batch16.tmp.md'
+          target='docs/classification_audit.md'
+
+          test -f "$section"
+          if grep -Fqx '# Classification Audit — Batch 16' "$target"; then
+            echo 'Batch 16 already present; nothing to append.'
+            exit 0
+          fi
+
+          cat "$section" >> "$target"
+          actual="$(git hash-object "$target")"
+          echo "AUDIT_BATCH16_COMBINED_SHA $actual"
+
+          git add -- "$target"
+          test "$(git diff --cached --name-only)" = "$target"
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: add classification audit batch 16'
+          git push origin HEAD:audit/batch-16
