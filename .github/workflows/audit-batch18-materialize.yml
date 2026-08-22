@@ -1,0 +1,29 @@
+name: Temporary Batch 18 Audit Materialization
+
+on:
+  pull_request:
+    branches:
+      - audit/batch-3
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    if: github.head_ref == 'temp/audit-batch18-materialize'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: temp/audit-batch18-materialize
+          fetch-depth: 0
+      - name: Append validated Batch 18 section
+        run: |
+          cat docs/batch18_append.tmp.md >> docs/classification_audit.md
+          rm docs/batch18_append.tmp.md
+          rm .github/workflows/audit-batch18-materialize.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "docs: materialize classification audit batch 18"
+          git push origin HEAD:temp/audit-batch18-materialize
