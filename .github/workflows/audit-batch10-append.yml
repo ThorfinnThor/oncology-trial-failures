@@ -1,0 +1,52 @@
+name: Apply Batch 10 audit documentation
+
+on:
+  pull_request:
+    branches:
+      - audit/batch-10
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-batch10-append
+  cancel-in-progress: false
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/batch-10
+          fetch-depth: 0
+
+      - name: Append validated Batch 10 section
+        shell: bash
+        run: |
+          set -euo pipefail
+          section='docs/.classification_audit_batch10.tmp.md'
+          target='docs/classification_audit.md'
+          base='9df80d1b1fa6a82ac664d31d694920a94df8a2a6'
+          expected='091a0332fd2f03d0fd98d2626d83420d21290e9c'
+
+          test -f "$section"
+          current="$(git hash-object "$target")"
+          if [ "$current" = "$expected" ]; then
+            exit 0
+          fi
+          test "$current" = "$base"
+          cat "$section" >> "$target"
+          actual="$(git hash-object "$target")"
+          test "$actual" = "$expected"
+
+          git add -- "$target"
+          test "$(git diff --cached --name-only)" = "$target"
+          git diff --cached --check
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: add classification audit batch 10'
+          git push origin HEAD:audit/batch-10
