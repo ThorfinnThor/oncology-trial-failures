@@ -3,8 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
+    "predev": "npm run data:optimize",
     "dev": "next dev",
-    "build": "next build",
+    "data:optimize": "node scripts/generate-data-shards.mjs",
+    "build": "npm run data:optimize && next build",
     "start": "next start",
     "lint": "next lint"
   },

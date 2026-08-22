@@ -20,6 +20,10 @@
 # production
 /build
 
+# generated trial delivery assets
+/public/trials-index.json
+/public/trial-shards/
+
 # misc
 .DS_Store
 *.pem

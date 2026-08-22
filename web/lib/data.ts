@@ -1,3 +1,4 @@
+import { trialShardKey } from "./trial-sharding";
 import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
 
 let _meta: DatasetMeta | null = null;
@@ -5,7 +6,9 @@ let _index: TrialIndexRow[] | null = null;
 let _specialness: any | null = null;
 
 async function fetchJSON<T>(url: string): Promise<T> {
-  const res = await fetch(url, { cache: "no-store" });
+  // These files change only when the site is redeployed. Respect the browser/CDN
+  // cache instead of forcing every visit back to origin.
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`Failed to load ${url} (${res.status})`);
   return res.json() as Promise<T>;
 }
@@ -30,13 +33,41 @@ function firstFromSemicolon(s: string): string {
   return t[0] || "";
 }
 
-/**
- * Prefer the "root" published assets (web/public/*.json) which include:
- * - /all_stopped_trials.json (full)
- * - /dataset_meta.json
- *
- * Fall back to /data/all_stopped_trials.json for compatibility.
- */
+function normalizeIndexRows(raw: any[]): TrialIndexRow[] {
+  return raw
+    .map((r: any) => {
+      const phasesRaw = r.phases ?? r.phase ?? r.phase_list ?? r.phase_raw ?? r.phases_raw ?? "";
+      const conditionsRaw =
+        r.conditions ?? r.condition ?? r.condition_list ?? r.condition_name ?? r.condition_names ?? r.condition_terms ?? "";
+      const interventionsRaw =
+        r.intervention_names ?? r.interventions ?? r.intervention ?? r.intervention_list ?? r.intervention_name ?? "";
+      const whyRaw = r.why_stopped ?? r.why_stopped_reason ?? r.why_stopped_text ?? r.reason_stopped ?? r.reason ?? "";
+      const diseaseArea = r.disease_area ?? r.area ?? r.condition_area ?? r.therapeutic_area ?? "Other";
+      const nctId = asString(r.nct_id).trim();
+      const url = r.url || (nctId ? `https://clinicaltrials.gov/study/${encodeURIComponent(nctId)}` : "");
+
+      return {
+        nct_id: nctId,
+        brief_title: asString(r.brief_title || r.title || r.official_title || "").trim(),
+        overall_status: asString(r.overall_status || r.status || "").trim(),
+        phases: asString(phasesRaw).trim(),
+        disease_area: asString(diseaseArea).trim(),
+        lead_sponsor: asString(r.lead_sponsor || r.sponsor || r.organization || "").trim(),
+        collaborators: asString(r.collaborators || r.collab || "").trim(),
+        condition_first: firstFromSemicolon(asString(conditionsRaw)),
+        intervention_first: firstFromSemicolon(asString(interventionsRaw)),
+        why_stopped_short: asString(whyRaw).trim(),
+        classification_label: asString(r.classification_label || r.label || "").trim(),
+        classification_reason: asString(r.classification_reason || r.reason_bucket || "").trim(),
+        classification_confidence: asString(r.classification_confidence || r.confidence || "").trim(),
+        classification_evidence: asString(r.classification_evidence || r.evidence || "").trim(),
+        last_update_post_date: asString(r.last_update_post_date || r.last_update || r.updated || "").trim(),
+        url,
+      } as TrialIndexRow;
+    })
+    .filter((row) => row.nct_id);
+}
+
 export async function loadMeta(): Promise<DatasetMeta> {
   if (_meta) return _meta;
 
@@ -44,14 +75,14 @@ export async function loadMeta(): Promise<DatasetMeta> {
   if (m) {
     _meta = {
       version: m.version || m.generated_at_utc || "Dataset",
-      source: m.source || "ClinicalTrials.gov"
+      source: m.source || "ClinicalTrials.gov",
     };
     return _meta;
   }
 
   _meta = {
     version: "All stopped trials",
-    source: "ClinicalTrials.gov"
+    source: "ClinicalTrials.gov",
   };
   return _meta;
 }
@@ -59,98 +90,40 @@ export async function loadMeta(): Promise<DatasetMeta> {
 export async function loadIndex(): Promise<TrialIndexRow[]> {
   if (_index) return _index;
 
-  // Prefer full dataset at root
-  const raw =
+  // Normal deployments generate this compact, already-normalized asset before
+  // `next build`. Keep the legacy fallback so local/older deployments still work.
+  const compactIndex = await tryFetchJSON<TrialIndexRow[]>("/trials-index.json");
+  if (compactIndex) {
+    _index = compactIndex.filter((row) => row.nct_id);
+    return _index;
+  }
+
+  const legacyRaw =
     (await tryFetchJSON<any[]>("/all_stopped_trials.json")) ??
     (await fetchJSON<any[]>("/data/all_stopped_trials.json"));
-
-  _index = raw.map((r: any) => {
-    const phasesRaw =
-      r.phases ??
-      r.phase ??
-      r.phase_list ??
-      r.phase_raw ??
-      r.phases_raw ??
-      "";
-
-    const conditionsRaw =
-      r.conditions ??
-      r.condition ??
-      r.condition_list ??
-      r.condition_name ??
-      r.condition_names ??
-      r.condition_terms ??
-      "";
-
-    const interventionsRaw =
-      r.intervention_names ??
-      r.interventions ??
-      r.intervention ??
-      r.intervention_list ??
-      r.intervention_name ??
-      "";
-
-    const whyRaw =
-      r.why_stopped ??
-      r.why_stopped_reason ??
-      r.why_stopped_text ??
-      r.reason_stopped ??
-      r.reason ??
-      "";
-
-    const diseaseArea =
-      r.disease_area ??
-      r.area ??
-      r.condition_area ??
-      r.therapeutic_area ??
-      "Other";
-
-    const url =
-      r.url ||
-      (r.nct_id ? `https://clinicaltrials.gov/study/${encodeURIComponent(r.nct_id)}` : "");
-
-    return {
-      nct_id: asString(r.nct_id).trim(),
-
-      brief_title: asString(r.brief_title || r.title || r.official_title || "").trim(),
-      overall_status: asString(r.overall_status || r.status || "").trim(),
-
-      phases: asString(phasesRaw).trim(),
-      disease_area: asString(diseaseArea).trim(),
-
-      lead_sponsor: asString(r.lead_sponsor || r.sponsor || r.organization || "").trim(),
-      collaborators: asString(r.collaborators || r.collab || "").trim(),
-
-      condition_first: firstFromSemicolon(asString(conditionsRaw)),
-      intervention_first: firstFromSemicolon(asString(interventionsRaw)),
-
-      why_stopped_short: asString(whyRaw).trim(),
-
-      classification_label: asString(r.classification_label || r.label || "").trim(),
-      classification_reason: asString(r.classification_reason || r.reason_bucket || "").trim(),
-      classification_confidence: asString(r.classification_confidence || r.confidence || "").trim(),
-      classification_evidence: asString(r.classification_evidence || r.evidence || "").trim(),
-
-      last_update_post_date: asString(r.last_update_post_date || r.last_update || r.updated || "").trim(),
-
-      url
-    } as TrialIndexRow;
-  });
-
-  _index = _index.filter((x) => x.nct_id);
+  _index = normalizeIndexRows(legacyRaw);
   return _index;
 }
 
 export async function loadDetail(nctId: string): Promise<TrialDetail | null> {
+  const normalizedId = (nctId || "").trim().toUpperCase();
+  if (!normalizedId) return null;
+
+  const shard = await tryFetchJSON<TrialDetail[]>(`/trial-shards/${trialShardKey(normalizedId)}.json`);
+  const fromShard = shard?.find((row) => row.nct_id.toUpperCase() === normalizedId);
+  if (fromShard) return fromShard;
+
+  // Safe fallback: the compact index contains every field the existing detail UI
+  // used before sharding, so a missing shard does not force a 27 MB download.
   const rows = await loadIndex();
-  const row = rows.find((x) => x.nct_id === nctId);
+  const row = rows.find((candidate) => candidate.nct_id.toUpperCase() === normalizedId);
   if (!row) return null;
 
   return {
     ...row,
     why_stopped: row.why_stopped_short || "",
     conditions: row.condition_first || "",
-    intervention_names: row.intervention_first || ""
+    intervention_names: row.intervention_first || "",
   };
 }
 
