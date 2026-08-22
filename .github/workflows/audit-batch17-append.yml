@@ -1,0 +1,30 @@
+name: Batch 17 audit append
+
+on:
+  push:
+    branches:
+      - audit/batch-17
+    paths:
+      - .github/workflows/audit-batch17-append.yml
+
+permissions:
+  contents: write
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/batch-17
+          fetch-depth: 0
+      - name: Append audited section and clean helpers
+        shell: bash
+        run: |
+          cat docs/.batch17_append.tmp >> docs/classification_audit.md
+          git rm docs/.batch17_append.tmp .github/workflows/audit-batch17-append.yml
+          git add docs/classification_audit.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: add classification audit batch 17"
+          git push origin HEAD:audit/batch-17
