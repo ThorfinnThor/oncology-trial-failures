@@ -1,0 +1,49 @@
+name: Apply Batch 15 audit documentation
+
+on:
+  pull_request_target:
+    branches:
+      - audit/batch-15
+    types: [opened, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-batch15-append
+  cancel-in-progress: false
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/batch-15
+          fetch-depth: 0
+
+      - name: Append validated Batch 15 section
+        shell: bash
+        run: |
+          set -euo pipefail
+          section='docs/.classification_audit_batch15.tmp.md'
+          target='docs/classification_audit.md'
+
+          test -f "$section"
+          if grep -Fqx '# Classification Audit — Batch 15' "$target"; then
+            echo 'Batch 15 already present; nothing to append.'
+            exit 0
+          fi
+
+          cat "$section" >> "$target"
+          actual="$(git hash-object "$target")"
+          echo "AUDIT_BATCH15_COMBINED_SHA $actual"
+
+          git add -- "$target"
+          test "$(git diff --cached --name-only)" = "$target"
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: add classification audit batch 15'
+          git push origin HEAD:audit/batch-15
