@@ -1,10 +1,11 @@
 name: Apply Batch 17 audit documentation
 
 on:
-  pull_request:
+  push:
     branches:
       - audit/batch-17-clean
-    types: [opened, reopened]
+    paths:
+      - .audit-batch17-run
 
 permissions:
   contents: write
@@ -30,15 +31,17 @@ jobs:
           section='docs/.classification_audit_batch17.tmp.md'
           target='docs/classification_audit.md'
           workflow='.github/workflows/audit-batch17-append-clean.yml'
+          trigger='.audit-batch17-run'
 
           test -f "$section"
+          test -f "$trigger"
           if grep -Fqx '# Classification Audit — Batch 17' "$target"; then
             echo 'Batch 17 already present; cleaning helpers only.'
           else
             cat "$section" >> "$target"
           fi
 
-          git rm -- "$section" "$workflow"
+          git rm -- "$section" "$workflow" "$trigger"
           git add -- "$target"
           echo "AUDIT_BATCH17_COMBINED_SHA $(git hash-object "$target")"
           git diff --cached --check
