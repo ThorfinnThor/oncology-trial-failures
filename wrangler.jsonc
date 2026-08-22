@@ -1,0 +1,18 @@
+{
+  "$schema": "./web/node_modules/wrangler/config-schema.json",
+  "name": "oncology-trial-failures",
+  "main": "web/.open-next/worker.js",
+  "compatibility_date": "2026-08-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "web/.open-next/assets",
+    "binding": "ASSETS"
+  },
+  "build": {
+    "command": "npm install --no-audit --no-fund && npm run cf:build",
+    "cwd": "web"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

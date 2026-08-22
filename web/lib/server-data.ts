@@ -13,10 +13,47 @@ let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
 const _detailShards = new Map<string, TrialDetail[]>();
 
+type AssetBinding = {
+  fetch(input: Request | URL | string): Promise<Response>;
+};
+
+async function readJsonFromCloudflareAssets<T>(relPathFromWeb: string): Promise<T> {
+  if (!relPathFromWeb.startsWith("public/")) {
+    throw new Error(`Cloudflare asset path must start with public/: ${relPathFromWeb}`);
+  }
+
+  const { getCloudflareContext } = await import("@opennextjs/cloudflare");
+  const { env } = await getCloudflareContext({ async: true });
+  const assets = (env as { ASSETS?: AssetBinding }).ASSETS;
+  if (!assets) {
+    throw new Error("Cloudflare ASSETS binding is not available");
+  }
+
+  const assetPath = relPathFromWeb.slice("public/".length);
+  const response = await assets.fetch(`https://assets.local/${assetPath}`);
+  if (!response.ok) {
+    throw new Error(`Failed to read Cloudflare asset ${assetPath} (${response.status})`);
+  }
+
+  return (await response.json()) as T;
+}
+
 async function readJsonFile<T>(relPathFromWeb: string): Promise<T> {
   const abs = path.join(process.cwd(), relPathFromWeb);
-  const raw = await fs.readFile(abs, "utf8");
-  return JSON.parse(raw) as T;
+
+  try {
+    const raw = await fs.readFile(abs, "utf8");
+    return JSON.parse(raw) as T;
+  } catch (filesystemError) {
+    // Vercel/build-time Node can read public assets directly from disk. Cloudflare
+    // Workers do not expose that filesystem at runtime, so read the same files
+    // through the Worker static-assets binding instead.
+    try {
+      return await readJsonFromCloudflareAssets<T>(relPathFromWeb);
+    } catch {
+      throw filesystemError;
+    }
+  }
 }
 
 export async function loadMetaServer(): Promise<DatasetMeta> {
