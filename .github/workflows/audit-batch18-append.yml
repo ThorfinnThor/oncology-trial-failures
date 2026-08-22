@@ -31,3 +31,5 @@ jobs:
           git add docs/classification_audit.md
           git commit -m 'docs: add classification audit batch 18'
           git push origin HEAD:audit/batch-18
+
+# trigger after workflow exists on branch
