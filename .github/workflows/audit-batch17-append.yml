@@ -1,17 +1,17 @@
 name: Batch 17 audit append
 
 on:
-  push:
+  pull_request:
     branches:
-      - audit/batch-17
-    paths:
-      - .github/workflows/audit-batch17-append.yml
+      - audit/batch-3
+    types: [opened]
 
 permissions:
   contents: write
 
 jobs:
   append:
+    if: github.head_ref == 'audit/batch-17'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
