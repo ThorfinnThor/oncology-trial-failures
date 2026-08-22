@@ -224,6 +224,11 @@ export default function MethodsPage() {
               <li>Labels are probabilistic and should be verified against primary sources.</li>
               <li>The site is for research support only and is not medical advice.</li>
             </ul>
+            <p className="muted" style={{ marginTop: 10 }}>
+              Read the <Link className="link" href="/disclaimer">Disclaimer and limitations</Link> for
+              verification responsibilities, information-quality limitations, and the legally applicable
+              limitation of liability.
+            </p>
 
             <div style={{ marginTop: 18 }}>
               <Link href="/explore" className="btn">
