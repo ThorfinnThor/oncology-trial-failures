@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - audit/batch-3
-    types: [opened]
+    types: [synchronize]
 
 permissions:
   contents: write
@@ -18,11 +18,15 @@ jobs:
         with:
           ref: audit/batch-17
           fetch-depth: 0
-      - name: Append audited section and clean helpers
+      - name: Append audited section
         shell: bash
         run: |
+          if [ ! -f docs/.batch17_append.tmp ]; then
+            echo "Batch 17 append already applied"
+            exit 0
+          fi
           cat docs/.batch17_append.tmp >> docs/classification_audit.md
-          git rm docs/.batch17_append.tmp .github/workflows/audit-batch17-append.yml
+          git rm docs/.batch17_append.tmp
           git add docs/classification_audit.md
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
