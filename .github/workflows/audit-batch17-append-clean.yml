@@ -1,7 +1,7 @@
 name: Apply Batch 17 audit documentation
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - audit/batch-17-clean
     types: [opened, reopened]
