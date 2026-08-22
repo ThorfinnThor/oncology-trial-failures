@@ -241,7 +241,8 @@ export default function PrivacyPage() {
               advice. Because the operator is based in Europe and because AdSense, affiliate tracking,
               and newsletter tools can trigger GDPR and German TTDSG consent duties, the policy and
               consent setup should be reviewed by a qualified privacy professional before monetization
-              or personalized advertising is enabled.
+              or personalized advertising is enabled. Information-quality, verification, and liability
+              limitations are explained separately in the <Link href="/disclaimer">Disclaimer</Link>.
             </p>
           </section>
 
