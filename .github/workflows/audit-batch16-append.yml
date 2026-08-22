@@ -1,9 +1,10 @@
 name: Apply Batch 16 audit documentation
 
 on:
-  push:
+  pull_request:
     branches:
       - audit/batch-16
+    types: [opened, reopened]
 
 permissions:
   contents: write
