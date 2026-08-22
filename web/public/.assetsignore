@@ -1,0 +1,3 @@
+# Cloudflare Workers static assets are limited to 25 MiB per file.
+# The app uses trials-index.json + trial-shards/* instead of this legacy raw asset.
+all_stopped_trials.json
