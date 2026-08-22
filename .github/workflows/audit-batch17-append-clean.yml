@@ -1,0 +1,48 @@
+name: Apply Batch 17 audit documentation
+
+on:
+  pull_request_target:
+    branches:
+      - audit/batch-17-clean
+    types: [opened, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-batch17-clean-append
+  cancel-in-progress: false
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/batch-17-clean
+          fetch-depth: 0
+
+      - name: Append validated Batch 17 section
+        shell: bash
+        run: |
+          set -euo pipefail
+          section='docs/.classification_audit_batch17.tmp.md'
+          target='docs/classification_audit.md'
+          workflow='.github/workflows/audit-batch17-append-clean.yml'
+
+          test -f "$section"
+          if grep -Fqx '# Classification Audit — Batch 17' "$target"; then
+            echo 'Batch 17 already present; cleaning helpers only.'
+          else
+            cat "$section" >> "$target"
+          fi
+
+          git rm -- "$section" "$workflow"
+          git add -- "$target"
+          echo "AUDIT_BATCH17_COMBINED_SHA $(git hash-object "$target")"
+          git diff --cached --check
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: add classification audit batch 17'
+          git push origin HEAD:audit/batch-17-clean
