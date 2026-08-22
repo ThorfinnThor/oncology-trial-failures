@@ -1,6 +1,9 @@
 name: Temporary Batch 18 Audit Materialization
 
 on:
+  push:
+    branches:
+      - temp/audit-batch18-materialize
   pull_request:
     branches:
       - audit/batch-3
@@ -10,7 +13,7 @@ permissions:
 
 jobs:
   materialize:
-    if: github.head_ref == 'temp/audit-batch18-materialize'
+    if: github.event_name == 'push' || github.head_ref == 'temp/audit-batch18-materialize'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
