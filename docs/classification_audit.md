@@ -3131,3 +3131,158 @@ Thus 1087 of 1301 definite errors (83.6%) remain variants of the same core probl
 - Cumulative total: `1987 + 1301 + 312 = 3600`.
 - Cumulative needs change/review: `1301 + 312 = 1613`.
 - Cumulative definite-error subgroups: `749 + 338 + 141 + 33 + 33 + 7 = 1301`.
+
+---
+
+# Classification Audit — Batch 19
+
+This section is the completed manual semantic audit for records 3601–3800 and uses the same methodology and taxonomy as Batches 1–18.
+
+Batch boundary: record 3601 is `NCT02340156`; record 3800 is `NCT01745367`.
+
+The same causal-layer rules are applied strictly. Bare decisions, requests, recommendations, program discontinuations, enrollment actions, and stage transitions do not identify causality by themselves. Concrete business/strategy changes, recruitment and feasibility constraints, staffing, supply/manufacturing, funding/support withdrawal, competing studies, and treatment-landscape changes are operational when they actually explain the stop. Direct negative efficacy and adverse safety evidence retain their biological dimension; external regulator/IRB actions are regulatory. Risk-benefit, interim/DMC/DSMB, mixed-cause, replacement-study, milestone, and successful-transition language remains subject to dimension, polarity, and non-failure review rather than forced single-label precedence.
+
+## Summary
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 141 | 70.5% |
+| Definitely misclassified | 37 | 18.5% |
+| Ambiguous / multiple plausible causes / planned-success / non-failure | 22 | 11.0% |
+| Needs change or manual review | 59 | 29.5% |
+
+## Main finding
+
+Batch 19 has a lower definite-error rate than the preceding batches, but the same structural boundary remains dominant. Of the 37 definite errors, 19 are `OTHER/UNKNOWN → OPERATIONAL` and eight are `OPERATIONAL → OTHER/UNKNOWN`. Together these 27 records account for 73.0% of all definite Batch 19 errors.
+
+The remaining ten definite errors are seven missed `EFFICACY/FUTILITY` cases, two missed `SAFETY` cases, one missed `REGULATORY` case, and zero inverse biological false positives.
+
+## A. `OTHER/UNKNOWN` that should be `OPERATIONAL` — 19
+
+- `NCT02684617` (record 3603) — `Business Reasons`; concrete business cause
+- `NCT02758366` (record 3627) — high heterogeneity of enrolled patients made the study population unsuitable; feasibility cause
+- `NCT00285415` (record 3633) — investigator abruptly left Carilion; staffing/PI-departure cause
+- `NCT03728465` (record 3640) — lack of patients; recruitment/feasibility cause
+- `NCT02524119` (record 3647) — sponsor withdrew support; concrete support-withdrawal cause
+- `NCT02495103` (record 3662) — drug no longer available and Sanofi would not provide more; supply/product-availability cause
+- `NCT03585062` (record 3688) — paclitaxel-albumin production halted; manufacturing/supply cause
+- `NCT01428245` (record 3698) — research question changed and was de-prioritized; concrete reprioritization
+- `NCT00285051` (record 3707) — study-drug expiry date was not extended; product-availability cause
+- `NCT03363776` (record 3718) — business objectives changed; concrete business-strategy cause
+- `NCT00615784` (record 3725) — Targretin was acquired by another company; corporate/product-availability transition
+- `NCT00823290` (record 3730) — investigator left the site; staffing cause
+- `NCT01562899` (record 3734) — scientific and business considerations include an explicit business rationale; operational cause is concretely present
+- `NCT02931110` (record 3737) — business reasons
+- `NCT03996252` (record 3749) — study team never started or completed the IRB submission; operational administrative failure rather than regulator action
+- `NCT02946918` (record 3753) — drug ownership/support moved to another company and support stopped; corporate/product-support transition
+- `NCT02607124` (record 3785) — a competing trial opened for the same patient population; recruitment/feasibility cause
+- `NCT03528876` (record 3790) — chemo-immunotherapy became the new standard of care; treatment-landscape cause
+- `NCT03302247` (record 3797) — unable to accrue subjects; recruitment failure
+
+## B. `OPERATIONAL` that should be `OTHER/UNKNOWN` — 8
+
+These records identify a decision, request, or development action without the underlying causal reason.
+
+- `NCT04274907` (record 3625) — `Company Decision`; decision only
+- `NCT00642941` (record 3639) — sponsor decided to discontinue development; no underlying causal reason is supplied
+- `NCT03512353` (record 3687) — `Sponsor Decision`
+- `NCT03162562` (record 3709) — sponsor decision to discontinue long-term follow-up; cause absent
+- `NCT02703571` (record 3711) — `Company decision`
+- `NCT00493766` (record 3717) — bare strategic decision by Novartis; no concrete strategic change or reason is supplied
+- `NCT02010567` (record 3787) — halted at the funding partner's request; a request/actor is stated, not an actual funding loss or other cause
+- `NCT04274933` (record 3796) — `Company Decision`
+
+## C. Missed `EFFICACY/FUTILITY` — 7
+
+- `NCT04084158` (record 3608) — the combination arm developed significant poor prognosis; adverse clinical-outcome signal in the treatment arm
+- `NCT03146663` (record 3613) — prespecified efficacy boundary was unlikely to be met despite promising Part I findings and good tolerability
+- `NCT02698176` (record 3658) — terminated for limited efficacy, explicitly not safety
+- `NCT02296476` (record 3660) — lack of clinical activity, explicitly not safety
+- `NCT00515528` (record 3661) — immune monitoring failed to demonstrate improvement in any biological endpoint
+- `NCT03170115` (record 3720) — aspirin was safe but did not improve response; direct absence of benefit
+- `NCT02897830` (record 3779) — negative results; negative trial-result signal supports efficacy/futility
+
+## D. Missed `SAFETY` — 2
+
+- `NCT03125200` (record 3649) — `Safety` is supplied directly as the stop reason
+- `NCT03342859` (record 3692) — preclinical carcinogenicity findings for vilaprisan represent an adverse safety risk
+
+## E. Missed `REGULATORY` — 1
+
+- `NCT02893332` (record 3641) — after interim analysis, the IRB recommended termination; concrete external IRB oversight action
+
+## F. Inverse biological false positives — 0
+
+No definite Batch 19 record currently assigned a biological failure label is contradicted strongly enough by the stop text to require an inverse biological false-positive reclassification.
+
+## G. Ambiguous / mixed-cause / planned-success / non-failure cases — 22
+
+- `NCT02255461` (record 3602) — primary objectives were complete and MTD was identified; successful/planned milestone rather than failure
+- `NCT01334047` (record 3604) — new knowledge about cancer vaccines led to a replacement protocol expected to use a more efficient vaccine; scientific transition/replacement rather than a clean failure class
+- `NCT00904345` (record 3606) — funding and efficacy reasons are both explicit; mixed operational + efficacy cause
+- `NCT03696212` (record 3610) — termination based on combined safety and efficacy data; mixed biological dimensions without sufficient polarity detail
+- `NCT01770340` (record 3611) — poor recruitment plus primary/secondary endpoints lower than expected; mixed operational + efficacy cause
+- `NCT02244112` (record 3612) — safety profile plus PK/formulation characteristics required optimization; mixed safety + formulation/development cause
+- `NCT02865915` (record 3644) — unfavorable risk/benefit profile; biologically adverse but safety versus efficacy dimension is not isolated
+- `NCT00448266` (record 3666) — a similar multicenter study was activated and the original study was no longer needed; replacement-study transition/non-failure
+- `NCT01702558` (record 3670) — stop after 70% experienced a PFS event; likely event-driven data maturity/milestone rather than an explicit failure cause
+- `NCT00176930` (record 3671) — replaced by another study/protocol rewrite; replacement transition/non-failure
+- `NCT00738777` (record 3673) — suspended in preparation for an amendment; planned protocol transition without a supplied adverse failure cause
+- `NCT03382899` (record 3677) — unfavorable risk-benefit ratio after planned primary analysis; biologically adverse but dimensionally ambiguous
+- `NCT01092975` (record 3700) — formulation/dose changes plus planned safety-monitoring/reporting changes; protocol/formulation redesign without explicit adverse safety polarity
+- `NCT02951156` (record 3721) — futility-analysis arm closures plus enrollment difficulty from an evolving treatment landscape; mixed efficacy + operational cause
+- `NCT02943473` (record 3728) — poor accrual plus risk/benefit ratio; mixed operational + dimensionally ambiguous biological cause
+- `NCT01495247` (record 3744) — Phase Ib failed its primary objective of establishing MTD/recommended Phase II dose; dose-finding/tolerability failure is not dimensionally explicit enough to force efficacy or safety
+- `NCT00023868` (record 3751) — study redesign; protocol transition without a clean adverse failure cause
+- `NCT02151903` (record 3756) — clinical benefit was noted and expansion cohorts were not opened; positive/planned transition/non-failure
+- `NCT01874288` (record 3761) — clinical benefit was noted and extension/expansion was not opened; positive/planned transition/non-failure
+- `NCT03837457` (record 3768) — study no longer needed because eligible subjects could receive cobomarsen through the SOLAR crossover arm; transition/non-failure
+- `NCT03976050` (record 3771) — study objective and design change; protocol/design transition rather than a demonstrated failure
+- `NCT02605083` (record 3793) — RP2D was determined before expansion cohorts; successful dose-finding milestone/non-failure
+
+## Classifier issues reinforced or newly exposed by Batch 19
+
+1. **Decision/action phrases remain false positives.** `Company Decision`, `Sponsor Decision`, a bare strategic decision, and a partner request do not establish an operational cause.
+2. **Concrete business, support, supply, staffing, and feasibility causes still leak to `OTHER/UNKNOWN`.** Business reasons/objectives, sponsor-support withdrawal, drug expiry/unavailability, manufacturing halt, PI departure, competing trials, and inability to accrue remain operational misses.
+3. **Treatment-landscape changes remain operational when they alter feasibility/relevance.** A competing trial or a new standard of care can make continuation impractical without representing a study-drug biological failure.
+4. **Direct negative efficacy semantics are still missed.** Limited efficacy, lack of clinical activity, failure to improve biological endpoints or response, low probability of meeting an efficacy boundary, adverse clinical-outcome signals, and negative results all require efficacy/futility coverage when causal.
+5. **Direct safety causes remain missable.** A direct `Safety` stop and carcinogenicity findings are adverse safety signals, unlike neutral safety review/monitoring language.
+6. **Concrete IRB action remains regulatory.** An IRB recommendation to terminate is an external oversight action and should not remain unknown.
+7. **Risk-benefit wording still requires dimension gating.** An unfavorable balance can be biologically adverse without uniquely distinguishing safety from efficacy.
+8. **Mixed causes still need explicit review.** Funding+efficacy, recruitment+endpoint underperformance, safety+formulation, futility+treatment-landscape change, and recruitment+risk-benefit combinations cannot be represented faithfully by forced precedence.
+9. **Milestones, replacements, crossovers, and positive clinical-benefit stops are not failures.** MTD/RP2D determination, replacement studies, crossover access, and positive-benefit transitions require non-failure handling.
+10. **Protocol/design change is not automatically an operational failure.** A redesign or objective/design change may be a neutral transition unless a concrete feasibility problem is supplied.
+11. **A request from a funding partner is still an action unless actual funding loss is stated.** Actor wording must not be promoted to a funding cause without the causal fact.
+12. **Confidence must remain subordinate to semantics.** Classifier confidence does not cure content-free decisions or override explicit biological, regulatory, operational, mixed, or non-failure evidence.
+
+---
+
+## Cumulative status — records 1–3800
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 2128 | 56.00% |
+| Definitely misclassified | 1338 | 35.21% |
+| Ambiguous / multiple plausible causes / non-failure | 334 | 8.79% |
+| Needs change or manual review | 1672 | 44.00% |
+
+Of the 1338 definite errors across the first 3800 records:
+
+- 768 (57.4%) are `OTHER/UNKNOWN → OPERATIONAL`;
+- 346 (25.9%) are `OPERATIONAL → OTHER/UNKNOWN`;
+- 148 (11.1%) are missed `EFFICACY/FUTILITY`;
+- 35 (2.6%) are missed `SAFETY`;
+- 34 (2.5%) are missed `REGULATORY`;
+- 7 (0.5%) are inverse biological false positives.
+
+Thus 1114 of 1338 definite errors (83.3%) remain variants of the same core problem: separating a real operational cause from a mere decision-maker/action statement.
+
+## Arithmetic check
+
+- Batch 19: `141 + 37 + 22 = 200`.
+- Batch 19 needs change/review: `37 + 22 = 59`.
+- Batch 19 definite-error subgroups: `19 + 8 + 7 + 2 + 1 + 0 = 37`.
+- Cumulative additions: `1987 + 141 = 2128`, `1301 + 37 = 1338`, `312 + 22 = 334`, and `1613 + 59 = 1672`.
+- Cumulative total: `2128 + 1338 + 334 = 3800`.
+- Cumulative needs change/review: `1338 + 334 = 1672`.
+- Cumulative definite-error subgroups: `768 + 346 + 148 + 35 + 34 + 7 = 1338`.
