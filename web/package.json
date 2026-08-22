@@ -7,7 +7,7 @@
     "dev": "next dev",
     "data:optimize": "node scripts/generate-data-shards.mjs",
     "build": "npm run data:optimize && next build",
-    "cf:build": "opennextjs-cloudflare build && cp public/.assetsignore .open-next/assets/.assetsignore",
+    "cf:build": "npm run data:optimize && opennextjs-cloudflare build && cp public/.assetsignore .open-next/assets/.assetsignore",
     "cf:deploy": "npm run cf:build && wrangler deploy",
     "cf:preview": "npm run cf:build && wrangler dev",
     "start": "next start",
