@@ -4,10 +4,31 @@ on:
   pull_request:
     branches:
       - audit/batch-3
-    types: [synchronize]
+    types: [reopened]
+
+permissions:
+  contents: write
 
 jobs:
-  diagnostic:
+  append:
+    if: github.head_ref == 'audit/batch-17'
     runs-on: ubuntu-latest
     steps:
-      - run: echo "actions-ok"
+      - uses: actions/checkout@v4
+        with:
+          ref: audit/batch-17
+          fetch-depth: 0
+      - name: Append audited section
+        shell: bash
+        run: |
+          if [ ! -f docs/.batch17_append.tmp ]; then
+            echo "Batch 17 append already applied"
+            exit 0
+          fi
+          cat docs/.batch17_append.tmp >> docs/classification_audit.md
+          git rm docs/.batch17_append.tmp
+          git add docs/classification_audit.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "docs: add classification audit batch 17"
+          git push origin HEAD:audit/batch-17
