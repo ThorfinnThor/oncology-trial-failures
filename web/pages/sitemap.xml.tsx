@@ -41,6 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/outliers",
     "/methods",
     "/privacy",
+    "/disclaimer",
     "/clinical-trial-failures",
     "/why-clinical-trials-fail",
     "/failed-clinical-trials",

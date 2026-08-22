@@ -17,6 +17,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     `- About and data trust: ${INSIGHTS_BASE_URL}/about\n` +
     `- Contact and corrections: ${INSIGHTS_BASE_URL}/contact\n` +
     `- Privacy Policy: ${INSIGHTS_BASE_URL}/privacy\n` +
+    `- Disclaimer and limitations: ${INSIGHTS_BASE_URL}/disclaimer\n` +
     `- Failure hubs: ${INSIGHTS_BASE_URL}/failures\n` +
     `- Clinical trial failures by phase: ${INSIGHTS_BASE_URL}/clinical-trial-failures-by-phase\n` +
     `- Clinical trial failures by disease area: ${INSIGHTS_BASE_URL}/clinical-trial-failures-by-disease-area\n` +

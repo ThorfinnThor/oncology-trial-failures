@@ -499,6 +499,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 <Link href="/about">About</Link>
                 <Link href="/contact">Contact</Link>
                 <Link href="/privacy">Privacy Policy</Link>
+                <Link href="/disclaimer">Disclaimer</Link>
               </div>
             </div>
           </footer>
