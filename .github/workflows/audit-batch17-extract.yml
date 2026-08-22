@@ -1,0 +1,15 @@
+name: Temporary Batch 17 Audit Extraction
+
+on:
+  push:
+    branches:
+      - audit/batch-17-extract
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Emit Batch 17 records
+        run: node web/scripts/audit-batch17-log.cjs
