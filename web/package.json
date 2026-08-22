@@ -14,7 +14,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "^1.20.2",
+    "@opennextjs/cloudflare": "1.15.0",
     "@tanstack/react-virtual": "^3.11.2",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
