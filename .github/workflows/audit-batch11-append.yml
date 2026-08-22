@@ -1,0 +1,45 @@
+name: Apply Batch 11 audit documentation
+
+on:
+  pull_request:
+    branches:
+      - audit/batch-11
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: audit-batch11-append
+  cancel-in-progress: false
+
+jobs:
+  append:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out audit branch
+        uses: actions/checkout@v4
+        with:
+          ref: audit/batch-11
+          fetch-depth: 0
+
+      - name: Append validated Batch 11 section
+        shell: bash
+        run: |
+          set -euo pipefail
+          section='docs/.classification_audit_batch11.tmp.md'
+          target='docs/classification_audit.md'
+
+          test -f "$section"
+          cat "$section" >> "$target"
+          actual="$(git hash-object "$target")"
+          echo "AUDIT_BATCH11_COMBINED_SHA $actual"
+
+          git add -- "$target"
+          test "$(git diff --cached --name-only)" = "$target"
+          git diff --cached --check
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'docs: add classification audit batch 11'
+          git push origin HEAD:audit/batch-11
