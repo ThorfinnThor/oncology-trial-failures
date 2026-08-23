@@ -20,7 +20,9 @@ try:
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_NON_FAILURE,
         OUTCOME_UNKNOWN,
+        REASON_BIO_UNSPECIFIED,
         REASON_MULTIPLE,
+        REASON_NOT_INITIATED,
         REASON_PLANNED,
         REASON_REGULATORY,
         REASON_REPLACEMENT,
@@ -38,7 +40,9 @@ except ImportError:
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_NON_FAILURE,
         OUTCOME_UNKNOWN,
+        REASON_BIO_UNSPECIFIED,
         REASON_MULTIPLE,
+        REASON_NOT_INITIATED,
         REASON_PLANNED,
         REASON_REGULATORY,
         REASON_REPLACEMENT,
@@ -64,6 +68,7 @@ ALLOWED_REASONS = {
     *OPERATIONAL_REASONS,
     REASON_REGULATORY,
     REASON_MULTIPLE,
+    REASON_NOT_INITIATED,
     REASON_PLANNED,
     REASON_REPLACEMENT,
     REASON_UNSPECIFIED,
@@ -143,6 +148,10 @@ def main() -> None:
             failures.append(f"{nct_id}: review-gated row asserts a legacy category")
         if source == "UNCLASSIFIED" and not review:
             failures.append(f"{nct_id}: unclassified row is not review-gated")
+        if outcome in {OUTCOME_UNKNOWN, OUTCOME_MIXED} and not review:
+            failures.append(f"{nct_id}: uncertain V2 outcome is not review-gated")
+        if reason == REASON_BIO_UNSPECIFIED and not review:
+            failures.append(f"{nct_id}: unspecified biological reason is not review-gated")
         if outcome == OUTCOME_BIOLOGICAL and reason not in BIOLOGICAL_REASONS:
             failures.append(f"{nct_id}: biological outcome has non-biological reason")
         if outcome == OUTCOME_NON_BIOLOGICAL and reason not in {

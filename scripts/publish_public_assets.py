@@ -5,6 +5,11 @@ import shutil
 from collections import Counter
 from datetime import datetime, timezone
 
+try:
+    from classification_v2 import CLASSIFIER_VERSION
+except ImportError:
+    from scripts.classification_v2 import CLASSIFIER_VERSION
+
 ROOT_ALL_JSON = "data/all_stopped_trials.json"
 ROOT_ALL_CSV = "data/all_stopped_trials.csv"
 
@@ -88,7 +93,7 @@ def main() -> None:
         },
         "top_areas": top_areas,
         "classification_v2": {
-            "version": "2.0.0",
+            "version": CLASSIFIER_VERSION,
             "outcomes": dict(v2_outcomes.most_common()),
             "primary_reasons": dict(v2_reasons.most_common()),
             "needs_review": v2_review_count,

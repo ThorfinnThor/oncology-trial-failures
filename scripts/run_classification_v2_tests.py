@@ -14,16 +14,19 @@ if str(REPO_ROOT) not in sys.path:
 
 from scripts.fetch_ctgov_oncology_failures import extract_record
 from scripts.ingest_changes import build_ingest_change_report
+from scripts.import_classification_review_batch_v2 import validate_semantics
 from scripts.reclassify_dataset_v2 import classify_rows
 
 try:
     from classification_v2 import (
+        CLASSIFIER_VERSION,
         classify_reason_v2,
         classify_with_v2_fallback,
         load_reviewed_reason_index,
     )
 except ImportError:
     from scripts.classification_v2 import (
+        CLASSIFIER_VERSION,
         classify_reason_v2,
         classify_with_v2_fallback,
         load_reviewed_reason_index,
@@ -58,6 +61,19 @@ def main() -> None:
     if not reviewed_result.evidence or reviewed_result.evidence[0].rule_id != "reviewed.exact_reason":
         failures.append("Reviewed exact reason did not override the rule classifier")
 
+    unresolved_legacy = {
+        classify_reason_v2("Difficulty in recruiting").normalized_text_hash: {
+            "outcome": "UNKNOWN",
+            "primary_reason": "UNSPECIFIED",
+            "needs_review": True,
+            "v2_derivation": "V2_UNRESOLVED_LEGACY_OPERATIONAL",
+            "example_text": "Difficulty in recruiting",
+        }
+    }
+    upgraded_result = classify_reason_v2("Difficulty in recruiting", unresolved_legacy)
+    if upgraded_result.primary_reason != "RECRUITMENT" or upgraded_result.needs_review:
+        failures.append("Unresolved legacy cache entry blocked a specific V2 rule")
+
     fallback = classify_with_v2_fallback(
         "See detailed description",
         "",
@@ -87,7 +103,7 @@ def main() -> None:
         "classification_primary_reason_v2": "SAFETY",
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": False,
-        "classification_version": "2.0.0",
+        "classification_version": CLASSIFIER_VERSION,
         "classification_text_hash": "manual",
         "classification_source": "MANUAL_NCT_OVERRIDE",
     }
@@ -142,6 +158,16 @@ def main() -> None:
     )
     if change_report["summary"]["classification_changes"] != 1:
         failures.append(f"V2 change was absent from ingest report: {change_report['summary']}")
+
+    try:
+        validate_semantics("UNKNOWN", "UNSPECIFIED", False)
+        failures.append("Manual-decision validation accepted an unreviewed UNKNOWN outcome")
+    except ValueError:
+        pass
+    try:
+        validate_semantics("UNKNOWN", "UNSPECIFIED", True)
+    except ValueError as exc:
+        failures.append(f"Manual-decision validation rejected a valid review state: {exc}")
 
     if failures:
         print("Classification V2 test failures:\n")

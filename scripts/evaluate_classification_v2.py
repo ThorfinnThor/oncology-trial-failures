@@ -150,10 +150,11 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
 def enforce(report: Dict[str, Any]) -> None:
     metrics = report["metrics"]
     requirements = {
-        "assertion_precision": 0.90,
-        "high_confidence_assertion_precision": 0.94,
-        "biological_precision": 0.94,
-        "audit_review_recall": 0.80,
+        "assertion_precision": 0.99,
+        "high_confidence_assertion_precision": 0.99,
+        "biological_precision": 0.98,
+        "biological_recall": 0.55,
+        "audit_review_recall": 0.85,
     }
     failures = [
         f"{name}={metrics[name]:.4f} < {minimum:.4f}"

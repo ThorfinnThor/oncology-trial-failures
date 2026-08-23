@@ -37,6 +37,7 @@ import requests
 try:
     from ingest_changes import build_ingest_change_report
     from classification_v2 import (
+        CLASSIFIER_VERSION,
         classification_source,
         classify_with_v2_fallback,
         load_reviewed_reason_index,
@@ -44,6 +45,7 @@ try:
 except ImportError:
     from scripts.ingest_changes import build_ingest_change_report
     from scripts.classification_v2 import (
+        CLASSIFIER_VERSION,
         classification_source,
         classify_with_v2_fallback,
         load_reviewed_reason_index,
@@ -1159,8 +1161,8 @@ def main() -> None:
                 ov.reason, "UNSPECIFIED"
             )
             record["classification_secondary_reasons_v2"] = ""
-            record["classification_needs_review"] = False
-            record["classification_version"] = "2.0.0"
+            record["classification_needs_review"] = ov.label == "UNCLEAR"
+            record["classification_version"] = CLASSIFIER_VERSION
             record["classification_source"] = "MANUAL_NCT_OVERRIDE"
 
         all_records.append(record)

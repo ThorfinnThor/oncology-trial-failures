@@ -43,6 +43,7 @@ Primary and secondary reasons:
 - `OPERATIONAL_OTHER`
 - `PLANNED_MILESTONE`
 - `REPLACEMENT_TRANSITION`
+- `NOT_INITIATED`
 - `MULTIPLE`
 - `UNSPECIFIED`
 
@@ -55,6 +56,8 @@ non-failure, unspecified biological, and unresolved records map to
 
 1. Normalize the registry stop reason and compute a stable text hash.
 2. Reuse a consistent, previously reviewed exact stop reason when available.
+   Legacy audit rows explicitly marked as unresolved do not block a later,
+   more specific tested V2 rule.
 3. Apply high-precision semantic rules with polarity and negation guards.
 4. Preserve multiple explicit causes instead of forcing precedence.
 5. Identify explicit planned milestones and replacement transitions.
@@ -110,14 +113,20 @@ cannot be semantically resolved without another explicit primary-source field.
 
 The release gate currently requires:
 
-- at least 90% precision among asserted legacy-compatible classifications;
-- at least 94% precision among high-confidence assertions;
-- at least 94% precision for biological failure assertions;
-- at least 80% recall for audit cases previously marked ambiguous/review.
+- at least 99% precision among asserted legacy-compatible classifications;
+- at least 99% precision among high-confidence assertions;
+- at least 98% precision for biological failure assertions;
+- at least 55% recall for biological audit cases;
+- at least 85% recall for audit cases previously marked ambiguous/review.
 
 The initial V2 rule benchmark exceeds these minimums, but its recall is
 intentionally conservative. Exact reviewed reasons increase production coverage
 without weakening the independent rule benchmark.
+
+Snapshot validation also rejects any `UNKNOWN`, `MIXED_CAUSES`, or
+`BIOLOGICAL_UNSPECIFIED` record without a review flag. This prevents uncertain
+semantics from appearing as a completed classification even if an old audit
+mapping or a future import is malformed.
 
 The historical Markdown audit did not record the target label of correct rows
 individually. Their expected labels are reconstructed from the frozen audited

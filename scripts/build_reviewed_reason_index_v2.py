@@ -12,6 +12,7 @@ from typing import Any, Dict, Iterable, List, Tuple
 
 try:
     from classification_v2 import (
+        CLASSIFIER_VERSION,
         OUTCOME_BIOLOGICAL,
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_UNKNOWN,
@@ -26,6 +27,7 @@ try:
     )
 except ImportError:
     from scripts.classification_v2 import (
+        CLASSIFIER_VERSION,
         OUTCOME_BIOLOGICAL,
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_UNKNOWN,
@@ -94,7 +96,7 @@ def to_v2(
             True,
             "V2_UNRESOLVED_LEGACY_OPERATIONAL",
         )
-    return OUTCOME_UNKNOWN, REASON_UNSPECIFIED, [], False, "AUDIT_LEGACY_MAPPING"
+    return OUTCOME_UNKNOWN, REASON_UNSPECIFIED, [], True, "AUDIT_LEGACY_MAPPING"
 
 
 def build(
@@ -195,7 +197,7 @@ def build(
 
     return {
         "schema_version": 1,
-        "classifier_version": "2.0.0",
+        "classifier_version": CLASSIFIER_VERSION,
         "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
         "entry_count": len(entries),
         "manual_entry_count": manual_entry_count,

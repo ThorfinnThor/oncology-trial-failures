@@ -40,6 +40,7 @@ REASON_EXTERNAL = "EXTERNAL_DISRUPTION"
 REASON_OPERATIONAL_OTHER = "OPERATIONAL_OTHER"
 REASON_PLANNED = "PLANNED_MILESTONE"
 REASON_REPLACEMENT = "REPLACEMENT_TRANSITION"
+REASON_NOT_INITIATED = "NOT_INITIATED"
 REASON_UNSPECIFIED = "UNSPECIFIED"
 REASON_MULTIPLE = "MULTIPLE"
 
@@ -139,6 +140,10 @@ class Rule:
 def normalize_reason(text: Optional[str]) -> str:
     value = unicodedata.normalize("NFKC", str(text or "")).lower()
     value = value.replace("’", "'").replace("–", "-").replace("—", "-")
+    # ClinicalTrials.gov exports occasionally contain Markdown-style escapes
+    # (for example ``R\&D`` or ``\<75%``).  They are presentation artifacts,
+    # not semantic content.
+    value = re.sub(r"\\([&<>])", r"\1", value)
     value = re.sub(r"https?://\S+", " <url> ", value)
     value = re.sub(r"\bNCT\d{8}\b", " <nct> ", value, flags=re.IGNORECASE)
     value = re.sub(r"\s+", " ", value).strip()
@@ -211,12 +216,13 @@ RULES: Tuple[Rule, ...] = (
         "eff.explicit_lack",
         REASON_EFFICACY,
         "HIGH",
-        r"\black of (?:clinical |meaningful |anti[- ]?tumou?r )?(?:efficacy|effectiveness|activity|benefit|response)\b",
+        r"\black of (?:clinical |meaningful |sufficient |expected |anti[- ]?(?:tumou?r|cancer) )?(?:efficacy|effectiveness|activity|benefit|response)\b",
         r"\binsufficient (?:clinical |anti[- ]?tumou?r )?(?:efficacy|activity|benefit|response)\b",
         r"\bno (?:meaningful |clinical |anti[- ]?tumou?r )?(?:efficacy|activity|benefit|response|treatment effect)\b",
-        r"\blimited (?:clinical |anti[- ]?tumou?r )?(?:efficacy|activity|benefit)\b",
+        r"\blimited (?:clinical |anti[- ]?(?:tumou?r|cancer) )?(?:efficacy|activity|benefit)\b",
         r"\bnot providing efficacy\b",
         r"\babsence of (?:clinically significant )?(?:efficacy|activity|benefit|response)\b",
+        r"\bno evidence of (?:potential |clinical )?efficacy\b",
         r"\black of (?:evidence of )?(?:clinical )?benefit\b",
         r"\bno objective response\b",
         r"\black of objective response\b",
@@ -225,7 +231,7 @@ RULES: Tuple[Rule, ...] = (
         r"\black of improved efficacy\b",
         r"\bbenefit (?:was |is )?not significant\b",
         r"^(?:due to )?efficacy concerns?\.?$",
-        r"\bnegative results? from (?:an? |the |other )?(?:study|studies|trial|trials)\b",
+        r"\bnegative results? from (?:an? |the |other )?(?:\d+ )?(?:study|studies|trial|trials)\b",
     ),
     _rule(
         "eff.endpoint_failure",
@@ -235,7 +241,11 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:did not|failed to) meet (?:the )?(?:primary |secondary )?end[- ]?point\b",
         r"\bfailed (?:its |the )?(?:primary |secondary )?(?:efficacy )?objective\b",
         r"\b(?:primary |secondary )?objectives? (?:was |were )?(?:not met|failed|not achieved|not reached)\b",
+        r"\b(?:study |trial )?did not meet (?:its |the )?(?:primary |secondary )?(?:efficacy )?end[- ]?point\b",
+        r"\bunmet (?:primary |secondary )?end[- ]?point\b",
+        r"\bfailure to meet (?:its |the )?(?:primary |secondary )?(?:efficacy )?end[- ]?point\b",
         r"\bcriteria for (?:the )?(?:second|next) stage (?:were )?not met\b",
+        r"\bcriteria (?:were )?not met for (?:the )?(?:second|next) stage\b",
         r"\bcontinuation criteri(?:a|on) (?:were |was )?not met\b.{0,80}\b(?:efficacy|response|activity|endpoint)\b",
     ),
     _rule(
@@ -246,10 +256,16 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:did not|failed to) improve (?:pfs|os|survival|response|outcome|outcomes)\b",
         r"\bno (?:statistically )?significant (?:difference|improvement)\b",
         r"\blow probability of (?:meeting|achieving) (?:the )?(?:primary )?end[- ]?point\b",
+        r"\bprobability of (?:less than |below )?\d+(?:\.\d+)?%? of (?:meeting|achieving) (?:the )?(?:primary )?end[- ]?point\b",
         r"\bunlikely to (?:meet|achieve) (?:the )?(?:primary )?(?:efficacy )?end[- ]?point\b",
         r"\blow likelihood of (?:meeting|achieving) (?:the )?(?:primary )?(?:efficacy )?(?:end[- ]?point|objective)\b",
         r"\bno signal of (?:clinical )?(?:efficacy|activity)\b",
         r"\btarget engagement (?:did |was )?not translat(?:e|ed) (?:into|to) (?:meaningful )?(?:clinical )?(?:benefit|activity|response)\b",
+        r"\b(?:overall )?clinical activity\b.{0,80}\b(?:minimal|insufficient|limited)\b",
+        r"\b(?:minimal|insufficient|limited) (?:overall )?clinical activity\b",
+        r"\b(?:terminated|stopped|discontinued) (?:based on|following) (?:the )?(?:phase [1234] )?efficacy (?:data|results)\b",
+        r"\bdecision to (?:stop|terminate|discontinue) (?:the )?(?:study|trial|program|programme|development) (?:was )?based on (?:the )?(?:phase [1234] )?efficacy (?:data|results)\b",
+        r"^(?:lack of )?efficacy\.?$",
     ),
 
     # Direct adverse safety evidence.  Review/monitoring vocabulary and a bare
@@ -262,9 +278,11 @@ RULES: Tuple[Rule, ...] = (
         r"\bexcessive (?:toxicity|toxicities|adverse events?|infection rate)\b",
         r"\btoo much toxicity\b",
         r"\btoxicity stopping rules? (?:were |was )?(?:met|crossed)\b",
-        r"\bdose[- ]limiting toxicit(?:y|ies)\b",
-        r"\bdlts?\b",
+        r"\b(?:due to|because of|following|after observing|experienced|observed|occurrence of|high rate of)\b.{0,45}\bdose[- ]limiting toxicit(?:y|ies)\b",
+        r"\b(?:due to|because of|following|after observing|experienced|observed|occurrence of|high rate of)\b.{0,45}\bdlts?\b",
+        r"^(?:dose[- ]limiting toxicit(?:y|ies)|dlts?)\.?$",
         r"\bnot tolerable\b",
+        r"\bnot well tolerated\b",
         r"\black of tolerability\b",
     ),
     _rule(
@@ -277,7 +295,11 @@ RULES: Tuple[Rule, ...] = (
         r"\bcarcinogenicity (?:finding|findings|signal|signals)\b",
         r"\bhigh incidence of [^.]{0,100}(?:disease|injury|toxicity|events?)\b",
         r"\bside effects?\b",
-        r"\b(?:significant |severe |serious |high )?(?:toxicity|toxicities)\b",
+        r"\b(?:significant|severe|serious|high|unexpected) (?:toxicity|toxicities)\b",
+        r"\b(?:due to|because of|following|after|for) (?:the )?(?:observed )?(?:toxicity|toxicities)\b",
+        r"\b(?:toxicity|toxicities) concerns?\b",
+        r"^(?:toxicity|toxicities)\.?$",
+        r"^(?:toxicity|toxicities) and lack of efficacy\b",
         r"\b(?:significant |severe |serious )?adverse effects?\b",
         r"\black of safety\b",
     ),
@@ -286,10 +308,13 @@ RULES: Tuple[Rule, ...] = (
         REASON_SAFETY,
         "HIGH",
         r"^(?:due to )?safety(?: reasons?| concerns?| issues?)?\.?$",
-        r"\b(?:terminated|stopped|halted|suspended|withdrawn) (?:early )?(?:due to|because of|for) (?:an? )?(?:safety concern|safety concerns|safety issue|safety issues|safety reasons?)\b",
+        r"\b(?:terminated|stopped|halted|suspended|withdrawn|closed) (?:early )?(?:due to|because of|for) (?:an? )?(?:safety concern|safety concerns|safety issue|safety issues|safety reasons?)\b",
         r"\b(?:safety concern|safety concerns|safety issue|safety issues) (?:caused|prompted|led to|resulted in)\b",
         r"\bbecause of (?:the )?(?:safety concern|safety concerns|safety issue|safety issues)\b",
         r"\bbecause of [^.]{0,80}\b(?:safety concern|safety concerns|safety issue|safety issues)\b",
+        r"^(?:new )?safety (?:information|concern|concerns|issue|issues|reason|reasons)?\.?$",
+        r"\b(?:idmc|dsmb|dmc) recommendation (?:for|due to|because of) safety concerns?\b",
+        r"^(?:ae|aes|sae|saes)\.?$",
     ),
 
     # Concrete external oversight action.  Mere regulatory strategy or a
@@ -306,6 +331,16 @@ RULES: Tuple[Rule, ...] = (
         r"\bethics committee (?:closed|terminated|recommended termination)\b",
         r"\bhgrac (?:filing|approval|review) requirements?\b",
         r"\b(?:fda|ema|mhra|health authority|regulatory authority) (?:withdrew|revoked) (?:the )?(?:approval|authorization|authorisation|drug)\b",
+        r"\b(?:irb|ethics committee) did not approve\b",
+        r"\bno (?:irb|ethics committee) approval\b",
+        r"\b(?:fda|ema|mhra|health authority|regulatory authority|regulator) required (?:the )?(?:sponsor )?to (?:halt|stop|suspend|terminate|withdraw)\b",
+        r"\b(?:fda|ema|mhra|health authority|regulatory authority|regulator)[- ]required changes\b",
+        r"\b(?:local|national|new) regulations? (?:required|prevented|forced|led to|resulted in)\b",
+        r"\b(?:demands?|requirements?) by (?:certain )?(?:national |local )?health authorities\b",
+        r"\bimplementation of (?:the )?(?:new )?(?:regulation|regulatory) policy by (?:the )?(?:chinese |national |local )?(?:authority|authorities)\b",
+        r"\b(?:revision|change) of (?:the )?(?:local|national) regulations?\b",
+        r"\b(?:regulation|regulatory) policy\b.{0,80}\b(?:terminate|stop|withdraw|cancel|discontinue)\w*\b",
+        r"\bfwa restriction\b",
     ),
 
     # Operational causes.  Actor/action-only phrases such as "Sponsor
@@ -334,11 +369,42 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:has|had) not enrolled any (?:patients|participants|subjects)\b",
         r"\bproblems? (?:including|enrolling|recruiting) (?:patients|participants|subjects)\b",
         r"\b(?:accrual|enrolment|enrollment|recruitment) futility\b",
+        r"\bfutility (?:in|of) (?:accrual|enrolment|enrollment|recruitment)\b",
         r"\b(?:lack of|insufficient) (?:the )?(?:eligible )?patient population\b",
         r"\black of (?:eligible )?volunteers?\b",
         r"\b(?:accrual|enrolment|enrollment|recruitment) (?:goal|target) (?:was )?not (?:met|reached|achieved)\b",
         r"\bfailure to meet (?:the )?(?:accrual|enrolment|enrollment|recruitment) (?:goals?|targets?)\b",
         r"\b[<]?\s*75% participant accrual\b",
+        r"^(?:lack of |no |zero )?(?:eligible )?(?:patients|participants|subjects)\.?$",
+        r"^0 (?:patients?|participants?|subjects?)(?: (?:enrolled|recruited|accrued))?\.?$",
+        r"^0 (?:patient |participant |subject )?accrual\.?$",
+        r"\b(?:low|slow|delayed|limited) inclusion rates?\b",
+        r"\b(?:lack of|no|not enough) inclusions?\b",
+        r"\btarget number of inclusions? (?:was )?not reached\b",
+        r"\b(?:difficulty|difficulties) (?:with|in) (?:patient )?(?:recruitment|enrolment|enrollment)\b",
+        r"\b(?:difficulty|difficulties|challenges?) (?:with|in)?\s*(?:recruiting|enrolling|accruing) (?:eligible )?(?:patients|participants|subjects)\b",
+        r"\b(?:difficulty|difficulties) (?:recruiting|enrolling|accruing)\b",
+        r"\b(?:recruitment|enrolment|enrollment) (?:is |was |has been )?(?:too slow|proceeding too slowly|delayed)\b",
+        r"\b(?:delayed|slow) (?:patient )?(?:recruitment|enrolment|enrollment|inclusion)\b",
+        r"\b(?:low|insufficient) rate of (?:accrual|enrolment|enrollment|recruitment)\b",
+        r"\b(?:no|not enough) (?:eligible )?(?:patient|participant|subject)s? (?:was |were )?enrolled\b",
+        r"\b(?:no|zero) patient accruals?\b",
+        r"\bno accruals?\b",
+        r"^(?:no|not enough) participants?\.?$",
+        r"\b(?:did not|failed to) enrol+l?\b",
+        r"\blimited (?:patient )?(?:enrolment|enrollment|recruitment)\b",
+        r"\b(?:accrual|enrolment|enrollment) rate (?:was |is )?(?:too slow|insufficient|inadequate)\b",
+        r"\b(?:patient |participant |subject )?(?:enrolment|enrollment|recruitment) rate (?:is |was )?proceeding too slowly\b",
+        r"\bno enough (?:eligible )?(?:patients|participants|subjects)\b",
+        r"[<]\s*75\s*% participation\b",
+        r"\b(?:recruitment|enrolment|enrollment) (?:difficulty|difficulties|problem|problems|failure)\b",
+        r"^(?:difficult|difficulty|difficulties) (?:patient )?(?:recruitment|enrolment|enrollment)\.?$",
+        r"\b(?:difficulty|difficulties) in (?:recruiting|enrolling|accruing)\b",
+        r"\b(?:recruiting|enrolling|accruing) difficulties\b",
+        r"\bnot enough (?:accrual|enrolment|enrollment|recruitment)\b",
+        r"\bdelay in (?:accrual|enrolment|enrollment|recruitment)\b",
+        r"\bdifficulty of (?:accrual|enrolment|enrollment|recruitment)\b",
+        r"^(?:recruitment|enrolment|enrollment)\.?$",
     ),
     _rule(
         "ops.funding",
@@ -356,18 +422,33 @@ RULES: Tuple[Rule, ...] = (
         r"\bfunding (?:issue|issues|reason|reasons)\b",
         r"\b(?:end|termination) of funding\b",
         r"\bwithdrawal of funding\b",
+        r"\bfunding (?:was )?(?:terminated|discontinued|stopped|completed)\b",
+        r"\b(?:break|loss|changes?) in funding\b",
+        r"\bfunding (?:not|was not) (?:obtained|secured|received|available|awarded)\b",
+        r"\b(?:did not receive|unable to secure|unable to obtain) funding\b",
+        r"\b(?:ran|run) out of funding\b",
+        r"\bbudget (?:issue|issues|limitations?|constraints?)\b",
         r"\black of (?:future |further )?funding\b",
         r"\bfunding concerns?\b",
         r"\bfinancial (?:issue|issues|constraint|constraints|reasons?)\b",
         r"^not funded\.?$",
         r"\black of financial support\b",
         r"\binstitutional and funding constraints?\b",
+        r"\binstitutional and funding constrains?\b",
+        r"\binadequate funding\b",
+        r"\blost funding\b",
+        r"\bfunding (?:withdrawal|loss|changes?)\b",
+        r"\bcancell?ation of (?:the )?funding contract\b",
+        r"\b(?:sponsor|company|institution|funder) withdrew funding\b",
+        r"\b(?:study|trial|project) (?:was |is )?not funded\b",
+        r"\b(?:study|trial|project|research) (?:was |is )?no longer funded\b",
+        r"\bfunding constraints?\b",
     ),
     _rule(
         "ops.supply",
         REASON_SUPPLY,
         "HIGH",
-        r"\b(?:drug|study drug|study agent|medication|investigational product|product|device|equipment|formulation) (?:was |is )?(?:unavailable|no longer available|not available|expired|no longer produced|no longer manufactured|discontinued by the manufacturer)\b",
+        r"\b(?:drug|study drug|study agent|medication|investigational product|product|device|devices|equipment|formulation) (?:was |is )?(?:unavailable|no longer available|not available|expired|no longer produced|no longer manufactured|discontinued by the manufacturer)\b",
         r"\b(?:drug|product|material|raw material) supply (?:issue|issues|shortage|shortages|constraint|constraints)\b",
         r"\bmanufactur(?:ing|er) (?:issue|issues|problem|problems|delay|delays|stopped|halted|ceased)\b",
         r"\b(?:production|manufacturing) (?:stopped|halted|ceased|unavailable)\b",
@@ -376,6 +457,16 @@ RULES: Tuple[Rule, ...] = (
         r"\bno (?:treatment |dose |cohort )?slots? (?:were |was )?available\b",
         r"^(?:study )?drugs? (?:is |are |was |were )?unavailable\.?$",
         r"^(?:study )?drug supply\.?$",
+        r"^(?:study )?drug (?:availability|shortage)\.?$",
+        r"\b(?:study )?drug supply (?:was |is )?(?:no longer available|unavailable|not available|being phased out)\b",
+        r"\b(?:distribution|delivery) issue with (?:the )?(?:trial|study) medication\b",
+        r"\bdrug manufacturing logistics\b",
+        r"\black of access to (?:the )?(?:study )?drug supply\b",
+        r"\b(?:suspended|on hold) until (?:the )?(?:study )?drug manufacturing is available\b",
+        r"\bpending updates? to (?:the )?(?:study )?drug(?:/manufacturer)? information\b",
+        r"\b(?:company|sponsor|manufacturer) (?:was |is )?(?:no longer|longer) providing (?:the )?(?:investigational |study )?(?:product|drug|agent)\b",
+        r"\b(?:company|sponsor|manufacturer) (?:could|can) no longer supply (?:the )?(?:investigational |study )?(?:product|drug|agent)\b",
+        r"\b(?:sponsor|company) decision related to (?:the )?(?:study )?drug supply\b",
         r"\bexpiration of (?:the )?(?:available )?(?:study )?(?:drug|agent|product)\b",
     ),
     _rule(
@@ -387,12 +478,15 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:staff|staffing|personnel) (?:shortage|shortages|issue|issues|unavailable|insufficient)\b",
         r"\binsufficient (?:staff|staffing|personnel|resources)\b",
         r"\b(?:principal investigator|investigator|pi) changed institutions?\b",
+        r"\b(?:principal investigator|investigator|pi) (?:is |was )?no longer at (?:the )?institution\b",
+        r"\b(?:principal investigator|investigator|pi) (?:leaving|left|departed from|relocated from) (?:the )?(?:institution|site)\b",
+        r"\b(?:principal investigator|investigator|pi) (?:departure|transition|relocated)\b",
+        r"\b(?:suspended|on hold) to identify (?:a )?permanent (?:principal investigator|investigator|pi)\b",
     ),
     _rule(
         "ops.business",
         REASON_BUSINESS,
         "HIGH",
-        r"\b(?:business|commercial|strategic|corporate) reasons?\b",
         r"\b(?:business|corporate|company|r&d|research and development|development|portfolio|program|programme) (?:strategy|objectives?|priorities) (?:changed|adjusted|shifted|were changed|have changed)\b",
         r"\b(?:portfolio|program|programme|pipeline) reprioriti[sz]ation\b",
         r"\bportfolio prioritization\b",
@@ -413,6 +507,24 @@ RULES: Tuple[Rule, ...] = (
         r"\bchange in (?:the )?(?:clinical )?development (?:program|programme|strategy)\b",
         r"\b(?:sponsor|company) insolvency\b",
         r"\bprogram (?:was )?(?:suspended and )?divested\b",
+        r"\b(?:corporate|company|sponsor) strategic adjustment\b",
+        r"\bchange in (?:clinical |company |corporate )?strategy\b",
+        r"\bchange in (?:the )?sponsor prioritization\b",
+        r"\b(?:project|program|programme) discontinued to prioritize other\b",
+        r"\b(?:sponsor|company) (?:has )?adjusted (?:its )?r&d strategy\b",
+        r"\b(?:sponsor|company)(?:'s)? r&d strategy (?:is |was |has been )?adjusted\b",
+        r"\bchanges? in (?:the )?(?:company|corporate|sponsor|development) priorities\b",
+        r"\bfiled (?:for )?chapter 11 bankruptcy\b",
+        r"\bfiled (?:for )?chapter 11\b",
+        r"\bbankruptcy of (?:the )?(?:company|sponsor|partner)\b",
+        r"\bcompany (?:was )?dissolved\b",
+        r"\binternal reprioriti[sz]ation of resources\b",
+        r"\bstrategic priorities\b",
+        r"\bprioriti[sz](?:e|ing) other (?:programs|programmes|projects|studies|trials)\b",
+        r"\badjustment of (?:the )?(?:company|sponsor|applicant)(?:'s)? (?:research and development |r&d )?strategy\b",
+        r"\bfocus resources on (?:the )?(?:studies|trials|programs|programmes|projects)\b",
+        r"\b(?:drug|development|clinical) (?:program|programme|asset) (?:was |has been )?(?:sold|acquired)\b",
+        r"\b(?:rights|asset) (?:were |was |have been |has been )?acquired\b.{0,100}\b(?:terminated|stopped|discontinued)\b",
     ),
     _rule(
         "ops.protocol",
@@ -424,11 +536,23 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:pending|awaiting) (?:a )?(?:protocol )?amendment(?: approval)?\b",
         r"\b(?:protocol )?amendment (?:needed|required|pending|to add|to use)\b",
         r"\b(?:eligibility|protocol|study design) revisions?\b",
+        r"^(?:lack of )?feasibility(?: issues?)?\.?$",
+        r"\bprotocol (?:modification|redesign|violation|violations)\b",
+        r"\bchange in (?:the )?study design\b",
+        r"\bstudy redesign\b",
         r"\b(?:outdated|obsolete) (?:study |trial )?design\b",
         r"\bstandard of care (?:has |had )?(?:changed|evolved)\b",
         r"\bchanging standard of care\b",
+        r"\b(?:pending|awaiting) (?:protocol|icf) (?:changes?|revision)\b",
+        r"\b(?:study )?protocol (?:will be|is being|was) changed\b",
+        r"\b(?:pilot )?feasibility end[- ]?points? (?:were |was )?not met\b",
+        r"\b(?:did not|failed to) meet (?:the )?(?:pilot )?feasibility end[- ]?points?\b",
+        r"\b(?:did not|does not) meet (?:the )?requirements? of (?:a )?randomi[sz]ed trials?\b",
+        r"\binability to meet (?:the )?protocol objectives?\b",
+        r"\bdetermined (?:to be )?not feasible\b",
         r"\bstandard of care .{0,80}(?:updated|revised|now includes?)\b",
         r"\b(?:treatment|therapeutic|competitive) landscape (?:has |had )?(?:changed|evolved)\b",
+        r"\bavailability of (?:new|other) (?:and )?(?:more )?promising therapeutic agents?\b",
         r"\bno longer (?:clinically )?(?:relevant|needed|feasible|impactful)\b.{0,100}\b(?:standard of care|treatment|landscape|design)\b",
     ),
     _rule(
@@ -439,6 +563,9 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:support|sponsorship|collaboration) (?:was |has been )?(?:withdrawn|ended|terminated|discontinued)\b",
         r"\b(?:partner|sponsor|company) (?:abandoned|ceased) support\b",
         r"\b(?:funder|funders|funding partner)(?:'s)? decision to withdraw (?:the )?(?:financial )?support\b",
+        r"\bwithdrawal of sponsor support\b",
+        r"\babandon(?:ment)? of (?:the )?partner\b",
+        r"\b(?:company|partner|collaborator) withdrew interest\b",
     ),
     _rule(
         "ops.external",
@@ -448,6 +575,12 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:covid[- ]?19|covid|pandemic) (?:caused|forced|led to) .{0,80}(?:site|sites|recruitment|enrollment|trial|study) (?:to )?(?:close|shut down|stop|halt|suspend)\b",
         r"\bsite (?:closure|closures|closed)\b",
         r"\blogistical (?:issue|issues|problem|problems|constraints|challenges)\b",
+        r"^(?:due to )?(?:covid[- ]?19|covid|covid 19|covid[- ]?19 pandemic|covid[- ]?19 epidemic|pandemic)(?: outbreak| epidemic| situation)?\.?$",
+        r"\b(?:coronavirus|covid[- ]?19|covid) outbreak\b",
+        r"\bcoronavirus\s*\(covid[- ]?19\) outbreak\b",
+        r"\bdue to (?:the )?covid[- ]?19 (?:epidemic|pandemic)(?: situation)?\b",
+        r"\bcovid(?:[- ]?19)? pandemic\b",
+        r"\b(?:withdrawn|terminated|stopped|cancelled|canceled) due to covid[- ]?19?\b",
     ),
     _rule(
         "ops.other",
@@ -456,6 +589,13 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:contract|agreement) (?:issue|issues|could not be finalized|was not finalized)\b",
         r"\btechnical (?:issue|issues|problem|problems|failure|failures|infeasibility)\b",
         r"\boperational (?:issue|issues|problem|problems|constraints|reasons)\b",
+        r"^(?:logistics|resources)\.?$",
+        r"\btime and resource constraints\b",
+        r"\black of resources\b",
+        r"\bimplementation issues?\b",
+        r"\black of (?:operational )?capabilit(?:y|ies)\b",
+        r"\b(?:time|resource) constraints?\b",
+        r"\black of ressources\b",
     ),
 
     # Explicit successful/planned transitions.  These are not legacy failure
@@ -472,14 +612,34 @@ RULES: Tuple[Rule, ...] = (
         r"\bsufficient data (?:were |was )?(?:collected|available|obtained)\b",
         r"\badministratively complete\b",
         r"\bend of (?:the )?inclusion period\b",
+        r"\b(?:study|trial) (?:was )?concluded as planned\b",
     ),
     _rule(
         "nonfailure.replacement",
         REASON_REPLACEMENT,
         "MEDIUM",
-        r"\b(?:replaced|superseded) by (?:a )?(?:new|another|alternative) (?:study|trial|protocol)\b",
+        r"\b(?:replaced|superseded) by (?:a )?(?:new|another|alternative|different) (?:study|trial|protocol)\b",
         r"\btransitioned? (?:the |all |last )?(?:participant|participants|patient|patients|subjects?) to (?:a |an )?(?:new|another|alternative) (?:study|trial|protocol)\b",
         r"\b(?:new|another|alternative) (?:study|trial|protocol) (?:was |has been )?(?:opened|activated)\b.{0,100}\b(?:original|this) (?:study|trial)\b",
+        r"\b(?:participants|patients|subjects) (?:have been |were |are )?moved to (?:a )?continuation (?:study|trial|protocol)\b",
+    ),
+    _rule(
+        "nonfailure.not_initiated",
+        REASON_NOT_INITIATED,
+        "HIGH",
+        r"^(?:the )?(?:study|trial|project|research project|clinical trial) (?:was |has been )?(?:never |not )?(?:started|initiated|activated|opened)\.?$",
+        r"^(?:study|trial) never (?:started|initiated|opened)\.?$",
+        r"\b(?:study|trial) (?:was )?never opened to (?:accrual|enrolment|enrollment|recruitment)\b",
+        r"^(?:never|not) (?:started|initiated|opened)\.?$",
+        r"\b(?:cancelled|canceled|withdrawn|halted|stopped) (?:(?:early|prematurely),? )?(?:before|prior to) (?:the )?(?:enrolment|enrollment) of (?:the |its )?(?:first|any) (?:patient|participant|subject)s?\b",
+        r"\b(?:cancelled|canceled|withdrawn|halted|stopped) (?:(?:early|prematurely),? )?before (?:enrolling|recruiting|accruing) (?:its |the )?(?:first|any) (?:patients|participants|subjects|patient|participant|subject)\b",
+        r"\b(?:cancelled|canceled|withdrawn) before any (?:patients|participants|subjects) were (?:enrolled|recruited|accrued)\b",
+        r"\b(?:cancelled|canceled|withdrawn) before (?:patient |participant |subject )?(?:enrolment|enrollment|recruitment)\b",
+        r"\b(?:no|zero) (?:human )?(?:patients|participants|subjects) (?:were )?enrolled\b.{0,80}\b(?:never|not) (?:started|initiated)\b",
+        r"^(?:study|trial )?enrollment not initiated\.?$",
+        r"\bstudy (?:was )?not activated\b",
+        r"^(?:the )?(?:study|trial|project) did not start\.?$",
+        r"\b(?:study|trial|project) (?:has been |was )?(?:cancelled|canceled)\b.{0,60}\b(?:has |had )?not been initiated\b",
     ),
 )
 
@@ -496,22 +656,12 @@ BIOLOGICAL_UNSPECIFIED_PATTERNS: Tuple[str, ...] = (
     r"\bunfavo(?:u)?rable (?:overall )?(?:risk[- /]?benefit|benefit[- /]?risk)(?: profile| ratio| assessment| balance)?\b",
     r"\b(?:risks?|risk profile) (?:exceeded|exceeds|outweighed|outweighs) (?:the )?benefits?\b",
     r"\bbenefits? (?:did not|do not|does not) outweigh (?:the )?risks?\b",
+    r"\badverse change in (?:the )?(?:risk[- /]?benefit|benefit[- /]?risk)\b",
+    r"\b(?:overall )?profile does not support (?:further )?development\b",
+    r"\b(?:early termination|terminated|stopped) (?:for|due to) discouraging results\b",
+    r"\b(?:benefit[- /]?risk|risk[- /]?benefit) (?:profile |assessment )?no longer supports? (?:further )?development\b",
+    r"\b(?:based on|due to) (?:an? )?(?:benefit[- /]?risk|risk[- /]?benefit) (?:assessment|reassessment)\b",
 )
-
-EXPLICIT_NEGATIONS: Tuple[str, ...] = (
-    r"\bnot due to\b",
-    r"\bnot (?:\w+\s+){0,5}(?:due to|because of|related to|prompted by)\b",
-    r"\bnot because of\b",
-    r"\bnot related to\b",
-    r"\bunrelated to\b",
-    r"\bnot prompted by\b",
-    r"\bwithout (?:any )?\b",
-    r"\bno (?:new )?(?:safety|efficacy) (?:concern|concerns|issue|issues|signal|signals)\b",
-    r"\b(?:safety|efficacy) (?:profile )?(?:remained|was) (?:unchanged|acceptable|manageable|favorable|favourable)\b",
-    r"\bwell[- ]tolerated\b",
-    r"\bno (?:observed |treatment[- ]related |related )?(?:dlts?|saes?|deaths?|toxicities|adverse events?)\b",
-)
-
 
 def _clause_bounds(text: str, start: int, end: int) -> Tuple[int, int]:
     left = max(text.rfind(".", 0, start), text.rfind(";", 0, start), text.rfind(":", 0, start))
@@ -520,25 +670,70 @@ def _clause_bounds(text: str, start: int, end: int) -> Tuple[int, int]:
     return left + 1, right
 
 
-def _is_negated(text: str, start: int, end: int) -> bool:
+def _is_negated(text: str, start: int, end: int, reason: Optional[str] = None) -> bool:
     left, right = _clause_bounds(text, start, end)
     clause = text[left:right]
     local_start = start - left
     before = clause[max(0, local_start - 90):local_start]
-    nearby = clause[max(0, local_start - 100):min(len(clause), local_start + (end - start) + 55)]
-    if re.search(r"\b(?:no|not|never|without)\s+(?:directly\s+)?(?:due to|because of|related to|prompted by)?\s*$", before):
+    local_end = local_start + (end - start)
+    after = clause[local_end:min(len(clause), local_end + 80)]
+    if re.search(
+        r"\b(?:no|not|never|without|unrelated(?: to)?)\s+"
+        r"(?:(?:being|prematurely|early|directly|primarily|specifically)\s+)*"
+        r"(?:(?:due to|because of|related to|prompted by|based on)\s+)?"
+        r"(?:(?:any|new|observed|identified|additional)\s+)?$",
+        before,
+    ):
         return True
-    return any(re.search(pattern, nearby) for pattern in EXPLICIT_NEGATIONS)
+    if re.search(r"\bno (?:evidence|signal) of\s*$", before):
+        return True
+    if reason in BIOLOGICAL_REASONS and re.search(
+        r"\bno\b[^.;:]{0,100}(?:,|and|or|/)\s*$",
+        before,
+    ):
+        return True
+    if reason in BIOLOGICAL_REASONS and re.search(
+        r"\b(?:was|were|is|are|did|does|do|has|have) not\s+"
+        r"(?:a |the )?(?:cause|reason|factor|driver|concern)|"
+        r"\b(?:did|does|do|was|were) not\s+"
+        r"(?:cause|contribute|prompt|drive|lead|result)",
+        after,
+    ):
+        return True
+    if re.search(r"\bnot (?:terminated|stopped|halted|suspended|withdrawn|closed)\s*$", before):
+        return True
+    if re.search(
+        r"\bnot\b.{0,55}\b(?:due to|because of|related to|prompted by|based on)\b"
+        r"[^.;:]{0,100}(?:,|and|or|/)\s*$",
+        before,
+    ):
+        return True
+    return False
 
 
 def _find_rule_evidence(text: str, rule: Rule) -> List[Evidence]:
     found: List[Evidence] = []
     for pattern in rule.patterns:
         for match in re.finditer(pattern, text, flags=re.IGNORECASE | re.DOTALL):
-            if _is_negated(text, match.start(), match.end()):
+            affirmative_efficacy_lack = (
+                rule.reason == REASON_EFFICACY
+                and re.match(
+                    r"^no (?:evidence of )?(?:clinical )?"
+                    r"(?:efficacy|activity|benefit|response|objective response|treatment effect|signal)",
+                    match.group(0),
+                )
+            )
+            if not affirmative_efficacy_lack and _is_negated(
+                text,
+                match.start(),
+                match.end(),
+                rule.reason,
+            ):
                 continue
             if rule.rule_id == "eff.futility" and re.search(
-                r"\b(?:accrual|enrolment|enrollment|recruitment) futility\b",
+                r"\b(?:(?:accrual|enrolment|enrollment|recruitment) futility|"
+                r"futility (?:in|of) (?:accrual|enrolment|enrollment|recruitment)|"
+                r"financial futility)\b",
                 text,
             ):
                 continue
@@ -548,9 +743,32 @@ def _find_rule_evidence(text: str, rule: Rule) -> List[Evidence]:
                 text,
             ):
                 continue
+            if rule.rule_id == "eff.explicit_lack" and re.search(
+                r"\bno response (?:from|to|regarding|about) (?:an? |the )?"
+                r"(?:(?:initial|expiry|follow[- ]?up) )?"
+                r"(?:letter|email|communication|coverage|insurance|approval|authorization|authorisation)\b",
+                text,
+            ):
+                continue
+            if rule.rule_id == "eff.explicit_lack" and re.search(
+                r"\bno (?:clinical )?activity (?:since|for) (?:an? |the )?"
+                r"(?:year|month|week|day|long time)\b",
+                text,
+            ):
+                continue
+            if rule.rule_id == "eff.explicit_lack" and re.search(
+                r"\bno efficacy\b.{0,35}\b(?:concern|concerns|issue|issues|factored|impact)\b",
+                text,
+            ):
+                continue
+            if rule.rule_id == "eff.explicit_lack" and re.search(
+                r"\bno benefit[- /]?risk impact\b",
+                text,
+            ):
+                continue
             if rule.rule_id == "saf.adverse_events" and re.search(
-                r"\bno participant experiences?\b.{0,100}\badverse events?\b"
-                r".{0,40}\bto report\b",
+                r"\bno participants? (?:experiences?|experienced)\b.{0,100}\badverse events?\b"
+                r"(?:.{0,40}\bto report\b)?",
                 text,
             ):
                 continue
@@ -592,7 +810,13 @@ def classify_reason_v2(
     text = normalize_reason(why_stopped)
     digest = text_hash(text)
     if reviewed_index and digest in reviewed_index:
-        return _from_reviewed_entry(digest, reviewed_index[digest])
+        reviewed_entry = reviewed_index[digest]
+        # A legacy operational audit row could confirm that a record was
+        # non-biological without identifying a V2 cause.  Those rows are
+        # deliberately marked unresolved and must not freeze later, more
+        # specific V2 rules.  All actual adjudications retain precedence.
+        if reviewed_entry.get("v2_derivation") != "V2_UNRESOLVED_LEGACY_OPERATIONAL":
+            return _from_reviewed_entry(digest, reviewed_entry)
     if not text:
         return ClassificationV2(
             OUTCOME_UNKNOWN,
@@ -615,6 +839,14 @@ def classify_reason_v2(
                 Evidence("bio.coordinated_efficacy", REASON_EFFICACY, "lack of efficacy", "HIGH"),
             )
         )
+    if re.search(r"\black of tolerability and (?:lack of )?efficacy\b", text):
+        evidence = _dedupe_evidence(
+            (
+                *evidence,
+                Evidence("bio.coordinated_tolerability", REASON_SAFETY, "lack of tolerability", "HIGH"),
+                Evidence("bio.coordinated_efficacy", REASON_EFFICACY, "lack of efficacy", "HIGH"),
+            )
+        )
     reasons: List[str] = []
     for item in evidence:
         if item.reason not in reasons:
@@ -623,7 +855,7 @@ def classify_reason_v2(
     unspecified_bio = []
     for pattern in BIOLOGICAL_UNSPECIFIED_PATTERNS:
         for match in re.finditer(pattern, text, flags=re.IGNORECASE | re.DOTALL):
-            if not _is_negated(text, match.start(), match.end()):
+            if not _is_negated(text, match.start(), match.end(), REASON_BIO_UNSPECIFIED):
                 unspecified_bio.append(
                     Evidence("bio.unspecified_risk_benefit", REASON_BIO_UNSPECIFIED, match.group(0), "MEDIUM")
                 )
@@ -635,7 +867,11 @@ def classify_reason_v2(
     biological = [reason for reason in reasons if reason in BIOLOGICAL_REASONS]
     operational = [reason for reason in reasons if reason in OPERATIONAL_REASONS]
     regulatory = REASON_REGULATORY in reason_set
-    non_failure = [reason for reason in reasons if reason in {REASON_PLANNED, REASON_REPLACEMENT}]
+    non_failure = [
+        reason
+        for reason in reasons
+        if reason in {REASON_PLANNED, REASON_REPLACEMENT, REASON_NOT_INITIATED}
+    ]
 
     domains = sum(bool(group) for group in (biological, operational, [REASON_REGULATORY] if regulatory else [], non_failure))
     multiple_bio = len(set(biological) & {REASON_SAFETY, REASON_EFFICACY}) > 1
