@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "classifier_version": "2.0.0",
+  "record_count": 23617,
+  "review_record_count": 14684,
+  "review_unique_reason_count": 10229,
+  "reviewed_reason_index_count": 2375,
+  "outcomes": {
+    "UNKNOWN": 15279,
+    "NON_BIOLOGICAL": 6865,
+    "BIOLOGICAL_FAILURE": 1343,
+    "MIXED_CAUSES": 84,
+    "NON_FAILURE_TRANSITION": 46
+  },
+  "primary_reasons": {
+    "UNSPECIFIED": 15279,
+    "RECRUITMENT": 4489,
+    "EFFICACY_FUTILITY": 1003,
+    "FUNDING": 956,
+    "BUSINESS_STRATEGY": 629,
+    "STAFFING_RESOURCES": 399,
+    "SAFETY": 327,
+    "SUPPLY_MANUFACTURING": 128,
+    "REGULATORY": 95,
+    "MULTIPLE": 84,
+    "PROTOCOL_FEASIBILITY": 55,
+    "EXTERNAL_DISRUPTION": 48,
+    "SUPPORT_WITHDRAWAL": 38,
+    "PLANNED_MILESTONE": 36,
+    "OPERATIONAL_OTHER": 28,
+    "BIOLOGICAL_UNSPECIFIED": 13,
+    "REPLACEMENT_TRANSITION": 10
+  },
+  "sources": {
+    "UNCLASSIFIED": 12535,
+    "REVIEWED_EXACT": 6543,
+    "RULE_V2": 4539
+  },
+  "confidence": {
+    "LOW": 14684,
+    "HIGH": 8835,
+    "MEDIUM": 98
+  },
+  "legacy_transitions": {
+    "UNCLEAR/OTHER/UNKNOWN -> UNCLEAR/OTHER/UNKNOWN": 15422,
+    "NON_BIOLOGICAL/OPERATIONAL -> NON_BIOLOGICAL/OPERATIONAL": 6770,
+    "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY -> BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 1003,
+    "BIOLOGICAL_FAILURE/SAFETY -> BIOLOGICAL_FAILURE/SAFETY": 327,
+    "NON_BIOLOGICAL/REGULATORY -> NON_BIOLOGICAL/REGULATORY": 95
+  }
+}

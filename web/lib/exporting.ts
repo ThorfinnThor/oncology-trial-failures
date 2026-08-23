@@ -55,6 +55,12 @@ export function exportCSV(meta: DatasetMeta | null, state: UrlState, rows: Trial
     "classification_reason",
     "classification_confidence",
     "classification_evidence",
+    "classification_outcome_v2",
+    "classification_primary_reason_v2",
+    "classification_secondary_reasons_v2",
+    "classification_needs_review",
+    "classification_version",
+    "classification_source",
     "last_update_post_date",
     "url",
   ];

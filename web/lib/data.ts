@@ -61,6 +61,12 @@ function normalizeIndexRows(raw: any[]): TrialIndexRow[] {
         classification_reason: asString(r.classification_reason || r.reason_bucket || "").trim(),
         classification_confidence: asString(r.classification_confidence || r.confidence || "").trim(),
         classification_evidence: asString(r.classification_evidence || r.evidence || "").trim(),
+        classification_outcome_v2: asString(r.classification_outcome_v2 || "").trim(),
+        classification_primary_reason_v2: asString(r.classification_primary_reason_v2 || "").trim(),
+        classification_secondary_reasons_v2: asString(r.classification_secondary_reasons_v2 || "").trim(),
+        classification_needs_review: Boolean(r.classification_needs_review),
+        classification_version: asString(r.classification_version || "").trim(),
+        classification_source: asString(r.classification_source || "").trim(),
         last_update_post_date: asString(r.last_update_post_date || r.last_update || r.updated || "").trim(),
         url,
       } as TrialIndexRow;

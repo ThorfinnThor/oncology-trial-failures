@@ -1,0 +1,776 @@
+{
+  "schema_version": 1,
+  "records": {
+    "total": 4000,
+    "adjudicated": 3654,
+    "audit_review": 346
+  },
+  "metrics": {
+    "legacy_accuracy_all_adjudicated": 0.6976,
+    "assertion_coverage": 0.4554,
+    "assertion_precision": 0.9952,
+    "high_confidence_assertion_precision": 0.9951,
+    "biological_precision": 0.9695,
+    "biological_recall": 0.5799,
+    "audit_review_recall": 0.8815,
+    "overall_review_rate": 0.5737
+  },
+  "counts": {
+    "correct": 2549,
+    "asserted": 1664,
+    "asserted_correct": 1656,
+    "high_confidence_asserted": 1637,
+    "high_confidence_asserted_correct": 1629,
+    "biological_asserted": 262,
+    "biological_correct": 254,
+    "expected_biological": 438,
+    "biological_found": 254,
+    "audit_review_flagged": 305,
+    "predicted_review": 2295
+  },
+  "errors_by_expected": {
+    "NON_BIOLOGICAL/OPERATIONAL": 897,
+    "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 150,
+    "BIOLOGICAL_FAILURE/SAFETY": 34,
+    "NON_BIOLOGICAL/REGULATORY": 21,
+    "UNCLEAR/OTHER/UNKNOWN": 3
+  },
+  "errors_by_predicted": {
+    "UNCLEAR/OTHER/UNKNOWN": 1097,
+    "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 6,
+    "BIOLOGICAL_FAILURE/SAFETY": 2
+  },
+  "confusion": [
+    {
+      "expected": "NON_BIOLOGICAL/OPERATIONAL",
+      "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+      "count": 1387
+    },
+    {
+      "expected": "UNCLEAR/OTHER/UNKNOWN",
+      "predicted": "UNCLEAR/OTHER/UNKNOWN",
+      "count": 894
+    },
+    {
+      "expected": "NON_BIOLOGICAL/OPERATIONAL",
+      "predicted": "UNCLEAR/OTHER/UNKNOWN",
+      "count": 892
+    },
+    {
+      "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+      "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+      "count": 188
+    },
+    {
+      "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+      "predicted": "UNCLEAR/OTHER/UNKNOWN",
+      "count": 150
+    },
+    {
+      "expected": "BIOLOGICAL_FAILURE/SAFETY",
+      "predicted": "BIOLOGICAL_FAILURE/SAFETY",
+      "count": 66
+    },
+    {
+      "expected": "BIOLOGICAL_FAILURE/SAFETY",
+      "predicted": "UNCLEAR/OTHER/UNKNOWN",
+      "count": 34
+    },
+    {
+      "expected": "NON_BIOLOGICAL/REGULATORY",
+      "predicted": "UNCLEAR/OTHER/UNKNOWN",
+      "count": 21
+    },
+    {
+      "expected": "NON_BIOLOGICAL/REGULATORY",
+      "predicted": "NON_BIOLOGICAL/REGULATORY",
+      "count": 14
+    },
+    {
+      "expected": "NON_BIOLOGICAL/OPERATIONAL",
+      "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+      "count": 5
+    },
+    {
+      "expected": "UNCLEAR/OTHER/UNKNOWN",
+      "predicted": "BIOLOGICAL_FAILURE/SAFETY",
+      "count": 2
+    },
+    {
+      "expected": "UNCLEAR/OTHER/UNKNOWN",
+      "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+      "count": 1
+    }
+  ],
+  "examples": {
+    "misclassified": [
+      {
+        "nct_id": "NCT05642195",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Revisions to eligibility/design being made prior to enrollment of first participants."
+      },
+      {
+        "nct_id": "NCT04230265",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "business decision by sponsor"
+      },
+      {
+        "nct_id": "NCT04903197",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Business decision and not due to any safety or tolerability concerns."
+      },
+      {
+        "nct_id": "NCT06865677",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "This protocol was terminated prematurely because the prior principal investigator departed the Institute without treating any participants."
+      },
+      {
+        "nct_id": "NCT06006923",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Terminated per directive from Bayer due to funding."
+      },
+      {
+        "nct_id": "NCT05450562",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Early discontinuation based on strategic sponsor decision not driven by any safety concerns"
+      },
+      {
+        "nct_id": "NCT04150029",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Novartis made a decision to early terminate the sabatolimab clinical development program, including the CMBG453C12201 trial, following the negative results from other 2 trials."
+      },
+      {
+        "nct_id": "NCT04266301",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "In December 2023, Novartis decided to terminate the sabatolimab clinical development program early after Phase II (MDS1) and Phase III (MDS2) studies failed to meet their primary objectives. The termination was not due to safety concerns."
+      },
+      {
+        "nct_id": "NCT04260802",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Business Decision"
+      },
+      {
+        "nct_id": "NCT04770272",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The trial stopped recruitment prematurely after a first planned interim analysis of the first 100 pCR results (given that a probability of less than 2.5% of meeting the primary endpoint was estimated)."
+      },
+      {
+        "nct_id": "NCT04585815",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Study was terminated due to portfolio re-prioritization and strategic considerations. The decision was not based on any safety concerns and/or regulatory interactions"
+      },
+      {
+        "nct_id": "NCT05481645",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Per sponsor request. Premature closure was not prompted by any safety or efficacy concerns."
+      },
+      {
+        "nct_id": "NCT01995058",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Sponsor decided to close the study prior to completion of enrollment. This was a business decision and not based on the safety results of the study."
+      },
+      {
+        "nct_id": "NCT03075527",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Criteria not met for second stage at time of interim analysis"
+      },
+      {
+        "nct_id": "NCT03746431",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "A strategic decision was made to discontinue the study and prioritize other programs within the portfolio. The study was not discontinued due to safety issues or adverse events related to FPI-1434, FPE-1547, or FPI-1175."
+      },
+      {
+        "nct_id": "NCT06692452",
+        "expected": "BIOLOGICAL_FAILURE/SAFETY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Ipsen requested a temporary closure due to a safety concern."
+      },
+      {
+        "nct_id": "NCT06332079",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Medical devices (QuiremScout/QuiremSpheres) no longer available due to discontinuation of production by the manufacturer"
+      },
+      {
+        "nct_id": "NCT06162351",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "MIXED_CAUSES",
+        "v2_primary": "MULTIPLE",
+        "needs_review": true,
+        "text": "No signal of significant toxicity and no signal of activity in the population of the TOPOLGY study"
+      },
+      {
+        "nct_id": "NCT04677049",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Recruitment has been placed on hold to determine evaluability of currently enrolled patients. Recruitment will remain on hold until evaluability is confirmed. If fewer than 48 evaluable patients are achieved, the study will be re-opened to accrual."
+      },
+      {
+        "nct_id": "NCT06337630",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Although no safety signal has been observed, given that the industrial development of tuvusertib has been halted regardless of the results, we see no scientific and ethical justification for continuing the study"
+      },
+      {
+        "nct_id": "NCT04601857",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Sponsor decided to discontinue the study due to strategic considerations and not due to any safety-related concerns."
+      },
+      {
+        "nct_id": "NCT06391775",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Terminated due to strategic decision"
+      },
+      {
+        "nct_id": "NCT06616623",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Pending ICF revision"
+      },
+      {
+        "nct_id": "NCT04840472",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "tentatively suspended until drug manufacturing is available"
+      },
+      {
+        "nct_id": "NCT05179603",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Early discontinuation based on strategic sponsor decision not driven by any safety concerns"
+      },
+      {
+        "nct_id": "NCT06968195",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "awaiting agreement with Sponsor"
+      },
+      {
+        "nct_id": "NCT05960773",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "On hold pending updates to the drug/manufacturer information."
+      },
+      {
+        "nct_id": "NCT04824794",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The sponsor has decided to discontinue further development of GEN3014 after a comprehensive review of the data, market landscape, and strategic priorities."
+      },
+      {
+        "nct_id": "NCT03955640",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "PI decided not to move forward because of low accrual"
+      },
+      {
+        "nct_id": "NCT06420349",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "study sponsor phasing out drug supply"
+      },
+      {
+        "nct_id": "NCT05556616",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Due to strategic reasons (no safety concerns)."
+      },
+      {
+        "nct_id": "NCT06202066",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "pending protocol changes"
+      },
+      {
+        "nct_id": "NCT05336409",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Strategic decision"
+      },
+      {
+        "nct_id": "NCT03758417",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The study was terminated early due to a strategic realignment of the sponsor's business plan, not related to safety, efficacy, or data integrity concerns."
+      },
+      {
+        "nct_id": "NCT06159790",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "In light of the evolving regulatory landscape and growing indications that major Health Authorities will move towards a streamlined clinical development, Sandoz took a strategic decision and is minimizing its CGME751A12301 clinical study."
+      },
+      {
+        "nct_id": "NCT05652868",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Business decision"
+      },
+      {
+        "nct_id": "NCT04445064",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "unmet primary endpoint"
+      },
+      {
+        "nct_id": "NCT06761677",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Due to challenges in recruiting eligible patients under the protocol."
+      },
+      {
+        "nct_id": "NCT05454358",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "No enough participants"
+      },
+      {
+        "nct_id": "NCT05086315",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Early discontinuation based on strategic sponsor decision not driven by any safety concerns."
+      },
+      {
+        "nct_id": "NCT06818305",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The patient enrollment rate is proceeding too slowly"
+      },
+      {
+        "nct_id": "NCT05583110",
+        "expected": "BIOLOGICAL_FAILURE/SAFETY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "BIOLOGICAL_FAILURE",
+        "v2_primary": "BIOLOGICAL_UNSPECIFIED",
+        "needs_review": true,
+        "text": "The study was closed early due to safety concerns and an unfavorable benefit-risk balance. Unexpected high neutropenia rates required a costly sub-study, which was not feasible, forcing the sponsor to terminate the trial prematurely."
+      },
+      {
+        "nct_id": "NCT03595683",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Drug supply no longer available."
+      },
+      {
+        "nct_id": "NCT06199466",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "\\<75 % participation"
+      },
+      {
+        "nct_id": "NCT05361057",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The research center has conducted a more comprehensive study."
+      },
+      {
+        "nct_id": "NCT02282917",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Drug manufacturing logistics; lack of access to drug supply"
+      },
+      {
+        "nct_id": "NCT04916002",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Sponsor Decision related to study drug supply"
+      },
+      {
+        "nct_id": "NCT02688803",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The study did not meet the pilot feasibility endpoints and was formally closed to accrual prematurely on February 8, 2017."
+      },
+      {
+        "nct_id": "NCT04844073",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Sponsor decision based on limited anti-cancer activity of TAK-186."
+      },
+      {
+        "nct_id": "NCT05427396",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The trial was stopped early on the initiative of the sponsor on the basis of a change in the research and development strategy without safety concerns"
+      },
+      {
+        "nct_id": "NCT05035407",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Site plans to become a site for a multicenter study of this therapy"
+      },
+      {
+        "nct_id": "NCT06280196",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The new regulatory developments have led us to conclude that a Phase 3 study is no longer necessary for the development and approval of BAT3306. As such, to ensure effective use of clinical resources, we are terminating this study."
+      },
+      {
+        "nct_id": "NCT05180006",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Abandon of the partner, ROCHE"
+      },
+      {
+        "nct_id": "NCT04779151",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Abandon of the partner, GSK"
+      },
+      {
+        "nct_id": "NCT04276376",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Bankruptcy of partner: Clovis"
+      },
+      {
+        "nct_id": "NCT05464836",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The sponsor requested termination due to internal reprioritization of resources."
+      },
+      {
+        "nct_id": "NCT06709131",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Product manufacturing process improvement"
+      },
+      {
+        "nct_id": "NCT06965881",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Study was terminated due to the lack of operational capabilities of the sites to segregate participants as needed."
+      },
+      {
+        "nct_id": "NCT06289894",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Adjustment of the company's R\\&D strategy"
+      },
+      {
+        "nct_id": "NCT06388902",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Due to drug stability and global interests, it is currently in a suspended state."
+      }
+    ],
+    "review_not_flagged": [
+      {
+        "nct_id": "NCT00766142",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "In 2008, new data highlighted that Cetuximab had no efficacy in case of KRAS mutation. As such, eligibility criteria were revised and limited to KRAS wild-type. Inclusions were thus slown down considerably, and the trial was stopped."
+      },
+      {
+        "nct_id": "NCT03991741",
+        "predicted": "BIOLOGICAL_FAILURE/SAFETY",
+        "text": "Closed because of feasibility and safety issues, didn't reach our end point"
+      },
+      {
+        "nct_id": "NCT04804709",
+        "predicted": "NON_BIOLOGICAL/REGULATORY",
+        "text": "FDA withdrew approval of the new drug application (NDA) for panobinostat as of March 24, 2022 because it was not feasible for the company to complete the required postmarketing clinical trials."
+      },
+      {
+        "nct_id": "NCT02419495",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "text": "Administratively Complete"
+      },
+      {
+        "nct_id": "NCT04861181",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "text": "End of inclusion period."
+      },
+      {
+        "nct_id": "NCT04642365",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "The sponsor decided to terminate the study early, due to recruitment challenges for Part II and, based on the totality of data generated with a low likelihood of achieving the targeted efficacy, to open Part III."
+      },
+      {
+        "nct_id": "NCT01324635",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Arm A - reached goal; Arm B - poor accrual"
+      },
+      {
+        "nct_id": "NCT04875806",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "Due to the limited activity in Phase 1, NextCure decided to discontinue development of the anti-B7-H4 antibody monotherapy trial (NC762-01) to move forward with a prioritized B7-H4 ADC program."
+      },
+      {
+        "nct_id": "NCT04047797",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "text": "Administratively Complete 75%\\<Participants"
+      },
+      {
+        "nct_id": "NCT04896658",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "The study was terminated due to FDA withdrawal of the drug and lack of enrollment with available BCMA therapies that were deemed safer."
+      },
+      {
+        "nct_id": "NCT04526795",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "text": "Administratively Complete"
+      },
+      {
+        "nct_id": "NCT01217411",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "text": "Other - Protocol moved to Administratively Complete"
+      },
+      {
+        "nct_id": "NCT02353143",
+        "predicted": "BIOLOGICAL_FAILURE/SAFETY",
+        "text": "The Sponsor accepted the iDSMB recommendation to terminate the study due to evidence of unpredictable liver toxicity and meaningful target engagement not translating into any clinical objective response."
+      },
+      {
+        "nct_id": "NCT02949843",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Slow accrual, closed by IRB"
+      },
+      {
+        "nct_id": "NCT01041027",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Due to slow accrual. Results from the PORTEC3 the study rendered the hypothesis no longer valid."
+      },
+      {
+        "nct_id": "NCT03642132",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "Phase 3 B9991010 study was stopped due to futility of efficacy at interim analysis on 21Dec2018, and approvals of PARP inhibitors in front-line maintenance setting, Pfizer decided stopping enrollment in the B9991030 study on 19Mar2019."
+      },
+      {
+        "nct_id": "NCT05622058",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "The study has been terminated early given that the first four patients enrolled have experienced Grade 4 neutropenia and alopecia after cycle 1 and as such failed to meet the primary endpoint and the main secondary endpoint."
+      },
+      {
+        "nct_id": "NCT02987998",
+        "predicted": "BIOLOGICAL_FAILURE/SAFETY",
+        "text": "higher than expected rate of toxicity \\& unrealistic timeline to complete trial under company's proposed plan to reopen"
+      },
+      {
+        "nct_id": "NCT02933073",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Study recruitment is temporary on hold by the sponsor due to patient recruitment challenges and the ongoing review of the investigational adjuvant."
+      },
+      {
+        "nct_id": "NCT01649505",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Low patient enrollment and no clinical findings."
+      },
+      {
+        "nct_id": "NCT04880564",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "Sponsor decided that there was no benefit in the drug treatment and due to company change in landscape in the new year."
+      },
+      {
+        "nct_id": "NCT03324282",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "ANSM's refusal to validate ATU requests for avelumab in bladder cancer, Decrease in recruitment, Most investigators would like to offer avelumab for maintenance, Absence of benefit to the chemo-immuno combination (pembro+gem-platinum) in phase III"
+      },
+      {
+        "nct_id": "NCT04428047",
+        "predicted": "BIOLOGICAL_FAILURE/SAFETY",
+        "text": "Sponsor decision following information on cases of hyperprogression and early toxicities with bintrafusp alfa in other studies"
+      },
+      {
+        "nct_id": "NCT01685606",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Lack of accrual and low efficacy"
+      },
+      {
+        "nct_id": "NCT00496431",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Study accrual was stopped earlier than planned by the Sponsor for 2 main reasons: very slow recruitment rate; lower than estimated efficacy of the drug when delivered as single agent."
+      }
+    ]
+  }
+}

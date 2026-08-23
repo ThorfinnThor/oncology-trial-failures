@@ -70,6 +70,12 @@ function normalizeIndexRow(row) {
     classification_reason: asString(row.classification_reason || row.reason_bucket || "").trim(),
     classification_confidence: asString(row.classification_confidence || row.confidence || "").trim(),
     classification_evidence: asString(row.classification_evidence || row.evidence || "").trim(),
+    classification_outcome_v2: asString(row.classification_outcome_v2 || "").trim(),
+    classification_primary_reason_v2: asString(row.classification_primary_reason_v2 || "").trim(),
+    classification_secondary_reasons_v2: asString(row.classification_secondary_reasons_v2 || "").trim(),
+    classification_needs_review: Boolean(row.classification_needs_review),
+    classification_version: asString(row.classification_version || "").trim(),
+    classification_source: asString(row.classification_source || "").trim(),
     last_update_post_date: asString(row.last_update_post_date || row.last_update || row.updated || "").trim(),
     url,
   });

@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Validate approved grouped reviews and merge them into the V2 decision log."""
+
+from __future__ import annotations
+
+import argparse
+import csv
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, List
+
+try:
+    from classification_v2 import (
+        BIOLOGICAL_REASONS,
+        OPERATIONAL_REASONS,
+        OUTCOME_BIOLOGICAL,
+        OUTCOME_MIXED,
+        OUTCOME_NON_BIOLOGICAL,
+        OUTCOME_NON_FAILURE,
+        OUTCOME_UNKNOWN,
+        REASON_MULTIPLE,
+        REASON_PLANNED,
+        REASON_REGULATORY,
+        REASON_REPLACEMENT,
+        REASON_UNSPECIFIED,
+        normalize_reason,
+    )
+except ImportError:
+    from scripts.classification_v2 import (
+        BIOLOGICAL_REASONS,
+        OPERATIONAL_REASONS,
+        OUTCOME_BIOLOGICAL,
+        OUTCOME_MIXED,
+        OUTCOME_NON_BIOLOGICAL,
+        OUTCOME_NON_FAILURE,
+        OUTCOME_UNKNOWN,
+        REASON_MULTIPLE,
+        REASON_PLANNED,
+        REASON_REGULATORY,
+        REASON_REPLACEMENT,
+        REASON_UNSPECIFIED,
+        normalize_reason,
+    )
+
+
+DEST_FIELDS = (
+    "why_stopped",
+    "outcome",
+    "primary_reason",
+    "secondary_reasons",
+    "needs_review",
+    "decision_status",
+    "reviewer_notes",
+    "reviewed_at",
+)
+ALLOWED_OUTCOMES = {
+    OUTCOME_BIOLOGICAL,
+    OUTCOME_NON_BIOLOGICAL,
+    OUTCOME_MIXED,
+    OUTCOME_NON_FAILURE,
+    OUTCOME_UNKNOWN,
+}
+ALLOWED_REASONS = {
+    *BIOLOGICAL_REASONS,
+    *OPERATIONAL_REASONS,
+    REASON_REGULATORY,
+    REASON_MULTIPLE,
+    REASON_PLANNED,
+    REASON_REPLACEMENT,
+    REASON_UNSPECIFIED,
+}
+
+
+def read_csv(path: Path) -> List[Dict[str, Any]]:
+    if not path.exists():
+        return []
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("batch")
+    parser.add_argument(
+        "--decisions",
+        default="data/classification_manual_decisions_v2.csv",
+    )
+    args = parser.parse_args()
+
+    approved: List[Dict[str, Any]] = []
+    for row in read_csv(Path(args.batch)):
+        if str(row.get("decision_status") or "").strip().upper() != "APPROVED":
+            continue
+        text = str(row.get("why_stopped") or "").strip()
+        outcome = str(row.get("reviewer_outcome") or "").strip().upper()
+        primary = str(row.get("reviewer_primary_reason") or "").strip().upper()
+        if not text or outcome not in ALLOWED_OUTCOMES or primary not in ALLOWED_REASONS:
+            raise ValueError(f"Invalid approved decision: {row}")
+        approved.append(
+            {
+                "why_stopped": text,
+                "outcome": outcome,
+                "primary_reason": primary,
+                "secondary_reasons": str(
+                    row.get("reviewer_secondary_reasons") or ""
+                ).strip().upper(),
+                "needs_review": str(
+                    row.get("reviewer_needs_review") or "false"
+                ).strip().lower(),
+                "decision_status": "APPROVED",
+                "reviewer_notes": str(row.get("reviewer_notes") or "").strip(),
+                "reviewed_at": datetime.now(timezone.utc).isoformat(),
+            }
+        )
+
+    destination = Path(args.decisions)
+    existing = read_csv(destination)
+    by_reason = {
+        normalize_reason(row.get("why_stopped")): row
+        for row in existing
+        if normalize_reason(row.get("why_stopped"))
+    }
+    for row in approved:
+        by_reason[normalize_reason(row["why_stopped"])] = row
+    with destination.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=DEST_FIELDS, lineterminator="\n")
+        writer.writeheader()
+        writer.writerows(sorted(by_reason.values(), key=lambda row: normalize_reason(row["why_stopped"])))
+    print(f"Merged {len(approved)} approved decisions into {destination}")
+
+
+if __name__ == "__main__":
+    main()

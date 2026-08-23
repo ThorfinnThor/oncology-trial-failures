@@ -2,6 +2,7 @@
 import json
 import os
 import shutil
+from collections import Counter
 from datetime import datetime, timezone
 
 ROOT_ALL_JSON = "data/all_stopped_trials.json"
@@ -62,6 +63,16 @@ def main() -> None:
         counts[a] = counts.get(a, 0) + 1
     top_10 = sorted(counts.items(), key=lambda x: (-x[1], x[0]))[:10]
     top_areas = [{"area": a, "count": c} for a, c in top_10]
+    v2_outcomes = Counter(
+        (r.get("classification_outcome_v2") or "UNKNOWN").strip() or "UNKNOWN"
+        for r in all_rows
+    )
+    v2_reasons = Counter(
+        (r.get("classification_primary_reason_v2") or "UNSPECIFIED").strip()
+        or "UNSPECIFIED"
+        for r in all_rows
+    )
+    v2_review_count = sum(bool(r.get("classification_needs_review")) for r in all_rows)
 
     meta = {
         "version": version,
@@ -76,7 +87,21 @@ def main() -> None:
             "max_last_update_post_date": bio_max,
         },
         "top_areas": top_areas,
-        "notes": "Disease areas are keyword-based mappings from conditions/MeSH terms; countries are trial site countries.",
+        "classification_v2": {
+            "version": "2.0.0",
+            "outcomes": dict(v2_outcomes.most_common()),
+            "primary_reasons": dict(v2_reasons.most_common()),
+            "needs_review": v2_review_count,
+            "review_policy": (
+                "Mixed, content-free, and novel stop reasons are review-gated rather "
+                "than forced into a failure bucket."
+            ),
+        },
+        "notes": (
+            "Disease areas are keyword-based mappings from conditions/MeSH terms; "
+            "countries are trial site countries. Classifications are analytical "
+            "screening signals and may require primary-source verification."
+        ),
     }
 
     shutil.copyfile(ROOT_ALL_JSON, PUBLIC_ALL_JSON)

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "source_ref": "origin/audit/batch-3",
+  "source_document": "docs/classification_audit.md",
+  "source_dataset": "data/all_oncology_stopped_trials.json",
+  "record_range": [
+    1,
+    4000
+  ],
+  "counts": {
+    "CORRECT": 2261,
+    "MISCLASSIFIED": 1393,
+    "REVIEW": 346
+  },
+  "important_limitation": "Rows marked CORRECT inherit the historical classifier output because the Markdown audit did not record their adjudicated label individually."
+}

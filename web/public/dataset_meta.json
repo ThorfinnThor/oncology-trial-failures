@@ -1,13 +1,13 @@
 {
   "version": "2026-08-14",
-  "generated_at_utc": "2026-08-17T07:23:43Z",
+  "generated_at_utc": "2026-08-23T15:23:46Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23617,
     "max_last_update_post_date": "2026-08-14"
   },
   "biological_failure": {
-    "record_count": 1821,
+    "record_count": 1330,
     "max_last_update_post_date": "2026-08-14"
   },
   "top_areas": [
@@ -52,5 +52,36 @@
       "count": 609
     }
   ],
-  "notes": "Disease areas are keyword-based mappings from conditions/MeSH terms; countries are trial site countries."
+  "classification_v2": {
+    "version": "2.0.0",
+    "outcomes": {
+      "UNKNOWN": 15279,
+      "NON_BIOLOGICAL": 6865,
+      "BIOLOGICAL_FAILURE": 1343,
+      "MIXED_CAUSES": 84,
+      "NON_FAILURE_TRANSITION": 46
+    },
+    "primary_reasons": {
+      "UNSPECIFIED": 15279,
+      "RECRUITMENT": 4489,
+      "EFFICACY_FUTILITY": 1003,
+      "FUNDING": 956,
+      "BUSINESS_STRATEGY": 629,
+      "STAFFING_RESOURCES": 399,
+      "SAFETY": 327,
+      "SUPPLY_MANUFACTURING": 128,
+      "REGULATORY": 95,
+      "MULTIPLE": 84,
+      "PROTOCOL_FEASIBILITY": 55,
+      "EXTERNAL_DISRUPTION": 48,
+      "SUPPORT_WITHDRAWAL": 38,
+      "PLANNED_MILESTONE": 36,
+      "OPERATIONAL_OTHER": 28,
+      "BIOLOGICAL_UNSPECIFIED": 13,
+      "REPLACEMENT_TRANSITION": 10
+    },
+    "needs_review": 14684,
+    "review_policy": "Mixed, content-free, and novel stop reasons are review-gated rather than forced into a failure bucket."
+  },
+  "notes": "Disease areas are keyword-based mappings from conditions/MeSH terms; countries are trial site countries. Classifications are analytical screening signals and may require primary-source verification."
 }
