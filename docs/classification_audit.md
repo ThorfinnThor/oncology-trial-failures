@@ -3286,3 +3286,165 @@ Thus 1114 of 1338 definite errors (83.3%) remain variants of the same core probl
 - Cumulative total: `2128 + 1338 + 334 = 3800`.
 - Cumulative needs change/review: `1338 + 334 = 1672`.
 - Cumulative definite-error subgroups: `768 + 346 + 148 + 35 + 34 + 7 = 1338`.
+
+---
+
+# Classification Audit — Batch 20
+
+This section is the completed manual semantic audit for records 3801–4000 and uses the same methodology and taxonomy as Batches 1–19.
+
+Batch boundary: record 3801 is `NCT01673386`; record 4000 is `NCT02837991`.
+
+The same causal-layer rules are applied strictly. An action, decision, request, recommendation, enrollment stop, program discontinuation, or stage transition is not itself a causal explanation. Concrete recruitment, staffing, funding/support, supply, business/strategy, treatment-landscape, feasibility, and other execution causes are `OPERATIONAL`; direct negative efficacy/futility and adverse safety evidence retain their biological dimension; concrete external regulator, FDA, IRB, or ethics actions are `REGULATORY`; and mixed causes, unfavorable but dimensionally unresolved benefit-risk, milestones, replacements, data-sufficiency stops, and other non-failure transitions are sent to review rather than forced into a single label.
+
+## Summary
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 133 | 66.5% |
+| Definitely misclassified | 55 | 27.5% |
+| Ambiguous / multiple plausible causes / planned-success / non-failure | 12 | 6.0% |
+| Needs change or manual review | 67 | 33.5% |
+
+## Main finding
+
+Batch 20 again concentrates definite error at the `OPERATIONAL` versus `OTHER/UNKNOWN` boundary. Of the 55 definite errors, 28 are `OTHER/UNKNOWN → OPERATIONAL` and 17 are `OPERATIONAL → OTHER/UNKNOWN`; together these 45 records account for 81.8% of all definite Batch 20 errors. The remaining ten definite errors are eight missed `EFFICACY/FUTILITY` cases, one missed `SAFETY` case, one missed `REGULATORY` case, and zero inverse biological false positives.
+
+The dominant semantic failures are concrete strategy/business, staffing, support, recruitment, and treatment-landscape causes left as unknown; content-free sponsor/company/business/administrative actions promoted to operational causes; and direct efficacy evidence left outside the biological efficacy class. Batch 20 also reinforces that mixed causes, unfavorable risk-benefit without a separable biological dimension, interim/continuation gates without their result dimension, and milestone/replacement transitions require review rather than forced precedence.
+
+## A. `OTHER/UNKNOWN` that should be `OPERATIONAL` — 28
+
+- `NCT02709889` (record 3820) — `Strategic considerations` state a concrete strategy/business cause rather than a bare strategic decision
+- `NCT02425878` (record 3824) — lack of available eligible subjects is a recruitment/feasibility cause
+- `NCT03515941` (record 3828) — outdated study design is a protocol/treatment-relevance operational cause
+- `NCT01326923` (record 3830) — PI left the institution; staffing/continuity cause
+- `NCT03189030` (record 3843) — business realignment is a concrete business cause
+- `NCT03642457` (record 3845) — PI left and no replacement was found; staffing cause
+- `NCT01942993` (record 3846) — standard-of-care change made the study less relevant; treatment-landscape cause
+- `NCT01718444` (record 3849) — PI moved from academic practice and no successor was available; staffing cause
+- `NCT03151772` (record 3852) — problems including patients are an enrollment/feasibility cause
+- `NCT01821963` (record 3860) — low referral rate because of new therapeutic options is a treatment-landscape/recruitment cause
+- `NCT01466855` (record 3875) — competing studies created an operational recruitment constraint
+- `NCT03959852` (record 3877) — residency completion ended investigator/personnel continuity; staffing-availability cause
+- `NCT02501473` (record 3881) — explicit business reasons are operational
+- `NCT01369433` (record 3896) — lack of new feeder studies supplying subjects to the rollover study is a participant-source/enrollment feasibility cause
+- `NCT03515200` (record 3897) — PI departure is a staffing cause
+- `NCT02906670` (record 3898) — explicit business reasons are operational
+- `NCT00674427` (record 3915) — insufficient funds are a direct operational cause
+- `NCT01738724` (record 3918) — PI left/moved jobs; staffing cause
+- `NCT01225172` (record 3924) — business objectives changed; concrete business-strategy cause
+- `NCT03587129` (record 3933) — no patient entered the study; enrollment failure
+- `NCT03469258` (record 3938) — trial sponsorship halted after company acquisition; concrete support/business cause
+- `NCT00905021` (record 3951) — sponsor withdrew support; concrete operational support loss
+- `NCT02412371` (record 3953) — Phase 2 was not conducted because standard of care changed; treatment-landscape cause
+- `NCT02032784` (record 3957) — difficulty enrolling subjects is a recruitment cause
+- `NCT03745222` (record 3962) — the collaborating companies terminated their compound collaboration pending an acquisition; concrete partnership/support cause
+- `NCT00003086` (record 3965) — no participants enrolled over three years; enrollment infeasibility
+- `NCT02753595` (record 3970) — evolving standard of care and difficulty enrolling participants are operational relevance/recruitment causes
+- `NCT03827473` (record 3986) — changing standard of care made the trial no longer impactful; operational obsolescence/relevance cause
+
+## B. `OPERATIONAL` that should be `OTHER/UNKNOWN` — 17
+
+These records state an action, actor, generic administrative wording, or program decision without the underlying causal reason. The action-versus-cause distinction is controlling even where the classifier assigned high-confidence `OPERATIONAL`.
+
+- `NCT03724253` (record 3805) — recruitment stopped before target sample size; this states the action/shortfall, not why recruitment stopped
+- `NCT00622466` (record 3815) — sponsor requested permanent closure; request/action only
+- `NCT03549338` (record 3853) — generic `administrative reasons` supplies no concrete underlying cause
+- `NCT01952249` (record 3885) — Phase 2 was not initiated and the ovarian indication was no longer pursued; program action/state without a causal reason
+- `NCT03241810` (record 3894) — bare business decision
+- `NCT03834584` (record 3905) — sponsor decision only
+- `NCT03119428` (record 3926) — sponsor decision only
+- `NCT03295942` (record 3927) — sponsor decision only
+- `NCT02889861` (record 3948) — sponsor decision only
+- `NCT02781467` (record 3954) — `Business Decision` only
+- `NCT03026166` (record 3955) — enrollment stopped after the DLT-evaluation phase; timing/action is stated, but no adverse DLT result or other cause is supplied
+- `NCT02715804` (record 3964) — sponsor decision only
+- `NCT01551043` (record 3973) — `Administrative Reasons` is content-free causal wording
+- `NCT03265717` (record 3974) — sponsor decision only
+- `NCT02202746` (record 3989) — sponsor decision to end monotherapy development; program action without the underlying causal reason
+- `NCT03343613` (record 3997) — strategic business decision by the company; decision layer only
+- `NCT02380677` (record 3998) — company decision only
+
+## C. Missed `EFFICACY/FUTILITY` — 8
+
+- `NCT03287804` (record 3804) — preliminary efficacy was insufficient to warrant further development
+- `NCT03037645` (record 3821) — insufficient evidence of activity at the tested doses to advance to Phase 2; tolerability was acceptable, so efficacy is the explicit failing dimension
+- `NCT03013127` (record 3827) — two or fewer patients had clinical benefit; direct insufficient-benefit signal
+- `NCT02997189` (record 3871) — negative efficacy results from the completed Phase 3 study
+- `NCT03029988` (record 3879) — lack of effect in Cohort 1
+- `NCT01859741` (record 3884) — treatment did not improve PFS
+- `NCT01535157` (record 3899) — the drug combination was not providing efficacy
+- `NCT00914940` (record 3909) — failed primary endpoint of decreased total acute GVHD; failure of the intended preventive treatment effect is efficacy/futility
+
+## D. Missed `SAFETY` — 1
+
+- `NCT00506948` (record 3861) — study halted because of a high incidence of veno-occlusive liver disease; explicit adverse safety-event burden
+
+## E. Missed `REGULATORY` — 1
+
+- `NCT03000660` (record 3908) — partial clinical hold per FDA; concrete external regulatory action
+
+## F. Inverse biological false positives — 0
+
+No definite Batch 20 record currently assigned a biological failure label is contradicted strongly enough by the stop text to require an inverse biological false-positive reclassification.
+
+## G. Ambiguous / mixed-cause / planned-success / non-failure cases — 12
+
+- `NCT01188707` (record 3813) — `Dose over MTD reached` may describe a dose-finding/tolerability milestone; the text does not explicitly supply adverse safety causality
+- `NCT00633061` (record 3832) — futility plus inability to complete screening because clinical practice changed; mixed efficacy/futility + operational cause
+- `NCT02991898` (record 3848) — considering new product technology is a product-development transition without a clearly adverse failure cause
+- `NCT01697293` (record 3863) — criteria for continuing enrollment in Phase 2 were not met, but the criterion/dimension is not stated
+- `NCT03382912` (record 3878) — unfavorable risk-benefit after final analysis is biologically adverse, but safety versus efficacy cannot be isolated
+- `NCT02266147` (record 3887) — sufficient data existed to make a lymphoma-development decision; data-sufficiency/milestone semantics may be non-failure
+- `NCT03539484` (record 3890) — high gastrointestinal toxicity and absence of clinically significant antitumor efficacy are both explicit; mixed safety + efficacy cause
+- `NCT03006562` (record 3934) — early stopping point was based on a planned second interim analysis, but result polarity and dimension are not supplied
+- `NCT03890198` (record 3980) — preliminary data/progress plus pipeline/strategy adjustment; mixed underspecified scientific and strategic causes
+- `NCT01803269` (record 3985) — lack of activity plus slow accrual; mixed efficacy + operational cause
+- `NCT02985554` (record 3987) — slow accrual plus safety concerns; mixed operational + safety cause
+- `NCT02512237` (record 3999) — replacement by a new trial is a replacement-study transition/non-failure rather than a demonstrated failure cause
+
+## Classifier issues reinforced or newly exposed by Batch 20
+
+1. **Decision/action wording remains a structural false-positive source.** Sponsor/company/business decisions, generic administrative reasons, enrollment-stop actions, and program discontinuation still receive `OPERATIONAL` without the actual causal layer.
+2. **Concrete business, strategy, support, staffing, recruitment, and treatment-landscape causes still leak to `OTHER/UNKNOWN`.** Strategic considerations, business realignment/objective changes, acquisition-related support changes, PI departure, absent participants, competing studies, and new standards of care are operational when they causally explain the stop.
+3. **Direct efficacy semantics remain under-recognized.** Insufficient activity, insufficient clinical benefit, negative efficacy results, lack of effect, lack of PFS improvement, lack of efficacy, and failure of a prevention endpoint all require `EFFICACY/FUTILITY` when causal.
+4. **Direct adverse safety and concrete FDA action can still be missed.** A high incidence of veno-occlusive liver disease is a safety cause; an FDA partial clinical hold is regulatory.
+5. **Risk-benefit wording still requires dimension gating.** An unfavorable risk-benefit conclusion may establish a biological problem without distinguishing safety from efficacy, so it remains review unless the failing dimension is explicit.
+6. **Mixed causes remain irreducible under forced precedence.** Batch 20 includes efficacy+screening/practice change, safety+efficacy, efficacy+slow accrual, and safety+slow accrual combinations that must remain review/multi-cause.
+7. **Milestone, data-sufficiency, product-transition, and replacement-study semantics require non-failure handling.** Reaching a dose-finding boundary, having enough data to make a development decision, considering a new product technology, or replacing a study with a new trial is not automatically failure.
+8. **DLT/interim/continuation language still requires the actual result, polarity, and dimension.** Stopping after a DLT-evaluation phase, an interim-analysis stopping point, or failure of unspecified Phase 2 continuation criteria does not by itself identify safety or efficacy causality.
+9. **Confidence remains subordinate to semantics.** High-confidence action-only `OPERATIONAL` assignments and low-confidence explicit causal records remain possible; the text controls the audit judgment.
+
+---
+
+## Cumulative status — records 1–4000
+
+| Audit result | Count | Share |
+|---|---:|---:|
+| Correct | 2261 | 56.53% |
+| Definitely misclassified | 1393 | 34.83% |
+| Ambiguous / multiple plausible causes / non-failure | 346 | 8.65% |
+| Needs change or manual review | 1739 | 43.48% |
+
+Of the 1393 definite errors across the first 4000 records:
+
+- 796 (57.1%) are `OTHER/UNKNOWN → OPERATIONAL`;
+- 363 (26.1%) are `OPERATIONAL → OTHER/UNKNOWN`;
+- 156 (11.2%) are missed `EFFICACY/FUTILITY`;
+- 36 (2.6%) are missed `SAFETY`;
+- 35 (2.5%) are missed `REGULATORY`;
+- 7 (0.5%) are inverse biological false positives.
+
+Thus 1159 of 1393 definite errors (83.2%) remain variants of the same core problem: separating a real operational cause from a mere decision-maker/action statement.
+
+## Arithmetic check
+
+- Batch 20: `133 + 55 + 12 = 200`.
+- Batch 20 needs change/review: `55 + 12 = 67`.
+- Batch 20 definite-error subgroups: `28 + 17 + 8 + 1 + 1 + 0 = 55`.
+- Batch 20 percentages: `133 / 200 = 66.5%`, `55 / 200 = 27.5%`, `12 / 200 = 6.0%`, and `67 / 200 = 33.5%`.
+- Cumulative additions: `2128 + 133 = 2261`, `1338 + 55 = 1393`, `334 + 12 = 346`, and `1672 + 67 = 1739`.
+- Cumulative total: `2261 + 1393 + 346 = 4000`.
+- Cumulative needs change/review: `1393 + 346 = 1739`.
+- Cumulative definite-error subgroups: `796 + 363 + 156 + 36 + 35 + 7 = 1393`.
+- Cumulative percentage checks: `2261 / 4000 = 56.525% → 56.53%`, `1393 / 4000 = 34.825% → 34.83%`, `346 / 4000 = 8.65%`, and `1739 / 4000 = 43.475% → 43.48%`.
