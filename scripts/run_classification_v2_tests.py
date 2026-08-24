@@ -13,6 +13,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from scripts.fetch_ctgov_oncology_failures import extract_record
+from scripts.enrich_classification_context_v2 import proposal_for
 from scripts.ingest_changes import build_ingest_change_report
 from scripts.import_classification_review_batch_v2 import validate_semantics
 from scripts.reclassify_dataset_v2 import classify_rows
@@ -74,6 +75,34 @@ def main() -> None:
     if upgraded_result.primary_reason != "RECRUITMENT" or upgraded_result.needs_review:
         failures.append("Unresolved legacy cache entry blocked a specific V2 rule")
 
+    unclear_legacy = {
+        classify_reason_v2("No longer pursuing the indication").normalized_text_hash: {
+            "outcome": "UNKNOWN",
+            "primary_reason": "UNSPECIFIED",
+            "needs_review": True,
+            "v2_derivation": "AUDIT_LEGACY_MAPPING",
+            "example_text": "No longer pursuing the indication",
+        }
+    }
+    upgraded_unclear = classify_reason_v2("No longer pursuing the indication", unclear_legacy)
+    if upgraded_unclear.primary_reason != "BUSINESS_STRATEGY" or upgraded_unclear.needs_review:
+        failures.append("Unresolved legacy UNKNOWN cache entry blocked a specific V2 rule")
+
+    manual_review = {
+        classify_reason_v2("No longer pursuing the indication").normalized_text_hash: {
+            "outcome": "UNKNOWN",
+            "primary_reason": "UNSPECIFIED",
+            "needs_review": True,
+            "v2_derivation": "MANUAL_V2_DECISION",
+            "example_text": "No longer pursuing the indication",
+        }
+    }
+    retained_manual_review = classify_reason_v2(
+        "No longer pursuing the indication", manual_review
+    )
+    if not retained_manual_review.needs_review:
+        failures.append("A manual V2 review decision lost precedence")
+
     fallback = classify_with_v2_fallback(
         "See detailed description",
         "",
@@ -118,6 +147,106 @@ def main() -> None:
     )
     if no_fallback.outcome != "UNKNOWN":
         failures.append(f"Non-placeholder text was incorrectly augmented: {no_fallback}")
+
+    fallback_proposal = proposal_for(
+        {
+            "nct_id": "NCT00000004",
+            "why_stopped": "See detailed description",
+        },
+        {
+            "statusModule": {"whyStopped": "See detailed description"},
+            "descriptionModule": {
+                "detailedDescription": (
+                    "The study was terminated due to unacceptable toxicity. "
+                    "No further participants were enrolled."
+                )
+            },
+        },
+        {},
+    )
+    if (
+        not fallback_proposal
+        or fallback_proposal["proposed_primary_reason_v2"] != "SAFETY"
+    ):
+        failures.append(f"Context enrichment did not propose the explicit cause: {fallback_proposal}")
+
+    nonplaceholder_proposal = proposal_for(
+        {"nct_id": "NCT00000005", "why_stopped": "Sponsor decision"},
+        {
+            "statusModule": {"whyStopped": "Sponsor decision"},
+            "descriptionModule": {
+                "detailedDescription": "The study was terminated due to unacceptable toxicity."
+            },
+        },
+        {},
+    )
+    if nonplaceholder_proposal is not None:
+        failures.append("Context enrichment mined a non-placeholder reason")
+
+    generic_treatment_proposal = proposal_for(
+        {"nct_id": "NCT00000006", "why_stopped": ""},
+        {
+            "statusModule": {"whyStopped": ""},
+            "descriptionModule": {
+                "detailedDescription": (
+                    "Participants will continue study treatment until disease progression, "
+                    "unacceptable toxicity, consent withdrawal, or refusal of treatment."
+                )
+            },
+        },
+        {},
+    )
+    if generic_treatment_proposal is not None:
+        failures.append("Context enrichment treated generic discontinuation criteria as a cause")
+
+    individual_discontinuation_proposal = proposal_for(
+        {"nct_id": "NCT00000008", "why_stopped": ""},
+        {
+            "statusModule": {"whyStopped": ""},
+            "descriptionModule": {
+                "detailedDescription": (
+                    "The primary outcome records whether a subject discontinued the study "
+                    "due to a related adverse event."
+                )
+            },
+        },
+        {},
+    )
+    if individual_discontinuation_proposal is not None:
+        failures.append("Context enrichment treated an individual discontinuation as study closure")
+
+    medication_discontinuation_proposal = proposal_for(
+        {"nct_id": "NCT00000009", "why_stopped": ""},
+        {
+            "statusModule": {"whyStopped": ""},
+            "descriptionModule": {
+                "detailedDescription": (
+                    "Study medication will be discontinued because of intolerable side effects."
+                )
+            },
+        },
+        {},
+    )
+    if medication_discontinuation_proposal is not None:
+        failures.append("Context enrichment treated medication discontinuation as study closure")
+
+    blank_direct_proposal = proposal_for(
+        {"nct_id": "NCT00000007", "why_stopped": ""},
+        {
+            "statusModule": {"whyStopped": ""},
+            "descriptionModule": {
+                "detailedDescription": "The study was terminated early due to slow enrollment."
+            },
+        },
+        {},
+    )
+    if (
+        not blank_direct_proposal
+        or blank_direct_proposal["proposed_primary_reason_v2"] != "RECRUITMENT"
+    ):
+        failures.append(
+            f"Context enrichment missed a direct blank-reason cause: {blank_direct_proposal}"
+        )
 
     synthetic = {
         "protocolSection": {

@@ -4,6 +4,11 @@ Classification V2 is the conservative stop-reason pipeline used for new and
 changed ClinicalTrials.gov records. It replaces forced keyword precedence with
 an evidence-bearing, review-gated model.
 
+The current rule implementation is `2.1.0`. A review flag is a deliberate
+semantic result, not a failed pipeline state: text that does not state a cause
+clearly enough remains unclassified until primary-source context or a reviewed
+decision supports it.
+
 ## Why V2 exists
 
 The semantic audit of oncology records 1-4000 found that 34.83% were definitely
@@ -68,6 +73,10 @@ placeholder. It is accepted only for a direct, high-confidence causal sentence.
 This prevents unrelated safety or efficacy background from becoming a false
 stop reason.
 
+The classifier compiles its narrow semantic patterns once per process. This
+keeps full-snapshot classification fast even though the rule set favors many
+specific patterns over a few broad, error-prone keyword rules.
+
 ## Files
 
 - `scripts/classification_v2.py`: classifier and compatibility mapping
@@ -84,6 +93,8 @@ stop reason.
 - `scripts/validate_classification_v2_snapshot.py`: full-snapshot invariant checks
 - `scripts/export_classification_review_batch_v2.py`: prioritized grouped review export
 - `scripts/import_classification_review_batch_v2.py`: validated decision-log import
+- `scripts/enrich_classification_context_v2.py`: conservative registry-description fallback proposals
+- `data/classification_context_proposals_v2.json`: reviewed description-fallback decisions
 
 ## Grouped review workflow
 
@@ -109,6 +120,31 @@ Approved decisions override audit-derived entries and are automatically reused
 for identical future registry language. Blank stop reasons remain unknown; they
 cannot be semantically resolved without another explicit primary-source field.
 
+## Primary-source context workflow
+
+The context helper queries ClinicalTrials.gov only for unresolved records whose
+`whyStopped` field is blank or an explicit placeholder. It writes proposals
+without changing the canonical snapshot by default:
+
+```bash
+python scripts/enrich_classification_context_v2.py
+```
+
+Review `data/classification_context_proposals_v2.json`, then apply that frozen
+proposal file without another network request and rebuild the classifications:
+
+```bash
+python scripts/enrich_classification_context_v2.py --apply-existing
+python scripts/reclassify_dataset_v2.py --write
+python scripts/validate_classification_v2_snapshot.py
+```
+
+Fallback text must be a direct study-level causal statement and produce a
+high-confidence final result. Individual participant discontinuations,
+background safety/efficacy discussion, and study-drug discontinuation advice
+are excluded. A description fallback therefore cannot be used to guess a cause
+for generic registry text.
+
 ## Quality policy
 
 The release gate currently requires:
@@ -117,7 +153,9 @@ The release gate currently requires:
 - at least 99% precision among high-confidence assertions;
 - at least 98% precision for biological failure assertions;
 - at least 55% recall for biological audit cases;
-- at least 85% recall for audit cases previously marked ambiguous/review.
+- at least 85% safe disposition recall for audit cases previously marked
+  ambiguous/review. A case is safely disposed when it remains review-gated or
+  is identified as an explicit non-failure transition.
 
 The initial V2 rule benchmark exceeds these minimums, but its recall is
 intentionally conservative. Exact reviewed reasons increase production coverage

@@ -6,106 +6,91 @@
     "audit_review": 346
   },
   "metrics": {
-    "legacy_accuracy_all_adjudicated": 0.711,
-    "assertion_coverage": 0.4683,
-    "assertion_precision": 0.9971,
-    "high_confidence_assertion_precision": 0.9982,
-    "biological_precision": 0.9884,
-    "biological_recall": 0.5845,
-    "audit_review_recall": 0.8757,
-    "overall_review_rate": 0.5615
+    "legacy_accuracy_all_adjudicated": 0.7641,
+    "assertion_coverage": 0.5233,
+    "assertion_precision": 0.9969,
+    "high_confidence_assertion_precision": 0.9976,
+    "biological_precision": 1.0,
+    "biological_recall": 0.8402,
+    "audit_review_recall": 0.8295,
+    "audit_review_safe_disposition_recall": 0.9104,
+    "overall_review_rate": 0.5072
   },
   "counts": {
-    "correct": 2598,
-    "asserted": 1711,
-    "asserted_correct": 1706,
-    "high_confidence_asserted": 1636,
-    "high_confidence_asserted_correct": 1633,
-    "biological_asserted": 259,
-    "biological_correct": 256,
+    "correct": 2792,
+    "asserted": 1912,
+    "asserted_correct": 1906,
+    "high_confidence_asserted": 1693,
+    "high_confidence_asserted_correct": 1689,
+    "biological_asserted": 368,
+    "biological_correct": 368,
     "expected_biological": 438,
-    "biological_found": 256,
-    "audit_review_flagged": 303,
-    "predicted_review": 2246
+    "biological_found": 368,
+    "audit_review_flagged": 287,
+    "audit_review_safely_disposed": 315,
+    "predicted_review": 2029
   },
   "errors_by_expected": {
-    "NON_BIOLOGICAL/OPERATIONAL": 850,
-    "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 132,
-    "BIOLOGICAL_FAILURE/SAFETY": 50,
-    "NON_BIOLOGICAL/REGULATORY": 20,
-    "UNCLEAR/OTHER/UNKNOWN": 4
+    "NON_BIOLOGICAL/OPERATIONAL": 782,
+    "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 52,
+    "BIOLOGICAL_FAILURE/SAFETY": 18,
+    "UNCLEAR/OTHER/UNKNOWN": 6,
+    "NON_BIOLOGICAL/REGULATORY": 4
   },
   "errors_by_predicted": {
-    "UNCLEAR/OTHER/UNKNOWN": 1051,
-    "NON_BIOLOGICAL/OPERATIONAL": 2,
-    "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 2,
-    "BIOLOGICAL_FAILURE/SAFETY": 1
+    "UNCLEAR/OTHER/UNKNOWN": 856,
+    "NON_BIOLOGICAL/OPERATIONAL": 6
   },
   "confusion": [
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-      "count": 1434
+      "count": 1502
     },
     {
       "expected": "UNCLEAR/OTHER/UNKNOWN",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 893
+      "count": 891
     },
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 849
+      "count": 782
     },
     {
       "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
       "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
-      "count": 206
-    },
-    {
-      "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
-      "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 132
+      "count": 286
     },
     {
       "expected": "BIOLOGICAL_FAILURE/SAFETY",
       "predicted": "BIOLOGICAL_FAILURE/SAFETY",
-      "count": 50
+      "count": 82
     },
     {
-      "expected": "BIOLOGICAL_FAILURE/SAFETY",
+      "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 50
-    },
-    {
-      "expected": "NON_BIOLOGICAL/REGULATORY",
-      "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 20
+      "count": 52
     },
     {
       "expected": "NON_BIOLOGICAL/REGULATORY",
       "predicted": "NON_BIOLOGICAL/REGULATORY",
-      "count": 15
+      "count": 31
+    },
+    {
+      "expected": "BIOLOGICAL_FAILURE/SAFETY",
+      "predicted": "UNCLEAR/OTHER/UNKNOWN",
+      "count": 18
     },
     {
       "expected": "UNCLEAR/OTHER/UNKNOWN",
       "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-      "count": 2
+      "count": 6
     },
     {
-      "expected": "NON_BIOLOGICAL/OPERATIONAL",
-      "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
-      "count": 1
-    },
-    {
-      "expected": "UNCLEAR/OTHER/UNKNOWN",
-      "predicted": "BIOLOGICAL_FAILURE/SAFETY",
-      "count": 1
-    },
-    {
-      "expected": "UNCLEAR/OTHER/UNKNOWN",
-      "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
-      "count": 1
+      "expected": "NON_BIOLOGICAL/REGULATORY",
+      "predicted": "UNCLEAR/OTHER/UNKNOWN",
+      "count": 4
     }
   ],
   "examples": {
@@ -165,15 +150,6 @@
         "text": "Early discontinuation based on strategic sponsor decision not driven by any safety concerns"
       },
       {
-        "nct_id": "NCT04266301",
-        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "In December 2023, Novartis decided to terminate the sabatolimab clinical development program early after Phase II (MDS1) and Phase III (MDS2) studies failed to meet their primary objectives. The termination was not due to safety concerns."
-      },
-      {
         "nct_id": "NCT04260802",
         "expected": "NON_BIOLOGICAL/OPERATIONAL",
         "predicted": "UNCLEAR/OTHER/UNKNOWN",
@@ -226,24 +202,6 @@
         "v2_primary": "PROTOCOL_FEASIBILITY",
         "needs_review": false,
         "text": "Inability to meet protocol objectives"
-      },
-      {
-        "nct_id": "NCT03760523",
-        "expected": "BIOLOGICAL_FAILURE/SAFETY",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "Toxicity -Two DLT events occurred"
-      },
-      {
-        "nct_id": "NCT06692452",
-        "expected": "BIOLOGICAL_FAILURE/SAFETY",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "Ipsen requested a temporary closure due to a safety concern."
       },
       {
         "nct_id": "NCT06332079",
@@ -352,15 +310,6 @@
         "v2_primary": "UNSPECIFIED",
         "needs_review": true,
         "text": "awaiting agreement with Sponsor"
-      },
-      {
-        "nct_id": "NCT06420349",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "study sponsor phasing out drug supply"
       },
       {
         "nct_id": "NCT05556616",
@@ -498,15 +447,6 @@
         "text": "The new regulatory developments have led us to conclude that a Phase 3 study is no longer necessary for the development and approval of BAT3306. As such, to ensure effective use of clinical resources, we are terminating this study."
       },
       {
-        "nct_id": "NCT06709131",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "Product manufacturing process improvement"
-      },
-      {
         "nct_id": "NCT06388902",
         "expected": "NON_BIOLOGICAL/OPERATIONAL",
         "predicted": "UNCLEAR/OTHER/UNKNOWN",
@@ -541,15 +481,6 @@
         "v2_primary": "UNSPECIFIED",
         "needs_review": true,
         "text": "The recruitment was halted for strategic reasons"
-      },
-      {
-        "nct_id": "NCT04396535",
-        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "EMD Serono recommendation based on three other studies that failed to show benefit for bintrafusp alfa"
       },
       {
         "nct_id": "NCT05525286",
@@ -649,6 +580,60 @@
         "v2_primary": "UNSPECIFIED",
         "needs_review": true,
         "text": "Due to strategic decision made by the sponsor the study was terminated"
+      },
+      {
+        "nct_id": "NCT02712905",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Strategic Business Decision"
+      },
+      {
+        "nct_id": "NCT04511130",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Despite a plan to enroll \\~195-210 participants, the ARTEMIS study was closed due to the long vein-to-vein manufacturing timeline of MT-401 after 38 participants received the autologous MT-401."
+      },
+      {
+        "nct_id": "NCT04586244",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Business Decision. No safety concerns contributed to this decision."
+      },
+      {
+        "nct_id": "NCT06248086",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The termination of the study was a business decision made by the sponsor."
+      },
+      {
+        "nct_id": "NCT06158958",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Strategic considerations"
+      },
+      {
+        "nct_id": "NCT01546571",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "After interim analysis the study was halted to redesign a pivotal trial."
       }
     ],
     "review_not_flagged": [
@@ -663,29 +648,9 @@
         "text": "Inability to meet protocol objectives"
       },
       {
-        "nct_id": "NCT03991741",
-        "predicted": "BIOLOGICAL_FAILURE/SAFETY",
-        "text": "Closed because of feasibility and safety issues, didn't reach our end point"
-      },
-      {
         "nct_id": "NCT04804709",
         "predicted": "NON_BIOLOGICAL/REGULATORY",
         "text": "FDA withdrew approval of the new drug application (NDA) for panobinostat as of March 24, 2022 because it was not feasible for the company to complete the required postmarketing clinical trials."
-      },
-      {
-        "nct_id": "NCT02419495",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "text": "Administratively Complete"
-      },
-      {
-        "nct_id": "NCT04861181",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "text": "End of inclusion period."
-      },
-      {
-        "nct_id": "NCT04642365",
-        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-        "text": "The sponsor decided to terminate the study early, due to recruitment challenges for Part II and, based on the totality of data generated with a low likelihood of achieving the targeted efficacy, to open Part III."
       },
       {
         "nct_id": "NCT01324635",
@@ -698,29 +663,14 @@
         "text": "Due to the limited activity in Phase 1, NextCure decided to discontinue development of the anti-B7-H4 antibody monotherapy trial (NC762-01) to move forward with a prioritized B7-H4 ADC program."
       },
       {
-        "nct_id": "NCT04047797",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "text": "Administratively Complete 75%\\<Participants"
-      },
-      {
         "nct_id": "NCT04896658",
         "predicted": "NON_BIOLOGICAL/OPERATIONAL",
         "text": "The study was terminated due to FDA withdrawal of the drug and lack of enrollment with available BCMA therapies that were deemed safer."
       },
       {
-        "nct_id": "NCT04526795",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "text": "Administratively Complete"
-      },
-      {
         "nct_id": "NCT04282668",
         "predicted": "NON_BIOLOGICAL/OPERATIONAL",
         "text": "The study was terminated due to the changing treatment landscape, difficulty in enrolling eligible participants, and little likelihood of providing meaningful clinical benefit for the participants."
-      },
-      {
-        "nct_id": "NCT01217411",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "text": "Other - Protocol moved to Administratively Complete"
       },
       {
         "nct_id": "NCT02949843",
@@ -738,9 +688,19 @@
         "text": "Due to slow accrual. Results from the PORTEC3 the study rendered the hypothesis no longer valid."
       },
       {
+        "nct_id": "NCT05120375",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Based on the disclosed global research data on the same target drugs, the company has carefully considered and decided to terminate the project to optimize the existing research pipeline."
+      },
+      {
         "nct_id": "NCT04511026",
         "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
         "text": "Efficacy"
+      },
+      {
+        "nct_id": "NCT05073484",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Based on the disclosed global research data on the same target drugs, the company has carefully considered and decided to terminate the project to optimize the existing research pipeline."
       },
       {
         "nct_id": "NCT04185311",
@@ -776,6 +736,31 @@
         "nct_id": "NCT04880564",
         "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
         "text": "Sponsor decided that there was no benefit in the drug treatment and due to company change in landscape in the new year."
+      },
+      {
+        "nct_id": "NCT03324282",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "ANSM's refusal to validate ATU requests for avelumab in bladder cancer, Decrease in recruitment, Most investigators would like to offer avelumab for maintenance, Absence of benefit to the chemo-immuno combination (pembro+gem-platinum) in phase III"
+      },
+      {
+        "nct_id": "NCT04034355",
+        "predicted": "NON_BIOLOGICAL/REGULATORY",
+        "text": "On 01 March 2020, the Sponsor decided to place recruitment and dosing of patients on hold following interactions with the French regulatory authority, ANSM and the US clinical hold of another study (POLAR-M)."
+      },
+      {
+        "nct_id": "NCT03637491",
+        "predicted": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "text": "Available clinical data has shown limited anti-tumor activity and reaching target study drug dose levels may not be feasible."
+      },
+      {
+        "nct_id": "NCT01324141",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "Slow, insufficient accrual and failure to meet endpoints."
+      },
+      {
+        "nct_id": "NCT00314353",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "text": "The study was closed early due to low enrollment and new information regarding the benefit of the study regimen."
       }
     ]
   }

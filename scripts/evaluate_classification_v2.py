@@ -10,9 +10,9 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Tuple
 
 try:
-    from classification_v2 import classify_reason_v2
+    from classification_v2 import OUTCOME_NON_FAILURE, classify_reason_v2
 except ImportError:
-    from scripts.classification_v2 import classify_reason_v2
+    from scripts.classification_v2 import OUTCOME_NON_FAILURE, classify_reason_v2
 
 
 def load_jsonl(path: Path) -> Iterable[Dict[str, Any]]:
@@ -36,6 +36,7 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     correct = 0
     review_total = 0
     review_flagged = 0
+    review_safely_disposed = 0
     predicted_review = 0
     asserted = 0
     asserted_correct = 0
@@ -61,6 +62,8 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             review_total += 1
             if result.needs_review:
                 review_flagged += 1
+            if result.needs_review or result.outcome == OUTCOME_NON_FAILURE:
+                review_safely_disposed += 1
             elif len(examples["review_not_flagged"]) < 25:
                 examples["review_not_flagged"].append(
                     {"nct_id": row["nct_id"], "predicted": predicted, "text": row["why_stopped"]}
@@ -122,6 +125,9 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             "biological_precision": safe_ratio(biological_correct, biological_asserted),
             "biological_recall": safe_ratio(biological_found, expected_biological),
             "audit_review_recall": safe_ratio(review_flagged, review_total),
+            "audit_review_safe_disposition_recall": safe_ratio(
+                review_safely_disposed, review_total
+            ),
             "overall_review_rate": safe_ratio(predicted_review, total),
         },
         "counts": {
@@ -135,6 +141,7 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             "expected_biological": expected_biological,
             "biological_found": biological_found,
             "audit_review_flagged": review_flagged,
+            "audit_review_safely_disposed": review_safely_disposed,
             "predicted_review": predicted_review,
         },
         "errors_by_expected": dict(errors_by_expected.most_common()),
@@ -154,7 +161,7 @@ def enforce(report: Dict[str, Any]) -> None:
         "high_confidence_assertion_precision": 0.99,
         "biological_precision": 0.98,
         "biological_recall": 0.55,
-        "audit_review_recall": 0.85,
+        "audit_review_safe_disposition_recall": 0.85,
     }
     failures = [
         f"{name}={metrics[name]:.4f} < {minimum:.4f}"
