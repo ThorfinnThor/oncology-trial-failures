@@ -76,6 +76,10 @@ function normalizeIndexRow(row) {
     classification_needs_review: Boolean(row.classification_needs_review),
     classification_version: asString(row.classification_version || "").trim(),
     classification_source: asString(row.classification_source || "").trim(),
+    classification_resolution_status: asString(row.classification_resolution_status || "").trim(),
+    classification_final_outcome: asString(row.classification_final_outcome || "").trim(),
+    classification_final_category: asString(row.classification_final_category || "").trim(),
+    classification_final_explanation: asString(row.classification_final_explanation || "").trim(),
     last_update_post_date: asString(row.last_update_post_date || row.last_update || row.updated || "").trim(),
     url,
   });

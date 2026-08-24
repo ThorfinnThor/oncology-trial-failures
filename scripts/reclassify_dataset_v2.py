@@ -50,6 +50,13 @@ V2_FIELDS = (
     "classification_source",
 )
 
+FINAL_FIELDS = (
+    "classification_resolution_status",
+    "classification_final_outcome",
+    "classification_final_category",
+    "classification_final_explanation",
+)
+
 PRESERVED_SOURCES = {"MANUAL_NCT_OVERRIDE", "DESCRIPTION_FALLBACK"}
 
 
@@ -221,6 +228,47 @@ def classify_rows(
         queue.append(group)
     queue.sort(key=lambda item: (-item["record_count"], item["classification_text_hash"]))
     queue, disposition_summary = augment_review_queue(queue)
+    review_by_hash = {
+        str(item["classification_text_hash"]): item for item in queue
+    }
+    final_statuses: Counter[str] = Counter()
+    final_categories: Counter[str] = Counter()
+    for row in output:
+        if row.get("classification_needs_review") is True:
+            review_item = review_by_hash.get(
+                str(row.get("classification_text_hash") or "")
+            )
+            if review_item is None:
+                raise ValueError(
+                    f"Missing review disposition for {row.get('nct_id') or '<missing ID>'}"
+                )
+            disposition = str(review_item["review_disposition"])
+            final_fields = {
+                "classification_resolution_status": "UNRESOLVED",
+                "classification_final_outcome": "UNRESOLVED",
+                "classification_final_category": f"UNRESOLVED_{disposition}",
+                "classification_final_explanation": str(
+                    review_item["review_disposition_note"]
+                ),
+            }
+        else:
+            final_fields = {
+                "classification_resolution_status": "RESOLVED",
+                "classification_final_outcome": str(
+                    row.get("classification_outcome_v2") or ""
+                ),
+                "classification_final_category": str(
+                    row.get("classification_primary_reason_v2") or ""
+                ),
+                "classification_final_explanation": (
+                    "Supported by explicit rule evidence or a reviewed source decision; "
+                    f"confidence={row.get('classification_confidence') or 'UNKNOWN'}; "
+                    f"source={row.get('classification_source') or 'UNKNOWN'}."
+                ),
+            }
+        row.update(final_fields)
+        final_statuses[str(final_fields["classification_resolution_status"])] += 1
+        final_categories[str(final_fields["classification_final_category"])] += 1
 
     report = {
         "schema_version": 1,
@@ -233,6 +281,8 @@ def classify_rows(
         "primary_reasons": dict(primary_reasons.most_common()),
         "sources": dict(sources.most_common()),
         "confidence": dict(confidence.most_common()),
+        "final_resolution_statuses": dict(final_statuses.most_common()),
+        "final_categories": dict(final_categories.most_common()),
         **disposition_summary,
         "legacy_transitions": dict(transitions.most_common()),
     }

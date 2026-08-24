@@ -95,6 +95,12 @@ V2_COMPARE_FIELDS = (
     "classification_text_hash",
     "classification_source",
 )
+FINAL_COMPARE_FIELDS = (
+    "classification_resolution_status",
+    "classification_final_outcome",
+    "classification_final_category",
+    "classification_final_explanation",
+)
 
 
 def load_rows(path: Path) -> List[Dict[str, Any]]:
@@ -130,6 +136,10 @@ def main() -> None:
         reason = row.get("classification_primary_reason_v2")
         source = row.get("classification_source")
         review = row.get("classification_needs_review")
+        resolution_status = row.get("classification_resolution_status")
+        final_outcome = row.get("classification_final_outcome")
+        final_category = str(row.get("classification_final_category") or "")
+        final_explanation = str(row.get("classification_final_explanation") or "")
         digest = str(row.get("classification_text_hash") or "")
         if outcome not in ALLOWED_OUTCOMES:
             failures.append(f"{nct_id}: invalid V2 outcome {outcome!r}")
@@ -154,6 +164,21 @@ def main() -> None:
             failures.append(f"{nct_id}: uncertain V2 outcome is not review-gated")
         if reason == REASON_BIO_UNSPECIFIED and not review:
             failures.append(f"{nct_id}: unspecified biological reason is not review-gated")
+        if not final_explanation:
+            failures.append(f"{nct_id}: final classification explanation is empty")
+        if review:
+            if (
+                resolution_status != "UNRESOLVED"
+                or final_outcome != "UNRESOLVED"
+                or not final_category.startswith("UNRESOLVED_")
+            ):
+                failures.append(f"{nct_id}: review-gated row lacks an unresolved final category")
+        elif (
+            resolution_status != "RESOLVED"
+            or final_outcome != outcome
+            or final_category != reason
+        ):
+            failures.append(f"{nct_id}: resolved final classification differs from V2")
         if outcome == OUTCOME_BIOLOGICAL and reason not in BIOLOGICAL_REASONS:
             failures.append(f"{nct_id}: biological outcome has non-biological reason")
         if outcome == OUTCOME_NON_BIOLOGICAL and reason not in {
@@ -197,7 +222,11 @@ def main() -> None:
     )
     rerun, report, rerun_queue = classify_rows(all_rows, reviewed)
     for before, after in zip(all_rows, rerun):
-        changed = [field for field in V2_COMPARE_FIELDS if before.get(field) != after.get(field)]
+        changed = [
+            field
+            for field in (*V2_COMPARE_FIELDS, *FINAL_COMPARE_FIELDS)
+            if before.get(field) != after.get(field)
+        ]
         if changed:
             failures.append(
                 f"{before.get('nct_id')}: classification is not idempotent ({', '.join(changed)})"
@@ -272,6 +301,30 @@ def main() -> None:
         failures.append("Review queue and disposition artifact group order/hashes differ")
     if queue_hashes != rerun_hashes:
         failures.append("Stored review queue differs from a fresh canonical reclassification")
+    queue_by_hash = {
+        str(item.get("classification_text_hash") or ""): item for item in queue
+    }
+    for row in all_rows:
+        if row.get("classification_needs_review") is not True:
+            continue
+        digest = str(row.get("classification_text_hash") or "")
+        item = queue_by_hash.get(digest)
+        if item is None:
+            failures.append(f"{row.get('nct_id')}: unresolved row is absent from review queue")
+            break
+        expected_category = f"UNRESOLVED_{item.get('review_disposition')}"
+        if row.get("classification_final_category") != expected_category:
+            failures.append(
+                f"{row.get('nct_id')}: unresolved final category differs from review disposition"
+            )
+            break
+        if row.get("classification_final_explanation") != item.get(
+            "review_disposition_note"
+        ):
+            failures.append(
+                f"{row.get('nct_id')}: unresolved final explanation is stale"
+            )
+            break
     for item in queue:
         disposition = str(item.get("review_disposition") or "")
         if disposition not in DISPOSITION_NOTES:
@@ -298,6 +351,13 @@ def main() -> None:
         failures.append("Reclassification report group count differs from the review queue")
     if stored_report.get("review_record_count") != queue_record_count:
         failures.append("Reclassification report record count differs from the review queue")
+    final_statuses = stored_report.get("final_resolution_statuses", {})
+    if final_statuses.get("RESOLVED") != len(all_rows) - queue_record_count:
+        failures.append("Final resolved count differs from canonical review status")
+    if final_statuses.get("UNRESOLVED") != queue_record_count:
+        failures.append("Final unresolved count differs from canonical review status")
+    if sum(stored_report.get("final_categories", {}).values()) != len(all_rows):
+        failures.append("Final category counts do not sum to the canonical snapshot")
     for dimension in ("disposition", "priority"):
         group_key = f"{dimension}_group_counts"
         record_key = f"{dimension}_record_counts"

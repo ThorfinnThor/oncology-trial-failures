@@ -125,6 +125,10 @@ export async function downloadTrials(
     "classification_needs_review",
     "classification_version",
     "classification_source",
+    "classification_resolution_status",
+    "classification_final_outcome",
+    "classification_final_category",
+    "classification_final_explanation",
     "last_update_post_date",
     "url"
   ];

@@ -57,6 +57,23 @@ fields remain available as conservative compatibility fields. Mixed,
 non-failure, unspecified biological, and unresolved records map to
 `UNCLEAR / OTHER/UNKNOWN` rather than an asserted legacy failure bucket.
 
+## Complete-row final classification
+
+Every canonical row also receives four final export fields:
+
+- `classification_resolution_status`: `RESOLVED` or `UNRESOLVED`;
+- `classification_final_outcome`: the supported V2 outcome, or `UNRESOLVED`;
+- `classification_final_category`: the supported primary cause, or a precise
+  `UNRESOLVED_*` disposition;
+- `classification_final_explanation`: the evidence provenance or the reason a
+  causal category cannot be supported.
+
+This makes the complete dataset filterable without converting missing or
+ambiguous source data into invented efficacy, safety, or operational claims.
+`UNRESOLVED` is a final data-quality classification, not an unprocessed row.
+The underlying suggested V2 outcome, secondary causes, evidence, and review
+flag remain available for later adjudication when better source text appears.
+
 ## Decision order
 
 1. Normalize the registry stop reason and compute a stable text hash.

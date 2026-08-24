@@ -265,8 +265,24 @@ def main() -> None:
         fallback_migrated[0]["classification_primary_reason_v2"] != "SAFETY"
         or fallback_migrated[0]["classification_version"] != CLASSIFIER_VERSION
         or fallback_migrated[0]["classification_source"] != "DESCRIPTION_FALLBACK"
+        or fallback_migrated[0]["classification_resolution_status"] != "RESOLVED"
+        or fallback_migrated[0]["classification_final_category"] != "SAFETY"
     ):
         failures.append("Snapshot migration did not revalidate a description fallback")
+
+    unresolved_rows, _, _ = classify_rows(
+        [{"nct_id": "NCT00000010", "why_stopped": "Sponsor decision"}],
+        {},
+    )
+    unresolved_row = unresolved_rows[0]
+    if (
+        unresolved_row["classification_resolution_status"] != "UNRESOLVED"
+        or unresolved_row["classification_final_outcome"] != "UNRESOLVED"
+        or unresolved_row["classification_final_category"]
+        != "UNRESOLVED_GENERIC_ACTOR_OR_DECISION_ONLY"
+        or not unresolved_row["classification_final_explanation"]
+    ):
+        failures.append("An unresolved row did not receive a final disposition category")
 
     manual_row = {
         "nct_id": "NCT00000003",

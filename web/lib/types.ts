@@ -96,6 +96,10 @@ export type TrialIndexRow = {
   classification_needs_review?: boolean;
   classification_version?: string;
   classification_source?: string;
+  classification_resolution_status?: "RESOLVED" | "UNRESOLVED";
+  classification_final_outcome?: string;
+  classification_final_category?: string;
+  classification_final_explanation?: string;
 
   // Backwards-compat / older naming referenced by filtering.ts / legacy datasets
   failure_label?: string;
