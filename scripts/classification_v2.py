@@ -248,6 +248,7 @@ RULES: Tuple[Rule, ...] = (
         r"\bbenefit (?:was |is )?not significant\b",
         r"^(?:due to )?efficacy concerns?\.?$",
         r"\bnegative results? from (?:an? |the |other )?(?:\d+ )?(?:study|studies|trial|trials)\b",
+        r"\bevidence (?:showed|shows|demonstrated|indicated) [^.]{0,100}\b(?:was |is )?not effective (?:against|for|in)\b",
     ),
     _rule(
         "eff.endpoint_failure",
@@ -284,6 +285,7 @@ RULES: Tuple[Rule, ...] = (
         r"\bdecision to (?:stop|terminate|discontinue) (?:the )?(?:study|trial|program|programme|development) (?:was )?based on (?:the )?(?:phase [1234] )?efficacy (?:data|results)\b",
         r"^(?:lack of )?efficacy\.?$",
         r"\b(?:drug|treatment|intervention|therapy|evidence) (?:was |is )?not effective (?:against|for|in)\b",
+        r"\bevidence (?:showed|shows|demonstrated|indicated) [^.]{0,100}\b(?:was |is )?not effective (?:against|for|in)\b",
         r"\bsufficient evidence of efficacy (?:was )?not met\b",
         r"\b(?:preliminary )?(?:effectiveness|efficacy) data\b.{0,80}\b(?:did not meet|failed to meet) (?:the )?expectations?\b",
         r"\bstopped due to efficacy reasons?\b",
@@ -735,6 +737,7 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:mhra|fda|ema|health canada|regulatory authority) (?:cta |ind |nda |maa )?(?:was )?(?:rejected|denied)\b",
         r"\b(?:irb|reb|ethics committee) withheld (?:the )?(?:study|trial|data|approval)\b[^.;:]{0,100}\b(?:inadequate|missing|insufficient) (?:supporting )?documentation\b",
         r"\b(?:excessive|significant|prolonged) delays?\b[^.;:]{0,120}\bobtaining approval from (?:the )?(?:fda|ema|mhra|health canada|regulatory authority)\b",
+        r"\bdelay(?:s|ed)? in (?:the )?approval of (?:the )?(?:study |trial )?protocol by (?:an? |the |a number of )?(?:irb|reb|ethics committee|ethics committees|ethics commitee|ethics commitees)\b",
     ),
 
     # Operational causes.  Actor/action-only phrases such as "Sponsor
@@ -938,6 +941,7 @@ RULES: Tuple[Rule, ...] = (
         r"\bstringent (?:inclusion|exclusion|eligibility) criteria\b[^.;:]{0,100}\b(?:not feasible|infeasible|recruitment)\b",
         r"\b(?:slow|low|poor) initial (?:accrual|enrolment|enrollment|recruitment)\b",
         r"\b(?:slow|low|poor) rate of (?:accrual|enrolment|enrollment|recruitment)\b",
+        r"\b(?:slow|low|poor) rate of (?:patient |participant |subject )?(?:accrual|enrolment|enrollment|recruitment|enrollement)\b",
         r"\blower (?:eligible )?(?:patient|participant|subject) numbers?\b",
         r"\bpersistent decline in (?:patient |participant |subject )?(?:accrual|enrolment|enrollment|recruitment)\b",
         r"\b(?:hard|difficult) to (?:obtain|get) (?:an? )?informed consents?\b",
@@ -948,6 +952,8 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:lengthy|prolonged) (?:accrual|enrolment|enrollment|recruitment) period\b",
         r"\b(?:low|poor) (?:patient |participant |subject )?recrcuitment\b",
         r"\brecruitment default\b",
+        r"\bdifficult(?:y|ies) (?:in|on|with)?\s*(?:recruting|recruiting|enrolling|accruing)(?: (?:patients|participants|subjects))?\b",
+        r"\babsence of (?:patient'?s? |participant'?s? |subject'?s? )?(?:recruitment|enrolment|enrollment)\b",
     ),
     _rule(
         "ops.funding",
@@ -1158,6 +1164,7 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:impossible|not possible|unable) to obtain (?:a )?suitable placebo[- ]?(?:inhaler|device)?\b",
         r"\bimpossibility of obtaining (?:a )?suitable placebo[- ]?(?:inhaler|device)?\b",
         r"\bcancellation of (?:the )?supply of [^.]{0,100}\bby (?:the )?(?:collaborator|supplier|manufacturer|sponsor)\b",
+        r"\bdifficult(?:y|ies) in (?:the )?procurement of (?:an? |the )?(?:adequate |sufficient )?supply of (?:the )?(?:study |treatment |investigational )?(?:drug|product|agent|medication)\b",
     ),
     _rule(
         "ops.staffing",
@@ -1701,6 +1708,7 @@ ACTION_ONLY_PATTERNS: Tuple[str, ...] = (
 BIOLOGICAL_UNSPECIFIED_PATTERNS: Tuple[str, ...] = (
     r"\bunfavo(?:u)?rable (?:overall )?(?:risk\s*[- /:]\s*benefit|benefit\s*[- /:]\s*risk)(?: profile| ratio| assessment| balance)?\b",
     r"\b(?:risks?|risk profile) (?:exceeded|exceeds|outweighed|outweighs) (?:the )?benefits?\b",
+    r"\bbenefit\s*(?:to|[- /:])\s*risk (?:balance|profile|assessment|ratio)? (?:did |does )?not support (?:further )?(?:treatment|continuation|development|the study)\b",
     r"\bbenefits? (?:did not|do not|does not) outweigh (?:the )?risks?\b",
     r"\badverse change in (?:the )?(?:risk\s*[- /:]\s*benefit|benefit\s*[- /:]\s*risk)\b",
     r"\b(?:overall )?profile does not support (?:further )?development\b",
@@ -1954,6 +1962,33 @@ def classify_reason_v2(
     evidence = _dedupe_evidence(
         item for rule in RULES for item in _find_rule_evidence(text, rule)
     )
+    unambiguous_never_started = bool(
+        re.search(
+            r"\b(?:study|trial) (?:was )?never (?:started|initiated|activated|opened)\b|"
+            r"\b(?:study|trial) (?:was )?(?:cancelled|canceled) before (?:start|active|activation)\b|"
+            r"\b(?:no|zero) (?:patients|participants|subjects) (?:were )?enrolled\b"
+            r".{0,100}\badministratively withdrawn\b|"
+            r"\b(?:no|zero) (?:patients|participants|subjects) enrolled onto (?:the )?study\b"
+            r".{0,100}\badministratively withdrawn\b",
+            text,
+        )
+    )
+    if (
+        unambiguous_never_started
+        and any(item.rule_id == "nonfailure.not_initiated" for item in evidence)
+    ):
+        evidence = tuple(
+            item
+            for item in evidence
+            if not (
+                item.rule_id == "ops.recruitment"
+                and re.fullmatch(
+                    r"(?:no|zero) (?:human )?(?:patients|participants|subjects) "
+                    r"(?:were )?(?:enrolled|recruited|accrued)",
+                    normalize_reason(item.quote),
+                )
+            )
+        )
     if re.search(r"\black of safety and (?:lack of )?efficacy\b", text):
         evidence = _dedupe_evidence(
             (

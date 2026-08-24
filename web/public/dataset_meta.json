@@ -1,13 +1,13 @@
 {
   "version": "2026-08-14",
-  "generated_at_utc": "2026-08-24T18:48:14Z",
+  "generated_at_utc": "2026-08-24T18:57:31Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23617,
     "max_last_update_post_date": "2026-08-14"
   },
   "biological_failure": {
-    "record_count": 1598,
+    "record_count": 1600,
     "max_last_update_post_date": "2026-08-14"
   },
   "top_areas": [
@@ -55,33 +55,33 @@
   "classification_v2": {
     "version": "2.2.0",
     "outcomes": {
-      "UNKNOWN": 11658,
-      "NON_BIOLOGICAL": 9770,
-      "BIOLOGICAL_FAILURE": 1660,
-      "NON_FAILURE_TRANSITION": 381,
-      "MIXED_CAUSES": 148
+      "UNKNOWN": 11645,
+      "NON_BIOLOGICAL": 9779,
+      "BIOLOGICAL_FAILURE": 1664,
+      "NON_FAILURE_TRANSITION": 385,
+      "MIXED_CAUSES": 144
     },
     "primary_reasons": {
-      "UNSPECIFIED": 11658,
-      "RECRUITMENT": 5805,
+      "UNSPECIFIED": 11645,
+      "RECRUITMENT": 5812,
       "FUNDING": 1419,
-      "EFFICACY_FUTILITY": 1198,
+      "EFFICACY_FUTILITY": 1200,
       "BUSINESS_STRATEGY": 684,
       "STAFFING_RESOURCES": 605,
       "EXTERNAL_DISRUPTION": 404,
       "SAFETY": 400,
-      "SUPPLY_MANUFACTURING": 271,
-      "REGULATORY": 229,
+      "SUPPLY_MANUFACTURING": 272,
+      "REGULATORY": 230,
       "PROTOCOL_FEASIBILITY": 218,
-      "NOT_INITIATED": 211,
-      "MULTIPLE": 148,
+      "NOT_INITIATED": 215,
+      "MULTIPLE": 144,
       "PLANNED_MILESTONE": 107,
       "OPERATIONAL_OTHER": 97,
+      "BIOLOGICAL_UNSPECIFIED": 64,
       "REPLACEMENT_TRANSITION": 63,
-      "BIOLOGICAL_UNSPECIFIED": 62,
       "SUPPORT_WITHDRAWAL": 38
     },
-    "needs_review": 11868,
+    "needs_review": 11853,
     "review_policy": "Mixed, content-free, and novel stop reasons are review-gated rather than forced into a failure bucket."
   },
   "notes": "Disease areas are keyword-based mappings from conditions/MeSH terms; countries are trial site countries. Classifications are analytical screening signals and may require primary-source verification."

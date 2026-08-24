@@ -7634,13 +7634,13 @@
     "current_v1_labels": {
       "UNCLEAR/OTHER/UNKNOWN": 2
     },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
+    "suggested_outcome_v2": "BIOLOGICAL_FAILURE",
+    "suggested_primary_reason_v2": "BIOLOGICAL_UNSPECIFIED",
     "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "OTHER_AMBIGUOUS_TEXT",
+    "evidence": "v=2.2.0;outcome=BIOLOGICAL_FAILURE;primary=BIOLOGICAL_UNSPECIFIED;bio.unspecified_risk_benefit:benefit to risk balance did not support further treatment",
+    "review_disposition": "BIOLOGICAL_DOMAIN_UNSPECIFIED",
     "review_priority": "HIGH",
-    "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
+    "review_disposition_note": "The text indicates an unfavorable biological or benefit-risk result but does not support a reliable efficacy-versus-safety distinction."
   },
   {
     "classification_text_hash": "3f5f2853d046a8c10d4c",
@@ -9050,25 +9050,6 @@
     "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
     "review_priority": "HIGH",
     "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
-  },
-  {
-    "classification_text_hash": "8ff30800f972c8f6aee9",
-    "why_stopped": "evidence showed chloroquine is not effective against COVID-19",
-    "record_count": 2,
-    "nct_ids": [
-      "NCT04372082",
-      "NCT04428268"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 2
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
     "classification_text_hash": "923751b653abf25f6e29",
@@ -19082,27 +19063,6 @@
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
-    "classification_text_hash": "10b7f06b43b66125a55e",
-    "why_stopped": "No subjects enrolled. Study was canceled before active",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00411372"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "MIXED_CAUSES",
-    "suggested_primary_reason_v2": "MULTIPLE",
-    "suggested_secondary_reasons_v2": [
-      "RECRUITMENT",
-      "NOT_INITIATED"
-    ],
-    "evidence": "v=2.2.0;outcome=MIXED_CAUSES;primary=MULTIPLE;secondary=RECRUITMENT|NOT_INITIATED;ops.recruitment:no subjects enrolled;nonfailure.not_initiated:no subjects enrolled. study was canceled",
-    "review_disposition": "MULTIPLE_EXPLICIT_CAUSES",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text states causes from more than one semantic domain. The causes are preserved and require adjudication instead of forced precedence."
-  },
-  {
     "classification_text_hash": "10ba93fea46cb0d3fc90",
     "why_stopped": "Recruitment not sufficient",
     "record_count": 1,
@@ -23242,24 +23202,6 @@
     "review_disposition": "ABBREVIATION_OR_FRAGMENT",
     "review_priority": "MEDIUM",
     "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
-    "classification_text_hash": "194ab203a0585e00f81c",
-    "why_stopped": "Absence of patient's recruitment in the study due to administrative reasons",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01156961"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
   },
   {
     "classification_text_hash": "1957eef6f3fc9a5c957d",
@@ -34441,24 +34383,6 @@
     "review_disposition": "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE",
     "review_priority": "MEDIUM",
     "review_disposition_note": "The text states that a study or development program ended, but the underlying medical, operational, regulatory, or strategic cause is not supplied."
-  },
-  {
-    "classification_text_hash": "2e7dc699d188303e564a",
-    "why_stopped": "Because of difficulties on recruiting participants",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01658852"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
   },
   {
     "classification_text_hash": "2e7f9e237530e0dd3de1",
@@ -45816,27 +45740,6 @@
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
-    "classification_text_hash": "44d40f4a71fa6686a422",
-    "why_stopped": "No participants were enrolled. Study never started.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT04515329"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "MIXED_CAUSES",
-    "suggested_primary_reason_v2": "MULTIPLE",
-    "suggested_secondary_reasons_v2": [
-      "RECRUITMENT",
-      "NOT_INITIATED"
-    ],
-    "evidence": "v=2.2.0;outcome=MIXED_CAUSES;primary=MULTIPLE;secondary=RECRUITMENT|NOT_INITIATED;ops.recruitment:no participants were enrolled;nonfailure.not_initiated:no participants were enrolled. study never started",
-    "review_disposition": "MULTIPLE_EXPLICIT_CAUSES",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text states causes from more than one semantic domain. The causes are preserved and require adjudication instead of forced precedence."
-  },
-  {
     "classification_text_hash": "44dc3d5c21de62980ff7",
     "why_stopped": "Discontinuation of production of the investigational medicinal product (PRP)",
     "record_count": 1,
@@ -46321,24 +46224,6 @@
     "review_disposition": "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT",
     "review_priority": "HIGH",
     "review_disposition_note": "The text mentions a medical or scientific domain such as safety or efficacy but does not state an adverse directional result that caused the stop."
-  },
-  {
-    "classification_text_hash": "45e090602bba72bc367c",
-    "why_stopped": "Because of difficulties in recruting",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01910844"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
   },
   {
     "classification_text_hash": "45e99c53ba652ca4e48e",
@@ -70665,24 +70550,6 @@
     "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
   },
   {
-    "classification_text_hash": "7324ed21fcaf867a6ae4",
-    "why_stopped": "Because of very slow rate of enrollement",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01461772"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
-  },
-  {
     "classification_text_hash": "7328216169d72afde078",
     "why_stopped": "The drug sponsor stopped supporting study.",
     "record_count": 1,
@@ -74038,24 +73905,6 @@
     "review_disposition": "OTHER_AMBIGUOUS_TEXT",
     "review_priority": "HIGH",
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-  },
-  {
-    "classification_text_hash": "78dab26ff41142f81fb5",
-    "why_stopped": "Decision made to terminate due to difficulty in procurement of adequate supply of treatment drug. Decision made on April 2023 to terminate study.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01970345"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
   },
   {
     "classification_text_hash": "78e88c6276162fac55d8",
@@ -84889,24 +84738,6 @@
     "review_disposition": "ABBREVIATION_OR_FRAGMENT",
     "review_priority": "MEDIUM",
     "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
-    "classification_text_hash": "8d0abd6a86afb9fd0e45",
-    "why_stopped": "Low rate of patient recruitment. Cannot achieve sample size.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00518245"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
     "classification_text_hash": "8d0ad30c4487df597a00",
@@ -114102,24 +113933,6 @@
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
-    "classification_text_hash": "c26d97e72c21ccac4dc6",
-    "why_stopped": "very low rate of patient accrual",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01479192"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
     "classification_text_hash": "c27345388cd175a1f32c",
     "why_stopped": "awaiting agreement with Sponsor",
     "record_count": 1,
@@ -124155,24 +123968,6 @@
     "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
   },
   {
-    "classification_text_hash": "d4d0ebb328392a3c43f9",
-    "why_stopped": "Because of delay in approval of the protocol by a number of Ethics Commitees the trial was terminated on March 4, 2010. No patient had received any study drug.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00456963"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
-  },
-  {
     "classification_text_hash": "d4e2453561ce5d8565a4",
     "why_stopped": "The sponsor decided to terminate the study early",
     "record_count": 1,
@@ -129427,27 +129222,6 @@
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
-    "classification_text_hash": "ded26765a7d09ccdf765",
-    "why_stopped": "No patients enrolled onto study. Administratively withdrawn.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT06922825"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "MIXED_CAUSES",
-    "suggested_primary_reason_v2": "MULTIPLE",
-    "suggested_secondary_reasons_v2": [
-      "RECRUITMENT",
-      "NOT_INITIATED"
-    ],
-    "evidence": "v=2.2.0;outcome=MIXED_CAUSES;primary=MULTIPLE;secondary=RECRUITMENT|NOT_INITIATED;ops.recruitment:no patients enrolled;nonfailure.not_initiated:no patients enrolled onto study. administratively withdrawn",
-    "review_disposition": "MULTIPLE_EXPLICIT_CAUSES",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text states causes from more than one semantic domain. The causes are preserved and require adjudication instead of forced precedence."
-  },
-  {
     "classification_text_hash": "deedc4396fa9916920ff",
     "why_stopped": "Interim analysis showed positive results, it was difficult to include patients and also the fact that the grant for this project has ended, we have decided to complete the study before we had included the total number of 16 patients.",
     "record_count": 1,
@@ -131735,27 +131509,6 @@
       "BUSINESS_STRATEGY"
     ],
     "evidence": "v=2.2.0;outcome=MIXED_CAUSES;primary=MULTIPLE;secondary=EFFICACY_FUTILITY|BUSINESS_STRATEGY;eff.explicit_lack:limited clinical activity;eff.negative_outcome:limited clinical activity;eff.negative_outcome:limited clinical activity observed;ops.business:program reprioritization",
-    "review_disposition": "MULTIPLE_EXPLICIT_CAUSES",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text states causes from more than one semantic domain. The causes are preserved and require adjudication instead of forced precedence."
-  },
-  {
-    "classification_text_hash": "e2e0017d60b4a7d35165",
-    "why_stopped": "No patients were enrolled, study cancelled before start",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00061178"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "MIXED_CAUSES",
-    "suggested_primary_reason_v2": "MULTIPLE",
-    "suggested_secondary_reasons_v2": [
-      "RECRUITMENT",
-      "NOT_INITIATED"
-    ],
-    "evidence": "v=2.2.0;outcome=MIXED_CAUSES;primary=MULTIPLE;secondary=RECRUITMENT|NOT_INITIATED;ops.recruitment:no patients were enrolled;nonfailure.not_initiated:no patients were enrolled, study cancelled",
     "review_disposition": "MULTIPLE_EXPLICIT_CAUSES",
     "review_priority": "HIGH",
     "review_disposition_note": "The text states causes from more than one semantic domain. The causes are preserved and require adjudication instead of forced precedence."
@@ -146499,24 +146252,6 @@
     "review_disposition": "ABBREVIATION_OR_FRAGMENT",
     "review_priority": "MEDIUM",
     "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
-    "classification_text_hash": "ff208331759d6b554918",
-    "why_stopped": "\"the study has been closed due to a low rate of patient enrollment (2 patients since the start of the trial)\"",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT02928419"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.2.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
   },
   {
     "classification_text_hash": "ff20b1a65c8c5a19fdc6",
