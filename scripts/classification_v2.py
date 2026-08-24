@@ -18,12 +18,13 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.4.0"
+CLASSIFIER_VERSION = "2.5.0"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
 OUTCOME_MIXED = "MIXED_CAUSES"
 OUTCOME_NON_FAILURE = "NON_FAILURE_TRANSITION"
+OUTCOME_CAUSE_NOT_STATED = "CAUSE_NOT_STATED"
 OUTCOME_UNKNOWN = "UNKNOWN"
 
 REASON_EFFICACY = "EFFICACY_FUTILITY"
@@ -42,6 +43,7 @@ REASON_OPERATIONAL_OTHER = "OPERATIONAL_OTHER"
 REASON_PLANNED = "PLANNED_MILESTONE"
 REASON_REPLACEMENT = "REPLACEMENT_TRANSITION"
 REASON_NOT_INITIATED = "NOT_INITIATED"
+REASON_DECISION_ONLY = "DECISION_WITHOUT_STATED_CAUSE"
 REASON_UNSPECIFIED = "UNSPECIFIED"
 REASON_MULTIPLE = "MULTIPLE"
 
@@ -1246,7 +1248,6 @@ RULES: Tuple[Rule, ...] = (
         REASON_BUSINESS,
         "HIGH",
         r"^(?:an? |the )?(?:internal )?(?:business|corporate) decision(?: by| on behalf of)?(?: the)?(?: sponsor| company)?\.?$",
-        r"^(?:due to )?(?:an? |the )?(?:internal )?company decision\.?$",
         r"^(?:due to )?(?:an? |the )?(?:sponsor )?business decision\.?$",
         r"^(?:an? |the )?strategic(?:/business| business)? decision\.?$",
         r"^(?:the )?strategy review\.?$",
@@ -1254,9 +1255,9 @@ RULES: Tuple[Rule, ...] = (
         r"\bstrategic(?: business)? decision to (?:discontinue|terminate|stop|halt|close|withdraw)\b",
         r"\bstrategic business decision\b",
         r"\bstrategic decision by (?:the )?sponsor\b",
-        r"\b(?:company|business|corporate) decision to (?:discontinue|terminate|stop|halt|close|withdraw|cancel) (?:the |this )?(?:study|trial|program|programme|development program)\b",
+        r"\b(?:business|corporate) decision to (?:discontinue|terminate|stop|halt|close|withdraw|cancel) (?:the |this )?(?:study|trial|program|programme|development program)\b",
         r"\b(?:study|trial|program|programme|development program) (?:is |was |is being |was being )?(?:discontinued|terminated|stopped|halted|closed|withdrawn|cancelled|canceled) (?:solely )?(?:due to|because of|for|based on|from) (?:an? |the )?(?:sponsor )?(?:business|corporate|company) (?:decision|perspective|reasons?)\b",
-        r"\b(?:due to|because of|for|based on|following) (?:an? |the )?(?:internal )?(?:company|business|corporate) decision\b",
+        r"\b(?:due to|because of|for|based on|following) (?:an? |the )?(?:internal )?(?:business|corporate) decision\b",
         r"\b(?:due to|because of|for|based on|following) (?:an? |the )?(?:business|corporate) (?:reason|reasons|consideration|considerations)\b",
         r"\b(?:due to|because of|for|based on|following|as a result of) (?:an? |the )?(?:company |corporate |sponsor )?strategic (?:decision|reasons?|considerations?)\b",
         r"\b(?:sponsor|company) (?:has )?(?:made|took) (?:an? |the )?strategic decision\b",
@@ -1594,6 +1595,21 @@ RULES: Tuple[Rule, ...] = (
         r"\bchange of (?:the )?laborator(?:y|ies) location\b",
         r"\b(?:long|lengthy) process\b[^.;:]{0,100}\b(?:strict|fixed) deadline\b",
         r"\bmedication error with (?:the )?(?:placebo|study drug|investigational product)\b",
+    ),
+
+    # The source identifies who made the stop decision, but gives no causal
+    # domain. This is a complete description of the available evidence, not a
+    # claim that the stop was biological, operational, or regulatory.
+    _rule(
+        "context.actor_decision_only",
+        REASON_DECISION_ONLY,
+        "HIGH",
+        r"^(?:due to |per |at )?(?:the )?(?:sponsor|company|principal investigator|investigator|pi|funder|board|dsmb|idmc)(?:'s)? (?:decision|request|choice|discretion|recommendation)\.?$",
+        r"^(?:per )?(?:the )?(?:sponsor|company|principal investigator|investigator|pi|funder|board|dsmb|idmc)(?:'s)? (?:requested|recommended)\.?$",
+        r"^(?:the )?(?:study|trial) (?:was |has been )?(?:terminated|stopped|closed|withdrawn|suspended|discontinued) (?:per|at the request of|by) (?:the )?(?:sponsor|principal investigator|investigator|pi|board|dsmb|idmc)(?:'s)?(?: decision| request| recommendation)?\.?$",
+        r"^(?:terminated|stopped|closed|withdrawn|suspended|discontinued) by (?:the )?(?:sponsor|principal investigator|investigator|pi|board|dsmb|idmc)\.?$",
+        r"^(?:the )?(?:sponsor|company|principal investigator|investigator|pi)(?:'s)? decision to (?:terminate|stop|close|withdraw|suspend|discontinue|cancel) (?:the |this )?(?:study|trial|program|programme)\.?$",
+        r"^(?:the )?(?:sponsor|company|principal investigator|investigator|pi) (?:decided|has decided) to (?:terminate|stop|close|withdraw|suspend|discontinue|cancel) (?:the |this )?(?:study|trial|program|programme)\.?$",
     ),
 
     # Explicit successful/planned transitions.  These are not legacy failure
@@ -2162,6 +2178,17 @@ def classify_reason_v2(
             OUTCOME_NON_BIOLOGICAL,
             operational[0],
             tuple(operational[1:]),
+            _confidence(evidence, False),
+            False,
+            evidence,
+            digest,
+        )
+
+    if REASON_DECISION_ONLY in reason_set:
+        return ClassificationV2(
+            OUTCOME_CAUSE_NOT_STATED,
+            REASON_DECISION_ONLY,
+            (),
             _confidence(evidence, False),
             False,
             evidence,

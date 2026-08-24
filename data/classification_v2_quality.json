@@ -6,41 +6,41 @@
     "audit_review": 346
   },
   "metrics": {
-    "legacy_accuracy_all_adjudicated": 0.8424,
-    "assertion_coverage": 0.6475,
-    "assertion_precision": 0.981,
-    "high_confidence_assertion_precision": 0.985,
+    "legacy_accuracy_all_adjudicated": 0.8478,
+    "assertion_coverage": 0.7003,
+    "assertion_precision": 0.9906,
+    "high_confidence_assertion_precision": 0.995,
     "biological_precision": 0.9814,
     "biological_recall": 0.8516,
-    "audit_review_recall": 0.6474,
-    "audit_review_safe_disposition_recall": 0.9017,
-    "overall_review_rate": 0.378
+    "audit_review_recall": 0.6445,
+    "audit_review_safe_disposition_recall": 0.8988,
+    "overall_review_rate": 0.3295
   },
   "counts": {
-    "correct": 3078,
-    "asserted": 2366,
-    "asserted_correct": 2321,
-    "high_confidence_asserted": 2199,
-    "high_confidence_asserted_correct": 2166,
+    "correct": 3098,
+    "asserted": 2559,
+    "asserted_correct": 2535,
+    "high_confidence_asserted": 2392,
+    "high_confidence_asserted_correct": 2380,
     "biological_asserted": 376,
     "biological_correct": 369,
     "expected_biological": 438,
     "biological_found": 373,
-    "audit_review_flagged": 224,
-    "audit_review_safely_disposed": 312,
-    "predicted_review": 1512,
+    "audit_review_flagged": 223,
+    "audit_review_safely_disposed": 311,
+    "predicted_review": 1318,
     "accepted_ontology_transition_matches": 101
   },
   "errors_by_expected": {
-    "NON_BIOLOGICAL/OPERATIONAL": 469,
+    "NON_BIOLOGICAL/OPERATIONAL": 470,
     "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 52,
-    "UNCLEAR/OTHER/UNKNOWN": 34,
     "BIOLOGICAL_FAILURE/SAFETY": 17,
+    "UNCLEAR/OTHER/UNKNOWN": 13,
     "NON_BIOLOGICAL/REGULATORY": 4
   },
   "errors_by_predicted": {
-    "UNCLEAR/OTHER/UNKNOWN": 538,
-    "NON_BIOLOGICAL/OPERATIONAL": 28,
+    "UNCLEAR/OTHER/UNKNOWN": 539,
+    "NON_BIOLOGICAL/OPERATIONAL": 7,
     "BIOLOGICAL_FAILURE/OTHER/UNKNOWN": 6,
     "NON_BIOLOGICAL/REGULATORY": 3,
     "BIOLOGICAL_FAILURE/SAFETY": 1
@@ -49,17 +49,17 @@
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-      "count": 1815
+      "count": 1814
     },
     {
       "expected": "UNCLEAR/OTHER/UNKNOWN",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 762
+      "count": 783
     },
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 469
+      "count": 470
     },
     {
       "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
@@ -69,7 +69,7 @@
     {
       "expected": "UNCLEAR/OTHER/UNKNOWN",
       "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-      "count": 129
+      "count": 108
     },
     {
       "expected": "BIOLOGICAL_FAILURE/SAFETY",
@@ -417,15 +417,6 @@
         "text": "The decision was made to close the study to enrollment due to poor overall accrual and the inability to meet the 31% overall enrollment goal."
       },
       {
-        "nct_id": "NCT05961839",
-        "expected": "UNCLEAR/OTHER/UNKNOWN",
-        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-        "v2_outcome": "NON_BIOLOGICAL",
-        "v2_primary": "BUSINESS_STRATEGY",
-        "needs_review": false,
-        "text": "Company decision"
-      },
-      {
         "nct_id": "NCT05904496",
         "expected": "BIOLOGICAL_FAILURE/SAFETY",
         "predicted": "BIOLOGICAL_FAILURE/OTHER/UNKNOWN",
@@ -658,6 +649,15 @@
         "v2_primary": "UNSPECIFIED",
         "needs_review": true,
         "text": "The study was stopped due to the shift in systemic treatment paradigm for HCC precluding further enrolment."
+      },
+      {
+        "nct_id": "NCT04042051",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Accrual rate to date was too low to finish the trial in a reasonable timeframe"
       }
     ],
     "review_not_flagged": [

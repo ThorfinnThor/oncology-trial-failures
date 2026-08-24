@@ -69,7 +69,6 @@ def main() -> None:
             "UNSPECIFIED",
             "PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE",
         ),
-        ("Sponsor Decision", "UNKNOWN", "UNSPECIFIED", "GENERIC_ACTOR_OR_DECISION_ONLY"),
         ("Study terminated", "UNKNOWN", "UNSPECIFIED", "STATUS_OR_ACTION_WITHOUT_CAUSE"),
         (
             "Sponsor decision, not related to safety",
@@ -270,19 +269,19 @@ def main() -> None:
     ):
         failures.append("Snapshot migration did not revalidate a description fallback")
 
-    unresolved_rows, _, _ = classify_rows(
+    decision_rows, _, _ = classify_rows(
         [{"nct_id": "NCT00000010", "why_stopped": "Sponsor decision"}],
         {},
     )
-    unresolved_row = unresolved_rows[0]
+    decision_row = decision_rows[0]
     if (
-        unresolved_row["classification_resolution_status"] != "UNRESOLVED"
-        or unresolved_row["classification_final_outcome"] != "UNRESOLVED"
-        or unresolved_row["classification_final_category"]
-        != "UNRESOLVED_GENERIC_ACTOR_OR_DECISION_ONLY"
-        or not unresolved_row["classification_final_explanation"]
+        decision_row["classification_resolution_status"] != "RESOLVED"
+        or decision_row["classification_final_outcome"] != "CAUSE_NOT_STATED"
+        or decision_row["classification_final_category"]
+        != "DECISION_WITHOUT_STATED_CAUSE"
+        or not decision_row["classification_final_explanation"]
     ):
-        failures.append("An unresolved row did not receive a final disposition category")
+        failures.append("An actor-only decision did not receive its terminal category")
 
     manual_row = {
         "nct_id": "NCT00000003",
@@ -308,7 +307,10 @@ def main() -> None:
         "",
         "Background safety monitoring was performed throughout the study.",
     )
-    if no_fallback.outcome != "UNKNOWN":
+    if (
+        no_fallback.outcome != "CAUSE_NOT_STATED"
+        or no_fallback.primary_reason != "DECISION_WITHOUT_STATED_CAUSE"
+    ):
         failures.append(f"Non-placeholder text was incorrectly augmented: {no_fallback}")
 
     fallback_proposal = proposal_for(
@@ -460,6 +462,19 @@ def main() -> None:
         validate_semantics("UNKNOWN", "UNSPECIFIED", True)
     except ValueError as exc:
         failures.append(f"Manual-decision validation rejected a valid review state: {exc}")
+    try:
+        validate_semantics(
+            "CAUSE_NOT_STATED", "DECISION_WITHOUT_STATED_CAUSE", False
+        )
+    except ValueError as exc:
+        failures.append(f"Manual-decision validation rejected a decision-only state: {exc}")
+    try:
+        validate_semantics(
+            "CAUSE_NOT_STATED", "DECISION_WITHOUT_STATED_CAUSE", True
+        )
+        failures.append("Manual-decision validation accepted a review-gated decision-only state")
+    except ValueError:
+        pass
 
     if failures:
         print("Classification V2 test failures:\n")

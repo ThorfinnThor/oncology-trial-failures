@@ -67,11 +67,12 @@ function bucketClass(bucket: string): string {
 function bucketLabel(bucket: string): string {
   if (bucket.toUpperCase() === "EFFICACY/FUTILITY") return "Efficacy / futility";
   if (bucket.toUpperCase() === "OTHER/UNKNOWN") return "Other / unknown";
+  if (bucket.toUpperCase() === "DECISION ONLY") return "Decision only";
   return bucket.toLowerCase().replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function buildSampleTrials(rows: TrialIndexRow[]): SampleTrial[] {
-  const bucketOrder = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "FUNDING", "REGULATORY"];
+  const bucketOrder = ["EFFICACY/FUTILITY", "SAFETY", "OPERATIONAL", "FUNDING", "REGULATORY", "DECISION ONLY"];
   const chosen: SampleTrial[] = [];
   const seen = new Set<string>();
 

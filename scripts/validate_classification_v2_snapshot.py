@@ -16,11 +16,13 @@ try:
         CLASSIFIER_VERSION,
         OPERATIONAL_REASONS,
         OUTCOME_BIOLOGICAL,
+        OUTCOME_CAUSE_NOT_STATED,
         OUTCOME_MIXED,
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_NON_FAILURE,
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
+        REASON_DECISION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -37,11 +39,13 @@ except ImportError:
         CLASSIFIER_VERSION,
         OPERATIONAL_REASONS,
         OUTCOME_BIOLOGICAL,
+        OUTCOME_CAUSE_NOT_STATED,
         OUTCOME_MIXED,
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_NON_FAILURE,
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
+        REASON_DECISION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -60,6 +64,7 @@ PUBLIC = ROOT / "web" / "public"
 
 ALLOWED_OUTCOMES = {
     OUTCOME_BIOLOGICAL,
+    OUTCOME_CAUSE_NOT_STATED,
     OUTCOME_NON_BIOLOGICAL,
     OUTCOME_MIXED,
     OUTCOME_NON_FAILURE,
@@ -69,6 +74,7 @@ ALLOWED_REASONS = {
     *BIOLOGICAL_REASONS,
     *OPERATIONAL_REASONS,
     REASON_REGULATORY,
+    REASON_DECISION_ONLY,
     REASON_MULTIPLE,
     REASON_NOT_INITIATED,
     REASON_PLANNED,
@@ -162,6 +168,12 @@ def main() -> None:
             failures.append(f"{nct_id}: unclassified row is not review-gated")
         if outcome == OUTCOME_UNKNOWN and not review:
             failures.append(f"{nct_id}: unknown V2 outcome is not review-gated")
+        if outcome == OUTCOME_CAUSE_NOT_STATED and (
+            review or reason != REASON_DECISION_ONLY
+        ):
+            failures.append(f"{nct_id}: invalid cause-not-stated decision classification")
+        if reason == REASON_DECISION_ONLY and outcome != OUTCOME_CAUSE_NOT_STATED:
+            failures.append(f"{nct_id}: decision-only reason has an incompatible outcome")
         if not final_explanation:
             failures.append(f"{nct_id}: final classification explanation is empty")
         if review:

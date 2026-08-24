@@ -44,6 +44,7 @@ const AREA_LIMIT = 50;
 const SPONSOR_MIN_COUNT = 10;
 const SPONSOR_LIMIT = 150;
 const HUB_TRIAL_LIST_LIMIT = 100;
+const NON_CAUSAL_REASON_BUCKETS = new Set(["DECISION ONLY"]);
 
 function norm(value: string | undefined): string {
   return (value || "").replace(/\s+/g, " ").trim();
@@ -156,7 +157,9 @@ export function buildFailureHubs(rows: TrialIndexRow[]): SeoHub[] {
     });
   }
 
-  for (const bucket of countBy(rows, reasonBucket).filter((item) => item.count >= AREA_MIN_COUNT)) {
+  for (const bucket of countBy(rows, reasonBucket).filter(
+    (item) => item.count >= AREA_MIN_COUNT && !NON_CAUSAL_REASON_BUCKETS.has(item.label.toUpperCase())
+  )) {
     const memberRows = rows.filter((row) => reasonBucket(row).toUpperCase() === bucket.label.toUpperCase());
     const slug = reasonSlug(bucket.label);
     hubs.push({

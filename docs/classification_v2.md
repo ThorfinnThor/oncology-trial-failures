@@ -4,15 +4,17 @@ Classification V2 is the conservative stop-reason pipeline used for new and
 changed ClinicalTrials.gov records. It replaces forced keyword precedence with
 an evidence-bearing, review-gated model.
 
-The current rule implementation is `2.4.0`. A review flag is a deliberate
+The current rule implementation is `2.5.0`. A review flag is a deliberate
 semantic result, not a failed pipeline state: text that does not state a cause
 clearly enough remains unclassified until primary-source context or a reviewed
 decision supports it.
 
-Version 2.4 treats explicit company/corporate/business decisions as the broad
+Version 2.5 treats explicit business/corporate decisions as the broad
 `BUSINESS_STRATEGY` cause and explicit administrative causes as
 `OPERATIONAL_OTHER`. Actor-only wording such as `Sponsor decision` remains
-unresolved because it does not state why the actor made the decision. Bare
+separate from causal categories as `DECISION_WITHOUT_STATED_CAUSE`: the actor
+and action are known, but the biological, operational, or regulatory cause is
+not stated. Bare
 regulatory and recruitment cause labels such as `IND withdrawn` and `Accrual
 Factor` retain their named broad domain without inventing a more specific
 underlying mechanism.
@@ -37,6 +39,7 @@ Outcomes:
 - `NON_BIOLOGICAL`
 - `MIXED_CAUSES`
 - `NON_FAILURE_TRANSITION`
+- `CAUSE_NOT_STATED`
 - `UNKNOWN`
 
 Primary and secondary reasons:
@@ -57,12 +60,14 @@ Primary and secondary reasons:
 - `PLANNED_MILESTONE`
 - `REPLACEMENT_TRANSITION`
 - `NOT_INITIATED`
+- `DECISION_WITHOUT_STATED_CAUSE`
 - `MULTIPLE`
 - `UNSPECIFIED`
 
 The website's original `classification_label` and `classification_reason`
 fields remain available as compatibility fields. Mixed and non-failure
-outcomes retain `UNCLEAR / OTHER/UNKNOWN`; unresolved records do not assert a
+outcomes and decision-only records retain `UNCLEAR / OTHER/UNKNOWN` in the
+legacy compatibility fields; unresolved records do not assert a
 legacy category. `BIOLOGICAL_UNSPECIFIED` maps to
 `BIOLOGICAL_FAILURE / OTHER/UNKNOWN`, preserving the supported biological
 domain without inventing an efficacy-versus-safety split.
@@ -94,14 +99,18 @@ flag remain available for later adjudication when better source text appears.
 4. Preserve multiple explicit causes as a resolved `MIXED_CAUSES` result
    instead of forcing precedence.
 5. Identify explicit planned milestones and replacement transitions.
-6. Route content-free decisions, novel text, and unresolved language to review.
+6. Resolve exact actor-only decisions to `CAUSE_NOT_STATED /
+   DECISION_WITHOUT_STATED_CAUSE` without assigning a causal domain.
+7. Route missing text, status-only text, novel language, and unresolved
+   language to review.
 
 An explicitly unfavorable benefit-risk statement resolves to
 `BIOLOGICAL_FAILURE / BIOLOGICAL_UNSPECIFIED`. This asserts the biological
 domain without inventing an efficacy-versus-safety split. Explicit business,
 corporate, strategic, portfolio, and reprioritization decisions resolve to
-`NON_BIOLOGICAL / BUSINESS_STRATEGY`; a bare `Sponsor decision` remains
-unresolved because it identifies the actor but not the causal domain.
+`NON_BIOLOGICAL / BUSINESS_STRATEGY`; a bare `Sponsor decision` resolves only
+to `CAUSE_NOT_STATED / DECISION_WITHOUT_STATED_CAUSE` because it identifies
+the actor but not the causal domain.
 
 Description fallback is allowed only when `whyStopped` is empty or an explicit
 placeholder. It is accepted only for a direct, high-confidence causal sentence.

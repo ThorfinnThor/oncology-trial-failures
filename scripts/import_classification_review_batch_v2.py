@@ -14,11 +14,13 @@ try:
         BIOLOGICAL_REASONS,
         OPERATIONAL_REASONS,
         OUTCOME_BIOLOGICAL,
+        OUTCOME_CAUSE_NOT_STATED,
         OUTCOME_MIXED,
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_NON_FAILURE,
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
+        REASON_DECISION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -32,11 +34,13 @@ except ImportError:
         BIOLOGICAL_REASONS,
         OPERATIONAL_REASONS,
         OUTCOME_BIOLOGICAL,
+        OUTCOME_CAUSE_NOT_STATED,
         OUTCOME_MIXED,
         OUTCOME_NON_BIOLOGICAL,
         OUTCOME_NON_FAILURE,
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
+        REASON_DECISION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -59,6 +63,7 @@ DEST_FIELDS = (
 )
 ALLOWED_OUTCOMES = {
     OUTCOME_BIOLOGICAL,
+    OUTCOME_CAUSE_NOT_STATED,
     OUTCOME_NON_BIOLOGICAL,
     OUTCOME_MIXED,
     OUTCOME_NON_FAILURE,
@@ -68,6 +73,7 @@ ALLOWED_REASONS = {
     *BIOLOGICAL_REASONS,
     *OPERATIONAL_REASONS,
     REASON_REGULATORY,
+    REASON_DECISION_ONLY,
     REASON_MULTIPLE,
     REASON_NOT_INITIATED,
     REASON_PLANNED,
@@ -106,6 +112,12 @@ def validate_semantics(outcome: str, primary: str, needs_review: bool) -> None:
         raise ValueError("Non-failure outcome has an incompatible primary reason")
     if outcome == OUTCOME_MIXED and primary != REASON_MULTIPLE:
         raise ValueError("Mixed outcome requires MULTIPLE as its primary reason")
+    if outcome == OUTCOME_CAUSE_NOT_STATED and primary != REASON_DECISION_ONLY:
+        raise ValueError("Cause-not-stated outcome requires the decision-only reason")
+    if primary == REASON_DECISION_ONLY and outcome != OUTCOME_CAUSE_NOT_STATED:
+        raise ValueError("Decision-only reason requires the cause-not-stated outcome")
+    if outcome == OUTCOME_CAUSE_NOT_STATED and needs_review:
+        raise ValueError("Cause-not-stated decisions are terminal classifications")
     if outcome == OUTCOME_UNKNOWN and primary != REASON_UNSPECIFIED:
         raise ValueError("Unknown outcome requires UNSPECIFIED as its primary reason")
     if outcome in {OUTCOME_UNKNOWN, OUTCOME_MIXED} and not needs_review:
