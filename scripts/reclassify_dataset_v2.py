@@ -19,14 +19,24 @@ try:
         CLASSIFIER_VERSION,
         classification_source,
         classify_reason_v2,
+        classify_with_v2_fallback,
         load_reviewed_reason_index,
+    )
+    from classification_review_dispositions_v2 import (
+        augment_review_queue,
+        build_disposition_payload,
     )
 except ImportError:
     from scripts.classification_v2 import (
         CLASSIFIER_VERSION,
         classification_source,
         classify_reason_v2,
+        classify_with_v2_fallback,
         load_reviewed_reason_index,
+    )
+    from scripts.classification_review_dispositions_v2 import (
+        augment_review_queue,
+        build_disposition_payload,
     )
 
 
@@ -41,6 +51,38 @@ V2_FIELDS = (
 )
 
 PRESERVED_SOURCES = {"MANUAL_NCT_OVERRIDE", "DESCRIPTION_FALLBACK"}
+
+
+def revalidate_description_fallback(
+    row: Dict[str, Any],
+    reviewed_index: Dict[str, Dict[str, Any]],
+) -> Dict[str, Any] | None:
+    """Re-run a stored source snippet before carrying it across V2 versions."""
+
+    evidence = str(row.get("classification_evidence") or "")
+    marker = "source.description_fallback:"
+    if marker not in evidence:
+        return None
+    candidate = evidence.split(marker, 1)[1].strip()
+    if not candidate:
+        return None
+    result = classify_with_v2_fallback(
+        row.get("why_stopped"),
+        "",
+        candidate,
+        reviewed_index,
+    )
+    if (
+        result.needs_review
+        or result.confidence != "HIGH"
+        or classification_source(result) != "DESCRIPTION_FALLBACK"
+        or result.outcome != row.get("classification_outcome_v2")
+        or result.primary_reason != row.get("classification_primary_reason_v2")
+    ):
+        return None
+    fields = result.as_record_fields()
+    fields["classification_source"] = "DESCRIPTION_FALLBACK"
+    return fields
 
 
 def write_json(path: Path, payload: Any) -> None:
@@ -85,7 +127,24 @@ def classify_rows(
             existing_source in PRESERVED_SOURCES
             and row.get("classification_version") == CLASSIFIER_VERSION
         )
-        if preserve_existing:
+        revalidated_fallback = None
+        if existing_source == "DESCRIPTION_FALLBACK" and not preserve_existing:
+            revalidated_fallback = revalidate_description_fallback(row, reviewed_index)
+        if revalidated_fallback is not None:
+            fields = revalidated_fallback
+            source = "DESCRIPTION_FALLBACK"
+            outcome = str(fields["classification_outcome_v2"])
+            primary_reason = str(fields["classification_primary_reason_v2"])
+            needs_review = bool(fields["classification_needs_review"])
+            confidence_value = str(fields["classification_confidence"])
+            evidence_string = str(fields["classification_evidence"])
+            text_digest = str(fields["classification_text_hash"])
+            secondary_reasons = [
+                value.strip()
+                for value in str(fields["classification_secondary_reasons_v2"]).split(";")
+                if value.strip()
+            ]
+        elif preserve_existing:
             fields = {key: row.get(key) for key in V2_FIELDS}
             fields.update(
                 {
@@ -161,6 +220,7 @@ def classify_rows(
         group["current_v1_labels"] = dict(group["current_v1_labels"].most_common())
         queue.append(group)
     queue.sort(key=lambda item: (-item["record_count"], item["classification_text_hash"]))
+    queue, disposition_summary = augment_review_queue(queue)
 
     report = {
         "schema_version": 1,
@@ -173,6 +233,7 @@ def classify_rows(
         "primary_reasons": dict(primary_reasons.most_common()),
         "sources": dict(sources.most_common()),
         "confidence": dict(confidence.most_common()),
+        **disposition_summary,
         "legacy_transitions": dict(transitions.most_common()),
     }
     return output, report, queue
@@ -184,6 +245,10 @@ def main() -> None:
     parser.add_argument("--reviewed-index", default="data/classification_reviewed_reasons_v2.json")
     parser.add_argument("--report", default="data/classification_v2_reclassification_report.json")
     parser.add_argument("--review-queue", default="data/classification_review_queue_v2.json")
+    parser.add_argument(
+        "--review-dispositions",
+        default="data/classification_review_dispositions_v2.json",
+    )
     parser.add_argument("--write", action="store_true")
     args = parser.parse_args()
 
@@ -195,6 +260,19 @@ def main() -> None:
     updated, report, queue = classify_rows(rows, reviewed_index)
     write_json(Path(args.report), report)
     write_json(Path(args.review_queue), queue)
+    disposition_summary = {
+        key: report[key]
+        for key in (
+            "disposition_group_counts",
+            "disposition_record_counts",
+            "priority_group_counts",
+            "priority_record_counts",
+        )
+    }
+    write_json(
+        Path(args.review_dispositions),
+        build_disposition_payload(queue, disposition_summary),
+    )
 
     if args.write:
         write_json(input_path, updated)

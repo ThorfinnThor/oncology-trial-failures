@@ -17,6 +17,10 @@ from scripts.enrich_classification_context_v2 import proposal_for
 from scripts.ingest_changes import build_ingest_change_report
 from scripts.import_classification_review_batch_v2 import validate_semantics
 from scripts.reclassify_dataset_v2 import classify_rows
+from scripts.classification_review_dispositions_v2 import (
+    augment_review_queue,
+    review_disposition,
+)
 
 try:
     from classification_v2 import (
@@ -57,6 +61,135 @@ def main() -> None:
         if result.evidence and any(not item.quote.strip() for item in result.evidence):
             failures.append(f"Case {index}: empty evidence quote")
 
+    disposition_cases = (
+        ("", "UNKNOWN", "UNSPECIFIED", "MISSING_STOP_REASON"),
+        (
+            "See detailed description",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE",
+        ),
+        ("Sponsor Decision", "UNKNOWN", "UNSPECIFIED", "GENERIC_ACTOR_OR_DECISION_ONLY"),
+        ("Study terminated", "UNKNOWN", "UNSPECIFIED", "STATUS_OR_ACTION_WITHOUT_CAUSE"),
+        (
+            "Sponsor decision, not related to safety",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE",
+        ),
+        (
+            "Interim analysis",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "ANALYSIS_OR_REVIEW_WITHOUT_RESULT",
+        ),
+        (
+            "Administrative reasons",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "GENERIC_CAUSE_CATEGORY_WITHOUT_DETAIL",
+        ),
+        (
+            "Awaiting additional information",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "PROVISIONAL_OR_FUTURE_PLAN",
+        ),
+        (
+            "Reason wording cannot support a direct cause",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "OTHER_AMBIGUOUS_TEXT",
+        ),
+        (
+            "This is a duplicate ClinicalTrials.gov registration",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "REGISTRY_OR_REPORTING_ADMIN_TEXT",
+        ),
+        (
+            "Efficacy evaluation was discussed",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT",
+        ),
+        (
+            "The development program was discontinued after review",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE",
+        ),
+        (
+            "The development program was discontinued after a meeting",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE",
+        ),
+        (
+            "Participants were lost to follow-up",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "RETENTION_OR_FOLLOW_UP_LIMITATION",
+        ),
+        (
+            "Insufficient data were available",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "INSUFFICIENT_OR_LOW_QUALITY_DATA",
+        ),
+        ("Unclear note", "UNKNOWN", "UNSPECIFIED", "ABBREVIATION_OR_FRAGMENT"),
+        (
+            "The local institution requested administrative closure",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "SITE_OR_INSTITUTION_ADMIN_TEXT",
+        ),
+        (
+            "Part B was complete and Part C was discussed",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR",
+        ),
+        (
+            "The work stopped due to exceptional circumstances",
+            "UNKNOWN",
+            "UNSPECIFIED",
+            "EXPLICIT_BUT_UNMAPPED_CAUSE",
+        ),
+        ("Two causes", "MIXED_CAUSES", "MULTIPLE", "MULTIPLE_EXPLICIT_CAUSES"),
+        (
+            "Unfavorable benefit-risk profile",
+            "BIOLOGICAL_FAILURE",
+            "BIOLOGICAL_UNSPECIFIED",
+            "BIOLOGICAL_DOMAIN_UNSPECIFIED",
+        ),
+    )
+    disposition_queue = []
+    for index, (text, outcome, primary, expected) in enumerate(disposition_cases):
+        item = {
+            "classification_text_hash": f"{index:020x}",
+            "why_stopped": text,
+            "record_count": index + 1,
+            "suggested_outcome_v2": outcome,
+            "suggested_primary_reason_v2": primary,
+            "evidence": "",
+        }
+        actual, _ = review_disposition(item)
+        if actual != expected:
+            failures.append(
+                f"Review disposition for {text!r}: expected {expected}, got {actual}"
+            )
+        disposition_queue.append(item)
+    augmented_queue, disposition_summary = augment_review_queue(disposition_queue)
+    if len(augmented_queue) != len(disposition_queue):
+        failures.append("Review disposition augmentation lost queue groups")
+    if sum(disposition_summary["disposition_group_counts"].values()) != len(disposition_queue):
+        failures.append("Review disposition group counts do not sum to the queue size")
+    if sum(disposition_summary["disposition_record_counts"].values()) != sum(
+        item["record_count"] for item in disposition_queue
+    ):
+        failures.append("Review disposition record counts do not sum to the queue records")
+
     reviewed = load_reviewed_reason_index("data/classification_reviewed_reasons_v2.json")
     reviewed_result = classify_reason_v2("Slow accrual", reviewed)
     if not reviewed_result.evidence or reviewed_result.evidence[0].rule_id != "reviewed.exact_reason":
@@ -76,29 +209,29 @@ def main() -> None:
         failures.append("Unresolved legacy cache entry blocked a specific V2 rule")
 
     unclear_legacy = {
-        classify_reason_v2("No longer pursuing the indication").normalized_text_hash: {
+        classify_reason_v2("Portfolio reprioritization").normalized_text_hash: {
             "outcome": "UNKNOWN",
             "primary_reason": "UNSPECIFIED",
             "needs_review": True,
             "v2_derivation": "AUDIT_LEGACY_MAPPING",
-            "example_text": "No longer pursuing the indication",
+            "example_text": "Portfolio reprioritization",
         }
     }
-    upgraded_unclear = classify_reason_v2("No longer pursuing the indication", unclear_legacy)
+    upgraded_unclear = classify_reason_v2("Portfolio reprioritization", unclear_legacy)
     if upgraded_unclear.primary_reason != "BUSINESS_STRATEGY" or upgraded_unclear.needs_review:
         failures.append("Unresolved legacy UNKNOWN cache entry blocked a specific V2 rule")
 
     manual_review = {
-        classify_reason_v2("No longer pursuing the indication").normalized_text_hash: {
+        classify_reason_v2("Portfolio reprioritization").normalized_text_hash: {
             "outcome": "UNKNOWN",
             "primary_reason": "UNSPECIFIED",
             "needs_review": True,
             "v2_derivation": "MANUAL_V2_DECISION",
-            "example_text": "No longer pursuing the indication",
+            "example_text": "Portfolio reprioritization",
         }
     }
     retained_manual_review = classify_reason_v2(
-        "No longer pursuing the indication", manual_review
+        "Portfolio reprioritization", manual_review
     )
     if not retained_manual_review.needs_review:
         failures.append("A manual V2 review decision lost precedence")
@@ -111,15 +244,29 @@ def main() -> None:
     if fallback.primary_reason != "SAFETY" or fallback.needs_review:
         failures.append(f"Description fallback failed: {fallback}")
 
+    overlapping_efficacy = classify_reason_v2(
+        "The trial was terminated due to lack of efficacy at the interim analysis."
+    )
+    if overlapping_efficacy.confidence != "HIGH":
+        failures.append(
+            "A direct high-confidence efficacy cause was downgraded by an "
+            "overlapping medium-confidence rule"
+        )
+
     fallback_row = {
         "nct_id": "NCT00000002",
         "why_stopped": "See detailed description",
         **fallback.as_record_fields(),
         "classification_source": "DESCRIPTION_FALLBACK",
     }
+    fallback_row["classification_version"] = "2.1.0"
     fallback_migrated, _, _ = classify_rows([fallback_row], {})
-    if fallback_migrated[0]["classification_primary_reason_v2"] != "SAFETY":
-        failures.append("Snapshot migration overwrote a description-fallback decision")
+    if (
+        fallback_migrated[0]["classification_primary_reason_v2"] != "SAFETY"
+        or fallback_migrated[0]["classification_version"] != CLASSIFIER_VERSION
+        or fallback_migrated[0]["classification_source"] != "DESCRIPTION_FALLBACK"
+    ):
+        failures.append("Snapshot migration did not revalidate a description fallback")
 
     manual_row = {
         "nct_id": "NCT00000003",

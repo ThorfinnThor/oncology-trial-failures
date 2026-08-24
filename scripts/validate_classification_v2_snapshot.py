@@ -30,6 +30,7 @@ try:
         load_reviewed_reason_index,
     )
     from reclassify_dataset_v2 import classify_rows
+    from classification_review_dispositions_v2 import DISPOSITION_NOTES
 except ImportError:
     from scripts.classification_v2 import (
         BIOLOGICAL_REASONS,
@@ -50,6 +51,7 @@ except ImportError:
         load_reviewed_reason_index,
     )
     from scripts.reclassify_dataset_v2 import classify_rows
+    from scripts.classification_review_dispositions_v2 import DISPOSITION_NOTES
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -193,7 +195,7 @@ def main() -> None:
     reviewed = load_reviewed_reason_index(
         str(DATA / "classification_reviewed_reasons_v2.json")
     )
-    rerun, report, _ = classify_rows(all_rows, reviewed)
+    rerun, report, rerun_queue = classify_rows(all_rows, reviewed)
     for before, after in zip(all_rows, rerun):
         changed = [field for field in V2_COMPARE_FIELDS if before.get(field) != after.get(field)]
         if changed:
@@ -204,6 +206,111 @@ def main() -> None:
                 break
     if sum(report["outcomes"].values()) != len(all_rows):
         failures.append("Reclassification report outcome counts do not sum to total")
+
+    context_payload = json.loads(
+        (DATA / "classification_context_proposals_v2.json").read_text(encoding="utf-8")
+    )
+    context_proposals = context_payload.get("proposals", [])
+    if not isinstance(context_proposals, list):
+        failures.append("Context proposal artifact proposals must be a JSON array")
+        context_proposals = []
+    if context_payload.get("proposal_count") != len(context_proposals):
+        failures.append("Context proposal count does not match its artifact")
+    rows_by_id = {
+        str(row.get("nct_id") or "").upper(): row for row in all_rows
+    }
+    context_ids = [
+        str(proposal.get("nct_id") or "").upper()
+        for proposal in context_proposals
+    ]
+    if len(context_ids) != len(set(context_ids)) or "" in context_ids:
+        failures.append("Context proposal artifact contains a missing or duplicate NCT ID")
+    for proposal, nct_id in zip(context_proposals, context_ids):
+        fields = proposal.get("record_fields") or {}
+        canonical = rows_by_id.get(nct_id)
+        if canonical is None:
+            failures.append(f"{nct_id}: context proposal is absent from canonical data")
+            break
+        if (
+            fields.get("classification_source") != "DESCRIPTION_FALLBACK"
+            or fields.get("classification_version") != CLASSIFIER_VERSION
+            or fields.get("classification_confidence") != "HIGH"
+            or fields.get("classification_needs_review") is not False
+        ):
+            failures.append(f"{nct_id}: context proposal is stale or not high-confidence")
+            break
+        changed = [
+            field for field in V2_COMPARE_FIELDS
+            if fields.get(field) != canonical.get(field)
+        ]
+        if changed:
+            failures.append(
+                f"{nct_id}: context proposal differs from canonical data "
+                f"({', '.join(changed)})"
+            )
+            break
+
+    queue = load_rows(DATA / "classification_review_queue_v2.json")
+    dispositions = json.loads(
+        (DATA / "classification_review_dispositions_v2.json").read_text(encoding="utf-8")
+    )
+    stored_report = json.loads(
+        (DATA / "classification_v2_reclassification_report.json").read_text(encoding="utf-8")
+    )
+    disposition_groups = dispositions.get("groups", [])
+    if not isinstance(disposition_groups, list):
+        failures.append("Review-disposition artifact groups must be a JSON array")
+        disposition_groups = []
+    queue_hashes = [str(item.get("classification_text_hash") or "") for item in queue]
+    disposition_hashes = [
+        str(item.get("classification_text_hash") or "") for item in disposition_groups
+    ]
+    rerun_hashes = [str(item.get("classification_text_hash") or "") for item in rerun_queue]
+    if len(queue_hashes) != len(set(queue_hashes)) or "" in queue_hashes:
+        failures.append("Stored review queue contains a missing or duplicate group hash")
+    if queue_hashes != disposition_hashes:
+        failures.append("Review queue and disposition artifact group order/hashes differ")
+    if queue_hashes != rerun_hashes:
+        failures.append("Stored review queue differs from a fresh canonical reclassification")
+    for item in queue:
+        disposition = str(item.get("review_disposition") or "")
+        if disposition not in DISPOSITION_NOTES:
+            failures.append(
+                f"{item.get('classification_text_hash')}: undocumented review disposition"
+            )
+            break
+        if item.get("review_disposition_note") != DISPOSITION_NOTES[disposition]:
+            failures.append(
+                f"{item.get('classification_text_hash')}: stale review disposition note"
+            )
+            break
+        if item.get("review_priority") not in {"HIGH", "MEDIUM", "LOW"}:
+            failures.append(
+                f"{item.get('classification_text_hash')}: invalid review priority"
+            )
+            break
+    queue_record_count = sum(int(item.get("record_count") or 0) for item in queue)
+    if dispositions.get("review_group_count") != len(queue):
+        failures.append("Disposition group count differs from the review queue")
+    if dispositions.get("review_record_count") != queue_record_count:
+        failures.append("Disposition record count differs from the review queue")
+    if stored_report.get("review_unique_reason_count") != len(queue):
+        failures.append("Reclassification report group count differs from the review queue")
+    if stored_report.get("review_record_count") != queue_record_count:
+        failures.append("Reclassification report record count differs from the review queue")
+    for dimension in ("disposition", "priority"):
+        group_key = f"{dimension}_group_counts"
+        record_key = f"{dimension}_record_counts"
+        group_counts = dispositions.get(group_key, {})
+        record_counts = dispositions.get(record_key, {})
+        if sum(group_counts.values()) != len(queue):
+            failures.append(f"{group_key} does not sum to the review queue")
+        if sum(record_counts.values()) != queue_record_count:
+            failures.append(f"{record_key} does not sum to review records")
+        if group_counts != stored_report.get(group_key):
+            failures.append(f"{group_key} differs between disposition artifact and report")
+        if record_counts != stored_report.get(record_key):
+            failures.append(f"{record_key} differs between disposition artifact and report")
 
     leaked = sorted((PUBLIC / "data").glob("classification_*"))
     if leaked:

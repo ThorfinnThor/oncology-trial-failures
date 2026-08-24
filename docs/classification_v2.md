@@ -4,7 +4,7 @@ Classification V2 is the conservative stop-reason pipeline used for new and
 changed ClinicalTrials.gov records. It replaces forced keyword precedence with
 an evidence-bearing, review-gated model.
 
-The current rule implementation is `2.1.0`. A review flag is a deliberate
+The current rule implementation is `2.2.0`. A review flag is a deliberate
 semantic result, not a failed pipeline state: text that does not state a cause
 clearly enough remains unclassified until primary-source context or a reviewed
 decision supports it.
@@ -83,6 +83,8 @@ specific patterns over a few broad, error-prone keyword rules.
 - `tests/classification_gold_v2.jsonl`: row-level audit fixture for records 1-4000
 - `data/classification_reviewed_reasons_v2.json`: consistent exact-text decisions
 - `data/classification_review_queue_v2.json`: grouped unresolved reasons
+- `data/classification_review_dispositions_v2.json`: documented disposition for
+  every unresolved reason group
 - `data/classification_manual_decisions_v2.csv`: durable approved V2 decisions
 - `data/classification_v2_quality.json`: audit benchmark
 - `data/classification_v2_reclassification_report.json`: full-snapshot summary
@@ -120,6 +122,20 @@ Approved decisions override audit-derived entries and are automatically reused
 for identical future registry language. Blank stop reasons remain unknown; they
 cannot be semantically resolved without another explicit primary-source field.
 
+Every queue group receives exactly one review disposition and a priority.
+Dispositions distinguish missing source text, placeholders, multi-domain
+causes, unspecified biological signals, negated causes, generic actor
+decisions, registry-administration text, program actions without an underlying
+cause, follow-up limitations, insufficient data, fragments, and other
+ambiguous wording. They explain why a group remains unresolved; they do not
+substitute a causal classification.
+
+`scripts/reclassify_dataset_v2.py` rebuilds both review artifacts from the full
+snapshot on every run. Snapshot validation rejects missing or duplicate group
+hashes, undocumented dispositions, stale notes, inconsistent counts, or a
+difference between the stored queue and a fresh reclassification. Newly
+ingested wording therefore cannot silently bypass the review inventory.
+
 ## Primary-source context workflow
 
 The context helper queries ClinicalTrials.gov only for unresolved records whose
@@ -143,7 +159,10 @@ Fallback text must be a direct study-level causal statement and produce a
 high-confidence final result. Individual participant discontinuations,
 background safety/efficacy discussion, and study-drug discontinuation advice
 are excluded. A description fallback therefore cannot be used to guess a cause
-for generic registry text.
+for generic registry text. When the classifier version changes, stored
+description fallbacks are not copied blindly: the saved source sentence must
+again produce the same high-confidence outcome and primary cause under the new
+classifier or the record returns to the review queue.
 
 ## Quality policy
 
@@ -178,7 +197,9 @@ and changed records are classified with V2, then the pipeline regenerates the
 grouped review queue, canonical subsets, metadata, compact index, and Cloudflare
 shards. Unchanged exact reviewed reasons remain stable across ingests. Manual
 NCT overrides and high-confidence description-fallback decisions are preserved
-when the canonical snapshot is rebuilt.
+when the canonical snapshot is rebuilt. New placeholder records are evaluated
+against their registry description during ingestion using the same strict
+direct-cause requirement.
 
 No classifier can guarantee that every registry statement is correct or
 unambiguous. V2 instead guarantees that unsupported or conflicting semantics
