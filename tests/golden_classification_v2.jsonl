@@ -9,7 +9,7 @@
 {"why_stopped":"Safety review completed with no safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The drug was well-tolerated with no DLTs.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Sponsor decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Business Decision","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Business Decision","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Administrative reasons","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The company changed its development strategy.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Portfolio reprioritization.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
@@ -25,15 +25,15 @@
 {"why_stopped":"FDA partial clinical hold.","outcome":"NON_BIOLOGICAL","primary_reason":"REGULATORY","needs_review":false}
 {"why_stopped":"The IRB recommended termination.","outcome":"NON_BIOLOGICAL","primary_reason":"REGULATORY","needs_review":false}
 {"why_stopped":"Regulatory strategy changed.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Lack of efficacy and slow recruitment.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"Toxicity and lack of efficacy.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"Futility and lack of future funding.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"Slow accrual and the IRB ordered closure.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"Lack of efficacy and slow recruitment.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Toxicity and lack of efficacy.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Futility and lack of future funding.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Slow accrual and the IRB ordered closure.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"The accrual goal was reached.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"The primary endpoint was achieved.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"The RP2D was determined.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"The study was replaced by a new trial.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"REPLACEMENT_TRANSITION","needs_review":false}
-{"why_stopped":"Unfavorable benefit-risk assessment.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
+{"why_stopped":"Unfavorable benefit-risk assessment.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
 {"why_stopped":"","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Reason not provided.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Not due to safety concerns; terminated due to lack of efficacy.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
@@ -41,11 +41,11 @@
 {"why_stopped":"The study was not discontinued due to safety issues or adverse events.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Closed due to no response from PI to IRB","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Enrollment was much slower than anticipated, leading to enrollment futility.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
-{"why_stopped":"Futility and limited feasibility","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"Futility and limited feasibility","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"COVID pandemic. No participant experiences (benefits, adverse events/adverse reactions) to report. There have been no safety concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"EXTERNAL_DISRUPTION","needs_review":false}
 {"why_stopped":"Concerns about potential side effects; no participants experienced an adverse event.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Lack of volunteers who would consent to participate and lack of funding.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
-{"why_stopped":"Because of low accrual and the safety concerns we closed the study.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"Because of low accrual and the safety concerns we closed the study.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Study never started","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Trial not initiated","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"The research project was cancelled before any participants were enrolled.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
@@ -55,7 +55,7 @@
 {"why_stopped":"Target number of inclusion not reached","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Funding not secured","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
 {"why_stopped":"Ran out of funding","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
-{"why_stopped":"Strategic decision to discontinue the development program; not related to safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Strategic decision to discontinue the development program; not related to safety concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Administrative reasons","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Lack of feasibility","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"Study did not meet its primary endpoint.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
@@ -64,11 +64,11 @@
 {"why_stopped":"IRB did not approve","outcome":"NON_BIOLOGICAL","primary_reason":"REGULATORY","needs_review":false}
 {"why_stopped":"FDA required the sponsor to halt enrollment in the trial.","outcome":"NON_BIOLOGICAL","primary_reason":"REGULATORY","needs_review":false}
 {"why_stopped":"Sponsor decision","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Business decision","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Business decision","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"The study was terminated because recruitment was too slow. There were no safety concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Not due to safety concerns; terminated due to lack of efficacy.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
-{"why_stopped":"Strategic decision to discontinue the program; not related to safety or efficacy.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Early discontinuation based on strategic sponsor decision not driven by any safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Strategic decision to discontinue the program; not related to safety or efficacy.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Early discontinuation based on strategic sponsor decision not driven by any safety concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"COVID-19 Pandemic","outcome":"NON_BIOLOGICAL","primary_reason":"EXTERNAL_DISRUPTION","needs_review":false}
 {"why_stopped":"The study was terminated as a result of the coronavirus outbreak.","outcome":"NON_BIOLOGICAL","primary_reason":"EXTERNAL_DISRUPTION","needs_review":false}
 {"why_stopped":"Unmet primary endpoint","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
@@ -81,9 +81,9 @@
 {"why_stopped":"Study cancelled","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"There were no new safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Safety concerns did not contribute to the sponsor decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Trial was discontinued for strategic reasons. Decision was not based on safety concerns, futility, or a regulatory request.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Business decision and not due to any safety or tolerability concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Sponsor discontinued the study due to strategic considerations and not due to safety-related concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Trial was discontinued for strategic reasons. Decision was not based on safety concerns, futility, or a regulatory request.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Business decision and not due to any safety or tolerability concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Sponsor discontinued the study due to strategic considerations and not due to safety-related concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Adjustment of the company's R\\&D strategy","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"The patient enrollment rate is proceeding too slowly.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"No enough participants","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
@@ -111,9 +111,9 @@
 {"why_stopped":"The study stopped early, before enrolling its first participant.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Replaced by a different protocol.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"REPLACEMENT_TRANSITION","needs_review":false}
 {"why_stopped":"The sponsor filed Chapter 11 and terminated all studies.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
-{"why_stopped":"The overall profile does not support further development.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
-{"why_stopped":"Early termination for discouraging results","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
-{"why_stopped":"Adverse change in the benefit-risk profile","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
+{"why_stopped":"The overall profile does not support further development.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
+{"why_stopped":"Early termination for discouraging results","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
+{"why_stopped":"Adverse change in the benefit-risk profile","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
 {"why_stopped":"Sponsor decision related to study drug supply","outcome":"NON_BIOLOGICAL","primary_reason":"SUPPLY_MANUFACTURING","needs_review":false}
 {"why_stopped":"The scope was reduced to focus resources on studies that can enable registration.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"The drug program was sold to another company.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
@@ -133,17 +133,17 @@
 {"why_stopped":"The events were unrelated serious adverse events.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Toxicity and efficacy data from another trial were reviewed; the sponsor gave no causal result.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The trial stopped because of unexpected toxicities.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
-{"why_stopped":"Lack of tolerability and efficacy of the combination treatment.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"Study was never opened to accrual. There is no clinical benefit to patients.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"Lack of tolerability and efficacy of the combination treatment.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Study was never opened to accrual. There is no clinical benefit to patients.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"The study was terminated because the company could no longer supply study drug. No efficacy or safety concerns factored into this decision.","outcome":"NON_BIOLOGICAL","primary_reason":"SUPPLY_MANUFACTURING","needs_review":false}
-{"why_stopped":"No efficacy observed; COVID-19 caused sites to shut down.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"The research is no longer funded and was terminated due to futility.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"The highest dose was not well tolerated and there was no benefit to continue dosing.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"No efficacy observed; COVID-19 caused sites to shut down.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"The research is no longer funded and was terminated due to futility.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"The highest dose was not well tolerated and there was no benefit to continue dosing.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Not due to recruitment; the study was stopped because of unacceptable toxicity.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
-{"why_stopped":"Business decision","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Business decision","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"The study was terminated from a business perspective.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"This study was closed due to business reasons. Closure was not prompted by any safety or efficacy concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
-{"why_stopped":"Strategic considerations","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Strategic considerations","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Sponsor decision","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Company decision","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Administrative reasons","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
@@ -163,9 +163,9 @@
 {"why_stopped":"In September 2023, the study was terminated because of a Sponsor decision, unrelated to safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The study was terminated earlier due to a sponsor decision; there was no clinical activity data that informed the decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The study stopped due to a business decision based on a confirmed lack of efficacy.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
-{"why_stopped":"The trial closed for lack of efficacy, with a safety issue also contributing to the decision.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"The trial closed for lack of efficacy, with a safety issue also contributing to the decision.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Safety issues did not contribute to the sponsor decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"The study stopped due to slow recruitment and no evidence for efficacy in a parallel study.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"The study stopped due to slow recruitment and no evidence for efficacy in a parallel study.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"The trial was terminated due to inability to recruit and shifting organizational priorities.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Evidence showed the treatment is not effective against COVID-19.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"Sufficient evidence of efficacy was not met.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
@@ -195,13 +195,13 @@
 {"why_stopped":"Sponsor decision based on interim analysis results.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Due to potential concerns about liver safety (See Detailed Description)","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
 {"why_stopped":"The decision was based on elevated transaminases observed in Phase 1 studies.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
-{"why_stopped":"Development was discontinued due to modest clinical benefit and limited tolerability.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"Development was discontinued due to modest clinical benefit and limited tolerability.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Safety data review","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The primary endpoint of non-inferiority was not achieved.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
-{"why_stopped":"The study stopped because of low enrollment and low efficacy.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"The trial was closed because of feasibility and safety issues and did not reach our endpoint.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"The study stopped early due to slow accrual and safety concerns.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
-{"why_stopped":"Development stopped due to safety and tolerability concerns and limited clinical activity.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"The study stopped because of low enrollment and low efficacy.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"The trial was closed because of feasibility and safety issues and did not reach our endpoint.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"The study stopped early due to slow accrual and safety concerns.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Development stopped due to safety and tolerability concerns and limited clinical activity.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Difficulties to recruit patients","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Insuffisient recruitment","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"No participant enrollment","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
@@ -260,7 +260,7 @@
 {"why_stopped":"The study was fully enrolled and completed after the last participant completed.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"The study was terminated based on new efficacy data from another study.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"Other related studies did not provide sufficient efficacy to warrant continuation.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
-{"why_stopped":"The study did not meet the primary efficacy objective and there was a significant increase in the incidence of non-fatal SAEs.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":true}
+{"why_stopped":"The study did not meet the primary efficacy objective and there was a significant increase in the incidence of non-fatal SAEs.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Extreme toxicity of the treatment combination","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
 {"why_stopped":"Trial was stopped due to difficult enrolment","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"The company has acquired the rights to the product and terminated both studies.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
@@ -283,7 +283,7 @@
 {"why_stopped":"The trial is not transitioning to the Clinical Trial Regulation.","outcome":"NON_BIOLOGICAL","primary_reason":"REGULATORY","needs_review":false}
 {"why_stopped":"Safety findings did not result in the termination decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Target enrollment was not reached because the medication taste was not well tolerated by infants.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
-{"why_stopped":"The overall benefit-risk profile did not support continuation of the study.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
+{"why_stopped":"The overall benefit-risk profile did not support continuation of the study.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
 {"why_stopped":"Genmab terminated the program because marginal anti-tumor activity did not support further development.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"Oral treatment did not demonstrate a meaningful clinical benefit at any dose compared with placebo.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"There is no clear therapeutic effect among the enrolled patients.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
@@ -375,7 +375,7 @@
 {"why_stopped":"The protocol-defined criterion of treatment availability was achieved.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"Completing the study would provide limited additional information and was unlikely to change the conclusions.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"Part 2 of the study was replaced by a new protocol.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"REPLACEMENT_TRANSITION","needs_review":false}
-{"why_stopped":"A strategic decision was made to discontinue the study, unrelated to safety.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"A strategic decision was made to discontinue the study, unrelated to safety.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Decision of the Data Safety Monitoring Board.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The study was withdrawn due to an internal decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The parent trials did not meet their primary endpoints.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
@@ -455,8 +455,8 @@
 {"why_stopped":"Funding never attained.","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
 {"why_stopped":"Funding Horizon.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Adjustment to the sponsor's development strategy.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
-{"why_stopped":"Corporate business decision. Not due to safety or efficacy concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"The trial was terminated for strategic business reasons; the decision was not based on any safety or efficacy concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Corporate business decision. Not due to safety or efficacy concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"The trial was terminated for strategic business reasons; the decision was not based on any safety or efficacy concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"The study is being closed based on corporate changes and is not related to any efficacy or safety issues.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"The sponsor decided to terminate the study.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Business operations were reviewed during the study.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
@@ -498,8 +498,8 @@
 {"why_stopped":"Study terminated due to abnormal liver biochemical tests.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
 {"why_stopped":"Safety analysis was completed.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Reassess safety risks and benefits.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Early discontinuation based on strategic sponsor decision not driven by any safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Business decision; no safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Early discontinuation based on strategic sponsor decision not driven by any safety concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Business decision; no safety concerns.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Change in trial design.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"The current study design could not support further development.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"The endpoint measure was not obtainable.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
@@ -522,8 +522,8 @@
 {"why_stopped":"Due to inability to demonstrate benefit in this patient population.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"Due to poor response.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"Due to low likelihood of clinical benefit in treated participants.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
-{"why_stopped":"The overall benefit:risk profile was not favorable.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
-{"why_stopped":"Change in the benefit/risk balance.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
+{"why_stopped":"The overall benefit:risk profile was not favorable.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
+{"why_stopped":"Change in the benefit/risk balance.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
 {"why_stopped":"Interim efficacy analysis.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Efficacy finding.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Sponsor decision after reviewing efficacy data.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
@@ -561,8 +561,8 @@
 {"why_stopped":"Sponsor strategic priority adjustment.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Adjustment of our company's research and development strategy.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"The decision was made to prioritize other pipeline programs.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
-{"why_stopped":"Strategic business decision; not a safety decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"Business decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Strategic business decision; not a safety decision.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Business decision.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Decision to change the study design.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"Concerns regarding study design.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"Change in hospital protocol.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
@@ -673,8 +673,8 @@
 {"why_stopped":"The study was suspended at the end of the influenza season.","outcome":"NON_BIOLOGICAL","primary_reason":"EXTERNAL_DISRUPTION","needs_review":false}
 {"why_stopped":"The study ended due to difficulty in finalizing the contract.","outcome":"NON_BIOLOGICAL","primary_reason":"OPERATIONAL_OTHER","needs_review":false}
 {"why_stopped":"The protocol was adjusted and a new clinical trial was submitted.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"REPLACEMENT_TRANSITION","needs_review":false}
-{"why_stopped":"Due to an altered benefit/risk assessment.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
-{"why_stopped":"The trial stopped due to an unsatisfactory benefit-risk ratio.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
+{"why_stopped":"Due to an altered benefit/risk assessment.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
+{"why_stopped":"The trial stopped due to an unsatisfactory benefit-risk ratio.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
 {"why_stopped":"Low confidence of clinical benefit led to study closure.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"The arms were stopped due to high levels of treatment failure.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"Inadequate separation on the primary efficacy endpoint.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
@@ -733,4 +733,15 @@
 {"why_stopped":"Decision made to terminate due to difficulty in procurement of adequate supply of treatment drug.","outcome":"NON_BIOLOGICAL","primary_reason":"SUPPLY_MANUFACTURING","needs_review":false}
 {"why_stopped":"The trial was terminated because of delay in approval of the protocol by a number of Ethics Committees.","outcome":"NON_BIOLOGICAL","primary_reason":"REGULATORY","needs_review":false}
 {"why_stopped":"Evidence showed chloroquine is not effective against COVID-19.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
-{"why_stopped":"The benefit to risk balance did not support further treatment.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":true}
+{"why_stopped":"The benefit to risk balance did not support further treatment.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
+{"why_stopped":"Per sponsor letter, due to a business decision based on reprioritization of their internal XmAb20717 programs, Xencor has determined that ECR003 activities must halt and no additional subjects may be enrolled","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Corporate decision","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Genmab has decided to terminate the GEN1286 program due to an unfavorable benefit-risk profile not supporting further development.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
+{"why_stopped":"The study was stopped due to a lack of clear evidence of anti-tumor activity with the combination treatment in the participants treated.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
+{"why_stopped":"The study was terminated early because recruitment of eligible children with refractory functional abdominal pain disorders was slower than anticipated, and enrollment of the planned 50 participants was not feasible within the approved study period.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"Recruitment of chronic opioid users was substantially lower than anticipated despite extensive recruitment efforts; the study was therefore closed before reaching the planned sample size.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"The study was terminated due to low accrual and insufficient efficacy seen in first few participants treated.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Business Decision; Terminated due to futility, with no safety concerns (see below)","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
+{"why_stopped":"Business Decision; no human safety concern; evaluating preclinical toxicology finding","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
+{"why_stopped":"As a result of program reprioritization and due to the limited clinical activity observed in the Phase 1 trial, the study has been discontinued.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Study halted prematurely, prior to enrollment of first participant, for strategic reasons","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}

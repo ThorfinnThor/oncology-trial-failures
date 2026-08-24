@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.2.0"
+CLASSIFIER_VERSION = "2.3.0"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -239,6 +239,8 @@ RULES: Tuple[Rule, ...] = (
         r"\babsence of (?:clinically significant )?(?:efficacy|activity|benefit|response)\b",
         r"\bno evidence of (?:potential |clinical )?efficacy\b",
         r"\bno evidence for (?:potential |clinical )?efficacy\b",
+        r"\bno evidence of (?:meaningful |clinical |anti[- ]?(?:tumou?r|cancer) )?(?:activity|benefit|response|treatment effect)\b",
+        r"\black of (?:clear |sufficient |convincing )?evidence of (?:meaningful |clinical |anti[- ]?(?:tumou?r|cancer) )?(?:efficacy|activity|benefit|response|treatment effect)\b",
         r"\black of (?:evidence of )?(?:clinical )?benefit\b",
         r"\bno objective response\b",
         r"\black of objective response\b",
@@ -804,6 +806,8 @@ RULES: Tuple[Rule, ...] = (
         r"^(?:recruitment|enrolment|enrollment)\.?$",
         r"\bissues? with (?:patient |participant |subject )?(?:recruitment|enrolment|enrollment)\b",
         r"\b(?:lower|slower) than anticipated (?:patient |participant |subject )?(?:recruitment|enrolment|enrollment)\b",
+        r"\b(?:recruitment|enrolment|enrollment|accrual) of [^.;:]{0,120}\b(?:was |is )?(?:substantially |considerably |significantly |much )?(?:lower|slower) than (?:anticipated|expected|planned)\b",
+        r"\b(?:recruitment|enrolment|enrollment|accrual)\b[^.;:]{0,100}\b(?:was |is )?(?:substantially |considerably |significantly |much )?(?:lower|slower) than (?:anticipated|expected|planned)\b",
         r"\b(?:incomplete|unsuccessful|unsufficient|poor) (?:patient |participant |subject )?(?:recruitment|recruitement|enrolment|enrollment)\b",
         r"\b(?:recruitement|erollment) difficult(?:y|ies)\b",
         r"\bdifficult(?:y|ies)? in recruiting (?:patients|participants|subjects)\b",
@@ -1233,6 +1237,16 @@ RULES: Tuple[Rule, ...] = (
         "ops.business",
         REASON_BUSINESS,
         "HIGH",
+        r"^(?:an? |the )?(?:internal )?(?:business|corporate) decision(?: by| on behalf of)?(?: the)?(?: sponsor| company)?\.?$",
+        r"^(?:an? |the )?strategic(?:/business| business)? decision\.?$",
+        r"^(?:company |corporate |sponsor )?strategic (?:decision|reasons?|considerations?)\.?$",
+        r"\bstrategic(?: business)? decision to (?:discontinue|terminate|stop|halt|close|withdraw)\b",
+        r"\bstrategic business decision\b",
+        r"\b(?:due to|because of|for|based on|following|as a result of) (?:an? |the )?(?:company |corporate |sponsor )?strategic (?:decision|reasons?|considerations?)\b",
+        r"\b(?:sponsor|company) (?:has )?(?:made|took) (?:an? |the )?strategic decision\b",
+        r"\ba strategic decision was made to (?:discontinue|terminate|stop|halt|close|withdraw)\b",
+        r"\b(?:business|corporate) decision based on (?:the )?(?:re[- ]?)?prioriti[sz]ation of (?:the |its |their |our )?(?:internal )?[^.;:]{0,80}\b(?:pipeline|portfolio|programs?|programmes?|assets?|projects?)\b",
+        r"\b(?:business|corporate) decision\b[^.;:]{0,120}\bdue to (?:a |an |the )?(?:portfolio|pipeline|program|programme|asset|project) reprioriti[sz]ation\b",
         r"\b(?:business|corporate|company|r&d|research and development|development|portfolio|program|programme) (?:strategy|objectives?|priorities) (?:changed|adjusted|shifted|were changed|have changed)\b",
         r"\b(?:portfolio|program|programme|pipeline) reprioriti[sz]ation\b",
         r"\bportfolio prioritization\b",
@@ -1842,6 +1856,16 @@ def _find_rule_evidence(text: str, rule: Rule) -> List[Evidence]:
                 text,
             ):
                 continue
+            if (
+                rule.rule_id == "ops.business"
+                and re.search(r"\bsponsor decision\b", match.group(0))
+                and not re.search(
+                    r"\b(?:business|corporate|strategic|portfolio|pipeline|"
+                    r"reprioriti[sz]|prioriti[sz]|resource allocation|reallocation)\b",
+                    text,
+                )
+            ):
+                continue
             if rule.rule_id == "eff.explicit_lack" and re.search(
                 r"\bno (?:clinical )?(?:efficacy|activity|benefit|response) data\b",
                 text,
@@ -1851,22 +1875,6 @@ def _find_rule_evidence(text: str, rule: Rule) -> List[Evidence]:
                 r"\b(?:unrelated to|not related to|not due to|neither due to|not driven by|not based on)\b"
                 r"[^.;:]{0,45}\bsafety\b",
                 match.group(0),
-            ):
-                continue
-            if rule.rule_id == "ops.business" and re.search(
-                r"\b(?:sponsor|company|corporate|internal|strategic|business)? ?"
-                r"(?:business |operational )?decision\b",
-                text,
-            ) and re.search(
-                r"\b(?:not due to|not related to|unrelated to|not based on|"
-                r"not driven by|neither due to|no)\b[^.;:]{0,120}"
-                r"\b(?:safety|efficacy|regulatory)\b",
-                text,
-            ) and not re.search(
-                r"\b(?:portfolio|pipeline|resource allocation|reallocation|"
-                r"reprioriti[sz]|prioriti[sz]|strategy (?:change|adjustment)|"
-                r"changed strategy|funding|insolvency|bankruptcy|divest)\b",
-                text,
             ):
                 continue
             if rule.reason in BIOLOGICAL_REASONS and re.search(
@@ -1942,6 +1950,7 @@ def classify_reason_v2(
         unresolved_legacy_derivations = {
             "V2_UNRESOLVED_LEGACY_OPERATIONAL",
             "AUDIT_LEGACY_MAPPING",
+            "V2_REVIEW_GUARD_OVERRIDES_LEGACY",
         }
         if not (
             reviewed_entry.get("needs_review")
@@ -1962,6 +1971,34 @@ def classify_reason_v2(
     evidence = _dedupe_evidence(
         item for rule in RULES for item in _find_rule_evidence(text, rule)
     )
+    if (
+        any(item.reason == REASON_BUSINESS for item in evidence)
+        and any(item.reason != REASON_BUSINESS for item in evidence)
+        and not re.search(
+            r"\b(?:portfolio|pipeline|resource allocation|reallocation|"
+            r"re[- ]?prioriti[sz](?:ation|ed|ing|e)|prioriti[sz](?:ation|ed|ing)|strategic (?:reason|"
+            r"reasons|decision|consideration|considerations|realignment)|"
+            r"(?:business|corporate|company|development) strategy|"
+            r"company governance|development priorities|"
+            r"(?:due to|because of|for) (?:an? |the )?(?:business|corporate|"
+            r"strategic) (?:decision|reasons?))\b",
+            text,
+        )
+    ):
+        # A generic business/corporate decision often introduces the actual
+        # reason later in the same statement. Preserve the specific cause and
+        # do not manufacture a second independent domain from the framing.
+        evidence = tuple(item for item in evidence if item.reason != REASON_BUSINESS)
+    if (
+        any(item.reason == REASON_BUSINESS for item in evidence)
+        and any(item.rule_id == "nonfailure.not_initiated" for item in evidence)
+    ):
+        # "Stopped before enrollment for strategic reasons" describes the
+        # timing plus an explicit business cause. NOT_INITIATED must not become
+        # a second causal domain in that construction.
+        evidence = tuple(
+            item for item in evidence if item.rule_id != "nonfailure.not_initiated"
+        )
     unambiguous_never_started = bool(
         re.search(
             r"\b(?:study|trial) (?:was )?never (?:started|initiated|activated|opened)\b|"
@@ -2052,21 +2089,20 @@ def classify_reason_v2(
             OUTCOME_MIXED,
             REASON_MULTIPLE,
             tuple(reasons),
-            "LOW",
-            True,
+            _confidence(evidence, False),
+            False,
             evidence,
             digest,
         )
 
     if biological:
         primary = biological[0]
-        needs_review = primary == REASON_BIO_UNSPECIFIED
         return ClassificationV2(
             OUTCOME_BIOLOGICAL,
             primary,
             tuple(biological[1:]),
-            _confidence(evidence, needs_review),
-            needs_review,
+            _confidence(evidence, False),
+            False,
             evidence,
             digest,
         )

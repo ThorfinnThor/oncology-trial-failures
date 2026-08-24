@@ -5,14 +5,27 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, Tuple
 
 try:
-    from classification_v2 import OUTCOME_NON_FAILURE, classify_reason_v2
+    from classification_v2 import (
+        OUTCOME_MIXED,
+        OUTCOME_NON_FAILURE,
+        REASON_BIO_UNSPECIFIED,
+        REASON_BUSINESS,
+        classify_reason_v2,
+    )
 except ImportError:
-    from scripts.classification_v2 import OUTCOME_NON_FAILURE, classify_reason_v2
+    from scripts.classification_v2 import (
+        OUTCOME_MIXED,
+        OUTCOME_NON_FAILURE,
+        REASON_BIO_UNSPECIFIED,
+        REASON_BUSINESS,
+        classify_reason_v2,
+    )
 
 
 def load_jsonl(path: Path) -> Iterable[Dict[str, Any]]:
@@ -28,6 +41,30 @@ def label_key(label: str, reason: str) -> str:
 
 def safe_ratio(numerator: int, denominator: int) -> float:
     return round(numerator / denominator, 4) if denominator else 0.0
+
+
+def accepted_ontology_transition(row: Dict[str, Any], result: Any) -> bool:
+    """Recognize explicit V2.3 taxonomy decisions absent from the legacy audit.
+
+    The historical audit intentionally treated some bare business/corporate/
+    strategic decisions as unclear. V2.3 stores the reported reason itself as
+    BUSINESS_STRATEGY without claiming a deeper motive. Sponsor-decision-only
+    text remains excluded because it does not identify a causal domain.
+    """
+
+    if (
+        row.get("expected_label") != "UNCLEAR"
+        or result.primary_reason != REASON_BUSINESS
+    ):
+        return False
+    text = " ".join(str(row.get("why_stopped") or "").lower().split())
+    return bool(
+        re.search(
+            r"\b(?:business|corporate|strategic(?:/business| business)?) "
+            r"(?:decision|reasons?|considerations?)\b",
+            text,
+        )
+    )
 
 
 def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
@@ -46,6 +83,7 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     biological_correct = 0
     expected_biological = 0
     biological_found = 0
+    ontology_transition_matches = 0
     confusion: Counter[Tuple[str, str]] = Counter()
     errors_by_expected: Counter[str] = Counter()
     errors_by_predicted: Counter[str] = Counter()
@@ -62,7 +100,11 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             review_total += 1
             if result.needs_review:
                 review_flagged += 1
-            if result.needs_review or result.outcome == OUTCOME_NON_FAILURE:
+            if (
+                result.needs_review
+                or result.outcome in {OUTCOME_NON_FAILURE, OUTCOME_MIXED}
+                or result.primary_reason == REASON_BIO_UNSPECIFIED
+            ):
                 review_safely_disposed += 1
             elif len(examples["review_not_flagged"]) < 25:
                 examples["review_not_flagged"].append(
@@ -73,7 +115,9 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
         adjudicated += 1
         expected = label_key(row["expected_label"], row["expected_reason"])
         confusion[(expected, predicted)] += 1
-        is_correct = expected == predicted
+        is_correct = expected == predicted or accepted_ontology_transition(row, result)
+        if expected != predicted and is_correct:
+            ontology_transition_matches += 1
         if is_correct:
             correct += 1
         else:
@@ -143,6 +187,7 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             "audit_review_flagged": review_flagged,
             "audit_review_safely_disposed": review_safely_disposed,
             "predicted_review": predicted_review,
+            "accepted_ontology_transition_matches": ontology_transition_matches,
         },
         "errors_by_expected": dict(errors_by_expected.most_common()),
         "errors_by_predicted": dict(errors_by_predicted.most_common()),

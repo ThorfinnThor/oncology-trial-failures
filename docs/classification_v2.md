@@ -4,7 +4,7 @@ Classification V2 is the conservative stop-reason pipeline used for new and
 changed ClinicalTrials.gov records. It replaces forced keyword precedence with
 an evidence-bearing, review-gated model.
 
-The current rule implementation is `2.2.0`. A review flag is a deliberate
+The current rule implementation is `2.3.0`. A review flag is a deliberate
 semantic result, not a failed pipeline state: text that does not state a cause
 clearly enough remains unclassified until primary-source context or a reviewed
 decision supports it.
@@ -53,9 +53,11 @@ Primary and secondary reasons:
 - `UNSPECIFIED`
 
 The website's original `classification_label` and `classification_reason`
-fields remain available as conservative compatibility fields. Mixed,
-non-failure, unspecified biological, and unresolved records map to
-`UNCLEAR / OTHER/UNKNOWN` rather than an asserted legacy failure bucket.
+fields remain available as compatibility fields. Mixed and non-failure
+outcomes retain `UNCLEAR / OTHER/UNKNOWN`; unresolved records do not assert a
+legacy category. `BIOLOGICAL_UNSPECIFIED` maps to
+`BIOLOGICAL_FAILURE / OTHER/UNKNOWN`, preserving the supported biological
+domain without inventing an efficacy-versus-safety split.
 
 ## Complete-row final classification
 
@@ -81,9 +83,17 @@ flag remain available for later adjudication when better source text appears.
    Legacy audit rows explicitly marked as unresolved do not block a later,
    more specific tested V2 rule.
 3. Apply high-precision semantic rules with polarity and negation guards.
-4. Preserve multiple explicit causes instead of forcing precedence.
+4. Preserve multiple explicit causes as a resolved `MIXED_CAUSES` result
+   instead of forcing precedence.
 5. Identify explicit planned milestones and replacement transitions.
 6. Route content-free decisions, novel text, and unresolved language to review.
+
+An explicitly unfavorable benefit-risk statement resolves to
+`BIOLOGICAL_FAILURE / BIOLOGICAL_UNSPECIFIED`. This asserts the biological
+domain without inventing an efficacy-versus-safety split. Explicit business,
+corporate, strategic, portfolio, and reprioritization decisions resolve to
+`NON_BIOLOGICAL / BUSINESS_STRATEGY`; a bare `Sponsor decision` remains
+unresolved because it identifies the actor but not the causal domain.
 
 Description fallback is allowed only when `whyStopped` is empty or an explicit
 placeholder. It is accepted only for a direct, high-confidence causal sentence.
