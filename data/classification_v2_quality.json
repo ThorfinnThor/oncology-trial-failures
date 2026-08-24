@@ -6,59 +6,60 @@
     "audit_review": 346
   },
   "metrics": {
-    "legacy_accuracy_all_adjudicated": 0.8478,
-    "assertion_coverage": 0.6303,
-    "assertion_precision": 0.9935,
-    "high_confidence_assertion_precision": 0.9958,
+    "legacy_accuracy_all_adjudicated": 0.8424,
+    "assertion_coverage": 0.6475,
+    "assertion_precision": 0.981,
+    "high_confidence_assertion_precision": 0.985,
     "biological_precision": 0.9814,
     "biological_recall": 0.8516,
     "audit_review_recall": 0.6474,
     "audit_review_safe_disposition_recall": 0.9017,
-    "overall_review_rate": 0.3937
+    "overall_review_rate": 0.378
   },
   "counts": {
-    "correct": 3098,
-    "asserted": 2303,
-    "asserted_correct": 2288,
-    "high_confidence_asserted": 2145,
-    "high_confidence_asserted_correct": 2136,
+    "correct": 3078,
+    "asserted": 2366,
+    "asserted_correct": 2321,
+    "high_confidence_asserted": 2199,
+    "high_confidence_asserted_correct": 2166,
     "biological_asserted": 376,
     "biological_correct": 369,
     "expected_biological": 438,
     "biological_found": 373,
     "audit_review_flagged": 224,
     "audit_review_safely_disposed": 312,
-    "predicted_review": 1575,
-    "accepted_ontology_transition_matches": 78
+    "predicted_review": 1512,
+    "accepted_ontology_transition_matches": 101
   },
   "errors_by_expected": {
-    "NON_BIOLOGICAL/OPERATIONAL": 479,
+    "NON_BIOLOGICAL/OPERATIONAL": 469,
     "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 52,
+    "UNCLEAR/OTHER/UNKNOWN": 34,
     "BIOLOGICAL_FAILURE/SAFETY": 17,
-    "UNCLEAR/OTHER/UNKNOWN": 4,
     "NON_BIOLOGICAL/REGULATORY": 4
   },
   "errors_by_predicted": {
-    "UNCLEAR/OTHER/UNKNOWN": 548,
+    "UNCLEAR/OTHER/UNKNOWN": 538,
+    "NON_BIOLOGICAL/OPERATIONAL": 28,
     "BIOLOGICAL_FAILURE/OTHER/UNKNOWN": 6,
-    "NON_BIOLOGICAL/OPERATIONAL": 1,
+    "NON_BIOLOGICAL/REGULATORY": 3,
     "BIOLOGICAL_FAILURE/SAFETY": 1
   },
   "confusion": [
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-      "count": 1805
+      "count": 1815
     },
     {
       "expected": "UNCLEAR/OTHER/UNKNOWN",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 815
+      "count": 762
     },
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 479
+      "count": 469
     },
     {
       "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
@@ -66,14 +67,14 @@
       "count": 286
     },
     {
+      "expected": "UNCLEAR/OTHER/UNKNOWN",
+      "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+      "count": 129
+    },
+    {
       "expected": "BIOLOGICAL_FAILURE/SAFETY",
       "predicted": "BIOLOGICAL_FAILURE/SAFETY",
       "count": 83
-    },
-    {
-      "expected": "UNCLEAR/OTHER/UNKNOWN",
-      "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-      "count": 79
     },
     {
       "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
@@ -99,6 +100,11 @@
       "expected": "NON_BIOLOGICAL/REGULATORY",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
       "count": 4
+    },
+    {
+      "expected": "UNCLEAR/OTHER/UNKNOWN",
+      "predicted": "NON_BIOLOGICAL/REGULATORY",
+      "count": 3
     },
     {
       "expected": "UNCLEAR/OTHER/UNKNOWN",
@@ -240,15 +246,6 @@
         "text": "Trial terminated by Sponsor based on benefit- risk reassessment"
       },
       {
-        "nct_id": "NCT05275868",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "The trial was terminated due to a business decision and not as a result of any safety concerns"
-      },
-      {
         "nct_id": "NCT06546553",
         "expected": "NON_BIOLOGICAL/OPERATIONAL",
         "predicted": "UNCLEAR/OTHER/UNKNOWN",
@@ -285,15 +282,6 @@
         "text": "Pfizer has made an internal business decision to not continue further development of PF-07284890. This decision was not due to major safety concerns or requests from any regulatory authorities."
       },
       {
-        "nct_id": "NCT03901573",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "Strategic decision by sponsor"
-      },
-      {
         "nct_id": "NCT05229601",
         "expected": "NON_BIOLOGICAL/OPERATIONAL",
         "predicted": "UNCLEAR/OTHER/UNKNOWN",
@@ -328,15 +316,6 @@
         "v2_primary": "UNSPECIFIED",
         "needs_review": true,
         "text": "Change in ImmuneSensor corporate strategy."
-      },
-      {
-        "nct_id": "NCT04678336",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "Administrative reasons"
       },
       {
         "nct_id": "NCT04328714",
@@ -429,15 +408,6 @@
         "text": "Genmab discontinued GEN3017 program following a strategic re-evaluation of Genmab's portfolio."
       },
       {
-        "nct_id": "NCT04674748",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "The study was terminated early due to a business decision."
-      },
-      {
         "nct_id": "NCT05537402",
         "expected": "NON_BIOLOGICAL/OPERATIONAL",
         "predicted": "UNCLEAR/OTHER/UNKNOWN",
@@ -447,13 +417,13 @@
         "text": "The decision was made to close the study to enrollment due to poor overall accrual and the inability to meet the 31% overall enrollment goal."
       },
       {
-        "nct_id": "NCT04697069",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "Administrative Reason"
+        "nct_id": "NCT05961839",
+        "expected": "UNCLEAR/OTHER/UNKNOWN",
+        "predicted": "NON_BIOLOGICAL/OPERATIONAL",
+        "v2_outcome": "NON_BIOLOGICAL",
+        "v2_primary": "BUSINESS_STRATEGY",
+        "needs_review": false,
+        "text": "Company decision"
       },
       {
         "nct_id": "NCT05904496",
@@ -600,15 +570,6 @@
         "text": "Sponsor reprioritization of active trials."
       },
       {
-        "nct_id": "NCT06074705",
-        "expected": "NON_BIOLOGICAL/OPERATIONAL",
-        "predicted": "UNCLEAR/OTHER/UNKNOWN",
-        "v2_outcome": "UNKNOWN",
-        "v2_primary": "UNSPECIFIED",
-        "needs_review": true,
-        "text": "The study was terminated by the sponsor due to a business decision."
-      },
-      {
         "nct_id": "NCT05589597",
         "expected": "NON_BIOLOGICAL/OPERATIONAL",
         "predicted": "UNCLEAR/OTHER/UNKNOWN",
@@ -652,6 +613,51 @@
         "v2_primary": "UNSPECIFIED",
         "needs_review": true,
         "text": "Drug company decided to not fund the phase 2 portion"
+      },
+      {
+        "nct_id": "NCT05623488",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Feasibility Concerns"
+      },
+      {
+        "nct_id": "NCT06587451",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "In light of the evolving regulatory landscape and growing indications that major Health Authorities will move towards a streamlined clinical development, Sandoz took a strategic decision and is winding down its CJPB898A12301 clinical study."
+      },
+      {
+        "nct_id": "NCT05980598",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The Sponsor made the decision to close enrollment as part of a strategic portfolio review."
+      },
+      {
+        "nct_id": "NCT05420636",
+        "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "Closed to accrual due to low probability of successful outcomes"
+      },
+      {
+        "nct_id": "NCT03316872",
+        "expected": "NON_BIOLOGICAL/OPERATIONAL",
+        "predicted": "UNCLEAR/OTHER/UNKNOWN",
+        "v2_outcome": "UNKNOWN",
+        "v2_primary": "UNSPECIFIED",
+        "needs_review": true,
+        "text": "The study was stopped due to the shift in systemic treatment paradigm for HCC precluding further enrolment."
       }
     ],
     "review_not_flagged": [

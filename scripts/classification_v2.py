@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.3.0"
+CLASSIFIER_VERSION = "2.4.0"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -644,6 +644,8 @@ RULES: Tuple[Rule, ...] = (
         "reg.external_action",
         REASON_REGULATORY,
         "HIGH",
+        r"^(?:the )?(?:ind|cta) (?:was |has been )?withdrawn\.?$",
+        r"^(?:other\s*[-:]\s*)?protocol moved to disapproved\.?$",
         r"\b(?:fda|ema|mhra|health canada|health authority|regulatory authority|regulator|irb|ethics committee) (?:requested|required|ordered|instructed|recommended|mandated) (?:the )?(?:study |trial )?(?:termination|closure|stop|hold|suspension)\b",
         r"\b(?:at the request of|requested by|required by|ordered by|instructed by) (?:the )?(?:fda|ema|mhra|health canada|health authority|regulatory authority|regulator|irb|ethics committee)\b",
         r"\b(?:fda )?(?:partial )?clinical hold\b",
@@ -749,6 +751,10 @@ RULES: Tuple[Rule, ...] = (
         REASON_RECRUITMENT,
         "HIGH",
         r"\b(?:slow|low|poor|insufficient|inadequate|lack of) (?:patient |participant |subject |study |trial |case )?(?:accruals?|enrolments?|enrollments?|recruitment)\b",
+        r"^accrual factor\.?$",
+        r"\b(?:patient |participant |subject )?(?:accrual|enrolment|enrollment|recruitment) (?:was |is |has been )?(?:low|poor|slow|insufficient|inadequate|unsuccessful)\b",
+        r"\b(?:failed|unsuccessful) (?:patient |participant |subject )?recruitment (?:efforts?)?\b",
+        r"\bfailure of (?:patient |participant |subject )?(?:accrual|enrolment|enrollment|recruitment)\b",
         r"^(?:no|zero) (?:accrual|enrolment|enrollment|recruitment)\.?$",
         r"^difficulty in (?:accrual|enrolment|enrollment|recruitment)\.?$",
         r"\b(?:unable|inability|difficulty|difficult|failure|failed) to (?:accrue|enrol|enroll|recruit|identify)\b",
@@ -964,6 +970,7 @@ RULES: Tuple[Rule, ...] = (
         REASON_FUNDING,
         "HIGH",
         r"\b(?:lack|loss|shortage) of (?:funding|funds|budget|financial resources)\b",
+        r"\babsence of (?:the )?(?:necessary |sufficient )?(?:funding|funds|budget|financial support)\b",
         r"\binsufficient (?:funding|funds|budget)\b",
         r"\b(?:funding|grant|budget) (?:ended|expired|was withdrawn|was not renewed|would not be extended)\b",
         r"\b(?:unable|could not|cannot) to (?:fund|finance)\b",
@@ -1201,6 +1208,7 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:investigators?|principal investigators?|pis?) changed jobs?\b",
         r"\b(?:investigators?|principal investigators?|pis?) (?:are |were )?no longer affiliated with (?:the )?institution\b",
         r"\b(?:student|resident|researcher) performing (?:the )?(?:study|trial) left\b",
+        r"\b(?:phd |doctoral |graduate )?(?:candidate|student) left (?:the )?(?:institution|university|department|program|programme)\b",
         r"\bresident graduated\b[^.;:]{0,100}\bnever carried (?:the study|it) to fruition\b",
         r"\bresident (?:who was )?tasked with coordinating (?:the |this )?(?:study|trial)\b[^.;:]{0,80}\bno longer able\b",
         r"\bresearcher left before data collection could be completed\b",
@@ -1238,10 +1246,18 @@ RULES: Tuple[Rule, ...] = (
         REASON_BUSINESS,
         "HIGH",
         r"^(?:an? |the )?(?:internal )?(?:business|corporate) decision(?: by| on behalf of)?(?: the)?(?: sponsor| company)?\.?$",
+        r"^(?:due to )?(?:an? |the )?(?:internal )?company decision\.?$",
+        r"^(?:due to )?(?:an? |the )?(?:sponsor )?business decision\.?$",
         r"^(?:an? |the )?strategic(?:/business| business)? decision\.?$",
+        r"^(?:the )?strategy review\.?$",
         r"^(?:company |corporate |sponsor )?strategic (?:decision|reasons?|considerations?)\.?$",
         r"\bstrategic(?: business)? decision to (?:discontinue|terminate|stop|halt|close|withdraw)\b",
         r"\bstrategic business decision\b",
+        r"\bstrategic decision by (?:the )?sponsor\b",
+        r"\b(?:company|business|corporate) decision to (?:discontinue|terminate|stop|halt|close|withdraw|cancel) (?:the |this )?(?:study|trial|program|programme|development program)\b",
+        r"\b(?:study|trial|program|programme|development program) (?:is |was |is being |was being )?(?:discontinued|terminated|stopped|halted|closed|withdrawn|cancelled|canceled) (?:solely )?(?:due to|because of|for|based on|from) (?:an? |the )?(?:sponsor )?(?:business|corporate|company) (?:decision|perspective|reasons?)\b",
+        r"\b(?:due to|because of|for|based on|following) (?:an? |the )?(?:internal )?(?:company|business|corporate) decision\b",
+        r"\b(?:due to|because of|for|based on|following) (?:an? |the )?(?:business|corporate) (?:reason|reasons|consideration|considerations)\b",
         r"\b(?:due to|because of|for|based on|following|as a result of) (?:an? |the )?(?:company |corporate |sponsor )?strategic (?:decision|reasons?|considerations?)\b",
         r"\b(?:sponsor|company) (?:has )?(?:made|took) (?:an? |the )?strategic decision\b",
         r"\ba strategic decision was made to (?:discontinue|terminate|stop|halt|close|withdraw)\b",
@@ -1491,6 +1507,7 @@ RULES: Tuple[Rule, ...] = (
         REASON_SUPPORT,
         "HIGH",
         r"\b(?:sponsor|company|partner|collaborator|manufacturer) (?:withdrew|ended|stopped|discontinued|terminated) (?:its )?(?:support|sponsorship|collaboration|drug supply)\b",
+        r"\b(?:sponsor|company|partner|collaborator|manufacturer) stopped supplying (?:the )?(?:study )?(?:drug|medication|intervention|product)\b",
         r"\b(?:support|sponsorship|collaboration) (?:was |has been )?(?:withdrawn|ended|terminated|discontinued)\b",
         r"\b(?:partner|sponsor|company) (?:abandoned|ceased) support\b",
         r"\b(?:funder|funders|funding partner)(?:'s)? decision to withdraw (?:the )?(?:financial )?support\b",
@@ -1510,6 +1527,8 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:covid[- ]?19|covid|pandemic) (?:related )?(?:restrictions|disruption|disruptions|impact|issues|challenges)\b",
         r"\b(?:covid[- ]?19|covid|pandemic) (?:caused|forced|led to) .{0,80}(?:site|sites|recruitment|enrollment|trial|study) (?:to )?(?:close|shut down|stop|halt|suspend)\b",
         r"\bsite (?:closure|closures|closed)\b",
+        r"\b(?:study |trial )?site (?:was |has been )?closed down\b",
+        r"\bsite that administered .{0,100}\bclosed\b[^.;:]{0,120}\balternative site could not be identified\b",
         r"\blogistical (?:issue|issues|problem|problems|constraints|challenges)\b",
         r"^(?:due to )?(?:covid[- ]?19|covid|covid 19|covid[- ]?19 pandemic|covid[- ]?19 epidemic|pandemic)(?: outbreak| epidemic| situation)?\.?$",
         r"\b(?:coronavirus|covid[- ]?19|covid) outbreak\b",
@@ -1551,6 +1570,7 @@ RULES: Tuple[Rule, ...] = (
         r"\btechnical (?:issue|issues|problem|problems|failure|failures|infeasibility)\b",
         r"\boperational (?:issue|issues|problem|problems|constraints|reasons)\b",
         r"^(?:logistics|resources)\.?$",
+        r"^administrative(?: decision| reasons?)?\.?$",
         r"\btime and resource constraints\b",
         r"\black of resources\b",
         r"\blogistic reasons? not related to (?:safety|efficacy)\b",
@@ -1560,6 +1580,7 @@ RULES: Tuple[Rule, ...] = (
         r"\black of ressources\b",
         r"\blimited resources\b",
         r"\badministrative (?:burden|constraints?|challenges?|delay|delays)\b",
+        r"\badministrative (?:issue|issues|problem|problems)\b",
         r"\b(?:contract|agreement) (?:ended|expired|terminated|was not executed|not executed|was never completed|never completed)\b",
         r"\b(?:logistic|logistical) and practical reasons?\b",
         r"\b(?:technical )?(?:difficulties|issues|problems) (?:with|in) (?:recording|collecting|measuring)\b",
@@ -1655,6 +1676,8 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:different|another|replacement) (?:study|trial|protocol) will be conducted\b",
         r"\b(?:sponsor|company) (?:has )?designed another (?:study|trial|protocol)\b.{0,80}\breplace\b",
         r"\bnew registration (?:has been |was )?re[- ]?applied for\b",
+        r"\b(?:duplicate registration|duplicate (?:study |trial )?record)\b",
+        r"\b(?:study|trial|clinical trial) (?:was )?entered in error\b[^.;:]{0,180}\b(?:correct|duplicate|another) (?:entry|record|registration)\b",
         r"\b(?:patients|participants|subjects) (?:are |were |will be )?followed (?:up )?in (?:the |a |an )?.{0,80}(?:study|trial|protocol)\b",
         r"\b(?:study|trial) (?:was |has been )?redeveloped into (?:a )?new protocol\b",
         r"\bnew protocol (?:will |is going to )?start with (?:an? )?improved product\b",
@@ -1730,6 +1753,8 @@ BIOLOGICAL_UNSPECIFIED_PATTERNS: Tuple[str, ...] = (
     r"\b(?:benefit\s*[- /:]\s*risk|risk\s*[- /:]\s*benefit) (?:profile |assessment )?no longer supports? (?:further )?development\b",
     r"\b(?:based on|due to) (?:an? )?(?:overall )?(?:benefit\s*[- /:]\s*risk|risk\s*[- /:]\s*benefit) (?:profile|assessment|reassessment)\b",
     r"\b(?:benefit\s*[- /:]\s*risk|risk\s*[- /:]\s*benefit) (?:profile|balance|ratio) (?:did |does )?not support (?:further )?(?:treatment|continuation|development|the study)\b",
+    r"\b(?:benefit\s*[- /:]\s*risk|risk\s*[- /:]\s*benefit) (?:profile|balance|ratio) no longer supports? (?:continuing|continuation of) (?:the )?(?:study|studies|trial|trials|program|programme|development)\b",
+    r"\b(?:risk profile|risks?)\b[^.;:]{0,100}\bexceeds? (?:the )?benefits?\b",
     r"\bimbalanced (?:benefit\s*[- /:]\s*risk|risk\s*[- /:]\s*benefit) profile\b",
     r"\b(?:tolerability|safety) to benefit ratio\b[^.;:]{0,80}\bnot (?:considered )?favorable\b",
     r"\b(?:reactive metabolites|safety observations?)\b[^.;:]{0,100}\bchanged (?:the )?(?:benefit\s*[- /:]\s*risk|risk\s*[- /:]\s*benefit) profile\b",
@@ -1971,6 +1996,20 @@ def classify_reason_v2(
     evidence = _dedupe_evidence(
         item for rule in RULES for item in _find_rule_evidence(text, rule)
     )
+    if (
+        any(item.reason == REASON_BUSINESS for item in evidence)
+        and any(item.reason != REASON_BUSINESS for item in evidence)
+        and re.search(
+            r"\b(?:business|corporate|company) decision\b[^.;:]{0,80}"
+            r"\bbased on\b[^.;:]{0,100}"
+            r"\b(?:lack|failure|failed|insufficient|negative|unfavo(?:u)?rable|"
+            r"safety|toxicity|efficacy|futility|benefit[- /:]?risk)\b",
+            text,
+        )
+    ):
+        # The corporate wording is only decision framing when the same clause
+        # explicitly names the scientific cause on which the decision rests.
+        evidence = tuple(item for item in evidence if item.reason != REASON_BUSINESS)
     if (
         any(item.reason == REASON_BUSINESS for item in evidence)
         and any(item.reason != REASON_BUSINESS for item in evidence)

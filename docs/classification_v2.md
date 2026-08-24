@@ -4,10 +4,18 @@ Classification V2 is the conservative stop-reason pipeline used for new and
 changed ClinicalTrials.gov records. It replaces forced keyword precedence with
 an evidence-bearing, review-gated model.
 
-The current rule implementation is `2.3.0`. A review flag is a deliberate
+The current rule implementation is `2.4.0`. A review flag is a deliberate
 semantic result, not a failed pipeline state: text that does not state a cause
 clearly enough remains unclassified until primary-source context or a reviewed
 decision supports it.
+
+Version 2.4 treats explicit company/corporate/business decisions as the broad
+`BUSINESS_STRATEGY` cause and explicit administrative causes as
+`OPERATIONAL_OTHER`. Actor-only wording such as `Sponsor decision` remains
+unresolved because it does not state why the actor made the decision. Bare
+regulatory and recruitment cause labels such as `IND withdrawn` and `Accrual
+Factor` retain their named broad domain without inventing a more specific
+underlying mechanism.
 
 ## Why V2 exists
 
