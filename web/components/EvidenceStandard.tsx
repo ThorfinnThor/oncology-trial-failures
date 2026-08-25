@@ -58,10 +58,7 @@ export default function EvidenceStandard({
           border-bottom: 1px solid var(--border);
         }
         .evidenceStandardHeading {
-          display: flex;
-          align-items: end;
-          justify-content: space-between;
-          gap: 24px;
+          max-width: 760px;
         }
         .evidenceStandardHeading h2 {
           max-width: 680px;
@@ -115,11 +112,6 @@ export default function EvidenceStandard({
           text-decoration: underline;
         }
         @media (max-width: 720px) {
-          .evidenceStandardHeading {
-            align-items: flex-start;
-            flex-direction: column;
-            gap: 4px;
-          }
           .evidenceStandardGrid {
             grid-template-columns: 1fr;
           }
