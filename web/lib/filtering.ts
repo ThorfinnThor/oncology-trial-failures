@@ -52,14 +52,24 @@ function normToken(s?: string): string {
 }
 
 export function isLikelyScientificFailure(r: TrialIndexRow): boolean {
+  const finalOutcome = (r.classification_final_outcome || "").toUpperCase().trim();
+  if (finalOutcome && finalOutcome !== "UNRESOLVED") {
+    return finalOutcome === "BIOLOGICAL_FAILURE";
+  }
+
+  const v2Outcome = (r.classification_outcome_v2 || "").toUpperCase().trim();
+  if (v2Outcome) {
+    return v2Outcome === "BIOLOGICAL_FAILURE";
+  }
+
   // Use pipeline labels if available:
   const label = (r.failure_label || r.classification_label || r.failure_type || "").toUpperCase();
 
   if (label.includes("BIOLOGICAL_FAILURE") || label.includes("SCIENTIFIC_FAILURE")) return true;
 
-  // Fall back: if reason bucket is efficacy/futility, assume likely scientific failure
+  // Legacy fallback for older datasets that do not contain V2 outcome fields.
   const bucket = reasonBucket(r);
-  if (bucket === "EFFICACY/FUTILITY") return true;
+  if (bucket === "EFFICACY/FUTILITY" || bucket === "SAFETY") return true;
 
   return false;
 }
