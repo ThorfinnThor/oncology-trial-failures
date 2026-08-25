@@ -1,5 +1,6 @@
 import type { TrialIndexRow } from "./types";
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket, sortRows } from "./filtering";
+import { compactSeoDescription, compactSeoTitle } from "./seoMetadata";
 import { slugify, trialPath } from "./seoUrls";
 
 export const SITE_URL = "https://clinicaltrialfailures.com";
@@ -119,14 +120,15 @@ export function buildFailureHubs(rows: TrialIndexRow[]): SeoHub[] {
 
   for (const area of countBy(rows, (row) => row.disease_area || "Other").filter((item) => item.count >= AREA_MIN_COUNT).slice(0, AREA_LIMIT)) {
     const memberRows = rows.filter((row) => (row.disease_area || "Other") === area.label);
+    const stats = hubStats(memberRows);
     const slug = slugify(area.label);
     hubs.push({
       kind: "area",
       slug,
       label: area.label,
-      title: `${area.label} clinical trial failures | Terminated and stopped trials`,
+      title: compactSeoTitle(`${area.label} clinical trial failures`, `${area.count.toLocaleString("en-US")} stopped studies`),
       h1: `${area.label} clinical trial failures`,
-      description: `Review ${area.count.toLocaleString()} stopped ${area.label.toLowerCase()} clinical trials, including failure signals, sponsors, phases, and stop reasons from ClinicalTrials.gov records.`,
+      description: compactSeoDescription(`Review ${area.count.toLocaleString("en-US")} stopped ${area.label.toLowerCase()} trials, including ${stats.scientificCount.toLocaleString("en-US")} likely biological failure signals, sponsors, phases, and source reasons.`),
       path: `/failures/${slug}`,
       total: area.count,
       rows: memberRows,
@@ -142,15 +144,16 @@ export function buildFailureHubs(rows: TrialIndexRow[]): SeoHub[] {
   for (const phaseKey of phaseKeys) {
     const memberRows = rowsByPhase(rows, phaseKey);
     if (memberRows.length < AREA_MIN_COUNT) continue;
+    const stats = hubStats(memberRows);
     const label = phaseLabel(phaseKey);
     const slug = phaseSlug(phaseKey);
     hubs.push({
       kind: "phase",
       slug,
       label,
-      title: `${label} clinical trial failures | Stopped trial database`,
+      title: compactSeoTitle(`${label} clinical trial failures`, `${memberRows.length.toLocaleString("en-US")} stopped studies`),
       h1: `${label} clinical trial failures`,
-      description: `Explore ${memberRows.length.toLocaleString()} stopped ${label.toLowerCase()} clinical trials with sponsors, indications, and stop-reason signals.`,
+      description: compactSeoDescription(`Explore ${memberRows.length.toLocaleString("en-US")} stopped ${label} trials, including ${stats.scientificCount.toLocaleString("en-US")} likely biological failure signals, sponsors, indications, and source reasons.`),
       path: `/failures/${slug}`,
       total: memberRows.length,
       rows: memberRows,
@@ -162,13 +165,14 @@ export function buildFailureHubs(rows: TrialIndexRow[]): SeoHub[] {
   )) {
     const memberRows = rows.filter((row) => reasonBucket(row).toUpperCase() === bucket.label.toUpperCase());
     const slug = reasonSlug(bucket.label);
+    const reasonLabel = `${bucket.label.charAt(0).toUpperCase()}${bucket.label.slice(1).toLowerCase()}`;
     hubs.push({
       kind: "reason",
       slug,
       label: bucket.label,
-      title: `${bucket.label.toLowerCase()} clinical trial stops | Failure signal database`,
+      title: compactSeoTitle(`${reasonLabel} clinical trial stops`, `${bucket.count.toLocaleString("en-US")} source records`),
       h1: `${bucket.label} clinical trial stops`,
-      description: `Search ${bucket.count.toLocaleString()} stopped clinical trials classified as ${bucket.label.toLowerCase()}, with source-linked records and failure-signal context.`,
+      description: compactSeoDescription(`Search ${bucket.count.toLocaleString("en-US")} stopped trials whose registry language is classified as ${bucket.label.toLowerCase()}. Compare NCT records, sponsors, phases, and source evidence.`),
       path: `/failures/${slug}`,
       total: bucket.count,
       rows: memberRows,
@@ -189,13 +193,14 @@ export function buildSponsorHubs(rows: TrialIndexRow[]): SponsorHub[] {
     .slice(0, SPONSOR_LIMIT)
     .map((sponsor) => {
       const memberRows = rows.filter((row) => (row.lead_sponsor || "") === sponsor.label);
+      const stats = hubStats(memberRows);
       const slug = slugify(sponsor.label);
       return {
         slug,
         label: sponsor.label,
-        title: `${sponsor.label} clinical trial failures | Stopped trial records`,
+        title: compactSeoTitle(sponsor.label, `${sponsor.count.toLocaleString("en-US")} stopped clinical trials`),
         h1: `${sponsor.label} clinical trial failures`,
-        description: `Review ${sponsor.count.toLocaleString()} stopped clinical trials from ${sponsor.label}, including disease areas, phases, and classified stop reasons.`,
+        description: compactSeoDescription(`${sponsor.label} has ${sponsor.count.toLocaleString("en-US")} stopped trials, including ${stats.scientificCount.toLocaleString("en-US")} likely biological signals. Explore phases, disease areas, and source records.`),
         path: `/sponsor/${slug}`,
         total: sponsor.count,
         rows: memberRows,
