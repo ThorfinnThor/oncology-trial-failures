@@ -10,7 +10,7 @@ import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
-import { isIndexableTrial } from "@/lib/seoHubs";
+import { areaHubPath, isIndexableTrial, phaseHubPath, reasonHubPath } from "@/lib/seoHubs";
 import { buildTrialSeoMetadata } from "@/lib/seoMetadata";
 import PrimaryNav from "@/components/PrimaryNav";
 
@@ -187,6 +187,9 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   const sourceReason = (trial?.why_stopped || trial?.why_stopped_short || "").trim();
   const sourceUrl = trial?.url || (trialId ? `https://clinicaltrials.gov/study/${trialId}` : SITE_URL);
   const interpretation = classificationInterpretation(outcomeCode, reasonCode);
+  const reasonHubHref = ["DECISION ONLY", "PROGRAM STOP ONLY"].includes(bucket)
+    ? null
+    : reasonHubPath(bucket);
   const classificationStatus = trial?.classification_needs_review
     ? "Review required"
     : trial?.classification_resolution_status === "RESOLVED"
@@ -428,14 +431,16 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
 
                 <nav className="trialRelated" aria-label="Related evidence">
                   <span>Continue exploring:</span>
+                  {trial.disease_area ? (
+                    <Link href={areaHubPath(trial.disease_area)}>
+                      {trial.disease_area} evidence hub
+                    </Link>
+                  ) : null}
+                  <Link href={phaseHubPath(phaseKey)}>{phaseLabel(phaseKey)} evidence hub</Link>
+                  {reasonHubHref ? <Link href={reasonHubHref}>{reasonLabel} evidence hub</Link> : null}
                   {trial.lead_sponsor ? (
                     <Link href={`/explore?sponsor=${encodeURIComponent(trial.lead_sponsor)}`}>
                       More from {trial.lead_sponsor}
-                    </Link>
-                  ) : null}
-                  {trial.disease_area ? (
-                    <Link href={`/explore?area=${encodeURIComponent(trial.disease_area)}`}>
-                      {trial.disease_area} records
                     </Link>
                   ) : null}
                   {outcomeCode === "BIOLOGICAL_FAILURE" ? (

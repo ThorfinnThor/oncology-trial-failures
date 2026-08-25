@@ -4,7 +4,9 @@ import Link from "next/link";
 import PrimaryNav from "@/components/PrimaryNav";
 import {
   displayHubRows,
+  areaHubPath,
   OG_IMAGE,
+  phaseHubPathFromLabel,
   SITE_URL,
   trialListItem,
   type SponsorEvidenceStats,
@@ -223,8 +225,8 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                 <p className="facet-title">Portfolio context</p>
                 <h2>Leading disease areas</h2>
                 <dl className="rankedList compact">
-                  {stats.topAreas.map((item) => (
-                    <div key={item.label}><dt>{item.label}</dt><dd>{item.count.toLocaleString()}</dd></div>
+                    {stats.topAreas.map((item) => (
+                      <div key={item.label}><dt><Link className="rankedLink" href={areaHubPath(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>
                   ))}
                 </dl>
               </div>
@@ -232,8 +234,8 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                 <p className="facet-title">Development context</p>
                 <h2>Phase distribution</h2>
                 <dl className="rankedList compact">
-                  {stats.topPhases.map((item) => (
-                    <div key={item.label}><dt>{item.label}</dt><dd>{item.count.toLocaleString()}</dd></div>
+                    {stats.topPhases.map((item) => (
+                      <div key={item.label}><dt><Link className="rankedLink" href={phaseHubPathFromLabel(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>
                   ))}
                 </dl>
               </div>
@@ -305,6 +307,8 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
         .rankedList { display: grid; gap: 0; margin: 0; }
         .rankedList div { display: flex; justify-content: space-between; gap: 18px; border-top: 1px solid var(--border); padding: 11px 0; }
         .rankedList dt { font-weight: 720; }
+        .rankedLink { color: var(--accent); }
+        .rankedLink:hover { text-decoration: underline; }
         .rankedList dd { margin: 0; font-weight: 900; font-variant-numeric: tabular-nums; }
         .rankedList.compact div { padding: 9px 0; }
         .recordsSection { margin-top: 14px; padding: 24px; }

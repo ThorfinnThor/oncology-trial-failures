@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
-import { displayHubRows, hubStats, OG_IMAGE, SITE_URL, trialListItem, type HubStats } from "@/lib/seoHubs";
+import { areaHubPath, displayHubRows, hubStats, OG_IMAGE, phaseHubPathFromLabel, SITE_URL, trialListItem, type HubStats } from "@/lib/seoHubs";
 import type { DatasetMeta, TrialIndexRow } from "@/lib/types";
 
 type HubMeta = {
@@ -28,12 +28,12 @@ type SeoHubPageProps = {
 const PHASE_PARAMS: Record<string, string> = {
   "Early Phase I": "EARLY_PHASE1",
   "Phase I": "PHASE1",
-  "Phase I/Phase II": "PHASE1%2FPHASE2",
+  "Phase I/II": "PHASE1%2FPHASE2",
   "Phase II": "PHASE2",
-  "Phase II/Phase III": "PHASE2%2FPHASE3",
+  "Phase II/III": "PHASE2%2FPHASE3",
   "Phase III": "PHASE3",
   "Phase IV": "PHASE4",
-  "Unknown phase": "UNKNOWN",
+  Unknown: "UNKNOWN",
 };
 
 function percent(part: number, total: number): string {
@@ -76,6 +76,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, datasetMet
   const otherCount = stats.mixedCount + stats.transitionCount + stats.otherOutcomeCount;
   const secondaryContext = hub.kind === "area" ? stats.topPhases : stats.topAreas;
   const secondaryTitle = hub.kind === "area" ? "Phase distribution" : "Leading disease areas";
+  const secondaryHref = (label: string) => hub.kind === "area" ? phaseHubPathFromLabel(label) : areaHubPath(label);
 
   const jsonLd = [
     {
@@ -177,8 +178,8 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, datasetMet
           </section>
 
           <section className="contextGrid">
-            <div className="card evidenceCard"><p className="facet-title">Source context</p><h2>Leading sponsors</h2><dl className="rankedList compact">{stats.topSponsors.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.count.toLocaleString()}</dd></div>)}</dl></div>
-            <div className="card evidenceCard"><p className="facet-title">Development context</p><h2>{secondaryTitle}</h2><dl className="rankedList compact">{secondaryContext.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.count.toLocaleString()}</dd></div>)}</dl></div>
+            <div className="card evidenceCard"><p className="facet-title">Source context</p><h2>Leading sponsors</h2><dl className="rankedList compact">{stats.topSponsors.map((item) => <div key={item.label}><dt><Link className="rankedLink" href={`/explore?sponsor=${encodeURIComponent(item.label)}`}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>)}</dl></div>
+            <div className="card evidenceCard"><p className="facet-title">Development context</p><h2>{secondaryTitle}</h2><dl className="rankedList compact">{secondaryContext.map((item) => <div key={item.label}><dt><Link className="rankedLink" href={secondaryHref(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>)}</dl></div>
           </section>
 
           <section className="card recordsSection">
@@ -199,7 +200,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, datasetMet
         .scopePanel{align-self:stretch;border:1px solid #bfd5ff;border-left:4px solid var(--accent);border-radius:10px;padding:18px;background:#f4f8ff}.scopePanel dl{display:grid;gap:10px;margin:12px 0 0}.scopePanel dl div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;border-bottom:1px solid #d8e4f7;padding-bottom:9px}.scopePanel dl div:last-child{border-bottom:0;padding-bottom:0}.scopePanel dt{color:var(--text-muted);font-size:13px}.scopePanel dd{margin:0;max-width:190px;text-align:right;font-weight:850;overflow-wrap:anywhere}
         .metricGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}.metricCard{min-height:140px;border:1px solid var(--border);border-radius:10px;padding:17px;background:#fff}.metricCard.biological{border-top:4px solid #d69b00}.metricCard.review{border-top:4px solid #6b7280}.metricCard span{display:block;min-height:32px;color:var(--text-muted);font-size:12px;font-weight:850;text-transform:uppercase}.metricCard strong{display:block;margin-top:6px;font-size:30px;font-variant-numeric:tabular-nums}.metricCard p{margin:5px 0 0;color:var(--text-muted);font-size:13px;line-height:1.45}
         .interpretationBand{display:grid;grid-template-columns:minmax(240px,.8fr) minmax(0,1.2fr);gap:34px;align-items:start;margin:28px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:24px 2px}.interpretationBand h2{margin:5px 0 0;font-size:24px;line-height:1.2}.interpretationBand>p{margin:0;color:var(--text-muted);line-height:1.72}
-        .evidenceGrid,.contextGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contextGrid{margin-top:14px}.evidenceCard{padding:22px}.evidenceCard h2{margin:6px 0 16px;font-size:21px;line-height:1.25}.rankedList{display:grid;gap:0;margin:0}.rankedList div{display:flex;justify-content:space-between;gap:18px;border-top:1px solid var(--border);padding:11px 0}.rankedList dt{font-weight:720}.rankedList dd{margin:0;font-weight:900;font-variant-numeric:tabular-nums}.rankedList.compact div{padding:9px 0}
+        .evidenceGrid,.contextGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.contextGrid{margin-top:14px}.evidenceCard{padding:22px}.evidenceCard h2{margin:6px 0 16px;font-size:21px;line-height:1.25}.rankedList{display:grid;gap:0;margin:0}.rankedList div{display:flex;justify-content:space-between;gap:18px;border-top:1px solid var(--border);padding:11px 0}.rankedList dt{font-weight:720}.rankedLink{color:var(--accent)}.rankedLink:hover{text-decoration:underline}.rankedList dd{margin:0;font-weight:900;font-variant-numeric:tabular-nums}.rankedList.compact div{padding:9px 0}
         .recordsSection{margin-top:14px;padding:24px}.sectionHeader{display:flex;align-items:end;justify-content:space-between;gap:16px}.sectionHeader h2{margin:5px 0 0;font-size:24px}.recordsIntro{max-width:780px;margin:10px 0 0;line-height:1.6}.trialList{display:grid;gap:10px;margin-top:18px}.trialCard{border-top:1px solid var(--border);padding:16px 0 6px}.trialMeta{display:flex;flex-wrap:wrap;gap:7px 14px;color:var(--text-muted);font-size:12px;font-weight:800;text-transform:uppercase}.trialTitle{display:inline-block;margin-top:7px;color:var(--accent);font-size:17px;font-weight:850;line-height:1.35}.trialCard p{margin:7px 0 0;line-height:1.55}.sourceNote{margin:14px 2px 0;font-size:12px;line-height:1.5}
         @media(max-width:900px){.heroSection{grid-template-columns:1fr;padding:24px}.metricGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
         @media(max-width:640px){.hubPage{padding-top:18px;padding-bottom:34px}.heroSection{gap:20px;padding:19px}.heroCopy h1{font-size:32px}.heroDescription{font-size:16px}.heroActions .btn{width:100%;justify-content:center}.scopePanel dl div{grid-template-columns:1fr;gap:3px}.scopePanel dd{max-width:none;text-align:left}.metricGrid,.evidenceGrid,.contextGrid,.interpretationBand{grid-template-columns:1fr}.metricCard{min-height:128px}.interpretationBand{gap:12px;margin:22px 0}.recordsSection{padding:19px}.sectionHeader{align-items:stretch;flex-direction:column}.sectionHeader .btn{justify-content:center}}
