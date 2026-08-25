@@ -1,0 +1,18 @@
+name: Temporary Batch 18 Audit Extraction
+
+on:
+  push:
+    branches:
+      - temp/audit-batch18-extract
+  pull_request:
+    branches:
+      - audit/batch-3
+  workflow_dispatch:
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Emit Batch 18 records
+        run: node web/scripts/audit-batch18-log.cjs
