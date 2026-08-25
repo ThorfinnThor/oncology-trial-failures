@@ -151,6 +151,32 @@ function reasonSlug(bucket: string): string {
   return slugify(bucket || "other-unknown") || "other-unknown";
 }
 
+export function areaHubPath(area: string): string {
+  return `/failures/${slugify(area || "other") || "other"}`;
+}
+
+export function phaseHubPath(phaseKey: string): string {
+  return `/failures/${phaseSlug(phaseKey)}`;
+}
+
+export function phaseHubPathFromLabel(label: string): string {
+  const phaseKeys: Record<string, string> = {
+    "Early Phase I": "EARLY_PHASE1",
+    "Phase I": "PHASE1",
+    "Phase I/II": "PHASE1/PHASE2",
+    "Phase II": "PHASE2",
+    "Phase II/III": "PHASE2/PHASE3",
+    "Phase III": "PHASE3",
+    "Phase IV": "PHASE4",
+    Unknown: "UNKNOWN",
+  };
+  return phaseHubPath(phaseKeys[label] || "UNKNOWN");
+}
+
+export function reasonHubPath(bucket: string): string {
+  return `/failures/${reasonSlug(bucket)}`;
+}
+
 export function isIndexableTrial(row: TrialIndexRow): boolean {
   return isLikelyScientificFailure(row);
 }

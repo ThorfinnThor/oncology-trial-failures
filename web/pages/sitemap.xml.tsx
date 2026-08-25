@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const { loadIndexServer, loadMetaServer } = await import("@/lib/server-data");
   const [rows, meta] = await Promise.all([loadIndexServer(), loadMetaServer()]);
 
-  const staticPaths = [
+  const dataDrivenPaths = [
     "/",
     "/explore",
     "/overview",
@@ -39,9 +39,6 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/sponsor-insights",
     "/top-entities",
     "/outliers",
-    "/methods",
-    "/privacy",
-    "/disclaimer",
     "/clinical-trial-failures",
     "/why-clinical-trials-fail",
     "/failed-clinical-trials",
@@ -60,8 +57,14 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/top-10-infectious-disease-clinical-trial-failures",
     "/top-10-phase-2-clinical-trial-failure-signals",
     "/top-10-safety-driven-clinical-trial-failures",
+  ];
+
+  const stableInformationPaths = [
+    "/methods",
     "/about",
     "/contact",
+    "/privacy",
+    "/disclaimer",
   ];
 
   const lastmod = meta.version && /^\d{4}-\d{2}-\d{2}/.test(meta.version)
@@ -69,9 +72,13 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     : new Date().toISOString();
 
   const urls = [
-    ...staticPaths.map((path) => ({
+    ...dataDrivenPaths.map((path) => ({
       loc: `${SITE_URL}${path}`,
       lastmod,
+    })),
+    ...stableInformationPaths.map((path) => ({
+      loc: `${SITE_URL}${path}`,
+      lastmod: undefined,
     })),
     ...buildFailureHubs(rows).map((hub) => ({
       loc: `${SITE_URL}${hub.path}`,
@@ -91,15 +98,22 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     })),
   ];
 
+  const seen = new Set<string>();
+  const uniqueUrls = urls.filter((url) => {
+    if (seen.has(url.loc)) return false;
+    seen.add(url.loc);
+    return true;
+  });
+
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
-    urls
+    uniqueUrls
       .map((url) => {
         return (
           `  <url>\n` +
           `    <loc>${escapeXml(url.loc)}</loc>\n` +
-          `    <lastmod>${escapeXml(url.lastmod)}</lastmod>\n` +
+          (url.lastmod ? `    <lastmod>${escapeXml(url.lastmod)}</lastmod>\n` : "") +
           `  </url>\n`
         );
       })
