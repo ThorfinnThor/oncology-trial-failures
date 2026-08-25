@@ -4,12 +4,12 @@ Classification V2 is the conservative stop-reason pipeline used for new and
 changed ClinicalTrials.gov records. It replaces forced keyword precedence with
 an evidence-bearing, review-gated model.
 
-The current rule implementation is `2.5.0`. A review flag is a deliberate
+The current rule implementation is `2.7.0`. A review flag is a deliberate
 semantic result, not a failed pipeline state: text that does not state a cause
 clearly enough remains unclassified until primary-source context or a reviewed
 decision supports it.
 
-Version 2.5 treats explicit business/corporate decisions as the broad
+Version 2.7 treats explicit business/corporate decisions as the broad
 `BUSINESS_STRATEGY` cause and explicit administrative causes as
 `OPERATIONAL_OTHER`. Actor-only wording such as `Sponsor decision` remains
 separate from causal categories as `DECISION_WITHOUT_STATED_CAUSE`: the actor
@@ -17,7 +17,22 @@ and action are known, but the biological, operational, or regulatory cause is
 not stated. Bare
 regulatory and recruitment cause labels such as `IND withdrawn` and `Accrual
 Factor` retain their named broad domain without inventing a more specific
-underlying mechanism.
+underlying mechanism. Explicit development-program or asset discontinuations
+without an underlying cause are retained as
+`PROGRAM_ACTION_WITHOUT_STATED_CAUSE`; bare trial statuses remain unresolved.
+
+Version 2.7 extends the audited language coverage for explicit efficacy,
+safety, recruitment, regulatory, funding, supply, staffing, protocol,
+business, support, transition, and milestone statements. It also normalizes
+NCT identifiers containing incidental whitespace and preserves strict guards
+for directionless interim analyses, bare stopping rules, temporary reviews,
+zero-enrollment status text without a cause, and source-section references.
+
+The validated 2.7 snapshot contains 23,617 records. Of these, 19,968 have a
+supported final classification and 3,649 remain unresolved across 1,153 unique
+reason groups. The unresolved total includes 2,132 records with no stop-reason
+text at all; those records cannot receive a causal classification until the
+primary source provides additional evidence.
 
 ## Why V2 exists
 
@@ -61,6 +76,7 @@ Primary and secondary reasons:
 - `REPLACEMENT_TRANSITION`
 - `NOT_INITIATED`
 - `DECISION_WITHOUT_STATED_CAUSE`
+- `PROGRAM_ACTION_WITHOUT_STATED_CAUSE`
 - `MULTIPLE`
 - `UNSPECIFIED`
 
@@ -99,8 +115,8 @@ flag remain available for later adjudication when better source text appears.
 4. Preserve multiple explicit causes as a resolved `MIXED_CAUSES` result
    instead of forcing precedence.
 5. Identify explicit planned milestones and replacement transitions.
-6. Resolve exact actor-only decisions to `CAUSE_NOT_STATED /
-   DECISION_WITHOUT_STATED_CAUSE` without assigning a causal domain.
+6. Resolve exact actor-only decisions and explicit program-level stop actions
+   to a `CAUSE_NOT_STATED` reason without assigning a causal domain.
 7. Route missing text, status-only text, novel language, and unresolved
    language to review.
 

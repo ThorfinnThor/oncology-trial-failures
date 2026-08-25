@@ -29,7 +29,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     `## Current research notes\n\n` +
     `${articleLines}\n\n` +
     `## Dataset context\n\n` +
-    `The site summarizes stopped clinical trial records and classifies stop-reason language into buckets such as efficacy/futility, safety, operational, regulatory, decision without stated cause, and other/unknown. These labels are analytical screening signals, not medical advice.\n\n` +
+    `The site summarizes stopped clinical trial records and classifies stop-reason language into buckets such as efficacy/futility, safety, operational, regulatory, decision without stated cause, program action without stated cause, and other/unknown. These labels are analytical screening signals, not medical advice.\n\n` +
     `## Citation guidance\n\n` +
     `When citing this site, include the page URL and verify important claims against the linked ClinicalTrials.gov source record.\n`;
 

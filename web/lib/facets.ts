@@ -58,7 +58,12 @@ export function computeFacets(rows: TrialIndexRow[]): {
   const bucket = Array.from(bucketM.entries())
     .map(([value, count]) => ({
       value,
-      label: value === "DECISION ONLY" ? "Decision only" : value,
+      label:
+        value === "DECISION ONLY"
+          ? "Decision only"
+          : value === "PROGRAM STOP ONLY"
+            ? "Program stop only"
+            : value,
       count
     }))
     .sort((a, b) => b.count - a.count);

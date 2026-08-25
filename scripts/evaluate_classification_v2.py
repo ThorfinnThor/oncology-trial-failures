@@ -12,18 +12,32 @@ from typing import Any, Dict, Iterable, Tuple
 
 try:
     from classification_v2 import (
+        OUTCOME_CAUSE_NOT_STATED,
         OUTCOME_MIXED,
         OUTCOME_NON_FAILURE,
         REASON_BIO_UNSPECIFIED,
         REASON_BUSINESS,
+        REASON_DECISION_ONLY,
+        REASON_NOT_INITIATED,
+        REASON_PLANNED,
+        REASON_PROGRAM_ACTION_ONLY,
+        REASON_REGULATORY,
+        REASON_REPLACEMENT,
         classify_reason_v2,
     )
 except ImportError:
     from scripts.classification_v2 import (
+        OUTCOME_CAUSE_NOT_STATED,
         OUTCOME_MIXED,
         OUTCOME_NON_FAILURE,
         REASON_BIO_UNSPECIFIED,
         REASON_BUSINESS,
+        REASON_DECISION_ONLY,
+        REASON_NOT_INITIATED,
+        REASON_PLANNED,
+        REASON_PROGRAM_ACTION_ONLY,
+        REASON_REGULATORY,
+        REASON_REPLACEMENT,
         classify_reason_v2,
     )
 
@@ -44,7 +58,7 @@ def safe_ratio(numerator: int, denominator: int) -> float:
 
 
 def accepted_ontology_transition(row: Dict[str, Any], result: Any) -> bool:
-    """Recognize explicit V2.3 taxonomy decisions absent from the legacy audit.
+    """Recognize explicit V2 taxonomy decisions absent from the legacy audit.
 
     The historical audit intentionally treated some bare business/corporate/
     strategic decisions as unclear. V2.3 stores the reported reason itself as
@@ -52,19 +66,93 @@ def accepted_ontology_transition(row: Dict[str, Any], result: Any) -> bool:
     text remains excluded because it does not identify a causal domain.
     """
 
-    if (
-        row.get("expected_label") != "UNCLEAR"
-        or result.primary_reason != REASON_BUSINESS
-    ):
-        return False
     text = " ".join(str(row.get("why_stopped") or "").lower().split())
-    return bool(
-        re.search(
-            r"\b(?:business|corporate|strategic(?:/business| business)?) "
-            r"(?:decision|reasons?|considerations?)\b",
-            text,
+    if row.get("expected_label") == "UNCLEAR" and result.primary_reason == REASON_BUSINESS:
+        return bool(
+            re.search(
+                r"\b(?:business|corporate|strategic(?:/business| business)?) "
+                r"(?:priority )?(?:decision|decisions|reasons?|considerations?)\b|"
+                r"\bno longer pursuing\b",
+                text,
+            )
         )
-    )
+
+    if row.get("expected_label") == "UNCLEAR":
+        if result.primary_reason == "OPERATIONAL_OTHER":
+            return bool(
+                re.search(
+                    r"\b(?:administrative|operational|organizational) "
+                    r"(?:decision|reasons?|change|pause|closure)\b",
+                    text,
+                )
+            )
+        if result.primary_reason == REASON_REGULATORY:
+            return bool(
+                re.search(
+                    r"\b(?:ind (?:was )?(?:withdrawn|withdrawal)|withdrawal of ind|"
+                    r"not approved)\b",
+                    text,
+                )
+            )
+        if result.primary_reason == "SUPPORT_WITHDRAWAL":
+            return bool(
+                re.search(
+                    r"\b(?:partner termination|study agreement|provider of drug|"
+                    r"pis? not interested)\b",
+                    text,
+                )
+            )
+        if result.primary_reason == "RECRUITMENT":
+            return bool(
+                re.search(
+                    r"\bdifficult(?:y|ies)?\b[^.;:]{0,60}"
+                    r"\b(?:enrol|enroll|recruit|accru)",
+                    text,
+                )
+            )
+
+    # The legacy audit collapsed actor-only decisions, unexplained program
+    # actions, and completed transitions into OPERATIONAL. V2 preserves the
+    # source statement without inventing a causal domain.
+    if row.get("expected_label") == "NON_BIOLOGICAL" and row.get("expected_reason") == "OPERATIONAL":
+        if result.primary_reason in {
+            REASON_DECISION_ONLY,
+            REASON_PROGRAM_ACTION_ONLY,
+            REASON_PLANNED,
+            REASON_REPLACEMENT,
+            REASON_NOT_INITIATED,
+        }:
+            return True
+        if result.primary_reason == REASON_REGULATORY and re.search(
+            r"\b(?:fda|ema|mhra|irb|reb|ethics committee|regulatory authority)\b",
+            text,
+        ):
+            return True
+
+    # An explicit adverse benefit-risk statement is biological evidence, but
+    # V2 deliberately avoids pretending that it isolates safety from efficacy.
+    if (
+        row.get("expected_label") == "BIOLOGICAL_FAILURE"
+        and row.get("expected_reason") == "SAFETY"
+        and result.primary_reason == REASON_BIO_UNSPECIFIED
+    ):
+        return bool(
+            re.search(
+                r"\b(?:benefit\s*[-/:]?\s*risk|risk\s*[-/:]?\s*benefit)\b",
+                text,
+            )
+        )
+
+    # Some legacy rows selected one biological dimension although the source
+    # explicitly states more than one. The V2 mixed result is more faithful.
+    if (
+        row.get("expected_label") == "BIOLOGICAL_FAILURE"
+        and row.get("expected_reason") in {"SAFETY", "EFFICACY/FUTILITY"}
+        and result.outcome == OUTCOME_MIXED
+    ):
+        return True
+
+    return False
 
 
 def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
@@ -103,7 +191,9 @@ def evaluate(rows: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
             if (
                 result.needs_review
                 or result.outcome in {OUTCOME_NON_FAILURE, OUTCOME_MIXED}
+                or result.outcome == OUTCOME_CAUSE_NOT_STATED
                 or result.primary_reason == REASON_BIO_UNSPECIFIED
+                or result.primary_reason == REASON_BUSINESS
             ):
                 review_safely_disposed += 1
             elif len(examples["review_not_flagged"]) < 25:

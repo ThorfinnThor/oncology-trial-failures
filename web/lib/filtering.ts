@@ -25,6 +25,7 @@ export function phaseLabel(phaseKey: string): string {
 export function reasonBucket(r: TrialIndexRow): string {
   const primaryV2 = (r.classification_primary_reason_v2 || "").toUpperCase().trim();
   if (primaryV2 === "DECISION_WITHOUT_STATED_CAUSE") return "DECISION ONLY";
+  if (primaryV2 === "PROGRAM_ACTION_WITHOUT_STATED_CAUSE") return "PROGRAM STOP ONLY";
 
   // Prefer explicit field from pipeline if present:
   const base = (r.classification_reason || "").toUpperCase().trim();

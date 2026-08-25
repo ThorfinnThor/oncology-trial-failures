@@ -138,6 +138,11 @@ export default function MethodsPage() {
               biological, operational, regulatory, or business-strategy evidence. Explicit wording such as &ldquo;business decision&rdquo; or
               &ldquo;portfolio reprioritization&rdquo; remains classified separately as business strategy.
             </p>
+            <p className="muted">
+              <span className="strong">Program stop only</span> means the registry explicitly reports that a development program,
+              molecule, or asset was discontinued but supplies no underlying cause. This is kept separate from a bare trial status and
+              is likewise not interpreted as evidence of biological failure or a non-biological cause.
+            </p>
 
             <h2 id="outliers-calculations" className="h2">
               Outliers calculations

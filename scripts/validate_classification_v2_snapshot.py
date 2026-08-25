@@ -23,6 +23,7 @@ try:
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
         REASON_DECISION_ONLY,
+        REASON_PROGRAM_ACTION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -46,6 +47,7 @@ except ImportError:
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
         REASON_DECISION_ONLY,
+        REASON_PROGRAM_ACTION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -75,6 +77,7 @@ ALLOWED_REASONS = {
     *OPERATIONAL_REASONS,
     REASON_REGULATORY,
     REASON_DECISION_ONLY,
+    REASON_PROGRAM_ACTION_ONLY,
     REASON_MULTIPLE,
     REASON_NOT_INITIATED,
     REASON_PLANNED,
@@ -168,12 +171,16 @@ def main() -> None:
             failures.append(f"{nct_id}: unclassified row is not review-gated")
         if outcome == OUTCOME_UNKNOWN and not review:
             failures.append(f"{nct_id}: unknown V2 outcome is not review-gated")
+        cause_not_stated_reasons = {
+            REASON_DECISION_ONLY,
+            REASON_PROGRAM_ACTION_ONLY,
+        }
         if outcome == OUTCOME_CAUSE_NOT_STATED and (
-            review or reason != REASON_DECISION_ONLY
+            review or reason not in cause_not_stated_reasons
         ):
-            failures.append(f"{nct_id}: invalid cause-not-stated decision classification")
-        if reason == REASON_DECISION_ONLY and outcome != OUTCOME_CAUSE_NOT_STATED:
-            failures.append(f"{nct_id}: decision-only reason has an incompatible outcome")
+            failures.append(f"{nct_id}: invalid cause-not-stated classification")
+        if reason in cause_not_stated_reasons and outcome != OUTCOME_CAUSE_NOT_STATED:
+            failures.append(f"{nct_id}: non-causal reason has an incompatible outcome")
         if not final_explanation:
             failures.append(f"{nct_id}: final classification explanation is empty")
         if review:

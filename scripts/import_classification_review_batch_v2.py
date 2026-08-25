@@ -21,6 +21,7 @@ try:
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
         REASON_DECISION_ONLY,
+        REASON_PROGRAM_ACTION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -41,6 +42,7 @@ except ImportError:
         OUTCOME_UNKNOWN,
         REASON_BIO_UNSPECIFIED,
         REASON_DECISION_ONLY,
+        REASON_PROGRAM_ACTION_ONLY,
         REASON_MULTIPLE,
         REASON_NOT_INITIATED,
         REASON_PLANNED,
@@ -74,6 +76,7 @@ ALLOWED_REASONS = {
     *OPERATIONAL_REASONS,
     REASON_REGULATORY,
     REASON_DECISION_ONLY,
+    REASON_PROGRAM_ACTION_ONLY,
     REASON_MULTIPLE,
     REASON_NOT_INITIATED,
     REASON_PLANNED,
@@ -112,10 +115,14 @@ def validate_semantics(outcome: str, primary: str, needs_review: bool) -> None:
         raise ValueError("Non-failure outcome has an incompatible primary reason")
     if outcome == OUTCOME_MIXED and primary != REASON_MULTIPLE:
         raise ValueError("Mixed outcome requires MULTIPLE as its primary reason")
-    if outcome == OUTCOME_CAUSE_NOT_STATED and primary != REASON_DECISION_ONLY:
-        raise ValueError("Cause-not-stated outcome requires the decision-only reason")
-    if primary == REASON_DECISION_ONLY and outcome != OUTCOME_CAUSE_NOT_STATED:
-        raise ValueError("Decision-only reason requires the cause-not-stated outcome")
+    cause_not_stated_reasons = {
+        REASON_DECISION_ONLY,
+        REASON_PROGRAM_ACTION_ONLY,
+    }
+    if outcome == OUTCOME_CAUSE_NOT_STATED and primary not in cause_not_stated_reasons:
+        raise ValueError("Cause-not-stated outcome requires a compatible non-causal reason")
+    if primary in cause_not_stated_reasons and outcome != OUTCOME_CAUSE_NOT_STATED:
+        raise ValueError("Non-causal reason requires the cause-not-stated outcome")
     if outcome == OUTCOME_CAUSE_NOT_STATED and needs_review:
         raise ValueError("Cause-not-stated decisions are terminal classifications")
     if outcome == OUTCOME_UNKNOWN and primary != REASON_UNSPECIFIED:

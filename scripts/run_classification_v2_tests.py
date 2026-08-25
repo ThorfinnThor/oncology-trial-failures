@@ -475,6 +475,12 @@ def main() -> None:
         failures.append("Manual-decision validation accepted a review-gated decision-only state")
     except ValueError:
         pass
+    try:
+        validate_semantics(
+            "CAUSE_NOT_STATED", "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", False
+        )
+    except ValueError as exc:
+        failures.append(f"Manual-decision validation rejected a program-action state: {exc}")
 
     if failures:
         print("Classification V2 test failures:\n")

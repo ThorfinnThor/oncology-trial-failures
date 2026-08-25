@@ -1,13 +1,13 @@
 {
   "version": "2026-08-14",
-  "generated_at_utc": "2026-08-24T21:03:14Z",
+  "generated_at_utc": "2026-08-25T08:36:02Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23617,
     "max_last_update_post_date": "2026-08-14"
   },
   "biological_failure": {
-    "record_count": 1675,
+    "record_count": 2360,
     "max_last_update_post_date": "2026-08-14"
   },
   "top_areas": [
@@ -53,37 +53,49 @@
     }
   ],
   "classification_v2": {
-    "version": "2.5.0",
+    "version": "2.7.0",
     "outcomes": {
-      "NON_BIOLOGICAL": 10667,
-      "UNKNOWN": 9869,
-      "BIOLOGICAL_FAILURE": 1675,
-      "CAUSE_NOT_STATED": 873,
-      "NON_FAILURE_TRANSITION": 389,
-      "MIXED_CAUSES": 144
+      "NON_BIOLOGICAL": 14221,
+      "UNKNOWN": 3649,
+      "BIOLOGICAL_FAILURE": 2360,
+      "CAUSE_NOT_STATED": 1997,
+      "NON_FAILURE_TRANSITION": 1151,
+      "MIXED_CAUSES": 239
     },
     "primary_reasons": {
-      "UNSPECIFIED": 9869,
-      "RECRUITMENT": 5839,
-      "BUSINESS_STRATEGY": 1478,
-      "FUNDING": 1420,
-      "EFFICACY_FUTILITY": 1203,
-      "DECISION_WITHOUT_STATED_CAUSE": 873,
-      "STAFFING_RESOURCES": 606,
-      "EXTERNAL_DISRUPTION": 404,
-      "SAFETY": 400,
-      "SUPPLY_MANUFACTURING": 272,
-      "REGULATORY": 243,
-      "PROTOCOL_FEASIBILITY": 217,
-      "NOT_INITIATED": 214,
-      "OPERATIONAL_OTHER": 149,
-      "MULTIPLE": 144,
-      "PLANNED_MILESTONE": 107,
-      "BIOLOGICAL_UNSPECIFIED": 72,
-      "REPLACEMENT_TRANSITION": 68,
-      "SUPPORT_WITHDRAWAL": 39
+      "RECRUITMENT": 6589,
+      "UNSPECIFIED": 3649,
+      "BUSINESS_STRATEGY": 2227,
+      "FUNDING": 1740,
+      "DECISION_WITHOUT_STATED_CAUSE": 1604,
+      "EFFICACY_FUTILITY": 1586,
+      "STAFFING_RESOURCES": 804,
+      "PROTOCOL_FEASIBILITY": 642,
+      "SUPPLY_MANUFACTURING": 616,
+      "SAFETY": 604,
+      "REGULATORY": 510,
+      "EXTERNAL_DISRUPTION": 487,
+      "REPLACEMENT_TRANSITION": 415,
+      "OPERATIONAL_OTHER": 415,
+      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 393,
+      "NOT_INITIATED": 371,
+      "PLANNED_MILESTONE": 365,
+      "MULTIPLE": 239,
+      "SUPPORT_WITHDRAWAL": 191,
+      "BIOLOGICAL_UNSPECIFIED": 170
     },
-    "needs_review": 9869,
+    "needs_review": 3649,
+    "quality": {
+      "legacy_accuracy_all_adjudicated": 0.9677,
+      "assertion_coverage": 0.8996,
+      "assertion_precision": 0.9942,
+      "high_confidence_assertion_precision": 0.9946,
+      "biological_precision": 0.9842,
+      "biological_recall": 0.863,
+      "audit_review_recall": 0.2081,
+      "audit_review_safe_disposition_recall": 0.8526,
+      "overall_review_rate": 0.1098
+    },
     "review_policy": "Mixed, content-free, and novel stop reasons are review-gated rather than forced into a failure bucket."
   },
   "notes": "Disease areas are keyword-based mappings from conditions/MeSH terms; countries are trial site countries. Classifications are analytical screening signals and may require primary-source verification."

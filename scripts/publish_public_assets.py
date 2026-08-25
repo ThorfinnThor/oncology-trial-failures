@@ -16,6 +16,7 @@ ROOT_ALL_CSV = "data/all_stopped_trials.csv"
 ROOT_BIO_JSON = "data/biological_failure_trials.json"
 ROOT_BIO_CSV = "data/biological_failure_trials.csv"
 ROOT_CHANGES_JSON = "data/ingest_changes.json"
+ROOT_QUALITY_JSON = "data/classification_v2_quality.json"
 
 PUBLIC_DIR = os.path.join("web", "public")
 
@@ -78,6 +79,7 @@ def main() -> None:
         for r in all_rows
     )
     v2_review_count = sum(bool(r.get("classification_needs_review")) for r in all_rows)
+    quality = _load_json(ROOT_QUALITY_JSON).get("metrics", {}) if os.path.exists(ROOT_QUALITY_JSON) else {}
 
     meta = {
         "version": version,
@@ -97,6 +99,7 @@ def main() -> None:
             "outcomes": dict(v2_outcomes.most_common()),
             "primary_reasons": dict(v2_reasons.most_common()),
             "needs_review": v2_review_count,
+            "quality": quality,
             "review_policy": (
                 "Mixed, content-free, and novel stop reasons are review-gated rather "
                 "than forced into a failure bucket."

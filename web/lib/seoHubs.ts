@@ -44,7 +44,7 @@ const AREA_LIMIT = 50;
 const SPONSOR_MIN_COUNT = 10;
 const SPONSOR_LIMIT = 150;
 const HUB_TRIAL_LIST_LIMIT = 100;
-const NON_CAUSAL_REASON_BUCKETS = new Set(["DECISION ONLY"]);
+const NON_CAUSAL_REASON_BUCKETS = new Set(["DECISION ONLY", "PROGRAM STOP ONLY"]);
 
 function norm(value: string | undefined): string {
   return (value || "").replace(/\s+/g, " ").trim();
