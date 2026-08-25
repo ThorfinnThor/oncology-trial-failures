@@ -11,6 +11,7 @@ import { DatasetMeta, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
 import { isIndexableTrial } from "@/lib/seoHubs";
+import { buildTrialSeoMetadata } from "@/lib/seoMetadata";
 import PrimaryNav from "@/components/PrimaryNav";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -95,23 +96,8 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   );
   const bucket = useMemo(() => (trial ? reasonBucket(trial) : "OTHER/UNKNOWN"), [trial]);
 
-  const phaseText = phaseLabel(phaseKey);
   const conditionText = trial?.condition_first || trial?.conditions || "stopped clinical trial";
-  const interventionText = trial?.intervention_first || trial?.intervention_names || trial?.brief_title || trialId;
-  const sponsorText = trial?.lead_sponsor || "the listed sponsor";
-  const stopReasonText = (trial?.why_stopped || trial?.why_stopped_short || bucket || "stopped early").trim();
-
-  const title = trial
-    ? `${trial.nct_id}: ${interventionText} ${conditionText} trial | Clinical Trial Failures`
-    : trialId
-      ? `${trialId} clinical trial record | Clinical Trial Failures`
-      : "Trial record | Clinical Trial Failures";
-
-  const description = trial
-    ? `${interventionText} — ${phaseText} ${conditionText} trial by ${sponsorText}, stopped for ${stopReasonText}. See the source record and failure signals.`
-        .replace(/\s+/g, " ")
-        .slice(0, 170)
-    : "Trial detail for a stopped clinical trial.";
+  const { title, description } = buildTrialSeoMetadata(trial, trialId);
   const canonicalUrl = trial ? `${SITE_URL}${trialPath(trial)}` : trialId ? `${SITE_URL}/trial/${encodeURIComponent(trialId)}` : `${SITE_URL}/explore`;
   const indexable = trial ? isIndexableTrial(trial) : false;
 
