@@ -2,9 +2,11 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 
 const SHARD_COUNT = 256;
+const INDEX_SHARD_COUNT = 16;
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const SOURCE_FILE = path.join(PUBLIC_DIR, "all_stopped_trials.json");
 const INDEX_FILE = path.join(PUBLIC_DIR, "trials-index.json");
+const INDEX_SHARD_DIR = path.join(PUBLIC_DIR, "trials-index-shards");
 const SHARD_DIR = path.join(PUBLIC_DIR, "trial-shards");
 
 function asString(value) {
@@ -114,6 +116,7 @@ async function main() {
   }
 
   const indexRows = [];
+  const indexShards = Array.from({ length: INDEX_SHARD_COUNT }, () => []);
   const shards = Array.from({ length: SHARD_COUNT }, () => []);
 
   for (const sourceRow of sourceRows) {
@@ -128,13 +131,22 @@ async function main() {
       intervention_names: indexRow.intervention_first || "",
     });
     const key = shardKey(indexRow.nct_id);
+    indexShards[Number.parseInt(key[0], 16)].push(indexRow);
     shards[Number.parseInt(key, 16)].push(detailRow);
   }
 
+  await fs.rm(INDEX_FILE, { force: true });
+  await fs.rm(INDEX_SHARD_DIR, { recursive: true, force: true });
   await fs.rm(SHARD_DIR, { recursive: true, force: true });
+  await fs.mkdir(INDEX_SHARD_DIR, { recursive: true });
   await fs.mkdir(SHARD_DIR, { recursive: true });
 
-  await fs.writeFile(INDEX_FILE, JSON.stringify(indexRows), "utf8");
+  await Promise.all(
+    indexShards.map((rows, bucket) => {
+      const key = bucket.toString(16);
+      return fs.writeFile(path.join(INDEX_SHARD_DIR, `${key}.json`), JSON.stringify(rows), "utf8");
+    })
+  );
   await Promise.all(
     shards.map((rows, bucket) => {
       const key = bucket.toString(16).padStart(2, "0");
@@ -142,11 +154,14 @@ async function main() {
     })
   );
 
-  const indexStat = await fs.stat(INDEX_FILE);
+  const largestIndexShard = Math.max(
+    ...indexShards.map((rows) => Buffer.byteLength(JSON.stringify(rows), "utf8"))
+  );
   const largestShard = Math.max(...shards.map((rows) => Buffer.byteLength(JSON.stringify(rows), "utf8")));
   console.log(
-    `Generated ${indexRows.length.toLocaleString()} compact trial rows across ${SHARD_COUNT} shards. ` +
-      `Index: ${(indexStat.size / 1024 / 1024).toFixed(2)} MB; largest shard: ${(largestShard / 1024).toFixed(1)} KB.`
+    `Generated ${indexRows.length.toLocaleString()} compact trial rows across ${INDEX_SHARD_COUNT} index shards ` +
+      `and ${SHARD_COUNT} detail shards. Largest index shard: ${(largestIndexShard / 1024 / 1024).toFixed(2)} MB; ` +
+      `largest detail shard: ${(largestShard / 1024).toFixed(1)} KB.`
   );
 }
 
