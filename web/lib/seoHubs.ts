@@ -208,9 +208,9 @@ function sponsorHubFromGroup(label: string, memberRows: TrialIndexRow[]): Sponso
   return {
     slug,
     label,
-    title: compactSeoTitle(`${label} stopped clinical trials`, `${stats.biologicalCount.toLocaleString("en-US")} biological signals`),
+    title: compactSeoTitle(label, "stopped clinical trial evidence"),
     h1: `${label}: stopped clinical trials and failure signals`,
-    description: compactSeoDescription(`Analyze ${memberRows.length.toLocaleString("en-US")} stopped ClinicalTrials.gov records attributed to ${label}. V2 separates ${stats.biologicalCount.toLocaleString("en-US")} likely biological signals from non-biological and unresolved outcomes.`),
+    description: compactSeoDescription(`V2 profile of ${memberRows.length.toLocaleString("en-US")} stopped records: ${stats.biologicalCount.toLocaleString("en-US")} likely biological signals, with non-biological and unresolved outcomes separated. Review source-linked NCT evidence.`),
     path: `/sponsor/${slug}`,
     total: memberRows.length,
     rows: memberRows,
