@@ -38,6 +38,16 @@ export type HubStats = {
   topSponsors: Array<{ label: string; count: number }>;
   topAreas: Array<{ label: string; count: number }>;
   topPhases: Array<{ label: string; count: number }>;
+  biologicalCount: number;
+  nonBiologicalCount: number;
+  unresolvedCount: number;
+  mixedCount: number;
+  transitionCount: number;
+  otherOutcomeCount: number;
+  biologicalShare: number;
+  outcomeBreakdown: Array<{ label: string; count: number }>;
+  topResolvedReasons: Array<{ label: string; count: number }>;
+  latestRegistryUpdate: string;
 };
 
 export type SponsorEvidenceStats = {
@@ -150,13 +160,12 @@ export function indexableTrialRows(rows: TrialIndexRow[]): TrialIndexRow[] {
 }
 
 export function hubStats(rows: TrialIndexRow[]): HubStats {
+  const evidence = sponsorEvidenceStats(rows);
   return {
-    total: rows.length,
-    scientificCount: rows.filter(isIndexableTrial).length,
+    ...evidence,
+    scientificCount: evidence.biologicalCount,
     topBuckets: countBy(rows, reasonBucket).slice(0, 5),
     topSponsors: countBy(rows, (row) => row.lead_sponsor || "Unknown sponsor").slice(0, 5),
-    topAreas: countBy(rows, (row) => row.disease_area || "Other").slice(0, 5),
-    topPhases: countBy(rows, (row) => phaseLabel(parsePhases(row.phases || "")[0] || "UNKNOWN")).slice(0, 5),
   };
 }
 
@@ -277,7 +286,7 @@ export function buildFailureHubs(rows: TrialIndexRow[]): SeoHub[] {
       slug,
       label: bucket.label,
       title: compactSeoTitle(`${reasonLabel} clinical trial stops`, `${bucket.count.toLocaleString("en-US")} source records`),
-      h1: `${bucket.label} clinical trial stops`,
+      h1: `${reasonLabel} clinical trial stops`,
       description: compactSeoDescription(`Search ${bucket.count.toLocaleString("en-US")} stopped trials whose registry language is classified as ${bucket.label.toLowerCase()}. Compare NCT records, sponsors, phases, and source evidence.`),
       path: `/failures/${slug}`,
       total: bucket.count,
