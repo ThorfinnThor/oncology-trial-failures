@@ -92,8 +92,7 @@ function reasonSlug(bucket: string): string {
 }
 
 export function isIndexableTrial(row: TrialIndexRow): boolean {
-  const bucket = reasonBucket(row).toUpperCase();
-  return isLikelyScientificFailure(row) || bucket === "EFFICACY/FUTILITY" || bucket === "SAFETY";
+  return isLikelyScientificFailure(row);
 }
 
 export function indexableTrialRows(rows: TrialIndexRow[]): TrialIndexRow[] {
