@@ -12,6 +12,7 @@ import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
 let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
 const _detailShards = new Map<string, TrialDetail[]>();
+const INDEX_SHARD_KEYS = Array.from({ length: 16 }, (_, bucket) => bucket.toString(16));
 
 type StaticAssetsBinding = {
   fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
@@ -79,9 +80,18 @@ export async function loadMetaServer(): Promise<DatasetMeta> {
 export async function loadIndexServer(): Promise<TrialIndexRow[]> {
   if (_index) return _index;
 
-  _index = (await readJsonServerAsset<TrialIndexRow[]>("public/trials-index.json")).filter(
-    (row) => row.nct_id
-  );
+  try {
+    const shards = await Promise.all(
+      INDEX_SHARD_KEYS.map((key) =>
+        readJsonServerAsset<TrialIndexRow[]>(`public/trials-index-shards/${key}.json`)
+      )
+    );
+    _index = shards.flat().filter((row) => row.nct_id);
+  } catch {
+    _index = (await readJsonServerAsset<TrialIndexRow[]>("public/trials-index.json")).filter(
+      (row) => row.nct_id
+    );
+  }
   return _index;
 }
 

@@ -4,6 +4,7 @@ import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
 let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
 let _specialness: any | null = null;
+const INDEX_SHARD_KEYS = Array.from({ length: 16 }, (_, bucket) => bucket.toString(16));
 
 async function fetchJSON<T>(url: string): Promise<T> {
   // These files change only when the site is redeployed. Respect the browser/CDN
@@ -100,8 +101,15 @@ export async function loadMeta(): Promise<DatasetMeta> {
 export async function loadIndex(): Promise<TrialIndexRow[]> {
   if (_index) return _index;
 
-  // Normal deployments generate this compact, already-normalized asset before
-  // `next build`. Keep the legacy fallback so local/older deployments still work.
+  const indexShards = await Promise.all(
+    INDEX_SHARD_KEYS.map((key) => tryFetchJSON<TrialIndexRow[]>(`/trials-index-shards/${key}.json`))
+  );
+  if (indexShards.every((rows): rows is TrialIndexRow[] => rows !== null)) {
+    _index = indexShards.flat().filter((row) => row.nct_id);
+    return _index;
+  }
+
+  // Keep the single-file fallback for deployments created before index sharding.
   const compactIndex = await tryFetchJSON<TrialIndexRow[]>("/trials-index.json");
   if (compactIndex) {
     _index = compactIndex.filter((row) => row.nct_id);

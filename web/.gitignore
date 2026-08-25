@@ -22,6 +22,7 @@
 
 # generated trial delivery assets
 /public/trials-index.json
+/public/trials-index-shards/
 /public/trial-shards/
 
 # misc
