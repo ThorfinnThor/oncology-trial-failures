@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
+import EvidenceStandard from "@/components/EvidenceStandard";
 import PrimaryNav from "@/components/PrimaryNav";
 import { areaHubPath, displayHubRows, hubStats, OG_IMAGE, phaseHubPathFromLabel, SITE_URL, trialListItem, type HubStats } from "@/lib/seoHubs";
 import type { DatasetMeta, TrialIndexRow } from "@/lib/types";
@@ -96,6 +97,9 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, datasetMet
       url: canonicalUrl,
       isPartOf: { "@type": "Dataset", name: "Clinical Trial Failures database", url: SITE_URL },
       creator: { "@type": "Organization", name: "Clinical Trial Failures" },
+      dateModified: datasetMeta.version,
+      citation: { "@type": "WebPage", name: "ClinicalTrials.gov", url: "https://clinicaltrials.gov/" },
+      measurementTechnique: "Classification V2 analysis of ClinicalTrials.gov stopped-study source language",
       temporalCoverage: `../${stats.latestRegistryUpdate}`,
       variableMeasured: ["Stopped clinical trial records", "Likely biological failure signals", "Non-biological stop reasons", "Unresolved stop reasons"],
       mainEntity: {
@@ -167,6 +171,8 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, datasetMet
           </section>
 
           <section className="interpretationBand"><div><p className="facet-title">How to read this page</p><h2>{reading.title}</h2></div><p>{reading.body}</p></section>
+
+          <EvidenceStandard datasetVersion={datasetMeta.version} latestRegistryUpdate={stats.latestRegistryUpdate} source={datasetMeta.source} />
 
           <section className="evidenceGrid">
             <div className="card evidenceCard"><p className="facet-title">V2 outcomes</p><h2>How the stopped records resolve</h2><dl className="rankedList">

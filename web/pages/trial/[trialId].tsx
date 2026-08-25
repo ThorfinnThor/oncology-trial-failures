@@ -12,6 +12,7 @@ import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
 import { areaHubPath, isIndexableTrial, phaseHubPath, reasonHubPath } from "@/lib/seoHubs";
 import { buildTrialSeoMetadata } from "@/lib/seoMetadata";
+import EvidenceStandard from "@/components/EvidenceStandard";
 import PrimaryNav from "@/components/PrimaryNav";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -222,6 +223,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
             : undefined,
           studySubject: conditionText,
           status: trial.overall_status || undefined,
+          sameAs: sourceUrl,
         },
       ]
     : [];
@@ -405,18 +407,18 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                   </dl>
                 </section>
 
-                <section className="trialProvenance" aria-label="Source and methodology">
+                <EvidenceStandard
+                  datasetVersion={meta?.version || "current build"}
+                  latestRegistryUpdate={trial.last_update_post_date}
+                  source={meta?.source}
+                />
+
+                <section className="trialProvenance" aria-label="Primary source actions">
                   <div>
-                    <div className="trialEyebrow">Provenance</div>
+                    <div className="trialEyebrow">Verify this record</div>
                     <p>
-                      Dataset <strong>{meta?.version || "current build"}</strong>
-                      {meta?.source ? <> · Source <strong>{meta.source}</strong></> : null}
-                      {trial.last_update_post_date ? (
-                        <> · Registry update <strong>{trial.last_update_post_date}</strong></>
-                      ) : null}
-                      {trial.classification_version ? (
-                        <> · Classification <strong>V{trial.classification_version}</strong></>
-                      ) : null}
+                      Classification {trial.classification_version ? `V${trial.classification_version}` : "V2"}
+                      {" · "}Source record {trial.nct_id}
                     </p>
                   </div>
                   <div className="trialActions">

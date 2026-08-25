@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 
+import EvidenceStandard from "@/components/EvidenceStandard";
 import PrimaryNav from "@/components/PrimaryNav";
 import {
   displayHubRows,
@@ -61,6 +62,9 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
         url: SITE_URL,
       },
       creator: { "@type": "Organization", name: "Clinical Trial Failures" },
+      dateModified: datasetMeta.version,
+      citation: { "@type": "WebPage", name: "ClinicalTrials.gov", url: "https://clinicaltrials.gov/" },
+      measurementTechnique: "Classification V2 analysis of ClinicalTrials.gov stopped-study source language",
       temporalCoverage: `../${stats.latestRegistryUpdate}`,
       variableMeasured: [
         "Stopped clinical trial records",
@@ -187,6 +191,8 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                 of turning ambiguous source language into a biological conclusion.
               </p>
             </section>
+
+            <EvidenceStandard datasetVersion={datasetMeta.version} latestRegistryUpdate={stats.latestRegistryUpdate} source={datasetMeta.source} />
 
             <section className="evidenceGrid">
               <div className="card evidenceCard">
