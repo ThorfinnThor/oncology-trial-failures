@@ -1147,8 +1147,194 @@ function hydrateEnrollmentFailurePage(page: SeoLandingPageConfig, stats: Insight
   };
 }
 
+const V2_OUTCOME_LABELS: Record<string, string> = {
+  NON_BIOLOGICAL: "Non-biological stop",
+  UNKNOWN: "Review-gated / unknown",
+  BIOLOGICAL_FAILURE: "Biological failure",
+  CAUSE_NOT_STATED: "Cause not stated",
+  NON_FAILURE_TRANSITION: "Non-failure transition",
+  MIXED_CAUSES: "Mixed causes",
+};
+
+const V2_REASON_LABELS: Record<string, string> = {
+  RECRUITMENT: "Recruitment",
+  BUSINESS_STRATEGY: "Business strategy",
+  FUNDING: "Funding",
+  EFFICACY_FUTILITY: "Efficacy / futility",
+  DECISION_WITHOUT_STATED_CAUSE: "Decision without stated cause",
+  STAFFING_RESOURCES: "Staffing / resources",
+  PROTOCOL_FEASIBILITY: "Protocol feasibility",
+  SUPPLY_MANUFACTURING: "Supply / manufacturing",
+  SAFETY: "Safety",
+  REGULATORY: "Regulatory",
+  EXTERNAL_DISRUPTION: "External disruption",
+  BIOLOGICAL_UNSPECIFIED: "Biological, unspecified",
+};
+
+function share(part: number, total: number): string {
+  if (!total) return "0.0%";
+  return `${((part / total) * 100).toFixed(1)}%`;
+}
+
+function rankedV2Items(
+  values: Record<string, number>,
+  labels: Record<string, string>,
+  limit = 6,
+  exclude: string[] = []
+) {
+  const excluded = new Set(exclude);
+  return Object.entries(values)
+    .filter(([key, value]) => value > 0 && !excluded.has(key))
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([key, value]) => ({ label: labels[key] || key, value: fmt(value) }));
+}
+
+function hydrateClinicalTrialFailuresPage(page: SeoLandingPageConfig, stats: InsightStats): SeoLandingPageConfig {
+  const v2 = stats.classificationV2;
+  const biological = v2.outcomes.BIOLOGICAL_FAILURE || 0;
+  const nonBiological = v2.outcomes.NON_BIOLOGICAL || 0;
+  const reviewGated = v2.outcomes.UNKNOWN || v2.reviewGated;
+
+  return {
+    ...page,
+    title: `Clinical Trial Failures Database: ${fmt(stats.total)} Stopped Trials`,
+    metaDescription: `Search ${fmt(stats.total)} terminated, withdrawn, and suspended trials with V2 evidence classifications, stated stop reasons, and ClinicalTrials.gov source links.`,
+    eyebrow: "Clinical Trial Failures V2",
+    h1: "Clinical trial failures, classified by evidence",
+    lede: `Search ${fmt(stats.total)} stopped clinical trial records through a V2 evidence layer that separates biological failure signals from recruitment, funding, business strategy, operational causes, and records that still require review.`,
+    quickAnswer: `The database contains ${fmt(stats.total)} terminated, withdrawn, and suspended trials. Classification V2 identifies ${fmt(biological)} biological failure signals and ${fmt(nonBiological)} non-biological stops, while ${fmt(reviewGated)} records remain review-gated instead of being forced into an unsupported category.`,
+    dataInsights: page.dataInsights
+      ? {
+          ...page.dataInsights,
+          heading: "What Classification V2 shows across stopped trials",
+          intro: `The current dataset separates registry status from interpreted outcome. Biological failure is a deliberately narrow evidence class; non-biological stops, cause-not-stated records, transitions, mixed causes, and review-gated records remain distinct.`,
+          sourceNote: `Counts are generated from the current V2-classified dataset during every build. Classifications summarize ClinicalTrials.gov stop language for screening and should be verified against the linked source record.`,
+          metrics: [
+            { label: "Stopped trial records", value: fmt(stats.total), detail: "Terminated, withdrawn, or suspended registry records." },
+            { label: "Biological failure signals", value: fmt(biological), detail: `${share(biological, stats.total)} of records have supported biological failure evidence.` },
+            { label: "Review-gated records", value: fmt(reviewGated), detail: "Insufficient or unresolved evidence is kept visible without forced classification." },
+          ],
+          distributions: [
+            { heading: "V2 outcome map", items: rankedV2Items(v2.outcomes, V2_OUTCOME_LABELS) },
+            { heading: "Largest stated primary reasons", items: rankedV2Items(v2.primaryReasons, V2_REASON_LABELS, 6, ["UNSPECIFIED"]) },
+          ],
+        }
+      : page.dataInsights,
+  };
+}
+
+function hydrateWhyClinicalTrialsFailPage(page: SeoLandingPageConfig, stats: InsightStats): SeoLandingPageConfig {
+  const v2 = stats.classificationV2;
+  const recruitment = v2.primaryReasons.RECRUITMENT || 0;
+  const efficacy = v2.primaryReasons.EFFICACY_FUTILITY || 0;
+  const safety = v2.primaryReasons.SAFETY || 0;
+
+  return {
+    ...page,
+    title: `Why Clinical Trials Fail: Evidence from ${fmt(stats.total)} Stopped Trials`,
+    metaDescription: `Why do clinical trials fail? Compare V2 evidence for efficacy, futility, safety, recruitment, funding, strategy, feasibility, and other stated stop reasons.`,
+    h1: "Why clinical trials fail: evidence from stopped studies",
+    lede: `Clinical trials stop for fundamentally different reasons. Classification V2 separates biological failure from recruitment, business strategy, funding, protocol feasibility, staffing, supply, regulatory action, transitions, and cases where the source does not support a conclusion.`,
+    quickAnswer: `Recruitment is the largest named primary reason in the current dataset with ${fmt(recruitment)} records. The biological subset includes ${fmt(efficacy)} efficacy or futility records, ${fmt(safety)} safety records, and a smaller biological-unspecified group.`,
+    dataInsights: page.dataInsights
+      ? {
+          ...page.dataInsights,
+          heading: "Why trials stop in the V2 classification",
+          intro: `The primary-reason layer answers why a record stopped when the registry supplies enough evidence. The separate outcome layer prevents recruitment, funding, strategy, and other non-biological causes from being counted as failed biology.`,
+          sourceNote: `Primary reasons are derived from ClinicalTrials.gov registry fields and sponsor-provided stop language. Review-gated and cause-not-stated records are not treated as hidden failures.`,
+          metrics: [
+            { label: "Recruitment", value: fmt(recruitment), detail: "The largest named primary stop reason in V2." },
+            { label: "Efficacy / futility", value: fmt(efficacy), detail: "Lack of benefit, failed endpoints, insufficient activity, or futility evidence." },
+            { label: "Safety", value: fmt(safety), detail: "Toxicity, tolerability, adverse events, or unfavorable risk-benefit evidence." },
+          ],
+          distributions: [
+            { heading: "Largest stated primary reasons", items: rankedV2Items(v2.primaryReasons, V2_REASON_LABELS, 7, ["UNSPECIFIED"]) },
+            { heading: "Outcome context", items: rankedV2Items(v2.outcomes, V2_OUTCOME_LABELS) },
+          ],
+        }
+      : page.dataInsights,
+  };
+}
+
+function hydrateFailedClinicalTrialsPage(page: SeoLandingPageConfig, stats: InsightStats): SeoLandingPageConfig {
+  const v2 = stats.classificationV2;
+  const biological = v2.outcomes.BIOLOGICAL_FAILURE || 0;
+  const efficacy = v2.primaryReasons.EFFICACY_FUTILITY || 0;
+  const safety = v2.primaryReasons.SAFETY || 0;
+  const unspecified = v2.primaryReasons.BIOLOGICAL_UNSPECIFIED || 0;
+
+  return {
+    ...page,
+    title: `Failed Clinical Trials: ${fmt(biological)} Biological Failure Signals`,
+    metaDescription: `Search ${fmt(biological)} likely biological clinical trial failure signals classified as efficacy, futility, safety, or biological-unspecified evidence in V2.`,
+    h1: "Failed clinical trials: biological evidence, not status alone",
+    lede: `The phrase failed clinical trial should describe evidence, not merely a TERMINATED, WITHDRAWN, or SUSPENDED status. This page focuses on V2 records where the source supports efficacy or futility, safety, or an unfavorable biological signal that cannot be narrowed further.`,
+    quickAnswer: `Classification V2 identifies ${fmt(biological)} biological failure signals: ${fmt(efficacy)} efficacy or futility records, ${fmt(safety)} safety records, and ${fmt(unspecified)} biological-unspecified records. Each result remains linked to its source statement for verification.`,
+    dataInsights: page.dataInsights
+      ? {
+          ...page.dataInsights,
+          heading: "The V2 biological failure subset",
+          intro: `This subset excludes records whose evidence supports recruitment, funding, strategy, operations, transitions, or no stated cause. It is designed as a higher-precision starting point for reviewing possible failed biology.`,
+          sourceNote: `Biological failure is an analytical screening classification, not a medical conclusion. Verify the linked registry record, endpoints, publications, and sponsor disclosures before relying on an individual result.`,
+          metrics: [
+            { label: "Biological failure signals", value: fmt(biological), detail: `${share(biological, stats.total)} of all stopped records in the current dataset.` },
+            { label: "Efficacy / futility", value: fmt(efficacy), detail: "The largest V2 biological primary-reason group." },
+            { label: "Safety", value: fmt(safety), detail: `${fmt(unspecified)} additional records are biological but not specific enough to split further.` },
+          ],
+          distributions: [
+            { heading: "Biological signals by phase", items: v2.biologicalSignals.phases.slice(0, 6).map((item) => ({ label: item.label, value: fmt(item.count) })) },
+            { heading: "Largest biological-signal disease areas", items: v2.biologicalSignals.topAreas.slice(0, 6).map((item) => ({ label: item.label, value: fmt(item.count) })) },
+          ],
+        }
+      : page.dataInsights,
+  };
+}
+
+function hydrateTerminatedClinicalTrialsPage(page: SeoLandingPageConfig, stats: InsightStats): SeoLandingPageConfig {
+  const terminated = stats.classificationV2.terminated;
+  const total = stats.statuses.terminated;
+  const biological = terminated.outcomes.BIOLOGICAL_FAILURE || 0;
+
+  return {
+    ...page,
+    title: `Terminated Clinical Trials: ${fmt(total)} Records by Stop Reason`,
+    metaDescription: `Search ${fmt(total)} terminated clinical trial records and compare V2 outcomes and stated reasons including efficacy, safety, recruitment, funding, and strategy.`,
+    quickAnswer: `A terminated trial ended before planned completion, but termination is not itself a failure reason. In the current dataset, ${fmt(total)} records are terminated and ${fmt(biological)} have V2 evidence supporting a biological failure signal.`,
+    dataInsights: page.dataInsights
+      ? {
+          ...page.dataInsights,
+          heading: "Terminated trials by V2 outcome and reason",
+          intro: `Termination is the largest stopped-study status, but its records span biological failures, non-biological causes, transitions, mixed causes, cause-not-stated cases, and unresolved evidence.`,
+          sourceNote: `Termination comes from the ClinicalTrials.gov overall-status field. V2 outcomes and primary reasons summarize the available stop language and remain subject to source verification.`,
+          metrics: [
+            { label: "Terminated records", value: fmt(total), detail: "Records with overall status TERMINATED." },
+            { label: "Biological failure signals", value: fmt(biological), detail: `${share(biological, total)} of terminated records.` },
+            { label: "Non-biological stops", value: fmt(terminated.outcomes.NON_BIOLOGICAL || 0), detail: "Termination evidence tied to non-biological causes." },
+          ],
+          distributions: [
+            { heading: "Terminated-trial outcomes", items: rankedV2Items(terminated.outcomes, V2_OUTCOME_LABELS) },
+            { heading: "Largest terminated-trial reasons", items: rankedV2Items(terminated.primaryReasons, V2_REASON_LABELS, 6, ["UNSPECIFIED"]) },
+          ],
+        }
+      : page.dataInsights,
+  };
+}
+
 export function hydrateSeoLandingPage(page: SeoLandingPageConfig, stats: InsightStats): SeoLandingPageConfig {
   const hydrated = hydrateValue(page, stats);
+  if (page.slug === "/clinical-trial-failures") {
+    return hydrateClinicalTrialFailuresPage(hydrated, stats);
+  }
+  if (page.slug === "/why-clinical-trials-fail") {
+    return hydrateWhyClinicalTrialsFailPage(hydrated, stats);
+  }
+  if (page.slug === "/failed-clinical-trials") {
+    return hydrateFailedClinicalTrialsPage(hydrated, stats);
+  }
+  if (page.slug === "/terminated-clinical-trials") {
+    return hydrateTerminatedClinicalTrialsPage(hydrated, stats);
+  }
   if (page.slug === "/failed-endpoint-clinical-trials") {
     return hydrateFailedEndpointPage(hydrated, stats);
   }

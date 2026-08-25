@@ -425,7 +425,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         <footer className="v2Footer">
           <div className="v2Container v2FooterInner">
             <div><strong>{SITE_NAME}</strong><p>Stopped clinical trials, classified by evidence and linked to source.</p></div>
-            <nav aria-label="Footer"><Link href="/explore">Database</Link><Link href="/methods">Methods</Link><Link href="/insights">Insights</Link><Link href="/about">About</Link><Link href="/privacy">Privacy</Link></nav>
+            <nav aria-label="Footer"><Link href="/explore">Database</Link><Link href="/clinical-trial-failures">Clinical trial failures guide</Link><Link href="/methods">Methods</Link><Link href="/insights">Insights</Link><Link href="/about">About</Link><Link href="/privacy">Privacy</Link></nav>
           </div>
         </footer>
       </div>
