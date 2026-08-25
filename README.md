@@ -8,9 +8,11 @@ This repo automatically fetches broad oncology trials from ClinicalTrials.gov AP
 - `data/biological_failure_oncology_trials.csv`
 - plus JSON equivalents
 
-Biological failures are inferred from the `whyStopped` field using simple keyword rules
-(efficacy/futility/safety). Recruitment/funding/admin-like reasons are excluded from
-the biological-failure subset.
+Stopped-trial reasons are classified with the conservative Classification V2
+pipeline. V2 stores explicit evidence, separates outcome from causal reason,
+preserves mixed and non-failure cases, and routes novel or content-free language
+to review instead of forcing a failure bucket. See
+[`docs/classification_v2.md`](docs/classification_v2.md).
 
 ## How it updates
 A GitHub Actions workflow runs weekly (and can be run manually).

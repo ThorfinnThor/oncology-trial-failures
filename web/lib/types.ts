@@ -90,6 +90,16 @@ export type TrialIndexRow = {
   classification_reason?: string; // e.g., EFFICACY/FUTILITY
   classification_confidence?: string; // LOW/MED/HIGH
   classification_evidence?: string;
+  classification_outcome_v2?: string;
+  classification_primary_reason_v2?: string;
+  classification_secondary_reasons_v2?: string;
+  classification_needs_review?: boolean;
+  classification_version?: string;
+  classification_source?: string;
+  classification_resolution_status?: "RESOLVED" | "UNRESOLVED";
+  classification_final_outcome?: string;
+  classification_final_category?: string;
+  classification_final_explanation?: string;
 
   // Backwards-compat / older naming referenced by filtering.ts / legacy datasets
   failure_label?: string;

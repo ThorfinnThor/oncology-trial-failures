@@ -14,6 +14,11 @@ TRACKED_FIELDS = (
     "classification_label",
     "classification_reason",
     "classification_confidence",
+    "classification_outcome_v2",
+    "classification_primary_reason_v2",
+    "classification_secondary_reasons_v2",
+    "classification_needs_review",
+    "classification_version",
     "disease_area",
     "phases",
     "lead_sponsor",
@@ -27,6 +32,12 @@ def _text(value: Any) -> str:
     if value is None:
         return ""
     return " ".join(str(value).split())
+
+
+def _bool(value: Any) -> bool:
+    if isinstance(value, bool):
+        return value
+    return str(value or "").strip().lower() in {"1", "true", "yes"}
 
 
 def _by_nct(rows: Iterable[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
@@ -54,6 +65,15 @@ def _compact(row: Dict[str, Any]) -> Dict[str, Any]:
         "classification_label": _text(row.get("classification_label")).upper(),
         "classification_reason": _text(row.get("classification_reason")).upper(),
         "classification_confidence": _text(row.get("classification_confidence")).upper(),
+        "classification_outcome_v2": _text(row.get("classification_outcome_v2")).upper(),
+        "classification_primary_reason_v2": _text(
+            row.get("classification_primary_reason_v2")
+        ).upper(),
+        "classification_secondary_reasons_v2": _text(
+            row.get("classification_secondary_reasons_v2")
+        ).upper(),
+        "classification_needs_review": _bool(row.get("classification_needs_review")),
+        "classification_version": _text(row.get("classification_version")),
         "disease_area": _text(row.get("disease_area")) or "Other",
         "phases": _text(row.get("phases")),
         "lead_sponsor": _text(row.get("lead_sponsor")),
@@ -122,6 +142,11 @@ def build_ingest_change_report(
             "classification_label",
             "classification_reason",
             "classification_confidence",
+            "classification_outcome_v2",
+            "classification_primary_reason_v2",
+            "classification_secondary_reasons_v2",
+            "classification_needs_review",
+            "classification_version",
         }
         if classification_fields.intersection(changed_fields):
             classification_item = dict(item)

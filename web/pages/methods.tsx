@@ -130,7 +130,18 @@ export default function MethodsPage() {
             <h2 className="h2">Reason buckets</h2>
             <p className="muted">
               Stop reasons are grouped into high-level buckets (e.g., efficacy/futility, safety, operational, enrollment, funding, regulatory,
-              other/unknown) using rule-based parsing of the recorded reason text and structured fields where available.
+              decision only, and other/unknown) using rule-based parsing of the recorded reason text and structured fields where available.
+            </p>
+            <p className="muted">
+              <span className="strong">Decision only</span> means the registry identifies an actor or action, such as
+              &ldquo;Sponsor decision&rdquo; or &ldquo;PI request,&rdquo; but does not state why the decision was made. It is not treated as
+              biological, operational, regulatory, or business-strategy evidence. Explicit wording such as &ldquo;business decision&rdquo; or
+              &ldquo;portfolio reprioritization&rdquo; remains classified separately as business strategy.
+            </p>
+            <p className="muted">
+              <span className="strong">Program stop only</span> means the registry explicitly reports that a development program,
+              molecule, or asset was discontinued but supplies no underlying cause. This is kept separate from a bare trial status and
+              is likewise not interpreted as evidence of biological failure or a non-biological cause.
             </p>
 
             <h2 id="outliers-calculations" className="h2">

@@ -36,8 +36,20 @@ import requests
 
 try:
     from ingest_changes import build_ingest_change_report
+    from classification_v2 import (
+        CLASSIFIER_VERSION,
+        classification_source,
+        classify_with_v2_fallback,
+        load_reviewed_reason_index,
+    )
 except ImportError:
     from scripts.ingest_changes import build_ingest_change_report
+    from scripts.classification_v2 import (
+        CLASSIFIER_VERSION,
+        classification_source,
+        classify_with_v2_fallback,
+        load_reviewed_reason_index,
+    )
 
 BASE_URL = "https://clinicaltrials.gov/api/v2/studies"
 
@@ -48,6 +60,11 @@ SLEEP_SECONDS = float(os.getenv("SLEEP_SECONDS", "1.2"))
 TIMEOUT = 60
 
 OVERRIDES_PATH = os.getenv("OVERRIDES_PATH", "overrides.csv")
+REVIEWED_REASONS_V2_PATH = os.getenv(
+    "REVIEWED_REASONS_V2_PATH",
+    "data/classification_reviewed_reasons_v2.json",
+)
+REVIEWED_REASONS_V2 = load_reviewed_reason_index(REVIEWED_REASONS_V2_PATH)
 
 
 @dataclass(frozen=True)
@@ -1012,7 +1029,12 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
 
     url = f"https://clinicaltrials.gov/study/{nct_id}" if nct_id else ""
 
-    cls = classify_with_description_fallback(why_stopped, brief_summary, detailed_description)
+    cls_v2 = classify_with_v2_fallback(
+        why_stopped,
+        brief_summary,
+        detailed_description,
+        REVIEWED_REASONS_V2,
+    )
     primary_area, matched_areas = assign_disease_areas(
         [str(c) for c in conditions if c],
         [str(m) for m in mesh_terms if m],
@@ -1024,10 +1046,8 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
         "overall_status": overall_status,
         "why_stopped": why_stopped,
 
-        "classification_label": cls.label,
-        "classification_reason": cls.reason,
-        "classification_confidence": cls.confidence,
-        "classification_evidence": cls.matched_evidence,
+        **cls_v2.as_record_fields(),
+        "classification_source": classification_source(cls_v2),
 
         "disease_area": primary_area,
         "disease_areas_matched": matched_areas,
@@ -1067,7 +1087,7 @@ def write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
         return
     fieldnames = list(rows[0].keys())
     with open(path, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
+        w = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         w.writeheader()
         for r in rows:
             w.writerow(r)
@@ -1124,6 +1144,26 @@ def main() -> None:
             record["classification_reason"] = ov.reason
             record["classification_confidence"] = ov.confidence
             record["classification_evidence"] = ov.matched_evidence
+            v2_reason_map = {
+                "SAFETY": "SAFETY",
+                "EFFICACY/FUTILITY": "EFFICACY_FUTILITY",
+                "REGULATORY": "REGULATORY",
+                "OPERATIONAL": "OPERATIONAL_OTHER",
+                "OTHER/UNKNOWN": "UNSPECIFIED",
+            }
+            v2_outcome_map = {
+                "BIOLOGICAL_FAILURE": "BIOLOGICAL_FAILURE",
+                "NON_BIOLOGICAL": "NON_BIOLOGICAL",
+                "UNCLEAR": "UNKNOWN",
+            }
+            record["classification_outcome_v2"] = v2_outcome_map.get(ov.label, "UNKNOWN")
+            record["classification_primary_reason_v2"] = v2_reason_map.get(
+                ov.reason, "UNSPECIFIED"
+            )
+            record["classification_secondary_reasons_v2"] = ""
+            record["classification_needs_review"] = ov.label == "UNCLEAR"
+            record["classification_version"] = CLASSIFIER_VERSION
+            record["classification_source"] = "MANUAL_NCT_OVERRIDE"
 
         all_records.append(record)
         if MAX_STUDIES_TOTAL > 0 and len(all_records) >= MAX_STUDIES_TOTAL:
@@ -1135,6 +1175,7 @@ def main() -> None:
         r for r in all_records
         if r.get("classification_label") == "BIOLOGICAL_FAILURE"
         and r.get("classification_confidence") in ("HIGH", "MEDIUM")
+        and r.get("classification_needs_review") is False
     ]
 
     ingest_changes = build_ingest_change_report(previous_records, all_records)
