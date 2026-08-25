@@ -1,0 +1,56 @@
+name: Extract audit batch 6
+
+on:
+  pull_request:
+    branches:
+      - audit/batch-3
+
+permissions:
+  contents: read
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: tmp/audit-batch6-extract-20260821
+
+      - name: Extract records 1001-1200
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          src = Path('data/all_oncology_stopped_trials.json')
+          rows = json.loads(src.read_text(encoding='utf-8'))
+          batch = rows[1000:1200]
+          keep = [
+              'nct_id', 'brief_title', 'overall_status', 'why_stopped',
+              'classification_label', 'classification_reason',
+              'classification_confidence', 'classification_evidence',
+              'disease_area', 'phases', 'lead_sponsor', 'conditions',
+              'intervention_names', 'last_update_post_date'
+          ]
+          out = [{k: r.get(k, '') for k in keep} for r in batch]
+          payload = {
+              'source': 'data/all_oncology_stopped_trials.json',
+              'source_record_start': 1001,
+              'source_record_end': 1200,
+              'count': len(out),
+              'records': out,
+          }
+          Path('data/audit_batch6_extract.json').write_text(
+              json.dumps(payload, ensure_ascii=False, indent=2),
+              encoding='utf-8'
+          )
+          assert len(out) == 200, len(out)
+          print(out[0]['nct_id'], out[-1]['nct_id'])
+          PY
+
+      - name: Upload extract
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-batch6-extract
+          path: data/audit_batch6_extract.json
+          if-no-files-found: error
