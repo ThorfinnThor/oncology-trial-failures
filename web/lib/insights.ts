@@ -1027,7 +1027,7 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     tables: [],
     links: [
       {
-        href: "/oncology-clinical-trial-failures",
+        href: "/failures/oncology",
         label: "Oncology clinical trial failures",
         text: "Review the oncology-specific dataset, definitions, and source-linked records.",
       },

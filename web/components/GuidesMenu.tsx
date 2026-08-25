@@ -7,7 +7,7 @@ export const GUIDE_LINKS = [
   { href: "/clinical-trial-failures", label: "Clinical trial failures" },
   { href: "/why-clinical-trials-fail", label: "Why trials fail" },
   { href: "/failed-clinical-trials", label: "Failed clinical trials" },
-  { href: "/oncology-clinical-trial-failures", label: "Oncology failures" },
+  { href: "/failures/oncology", label: "Oncology failures" },
   { href: "/terminated-clinical-trials", label: "Terminated trials" },
   { href: "/clinical-trial-futility", label: "Futility signals" },
   { href: "/about", label: "About and data trust" },

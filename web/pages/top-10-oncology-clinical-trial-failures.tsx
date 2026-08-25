@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         "For oncology, context matters especially strongly. Trials may stop because the competitive landscape changes, standard therapy evolves, a biomarker strategy is revised, or a sponsor prioritizes another program. That is why each row includes an example NCT record to verify before using the ranking in a report.",
       ],
       related: [
-        { href: "/oncology-clinical-trial-failures", label: "Oncology failure guide", text: "Understand oncology-specific stopped-trial patterns." },
+        { href: "/failures/oncology", label: "Oncology evidence hub", text: "Review V2 outcomes and source-linked oncology records." },
         { href: "/clinical-trial-futility", label: "Futility signals", text: "Focus on weak efficacy and failed endpoint language." },
         { href: "/explore?area=Oncology", label: "Explore oncology records", text: "Open the live database filtered to oncology." },
       ],
