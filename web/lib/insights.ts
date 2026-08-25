@@ -92,6 +92,15 @@ export type InsightStats = {
       href: string;
     }>;
   };
+  classificationV2: {
+    version: string;
+    resolved: number;
+    reviewGated: number;
+    outcomes: Record<string, number>;
+    primaryReasons: Record<string, number>;
+    assertionPrecision: number;
+    biologicalPrecision: number;
+  };
 };
 
 export type InsightSignalSlice = {
@@ -139,6 +148,176 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "classification-v2-clinical-trial-stop-reasons",
+    title: "Classification V2: a clearer map of why clinical trials stop",
+    metaDescription:
+      "How Clinical Trial Failures V2 adds a more granular stop-reason taxonomy, separates outcomes from causes, and strengthens the focus on biological signals.",
+    eyebrow: "Classification V2",
+    dek:
+      "V2 makes the database more useful for serious screening: more cause categories, a separate outcome layer, clearer review states, and a stronger distinction between biological failure signals and everything else.",
+    datePublished: "2026-08-25",
+    readingTime: "7 min read",
+    keyword: "clinical trial failure classification",
+    facts: [],
+    sections: [
+      {
+        heading: "A more precise classification layer",
+        body: [
+          "Clinical trial stop reasons are rarely written in a standard format. One registry record may describe futility, another may mention portfolio reprioritization, and another may say only that the sponsor made a decision. Classification V2 turns that uneven source language into a clearer analytical structure while keeping the original statement available for verification.",
+          "The main improvement is not a single new label. It is the separation of two questions: what kind of outcome does the record support, and what primary reason is actually stated? That distinction reduces the temptation to treat every stopped study as a biological failure.",
+        ],
+      },
+      {
+        heading: "A stronger focus on biological evidence",
+        body: [
+          "V2 keeps biological failure signals deliberately narrow. Explicit efficacy or futility language, safety or toxicity language, and unfavorable biological evidence that cannot be split cleanly between the two can support a biological outcome. A business decision, recruitment problem, funding constraint, or regulatory action remains separate even when it ends a development program.",
+          "The added biological-unspecified category matters. A source can support an unfavorable biological conclusion without saying whether efficacy or safety was decisive. V2 preserves that evidence without inventing a more specific explanation than the registry provides.",
+        ],
+      },
+      {
+        heading: "More categories for non-biological stops",
+        body: [
+          "The expanded taxonomy distinguishes recruitment, business strategy, funding, staffing and resources, protocol feasibility, supply and manufacturing, regulatory causes, external disruption, support withdrawal, and other operational reasons. Planned milestones and replacement transitions are also kept apart from failures.",
+          "This makes the database more useful in both directions. Analysts can isolate likely biological signals more confidently, while operational and strategy teams can study the non-biological reasons that account for much of the stopped-trial universe.",
+        ],
+      },
+      {
+        heading: "Decision-only language is not treated as a cause",
+        body: [
+          "Statements such as 'Sponsor decision' identify an actor and an action, but not the underlying reason. V2 records these as cause-not-stated rather than converting them into biological, operational, or strategic claims. An explicit corporate reprioritization can support business strategy; a bare corporate decision cannot.",
+          "The same principle applies to program-level actions. If the source says a program was discontinued but gives no causal explanation, the database can preserve the action without pretending to know why it happened.",
+        ],
+      },
+      {
+        heading: "Review-gated is a deliberate result",
+        body: [
+          "Some records contain no stop reason, only a status, a fragment, or language too ambiguous for a defensible causal label. Those records remain review-gated. This is a feature of the model: the database should show the boundary of its evidence instead of filling it with false precision.",
+          "New and changed records pass through the same rule set during future ingests. Repeated reviewed language can be reused consistently, while novel or insufficient text returns to the review inventory. The result is a classification system that can improve without silently changing the meaning of its categories.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/methods",
+        label: "How classification works",
+        text: "Review the evidence rules, safeguards, limitations, and update process behind the classifications.",
+      },
+      {
+        href: "/explore?bio=true",
+        label: "Explore biological failure signals",
+        text: "Open the database with the likely biological-signal filter applied.",
+      },
+      {
+        href: "/about",
+        label: "About and data trust",
+        text: "See the source, scope, intended use, and verification expectations for the database.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does Classification V2 label every stopped trial as a failure?",
+        answer:
+          "No. V2 separates biological failures, non-biological stops, mixed causes, non-failure transitions, cause-not-stated records, and review-gated unknowns.",
+      },
+      {
+        question: "What counts as a biological failure signal in V2?",
+        answer:
+          "The source must support efficacy or futility, safety or toxicity, or an unfavorable biological conclusion that cannot responsibly be split between efficacy and safety.",
+      },
+      {
+        question: "Will future ingests use the V2 taxonomy?",
+        answer:
+          "Yes. The classification rules and review safeguards run as part of the publication pipeline for new and changed records.",
+      },
+    ],
+  },
+  {
+    slug: "most-stopped-clinical-trials-are-not-biological-failures",
+    title: "Most stopped clinical trials are not biological failures",
+    metaDescription:
+      "A V2 analysis of stopped clinical trials showing the relative shares of biological failure, non-biological causes, mixed causes, transitions, and unknown records.",
+    eyebrow: "V2 database analysis",
+    dek:
+      "The largest lesson from the current dataset is not how often drugs fail. It is how much information is lost when every terminated, withdrawn, or suspended study is placed in the same bucket.",
+    datePublished: "2026-08-25",
+    readingTime: "8 min read",
+    keyword: "stopped clinical trials biological failure",
+    facts: [],
+    sections: [
+      {
+        heading: "Stopped status is the beginning of the analysis",
+        body: [
+          "ClinicalTrials.gov status tells us that a study was terminated, withdrawn, or suspended. It does not, by itself, tell us whether the intervention lacked efficacy, caused a safety problem, ran into recruitment constraints, lost funding, or was closed for a portfolio decision.",
+          "The V2 outcome layer makes that distinction visible. It asks what the published stop language supports before the record is counted as a biological failure signal. This turns the database from a list of stopped studies into a more useful screening map.",
+        ],
+      },
+      {
+        heading: "Biological signals are important, but they are the minority",
+        body: [
+          "The biological group combines three evidence patterns: efficacy or futility, safety, and biological evidence that is unfavorable but not specific enough to separate efficacy from safety. These are the records most relevant to a biological-failure screen, but they should still be checked against the primary registry statement.",
+          "The relative size of this group is a useful warning against casual language. A database of stopped trials is not the same thing as a database in which every drug failed. Biological evidence is one important slice of a much larger operational, strategic, and administrative landscape.",
+        ],
+      },
+      {
+        heading: "Recruitment is the largest named primary reason",
+        body: [
+          "Recruitment and accrual problems appear more often than any other named primary cause in the current classification. That has a very different interpretation from a failed endpoint. A study can be scientifically plausible and still become infeasible because too few eligible participants enroll or because enrollment is too slow.",
+          "Business strategy and funding are also large categories. These records can be highly relevant to portfolio analysis, but they should not be used as evidence that the underlying mechanism or treatment was disproven.",
+        ],
+      },
+      {
+        heading: "Cause not stated is not a hidden biological failure",
+        body: [
+          "A meaningful share of records reports a decision or program action without the reason behind it. These records are informative about what happened, but not about why. Treating them as operational or biological would create confidence that the source does not support.",
+          "Unknown and review-gated records require the same restraint. Some have missing stop text; others contain language that is too vague or novel for a reliable rule. They remain visible so users can distinguish missing evidence from a classified negative result.",
+        ],
+      },
+      {
+        heading: "How I would use the result",
+        body: [
+          "For a biological screen, start with the V2 biological outcome and then separate efficacy, safety, and unspecified biological evidence. Open the linked NCT record before using a classification in a research report, investment decision, or scientific conclusion.",
+          "For operational or portfolio research, work from the primary-reason categories instead. Recruitment, staffing, protocol feasibility, supply, funding, regulatory action, and business strategy answer different questions and should not be collapsed into one generic failure rate.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/explore",
+        label: "Explore the stopped-trial database",
+        text: "Search the underlying records and combine status, phase, disease area, sponsor, and reason filters.",
+      },
+      {
+        href: "/insights/classification-v2-clinical-trial-stop-reasons",
+        label: "Read about Classification V2",
+        text: "See how the outcome and primary-reason layers produce a more precise map of stopped studies.",
+      },
+      {
+        href: "/insights/terminated-clinical-trials-are-not-always-failures",
+        label: "Terminated does not always mean failed",
+        text: "Continue with the practical distinction between registry status and scientific failure.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Are most stopped clinical trials biological failures?",
+        answer:
+          "No. In the current V2 dataset, non-biological stops are the largest outcome group. Biological failure signals are a smaller, specifically supported subset.",
+      },
+      {
+        question: "Why is recruitment separate from biological failure?",
+        answer:
+          "Recruitment describes whether a study can enroll enough participants, not whether the intervention is efficacious or safe. It can stop an otherwise scientifically plausible trial.",
+      },
+      {
+        question: "Do unknown records count as non-biological?",
+        answer:
+          "No. Unknown means the available source text does not support a reliable outcome or cause. It is kept separate rather than treated as evidence for either side.",
+      },
+    ],
+  },
   {
     slug: "could-clinical-trial-betting-hedge-risk-for-patients",
     title: "Could clinical trial betting act as insurance for patients?",
@@ -1738,6 +1917,10 @@ function pctFromCounts(part: number, total: number): string {
   return `${((part / total) * 100).toFixed(1)}%`;
 }
 
+function pctFromRatio(value: number): string {
+  return `${(value * 100).toFixed(1)}%`;
+}
+
 function b(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
@@ -1749,6 +1932,201 @@ function insightDateTime(article: Pick<InsightArticle, "datePublished">): number
 
 export function sortInsightArticlesByDate<T extends Pick<InsightArticle, "datePublished" | "slug">>(articles: T[]): T[] {
   return [...articles].sort((a, b) => insightDateTime(b) - insightDateTime(a) || a.slug.localeCompare(b.slug));
+}
+
+function hydrateClassificationV2Article(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const v2 = stats.classificationV2;
+  const outcomes = v2.outcomes;
+  const reasons = v2.primaryReasons;
+  const biological = outcomes.BIOLOGICAL_FAILURE || 0;
+  const nonBiological = outcomes.NON_BIOLOGICAL || 0;
+  const mixed = outcomes.MIXED_CAUSES || 0;
+  const transition = outcomes.NON_FAILURE_TRANSITION || 0;
+  const causeNotStated = outcomes.CAUSE_NOT_STATED || 0;
+  const efficacy = reasons.EFFICACY_FUTILITY || 0;
+  const safety = reasons.SAFETY || 0;
+  const biologicalUnspecified = reasons.BIOLOGICAL_UNSPECIFIED || 0;
+
+  return {
+    ...article,
+    metaDescription: `Classification V${v2.version} maps ${n(stats.total)} stopped clinical trials with more granular causes, separate outcomes, and a stronger focus on ${n(biological)} biological signals.`,
+    facts: [
+      `Classification V${v2.version} is applied to all ${n(stats.total)} records in the current published dataset.`,
+      `${n(v2.resolved)} records have a supported final classification; ${n(v2.reviewGated)} remain review-gated rather than being forced into a cause.`,
+      `${n(biological)} records support a biological failure outcome: ${n(efficacy)} efficacy/futility, ${n(safety)} safety, and ${n(biologicalUnspecified)} biological-unspecified signals.`,
+      `${n(nonBiological)} records support a non-biological outcome, while ${n(mixed)} contain explicit mixed causes.`,
+      `The current audit benchmark reports ${pctFromRatio(v2.assertionPrecision)} assertion precision and ${pctFromRatio(v2.biologicalPrecision)} biological precision.`,
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "A stronger focus on biological evidence") {
+        return {
+          ...section,
+          body: [
+            `V2 keeps biological failure signals deliberately narrow. In the current snapshot, ${n(biological)} of ${n(stats.total)} records support a biological outcome. That group contains ${n(efficacy)} efficacy or futility signals, ${n(safety)} safety signals, and ${n(biologicalUnspecified)} unfavorable biological signals that cannot responsibly be split between the two.`,
+            "The biological-unspecified category matters. A source can support an unfavorable biological conclusion without saying whether efficacy or safety was decisive. V2 preserves that evidence without inventing a more specific explanation than the registry provides.",
+          ],
+        };
+      }
+      if (section.heading === "More categories for non-biological stops") {
+        return {
+          ...section,
+          body: [
+            `The expanded taxonomy separates ${n(reasons.RECRUITMENT || 0)} recruitment records, ${n(reasons.BUSINESS_STRATEGY || 0)} business-strategy records, ${n(reasons.FUNDING || 0)} funding records, and additional staffing, protocol, supply, regulatory, external-disruption, support, and operational causes. ${n(transition)} records are preserved as non-failure transitions rather than being folded into a failure category.`,
+            "This makes the database more useful in both directions. Analysts can isolate likely biological signals more confidently, while operational and strategy teams can study the non-biological reasons that account for much of the stopped-trial universe.",
+          ],
+        };
+      }
+      if (section.heading === "Decision-only language is not treated as a cause") {
+        return {
+          ...section,
+          body: [
+            `Statements such as 'Sponsor decision' identify an actor and an action, but not the underlying reason. V2 records ${n(reasons.DECISION_WITHOUT_STATED_CAUSE || 0)} such cases as decision-without-stated-cause instead of converting them into biological, operational, or strategic claims. An explicit corporate reprioritization can support business strategy; a bare corporate decision cannot.`,
+            `The same principle applies to program-level actions. If the source says a program was discontinued but gives no causal explanation, the database preserves the action without pretending to know why it happened. In total, ${n(causeNotStated)} records currently sit in the cause-not-stated outcome group.`,
+          ],
+        };
+      }
+      if (section.heading === "Review-gated is a deliberate result") {
+        return {
+          ...section,
+          body: [
+            `${n(v2.reviewGated)} records currently contain no stop reason, only a status, a fragment, or language too ambiguous for a defensible causal label. Those records remain review-gated. This is a feature of the model: the database shows the boundary of its evidence instead of filling it with false precision.`,
+            "New and changed records pass through the same rule set during future ingests. Repeated reviewed language can be reused consistently, while novel or insufficient text returns to the review inventory. The result is a classification system that can improve without silently changing the meaning of its categories.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "V2 outcome map",
+        columns: ["Outcome", "Records and share"],
+        rows: [
+          ["Non-biological stop", `${n(nonBiological)} (${pctFromCounts(nonBiological, stats.total)})`],
+          ["Biological failure", `${n(biological)} (${pctFromCounts(biological, stats.total)})`],
+          ["Cause not stated", `${n(causeNotStated)} (${pctFromCounts(causeNotStated, stats.total)})`],
+          ["Non-failure transition", `${n(transition)} (${pctFromCounts(transition, stats.total)})`],
+          ["Mixed causes", `${n(mixed)} (${pctFromCounts(mixed, stats.total)})`],
+          ["Unknown / review-gated", `${n(v2.reviewGated)} (${pctFromCounts(v2.reviewGated, stats.total)})`],
+        ],
+      },
+      {
+        heading: "Biological failure signal detail",
+        columns: ["Primary reason", "Records"],
+        rows: [
+          ["Efficacy / futility", n(efficacy)],
+          ["Safety", n(safety)],
+          ["Biological, unspecified", n(biologicalUnspecified)],
+        ],
+      },
+      {
+        heading: "Selected expanded primary reasons",
+        columns: ["Primary reason", "Records"],
+        rows: [
+          ["Recruitment", n(reasons.RECRUITMENT || 0)],
+          ["Business strategy", n(reasons.BUSINESS_STRATEGY || 0)],
+          ["Funding", n(reasons.FUNDING || 0)],
+          ["Staffing / resources", n(reasons.STAFFING_RESOURCES || 0)],
+          ["Protocol feasibility", n(reasons.PROTOCOL_FEASIBILITY || 0)],
+          ["Supply / manufacturing", n(reasons.SUPPLY_MANUFACTURING || 0)],
+          ["Regulatory", n(reasons.REGULATORY || 0)],
+        ],
+      },
+    ],
+  };
+}
+
+function hydrateStoppedVsBiologicalArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const v2 = stats.classificationV2;
+  const outcomes = v2.outcomes;
+  const reasons = v2.primaryReasons;
+  const biological = outcomes.BIOLOGICAL_FAILURE || 0;
+  const nonBiological = outcomes.NON_BIOLOGICAL || 0;
+  const mixed = outcomes.MIXED_CAUSES || 0;
+  const transition = outcomes.NON_FAILURE_TRANSITION || 0;
+  const causeNotStated = outcomes.CAUSE_NOT_STATED || 0;
+  const efficacy = reasons.EFFICACY_FUTILITY || 0;
+  const safety = reasons.SAFETY || 0;
+  const biologicalUnspecified = reasons.BIOLOGICAL_UNSPECIFIED || 0;
+
+  return {
+    ...article,
+    metaDescription: `Only ${pctFromCounts(biological, stats.total)} of ${n(stats.total)} stopped clinical trial records support a biological failure outcome in the current V2 dataset. See the full cause breakdown.`,
+    facts: [
+      `The current database contains ${n(stats.total)} terminated, withdrawn, and suspended trial records.`,
+      `${n(nonBiological)} records, or ${pctFromCounts(nonBiological, stats.total)}, support a non-biological outcome.`,
+      `${n(biological)} records, or ${pctFromCounts(biological, stats.total)}, support a biological failure outcome.`,
+      `Recruitment is the largest named primary reason with ${n(reasons.RECRUITMENT || 0)} records.`,
+      `${n(v2.reviewGated)} records remain unknown and review-gated rather than being counted as either biological or non-biological.`,
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "Biological signals are important, but they are the minority") {
+        return {
+          ...section,
+          body: [
+            `${n(biological)} records, or ${pctFromCounts(biological, stats.total)} of the current stopped-trial dataset, support a biological failure outcome. Within that group, ${n(efficacy)} are efficacy or futility signals, ${n(safety)} are safety signals, and ${n(biologicalUnspecified)} support an unfavorable biological result without a defensible efficacy-versus-safety split.`,
+            `The relative size of this group is a useful warning against casual language. ${n(nonBiological)} records support a non-biological outcome, more than six times the biological count. A database of stopped trials is not the same thing as a database in which every drug failed.`,
+          ],
+        };
+      }
+      if (section.heading === "Recruitment is the largest named primary reason") {
+        return {
+          ...section,
+          body: [
+            `Recruitment and accrual problems account for ${n(reasons.RECRUITMENT || 0)} records, making recruitment the largest named primary reason in the current V2 snapshot. That has a very different interpretation from a failed endpoint. A study can be scientifically plausible and still become infeasible because too few eligible participants enroll or because enrollment is too slow.`,
+            `Business strategy contributes ${n(reasons.BUSINESS_STRATEGY || 0)} records and funding contributes ${n(reasons.FUNDING || 0)}. These records can be highly relevant to portfolio analysis, but they should not be used as evidence that the underlying mechanism or treatment was disproven.`,
+          ],
+        };
+      }
+      if (section.heading === "Cause not stated is not a hidden biological failure") {
+        return {
+          ...section,
+          body: [
+            `${n(causeNotStated)} records report a decision or program action without the reason behind it. These records are informative about what happened, but not about why. Treating them as operational or biological would create confidence that the source does not support.`,
+            `${n(v2.reviewGated)} unknown records require the same restraint. Some have missing stop text; others contain language that is too vague or novel for a reliable rule. They remain visible so users can distinguish missing evidence from a classified negative result.`,
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "What the V2 outcomes show",
+        columns: ["Outcome", "Records and share"],
+        rows: [
+          ["Non-biological stop", `${n(nonBiological)} (${pctFromCounts(nonBiological, stats.total)})`],
+          ["Unknown / review-gated", `${n(v2.reviewGated)} (${pctFromCounts(v2.reviewGated, stats.total)})`],
+          ["Biological failure", `${n(biological)} (${pctFromCounts(biological, stats.total)})`],
+          ["Cause not stated", `${n(causeNotStated)} (${pctFromCounts(causeNotStated, stats.total)})`],
+          ["Non-failure transition", `${n(transition)} (${pctFromCounts(transition, stats.total)})`],
+          ["Mixed causes", `${n(mixed)} (${pctFromCounts(mixed, stats.total)})`],
+        ],
+      },
+      {
+        heading: "Biological signal composition",
+        columns: ["Signal", "Records and biological share"],
+        rows: [
+          ["Efficacy / futility", `${n(efficacy)} (${pctFromCounts(efficacy, biological)})`],
+          ["Safety", `${n(safety)} (${pctFromCounts(safety, biological)})`],
+          ["Biological, unspecified", `${n(biologicalUnspecified)} (${pctFromCounts(biologicalUnspecified, biological)})`],
+        ],
+      },
+      {
+        heading: "Largest named primary reasons",
+        columns: ["Primary reason", "Records"],
+        rows: [
+          ["Recruitment", n(reasons.RECRUITMENT || 0)],
+          ["Business strategy", n(reasons.BUSINESS_STRATEGY || 0)],
+          ["Funding", n(reasons.FUNDING || 0)],
+          ["Efficacy / futility", n(efficacy)],
+          ["Staffing / resources", n(reasons.STAFFING_RESOURCES || 0)],
+          ["Protocol feasibility", n(reasons.PROTOCOL_FEASIBILITY || 0)],
+          ["Supply / manufacturing", n(reasons.SUPPLY_MANUFACTURING || 0)],
+          ["Safety", n(safety)],
+          ["Regulatory", n(reasons.REGULATORY || 0)],
+        ],
+      },
+    ],
+  };
 }
 
 function hydrateTerminatedArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
@@ -2747,6 +3125,12 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "classification-v2-clinical-trial-stop-reasons") {
+    return hydrateClassificationV2Article(article, stats);
+  }
+  if (article.slug === "most-stopped-clinical-trials-are-not-biological-failures") {
+    return hydrateStoppedVsBiologicalArticle(article, stats);
+  }
   if (article.slug === "could-clinical-trial-betting-hedge-risk-for-patients") {
     return hydratePatientHedgeArticle(article, stats);
   }

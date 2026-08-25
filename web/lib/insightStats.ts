@@ -1,7 +1,7 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
 import type { InsightStats } from "./insights";
 import { trialPath } from "./seoUrls";
-import { loadIndexServer } from "./server-data";
+import { loadIndexServer, readJsonServerAsset } from "./server-data";
 import type { TrialIndexRow } from "./types";
 
 function countBy(rows: TrialIndexRow[], getValue: (row: TrialIndexRow) => string): Record<string, number> {
@@ -189,7 +189,10 @@ export function bucketCount(stats: Pick<InsightStats, "buckets">, bucket: string
 }
 
 export async function buildInsightStats(): Promise<InsightStats> {
-  const rows = await loadIndexServer();
+  const [rows, meta] = await Promise.all([
+    loadIndexServer(),
+    readJsonServerAsset<any>("public/dataset_meta.json"),
+  ]);
   const statuses = countBy(rows, (row) => (row.overall_status || "").toUpperCase());
   const buckets = countBy(rows, (row) => reasonBucket(row).toUpperCase());
   const topAreas = countBy(rows, (row) => row.disease_area || "Other");
@@ -212,6 +215,10 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const suspendedRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "SUSPENDED");
   const suspendedScientificCount = suspendedRows.filter(isLikelyScientificFailure).length;
   const latestUpdates = latestUpdateSlice(rows);
+  const classificationV2 = meta?.classification_v2 || {};
+  const v2Outcomes = classificationV2.outcomes || {};
+  const v2Quality = classificationV2.quality || {};
+  const reviewGated = classificationV2.needs_review || v2Outcomes.UNKNOWN || 0;
 
   return {
     total: rows.length,
@@ -256,5 +263,14 @@ export async function buildInsightStats(): Promise<InsightStats> {
     diseaseAreaSignalShares: diseaseAreaSignalShares(rows),
     phaseSignalComparison: phaseSignalComparison(rows),
     latestUpdates,
+    classificationV2: {
+      version: classificationV2.version || "2.7.0",
+      resolved: Math.max(0, rows.length - reviewGated),
+      reviewGated,
+      outcomes: v2Outcomes,
+      primaryReasons: classificationV2.primary_reasons || {},
+      assertionPrecision: v2Quality.assertion_precision || 0,
+      biologicalPrecision: v2Quality.biological_precision || 0,
+    },
   };
 }
