@@ -40,6 +40,22 @@ export type HubStats = {
   topPhases: Array<{ label: string; count: number }>;
 };
 
+export type SponsorEvidenceStats = {
+  total: number;
+  biologicalCount: number;
+  nonBiologicalCount: number;
+  unresolvedCount: number;
+  mixedCount: number;
+  transitionCount: number;
+  otherOutcomeCount: number;
+  biologicalShare: number;
+  outcomeBreakdown: Array<{ label: string; count: number }>;
+  topResolvedReasons: Array<{ label: string; count: number }>;
+  topAreas: Array<{ label: string; count: number }>;
+  topPhases: Array<{ label: string; count: number }>;
+  latestRegistryUpdate: string;
+};
+
 const AREA_MIN_COUNT = 10;
 const AREA_LIMIT = 50;
 const SPONSOR_MIN_COUNT = 10;
@@ -49,6 +65,40 @@ const NON_CAUSAL_REASON_BUCKETS = new Set(["DECISION ONLY", "PROGRAM STOP ONLY"]
 
 function norm(value: string | undefined): string {
   return (value || "").replace(/\s+/g, " ").trim();
+}
+
+function titleCaseTaxonomy(value: string): string {
+  const labels: Record<string, string> = {
+    BIOLOGICAL_FAILURE: "Likely biological failure",
+    NON_BIOLOGICAL: "Non-biological stop",
+    NON_FAILURE_TRANSITION: "Non-failure transition",
+    MIXED_CAUSES: "Mixed causes",
+    UNRESOLVED: "Unresolved / review required",
+    EFFICACY_FUTILITY: "Efficacy / futility",
+    BIOLOGICAL_UNSPECIFIED: "Biological signal, unspecified",
+    BUSINESS_STRATEGY: "Business / strategy",
+    STAFFING_RESOURCES: "Staffing / resources",
+    EXTERNAL_DISRUPTION: "External disruption",
+  };
+  if (labels[value]) return labels[value];
+  return value
+    .toLowerCase()
+    .split("_")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function resolvedOutcome(row: TrialIndexRow): string {
+  const finalOutcome = norm(row.classification_final_outcome).toUpperCase();
+  if (finalOutcome) return finalOutcome;
+  const v2Outcome = norm(row.classification_outcome_v2).toUpperCase();
+  if (v2Outcome) return v2Outcome;
+  return isLikelyScientificFailure(row) ? "BIOLOGICAL_FAILURE" : "UNRESOLVED";
+}
+
+function resolvedReason(row: TrialIndexRow): string {
+  return norm(row.classification_final_category || row.classification_primary_reason_v2).toUpperCase();
 }
 
 function countBy(rows: TrialIndexRow[], getValue: (row: TrialIndexRow) => string): Array<{ label: string; count: number }> {
@@ -107,6 +157,63 @@ export function hubStats(rows: TrialIndexRow[]): HubStats {
     topSponsors: countBy(rows, (row) => row.lead_sponsor || "Unknown sponsor").slice(0, 5),
     topAreas: countBy(rows, (row) => row.disease_area || "Other").slice(0, 5),
     topPhases: countBy(rows, (row) => phaseLabel(parsePhases(row.phases || "")[0] || "UNKNOWN")).slice(0, 5),
+  };
+}
+
+export function sponsorEvidenceStats(rows: TrialIndexRow[]): SponsorEvidenceStats {
+  const outcomes = countBy(rows, (row) => titleCaseTaxonomy(resolvedOutcome(row)));
+  const outcomeCount = (outcome: string) => rows.filter((row) => resolvedOutcome(row) === outcome).length;
+  const knownOutcomes = new Set([
+    "BIOLOGICAL_FAILURE",
+    "NON_BIOLOGICAL",
+    "UNRESOLVED",
+    "MIXED_CAUSES",
+    "NON_FAILURE_TRANSITION",
+  ]);
+  const topResolvedReasons = countBy(
+    rows.filter((row) => {
+      const outcome = resolvedOutcome(row);
+      const reason = resolvedReason(row);
+      return outcome !== "UNRESOLVED" && Boolean(reason) && !reason.startsWith("UNRESOLVED_");
+    }),
+    (row) => titleCaseTaxonomy(resolvedReason(row))
+  ).slice(0, 6);
+  const latestRegistryUpdate = rows
+    .map((row) => norm(row.last_update_post_date || row.date).slice(0, 10))
+    .filter(Boolean)
+    .sort()
+    .at(-1) || "Not available";
+  const biologicalCount = outcomeCount("BIOLOGICAL_FAILURE");
+
+  return {
+    total: rows.length,
+    biologicalCount,
+    nonBiologicalCount: outcomeCount("NON_BIOLOGICAL"),
+    unresolvedCount: outcomeCount("UNRESOLVED"),
+    mixedCount: outcomeCount("MIXED_CAUSES"),
+    transitionCount: outcomeCount("NON_FAILURE_TRANSITION"),
+    otherOutcomeCount: rows.filter((row) => !knownOutcomes.has(resolvedOutcome(row))).length,
+    biologicalShare: rows.length ? (biologicalCount / rows.length) * 100 : 0,
+    outcomeBreakdown: outcomes,
+    topResolvedReasons,
+    topAreas: countBy(rows, (row) => row.disease_area || "Other").slice(0, 6),
+    topPhases: countBy(rows, (row) => phaseLabel(parsePhases(row.phases || "")[0] || "UNKNOWN")).slice(0, 6),
+    latestRegistryUpdate,
+  };
+}
+
+function sponsorHubFromGroup(label: string, memberRows: TrialIndexRow[]): SponsorHub {
+  const stats = sponsorEvidenceStats(memberRows);
+  const slug = slugify(label);
+  return {
+    slug,
+    label,
+    title: compactSeoTitle(`${label} stopped clinical trials`, `${stats.biologicalCount.toLocaleString("en-US")} biological signals`),
+    h1: `${label}: stopped clinical trials and failure signals`,
+    description: compactSeoDescription(`Analyze ${memberRows.length.toLocaleString("en-US")} stopped ClinicalTrials.gov records attributed to ${label}. V2 separates ${stats.biologicalCount.toLocaleString("en-US")} likely biological signals from non-biological and unresolved outcomes.`),
+    path: `/sponsor/${slug}`,
+    total: memberRows.length,
+    rows: memberRows,
   };
 }
 
@@ -192,18 +299,7 @@ export function buildSponsorHubs(rows: TrialIndexRow[]): SponsorHub[] {
     .slice(0, SPONSOR_LIMIT)
     .map((sponsor) => {
       const memberRows = rows.filter((row) => (row.lead_sponsor || "") === sponsor.label);
-      const stats = hubStats(memberRows);
-      const slug = slugify(sponsor.label);
-      return {
-        slug,
-        label: sponsor.label,
-        title: compactSeoTitle(sponsor.label, `${sponsor.count.toLocaleString("en-US")} stopped clinical trials`),
-        h1: `${sponsor.label} clinical trial failures`,
-        description: compactSeoDescription(`${sponsor.label} has ${sponsor.count.toLocaleString("en-US")} stopped trials, including ${stats.scientificCount.toLocaleString("en-US")} likely biological signals. Explore phases, disease areas, and source records.`),
-        path: `/sponsor/${slug}`,
-        total: sponsor.count,
-        rows: memberRows,
-      };
+      return sponsorHubFromGroup(sponsor.label, memberRows);
     })
     .filter((hub, index, arr) => hub.slug && arr.findIndex((x) => x.slug === hub.slug) === index);
 }
@@ -213,7 +309,14 @@ export function findFailureHub(rows: TrialIndexRow[], slug: string): SeoHub | nu
 }
 
 export function findSponsorHub(rows: TrialIndexRow[], slug: string): SponsorHub | null {
-  return buildSponsorHubs(rows).find((hub) => hub.slug === slug) || null;
+  const sponsor = countBy(rows, (row) => row.lead_sponsor || "Unknown sponsor")
+    .filter((item) => item.count >= SPONSOR_MIN_COUNT && item.label !== "Unknown sponsor")
+    .slice(0, SPONSOR_LIMIT)
+    .find((item) => slugify(item.label) === slug);
+  if (!sponsor) return null;
+
+  const memberRows = rows.filter((row) => (row.lead_sponsor || "") === sponsor.label);
+  return sponsorHubFromGroup(sponsor.label, memberRows);
 }
 
 export function trialListItem(row: TrialIndexRow) {
