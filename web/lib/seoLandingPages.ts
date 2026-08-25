@@ -98,7 +98,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
     related: [
       { href: "/why-clinical-trials-fail", label: "Why clinical trials fail", text: "Understand common failure categories." },
       { href: "/failed-clinical-trials", label: "Failed clinical trials", text: "Review how failure language appears in source records." },
-      { href: "/oncology-clinical-trial-failures", label: "Oncology trial failures", text: "Focus on oncology-specific failure patterns." },
+      { href: "/failures/oncology", label: "Oncology trial failures", text: "Review V2 outcomes and source-linked oncology records." },
     ],
     dataInsights: {
       heading: "What the current stopped-trial dataset shows",
@@ -670,16 +670,16 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
 
   clinicalTrialFutility: {
     slug: "/clinical-trial-futility",
-    title: "Clinical trial futility | Search 1,096 efficacy and futility signals",
+    title: "Clinical trial futility explained | Meaning and interpretation",
     metaDescription:
-      "Learn what clinical trial futility means and search 1,096 efficacy/futility signals with weak efficacy, lack of benefit, and failed endpoint language.",
+      "Learn what clinical trial futility means, how interim analyses inform stopping decisions, and how to interpret futility without overstating the evidence.",
     eyebrow: "Clinical trial futility",
-    h1: "Clinical trial futility: search weak efficacy and failed endpoint signals",
+    h1: "Clinical trial futility: what it means and how to interpret it",
     lede:
       "Clinical trial futility usually means the accumulating evidence suggests a study is unlikely to meet its endpoint or show sufficient benefit. Futility stops are among the clearest registry signals of likely biological or efficacy failure.",
     quickAnswer:
-      "Clinical trial futility usually means the available data suggest a study is unlikely to show the planned treatment effect. In the current stopped-trial dataset, 1,096 records fall into the efficacy/futility bucket, making this one of the clearest scientific-failure signals to review.",
-    primaryCta: { href: "/explore?q=futility", label: "Search futility records" },
+      "Clinical trial futility usually means the available data suggest a study is unlikely to achieve its planned objective. It can support an early stopping decision, but its meaning depends on the endpoint, interim-analysis rules, population, dose, and wider trial context.",
+    primaryCta: { href: "/failures/futility", label: "Open futility evidence hub" },
     secondaryCta: { href: "/why-clinical-trials-fail", label: "Why trials fail" },
     keyPoints: [
       "Futility can indicate a trial is unlikely to meet its endpoint.",
@@ -711,7 +711,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
     ],
     related: [
       { href: "/why-clinical-trials-fail", label: "Why trials fail", text: "Compare futility with other stop reasons." },
-      { href: "/clinical-trial-failures", label: "Clinical trial failures", text: "Search the broader failure database." },
+      { href: "/failures/futility", label: "Futility evidence hub", text: "Review V2 outcomes and source-linked futility records." },
       { href: "/outliers", label: "Outliers", text: "Find over-represented futility patterns." },
     ],
     dataInsights: {

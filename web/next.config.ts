@@ -28,6 +28,11 @@ const nextConfig = {
         destination: "/methods",
         permanent: true,
       },
+      {
+        source: "/oncology-clinical-trial-failures",
+        destination: "/failures/oncology",
+        permanent: true,
+      },
     ];
   },
 };
