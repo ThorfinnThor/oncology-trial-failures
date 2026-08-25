@@ -98,6 +98,12 @@ export type InsightStats = {
     reviewGated: number;
     outcomes: Record<string, number>;
     primaryReasons: Record<string, number>;
+    biologicalSignals: InsightSignalSlice;
+    terminated: {
+      outcomes: Record<string, number>;
+      primaryReasons: Record<string, number>;
+      biologicalSignals: InsightSignalSlice;
+    };
     assertionPrecision: number;
     biologicalPrecision: number;
   };

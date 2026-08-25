@@ -60,6 +60,21 @@ function isEnrollmentSignal(row: TrialIndexRow): boolean {
   return /enroll|recruit|accrual|accrue|slow accrual|insufficient accrual|unable to recruit|poor recruitment/.test(text);
 }
 
+function v2Outcome(row: TrialIndexRow): string {
+  const finalOutcome = (row.classification_final_outcome || "").toUpperCase().trim();
+  if (finalOutcome && finalOutcome !== "UNRESOLVED") return finalOutcome;
+  return (row.classification_outcome_v2 || "UNKNOWN").toUpperCase().trim() || "UNKNOWN";
+}
+
+function v2PrimaryReason(row: TrialIndexRow): string {
+  const reason = (
+    row.classification_final_category ||
+    row.classification_primary_reason_v2 ||
+    "UNSPECIFIED"
+  ).toUpperCase().trim() || "UNSPECIFIED";
+  return reason.startsWith("UNRESOLVED_") ? "UNSPECIFIED" : reason;
+}
+
 function signalSlice(rows: TrialIndexRow[]) {
   return {
     total: rows.length,
@@ -210,10 +225,13 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const operationalRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OPERATIONAL");
   const regulatoryRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "REGULATORY");
   const unknownRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OTHER/UNKNOWN");
+  const terminatedRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "TERMINATED");
   const withdrawnRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "WITHDRAWN");
   const withdrawnScientificCount = withdrawnRows.filter(isLikelyScientificFailure).length;
   const suspendedRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "SUSPENDED");
   const suspendedScientificCount = suspendedRows.filter(isLikelyScientificFailure).length;
+  const v2BiologicalRows = rows.filter((row) => v2Outcome(row) === "BIOLOGICAL_FAILURE");
+  const terminatedV2BiologicalRows = terminatedRows.filter((row) => v2Outcome(row) === "BIOLOGICAL_FAILURE");
   const latestUpdates = latestUpdateSlice(rows);
   const classificationV2 = meta?.classification_v2 || {};
   const v2Outcomes = classificationV2.outcomes || {};
@@ -269,6 +287,12 @@ export async function buildInsightStats(): Promise<InsightStats> {
       reviewGated,
       outcomes: v2Outcomes,
       primaryReasons: classificationV2.primary_reasons || {},
+      biologicalSignals: signalSlice(v2BiologicalRows),
+      terminated: {
+        outcomes: countBy(terminatedRows, v2Outcome),
+        primaryReasons: countBy(terminatedRows, v2PrimaryReason),
+        biologicalSignals: signalSlice(terminatedV2BiologicalRows),
+      },
       assertionPrecision: v2Quality.assertion_precision || 0,
       biologicalPrecision: v2Quality.biological_precision || 0,
     },
