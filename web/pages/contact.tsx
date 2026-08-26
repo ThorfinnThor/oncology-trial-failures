@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import { ORGANIZATION_ID } from "@/lib/siteIdentity";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "Contact | Clinical Trial Failures";
@@ -27,6 +28,9 @@ export default function ContactPage() {
         "@type": "WebSite",
         name: "Clinical Trial Failures",
         url: SITE_URL,
+      },
+      mainEntity: {
+        "@id": ORGANIZATION_ID,
       },
     },
     {

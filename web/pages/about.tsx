@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import { CONTACT_EMAIL, ORGANIZATION_ID } from "@/lib/siteIdentity";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "About Clinical Trial Failures | Source, scope, and data trust";
@@ -22,6 +23,9 @@ export default function AboutPage() {
         "@type": "WebSite",
         name: "Clinical Trial Failures",
         url: SITE_URL,
+      },
+      mainEntity: {
+        "@id": ORGANIZATION_ID,
       },
     },
     {
@@ -81,6 +85,25 @@ export default function AboutPage() {
               search terminated, suspended, and withdrawn records and compare likely stop-reason signals such as
               efficacy, futility, safety, operational, enrollment, funding, regulatory, and other/unknown reasons.
             </p>
+
+            <section style={{ marginTop: 24 }}>
+              <h2>Organization identity</h2>
+              <p>
+                Clinical Trial Failures is the name used for this research-support website and database at{" "}
+                <Link className="link" href="/">
+                  clinicaltrialfailures.com
+                </Link>
+                . The website organizes public registry records for research and analytical review; it is not
+                ClinicalTrials.gov, a clinical trial sponsor, a regulator, or a medical provider.
+              </p>
+              <p style={{ marginTop: 10 }}>
+                Questions about the website, its data, or corrections can be sent to{" "}
+                <a className="link" href={`mailto:${CONTACT_EMAIL}`}>
+                  {CONTACT_EMAIL}
+                </a>
+                .
+              </p>
+            </section>
 
             <section style={{ marginTop: 24 }}>
               <h2>Primary source</h2>

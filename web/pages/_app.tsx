@@ -6,6 +6,7 @@ import "@/styles/globals.css";
 
 import { CookieBanner } from "@/components/CookieBanner";
 import { GoogleAnalytics } from "@/components/GoogleAnalytics";
+import { organizationJsonLd } from "@/lib/siteIdentity";
 
 const DEFAULT_TITLE = "Clinical Trial Failures";
 const DEFAULT_DESCRIPTION =
@@ -37,6 +38,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="robots" content="index,follow" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={OG_IMAGE} />
+        <script
+          id="organization-json-ld"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
       </Head>
 
       <GoogleAnalytics />

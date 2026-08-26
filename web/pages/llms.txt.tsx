@@ -11,6 +11,9 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const content =
     `# Clinical Trial Failures\n\n` +
     `Clinical Trial Failures is a ClinicalTrials.gov-derived research database for studying terminated, suspended, and withdrawn clinical trials.\n\n` +
+    `## Organization and service\n\n` +
+    `Clinical Trial Failures is the name of the research-support website and database published at ${INSIGHTS_BASE_URL}. It is not ClinicalTrials.gov, a clinical trial sponsor, a regulator, or a medical provider.\n\n` +
+    `The website provides free, no-account search access to stopped ClinicalTrials.gov records classified by registered stop-reason language. Contact for data corrections and website questions: contact@clinicaltrialfailures.com.\n\n` +
     `## Best pages for AI assistants\n\n` +
     `- Database explorer: ${INSIGHTS_BASE_URL}/explore\n` +
     `- Methods and source notes: ${INSIGHTS_BASE_URL}/methods\n` +

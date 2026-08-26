@@ -5,13 +5,14 @@ import type { GetStaticProps } from "next";
 import PrimaryNav from "@/components/PrimaryNav";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { trialPath } from "@/lib/seoUrls";
+import { databaseServiceJsonLd, ORGANIZATION_ID } from "@/lib/siteIdentity";
 import type { TrialIndexRow } from "@/lib/types";
 
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "Clinical Trial Failures V2 | Evidence-classified trial stops";
+const TITLE = "Clinical Trial Failure Database | Stop-reason evidence";
 const DESCRIPTION =
-  "Search 23,000+ stopped clinical trials with V2 evidence classification. Find efficacy, futility, safety, recruitment, business, funding, and regulatory stop signals linked to ClinicalTrials.gov.";
+  "Search a ClinicalTrials.gov-derived database of terminated, suspended, and withdrawn trials, classified by registered stop reason and linked to source records.";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 type SampleTrial = {
@@ -225,10 +226,11 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
       dateModified: stats.updatedIso,
       version: v2.version,
       isAccessibleForFree: true,
-      creator: { "@type": "Organization", name: SITE_NAME },
+      creator: { "@id": ORGANIZATION_ID },
       measurementTechnique: "Audited rule-based semantic classification with explicit review gating",
       variableMeasured: ["trial status", "clinical phase", "sponsor", "disease area", "registered stop reason", "classification outcome", "classification reason"],
     },
+    databaseServiceJsonLd,
   ];
 
   return (
@@ -273,9 +275,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   <span className="v2ReleaseDivider" aria-hidden="true" />
                   <span>{compactNumber(v2.resolved)} resolved records</span>
                 </div>
-                <h1 id="v2-hero-title">Clinical trial stops,<span>reclassified.</span></h1>
+                <h1 id="v2-hero-title">Clinical trial failure database, <span>classified by stop reason.</span></h1>
                 <p className="v2HeroLede">
-                  A searchable evidence layer for terminated, suspended, and withdrawn trials. Separate likely biological failure signals from recruitment, funding, strategy, and other non-biological causes.
+                  Clinical Trial Failures gives researchers and analysts a searchable database of terminated, suspended, and withdrawn ClinicalTrials.gov records. It separates likely biological failure signals from recruitment, funding, strategy, and other non-biological causes.
                 </p>
 
                 <form className="v2Search" action="/explore" method="get" role="search">
