@@ -2,8 +2,8 @@
   "schema_version": 1,
   "classifier_version": "2.1.0",
   "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
-  "entry_count": 2375,
-  "manual_entry_count": 0,
+  "entry_count": 2381,
+  "manual_entry_count": 6,
   "review_rows_excluded": 346,
   "conflict_count": 9,
   "conflicts": [
@@ -245,6 +245,123 @@
     }
   ],
   "entries": {
+    "76e2a88525bacb988e39": {
+      "normalized_text": "dose limiting tox is observed. study put on full clinical hold.",
+      "example_text": "Dose limiting tox is observed. Study put on full clinical hold.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [
+        "REGULATORY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02372240"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Dose-limiting toxicity is the stated medical cause; the clinical hold is retained as a secondary regulatory action.",
+      "reviewed_at": "2026-08-26"
+    },
+    "281a35c394f3eaded0aa": {
+      "normalized_text": "original investigator left the nih and the primary outcome was not reached",
+      "example_text": "Original investigator left the NIH and the primary outcome was not reached",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "STAFFING_RESOURCES",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01675141"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "The investigator departure is the explicit cause. The outcome wording does not establish an adverse efficacy result and is treated as a consequence of early termination.",
+      "reviewed_at": "2026-08-26"
+    },
+    "9b44b586c2107af8d3e7": {
+      "normalized_text": "poor accrual and response less than expected on interim analysis",
+      "example_text": "poor accrual and response less than expected on interim analysis",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00337259"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "The source states both poor accrual and a below-expected interim response, supporting mixed operational and biological causes.",
+      "reviewed_at": "2026-08-26"
+    },
+    "bde5ee7f7b43202d3a7f": {
+      "normalized_text": "in 2013 the fda put a temporary hold on the trial and the phase ii portion of this study was cancelled.",
+      "example_text": "In 2013 the FDA put a temporary hold on the trial and the Phase II portion of this study was cancelled.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "REGULATORY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01636609"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "The FDA hold and cancellation are explicit regulatory actions; no underlying safety or efficacy cause is stated.",
+      "reviewed_at": "2026-08-26"
+    },
+    "f9d17ae8f17fc5e48d65": {
+      "normalized_text": "pi left nih. no subjects enrolled.",
+      "example_text": "PI left NIH. No subjects enrolled.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "STAFFING_RESOURCES",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04019769"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "The PI departure is the explicit causal event. No subjects enrolled describes study state but does not independently establish recruitment failure.",
+      "reviewed_at": "2026-08-26"
+    },
+    "33c7832cab30a13f76d9": {
+      "normalized_text": "pi left institution, end of funding, clinic relocation, recruitment issues",
+      "example_text": "PI left institution, end of funding, clinic relocation, recruitment issues",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [
+        "FUNDING",
+        "STAFFING_RESOURCES",
+        "OPERATIONAL_OTHER"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00218036"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "All stated causes are operational; recruitment remains the deterministic primary category while funding, staffing and relocation are preserved as secondary causes.",
+      "reviewed_at": "2026-08-26"
+    },
     "003029362ef0acc5233e": {
       "normalized_text": "enrollment was delayed and the number of eligible patients significantly declined with the use of neoadjuvant or adjuvant icis and tkis therapies. thus, this trial was closed due to insufficient accrual.",
       "example_text": "Enrollment was delayed and the number of eligible patients significantly declined with the use of neoadjuvant or adjuvant ICIs and TKIs therapies. Thus, this trial was closed due to insufficient accrual.",
