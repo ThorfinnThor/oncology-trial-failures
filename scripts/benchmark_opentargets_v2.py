@@ -204,6 +204,7 @@ def build_markdown(report: dict[str, Any]) -> str:
     overlap = report["exact_normalized_overlap"]
     anchors = report["comparable_anchor_agreement"]
     biological = report["broad_biological_agreement"]
+    adjudication = report["manual_adjudication"]
     ours = report["clinical_trial_failures_snapshot"]
     external = report["open_targets_snapshot"]
 
@@ -264,7 +265,7 @@ For the broader biological question, Open Targets `Negative` or `Safety_Sideeffe
 
 ## Manual follow-up
 
-A manual screen of the broad biological disagreements and the clearest non-biological anchor conflicts identified six high-priority V2 audit candidates. They are recorded in `data/benchmarks/opentargets_v2_manual_review_candidates.csv`. These are review candidates, not accepted Open Targets corrections, and no V2 label is changed by this benchmark.
+A manual screen of the broad biological disagreements and the clearest non-biological anchor conflicts identified {adjudication['reviewed']} high-priority V2 audit candidates. All were adjudicated against the complete registry stop statement: {adjudication['changed']} classifications were changed and {adjudication['confirmed']} were confirmed or confirmed with additional secondary detail. The decisions and rationales are recorded in `data/benchmarks/opentargets_v2_manual_review_candidates.csv` and persisted as approved V2 decisions before this final benchmark run.
 
 The full list of narrow anchor conflicts is available in `data/benchmarks/opentargets_v2_disagreements.csv`. It contains text hashes and NCT IDs rather than republishing external stop-reason text.
 
@@ -396,6 +397,18 @@ def main() -> None:
     outcome_counts = Counter(str(row.get("classification_final_outcome") or "<blank>") for row in ours)
     category_counts = Counter(str(row.get("classification_final_category") or "<blank>") for row in ours)
     ours_sha = sha256_file(args.ours)
+    adjudication_path = ROOT / "data" / "benchmarks" / "opentargets_v2_manual_review_candidates.csv"
+    adjudication_rows: list[dict[str, str]] = []
+    if adjudication_path.exists():
+        with adjudication_path.open("r", encoding="utf-8", newline="") as handle:
+            adjudication_rows = list(csv.DictReader(handle))
+    adjudication_decisions = Counter(row.get("decision", "") for row in adjudication_rows)
+    adjudication_changed = adjudication_decisions.get("CHANGED", 0)
+    adjudication_confirmed = sum(
+        count
+        for decision, count in adjudication_decisions.items()
+        if decision.startswith("CONFIRMED")
+    )
 
     report = {
         "schema_version": "1.0",
@@ -460,12 +473,19 @@ def main() -> None:
             "agreements": broad_biological_agreements,
             "agreement_rate": percent(broad_biological_agreements, len(biological_keys)),
         },
+        "manual_adjudication": {
+            "file": display_path(adjudication_path),
+            "reviewed": len(adjudication_rows),
+            "changed": adjudication_changed,
+            "confirmed": adjudication_confirmed,
+            "decision_counts": dict(sorted(adjudication_decisions.items())),
+        },
         "unique_text_crosswalk": {
             label: dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))
             for label, counts in sorted(crosswalk.items())
         },
         "disagreement_rows": len(disagreements),
-        "manual_review_candidates_file": "data/benchmarks/opentargets_v2_manual_review_candidates.csv",
+        "manual_review_candidates_file": display_path(adjudication_path),
         "limitations": [
             "Open Targets does not provide NCT IDs, so this is not a trial-level join.",
             "Repeated generic stop reasons can map one external text to multiple NCT records.",

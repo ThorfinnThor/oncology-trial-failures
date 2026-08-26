@@ -1,15 +1,15 @@
 {
   "schema_version": 1,
   "classifier_version": "2.7.0",
-  "review_group_count": 1153,
-  "review_record_count": 3649,
+  "review_group_count": 1152,
+  "review_record_count": 3648,
   "disposition_group_counts": {
     "OTHER_AMBIGUOUS_TEXT": 396,
     "ABBREVIATION_OR_FRAGMENT": 292,
     "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 159,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 70,
-    "PROVISIONAL_OR_FUTURE_PLAN": 50,
     "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 50,
+    "PROVISIONAL_OR_FUTURE_PLAN": 49,
     "EXPLICIT_BUT_UNMAPPED_CAUSE": 31,
     "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 30,
     "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE": 28,
@@ -27,7 +27,7 @@
     "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 176,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 87,
     "STATUS_OR_ACTION_WITHOUT_CAUSE": 65,
-    "PROVISIONAL_OR_FUTURE_PLAN": 57,
+    "PROVISIONAL_OR_FUTURE_PLAN": 56,
     "PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE": 54,
     "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 54,
     "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 33,
@@ -38,13 +38,13 @@
     "REGISTRY_OR_REPORTING_ADMIN_TEXT": 2
   },
   "priority_group_counts": {
-    "MEDIUM": 632,
+    "MEDIUM": 631,
     "HIGH": 482,
     "LOW": 39
   },
   "priority_record_counts": {
     "LOW": 2253,
-    "MEDIUM": 887,
+    "MEDIUM": 886,
     "HIGH": 509
   },
   "disposition_notes": {
@@ -2652,7 +2652,7 @@
         "NCT01264094"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 8
+        "UNCLEAR/OTHER/UNKNOWN": 8
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -2949,7 +2949,7 @@
         "NCT01062698"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 4
+        "UNCLEAR/OTHER/UNKNOWN": 4
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -2970,7 +2970,7 @@
         "NCT02843659"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 4
+        "UNCLEAR/OTHER/UNKNOWN": 4
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -3629,7 +3629,7 @@
         "NCT04516941"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 2
+        "UNCLEAR/OTHER/UNKNOWN": 2
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -3971,7 +3971,7 @@
         "NCT02414555"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/SAFETY": 2
+        "UNCLEAR/OTHER/UNKNOWN": 2
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -4176,7 +4176,7 @@
         "NCT03754244"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -4302,7 +4302,7 @@
         "NCT05289986"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -4626,7 +4626,7 @@
         "NCT04032171"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -5166,7 +5166,7 @@
         "NCT02943473"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -5544,7 +5544,7 @@
         "NCT02581397"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -5994,7 +5994,7 @@
         "NCT02949843"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -6408,7 +6408,7 @@
         "NCT05120726"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -6930,7 +6930,7 @@
         "NCT04006847"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -7218,7 +7218,7 @@
         "NCT02448810"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/OTHER/UNKNOWN": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -7290,7 +7290,7 @@
         "NCT06904274"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -7344,7 +7344,7 @@
         "NCT00278434"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -7596,7 +7596,7 @@
         "NCT01649505"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -8406,7 +8406,7 @@
         "NCT01041027"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -8856,7 +8856,7 @@
         "NCT06716853"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -11052,7 +11052,7 @@
         "NCT00023868"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -11448,7 +11448,7 @@
         "NCT04131556"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -11520,7 +11520,7 @@
         "NCT00913913"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -11610,7 +11610,7 @@
         "NCT05821777"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -11790,7 +11790,7 @@
         "NCT01770340"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -12546,7 +12546,7 @@
         "NCT01159964"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -12636,7 +12636,7 @@
         "NCT01382706"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -12780,7 +12780,7 @@
         "NCT03781960"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/SAFETY": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -13428,7 +13428,7 @@
         "NCT01220128"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -13752,7 +13752,7 @@
         "NCT02297490"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -14148,7 +14148,7 @@
         "NCT03765541"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -14274,7 +14274,7 @@
         "NCT01324635"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -15012,7 +15012,7 @@
         "NCT04070313"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -15192,7 +15192,7 @@
         "NCT04557384"
       ],
       "current_v1_labels": {
-        "BIOLOGICAL_FAILURE/OTHER/UNKNOWN": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -15984,7 +15984,7 @@
         "NCT05687617"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -16650,7 +16650,7 @@
         "NCT04158141"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -17712,7 +17712,7 @@
         "NCT00651014"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -17802,7 +17802,7 @@
         "NCT01531387"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -18036,7 +18036,7 @@
         "NCT01542255"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -18099,24 +18099,6 @@
       "review_disposition": "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT",
       "review_priority": "HIGH",
       "review_disposition_note": "The text mentions a medical or scientific domain such as safety or efficacy but does not state an adverse directional result that caused the stop."
-    },
-    {
-      "classification_text_hash": "bde5ee7f7b43202d3a7f",
-      "why_stopped": "In 2013 the FDA put a temporary hold on the trial and the Phase II portion of this study was cancelled.",
-      "record_count": 1,
-      "nct_ids": [
-        "NCT01636609"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 1
-      },
-      "suggested_outcome_v2": "UNKNOWN",
-      "suggested_primary_reason_v2": "UNSPECIFIED",
-      "suggested_secondary_reasons_v2": [],
-      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-      "review_disposition": "PROVISIONAL_OR_FUTURE_PLAN",
-      "review_priority": "MEDIUM",
-      "review_disposition_note": "The text describes a pending, temporary, or future state rather than a completed causal finding."
     },
     {
       "classification_text_hash": "bdf5117477f7e6b209ec",
@@ -18252,7 +18234,7 @@
         "NCT04032158"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -18378,7 +18360,7 @@
         "NCT01714817"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -19908,7 +19890,7 @@
         "NCT05326035"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -20088,7 +20070,7 @@
         "NCT04294277"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -20286,7 +20268,7 @@
         "NCT05433961"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/REGULATORY": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -20358,7 +20340,7 @@
         "NCT00977145"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -21294,7 +21276,7 @@
         "NCT02574910"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -21888,7 +21870,7 @@
         "NCT00923247"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -22932,7 +22914,7 @@
         "NCT00598091"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -23040,7 +23022,7 @@
         "NCT03361137"
       ],
       "current_v1_labels": {
-        "NON_BIOLOGICAL/OPERATIONAL": 1
+        "UNCLEAR/OTHER/UNKNOWN": 1
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",

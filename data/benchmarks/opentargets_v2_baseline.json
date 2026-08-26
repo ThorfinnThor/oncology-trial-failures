@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-08-26T18:00:26.870713+00:00",
+  "generated_at": "2026-08-26T18:28:47.847757+00:00",
   "clinical_trial_failures_snapshot": {
     "path": "data/all_stopped_trials.json",
-    "sha256": "6b082ffa452549eecf673de0a93fcad1bed5bf1d8b61438c30a62e3c73bc96a7",
+    "sha256": "78d914faac67b9d05522ec424984e162de1bf5e0400d2e2aa8a5f434885d9b80",
     "rows": 23617,
     "rows_with_stop_reason": 21480,
     "latest_registry_update": "2026-08-14",
@@ -11,24 +11,24 @@
       "2.7.0": 23617
     },
     "final_outcome_counts": {
-      "NON_BIOLOGICAL": 14221,
-      "UNRESOLVED": 3649,
-      "BIOLOGICAL_FAILURE": 2360,
+      "NON_BIOLOGICAL": 14220,
+      "UNRESOLVED": 3648,
+      "BIOLOGICAL_FAILURE": 2361,
       "CAUSE_NOT_STATED": 1997,
       "NON_FAILURE_TRANSITION": 1151,
-      "MIXED_CAUSES": 239
+      "MIXED_CAUSES": 240
     },
     "final_category_counts": {
-      "RECRUITMENT": 6589,
+      "RECRUITMENT": 6587,
       "BUSINESS_STRATEGY": 2227,
       "UNRESOLVED_MISSING_STOP_REASON": 2132,
       "FUNDING": 1740,
       "DECISION_WITHOUT_STATED_CAUSE": 1604,
       "EFFICACY_FUTILITY": 1586,
-      "STAFFING_RESOURCES": 804,
+      "STAFFING_RESOURCES": 805,
       "PROTOCOL_FEASIBILITY": 642,
       "SUPPLY_MANUFACTURING": 616,
-      "SAFETY": 604,
+      "SAFETY": 605,
       "REGULATORY": 510,
       "UNRESOLVED_ABBREVIATION_OR_FRAGMENT": 499,
       "EXTERNAL_DISRUPTION": 487,
@@ -38,13 +38,13 @@
       "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 393,
       "NOT_INITIATED": 371,
       "PLANNED_MILESTONE": 365,
-      "MULTIPLE": 239,
+      "MULTIPLE": 240,
       "SUPPORT_WITHDRAWAL": 191,
       "UNRESOLVED_ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 176,
       "BIOLOGICAL_UNSPECIFIED": 170,
       "UNRESOLVED_PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 87,
       "UNRESOLVED_STATUS_OR_ACTION_WITHOUT_CAUSE": 65,
-      "UNRESOLVED_PROVISIONAL_OR_FUTURE_PLAN": 57,
+      "UNRESOLVED_PROVISIONAL_OR_FUTURE_PLAN": 56,
       "UNRESOLVED_DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 54,
       "UNRESOLVED_PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE": 54,
       "UNRESOLVED_COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 33,
@@ -121,26 +121,26 @@
     "Safety_Sideeffects": {
       "mapping": "V2 final category is safety.",
       "comparisons": 86,
-      "any_agreements": 66,
-      "any_agreement_rate": 76.7,
-      "unanimous_agreements": 66,
-      "unanimous_agreement_rate": 76.7
+      "any_agreements": 67,
+      "any_agreement_rate": 77.9,
+      "unanimous_agreements": 67,
+      "unanimous_agreement_rate": 77.9
     },
     "Insufficient_Enrollment": {
       "mapping": "V2 final category is recruitment.",
       "comparisons": 446,
-      "any_agreements": 413,
-      "any_agreement_rate": 92.6,
-      "unanimous_agreements": 413,
-      "unanimous_agreement_rate": 92.6
+      "any_agreements": 412,
+      "any_agreement_rate": 92.4,
+      "unanimous_agreements": 412,
+      "unanimous_agreement_rate": 92.4
     },
     "Regulatory": {
       "mapping": "V2 final category is regulatory.",
       "comparisons": 40,
-      "any_agreements": 25,
-      "any_agreement_rate": 62.5,
-      "unanimous_agreements": 25,
-      "unanimous_agreement_rate": 62.5
+      "any_agreements": 26,
+      "any_agreement_rate": 65.0,
+      "unanimous_agreements": 26,
+      "unanimous_agreement_rate": 65.0
     },
     "Covid19": {
       "mapping": "V2 final category is external disruption.",
@@ -153,10 +153,10 @@
     "Study_Staff_Moved": {
       "mapping": "V2 final category is staffing/resources.",
       "comparisons": 59,
-      "any_agreements": 47,
-      "any_agreement_rate": 79.7,
-      "unanimous_agreements": 47,
-      "unanimous_agreement_rate": 79.7
+      "any_agreements": 48,
+      "any_agreement_rate": 81.4,
+      "unanimous_agreements": 48,
+      "unanimous_agreement_rate": 81.4
     }
   },
   "broad_biological_agreement": {
@@ -169,8 +169,19 @@
       "MIXED_CAUSES"
     ],
     "comparisons": 210,
-    "agreements": 184,
-    "agreement_rate": 87.6
+    "agreements": 186,
+    "agreement_rate": 88.6
+  },
+  "manual_adjudication": {
+    "file": "data/benchmarks/opentargets_v2_manual_review_candidates.csv",
+    "reviewed": 6,
+    "changed": 4,
+    "confirmed": 2,
+    "decision_counts": {
+      "CHANGED": 4,
+      "CONFIRMED": 1,
+      "CONFIRMED_WITH_DETAIL": 1
+    }
   },
   "unique_text_crosswalk": {
     "Another_Study": {
@@ -236,10 +247,10 @@
       "UNRESOLVED/UNRESOLVED_DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 1
     },
     "Insufficient_Data": {
-      "NON_BIOLOGICAL/RECRUITMENT": 15,
+      "NON_BIOLOGICAL/RECRUITMENT": 14,
       "BIOLOGICAL_FAILURE/EFFICACY_FUTILITY": 2,
+      "MIXED_CAUSES/MULTIPLE": 2,
       "NON_BIOLOGICAL/PROTOCOL_FEASIBILITY": 2,
-      "MIXED_CAUSES/MULTIPLE": 1,
       "NON_BIOLOGICAL/EXTERNAL_DISRUPTION": 1,
       "NON_BIOLOGICAL/SUPPLY_MANUFACTURING": 1,
       "UNRESOLVED/UNRESOLVED_INSUFFICIENT_OR_LOW_QUALITY_DATA": 1,
@@ -247,12 +258,12 @@
       "UNRESOLVED/UNRESOLVED_STATUS_OR_ACTION_WITHOUT_CAUSE": 1
     },
     "Insufficient_Enrollment": {
-      "NON_BIOLOGICAL/RECRUITMENT": 413,
+      "NON_BIOLOGICAL/RECRUITMENT": 412,
       "UNRESOLVED/UNRESOLVED_ABBREVIATION_OR_FRAGMENT": 9,
       "UNRESOLVED/UNRESOLVED_OTHER_AMBIGUOUS_TEXT": 6,
       "NON_BIOLOGICAL/FUNDING": 4,
       "BIOLOGICAL_FAILURE/EFFICACY_FUTILITY": 3,
-      "MIXED_CAUSES/MULTIPLE": 2,
+      "MIXED_CAUSES/MULTIPLE": 3,
       "NON_BIOLOGICAL/SUPPLY_MANUFACTURING": 2,
       "BIOLOGICAL_FAILURE/BIOLOGICAL_UNSPECIFIED": 1,
       "CAUSE_NOT_STATED/DECISION_WITHOUT_STATED_CAUSE": 1,
@@ -269,20 +280,20 @@
     },
     "Invalid_Reason": {
       "NON_FAILURE_TRANSITION/NOT_INITIATED": 33,
-      "NON_BIOLOGICAL/RECRUITMENT": 8,
       "NON_FAILURE_TRANSITION/PLANNED_MILESTONE": 8,
       "UNRESOLVED/UNRESOLVED_ABBREVIATION_OR_FRAGMENT": 8,
       "UNRESOLVED/UNRESOLVED_STATUS_OR_ACTION_WITHOUT_CAUSE": 8,
+      "NON_BIOLOGICAL/RECRUITMENT": 7,
       "NON_BIOLOGICAL/REGULATORY": 4,
       "UNRESOLVED/UNRESOLVED_OTHER_AMBIGUOUS_TEXT": 4,
       "CAUSE_NOT_STATED/DECISION_WITHOUT_STATED_CAUSE": 3,
       "BIOLOGICAL_FAILURE/EFFICACY_FUTILITY": 2,
       "NON_BIOLOGICAL/BUSINESS_STRATEGY": 2,
       "NON_BIOLOGICAL/FUNDING": 2,
+      "NON_BIOLOGICAL/STAFFING_RESOURCES": 2,
       "UNRESOLVED/UNRESOLVED_COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 2,
       "CAUSE_NOT_STATED/PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 1,
       "NON_BIOLOGICAL/PROTOCOL_FEASIBILITY": 1,
-      "NON_BIOLOGICAL/STAFFING_RESOURCES": 1,
       "NON_FAILURE_TRANSITION/REPLACEMENT_TRANSITION": 1,
       "UNRESOLVED/UNRESOLVED_DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 1,
       "UNRESOLVED/UNRESOLVED_PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE": 1,
@@ -314,7 +325,7 @@
       "BIOLOGICAL_FAILURE/EFFICACY_FUTILITY": 93,
       "BIOLOGICAL_FAILURE/SAFETY": 10,
       "BIOLOGICAL_FAILURE/BIOLOGICAL_UNSPECIFIED": 8,
-      "MIXED_CAUSES/MULTIPLE": 7,
+      "MIXED_CAUSES/MULTIPLE": 8,
       "NON_BIOLOGICAL/PROTOCOL_FEASIBILITY": 5,
       "UNRESOLVED/UNRESOLVED_ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 4,
       "UNRESOLVED/UNRESOLVED_ABBREVIATION_OR_FRAGMENT": 2,
@@ -322,7 +333,6 @@
       "CAUSE_NOT_STATED/DECISION_WITHOUT_STATED_CAUSE": 1,
       "CAUSE_NOT_STATED/PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 1,
       "NON_BIOLOGICAL/BUSINESS_STRATEGY": 1,
-      "NON_BIOLOGICAL/RECRUITMENT": 1,
       "NON_BIOLOGICAL/STAFFING_RESOURCES": 1,
       "UNRESOLVED/UNRESOLVED_DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 1,
       "UNRESOLVED/UNRESOLVED_OTHER_AMBIGUOUS_TEXT": 1
@@ -349,7 +359,7 @@
       "UNRESOLVED/UNRESOLVED_COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 1
     },
     "Regulatory": {
-      "NON_BIOLOGICAL/REGULATORY": 25,
+      "NON_BIOLOGICAL/REGULATORY": 26,
       "MIXED_CAUSES/MULTIPLE": 3,
       "UNRESOLVED/UNRESOLVED_ABBREVIATION_OR_FRAGMENT": 3,
       "BIOLOGICAL_FAILURE/SAFETY": 2,
@@ -358,15 +368,14 @@
       "NON_BIOLOGICAL/SUPPLY_MANUFACTURING": 1,
       "NON_BIOLOGICAL/SUPPORT_WITHDRAWAL": 1,
       "NON_FAILURE_TRANSITION/REPLACEMENT_TRANSITION": 1,
-      "UNRESOLVED/UNRESOLVED_ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 1,
-      "UNRESOLVED/UNRESOLVED_PROVISIONAL_OR_FUTURE_PLAN": 1
+      "UNRESOLVED/UNRESOLVED_ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 1
     },
     "Safety_Sideeffects": {
-      "BIOLOGICAL_FAILURE/SAFETY": 66,
+      "BIOLOGICAL_FAILURE/SAFETY": 67,
       "MIXED_CAUSES/MULTIPLE": 10,
       "BIOLOGICAL_FAILURE/BIOLOGICAL_UNSPECIFIED": 4,
-      "NON_BIOLOGICAL/REGULATORY": 2,
       "NON_BIOLOGICAL/RECRUITMENT": 1,
+      "NON_BIOLOGICAL/REGULATORY": 1,
       "NON_BIOLOGICAL/SUPPLY_MANUFACTURING": 1,
       "UNRESOLVED/UNRESOLVED_ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 1,
       "UNRESOLVED/UNRESOLVED_OTHER_AMBIGUOUS_TEXT": 1
@@ -396,11 +405,11 @@
       "UNRESOLVED/UNRESOLVED_PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 1
     },
     "Study_Staff_Moved": {
-      "NON_BIOLOGICAL/STAFFING_RESOURCES": 47,
+      "NON_BIOLOGICAL/STAFFING_RESOURCES": 48,
       "NON_BIOLOGICAL/FUNDING": 4,
       "NON_FAILURE_TRANSITION/REPLACEMENT_TRANSITION": 4,
-      "NON_BIOLOGICAL/RECRUITMENT": 2,
       "CAUSE_NOT_STATED/DECISION_WITHOUT_STATED_CAUSE": 1,
+      "NON_BIOLOGICAL/RECRUITMENT": 1,
       "UNRESOLVED/UNRESOLVED_ABBREVIATION_OR_FRAGMENT": 1
     },
     "Success": {
@@ -411,7 +420,7 @@
       "UNRESOLVED/UNRESOLVED_ABBREVIATION_OR_FRAGMENT": 1
     }
   },
-  "disagreement_rows": 117,
+  "disagreement_rows": 115,
   "manual_review_candidates_file": "data/benchmarks/opentargets_v2_manual_review_candidates.csv",
   "limitations": [
     "Open Targets does not provide NCT IDs, so this is not a trial-level join.",

@@ -1,8 +1,8 @@
 # Open Targets benchmark baseline
 
-Generated: 2026-08-26T18:00:26.870713+00:00
+Generated: 2026-08-26T18:28:47.847757+00:00
 
-Clinical Trial Failures snapshot: `6b082ffa452549eecf673de0a93fcad1bed5bf1d8b61438c30a62e3c73bc96a7`
+Clinical Trial Failures snapshot: `78d914faac67b9d05522ec424984e162de1bf5e0400d2e2aa8a5f434885d9b80`
 
 Classifier versions: `2.7.0` (23,617)
 
@@ -37,13 +37,13 @@ Each unique normalized text contributes at most one comparison per Open Targets 
 | Open Targets label | Comparable texts | Any agreements | Agreement rate |
 | --- | ---: | ---: | ---: |
 | `Negative` | 138 | 101 | 73.2% |
-| `Safety_Sideeffects` | 86 | 66 | 76.7% |
-| `Insufficient_Enrollment` | 446 | 413 | 92.6% |
-| `Regulatory` | 40 | 25 | 62.5% |
+| `Safety_Sideeffects` | 86 | 67 | 77.9% |
+| `Insufficient_Enrollment` | 446 | 412 | 92.4% |
+| `Regulatory` | 40 | 26 | 65.0% |
 | `Covid19` | 12 | 12 | 100.0% |
-| `Study_Staff_Moved` | 59 | 47 | 79.7% |
+| `Study_Staff_Moved` | 59 | 48 | 81.4% |
 
-For the broader biological question, Open Targets `Negative` or `Safety_Sideeffects` agrees with V2 `BIOLOGICAL_FAILURE` or `MIXED_CAUSES` for **184/210 texts (87.6%)**.
+For the broader biological question, Open Targets `Negative` or `Safety_Sideeffects` agrees with V2 `BIOLOGICAL_FAILURE` or `MIXED_CAUSES` for **186/210 texts (88.6%)**.
 
 ## Interpretation
 
@@ -54,7 +54,7 @@ For the broader biological question, Open Targets `Negative` or `Safety_Sideeffe
 
 ## Manual follow-up
 
-A manual screen of the broad biological disagreements and the clearest non-biological anchor conflicts identified six high-priority V2 audit candidates. They are recorded in `data/benchmarks/opentargets_v2_manual_review_candidates.csv`. These are review candidates, not accepted Open Targets corrections, and no V2 label is changed by this benchmark.
+A manual screen of the broad biological disagreements and the clearest non-biological anchor conflicts identified 6 high-priority V2 audit candidates. All were adjudicated against the complete registry stop statement: 4 classifications were changed and 2 were confirmed or confirmed with additional secondary detail. The decisions and rationales are recorded in `data/benchmarks/opentargets_v2_manual_review_candidates.csv` and persisted as approved V2 decisions before this final benchmark run.
 
 The full list of narrow anchor conflicts is available in `data/benchmarks/opentargets_v2_disagreements.csv`. It contains text hashes and NCT IDs rather than republishing external stop-reason text.
 

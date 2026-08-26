@@ -1,7 +1,7 @@
-nct_id,open_targets_labels,current_v2_classification,review_question
-NCT02372240,Safety_Sideeffects,NON_BIOLOGICAL/REGULATORY,"Dose-limiting toxicity appears to cause the clinical hold; review SAFETY as primary and REGULATORY as secondary."
-NCT01675141,Negative;Study_Staff_Moved,NON_BIOLOGICAL/STAFFING_RESOURCES,"The text states both investigator departure and primary outcome not reached; review MIXED_CAUSES."
-NCT00337259,Negative;Insufficient_Enrollment;Insufficient_Data,NON_BIOLOGICAL/RECRUITMENT,"The text states poor accrual and response below expectation; review MIXED_CAUSES."
-NCT01636609,Regulatory,UNRESOLVED/UNRESOLVED_PROVISIONAL_OR_FUTURE_PLAN,"The text states an FDA hold and cancellation of the Phase II portion; review REGULATORY."
-NCT04019769,Study_Staff_Moved;Invalid_Reason,NON_BIOLOGICAL/RECRUITMENT,"PI departure is explicit and no enrollment is also stated; review STAFFING_RESOURCES as primary or MIXED_CAUSES."
-NCT00218036,Business_Administrative;Insufficient_Enrollment;Study_Staff_Moved,NON_BIOLOGICAL/RECRUITMENT,"Funding, PI departure, relocation, and recruitment issues are all stated; review MIXED_CAUSES."
+nct_id,open_targets_labels,previous_v2_classification,adjudicated_v2_classification,decision,rationale
+NCT02372240,Safety_Sideeffects,NON_BIOLOGICAL/REGULATORY,BIOLOGICAL_FAILURE/SAFETY + REGULATORY secondary,CHANGED,"Dose-limiting toxicity is the stated medical cause; the clinical hold is a secondary regulatory action."
+NCT01675141,Negative;Study_Staff_Moved,NON_BIOLOGICAL/STAFFING_RESOURCES,NON_BIOLOGICAL/STAFFING_RESOURCES,CONFIRMED,"Investigator departure is explicit; 'primary outcome was not reached' does not establish an adverse efficacy result."
+NCT00337259,Negative;Insufficient_Enrollment;Insufficient_Data,NON_BIOLOGICAL/RECRUITMENT,MIXED_CAUSES/MULTIPLE (RECRUITMENT + EFFICACY_FUTILITY),CHANGED,"The source states both poor accrual and response below expectation on interim analysis."
+NCT01636609,Regulatory,UNRESOLVED/UNRESOLVED_PROVISIONAL_OR_FUTURE_PLAN,NON_BIOLOGICAL/REGULATORY,CHANGED,"The FDA hold and cancellation are explicit regulatory actions; the underlying medical cause is not stated."
+NCT04019769,Study_Staff_Moved;Invalid_Reason,NON_BIOLOGICAL/RECRUITMENT + STAFFING_RESOURCES secondary,NON_BIOLOGICAL/STAFFING_RESOURCES,CHANGED,"PI departure is the explicit causal event; no subjects enrolled is study state rather than a separately stated cause."
+NCT00218036,Business_Administrative;Insufficient_Enrollment;Study_Staff_Moved,NON_BIOLOGICAL/RECRUITMENT + FUNDING and STAFFING_RESOURCES secondary,NON_BIOLOGICAL/RECRUITMENT + FUNDING; STAFFING_RESOURCES; OPERATIONAL_OTHER secondary,CONFIRMED_WITH_DETAIL,"All stated causes are operational; relocation is additionally retained as OPERATIONAL_OTHER."
