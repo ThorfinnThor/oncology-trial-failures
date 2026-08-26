@@ -1,8 +1,8 @@
 # Open Targets benchmark baseline
 
-Generated: 2026-08-26T18:28:47.847757+00:00
+Generated: 2026-08-26T19:34:53.416008+00:00
 
-Clinical Trial Failures snapshot: `78d914faac67b9d05522ec424984e162de1bf5e0400d2e2aa8a5f434885d9b80`
+Clinical Trial Failures snapshot: `c7627dfb0cd46dff82a6421b4214138a95231f63ca403be5782865f31cb2938c`
 
 Classifier versions: `2.7.0` (23,617)
 
@@ -34,14 +34,16 @@ The NCT-record count is a candidate overlap, not a trial-level join. Generic sto
 
 Each unique normalized text contributes at most one comparison per Open Targets label. "Any agreement" means that at least one Clinical Trial Failures record with the same text satisfies the narrow mapping defined in the benchmark script.
 
-| Open Targets label | Comparable texts | Any agreements | Agreement rate |
-| --- | ---: | ---: | ---: |
-| `Negative` | 138 | 101 | 73.2% |
-| `Safety_Sideeffects` | 86 | 67 | 77.9% |
-| `Insufficient_Enrollment` | 446 | 412 | 92.4% |
-| `Regulatory` | 40 | 26 | 65.0% |
-| `Covid19` | 12 | 12 | 100.0% |
-| `Study_Staff_Moved` | 59 | 48 | 81.4% |
+| Open Targets label | Comparable texts | Primary agreements | Primary rate | Primary or secondary cause covered | Coverage rate |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `Negative` | 138 | 100 | 72.5% | 108 | 78.3% |
+| `Safety_Sideeffects` | 86 | 70 | 81.4% | 78 | 90.7% |
+| `Insufficient_Enrollment` | 446 | 416 | 93.3% | 422 | 94.6% |
+| `Regulatory` | 40 | 27 | 67.5% | 31 | 77.5% |
+| `Covid19` | 12 | 12 | 100.0% | 12 | 100.0% |
+| `Study_Staff_Moved` | 59 | 48 | 81.4% | 53 | 89.8% |
+
+The primary rate is the deliberately strict original metric. Cause coverage also accepts the same evidence category when V2 preserves it as a secondary cause in a mixed or more specific classification.
 
 For the broader biological question, Open Targets `Negative` or `Safety_Sideeffects` agrees with V2 `BIOLOGICAL_FAILURE` or `MIXED_CAUSES` for **186/210 texts (88.6%)**.
 
@@ -57,6 +59,8 @@ For the broader biological question, Open Targets `Negative` or `Safety_Sideeffe
 A manual screen of the broad biological disagreements and the clearest non-biological anchor conflicts identified 6 high-priority V2 audit candidates. All were adjudicated against the complete registry stop statement: 4 classifications were changed and 2 were confirmed or confirmed with additional secondary detail. The decisions and rationales are recorded in `data/benchmarks/opentargets_v2_manual_review_candidates.csv` and persisted as approved V2 decisions before this final benchmark run.
 
 The full list of narrow anchor conflicts is available in `data/benchmarks/opentargets_v2_disagreements.csv`. It contains text hashes and NCT IDs rather than republishing external stop-reason text.
+
+The subsequent full conflict audit reviewed all **115 strict conflict rows**, representing **106 unique normalized stop-reason texts**. It identified **24 text groups** requiring a V2 correction or additional explicit secondary-cause detail. The remaining groups were confirmed as conservative classifications, mixed causes, non-failure transitions, cause-not-stated records, already-covered secondary causes, or taxonomy differences. The complete row-level decision log is stored in `data/benchmarks/opentargets_v2_full_adjudication.csv`.
 
 ## Method
 

@@ -2149,122 +2149,6 @@
     "review_disposition_note": "ClinicalTrials.gov supplies no stop-reason text. No semantic cause can be asserted without another explicit primary-source statement."
   },
   {
-    "classification_text_hash": "015b84d50121f3c78b6b",
-    "why_stopped": "no participants enrolled",
-    "record_count": 99,
-    "nct_ids": [
-      "NCT07614828",
-      "NCT06842589",
-      "NCT04023825",
-      "NCT05799612",
-      "NCT06866951",
-      "NCT07196306",
-      "NCT00545194",
-      "NCT02470650",
-      "NCT05634525",
-      "NCT03021395",
-      "NCT04797949",
-      "NCT05937152",
-      "NCT06408714",
-      "NCT05882305",
-      "NCT01063010",
-      "NCT05972122",
-      "NCT05180318",
-      "NCT03338764",
-      "NCT05518422",
-      "NCT03671720",
-      "NCT04220008",
-      "NCT02416128",
-      "NCT05646602",
-      "NCT02824354",
-      "NCT05512182",
-      "NCT05431582",
-      "NCT05411575",
-      "NCT04954196",
-      "NCT01769027",
-      "NCT05730673",
-      "NCT05505123",
-      "NCT04355676",
-      "NCT04178642",
-      "NCT05633758",
-      "NCT00667472",
-      "NCT04450654",
-      "NCT03513445",
-      "NCT04711226",
-      "NCT04189640",
-      "NCT05010096",
-      "NCT05022394",
-      "NCT04920331",
-      "NCT03251911",
-      "NCT03677115",
-      "NCT02965911",
-      "NCT04482842",
-      "NCT01915472",
-      "NCT04330144",
-      "NCT03972683",
-      "NCT04433078",
-      "NCT02281799",
-      "NCT04280588",
-      "NCT03554395",
-      "NCT03524274",
-      "NCT03501056",
-      "NCT03509298",
-      "NCT03484962",
-      "NCT03524261",
-      "NCT04388202",
-      "NCT04388189",
-      "NCT04532554",
-      "NCT04541719",
-      "NCT01826864",
-      "NCT03506802",
-      "NCT03729310",
-      "NCT03342300",
-      "NCT02463812",
-      "NCT03302221",
-      "NCT01923909",
-      "NCT01733654",
-      "NCT02329379",
-      "NCT03919383",
-      "NCT03532204",
-      "NCT03803254",
-      "NCT03780634",
-      "NCT03782831",
-      "NCT03791918",
-      "NCT03746249",
-      "NCT02047552",
-      "NCT02611908",
-      "NCT01198379",
-      "NCT03021590",
-      "NCT02724150",
-      "NCT00003512",
-      "NCT02520505",
-      "NCT00702793",
-      "NCT02726867",
-      "NCT01833767",
-      "NCT02540512",
-      "NCT02951117",
-      "NCT01037335",
-      "NCT00278590",
-      "NCT01653522",
-      "NCT02126527",
-      "NCT02042027",
-      "NCT02222623",
-      "NCT02218359",
-      "NCT01948232",
-      "NCT01775605"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 99
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
     "classification_text_hash": "f27f5b30421c2aba0325",
     "why_stopped": "See termination reason in detailed description.",
     "record_count": 25,
@@ -2504,59 +2388,6 @@
     ],
     "current_v1_labels": {
       "UNCLEAR/OTHER/UNKNOWN": 10
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
-    "classification_text_hash": "99f979be5a52b31631a5",
-    "why_stopped": "No Subjects Enrolled",
-    "record_count": 10,
-    "nct_ids": [
-      "NCT05312645",
-      "NCT00792662",
-      "NCT03925675",
-      "NCT01510561",
-      "NCT01101581",
-      "NCT03090919",
-      "NCT04443868",
-      "NCT00346502",
-      "NCT01240304",
-      "NCT00732108"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 10
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
-    "classification_text_hash": "e39393846f2f290b42f9",
-    "why_stopped": "No participants enrolled.",
-    "record_count": 9,
-    "nct_ids": [
-      "NCT05495815",
-      "NCT04521946",
-      "NCT06460194",
-      "NCT05375825",
-      "NCT03644589",
-      "NCT01942187",
-      "NCT00003534",
-      "NCT02031211",
-      "NCT01795430"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 9
     },
     "suggested_outcome_v2": "UNKNOWN",
     "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -2825,28 +2656,6 @@
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
-    "classification_text_hash": "cdd72bd4b0b12c93eee4",
-    "why_stopped": "No patients recruited",
-    "record_count": 5,
-    "nct_ids": [
-      "NCT04898348",
-      "NCT04067102",
-      "NCT02395952",
-      "NCT01810237",
-      "NCT00981591"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 5
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
     "classification_text_hash": "61a066deccabb52e66d4",
     "why_stopped": "Early termination",
     "record_count": 4,
@@ -2908,27 +2717,6 @@
     "review_disposition": "OTHER_AMBIGUOUS_TEXT",
     "review_priority": "HIGH",
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-  },
-  {
-    "classification_text_hash": "e5c96fb95b5d5485a06d",
-    "why_stopped": "No subjects enrolled.",
-    "record_count": 4,
-    "nct_ids": [
-      "NCT04054752",
-      "NCT03779295",
-      "NCT02250794",
-      "NCT01352611"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 4
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
   },
   {
     "classification_text_hash": "02edafe7eb0b1cf93572",
@@ -3058,26 +2846,6 @@
       "NCT01978366",
       "NCT01847573",
       "NCT02525302"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 3
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
-    "classification_text_hash": "8033ee7b5127c20f4149",
-    "why_stopped": "No subjects recruited",
-    "record_count": 3,
-    "nct_ids": [
-      "NCT02086240",
-      "NCT01191177",
-      "NCT01577199"
     ],
     "current_v1_labels": {
       "UNCLEAR/OTHER/UNKNOWN": 3
@@ -8976,24 +8744,6 @@
     "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
   },
   {
-    "classification_text_hash": "484871ae01ff50bf5a1b",
-    "why_stopped": "Only one patient included as per Feb. 4, 2008.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00396487"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-  },
-  {
     "classification_text_hash": "48666e36d2aac664a3a7",
     "why_stopped": "New power calculation (reduction of necessary patient number)",
     "record_count": 1,
@@ -11442,24 +11192,6 @@
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
-    "classification_text_hash": "6b0a40d17f4086ecdf88",
-    "why_stopped": "low accrual not allowing site to meeting statistical endpoints",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00913913"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:low accrual;v261.remaining_round13_recruitment:low accrual",
-    "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-  },
-  {
     "classification_text_hash": "6b4c9356a4ff052b8c04",
     "why_stopped": "Not achieved the objective till 4 mg single dose",
     "record_count": 1,
@@ -12401,24 +12133,6 @@
     "record_count": 1,
     "nct_ids": [
       "NCT02577367"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
-  },
-  {
-    "classification_text_hash": "77ab632c60a9af652150",
-    "why_stopped": "No patients recruited.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT02215876"
     ],
     "current_v1_labels": {
       "UNCLEAR/OTHER/UNKNOWN": 1
@@ -14196,24 +13910,6 @@
     "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
   },
   {
-    "classification_text_hash": "8ef2058866a14a8985c3",
-    "why_stopped": "Arm A - reached goal; Arm B - poor accrual",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01324635"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:poor accrual;v261.recruitment_explicit:poor accrual",
-    "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-  },
-  {
     "classification_text_hash": "8f0ef5522a0859869824",
     "why_stopped": "Stopped by data safety monitoring board",
     "record_count": 1,
@@ -14914,24 +14610,6 @@
     "review_disposition": "ANALYSIS_OR_REVIEW_WITHOUT_RESULT",
     "review_priority": "MEDIUM",
     "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
-  },
-  {
-    "classification_text_hash": "9788ebb0f3f89ab87c25",
-    "why_stopped": "No enrolement",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00546611"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
   },
   {
     "classification_text_hash": "97b3b6455ecfd67d87b9",
@@ -20764,24 +20442,6 @@
     "review_disposition": "OTHER_AMBIGUOUS_TEXT",
     "review_priority": "HIGH",
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-  },
-  {
-    "classification_text_hash": "e1311649ab58afd31d5c",
-    "why_stopped": "no paticipants enrolled",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT00985998"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ABBREVIATION_OR_FRAGMENT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
   },
   {
     "classification_text_hash": "e13d9f88aa7a80efc4f1",

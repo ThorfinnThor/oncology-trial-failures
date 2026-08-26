@@ -2,8 +2,8 @@
   "schema_version": 1,
   "classifier_version": "2.1.0",
   "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
-  "entry_count": 2381,
-  "manual_entry_count": 6,
+  "entry_count": 2408,
+  "manual_entry_count": 33,
   "review_rows_excluded": 346,
   "conflict_count": 9,
   "conflicts": [
@@ -44261,6 +44261,647 @@
       "provenance": {
         "MISCLASSIFIED": 2
       }
+    },
+    "8ef2058866a14a8985c3": {
+      "normalized_text": "arm a - reached goal; arm b - poor accrual",
+      "example_text": "Arm A - reached goal; Arm B - poor accrual",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01324635"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication e5a368cedc9f0770bff1: Arm B is explicitly described as having poor accrual; Arm A reaching its goal does not negate that stop cause.",
+      "reviewed_at": "2026-08-26"
+    },
+    "8c680890979b802d626d": {
+      "normalized_text": "ceased production of the study drug, lymphoglobulin. recruitment of patients onto the trial was too slow.",
+      "example_text": "Ceased production of the study drug, Lymphoglobulin. Recruitment of patients onto the trial was too slow.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "SUPPLY_MANUFACTURING",
+      "secondary_reasons": [
+        "RECRUITMENT"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01163942"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 9ff3988354b080198c12: Drug production ceased and recruitment was also explicitly too slow.",
+      "reviewed_at": "2026-08-26"
+    },
+    "2e7f9e237530e0dd3de1": {
+      "normalized_text": "closed due to slowing enrollment and negative results of a phase iii trial using cabozantinib.",
+      "example_text": "Closed due to slowing enrollment and negative results of a phase III trial using cabozantinib.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01428219"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 4e7202a1c05985281180: Slowing enrollment and negative Phase III results are both stated as causes.",
+      "reviewed_at": "2026-08-26"
+    },
+    "fd0a0320fc1a1b8e737d": {
+      "normalized_text": "decision to discontinue due to challenges of trial design and constraints on enrolling eligible and consenting patients.",
+      "example_text": "Decision to discontinue due to challenges of trial design and constraints on enrolling eligible and consenting patients.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "PROTOCOL_FEASIBILITY",
+      "secondary_reasons": [
+        "RECRUITMENT"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00748579"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication ecc5dc96c1d5ac426c6c: Trial-design challenges are primary and constraints on enrolling eligible, consenting participants are explicit secondary evidence.",
+      "reviewed_at": "2026-08-26"
+    },
+    "70ce819ec96e4f5b9c0d": {
+      "normalized_text": "development program ended due to inability to pair with other cytidine analogs and higher risk of hyperlipasemia when not used with 3tc/ftc.",
+      "example_text": "Development program ended due to inability to pair with other cytidine analogs and higher risk of hyperlipasemia when not used with 3TC/FTC.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "PROTOCOL_FEASIBILITY",
+        "SAFETY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00300573"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication bc27e5037657224e66d2: The program ended because of combination feasibility and increased hyperlipasemia risk.",
+      "reviewed_at": "2026-08-26"
+    },
+    "d3f619b1107c62e7d312": {
+      "normalized_text": "few subjects recruited, sponsor withdrew support.",
+      "example_text": "Few subjects recruited, sponsor withdrew support.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "FUNDING",
+      "secondary_reasons": [
+        "SUPPORT_WITHDRAWAL",
+        "RECRUITMENT"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00388388"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 7a0ba7ecc3b7cf8fe906: Sponsor support withdrawal remains primary while the explicitly low recruitment is preserved as a secondary cause.",
+      "reviewed_at": "2026-08-26"
+    },
+    "f058d364cc53e5d41ee4": {
+      "normalized_text": "lack of funding/ resident in charge graduated",
+      "example_text": "Lack of Funding/ Resident in charge graduated",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "FUNDING",
+      "secondary_reasons": [
+        "STAFFING_RESOURCES"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03330119"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 7149e5fb11cea4b40a23: The text explicitly states both missing funding and departure of the resident in charge.",
+      "reviewed_at": "2026-08-26"
+    },
+    "6b0a40d17f4086ecdf88": {
+      "normalized_text": "low accrual not allowing site to meeting statistical endpoints",
+      "example_text": "low accrual not allowing site to meeting statistical endpoints",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00913913"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 6b0a40d17f4086ecdf88: Low accrual explicitly prevented the site from meeting the statistical endpoints.",
+      "reviewed_at": "2026-08-26"
+    },
+    "9788ebb0f3f89ab87c25": {
+      "normalized_text": "no enrolement",
+      "example_text": "No enrolement",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00546611"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 9788ebb0f3f89ab87c25: The misspelled source text still explicitly states that enrollment never began.",
+      "reviewed_at": "2026-08-26"
+    },
+    "015b84d50121f3c78b6b": {
+      "normalized_text": "no participants enrolled",
+      "example_text": "no participants enrolled",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 99,
+      "nct_ids": [
+        "NCT07614828",
+        "NCT06842589",
+        "NCT04023825",
+        "NCT05799612",
+        "NCT06866951",
+        "NCT07196306",
+        "NCT00545194",
+        "NCT02470650",
+        "NCT05634525",
+        "NCT03021395",
+        "NCT04797949",
+        "NCT05937152",
+        "NCT06408714",
+        "NCT05882305",
+        "NCT01063010",
+        "NCT05972122",
+        "NCT05180318",
+        "NCT03338764",
+        "NCT05518422",
+        "NCT03671720",
+        "NCT04220008",
+        "NCT02416128",
+        "NCT05646602",
+        "NCT02824354",
+        "NCT05512182",
+        "NCT05431582",
+        "NCT05411575",
+        "NCT04954196",
+        "NCT01769027",
+        "NCT05730673",
+        "NCT05505123",
+        "NCT04355676",
+        "NCT04178642",
+        "NCT05633758",
+        "NCT00667472",
+        "NCT04450654",
+        "NCT03513445",
+        "NCT04711226",
+        "NCT04189640",
+        "NCT05010096",
+        "NCT05022394",
+        "NCT04920331",
+        "NCT03251911",
+        "NCT03677115",
+        "NCT02965911",
+        "NCT04482842",
+        "NCT01915472",
+        "NCT04330144",
+        "NCT03972683",
+        "NCT04433078",
+        "NCT02281799",
+        "NCT04280588",
+        "NCT03554395",
+        "NCT03524274",
+        "NCT03501056",
+        "NCT03509298",
+        "NCT03484962",
+        "NCT03524261",
+        "NCT04388202",
+        "NCT04388189",
+        "NCT04532554",
+        "NCT04541719",
+        "NCT01826864",
+        "NCT03506802",
+        "NCT03729310",
+        "NCT03342300",
+        "NCT02463812",
+        "NCT03302221",
+        "NCT01923909",
+        "NCT01733654",
+        "NCT02329379",
+        "NCT03919383",
+        "NCT03532204",
+        "NCT03803254",
+        "NCT03780634",
+        "NCT03782831",
+        "NCT03791918",
+        "NCT03746249",
+        "NCT02047552",
+        "NCT02611908",
+        "NCT01198379",
+        "NCT03021590",
+        "NCT02724150",
+        "NCT00003512",
+        "NCT02520505",
+        "NCT00702793",
+        "NCT02726867",
+        "NCT01833767",
+        "NCT02540512",
+        "NCT02951117",
+        "NCT01037335",
+        "NCT00278590",
+        "NCT01653522",
+        "NCT02126527",
+        "NCT02042027",
+        "NCT02222623",
+        "NCT02218359",
+        "NCT01948232",
+        "NCT01775605"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 015b84d50121f3c78b6b: No participant was enrolled. V2 records the explicit pre-enrollment state without inferring recruitment failure.",
+      "reviewed_at": "2026-08-26"
+    },
+    "e39393846f2f290b42f9": {
+      "normalized_text": "no participants enrolled.",
+      "example_text": "No participants enrolled.",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 9,
+      "nct_ids": [
+        "NCT05495815",
+        "NCT04521946",
+        "NCT06460194",
+        "NCT05375825",
+        "NCT03644589",
+        "NCT01942187",
+        "NCT00003534",
+        "NCT02031211",
+        "NCT01795430"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 015b84d50121f3c78b6b: No participant was enrolled. V2 records the explicit pre-enrollment state without inferring recruitment failure.",
+      "reviewed_at": "2026-08-26"
+    },
+    "e1311649ab58afd31d5c": {
+      "normalized_text": "no paticipants enrolled",
+      "example_text": "no paticipants enrolled",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00985998"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication e1311649ab58afd31d5c: The misspelled source text still explicitly states that enrollment never began.",
+      "reviewed_at": "2026-08-26"
+    },
+    "cdd72bd4b0b12c93eee4": {
+      "normalized_text": "no patients recruited",
+      "example_text": "No patients recruited",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 5,
+      "nct_ids": [
+        "NCT04898348",
+        "NCT04067102",
+        "NCT02395952",
+        "NCT01810237",
+        "NCT00981591"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication cdd72bd4b0b12c93eee4: No patient was recruited. V2 records the explicit pre-enrollment state without inferring recruitment failure.",
+      "reviewed_at": "2026-08-26"
+    },
+    "77ab632c60a9af652150": {
+      "normalized_text": "no patients recruited.",
+      "example_text": "No patients recruited.",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02215876"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication cdd72bd4b0b12c93eee4: No patient was recruited. V2 records the explicit pre-enrollment state without inferring recruitment failure.",
+      "reviewed_at": "2026-08-26"
+    },
+    "99f979be5a52b31631a5": {
+      "normalized_text": "no subjects enrolled",
+      "example_text": "No Subjects Enrolled",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 10,
+      "nct_ids": [
+        "NCT05312645",
+        "NCT00792662",
+        "NCT03925675",
+        "NCT01510561",
+        "NCT01101581",
+        "NCT03090919",
+        "NCT04443868",
+        "NCT00346502",
+        "NCT01240304",
+        "NCT00732108"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 99f979be5a52b31631a5: No subject was enrolled. V2 records the explicit pre-enrollment state without asserting a recruitment cause.",
+      "reviewed_at": "2026-08-26"
+    },
+    "e5c96fb95b5d5485a06d": {
+      "normalized_text": "no subjects enrolled.",
+      "example_text": "No subjects enrolled.",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 4,
+      "nct_ids": [
+        "NCT04054752",
+        "NCT03779295",
+        "NCT02250794",
+        "NCT01352611"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 99f979be5a52b31631a5: No subject was enrolled. V2 records the explicit pre-enrollment state without asserting a recruitment cause.",
+      "reviewed_at": "2026-08-26"
+    },
+    "8033ee7b5127c20f4149": {
+      "normalized_text": "no subjects recruited",
+      "example_text": "No subjects recruited",
+      "outcome": "NON_FAILURE_TRANSITION",
+      "primary_reason": "NOT_INITIATED",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 3,
+      "nct_ids": [
+        "NCT02086240",
+        "NCT01191177",
+        "NCT01577199"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 8033ee7b5127c20f4149: No subject was recruited. V2 records the explicit pre-enrollment state without inferring recruitment failure.",
+      "reviewed_at": "2026-08-26"
+    },
+    "484871ae01ff50bf5a1b": {
+      "normalized_text": "only one patient included as per feb. 4, 2008.",
+      "example_text": "Only one patient included as per Feb. 4, 2008.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00396487"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication ba1c3affa251f953b22a: Only one participant was included, an explicit low-accrual condition in the stop-reason field.",
+      "reviewed_at": "2026-08-26"
+    },
+    "20d02f71b0b0a0ae118f": {
+      "normalized_text": "repros stopped the study for safety and fda put the study on hold for safety.",
+      "example_text": "Repros stopped the study for safety and FDA put the study on hold for safety.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [
+        "REGULATORY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00958412"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication fd24f71f776a9f74240a: Safety is the stated cause and the FDA hold is the resulting secondary regulatory action.",
+      "reviewed_at": "2026-08-26"
+    },
+    "fb8a0037eb299d7a2c5f": {
+      "normalized_text": "stopping rule-acute rejection threshold-was met based on local biopsy results",
+      "example_text": "Stopping rule-acute rejection threshold-was met based on local biopsy results",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00346151"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 2f329b1f5b46e336a99c: The acute-rejection stopping threshold is an explicit adverse clinical safety signal.",
+      "reviewed_at": "2026-08-26"
+    },
+    "a441b979702185bf307a": {
+      "normalized_text": "study prematurely terminated due to safety concerns leading to clinical hold",
+      "example_text": "Study prematurely terminated due to safety concerns leading to clinical hold",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [
+        "REGULATORY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02289482"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication a441b979702185bf307a: Safety concerns caused the termination and clinical hold; the hold is a secondary regulatory action.",
+      "reviewed_at": "2026-08-26"
+    },
+    "a91dada629db9a0b1936": {
+      "normalized_text": "study was administratively withdrawn by the irb; no subjects were enrolled",
+      "example_text": "Study was administratively withdrawn by the IRB; no subjects were enrolled",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "REGULATORY",
+      "secondary_reasons": [
+        "NOT_INITIATED"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00978146"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 467046df1454081a0e51: IRB withdrawal is the explicit stop action; no enrollment is retained as the study state rather than a recruitment cause.",
+      "reviewed_at": "2026-08-26"
+    },
+    "87c3c04ee99de7a72d4c": {
+      "normalized_text": "study was closed permanently before the accrual goal was met due to slow accrual",
+      "example_text": "Study was closed permanently before the accrual goal was met due to slow accrual",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00372905"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 87c3c04ee99de7a72d4c: The study closed before its accrual goal because of slow accrual; the unmet goal is not a planned milestone completion.",
+      "reviewed_at": "2026-08-26"
+    },
+    "deb667ddf60257867fb0": {
+      "normalized_text": "study was discontinued due to fda recommendations of the potential toxicities of the combination of drugs.",
+      "example_text": "Study was discontinued due to FDA recommendations of the potential toxicities of the combination of drugs.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [
+        "REGULATORY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03333746"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 8d9206f6e363a27864ca: Potential combination toxicities are the medical cause and the FDA recommendation is the secondary regulatory action.",
+      "reviewed_at": "2026-08-26"
+    },
+    "9c95dfdf1f84c2e3e4a1": {
+      "normalized_text": "the european medical agency granted a paediatric investigational product-specific waiver on the grounds that idelalisib is likely to be unsafe in paediatrics",
+      "example_text": "The European Medical Agency granted a Paediatric Investigational Product-specific waiver on the grounds that idelalisib is likely to be unsafe in paediatrics",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [
+        "REGULATORY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03349346"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication a20f5db628aeb4346444: The product-specific waiver was granted because the intervention was likely unsafe; safety is causal and the EMA action is secondary.",
+      "reviewed_at": "2026-08-26"
+    },
+    "47c576f1734d0551df86": {
+      "normalized_text": "there were no subjects enrolled locally on this study since it opened. local irb closure has been requested.",
+      "example_text": "There were no subjects enrolled locally on this study since it opened. Local IRB closure has been requested.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [
+        "REGULATORY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02382523"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 5996b21ad06aa63bd4ec: No local enrollment is the substantive cause and the requested IRB closure is retained as a secondary action.",
+      "reviewed_at": "2026-08-26"
+    },
+    "31aeb254534ef0244c5e": {
+      "normalized_text": "this trial is being closed based on lack of substantive efficacy, slow accrual and overall tolerance in patients treated to date.",
+      "example_text": "This trial is being closed based on lack of substantive efficacy, slow accrual and overall tolerance in patients treated to date.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY",
+        "SAFETY"
+      ],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00251589"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Open Targets full adjudication 498dc2cb33800d187511: The text explicitly combines slow accrual, lack of efficacy and tolerability concerns.",
+      "reviewed_at": "2026-08-26"
     }
   }
 }

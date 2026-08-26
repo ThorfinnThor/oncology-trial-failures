@@ -60,6 +60,15 @@ ANCHOR_RULES = {
     },
 }
 
+REASON_COVERAGE_CATEGORIES = {
+    "Negative": {"EFFICACY_FUTILITY", "BIOLOGICAL_UNSPECIFIED"},
+    "Safety_Sideeffects": {"SAFETY"},
+    "Insufficient_Enrollment": {"RECRUITMENT"},
+    "Regulatory": {"REGULATORY"},
+    "Covid19": {"EXTERNAL_DISRUPTION"},
+    "Study_Staff_Moved": {"STAFFING_RESOURCES"},
+}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -200,17 +209,40 @@ def anchor_agrees(rule: dict[str, Any], row: dict[str, Any]) -> bool:
     )
 
 
+def row_reason_categories(row: dict[str, Any]) -> set[str]:
+    categories = {str(row.get("classification_final_category") or "<blank>")}
+    categories.update(
+        category.strip()
+        for category in str(row.get("classification_secondary_reasons_v2") or "").split(";")
+        if category.strip()
+    )
+    return categories
+
+
+def reason_coverage_agrees(label: str, row: dict[str, Any]) -> bool:
+    expected = REASON_COVERAGE_CATEGORIES[label]
+    categories = row_reason_categories(row)
+    if label == "Negative":
+        outcome, _ = row_pair(row)
+        return outcome in {"BIOLOGICAL_FAILURE", "MIXED_CAUSES"} and bool(
+            categories.intersection(expected)
+        )
+    return bool(categories.intersection(expected))
+
+
 def build_markdown(report: dict[str, Any]) -> str:
     overlap = report["exact_normalized_overlap"]
     anchors = report["comparable_anchor_agreement"]
     biological = report["broad_biological_agreement"]
     adjudication = report["manual_adjudication"]
+    full_adjudication = report["full_conflict_adjudication"]
     ours = report["clinical_trial_failures_snapshot"]
     external = report["open_targets_snapshot"]
 
     anchor_rows = "\n".join(
         f"| `{label}` | {metrics['comparisons']} | {metrics['any_agreements']} | "
-        f"{metrics['any_agreement_rate']}% |"
+        f"{metrics['any_agreement_rate']}% | {metrics['reason_coverage_agreements']} | "
+        f"{metrics['reason_coverage_rate']}% |"
         for label, metrics in anchors.items()
     )
 
@@ -250,9 +282,11 @@ The NCT-record count is a candidate overlap, not a trial-level join. Generic sto
 
 Each unique normalized text contributes at most one comparison per Open Targets label. "Any agreement" means that at least one Clinical Trial Failures record with the same text satisfies the narrow mapping defined in the benchmark script.
 
-| Open Targets label | Comparable texts | Any agreements | Agreement rate |
-| --- | ---: | ---: | ---: |
+| Open Targets label | Comparable texts | Primary agreements | Primary rate | Primary or secondary cause covered | Coverage rate |
+| --- | ---: | ---: | ---: | ---: | ---: |
 {anchor_rows}
+
+The primary rate is the deliberately strict original metric. Cause coverage also accepts the same evidence category when V2 preserves it as a secondary cause in a mixed or more specific classification.
 
 For the broader biological question, Open Targets `Negative` or `Safety_Sideeffects` agrees with V2 `BIOLOGICAL_FAILURE` or `MIXED_CAUSES` for **{biological['agreements']}/{biological['comparisons']} texts ({biological['agreement_rate']}%)**.
 
@@ -268,6 +302,8 @@ For the broader biological question, Open Targets `Negative` or `Safety_Sideeffe
 A manual screen of the broad biological disagreements and the clearest non-biological anchor conflicts identified {adjudication['reviewed']} high-priority V2 audit candidates. All were adjudicated against the complete registry stop statement: {adjudication['changed']} classifications were changed and {adjudication['confirmed']} were confirmed or confirmed with additional secondary detail. The decisions and rationales are recorded in `data/benchmarks/opentargets_v2_manual_review_candidates.csv` and persisted as approved V2 decisions before this final benchmark run.
 
 The full list of narrow anchor conflicts is available in `data/benchmarks/opentargets_v2_disagreements.csv`. It contains text hashes and NCT IDs rather than republishing external stop-reason text.
+
+The subsequent full conflict audit reviewed all **{full_adjudication['conflict_rows']} strict conflict rows**, representing **{full_adjudication['unique_texts']} unique normalized stop-reason texts**. It identified **{full_adjudication['correction_text_groups']} text groups** requiring a V2 correction or additional explicit secondary-cause detail. The remaining groups were confirmed as conservative classifications, mixed causes, non-failure transitions, cause-not-stated records, already-covered secondary causes, or taxonomy differences. The complete row-level decision log is stored in `{full_adjudication['file']}`.
 
 ## Method
 
@@ -344,13 +380,20 @@ def main() -> None:
         )
         any_agreements = 0
         unanimous_agreements = 0
+        reason_coverage_agreements = 0
+        unanimous_reason_coverage_agreements = 0
         for key in comparison_keys:
             matched_rows = ours_by_text[key]
             results = [anchor_agrees(rule, row) for row in matched_rows]
+            coverage_results = [reason_coverage_agrees(label, row) for row in matched_rows]
             if any(results):
                 any_agreements += 1
             if all(results):
                 unanimous_agreements += 1
+            if any(coverage_results):
+                reason_coverage_agreements += 1
+            if all(coverage_results):
+                unanimous_reason_coverage_agreements += 1
             if not any(results):
                 pairs = sorted({"/".join(row_pair(row)) for row in matched_rows})
                 disagreements.append(
@@ -371,6 +414,12 @@ def main() -> None:
             "any_agreement_rate": percent(any_agreements, len(comparison_keys)),
             "unanimous_agreements": unanimous_agreements,
             "unanimous_agreement_rate": percent(unanimous_agreements, len(comparison_keys)),
+            "reason_coverage_agreements": reason_coverage_agreements,
+            "reason_coverage_rate": percent(reason_coverage_agreements, len(comparison_keys)),
+            "unanimous_reason_coverage_agreements": unanimous_reason_coverage_agreements,
+            "unanimous_reason_coverage_rate": percent(
+                unanimous_reason_coverage_agreements, len(comparison_keys)
+            ),
         }
 
     for key in sorted(matched_keys):
@@ -409,9 +458,29 @@ def main() -> None:
         for decision, count in adjudication_decisions.items()
         if decision.startswith("CONFIRMED")
     )
+    full_adjudication_path = (
+        ROOT / "data" / "benchmarks" / "opentargets_v2_full_adjudication.csv"
+    )
+    full_adjudication_rows: list[dict[str, str]] = []
+    if full_adjudication_path.exists():
+        with full_adjudication_path.open("r", encoding="utf-8", newline="") as handle:
+            full_adjudication_rows = list(csv.DictReader(handle))
+    full_status_counts = Counter(
+        row.get("adjudication_status", "") for row in full_adjudication_rows
+    )
+    full_unique_texts = {
+        row.get("normalized_text_hash", "")
+        for row in full_adjudication_rows
+        if row.get("normalized_text_hash")
+    }
+    changed_text_groups = {
+        row.get("normalized_text_hash", "")
+        for row in full_adjudication_rows
+        if row.get("adjudication_status") == "CHANGE_V2"
+    }
 
     report = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "generated_at": stable_generated_at(args.output, ours_sha, open_targets_sha),
         "clinical_trial_failures_snapshot": {
             "path": display_path(args.ours),
@@ -479,6 +548,13 @@ def main() -> None:
             "changed": adjudication_changed,
             "confirmed": adjudication_confirmed,
             "decision_counts": dict(sorted(adjudication_decisions.items())),
+        },
+        "full_conflict_adjudication": {
+            "file": display_path(full_adjudication_path),
+            "conflict_rows": len(full_adjudication_rows),
+            "unique_texts": len(full_unique_texts),
+            "correction_text_groups": len(changed_text_groups),
+            "status_counts": dict(sorted(full_status_counts.items())),
         },
         "unique_text_crosswalk": {
             label: dict(sorted(counts.items(), key=lambda item: (-item[1], item[0])))
