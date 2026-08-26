@@ -1,0 +1,7 @@
+nct_id,open_targets_labels,current_v2_classification,review_question
+NCT02372240,Safety_Sideeffects,NON_BIOLOGICAL/REGULATORY,"Dose-limiting toxicity appears to cause the clinical hold; review SAFETY as primary and REGULATORY as secondary."
+NCT01675141,Negative;Study_Staff_Moved,NON_BIOLOGICAL/STAFFING_RESOURCES,"The text states both investigator departure and primary outcome not reached; review MIXED_CAUSES."
+NCT00337259,Negative;Insufficient_Enrollment;Insufficient_Data,NON_BIOLOGICAL/RECRUITMENT,"The text states poor accrual and response below expectation; review MIXED_CAUSES."
+NCT01636609,Regulatory,UNRESOLVED/UNRESOLVED_PROVISIONAL_OR_FUTURE_PLAN,"The text states an FDA hold and cancellation of the Phase II portion; review REGULATORY."
+NCT04019769,Study_Staff_Moved;Invalid_Reason,NON_BIOLOGICAL/RECRUITMENT,"PI departure is explicit and no enrollment is also stated; review STAFFING_RESOURCES as primary or MIXED_CAUSES."
+NCT00218036,Business_Administrative;Insufficient_Enrollment;Study_Staff_Moved,NON_BIOLOGICAL/RECRUITMENT,"Funding, PI departure, relocation, and recruitment issues are all stated; review MIXED_CAUSES."
