@@ -59,11 +59,12 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
       isPartOf: {
         "@type": "Dataset",
         name: "Clinical Trial Failures database",
-        url: SITE_URL,
+        description: "A source-linked database of terminated, suspended, and withdrawn ClinicalTrials.gov records classified by stated stop reason.",
+        url: `${SITE_URL}/explore`,
       },
       creator: { "@type": "Organization", name: "Clinical Trial Failures" },
       dateModified: datasetMeta.version,
-      citation: { "@type": "WebPage", name: "ClinicalTrials.gov", url: "https://clinicaltrials.gov/" },
+      citation: "https://clinicaltrials.gov/",
       measurementTechnique: "Classification V2 analysis of ClinicalTrials.gov stopped-study source language",
       temporalCoverage: `../${stats.latestRegistryUpdate}`,
       variableMeasured: [
