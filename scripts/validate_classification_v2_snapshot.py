@@ -33,6 +33,12 @@ try:
         load_reviewed_reason_index,
     )
     from reclassify_dataset_v2 import classify_rows
+    from build_reviewed_reason_index_v2 import (
+        build as build_reviewed_reason_index,
+        describe_index_drift,
+        load_jsonl,
+        load_manual_decisions,
+    )
     from classification_review_dispositions_v2 import DISPOSITION_NOTES
 except ImportError:
     from scripts.classification_v2 import (
@@ -57,6 +63,12 @@ except ImportError:
         load_reviewed_reason_index,
     )
     from scripts.reclassify_dataset_v2 import classify_rows
+    from scripts.build_reviewed_reason_index_v2 import (
+        build as build_reviewed_reason_index,
+        describe_index_drift,
+        load_jsonl,
+        load_manual_decisions,
+    )
     from scripts.classification_review_dispositions_v2 import DISPOSITION_NOTES
 
 
@@ -234,9 +246,21 @@ def main() -> None:
         if csv_row_count(DATA / f"{stem}.csv") != len(rows):
             failures.append(f"{stem}.csv row count differs from JSON")
 
-    reviewed = load_reviewed_reason_index(
-        str(DATA / "classification_reviewed_reasons_v2.json")
-    )
+    # The index is a pure function of the gold file, the approved manual
+    # decisions, and the classifier rules, so it silently goes stale whenever
+    # one of those moves without a rebuild.  Check it before anything is
+    # classified through it.
+    index_path = DATA / "classification_reviewed_reasons_v2.json"
+    for line in describe_index_drift(
+        json.loads(index_path.read_text(encoding="utf-8")),
+        build_reviewed_reason_index(
+            load_jsonl(ROOT / "tests" / "classification_gold_v2.jsonl"),
+            load_manual_decisions(DATA / "classification_manual_decisions_v2.csv"),
+        ),
+    ):
+        failures.append(f"Reviewed-reason index no longer matches a fresh build: {line}")
+
+    reviewed = load_reviewed_reason_index(str(index_path))
     rerun, report, rerun_queue = classify_rows(all_rows, reviewed)
     for before, after in zip(all_rows, rerun):
         changed = [

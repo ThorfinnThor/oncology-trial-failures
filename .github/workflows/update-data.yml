@@ -25,9 +25,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Rebuild reviewed-reason index
+      # Rebuilding here would quietly repair a stale index and commit the
+      # result, which is how it sat at classifier 2.1.0 for so long: every run
+      # regenerated it and threw the result away when a later step failed.
+      # Verify instead, before the fetch, so drift fails loudly and early.
+      - name: Check the reviewed-reason index is current
         run: |
-          python scripts/build_reviewed_reason_index_v2.py
+          python scripts/build_reviewed_reason_index_v2.py --check
 
       - name: Run Classification V2 tests and quality gate
         run: |
