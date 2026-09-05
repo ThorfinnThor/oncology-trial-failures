@@ -215,6 +215,20 @@ python scripts/reclassify_dataset_v2.py --write
 python scripts/validate_classification_v2_snapshot.py
 ```
 
+Applied proposals are no longer review-gated, so the discovery query above can
+never revisit them. Whenever the snippet extraction or the rules change, refresh
+the reviewed set against current registry text instead, so the frozen artifact
+keeps matching what a live fetch computes:
+
+```bash
+python scripts/enrich_classification_context_v2.py --refresh-existing --write
+python scripts/reclassify_dataset_v2.py --write
+python scripts/validate_classification_v2_snapshot.py
+```
+
+A refreshed record that no longer yields a high-confidence fallback is retired
+from the artifact and returned to the review queue.
+
 Fallback text must be a direct study-level causal statement and produce a
 high-confidence final result. Individual participant discontinuations,
 background safety/efficacy discussion, and study-drug discontinuation advice

@@ -121,6 +121,11 @@ def main() -> None:
         action="store_true",
         help="Apply the already reviewed proposal file without another API request",
     )
+    parser.add_argument(
+        "--refresh-existing",
+        action="store_true",
+        help="Recompute the reviewed proposal set against current registry text and rules",
+    )
     args = parser.parse_args()
 
     rows = json.loads(Path(args.input).read_text(encoding="utf-8"))
@@ -149,12 +154,27 @@ def main() -> None:
         return
 
     reviewed_index = load_reviewed_reason_index(args.reviewed_index)
-    targets = [
-        row
-        for row in rows
-        if row.get("classification_needs_review") is True
-        and is_placeholder_reason(row.get("why_stopped"))
-    ]
+    if args.refresh_existing:
+        # Applied proposals are no longer review-gated, so the discovery filter
+        # below can never reach them.  Refresh works from the artifact instead,
+        # keeping the reviewed set fixed while its derived fields catch up with
+        # the current registry text and classifier rules.
+        payload = json.loads(Path(args.proposals).read_text(encoding="utf-8"))
+        wanted = {
+            str(proposal.get("nct_id") or "").upper()
+            for proposal in payload.get("proposals", [])
+        }
+        targets = [row for row in rows if str(row.get("nct_id") or "").upper() in wanted]
+        missing = wanted - {str(row.get("nct_id") or "").upper() for row in targets}
+        if missing:
+            raise ValueError(f"Proposal IDs are absent from the snapshot: {sorted(missing)[:10]}")
+    else:
+        targets = [
+            row
+            for row in rows
+            if row.get("classification_needs_review") is True
+            and is_placeholder_reason(row.get("why_stopped"))
+        ]
     by_id = {str(row.get("nct_id") or "").upper(): row for row in targets}
     contexts: Dict[str, Dict[str, Any]] = {}
     session = requests.Session()
@@ -186,11 +206,23 @@ def main() -> None:
         json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
 
+    fields_by_id = {
+        proposal["nct_id"]: proposal["record_fields"] for proposal in proposals
+    }
+    # A refreshed target that no longer yields a high-confidence fallback has to
+    # give up its applied fields, otherwise the stale snapshot outlives the
+    # proposal that justified it and only a live fetch would notice.
+    retired = sorted(set(by_id) - set(fields_by_id)) if args.refresh_existing else []
     if args.write:
-        fields_by_id = {
-            proposal["nct_id"]: proposal["record_fields"] for proposal in proposals
-        }
-        updated = [{**row, **fields_by_id.get(str(row.get("nct_id") or "").upper(), {})} for row in rows]
+        updated = []
+        for row in rows:
+            nct_id = str(row.get("nct_id") or "").upper()
+            if nct_id in fields_by_id:
+                updated.append({**row, **fields_by_id[nct_id]})
+            elif nct_id in retired:
+                updated.append({**row, "classification_source": "UNCLASSIFIED"})
+            else:
+                updated.append(row)
         Path(args.input).write_text(
             json.dumps(updated, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
@@ -199,6 +231,8 @@ def main() -> None:
         f"Context enrichment {mode}: {len(targets)} targets, "
         f"{len(contexts)} registry records, {len(proposals)} high-confidence fallbacks"
     )
+    if retired:
+        print(f"Retired {len(retired)} proposals back to review: {', '.join(retired)}")
 
 
 if __name__ == "__main__":

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "target_count": 2191,
-  "registry_record_count": 2191,
+  "target_count": 36,
+  "registry_record_count": 36,
   "missing_registry_count": 0,
-  "proposal_count": 36,
+  "proposal_count": 35,
   "proposals": [
     {
       "nct_id": "NCT00159757",
@@ -100,18 +100,18 @@
       "proposed_outcome_v2": "NON_BIOLOGICAL",
       "proposed_primary_reason_v2": "RECRUITMENT",
       "proposed_secondary_reasons_v2": [],
-      "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:delayed enrollment;source.description_fallback:this study was terminated on 17 march 2009 due to delayed enrollment. the decision to terminate the trial was not based on any safety concerns, but rather on timelines and the diff",
+      "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:difficulty in enrolling patients;ops.recruitment:delayed enrollment;ops.recruitment:difficulty in enrolling;v261.remaining_round13_recruitment:difficulty in enrolling;source.description_fallback:this study was terminated on 17 march 2009 due to delayed enrollment. the decision to terminate the trial was not based on any safety concerns, but rather on timelines and the diff",
       "record_fields": {
         "classification_label": "NON_BIOLOGICAL",
         "classification_reason": "OPERATIONAL",
         "classification_confidence": "HIGH",
-        "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:delayed enrollment;source.description_fallback:this study was terminated on 17 march 2009 due to delayed enrollment. the decision to terminate the trial was not based on any safety concerns, but rather on timelines and the diff",
+        "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:difficulty in enrolling patients;ops.recruitment:delayed enrollment;ops.recruitment:difficulty in enrolling;v261.remaining_round13_recruitment:difficulty in enrolling;source.description_fallback:this study was terminated on 17 march 2009 due to delayed enrollment. the decision to terminate the trial was not based on any safety concerns, but rather on timelines and the diff",
         "classification_outcome_v2": "NON_BIOLOGICAL",
         "classification_primary_reason_v2": "RECRUITMENT",
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "23e8711c7ec13ccce7cc",
+        "classification_text_hash": "70bd178b0ac287ec60a5",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -122,18 +122,18 @@
       "proposed_outcome_v2": "NON_BIOLOGICAL",
       "proposed_primary_reason_v2": "RECRUITMENT",
       "proposed_secondary_reasons_v2": [],
-      "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:slow recruitment;v261.remaining_recruitment:slow recruitment;v261.remaining_round13_recruitment:slow recruitment;v261.remaining_round23_recruitment:high screen fail rate;source.description_fallback:the study was terminated by mutual consent with the study site at a meeting on the 1 april 2009, because of slow recruitment due to a high screen fail rate.",
+      "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:slow recruitment;v261.remaining_recruitment:slow recruitment;v261.remaining_round13_recruitment:slow recruitment;v261.remaining_round23_recruitment:high screen fail rate;source.description_fallback:the study was terminated by mutual consent with the study site at a meeting on the 1 april 2009, because of slow recruitment due to a high screen fail rate. the study was not stopp",
       "record_fields": {
         "classification_label": "NON_BIOLOGICAL",
         "classification_reason": "OPERATIONAL",
         "classification_confidence": "HIGH",
-        "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:slow recruitment;v261.remaining_recruitment:slow recruitment;v261.remaining_round13_recruitment:slow recruitment;v261.remaining_round23_recruitment:high screen fail rate;source.description_fallback:the study was terminated by mutual consent with the study site at a meeting on the 1 april 2009, because of slow recruitment due to a high screen fail rate.",
+        "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:slow recruitment;v261.remaining_recruitment:slow recruitment;v261.remaining_round13_recruitment:slow recruitment;v261.remaining_round23_recruitment:high screen fail rate;source.description_fallback:the study was terminated by mutual consent with the study site at a meeting on the 1 april 2009, because of slow recruitment due to a high screen fail rate. the study was not stopp",
         "classification_outcome_v2": "NON_BIOLOGICAL",
         "classification_primary_reason_v2": "RECRUITMENT",
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "5920880fa9553eb6cec3",
+        "classification_text_hash": "5f3a4ff79571b8329d54",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -155,7 +155,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "c63bedf92fdd37cc7598",
+        "classification_text_hash": "5591a28a5d3c90f4e457",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -178,28 +178,6 @@
         "classification_needs_review": false,
         "classification_version": "2.7.0",
         "classification_text_hash": "a516059ff4505eaa2780",
-        "classification_source": "DESCRIPTION_FALLBACK"
-      }
-    },
-    {
-      "nct_id": "NCT00585312",
-      "why_stopped": "See termination reason in detailed description.",
-      "registry_why_stopped": "See termination reason in detailed description.",
-      "proposed_outcome_v2": "NON_BIOLOGICAL",
-      "proposed_primary_reason_v2": "RECRUITMENT",
-      "proposed_secondary_reasons_v2": [],
-      "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:low enrollment;ops.recruitment:terminated early (31oct2013) due to low enrollment;v261.remaining_round13_recruitment:low enrollment;source.description_fallback:per dmc recommendation, the study was terminated early (31oct2013) due to low enrollment and low endpoint accumulation rate.",
-      "record_fields": {
-        "classification_label": "NON_BIOLOGICAL",
-        "classification_reason": "OPERATIONAL",
-        "classification_confidence": "HIGH",
-        "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:low enrollment;ops.recruitment:terminated early (31oct2013) due to low enrollment;v261.remaining_round13_recruitment:low enrollment;source.description_fallback:per dmc recommendation, the study was terminated early (31oct2013) due to low enrollment and low endpoint accumulation rate.",
-        "classification_outcome_v2": "NON_BIOLOGICAL",
-        "classification_primary_reason_v2": "RECRUITMENT",
-        "classification_secondary_reasons_v2": "",
-        "classification_needs_review": false,
-        "classification_version": "2.7.0",
-        "classification_text_hash": "efa28cebaecb0d31cbf3",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -331,7 +309,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "13506f23b877de5db8f9",
+        "classification_text_hash": "fc3ac2273580de3bb98e",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -353,7 +331,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "51092ec573b8d9175ccd",
+        "classification_text_hash": "1f2fa5c153c437a9bdd7",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -397,7 +375,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "34731e9d0b4101beca3a",
+        "classification_text_hash": "1e72c5c177e11bc3a6c0",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -419,7 +397,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "34731e9d0b4101beca3a",
+        "classification_text_hash": "1e72c5c177e11bc3a6c0",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -463,7 +441,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "430cdad3a72966eae1bb",
+        "classification_text_hash": "a536cc703257b92129ac",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -485,7 +463,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "52b3de77db20afe3e840",
+        "classification_text_hash": "a5df43069e927e7586bd",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -507,7 +485,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "4523fb504f7a0e088b15",
+        "classification_text_hash": "7c98a5a6e809414301d4",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -529,7 +507,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "9e9d792394f5b1c8b6b4",
+        "classification_text_hash": "332ec9612e42e2e42008",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -551,7 +529,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "25b163d6164040a09b11",
+        "classification_text_hash": "9b93f816b9d1f0f516e7",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -573,7 +551,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "833c88e9099d3ecef24a",
+        "classification_text_hash": "64c97553c105140f80b3",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -595,7 +573,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "a8f4e7847ad8c4a57907",
+        "classification_text_hash": "9084d8abc27b819c2a7a",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -628,18 +606,18 @@
       "proposed_outcome_v2": "NON_BIOLOGICAL",
       "proposed_primary_reason_v2": "RECRUITMENT",
       "proposed_secondary_reasons_v2": [],
-      "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:inability to recruit;v261.remaining_round13_recruitment:inability to recruit;v261.remaining_round29_recruitment:inability to recruit the planned number of subjects;source.description_fallback:the trial was terminated prematurely on december 14, 2010, due to inability to recruit the planned number of subjects and shifting organizational priorities.",
+      "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:inability to recruit;v261.remaining_round13_recruitment:inability to recruit;v261.remaining_round29_recruitment:inability to recruit the planned number of subjects;source.description_fallback:the trial was terminated prematurely on december 14, 2010, due to inability to recruit the planned number of subjects and shifting organizational priorities. the decision to termin",
       "record_fields": {
         "classification_label": "NON_BIOLOGICAL",
         "classification_reason": "OPERATIONAL",
         "classification_confidence": "HIGH",
-        "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:inability to recruit;v261.remaining_round13_recruitment:inability to recruit;v261.remaining_round29_recruitment:inability to recruit the planned number of subjects;source.description_fallback:the trial was terminated prematurely on december 14, 2010, due to inability to recruit the planned number of subjects and shifting organizational priorities.",
+        "classification_evidence": "v=2.7.0;outcome=NON_BIOLOGICAL;primary=RECRUITMENT;ops.recruitment:inability to recruit;v261.remaining_round13_recruitment:inability to recruit;v261.remaining_round29_recruitment:inability to recruit the planned number of subjects;source.description_fallback:the trial was terminated prematurely on december 14, 2010, due to inability to recruit the planned number of subjects and shifting organizational priorities. the decision to termin",
         "classification_outcome_v2": "NON_BIOLOGICAL",
         "classification_primary_reason_v2": "RECRUITMENT",
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "05e8c6b2e94347aa43bf",
+        "classification_text_hash": "429f6a8aba618d7e9301",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -661,7 +639,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "e5a13a2250da9675cc42",
+        "classification_text_hash": "a577259012f26e269f67",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },
@@ -683,7 +661,7 @@
         "classification_secondary_reasons_v2": "",
         "classification_needs_review": false,
         "classification_version": "2.7.0",
-        "classification_text_hash": "7fa42a9edf4ca2c55d80",
+        "classification_text_hash": "3d357e5614c1db9f4785",
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     },

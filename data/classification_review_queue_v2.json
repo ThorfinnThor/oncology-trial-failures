@@ -2151,12 +2151,13 @@
   {
     "classification_text_hash": "f27f5b30421c2aba0325",
     "why_stopped": "See termination reason in detailed description.",
-    "record_count": 25,
+    "record_count": 26,
     "nct_ids": [
       "NCT01010542",
       "NCT00759655",
       "NCT00880009",
       "NCT01146561",
+      "NCT00585312",
       "NCT00785772",
       "NCT01069861",
       "NCT01049217",
@@ -2180,7 +2181,8 @@
       "NCT01103713"
     ],
     "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 25
+      "UNCLEAR/OTHER/UNKNOWN": 25,
+      "NON_BIOLOGICAL/OPERATIONAL": 1
     },
     "suggested_outcome_v2": "UNKNOWN",
     "suggested_primary_reason_v2": "UNSPECIFIED",
