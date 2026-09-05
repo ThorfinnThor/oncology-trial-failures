@@ -1,90 +1,90 @@
 {
-  "version": "2026-08-14",
-  "generated_at_utc": "2026-08-25T08:36:02Z",
+  "version": "2026-09-04",
+  "generated_at_utc": "2026-09-05T09:48:46Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 23617,
-    "max_last_update_post_date": "2026-08-14"
+    "record_count": 23725,
+    "max_last_update_post_date": "2026-09-04"
   },
   "biological_failure": {
-    "record_count": 2360,
-    "max_last_update_post_date": "2026-08-14"
+    "record_count": 2376,
+    "max_last_update_post_date": "2026-09-04"
   },
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 7941
+      "count": 7993
     },
     {
       "area": "Other",
-      "count": 5788
+      "count": 5809
     },
     {
       "area": "Infectious Disease",
-      "count": 1709
+      "count": 1720
     },
     {
       "area": "Gastroenterology & Hepatology",
-      "count": 1529
+      "count": 1534
     },
     {
       "area": "Cardiovascular",
-      "count": 1292
+      "count": 1296
     },
     {
       "area": "Neurology",
-      "count": 1003
+      "count": 1006
     },
     {
       "area": "Endocrine & Metabolic",
-      "count": 799
+      "count": 800
     },
     {
       "area": "Immunology & Autoimmune",
-      "count": 669
+      "count": 673
     },
     {
       "area": "Respiratory",
-      "count": 629
+      "count": 631
     },
     {
       "area": "Psychiatry & Mental Health",
-      "count": 609
+      "count": 610
     }
   ],
   "classification_v2": {
     "version": "2.7.0",
     "outcomes": {
-      "NON_BIOLOGICAL": 14221,
-      "UNKNOWN": 3649,
-      "BIOLOGICAL_FAILURE": 2360,
-      "CAUSE_NOT_STATED": 1997,
-      "NON_FAILURE_TRANSITION": 1151,
-      "MIXED_CAUSES": 239
+      "NON_BIOLOGICAL": 14258,
+      "UNKNOWN": 3559,
+      "BIOLOGICAL_FAILURE": 2376,
+      "CAUSE_NOT_STATED": 2009,
+      "NON_FAILURE_TRANSITION": 1286,
+      "MIXED_CAUSES": 237
     },
     "primary_reasons": {
-      "RECRUITMENT": 6589,
-      "UNSPECIFIED": 3649,
-      "BUSINESS_STRATEGY": 2227,
-      "FUNDING": 1740,
-      "DECISION_WITHOUT_STATED_CAUSE": 1604,
-      "EFFICACY_FUTILITY": 1586,
-      "STAFFING_RESOURCES": 804,
-      "PROTOCOL_FEASIBILITY": 642,
-      "SUPPLY_MANUFACTURING": 616,
-      "SAFETY": 604,
-      "REGULATORY": 510,
-      "EXTERNAL_DISRUPTION": 487,
+      "RECRUITMENT": 6593,
+      "UNSPECIFIED": 3559,
+      "BUSINESS_STRATEGY": 2237,
+      "FUNDING": 1754,
+      "DECISION_WITHOUT_STATED_CAUSE": 1612,
+      "EFFICACY_FUTILITY": 1591,
+      "STAFFING_RESOURCES": 807,
+      "PROTOCOL_FEASIBILITY": 648,
+      "SAFETY": 617,
+      "SUPPLY_MANUFACTURING": 617,
+      "REGULATORY": 509,
+      "NOT_INITIATED": 507,
+      "EXTERNAL_DISRUPTION": 489,
+      "OPERATIONAL_OTHER": 421,
       "REPLACEMENT_TRANSITION": 415,
-      "OPERATIONAL_OTHER": 415,
-      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 393,
-      "NOT_INITIATED": 371,
-      "PLANNED_MILESTONE": 365,
-      "MULTIPLE": 239,
-      "SUPPORT_WITHDRAWAL": 191,
-      "BIOLOGICAL_UNSPECIFIED": 170
+      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 397,
+      "PLANNED_MILESTONE": 364,
+      "MULTIPLE": 237,
+      "SUPPORT_WITHDRAWAL": 183,
+      "BIOLOGICAL_UNSPECIFIED": 168
     },
-    "needs_review": 3649,
+    "needs_review": 3559,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,
