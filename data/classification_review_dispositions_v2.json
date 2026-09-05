@@ -1,17 +1,17 @@
 {
   "schema_version": 1,
   "classifier_version": "2.7.0",
-  "review_group_count": 1140,
-  "review_record_count": 3512,
+  "review_group_count": 1148,
+  "review_record_count": 3521,
   "disposition_group_counts": {
-    "OTHER_AMBIGUOUS_TEXT": 393,
+    "OTHER_AMBIGUOUS_TEXT": 397,
     "ABBREVIATION_OR_FRAGMENT": 283,
     "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 159,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 70,
     "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 50,
     "PROVISIONAL_OR_FUTURE_PLAN": 49,
-    "EXPLICIT_BUT_UNMAPPED_CAUSE": 31,
-    "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 30,
+    "EXPLICIT_BUT_UNMAPPED_CAUSE": 34,
+    "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 31,
     "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE": 28,
     "STATUS_OR_ACTION_WITHOUT_CAUSE": 27,
     "PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE": 9,
@@ -22,30 +22,30 @@
   },
   "disposition_record_counts": {
     "MISSING_STOP_REASON": 2132,
-    "OTHER_AMBIGUOUS_TEXT": 414,
+    "OTHER_AMBIGUOUS_TEXT": 418,
     "ABBREVIATION_OR_FRAGMENT": 366,
     "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 176,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 87,
     "STATUS_OR_ACTION_WITHOUT_CAUSE": 65,
     "PROVISIONAL_OR_FUTURE_PLAN": 56,
-    "PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE": 54,
+    "PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE": 55,
     "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 54,
-    "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 33,
+    "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 34,
+    "EXPLICIT_BUT_UNMAPPED_CAUSE": 34,
     "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE": 32,
-    "EXPLICIT_BUT_UNMAPPED_CAUSE": 31,
     "INSUFFICIENT_OR_LOW_QUALITY_DATA": 7,
     "RETENTION_OR_FOLLOW_UP_LIMITATION": 3,
     "REGISTRY_OR_REPORTING_ADMIN_TEXT": 2
   },
   "priority_group_counts": {
-    "MEDIUM": 622,
-    "HIGH": 479,
+    "MEDIUM": 623,
+    "HIGH": 486,
     "LOW": 39
   },
   "priority_record_counts": {
-    "LOW": 2253,
-    "MEDIUM": 753,
-    "HIGH": 506
+    "LOW": 2254,
+    "MEDIUM": 754,
+    "HIGH": 513
   },
   "disposition_notes": {
     "MISSING_STOP_REASON": "ClinicalTrials.gov supplies no stop-reason text. No semantic cause can be asserted without another explicit primary-source statement.",
@@ -2222,12 +2222,13 @@
     {
       "classification_text_hash": "f27f5b30421c2aba0325",
       "why_stopped": "See termination reason in detailed description.",
-      "record_count": 25,
+      "record_count": 26,
       "nct_ids": [
         "NCT01010542",
         "NCT00759655",
         "NCT00880009",
         "NCT01146561",
+        "NCT00585312",
         "NCT00785772",
         "NCT01069861",
         "NCT01049217",
@@ -2251,7 +2252,7 @@
         "NCT01103713"
       ],
       "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 25
+        "UNCLEAR/OTHER/UNKNOWN": 26
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -5665,6 +5666,24 @@
       "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
     },
     {
+      "classification_text_hash": "1b04f45d54636dc4f3ea",
+      "why_stopped": "Slow accrual at the time when sufficient participants were already enrolled to answer the scientific question posed by the study.",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT04405167"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:slow accrual;v261.remaining_recruitment:slow accrual;v261.remaining_round13_recruitment:slow accrual",
+      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
+    },
+    {
       "classification_text_hash": "1b1fc6bfe7645dc6d476",
       "why_stopped": "It was suspendend because the protocol and the aims were modified",
       "record_count": 1,
@@ -6817,6 +6836,24 @@
       "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
     },
     {
+      "classification_text_hash": "2cc53ef348c2e28d0bbb",
+      "why_stopped": "Due to the significantly lower than expected accrual it was impossible to evaluate the endpoint in a timely fashion.",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT02664077"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:lower than expected accrual",
+      "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
+    },
+    {
       "classification_text_hash": "2cdadbc5d3658f4f1bfb",
       "why_stopped": "IP breach",
       "record_count": 1,
@@ -7105,6 +7142,24 @@
       "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
     },
     {
+      "classification_text_hash": "30e3e3e91a7f1386d29b",
+      "why_stopped": "Enrollment closed by internal scientific review committee due to slow accrual.",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT02512692"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:slow accrual;ops.recruitment:closed by internal scientific review committee due to slow accrual;v261.remaining_recruitment:slow accrual;v261.remaining_round13_recruitment:slow accrual",
+      "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
+    },
+    {
       "classification_text_hash": "30e94227732cd2a17d89",
       "why_stopped": "Accrual was insufficient to meet study endpoints",
       "record_count": 1,
@@ -7190,6 +7245,24 @@
       "suggested_primary_reason_v2": "UNSPECIFIED",
       "suggested_secondary_reasons_v2": [],
       "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED",
+      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
+    },
+    {
+      "classification_text_hash": "32dcb84b849c3e2bfca4",
+      "why_stopped": "lack of scientific relevance (change in the treatment landscape) and poor recruitment",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT02863055"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:poor recruitment;ops.protocol:change in the treatment landscape;v261.recruitment_explicit:poor recruitment;v261.protocol_explicit:change in the treatment",
       "review_disposition": "OTHER_AMBIGUOUS_TEXT",
       "review_priority": "HIGH",
       "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
@@ -15511,6 +15584,24 @@
       "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
     },
     {
+      "classification_text_hash": "9fed82f8966d0724d88d",
+      "why_stopped": "Due to slow enrollment, the extensive time projected to conclude the study hypothesis rendered the study no longer reasonably feasible to complete.",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT02520011"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:slow enrollment;v261.remaining_round13_recruitment:slow enrollment",
+      "review_disposition": "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR",
+      "review_priority": "MEDIUM",
+      "review_disposition_note": "The text refers to completion, a study part, follow-on activity, or a transition, but does not establish whether this was a planned milestone or a failure cause."
+    },
+    {
       "classification_text_hash": "a016aae75a3c54943481",
       "why_stopped": "IRB audit",
       "record_count": 1,
@@ -16373,6 +16464,24 @@
       "review_disposition": "ABBREVIATION_OR_FRAGMENT",
       "review_priority": "MEDIUM",
       "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
+    },
+    {
+      "classification_text_hash": "ab31e2b4074eb1b3179e",
+      "why_stopped": "Serious concerns on the slow recruitment of the study that impacts the robustness of the scientific rationale and the study financial provision. It aims to assess carefully the situation and to evaluate the potential solutions to overcome the issues.",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT04675827"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:slow recruitment;v261.remaining_recruitment:slow recruitment;v261.remaining_round13_recruitment:slow recruitment",
+      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
     },
     {
       "classification_text_hash": "ab6676a415c174afba89",
@@ -21325,6 +21434,24 @@
       "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
     },
     {
+      "classification_text_hash": "eb3733916698d0f72574",
+      "why_stopped": "Enrollment was stopped due to direction from the scientific review committee of the Penn State Cancer Institute. The instruction came due to slow accrual.",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT04869449"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:slow accrual;v261.remaining_recruitment:slow accrual;v261.remaining_round13_recruitment:slow accrual",
+      "review_disposition": "EXPLICIT_BUT_UNMAPPED_CAUSE",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The text contains an explicit causal connector, but the stated cause is too ambiguous or outside the supported taxonomy for a reliable classification."
+    },
+    {
       "classification_text_hash": "eb67c10c81527a313ede",
       "why_stopped": "Protocol undergoing additional revisions.",
       "record_count": 1,
@@ -22601,6 +22728,24 @@
       "review_disposition": "ABBREVIATION_OR_FRAGMENT",
       "review_priority": "MEDIUM",
       "review_disposition_note": "The available wording is an abbreviation or short fragment that does not contain a complete, affirmative causal statement."
+    },
+    {
+      "classification_text_hash": "faf660d13a41f572a5ca",
+      "why_stopped": "Low enrollment, University Scientific Review Committee required study closure.",
+      "record_count": 1,
+      "nct_ids": [
+        "NCT03318016"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 1
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.0;outcome=UNKNOWN;primary=UNSPECIFIED;ops.recruitment:low enrollment;v261.remaining_round13_recruitment:low enrollment",
+      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
     },
     {
       "classification_text_hash": "fb6abe1e29b4f3611232",
