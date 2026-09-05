@@ -216,9 +216,11 @@ python scripts/validate_classification_v2_snapshot.py
 ```
 
 Applied proposals are no longer review-gated, so the discovery query above can
-never revisit them. Whenever the snippet extraction or the rules change, refresh
-the reviewed set against current registry text instead, so the frozen artifact
-keeps matching what a live fetch computes:
+never revisit them. The weekly workflow therefore refreshes the reviewed set
+against the registry text it just fetched, before rebuilding the review queue,
+so the frozen artifact cannot drift away from what a live fetch computes. In the
+steady state that step is a no-op. Run it by hand after changing the snippet
+extraction or the rules, rather than waiting for the schedule:
 
 ```bash
 python scripts/enrich_classification_context_v2.py --refresh-existing --write
@@ -227,7 +229,8 @@ python scripts/validate_classification_v2_snapshot.py
 ```
 
 A refreshed record that no longer yields a high-confidence fallback is retired
-from the artifact and returned to the review queue.
+from the artifact and returned to the review queue. Refresh only recomputes
+proposals that were already reviewed; discovering new ones stays manual.
 
 Fallback text must be a direct study-level causal statement and produce a
 high-confidence final result. Individual participant discontinuations,

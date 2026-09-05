@@ -46,6 +46,16 @@ jobs:
           OVERRIDES_PATH: "overrides.csv"
           REVIEWED_REASONS_V2_PATH: "data/classification_reviewed_reasons_v2.json"
 
+      # The fetch re-derives description fallbacks from live registry text, but
+      # the reviewed proposal artifact is frozen, so any change to the snippet
+      # extraction or the rules silently puts the two out of step and only the
+      # snapshot validation below notices.  Refresh recomputes the reviewed set
+      # against the same text the fetch just read.  It only ever recomputes
+      # proposals that were already reviewed; discovering new ones stays manual.
+      - name: Refresh reviewed context proposals against the fetched snapshot
+        run: |
+          python scripts/enrich_classification_context_v2.py --refresh-existing --write
+
       - name: Build V2 review queue and canonical subsets
         run: |
           python scripts/reclassify_dataset_v2.py --write
