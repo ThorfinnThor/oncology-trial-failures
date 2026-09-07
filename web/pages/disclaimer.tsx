@@ -126,7 +126,7 @@ export default function DisclaimerPage() {
             <p>
               In an emergency or for an urgent health concern, contact local emergency services or a
               qualified healthcare professional. Do not submit confidential patient information through the
-              website's feedback channels.
+              website&apos;s feedback channels.
             </p>
           </section>
 
@@ -179,7 +179,7 @@ export default function DisclaimerPage() {
               typical for that kind of obligation.
             </p>
             <p>
-              This wording is intended to describe the website's limitations transparently, not to remove
+              This wording is intended to describe the website&apos;s limitations transparently, not to remove
               statutory rights or reverse any burden of proof imposed by law.
             </p>
           </section>

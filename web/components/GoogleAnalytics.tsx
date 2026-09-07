@@ -41,6 +41,7 @@ export function GoogleAnalytics() {
     if (consent == null) return;
 
     window.dataLayer = window.dataLayer || [];
+    // eslint-disable-next-line prefer-rest-params -- gtag queues IArguments objects; preserve that format.
     window.gtag = window.gtag || function gtag() { window.dataLayer.push(arguments); };
 
     const deniedAll = {
@@ -75,23 +76,6 @@ export function GoogleAnalytics() {
 
   return (
     <>
-      {/* Define dataLayer + Consent Mode v2 default DENIED (no external script yet) */}
-      <Script id="ga-consent-default" strategy="beforeInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){window.dataLayer.push(arguments);}
-          window.gtag = window.gtag || gtag;
-
-          gtag('consent','default',{
-            ad_storage:'denied',
-            analytics_storage:'denied',
-            ad_user_data:'denied',
-            ad_personalization:'denied',
-            wait_for_update: 500
-          });
-        `}
-      </Script>
-
       {/* EXTRA STRICT: only load gtag.js after explicit "Accept all" */}
       {consent === "all" && (
         <>

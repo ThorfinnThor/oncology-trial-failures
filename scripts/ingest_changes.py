@@ -3,7 +3,10 @@
 
 from __future__ import annotations
 
+import argparse
+import json
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
 
@@ -201,3 +204,33 @@ def build_ingest_change_report(
         "classification_changes": classification_changes,
         "removed_records": removed_records,
     }
+
+
+def load_snapshot(path: Path) -> List[Dict[str, Any]]:
+    rows = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
+        raise ValueError(f"{path} must contain a JSON array of records")
+    return rows
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--previous", type=Path,
+        help="Saved pre-ingest snapshot; omit only for an initial ingest without a baseline",
+    )
+    parser.add_argument("--current", type=Path, default=Path("data/all_stopped_trials.json"))
+    parser.add_argument("--output", type=Path, default=Path("data/ingest_changes.json"))
+    args = parser.parse_args()
+    inputs = [args.current] + ([args.previous] if args.previous is not None else [])
+    if args.output.resolve() in {path.resolve() for path in inputs}:
+        raise ValueError("Report output must not overwrite an input snapshot")
+    previous = load_snapshot(args.previous) if args.previous is not None else None
+    report = build_ingest_change_report(previous, load_snapshot(args.current))
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"Wrote final ingest changes to {args.output}: {report['summary']}")
+
+
+if __name__ == "__main__":
+    main()

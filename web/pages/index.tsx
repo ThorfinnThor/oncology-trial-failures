@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 
@@ -250,7 +251,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESCRIPTION} />
         <meta name="twitter:image" content={OG_IMAGE} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
       </Head>
 
       <div className="v2Home">

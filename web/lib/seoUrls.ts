@@ -10,7 +10,8 @@ export function slugify(value: string): string {
 }
 
 export function extractNctId(value: string): string {
-  const raw = decodeURIComponent(value || "").trim();
+  // Next.js route parameters are already decoded; literal percent signs are valid here.
+  const raw = (value || "").trim();
   const match = raw.match(/NCT\d{8}/i);
   return match ? match[0].toUpperCase() : raw.toUpperCase();
 }

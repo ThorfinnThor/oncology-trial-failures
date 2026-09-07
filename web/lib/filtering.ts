@@ -51,6 +51,11 @@ function normToken(s?: string): string {
   return (s || "").replace(/\s+/g, " ").trim().toLowerCase();
 }
 
+function matchesEntityList(value: string | undefined, selected: string[]): boolean {
+  // Commas belong to entity names; the pipeline separates entries with semicolons.
+  return (value || "").split(";").some((entry) => selected.includes(normToken(entry)));
+}
+
 export function isLikelyScientificFailure(r: TrialIndexRow): boolean {
   const finalOutcome = (r.classification_final_outcome || "").toUpperCase().trim();
   if (finalOutcome && finalOutcome !== "UNRESOLVED") {
@@ -94,8 +99,8 @@ export function filterRows(rows: TrialIndexRow[], state: UrlState): TrialIndexRo
         r.nct_id,
         r.brief_title,
         r.lead_sponsor,
-        r.condition_first,
-        r.intervention_first,
+        r.conditions || r.condition_first,
+        r.intervention_names || r.intervention_first,
         r.disease_area,
         r.why_stopped_short
       ]
@@ -130,21 +135,15 @@ export function filterRows(rows: TrialIndexRow[], state: UrlState): TrialIndexRo
       if (!sponsor.includes(s)) return false;
     }
 
-    // intervention / condition / country (exact match against compact index fields when available)
+    // Match any complete entity, retaining support for older first-only indexes.
     if (intervention.length) {
-      const x = normToken((r as any).intervention_first || (r as any).intervention_names);
-      if (!intervention.includes(x)) return false;
+      if (!matchesEntityList(r.intervention_names || r.intervention_first, intervention)) return false;
     }
     if (condition.length) {
-      const x = normToken((r as any).condition_first || (r as any).conditions);
-      if (!condition.includes(x)) return false;
+      if (!matchesEntityList(r.conditions || r.condition_first, condition)) return false;
     }
     if (country.length) {
-      // Some builds may not carry country in the compact index; tolerate missing.
-      const blob = normToken((r as any).countries || (r as any).country || "");
-      if (!blob) return false;
-      // If countries is a semicolon/comma list, accept any match.
-      if (!country.some((c) => blob.split(/[,;|]/).map((t: string) => normToken(t)).includes(c))) return false;
+      if (!matchesEntityList(r.countries || (r as any).country, country)) return false;
     }
 
     // bucket

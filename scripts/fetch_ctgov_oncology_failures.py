@@ -945,9 +945,9 @@ def load_overrides(path: str) -> Dict[str, Classification]:
     return overrides
 
 
-def extract_mesh_terms(protocol: Dict[str, Any]) -> List[str]:
+def extract_mesh_terms(derived: Dict[str, Any]) -> List[str]:
     out: List[str] = []
-    cb = protocol.get("conditionBrowseModule") or {}
+    cb = derived.get("conditionBrowseModule") or {}
     meshes = cb.get("meshes") or []
     if isinstance(meshes, list):
         for m in meshes:
@@ -957,14 +957,14 @@ def extract_mesh_terms(protocol: Dict[str, Any]) -> List[str]:
 
 
 def extract_countries(protocol: Dict[str, Any]) -> List[str]:
-    """Extract trial site countries from contactsLocationsModule.locations[].locationCountry"""
+    """Extract trial site countries from contactsLocationsModule.locations[].country."""
     out: Set[str] = set()
     cl = protocol.get("contactsLocationsModule") or {}
     locs = cl.get("locations") or []
     if isinstance(locs, list):
         for loc in locs:
             if isinstance(loc, dict):
-                c = loc.get("locationCountry")
+                c = loc.get("country")
                 if c and isinstance(c, str):
                     out.add(c.strip())
     return sorted(out)
@@ -989,7 +989,7 @@ def extract_record(study: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(conditions, list):
         conditions = []
 
-    mesh_terms = extract_mesh_terms(protocol)
+    mesh_terms = extract_mesh_terms(study.get("derivedSection") or {})
     countries = extract_countries(protocol)
 
     sponsor = get_nested(protocol, ["sponsorCollaboratorsModule", "leadSponsor", "name"], "")

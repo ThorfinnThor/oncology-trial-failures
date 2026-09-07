@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
@@ -73,7 +74,7 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
         <meta name="twitter:image" content={OG_IMAGE} />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
         />
       </Head>
 

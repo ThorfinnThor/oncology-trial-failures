@@ -116,7 +116,7 @@ export default function PrivacyPage() {
               advertising for users in the EEA, the United Kingdom, and Switzerland should not be enabled
               unless the site uses a Google-certified Consent Management Platform integrated with the
               applicable IAB Transparency and Consent Framework, or another Google-supported consent
-              setup that satisfies Google's publisher requirements.
+              setup that satisfies Google&apos;s publisher requirements.
             </p>
             <p>
               Google may process data such as cookie identifiers, device information, IP address, page
@@ -237,7 +237,7 @@ export default function PrivacyPage() {
           <section>
             <h2>Legal note</h2>
             <p>
-              This policy is intended to clearly explain the site's privacy practices, but it is not legal
+              This policy is intended to clearly explain the site&apos;s privacy practices, but it is not legal
               advice. Because the operator is based in Europe and because AdSense, affiliate tracking,
               and newsletter tools can trigger GDPR and German TTDSG consent duties, the policy and
               consent setup should be reviewed by a qualified privacy professional before monetization

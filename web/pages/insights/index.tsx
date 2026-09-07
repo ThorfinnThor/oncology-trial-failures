@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 
@@ -57,7 +58,7 @@ export default function InsightsIndexPage({ articles }: InsightsIndexPageProps) 
         <meta name="twitter:card" content="summary_large_image" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
         />
       </Head>
 

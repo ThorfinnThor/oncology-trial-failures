@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 
 import EvidenceStandard from "@/components/EvidenceStandard";
@@ -139,7 +140,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, datasetMet
         <meta name="twitter:title" content={hub.title} />
         <meta name="twitter:description" content={hub.description} />
         <meta name="twitter:image" content={OG_IMAGE} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }} />
       </Head>
 
       <div className="min-h-screen">

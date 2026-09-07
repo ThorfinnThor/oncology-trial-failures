@@ -88,29 +88,29 @@ export default function CompareModal({ open, onClose, trials, onRemove }: Props)
 
   const phaseCells = cols.map((t) => {
     const p = parsePhases(t.phases || "")[0] || "UNKNOWN";
-    return <span className={phaseChipClass(p)}>{phaseLabel(p)}</span>;
+    return <span key={t.nct_id} className={phaseChipClass(p)}>{phaseLabel(p)}</span>;
   });
 
   const statusCells = cols.map((t) => (
-    <span className="chip chip-neutral">{(t.overall_status || "—").toUpperCase()}</span>
+    <span key={t.nct_id} className="chip chip-neutral">{(t.overall_status || "—").toUpperCase()}</span>
   ));
-  const areaCells = cols.map((t) => <span>{t.disease_area || "Other"}</span>);
-  const sponsorCells = cols.map((t) => <span>{t.lead_sponsor || "—"}</span>);
-  const collabCells = cols.map((t) => <span>{t.collaborators || "—"}</span>);
-  const conditionCells = cols.map((t) => <span>{t.condition_first || "—"}</span>);
-  const interventionCells = cols.map((t) => <span>{t.intervention_first || "—"}</span>);
-  const dateCells = cols.map((t) => <span>{t.last_update_post_date || "—"}</span>);
+  const areaCells = cols.map((t) => <span key={t.nct_id}>{t.disease_area || "Other"}</span>);
+  const sponsorCells = cols.map((t) => <span key={t.nct_id}>{t.lead_sponsor || "—"}</span>);
+  const collabCells = cols.map((t) => <span key={t.nct_id}>{t.collaborators || "—"}</span>);
+  const conditionCells = cols.map((t) => <span key={t.nct_id}>{t.condition_first || "—"}</span>);
+  const interventionCells = cols.map((t) => <span key={t.nct_id}>{t.intervention_first || "—"}</span>);
+  const dateCells = cols.map((t) => <span key={t.nct_id}>{t.last_update_post_date || "—"}</span>);
 
   const bucketCells = cols.map((t) => {
     const b = reasonBucket(t);
-    return <span className={bucketChipClass(b)}>{b}</span>;
+    return <span key={t.nct_id} className={bucketChipClass(b)}>{b}</span>;
   });
 
   const confCells = cols.map((t) => (
-    <span className="chip chip-neutral">{t.classification_confidence || "—"}</span>
+    <span key={t.nct_id} className="chip chip-neutral">{t.classification_confidence || "—"}</span>
   ));
   const whyCells = cols.map((t) => (
-    <span style={{ color: "var(--text-muted)", lineHeight: 1.35 }}>{t.why_stopped_short || "—"}</span>
+    <span key={t.nct_id} style={{ color: "var(--text-muted)", lineHeight: 1.35 }}>{t.why_stopped_short || "—"}</span>
   ));
 
   return (

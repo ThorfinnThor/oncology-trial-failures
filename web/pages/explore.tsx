@@ -8,7 +8,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, SortKey, UrlState } from "@/lib/types";
-import { decodeState, encodeState } from "@/lib/urlState";
+import { decodeState, encodeState, resetExploreState } from "@/lib/urlState";
 import { computeFacets } from "@/lib/facets";
 import { filterRows, sortRows } from "@/lib/filtering";
 
@@ -154,19 +154,7 @@ export default function ExplorePage({ initialMeta, initialRows, initialTotal }: 
   }
 
   function resetAll() {
-    updateState({
-      q: undefined,
-      status: undefined,
-      phase: undefined,
-      area: undefined,
-      bucket: undefined,
-      bio: undefined,
-      date_from: undefined,
-      date_to: undefined,
-      sort: "date_desc",
-      trial: undefined,
-      compare: undefined
-    });
+    updateState(resetExploreState(decodeState(router.asPath)));
   }
 
   function copyLink() {

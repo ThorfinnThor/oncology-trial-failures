@@ -129,8 +129,13 @@ def main() -> None:
     args = parser.parse_args()
 
     rows = json.loads(Path(args.input).read_text(encoding="utf-8"))
+    proposal_path = Path(args.proposals)
+    payload = {}
+    if args.apply_existing or args.refresh_existing or proposal_path.exists():
+        payload = json.loads(proposal_path.read_text(encoding="utf-8"))
+    # Historical fields are retained for provenance, never applied to a row.
+    inactive_proposals = list(payload.get("inactive_proposals", []))
     if args.apply_existing:
-        payload = json.loads(Path(args.proposals).read_text(encoding="utf-8"))
         proposals = payload.get("proposals", [])
         fields_by_id: Dict[str, Dict[str, Any]] = {}
         for proposal in proposals:
@@ -159,15 +164,19 @@ def main() -> None:
         # below can never reach them.  Refresh works from the artifact instead,
         # keeping the reviewed set fixed while its derived fields catch up with
         # the current registry text and classifier rules.
-        payload = json.loads(Path(args.proposals).read_text(encoding="utf-8"))
-        wanted = {
-            str(proposal.get("nct_id") or "").upper()
-            for proposal in payload.get("proposals", [])
+        # Include previously retired IDs so a returning trial is evaluated from
+        # current registry text rather than resurrecting its archived fields.
+        reviewed_proposals = {
+            str(proposal.get("nct_id") or "").upper(): proposal
+            for proposal in (
+                [item["proposal"] for item in inactive_proposals]
+                + payload.get("proposals", [])
+            )
         }
+        wanted = set(reviewed_proposals)
+        if "" in wanted:
+            raise ValueError("Reviewed context proposal has a missing NCT ID")
         targets = [row for row in rows if str(row.get("nct_id") or "").upper() in wanted]
-        missing = wanted - {str(row.get("nct_id") or "").upper() for row in targets}
-        if missing:
-            raise ValueError(f"Proposal IDs are absent from the snapshot: {sorted(missing)[:10]}")
     else:
         targets = [
             row
@@ -194,6 +203,23 @@ def main() -> None:
         if proposal:
             proposals.append(proposal)
 
+    fields_by_id = {
+        proposal["nct_id"]: proposal["record_fields"] for proposal in proposals
+    }
+    retired = sorted(set(by_id) - set(fields_by_id)) if args.refresh_existing else []
+    if args.refresh_existing:
+        for nct_id, original in sorted(reviewed_proposals.items()):
+            if nct_id in fields_by_id:
+                continue
+            reason = (
+                "ABSENT_FROM_SNAPSHOT" if nct_id not in by_id
+                else "REGISTRY_CONTEXT_UNAVAILABLE" if nct_id not in contexts
+                else "NO_LONGER_SUPPORTED"
+            )
+            historical = {"reason": reason, "proposal": original}
+            if historical not in inactive_proposals:
+                inactive_proposals.append(historical)
+
     output = {
         "schema_version": 1,
         "target_count": len(targets),
@@ -201,18 +227,16 @@ def main() -> None:
         "missing_registry_count": len(ids) - len(contexts),
         "proposal_count": len(proposals),
         "proposals": proposals,
+        "inactive_proposal_count": len(inactive_proposals),
+        "inactive_proposals": inactive_proposals,
     }
     Path(args.proposals).write_text(
         json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
 
-    fields_by_id = {
-        proposal["nct_id"]: proposal["record_fields"] for proposal in proposals
-    }
     # A refreshed target that no longer yields a high-confidence fallback has to
     # give up its applied fields, otherwise the stale snapshot outlives the
     # proposal that justified it and only a live fetch would notice.
-    retired = sorted(set(by_id) - set(fields_by_id)) if args.refresh_existing else []
     if args.write:
         updated = []
         for row in rows:

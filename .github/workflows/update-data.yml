@@ -33,10 +33,12 @@ jobs:
         run: |
           python scripts/run_golden_tests.py
           python scripts/run_classification_v2_tests.py
+          python scripts/run_pipeline_integrity_tests.py
           python scripts/evaluate_classification_v2.py --enforce
 
       - name: Fetch data (no artificial cap)
         run: |
+          cp data/all_stopped_trials.json "$RUNNER_TEMP/pre_ingest_all_stopped_trials.json"
           python scripts/fetch_ctgov_oncology_failures.py
         env:
           # MAX_STUDIES_TOTAL intentionally omitted (script default is 50000)
@@ -63,6 +65,10 @@ jobs:
       - name: Validate Classification V2 snapshot invariants
         run: |
           python scripts/validate_classification_v2_snapshot.py
+
+      - name: Rebuild change report from the final classified snapshot
+        run: |
+          python scripts/ingest_changes.py --previous "$RUNNER_TEMP/pre_ingest_all_stopped_trials.json"
 
       - name: Publish public assets (web/public/*.json + dataset_meta.json)
         run: |

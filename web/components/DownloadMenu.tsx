@@ -1,10 +1,48 @@
 // web/components/DownloadMenu.tsx
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { downloadTrials, DownloadFormat, DownloadScope } from "@/lib/download";
 import { useDialogBehavior } from "@/hooks/useDialogBehavior";
+
+function OptionRow({
+  name,
+  checked,
+  onChange,
+  label,
+  count
+}: {
+  name: string;
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+  count: number;
+}) {
+  return (
+    <label
+      style={{
+        display: "grid",
+        gridTemplateColumns: "18px 1fr auto",
+        alignItems: "center",
+        gap: 10,
+        width: "100%",
+        cursor: "pointer",
+        userSelect: "none",
+        padding: "8px 10px",
+        borderRadius: 12
+      }}
+      onMouseEnter={(e) => ((e.currentTarget.style.background = "rgba(15,23,42,.03)"))}
+      onMouseLeave={(e) => ((e.currentTarget.style.background = "transparent"))}
+    >
+      <input type="radio" name={name} checked={checked} onChange={onChange} />
+      <span style={{ minWidth: 0, fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>{label}</span>
+      <span style={{ fontSize: 12, color: "var(--text-muted)", whiteSpace: "nowrap" }}>
+        {count.toLocaleString()}
+      </span>
+    </label>
+  );
+}
 
 export default function DownloadMenu({
   meta,
@@ -22,6 +60,7 @@ export default function DownloadMenu({
   const [open, setOpen] = useState(false);
   const [scope, setScope] = useState<DownloadScope>("filtered");
   const [format, setFormat] = useState<DownloadFormat>("csv");
+  const groupId = useId();
   const dialogRef = useDialogBehavior(open, () => setOpen(false));
 
   // Portal target (client-only)
@@ -42,40 +81,6 @@ export default function DownloadMenu({
     await downloadTrials(meta, state, rows, scope, format);
     setOpen(false);
   }
-
-  const OptionRow = ({
-    checked,
-    onChange,
-    label,
-    count
-  }: {
-    checked: boolean;
-    onChange: () => void;
-    label: string;
-    count: number;
-  }) => (
-    <label
-      style={{
-        display: "grid",
-        gridTemplateColumns: "18px 1fr auto",
-        alignItems: "center",
-        gap: 10,
-        width: "100%",
-        cursor: "pointer",
-        userSelect: "none",
-        padding: "8px 10px",
-        borderRadius: 12
-      }}
-      onMouseEnter={(e) => ((e.currentTarget.style.background = "rgba(15,23,42,.03)"))}
-      onMouseLeave={(e) => ((e.currentTarget.style.background = "transparent"))}
-    >
-      <input type="radio" checked={checked} onChange={onChange} />
-      <span style={{ minWidth: 0, fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>{label}</span>
-      <span style={{ fontSize: 12, color: "var(--text-muted)", whiteSpace: "nowrap" }}>
-        {count.toLocaleString()}
-      </span>
-    </label>
-  );
 
   const drawer = (
     <div
@@ -113,6 +118,7 @@ export default function DownloadMenu({
             <div className="facet-title">Scope</div>
 
             <OptionRow
+              name={`${groupId}-scope`}
               checked={scope === "filtered"}
               onChange={() => setScope("filtered")}
               label="Current filtered view"
@@ -120,6 +126,7 @@ export default function DownloadMenu({
             />
 
             <OptionRow
+              name={`${groupId}-scope`}
               checked={scope === "selected"}
               onChange={() => setScope("selected")}
               label="Selected (compare)"
@@ -127,6 +134,7 @@ export default function DownloadMenu({
             />
 
             <OptionRow
+              name={`${groupId}-scope`}
               checked={scope === "all"}
               onChange={() => setScope("all")}
               label="Everything"
@@ -146,12 +154,12 @@ export default function DownloadMenu({
             <div className="facet-title">Format</div>
 
             <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
-              <input type="radio" checked={format === "csv"} onChange={() => setFormat("csv")} />
+              <input type="radio" name={`${groupId}-format`} checked={format === "csv"} onChange={() => setFormat("csv")} />
               <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>CSV</span>
             </label>
 
             <label style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, cursor: "pointer" }}>
-              <input type="radio" checked={format === "json"} onChange={() => setFormat("json")} />
+              <input type="radio" name={`${groupId}-format`} checked={format === "json"} onChange={() => setFormat("json")} />
               <span style={{ fontSize: 14, fontWeight: 650, color: "rgba(15,23,42,.92)" }}>JSON</span>
             </label>
           </div>
