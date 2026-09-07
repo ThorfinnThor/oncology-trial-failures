@@ -99,7 +99,7 @@ export default function MethodsPage() {
               <div>
                 <div className="trustTitle">Primary record</div>
                 <p className="muted">
-                  Use each trial's NCT identifier to verify details directly in ClinicalTrials.gov before making
+                  Use each trial&apos;s NCT identifier to verify details directly in ClinicalTrials.gov before making
                   medical, scientific, or commercial decisions.
                 </p>
               </div>

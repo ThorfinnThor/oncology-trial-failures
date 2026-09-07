@@ -1,6 +1,7 @@
 // web/pages/trial/[trialId].tsx
 
 import Head from "next/head";
+import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
@@ -250,7 +251,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
         {trial ? (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
           />
         ) : null}
       </Head>

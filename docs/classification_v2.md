@@ -232,6 +232,15 @@ A refreshed record that no longer yields a high-confidence fallback is retired
 from the artifact and returned to the review queue. Refresh only recomputes
 proposals that were already reviewed; discovering new ones stays manual.
 
+Refresh preserves retired proposal records under `inactive_proposals`, including
+their original evidence and a retirement reason: `ABSENT_FROM_SNAPSHOT`,
+`REGISTRY_CONTEXT_UNAVAILABLE`, or `NO_LONGER_SUPPORTED`. This history survives
+subsequent refreshes and is never applied by `--apply-existing`. Only active
+`proposals` contribute to `proposal_count` and canonical snapshot validation.
+Previously reviewed IDs that reappear in the snapshot are evaluated again from
+current registry text; archived classifications are not copied back. Historical
+entries remain available even after an ID receives a new active proposal.
+
 Fallback text must be a direct study-level causal statement and produce a
 high-confidence final result. Individual participant discontinuations,
 background safety/efficacy discussion, and study-drug discontinuation advice
@@ -277,6 +286,15 @@ NCT overrides and high-confidence description-fallback decisions are preserved
 when the canonical snapshot is rebuilt. New placeholder records are evaluated
 against their registry description during ingestion using the same strict
 direct-cause requirement.
+
+CI saves the preceding canonical snapshot in `RUNNER_TEMP` before fetching.
+After context refresh, reclassification, and snapshot validation, it replaces
+the fetch-time change report with a comparison against the final canonical
+rows, before publishing any public assets. The report can also be rebuilt with
+`python scripts/ingest_changes.py --previous /path/to/pre-ingest-snapshot.json`.
+The CLI accepts `--current` and `--output` paths; omit `--previous` only for an
+initial ingest with no baseline. An explicitly supplied missing or malformed
+baseline is an error, not an initial ingest.
 
 No classifier can guarantee that every registry statement is correct or
 unambiguous. V2 instead guarantees that unsupported or conflicting semantics

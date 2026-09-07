@@ -45,8 +45,46 @@ def load_jsonl(path: Path) -> Iterable[Dict[str, Any]]:
                 yield json.loads(line)
 
 
+def test_registry_field_extraction(failures: list[str]) -> None:
+    study = {
+        "protocolSection": {
+            "identificationModule": {"nctId": "NCT00000010"},
+            "contactsLocationsModule": {
+                "locations": [
+                    {"country": "United States"},
+                    {"country": "Germany"},
+                    {"country": "Germany"},
+                    {},
+                ]
+            },
+        },
+        "derivedSection": {
+            "conditionBrowseModule": {
+                "meshes": [{"id": "D009369", "term": "Neoplasms"}]
+            }
+        },
+    }
+    extracted = extract_record(study)
+    expected = {
+        "countries": "Germany; United States",
+        "mesh_terms": "Neoplasms",
+        "disease_area": "Oncology",
+        "disease_areas_matched": "Oncology",
+    }
+    for field, value in expected.items():
+        if extracted[field] != value:
+            failures.append(
+                f"API v2 extraction: {field} expected {value!r}, got {extracted[field]!r}"
+            )
+    for missing_sections in ({}, {"protocolSection": None, "derivedSection": None}):
+        empty = extract_record(missing_sections)
+        if empty["countries"] or empty["mesh_terms"] or empty["disease_area"] != "Other":
+            failures.append(f"Missing optional registry sections produced data: {empty}")
+
+
 def main() -> None:
     failures = []
+    test_registry_field_extraction(failures)
     cases = list(load_jsonl(Path("tests/golden_classification_v2.jsonl")))
     for index, case in enumerate(cases, start=1):
         result = classify_reason_v2(case["why_stopped"])

@@ -82,6 +82,11 @@ export type TrialIndexRow = {
   condition_first?: string;
   intervention_first?: string;
 
+  // Full semicolon-separated values for search and entity filters.
+  conditions?: string;
+  intervention_names?: string;
+  countries?: string;
+
   // Stopping reason (short)
   why_stopped_short?: string;
 

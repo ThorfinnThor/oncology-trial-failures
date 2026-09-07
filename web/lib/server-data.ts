@@ -123,7 +123,7 @@ export async function loadDetailServer(nctId: string): Promise<TrialDetail | nul
   return {
     ...row,
     why_stopped: row.why_stopped_short || "",
-    conditions: row.condition_first || "",
-    intervention_names: row.intervention_first || "",
+    conditions: row.conditions || row.condition_first || "",
+    intervention_names: row.intervention_names || row.intervention_first || "",
   };
 }

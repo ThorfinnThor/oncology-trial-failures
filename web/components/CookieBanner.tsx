@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import Link from "next/link";
 
 type Consent = "all" | "necessary" | "none";
 
@@ -113,7 +114,7 @@ export function CookieBanner() {
         </div>
 
         <div className="cookie-consent-links">
-          Read our <a href="/privacy">Privacy Policy</a>.
+          Read our <Link href="/privacy">Privacy Policy</Link>.
         </div>
       </div>
     </div>

@@ -739,6 +739,7 @@ export default function SponsorInsightsPage() {
                             type="button"
                             className="comboItem"
                             role="option"
+                            aria-selected={s === selectedSponsor}
                             onMouseDown={(ev) => {
                               // Prevent input blur before selection
                               ev.preventDefault();

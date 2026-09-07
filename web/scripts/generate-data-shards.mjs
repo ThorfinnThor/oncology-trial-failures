@@ -67,6 +67,9 @@ function normalizeIndexRow(row) {
     collaborators: asString(row.collaborators || row.collab || "").trim(),
     condition_first: firstFromSemicolon(asString(conditionsRaw)),
     intervention_first: firstFromSemicolon(asString(interventionsRaw)),
+    conditions: asString(conditionsRaw).trim(),
+    intervention_names: asString(interventionsRaw).trim(),
+    countries: asString(row.countries ?? row.country ?? "").trim(),
     why_stopped_short: asString(whyRaw).trim(),
     classification_label: asString(row.classification_label || row.label || "").trim(),
     classification_reason: asString(row.classification_reason || row.reason_bucket || "").trim(),
@@ -127,8 +130,8 @@ async function main() {
     const detailRow = compact({
       ...indexRow,
       why_stopped: indexRow.why_stopped_short || "",
-      conditions: indexRow.condition_first || "",
-      intervention_names: indexRow.intervention_first || "",
+      conditions: indexRow.conditions || indexRow.condition_first || "",
+      intervention_names: indexRow.intervention_names || indexRow.intervention_first || "",
     });
     const key = shardKey(indexRow.nct_id);
     indexShards[Number.parseInt(key[0], 16)].push(indexRow);

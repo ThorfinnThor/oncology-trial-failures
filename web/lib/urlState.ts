@@ -1,4 +1,11 @@
-import { UrlState } from "./types";
+import type { UrlState } from "./types";
+
+// Entity names can contain commas; each occurrence is one complete facet value.
+// Keep CSV parsing only for the controlled-vocabulary facets and NCT IDs below.
+function readEntities(params: URLSearchParams, key: string): string[] | undefined {
+  const values = params.getAll(key).map((value) => value.trim()).filter(Boolean);
+  return values.length ? values : undefined;
+}
 
 function splitCsv(v?: string | null): string[] | undefined {
   if (!v) return undefined;
@@ -28,10 +35,10 @@ export function decodeState(asPath: string): UrlState {
   const compare = splitCsv(u.searchParams.get("compare"))?.slice(0, 5);
 
   // Additional facets used by Explore (and linked from other pages)
-  const sponsor = splitCsv(u.searchParams.get("sponsor"));
-  const intervention = splitCsv(u.searchParams.get("intervention"));
-  const condition = splitCsv(u.searchParams.get("condition"));
-  const country = splitCsv(u.searchParams.get("country"));
+  const sponsor = readEntities(u.searchParams, "sponsor");
+  const intervention = readEntities(u.searchParams, "intervention");
+  const condition = readEntities(u.searchParams, "condition");
+  const country = readEntities(u.searchParams, "country");
 
   const bio = u.searchParams.get("bio") === "1" ? true : undefined;
   const sort = u.searchParams.get("sort") || undefined;
@@ -76,10 +83,9 @@ export function encodeState(state: UrlState): string {
   if (state.area?.length) sp.set("area", state.area.join(","));
   if (state.bucket?.length) sp.set("bucket", state.bucket.join(","));
 
-  if (state.sponsor?.length) sp.set("sponsor", state.sponsor.join(","));
-  if (state.intervention?.length) sp.set("intervention", state.intervention.join(","));
-  if (state.condition?.length) sp.set("condition", state.condition.join(","));
-  if (state.country?.length) sp.set("country", state.country.join(","));
+  for (const key of ["sponsor", "intervention", "condition", "country"] as const) {
+    for (const value of state[key] || []) sp.append(key, value);
+  }
   if (state.compare?.length) sp.set("compare", state.compare.join(","));
 
   if (state.bio) sp.set("bio", "1");
@@ -97,4 +103,25 @@ export function encodeState(state: UrlState): string {
 
   const qs = sp.toString();
   return qs ? `?${qs}` : "";
+}
+
+export function resetExploreState(state: UrlState): UrlState {
+  return {
+    ...state,
+    q: undefined,
+    status: undefined,
+    phase: undefined,
+    area: undefined,
+    bucket: undefined,
+    sponsor: undefined,
+    intervention: undefined,
+    condition: undefined,
+    country: undefined,
+    bio: undefined,
+    date_from: undefined,
+    date_to: undefined,
+    sort: "date_desc",
+    trial: undefined,
+    compare: undefined,
+  };
 }

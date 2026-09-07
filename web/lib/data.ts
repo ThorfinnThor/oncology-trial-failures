@@ -57,6 +57,9 @@ function normalizeIndexRows(raw: any[]): TrialIndexRow[] {
         collaborators: asString(r.collaborators || r.collab || "").trim(),
         condition_first: firstFromSemicolon(asString(conditionsRaw)),
         intervention_first: firstFromSemicolon(asString(interventionsRaw)),
+        conditions: asString(conditionsRaw).trim(),
+        intervention_names: asString(interventionsRaw).trim(),
+        countries: asString(r.countries ?? r.country ?? "").trim(),
         why_stopped_short: asString(whyRaw).trim(),
         classification_label: asString(r.classification_label || r.label || "").trim(),
         classification_reason: asString(r.classification_reason || r.reason_bucket || "").trim(),
@@ -140,8 +143,8 @@ export async function loadDetail(nctId: string): Promise<TrialDetail | null> {
   return {
     ...row,
     why_stopped: row.why_stopped_short || "",
-    conditions: row.condition_first || "",
-    intervention_names: row.intervention_first || "",
+    conditions: row.conditions || row.condition_first || "",
+    intervention_names: row.intervention_names || row.intervention_first || "",
   };
 }
 
