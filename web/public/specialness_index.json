@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-05T14:03:37Z",
+  "generated_at_utc": "2026-09-07T11:40:43Z",
   "prior": {
     "a": 1.0,
     "b": 1.0
@@ -149355,835 +149355,835 @@
         "all": [
           {
             "group": "Oncology",
-            "n": 7993,
+            "n": 8458,
             "k": [
-              505,
-              212,
-              4665,
-              101,
-              2510
+              531,
+              231,
+              4934,
+              111,
+              2651
             ]
           },
           {
             "group": "Other",
-            "n": 5809,
+            "n": 5124,
             "k": [
-              352,
-              142,
-              3438,
-              167,
-              1710
+              301,
+              125,
+              3056,
+              148,
+              1494
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 1720,
+            "n": 1769,
             "k": [
-              140,
-              43,
-              931,
-              69,
-              537
-            ]
-          },
-          {
-            "group": "Gastroenterology & Hepatology",
-            "n": 1534,
-            "k": [
-              110,
-              57,
-              875,
-              25,
-              467
+              143,
+              45,
+              953,
+              68,
+              560
             ]
           },
           {
             "group": "Cardiovascular",
-            "n": 1296,
+            "n": 1366,
             "k": [
-              54,
+              59,
               29,
-              827,
-              24,
-              362
+              871,
+              26,
+              381
+            ]
+          },
+          {
+            "group": "Gastroenterology & Hepatology",
+            "n": 1351,
+            "k": [
+              96,
+              43,
+              781,
+              21,
+              410
             ]
           },
           {
             "group": "Neurology",
-            "n": 1006,
+            "n": 1046,
             "k": [
-              123,
-              20,
-              524,
-              20,
-              319
+              129,
+              18,
+              540,
+              22,
+              337
             ]
           },
           {
             "group": "Endocrine & Metabolic",
-            "n": 800,
+            "n": 825,
             "k": [
-              45,
+              48,
+              31,
+              463,
               32,
-              454,
-              29,
-              240
+              251
             ]
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 673,
+            "n": 777,
             "k": [
-              61,
-              10,
-              339,
-              27,
-              236
+              74,
+              12,
+              392,
+              31,
+              268
             ]
           },
           {
             "group": "Respiratory",
-            "n": 631,
+            "n": 675,
             "k": [
-              43,
-              18,
-              339,
-              7,
-              224
+              46,
+              22,
+              367,
+              9,
+              231
             ]
           },
           {
             "group": "Psychiatry & Mental Health",
-            "n": 610,
+            "n": 609,
             "k": [
-              42,
-              6,
-              387,
+              43,
+              5,
+              385,
               12,
-              163
+              164
             ]
           },
           {
             "group": "Renal & Urology",
-            "n": 481,
+            "n": 525,
             "k": [
               30,
-              9,
-              309,
-              9,
-              124
+              13,
+              324,
+              12,
+              146
             ]
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 338,
+            "n": 340,
             "k": [
               14,
-              10,
-              204,
-              3,
-              107
+              11,
+              210,
+              2,
+              103
             ]
           },
           {
             "group": "Dermatology",
-            "n": 319,
+            "n": 332,
             "k": [
               38,
-              11,
-              176,
+              13,
+              185,
               7,
-              87
+              89
             ]
           },
           {
             "group": "Ophthalmology",
-            "n": 261,
+            "n": 279,
             "k": [
-              26,
-              12,
-              115,
+              29,
+              13,
+              126,
               2,
-              106
+              109
             ]
           },
           {
             "group": "Musculoskeletal",
-            "n": 254,
+            "n": 249,
             "k": [
-              8,
+              10,
               6,
-              166,
-              7,
-              67
+              162,
+              6,
+              65
             ]
           }
         ],
         "phase1": [
           {
             "group": "Oncology",
-            "n": 3730,
+            "n": 3911,
             "k": [
-              195,
-              124,
-              2095,
-              40,
-              1276
-            ]
-          },
-          {
-            "group": "Other",
-            "n": 1457,
-            "k": [
-              65,
-              55,
-              764,
+              203,
+              131,
+              2197,
               44,
-              529
-            ]
-          },
-          {
-            "group": "Infectious Disease",
-            "n": 403,
-            "k": [
-              16,
-              17,
-              206,
-              20,
-              144
-            ]
-          },
-          {
-            "group": "Gastroenterology & Hepatology",
-            "n": 399,
-            "k": [
-              26,
-              17,
-              224,
-              5,
-              127
-            ]
-          },
-          {
-            "group": "Neurology",
-            "n": 224,
-            "k": [
-              20,
-              8,
-              117,
-              2,
-              77
-            ]
-          },
-          {
-            "group": "Cardiovascular",
-            "n": 208,
-            "k": [
-              4,
-              4,
-              120,
-              7,
-              73
-            ]
-          },
-          {
-            "group": "Endocrine & Metabolic",
-            "n": 166,
-            "k": [
-              13,
-              7,
-              82,
-              3,
-              61
-            ]
-          },
-          {
-            "group": "Immunology & Autoimmune",
-            "n": 164,
-            "k": [
-              5,
-              2,
-              86,
-              8,
-              63
-            ]
-          },
-          {
-            "group": "Respiratory",
-            "n": 125,
-            "k": [
-              3,
-              2,
-              74,
-              2,
-              44
-            ]
-          },
-          {
-            "group": "Psychiatry & Mental Health",
-            "n": 100,
-            "k": [
-              2,
-              2,
-              63,
-              2,
-              31
-            ]
-          },
-          {
-            "group": "Hematology (non-onc)",
-            "n": 94,
-            "k": [
-              3,
-              4,
-              57,
-              0,
-              30
-            ]
-          },
-          {
-            "group": "Renal & Urology",
-            "n": 73,
-            "k": [
-              3,
-              2,
-              46,
-              1,
-              21
-            ]
-          },
-          {
-            "group": "Dermatology",
-            "n": 71,
-            "k": [
-              4,
-              7,
-              33,
-              2,
-              25
-            ]
-          },
-          {
-            "group": "Musculoskeletal",
-            "n": 51,
-            "k": [
-              0,
-              2,
-              33,
-              1,
-              15
-            ]
-          },
-          {
-            "group": "Ophthalmology",
-            "n": 50,
-            "k": [
-              4,
-              3,
-              20,
-              0,
-              23
-            ]
-          }
-        ],
-        "phase2": [
-          {
-            "group": "Oncology",
-            "n": 4598,
-            "k": [
-              325,
-              120,
-              2732,
-              62,
-              1359
+              1336
             ]
           },
           {
             "group": "Other",
-            "n": 2092,
+            "n": 1286,
             "k": [
-              174,
-              56,
-              1188,
-              61,
-              613
+              58,
+              52,
+              665,
+              37,
+              474
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 787,
+            "n": 418,
             "k": [
-              67,
-              15,
-              437,
-              29,
-              239
-            ]
-          },
-          {
-            "group": "Gastroenterology & Hepatology",
-            "n": 748,
-            "k": [
-              65,
-              36,
-              391,
-              9,
-              247
-            ]
-          },
-          {
-            "group": "Neurology",
-            "n": 460,
-            "k": [
-              60,
-              12,
-              234,
-              5,
+              18,
+              18,
+              213,
+              20,
               149
             ]
           },
           {
-            "group": "Cardiovascular",
-            "n": 433,
+            "group": "Gastroenterology & Hepatology",
+            "n": 312,
             "k": [
-              19,
-              9,
-              268,
-              8,
-              129
-            ]
-          },
-          {
-            "group": "Immunology & Autoimmune",
-            "n": 289,
-            "k": [
-              34,
+              20,
+              11,
+              176,
               2,
-              140,
-              10,
               103
             ]
           },
           {
-            "group": "Respiratory",
-            "n": 269,
-            "k": [
-              23,
-              7,
-              128,
-              3,
-              108
-            ]
-          },
-          {
-            "group": "Endocrine & Metabolic",
-            "n": 256,
-            "k": [
-              19,
-              14,
-              145,
-              5,
-              73
-            ]
-          },
-          {
-            "group": "Psychiatry & Mental Health",
-            "n": 214,
-            "k": [
-              20,
-              3,
-              135,
-              4,
-              52
-            ]
-          },
-          {
-            "group": "Renal & Urology",
-            "n": 174,
-            "k": [
-              12,
-              5,
-              104,
-              1,
-              52
-            ]
-          },
-          {
-            "group": "Hematology (non-onc)",
-            "n": 150,
-            "k": [
-              5,
-              5,
-              97,
-              2,
-              41
-            ]
-          },
-          {
-            "group": "Dermatology",
-            "n": 137,
-            "k": [
-              27,
-              5,
-              66,
-              4,
-              35
-            ]
-          },
-          {
-            "group": "Ophthalmology",
-            "n": 103,
-            "k": [
-              10,
-              5,
-              36,
-              0,
-              52
-            ]
-          },
-          {
-            "group": "Musculoskeletal",
-            "n": 91,
-            "k": [
-              5,
-              1,
-              51,
-              2,
-              32
-            ]
-          }
-        ],
-        "phase3": [
-          {
-            "group": "Other",
-            "n": 1052,
-            "k": [
-              104,
-              17,
-              569,
-              29,
-              333
-            ]
-          },
-          {
-            "group": "Oncology",
-            "n": 686,
-            "k": [
-              74,
-              8,
-              334,
-              7,
-              263
-            ]
-          },
-          {
-            "group": "Infectious Disease",
-            "n": 453,
-            "k": [
-              59,
-              7,
-              216,
-              27,
-              144
-            ]
-          },
-          {
-            "group": "Cardiovascular",
-            "n": 317,
-            "k": [
-              28,
-              11,
-              177,
-              4,
-              97
-            ]
-          },
-          {
-            "group": "Gastroenterology & Hepatology",
-            "n": 266,
-            "k": [
-              28,
-              3,
-              132,
-              7,
-              96
-            ]
-          },
-          {
             "group": "Neurology",
-            "n": 244,
+            "n": 236,
             "k": [
-              50,
-              3,
-              100,
+              21,
               7,
+              122,
+              2,
               84
             ]
           },
           {
-            "group": "Endocrine & Metabolic",
-            "n": 184,
+            "group": "Cardiovascular",
+            "n": 216,
             "k": [
-              12,
+              5,
+              4,
+              125,
               7,
-              75,
-              13,
-              77
-            ]
-          },
-          {
-            "group": "Psychiatry & Mental Health",
-            "n": 148,
-            "k": [
-              19,
-              1,
-              81,
-              6,
-              41
-            ]
-          },
-          {
-            "group": "Respiratory",
-            "n": 143,
-            "k": [
-              17,
-              3,
-              62,
-              3,
-              58
+              75
             ]
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 141,
-            "k": [
-              17,
-              4,
-              50,
-              10,
-              60
-            ]
-          },
-          {
-            "group": "Renal & Urology",
-            "n": 110,
-            "k": [
-              10,
-              1,
-              73,
-              1,
-              25
-            ]
-          },
-          {
-            "group": "Hematology (non-onc)",
-            "n": 74,
-            "k": [
-              6,
-              3,
-              34,
-              2,
-              29
-            ]
-          },
-          {
-            "group": "Dermatology",
-            "n": 63,
+            "n": 188,
             "k": [
               8,
               2,
-              34,
-              1,
-              18
-            ]
-          },
-          {
-            "group": "Ophthalmology",
-            "n": 59,
-            "k": [
-              12,
-              3,
-              23,
-              0,
-              21
-            ]
-          },
-          {
-            "group": "Musculoskeletal",
-            "n": 43,
-            "k": [
-              1,
-              3,
-              24,
-              1,
-              14
-            ]
-          }
-        ],
-        "phase4": [
-          {
-            "group": "Other",
-            "n": 1093,
-            "k": [
-              26,
-              16,
-              798,
-              29,
-              224
-            ]
-          },
-          {
-            "group": "Cardiovascular",
-            "n": 316,
-            "k": [
-              5,
-              4,
-              237,
-              8,
-              62
-            ]
-          },
-          {
-            "group": "Infectious Disease",
-            "n": 212,
-            "k": [
-              7,
-              4,
-              147,
-              9,
-              45
-            ]
-          },
-          {
-            "group": "Gastroenterology & Hepatology",
-            "n": 176,
-            "k": [
-              2,
-              2,
-              127,
-              3,
-              42
+              97,
+              11,
+              70
             ]
           },
           {
             "group": "Endocrine & Metabolic",
             "n": 173,
             "k": [
-              2,
-              3,
-              124,
+              12,
               6,
-              38
+              88,
+              5,
+              62
+            ]
+          },
+          {
+            "group": "Respiratory",
+            "n": 134,
+            "k": [
+              2,
+              4,
+              81,
+              3,
+              44
             ]
           },
           {
             "group": "Psychiatry & Mental Health",
-            "n": 131,
+            "n": 102,
             "k": [
               2,
-              1,
-              92,
               2,
-              34
+              65,
+              2,
+              31
             ]
           },
           {
-            "group": "Oncology",
-            "n": 126,
+            "group": "Hematology (non-onc)",
+            "n": 93,
             "k": [
               2,
+              5,
+              58,
               0,
-              83,
+              28
+            ]
+          },
+          {
+            "group": "Renal & Urology",
+            "n": 75,
+            "k": [
+              3,
+              3,
+              48,
+              1,
+              20
+            ]
+          },
+          {
+            "group": "Dermatology",
+            "n": 70,
+            "k": [
+              4,
+              6,
+              32,
+              2,
+              26
+            ]
+          },
+          {
+            "group": "Ophthalmology",
+            "n": 57,
+            "k": [
+              5,
+              3,
+              26,
+              0,
+              23
+            ]
+          },
+          {
+            "group": "Musculoskeletal",
+            "n": 44,
+            "k": [
+              0,
+              2,
+              27,
+              1,
+              14
+            ]
+          }
+        ],
+        "phase2": [
+          {
+            "group": "Oncology",
+            "n": 4852,
+            "k": [
+              338,
+              134,
+              2874,
+              66,
+              1440
+            ]
+          },
+          {
+            "group": "Other",
+            "n": 1792,
+            "k": [
+              149,
+              45,
+              1034,
+              56,
+              508
+            ]
+          },
+          {
+            "group": "Infectious Disease",
+            "n": 799,
+            "k": [
+              67,
+              16,
+              439,
+              27,
+              250
+            ]
+          },
+          {
+            "group": "Gastroenterology & Hepatology",
+            "n": 627,
+            "k": [
+              56,
+              26,
+              333,
+              7,
+              205
+            ]
+          },
+          {
+            "group": "Neurology",
+            "n": 472,
+            "k": [
+              61,
+              13,
+              236,
+              5,
+              157
+            ]
+          },
+          {
+            "group": "Cardiovascular",
+            "n": 461,
+            "k": [
+              22,
+              9,
+              279,
+              9,
+              142
+            ]
+          },
+          {
+            "group": "Immunology & Autoimmune",
+            "n": 351,
+            "k": [
+              42,
+              4,
+              172,
+              12,
+              121
+            ]
+          },
+          {
+            "group": "Respiratory",
+            "n": 283,
+            "k": [
+              25,
+              9,
+              138,
+              4,
+              107
+            ]
+          },
+          {
+            "group": "Endocrine & Metabolic",
+            "n": 260,
+            "k": [
+              21,
+              13,
+              149,
+              6,
+              71
+            ]
+          },
+          {
+            "group": "Psychiatry & Mental Health",
+            "n": 216,
+            "k": [
+              21,
+              3,
+              133,
+              5,
+              54
+            ]
+          },
+          {
+            "group": "Renal & Urology",
+            "n": 188,
+            "k": [
+              13,
+              6,
+              101,
+              3,
+              65
+            ]
+          },
+          {
+            "group": "Hematology (non-onc)",
+            "n": 154,
+            "k": [
+              7,
+              6,
+              102,
+              1,
+              38
+            ]
+          },
+          {
+            "group": "Dermatology",
+            "n": 144,
+            "k": [
+              26,
+              5,
+              72,
               4,
               37
             ]
           },
           {
-            "group": "Neurology",
-            "n": 123,
+            "group": "Ophthalmology",
+            "n": 113,
             "k": [
-              3,
+              11,
+              5,
+              43,
               0,
-              86,
-              2,
-              32
+              54
+            ]
+          },
+          {
+            "group": "Musculoskeletal",
+            "n": 89,
+            "k": [
+              6,
+              1,
+              47,
+              0,
+              35
+            ]
+          }
+        ],
+        "phase3": [
+          {
+            "group": "Other",
+            "n": 923,
+            "k": [
+              91,
+              11,
+              497,
+              26,
+              298
+            ]
+          },
+          {
+            "group": "Oncology",
+            "n": 737,
+            "k": [
+              77,
+              9,
+              363,
+              8,
+              280
+            ]
+          },
+          {
+            "group": "Infectious Disease",
+            "n": 460,
+            "k": [
+              59,
+              7,
+              220,
+              25,
+              149
+            ]
+          },
+          {
+            "group": "Cardiovascular",
+            "n": 331,
+            "k": [
+              31,
+              12,
+              181,
+              5,
+              102
+            ]
+          },
+          {
+            "group": "Neurology",
+            "n": 258,
+            "k": [
+              53,
+              1,
+              109,
+              8,
+              87
+            ]
+          },
+          {
+            "group": "Gastroenterology & Hepatology",
+            "n": 256,
+            "k": [
+              28,
+              3,
+              129,
+              9,
+              87
+            ]
+          },
+          {
+            "group": "Endocrine & Metabolic",
+            "n": 187,
+            "k": [
+              10,
+              6,
+              82,
+              11,
+              78
             ]
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 116,
+            "n": 161,
             "k": [
-              3,
-              2,
-              85,
-              1,
-              25
-            ]
-          },
-          {
-            "group": "Renal & Urology",
-            "n": 103,
-            "k": [
+              21,
               5,
-              2,
-              70,
-              3,
-              23
+              59,
+              12,
+              64
             ]
           },
           {
             "group": "Respiratory",
-            "n": 103,
+            "n": 153,
             "k": [
-              3,
+              19,
               4,
-              77,
-              0,
-              19
+              65,
+              3,
+              62
+            ]
+          },
+          {
+            "group": "Psychiatry & Mental Health",
+            "n": 146,
+            "k": [
+              19,
+              1,
+              80,
+              5,
+              41
+            ]
+          },
+          {
+            "group": "Renal & Urology",
+            "n": 127,
+            "k": [
+              10,
+              3,
+              80,
+              3,
+              31
+            ]
+          },
+          {
+            "group": "Hematology (non-onc)",
+            "n": 75,
+            "k": [
+              5,
+              3,
+              37,
+              1,
+              29
+            ]
+          },
+          {
+            "group": "Dermatology",
+            "n": 65,
+            "k": [
+              8,
+              4,
+              35,
+              1,
+              17
             ]
           },
           {
             "group": "Ophthalmology",
-            "n": 63,
+            "n": 64,
+            "k": [
+              13,
+              4,
+              24,
+              0,
+              23
+            ]
+          },
+          {
+            "group": "Musculoskeletal",
+            "n": 40,
             "k": [
               1,
               3,
-              39,
+              23,
+              1,
+              12
+            ]
+          }
+        ],
+        "phase4": [
+          {
+            "group": "Other",
+            "n": 1000,
+            "k": [
+              23,
+              15,
+              733,
+              25,
+              204
+            ]
+          },
+          {
+            "group": "Cardiovascular",
+            "n": 333,
+            "k": [
+              5,
+              4,
+              251,
+              9,
+              64
+            ]
+          },
+          {
+            "group": "Infectious Disease",
+            "n": 221,
+            "k": [
+              8,
+              4,
+              153,
+              9,
+              47
+            ]
+          },
+          {
+            "group": "Endocrine & Metabolic",
+            "n": 176,
+            "k": [
+              4,
+              5,
+              119,
+              6,
+              42
+            ]
+          },
+          {
+            "group": "Gastroenterology & Hepatology",
+            "n": 171,
+            "k": [
+              2,
+              2,
+              123,
+              3,
+              41
+            ]
+          },
+          {
+            "group": "Oncology",
+            "n": 153,
+            "k": [
+              2,
+              0,
+              105,
+              4,
+              42
+            ]
+          },
+          {
+            "group": "Immunology & Autoimmune",
+            "n": 128,
+            "k": [
+              3,
+              2,
+              93,
+              1,
+              29
+            ]
+          },
+          {
+            "group": "Neurology",
+            "n": 127,
+            "k": [
+              3,
+              0,
+              88,
+              3,
+              33
+            ]
+          },
+          {
+            "group": "Psychiatry & Mental Health",
+            "n": 127,
+            "k": [
+              2,
+              0,
+              90,
+              2,
+              33
+            ]
+          },
+          {
+            "group": "Renal & Urology",
+            "n": 118,
+            "k": [
+              5,
+              3,
+              80,
+              3,
+              27
+            ]
+          },
+          {
+            "group": "Respiratory",
+            "n": 114,
+            "k": [
+              3,
+              4,
+              86,
+              0,
+              21
+            ]
+          },
+          {
+            "group": "Ophthalmology",
+            "n": 65,
+            "k": [
+              1,
+              3,
+              41,
               1,
               19
             ]
           },
           {
             "group": "Musculoskeletal",
-            "n": 60,
+            "n": 61,
             "k": [
               0,
               0,
-              48,
-              2,
-              10
+              49,
+              3,
+              9
             ]
           },
           {
             "group": "Dermatology",
-            "n": 50,
+            "n": 53,
             "k": [
               0,
               0,
-              42,
+              45,
               1,
               7
             ]
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 36,
+            "n": 34,
             "k": [
               0,
-              1,
-              20,
               0,
-              15
+              19,
+              1,
+              14
             ]
           }
         ]
@@ -176529,65 +176529,65 @@
         "all": [
           {
             "group": "Oncology",
-            "n": 765,
+            "n": 812,
             "k": [
-              505,
-              212,
+              531,
+              231,
               0,
               0,
-              48
+              50
             ]
           },
           {
             "group": "Other",
-            "n": 525,
+            "n": 448,
             "k": [
-              352,
-              142,
+              301,
+              125,
               0,
               0,
-              31
+              22
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 201,
+            "n": 206,
             "k": [
-              140,
-              43,
+              143,
+              45,
               0,
               0,
               18
             ]
           },
           {
-            "group": "Gastroenterology & Hepatology",
-            "n": 175,
+            "group": "Neurology",
+            "n": 156,
             "k": [
-              110,
-              57,
+              129,
+              18,
               0,
               0,
-              8
+              9
             ]
           },
           {
-            "group": "Neurology",
-            "n": 151,
+            "group": "Gastroenterology & Hepatology",
+            "n": 146,
             "k": [
-              123,
-              20,
+              96,
+              43,
               0,
               0,
-              8
+              7
             ]
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 88,
+            "n": 103,
             "k": [
-              61,
-              10,
+              74,
+              12,
               0,
               0,
               17
@@ -176595,65 +176595,65 @@
           },
           {
             "group": "Cardiovascular",
-            "n": 87,
+            "n": 94,
             "k": [
-              54,
+              59,
               29,
               0,
               0,
-              4
+              6
             ]
           },
           {
             "group": "Endocrine & Metabolic",
-            "n": 84,
+            "n": 87,
             "k": [
-              45,
-              32,
+              48,
+              31,
               0,
               0,
-              7
+              8
             ]
           },
           {
             "group": "Respiratory",
-            "n": 71,
+            "n": 80,
             "k": [
-              43,
-              18,
+              46,
+              22,
               0,
               0,
-              10
+              12
+            ]
+          },
+          {
+            "group": "Dermatology",
+            "n": 53,
+            "k": [
+              38,
+              13,
+              0,
+              0,
+              2
             ]
           },
           {
             "group": "Psychiatry & Mental Health",
             "n": 51,
             "k": [
-              42,
-              6,
+              43,
+              5,
               0,
               0,
               3
             ]
           },
           {
-            "group": "Dermatology",
-            "n": 50,
-            "k": [
-              38,
-              11,
-              0,
-              0,
-              1
-            ]
-          },
-          {
             "group": "Ophthalmology",
-            "n": 42,
+            "n": 46,
             "k": [
-              26,
-              12,
+              29,
+              13,
               0,
               0,
               4
@@ -176661,10 +176661,10 @@
           },
           {
             "group": "Renal & Urology",
-            "n": 42,
+            "n": 46,
             "k": [
               30,
-              9,
+              13,
               0,
               0,
               3
@@ -176672,78 +176672,78 @@
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 29,
+            "n": 32,
             "k": [
               14,
-              10,
-              0,
-              0,
-              5
-            ]
-          },
-          {
-            "group": "Musculoskeletal",
-            "n": 15,
-            "k": [
-              8,
-              6,
-              0,
-              0,
-              1
-            ]
-          }
-        ],
-        "phase1": [
-          {
-            "group": "Oncology",
-            "n": 350,
-            "k": [
-              195,
-              124,
-              0,
-              0,
-              31
-            ]
-          },
-          {
-            "group": "Other",
-            "n": 138,
-            "k": [
-              65,
-              55,
-              0,
-              0,
-              18
-            ]
-          },
-          {
-            "group": "Gastroenterology & Hepatology",
-            "n": 49,
-            "k": [
-              26,
-              17,
-              0,
-              0,
-              6
-            ]
-          },
-          {
-            "group": "Infectious Disease",
-            "n": 40,
-            "k": [
-              16,
-              17,
+              11,
               0,
               0,
               7
             ]
           },
           {
+            "group": "Musculoskeletal",
+            "n": 16,
+            "k": [
+              10,
+              6,
+              0,
+              0,
+              0
+            ]
+          }
+        ],
+        "phase1": [
+          {
+            "group": "Oncology",
+            "n": 366,
+            "k": [
+              203,
+              131,
+              0,
+              0,
+              32
+            ]
+          },
+          {
+            "group": "Other",
+            "n": 125,
+            "k": [
+              58,
+              52,
+              0,
+              0,
+              15
+            ]
+          },
+          {
+            "group": "Infectious Disease",
+            "n": 43,
+            "k": [
+              18,
+              18,
+              0,
+              0,
+              7
+            ]
+          },
+          {
+            "group": "Gastroenterology & Hepatology",
+            "n": 37,
+            "k": [
+              20,
+              11,
+              0,
+              0,
+              6
+            ]
+          },
+          {
             "group": "Neurology",
             "n": 30,
             "k": [
-              20,
-              8,
+              21,
+              7,
               0,
               0,
               2
@@ -176751,10 +176751,10 @@
           },
           {
             "group": "Endocrine & Metabolic",
-            "n": 20,
+            "n": 18,
             "k": [
-              13,
-              7,
+              12,
+              6,
               0,
               0,
               0
@@ -176762,9 +176762,9 @@
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 13,
+            "n": 16,
             "k": [
-              5,
+              8,
               2,
               0,
               0,
@@ -176773,10 +176773,10 @@
           },
           {
             "group": "Dermatology",
-            "n": 12,
+            "n": 11,
             "k": [
               4,
-              7,
+              6,
               0,
               0,
               1
@@ -176784,9 +176784,9 @@
           },
           {
             "group": "Cardiovascular",
-            "n": 9,
+            "n": 10,
             "k": [
-              4,
+              5,
               4,
               0,
               0,
@@ -176795,9 +176795,9 @@
           },
           {
             "group": "Ophthalmology",
-            "n": 9,
+            "n": 10,
             "k": [
-              4,
+              5,
               3,
               0,
               0,
@@ -176806,21 +176806,10 @@
           },
           {
             "group": "Hematology (non-onc)",
-            "n": 7,
+            "n": 8,
             "k": [
-              3,
-              4,
-              0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "Renal & Urology",
-            "n": 6,
-            "k": [
-              3,
               2,
+              5,
               0,
               0,
               1
@@ -176828,10 +176817,21 @@
           },
           {
             "group": "Respiratory",
-            "n": 6,
+            "n": 8,
+            "k": [
+              2,
+              4,
+              0,
+              0,
+              2
+            ]
+          },
+          {
+            "group": "Renal & Urology",
+            "n": 7,
             "k": [
               3,
-              2,
+              3,
               0,
               0,
               1
@@ -176863,10 +176863,10 @@
         "phase2": [
           {
             "group": "Oncology",
-            "n": 468,
+            "n": 495,
             "k": [
-              325,
-              120,
+              338,
+              134,
               0,
               0,
               23
@@ -176874,108 +176874,108 @@
           },
           {
             "group": "Other",
-            "n": 241,
+            "n": 201,
             "k": [
-              174,
-              56,
+              149,
+              45,
               0,
               0,
-              11
+              7
+            ]
+          },
+          {
+            "group": "Infectious Disease",
+            "n": 87,
+            "k": [
+              67,
+              16,
+              0,
+              0,
+              4
             ]
           },
           {
             "group": "Gastroenterology & Hepatology",
-            "n": 104,
+            "n": 85,
             "k": [
-              65,
-              36,
+              56,
+              26,
               0,
               0,
               3
             ]
           },
           {
-            "group": "Infectious Disease",
-            "n": 86,
-            "k": [
-              67,
-              15,
-              0,
-              0,
-              4
-            ]
-          },
-          {
             "group": "Neurology",
-            "n": 77,
+            "n": 80,
             "k": [
-              60,
-              12,
+              61,
+              13,
               0,
               0,
-              5
+              6
             ]
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 44,
+            "n": 54,
             "k": [
-              34,
-              2,
+              42,
+              4,
               0,
               0,
               8
             ]
           },
           {
-            "group": "Endocrine & Metabolic",
-            "n": 35,
+            "group": "Respiratory",
+            "n": 39,
             "k": [
-              19,
-              14,
+              25,
+              9,
+              0,
+              0,
+              5
+            ]
+          },
+          {
+            "group": "Endocrine & Metabolic",
+            "n": 36,
+            "k": [
+              21,
+              13,
               0,
               0,
               2
             ]
           },
           {
-            "group": "Respiratory",
+            "group": "Cardiovascular",
             "n": 34,
             "k": [
-              23,
-              7,
+              22,
+              9,
               0,
               0,
-              4
+              3
             ]
           },
           {
             "group": "Dermatology",
             "n": 32,
             "k": [
-              27,
+              26,
               5,
               0,
               0,
-              0
-            ]
-          },
-          {
-            "group": "Cardiovascular",
-            "n": 30,
-            "k": [
-              19,
-              9,
-              0,
-              0,
-              2
+              1
             ]
           },
           {
             "group": "Psychiatry & Mental Health",
-            "n": 25,
+            "n": 26,
             "k": [
-              20,
+              21,
               3,
               0,
               0,
@@ -176983,10 +176983,21 @@
             ]
           },
           {
-            "group": "Ophthalmology",
-            "n": 18,
+            "group": "Renal & Urology",
+            "n": 20,
             "k": [
-              10,
+              13,
+              6,
+              0,
+              0,
+              1
+            ]
+          },
+          {
+            "group": "Ophthalmology",
+            "n": 19,
+            "k": [
+              11,
               5,
               0,
               0,
@@ -176994,22 +177005,11 @@
             ]
           },
           {
-            "group": "Renal & Urology",
-            "n": 18,
-            "k": [
-              12,
-              5,
-              0,
-              0,
-              1
-            ]
-          },
-          {
             "group": "Hematology (non-onc)",
-            "n": 11,
+            "n": 14,
             "k": [
-              5,
-              5,
+              7,
+              6,
               0,
               0,
               1
@@ -177017,9 +177017,9 @@
           },
           {
             "group": "Musculoskeletal",
-            "n": 6,
+            "n": 7,
             "k": [
-              5,
+              6,
               1,
               0,
               0,
@@ -177030,24 +177030,24 @@
         "phase3": [
           {
             "group": "Other",
-            "n": 125,
+            "n": 104,
             "k": [
-              104,
-              17,
+              91,
+              11,
               0,
               0,
-              4
+              2
             ]
           },
           {
             "group": "Oncology",
-            "n": 86,
+            "n": 91,
             "k": [
-              74,
-              8,
+              77,
+              9,
               0,
               0,
-              4
+              5
             ]
           },
           {
@@ -177063,43 +177063,43 @@
           },
           {
             "group": "Neurology",
-            "n": 54,
+            "n": 56,
             "k": [
-              50,
-              3,
+              53,
+              1,
               0,
               0,
-              1
+              2
             ]
           },
           {
             "group": "Cardiovascular",
-            "n": 40,
+            "n": 45,
             "k": [
-              28,
-              11,
+              31,
+              12,
               0,
               0,
-              1
+              2
             ]
           },
           {
             "group": "Gastroenterology & Hepatology",
-            "n": 32,
+            "n": 31,
             "k": [
               28,
               3,
               0,
               0,
-              1
+              0
             ]
           },
           {
             "group": "Immunology & Autoimmune",
-            "n": 26,
+            "n": 31,
             "k": [
-              17,
-              4,
+              21,
+              5,
               0,
               0,
               5
@@ -177107,10 +177107,10 @@
           },
           {
             "group": "Respiratory",
-            "n": 25,
+            "n": 28,
             "k": [
-              17,
-              3,
+              19,
+              4,
               0,
               0,
               5
@@ -177118,10 +177118,10 @@
           },
           {
             "group": "Endocrine & Metabolic",
-            "n": 24,
+            "n": 21,
             "k": [
-              12,
-              7,
+              10,
+              6,
               0,
               0,
               5
@@ -177140,43 +177140,43 @@
           },
           {
             "group": "Ophthalmology",
-            "n": 15,
+            "n": 17,
             "k": [
-              12,
-              3,
+              13,
+              4,
               0,
               0,
               0
             ]
           },
           {
-            "group": "Hematology (non-onc)",
-            "n": 13,
-            "k": [
-              6,
-              3,
-              0,
-              0,
-              4
-            ]
-          },
-          {
             "group": "Renal & Urology",
-            "n": 12,
+            "n": 14,
             "k": [
               10,
-              1,
+              3,
               0,
               0,
               1
             ]
           },
           {
+            "group": "Hematology (non-onc)",
+            "n": 13,
+            "k": [
+              5,
+              3,
+              0,
+              0,
+              5
+            ]
+          },
+          {
             "group": "Dermatology",
-            "n": 10,
+            "n": 12,
             "k": [
               8,
-              2,
+              4,
               0,
               0,
               0
@@ -177184,33 +177184,33 @@
           },
           {
             "group": "Musculoskeletal",
-            "n": 5,
+            "n": 4,
             "k": [
               1,
               3,
               0,
               0,
-              1
+              0
             ]
           }
         ],
         "phase4": [
           {
             "group": "Other",
-            "n": 43,
+            "n": 38,
             "k": [
-              26,
-              16,
+              23,
+              15,
               0,
               0,
-              1
+              0
             ]
           },
           {
             "group": "Infectious Disease",
-            "n": 14,
+            "n": 15,
             "k": [
-              7,
+              8,
               4,
               0,
               0,
@@ -177229,11 +177229,22 @@
             ]
           },
           {
+            "group": "Endocrine & Metabolic",
+            "n": 9,
+            "k": [
+              4,
+              5,
+              0,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Renal & Urology",
-            "n": 7,
+            "n": 8,
             "k": [
               5,
-              2,
+              3,
               0,
               0,
               0
@@ -177241,24 +177252,13 @@
           },
           {
             "group": "Respiratory",
-            "n": 7,
+            "n": 8,
             "k": [
               3,
               4,
               0,
               0,
-              0
-            ]
-          },
-          {
-            "group": "Endocrine & Metabolic",
-            "n": 5,
-            "k": [
-              2,
-              3,
-              0,
-              0,
-              0
+              1
             ]
           },
           {
@@ -177306,17 +177306,6 @@
             ]
           },
           {
-            "group": "Psychiatry & Mental Health",
-            "n": 3,
-            "k": [
-              2,
-              1,
-              0,
-              0,
-              0
-            ]
-          },
-          {
             "group": "Oncology",
             "n": 2,
             "k": [
@@ -177328,11 +177317,11 @@
             ]
           },
           {
-            "group": "Hematology (non-onc)",
-            "n": 1,
+            "group": "Psychiatry & Mental Health",
+            "n": 2,
             "k": [
+              2,
               0,
-              1,
               0,
               0,
               0

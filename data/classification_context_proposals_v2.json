@@ -775,5 +775,7 @@
         "classification_source": "DESCRIPTION_FALLBACK"
       }
     }
-  ]
+  ],
+  "inactive_proposal_count": 0,
+  "inactive_proposals": []
 }

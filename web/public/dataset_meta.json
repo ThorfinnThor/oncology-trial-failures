@@ -1,6 +1,6 @@
 {
   "version": "2026-09-04",
-  "generated_at_utc": "2026-09-05T14:03:37Z",
+  "generated_at_utc": "2026-09-07T11:40:43Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23725,
@@ -13,43 +13,43 @@
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 7993
+      "count": 8458
     },
     {
       "area": "Other",
-      "count": 5809
+      "count": 5124
     },
     {
       "area": "Infectious Disease",
-      "count": 1720
-    },
-    {
-      "area": "Gastroenterology & Hepatology",
-      "count": 1534
+      "count": 1769
     },
     {
       "area": "Cardiovascular",
-      "count": 1296
+      "count": 1366
+    },
+    {
+      "area": "Gastroenterology & Hepatology",
+      "count": 1351
     },
     {
       "area": "Neurology",
-      "count": 1006
+      "count": 1046
     },
     {
       "area": "Endocrine & Metabolic",
-      "count": 800
+      "count": 825
     },
     {
       "area": "Immunology & Autoimmune",
-      "count": 673
+      "count": 777
     },
     {
       "area": "Respiratory",
-      "count": 631
+      "count": 675
     },
     {
       "area": "Psychiatry & Mental Health",
-      "count": 610
+      "count": 609
     }
   ],
   "classification_v2": {
