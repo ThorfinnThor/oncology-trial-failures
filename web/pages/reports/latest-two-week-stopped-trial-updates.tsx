@@ -20,7 +20,7 @@ const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 type ReportProps = {
   report: InsightStats["latestUpdates"];
-  changes: IngestChangeReport | null;
+  changes: Pick<IngestChangeReport, "has_previous_snapshot" | "summary" | "new_records"> | null;
 };
 
 function number(value: number): string {
@@ -61,7 +61,16 @@ function changeRecordHref(record: IngestChangeRecord): string {
 export const getStaticProps: GetStaticProps<ReportProps> = async () => {
   const [stats, changes] = await Promise.all([buildInsightStats(), loadIngestChangesServer()]);
   return {
-    props: { report: stats.latestUpdates, changes },
+    props: {
+      report: stats.latestUpdates,
+      changes: changes
+        ? {
+            has_previous_snapshot: changes.has_previous_snapshot,
+            summary: changes.summary,
+            new_records: changes.new_records,
+          }
+        : null,
+    },
   };
 };
 
