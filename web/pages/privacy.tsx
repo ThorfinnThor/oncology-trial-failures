@@ -174,6 +174,20 @@ export default function PrivacyPage() {
           </section>
 
           <section>
+            <h2>Dataset sample requests</h2>
+            <p>
+              If you request a dataset sample on the Data &amp; licensing page, we process your work email address, name (optional),
+              company or institution, selected use case, the request time and the approximate country derived from your connection.
+            </p>
+            <p>
+              We use this information to provide the sample, to follow up about the dataset you requested and to understand demand
+              for our data products (Art. 6(1)(b) and (f) GDPR). Request records are stored in our hosting provider&apos;s logs and
+              storage and are deleted after 24 months without further contact, or earlier on request. You can object to follow-up
+              at any time by emailing us.
+            </p>
+          </section>
+
+          <section>
             <h2>What we do not sell</h2>
             <p>
               We do not sell visitor personal information. We do not use visitor information for medical

@@ -11,6 +11,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
   const content =
     `User-agent: *\n` +
     `Disallow: /api/\n` +
+    `Disallow: /samples/\n` +
     `\n` +
     `LLMs: ${SITE_URL}/llms.txt\n` +
     `Sitemap: ${SITE_URL}/sitemap.xml\n`;

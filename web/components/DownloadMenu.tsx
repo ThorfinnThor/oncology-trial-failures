@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { downloadTrials, DownloadFormat, DownloadScope } from "@/lib/download";
 import { useDialogBehavior } from "@/hooks/useDialogBehavior";
+import { DATA_PAGE_PATH, EXPORT_ROW_LIMIT } from "@/lib/licensing";
 
 function OptionRow({
   name,
@@ -104,7 +105,8 @@ export default function DownloadMenu({
             </div>
             <div className="muted" style={{ fontSize: 13, marginTop: 6 }}>
               Choose scope and format.{" "}
-              <span style={{ fontWeight: 800 }}>{rows.length.toLocaleString()}</span> rows.
+              <span style={{ fontWeight: 800 }}>{Math.min(rows.length, EXPORT_ROW_LIMIT).toLocaleString()}</span> of{" "}
+              {rows.length.toLocaleString()} rows.
             </div>
           </div>
 
@@ -176,7 +178,12 @@ export default function DownloadMenu({
           </div>
 
           <div className="note">
-            Tip: “Everything” exports all {allRows.length.toLocaleString()} trials and may be a large download.
+            Free exports include up to {EXPORT_ROW_LIMIT} rows. The complete classified dataset, the enriched Oncology Failure Signals
+            dataset and bulk or API access are available under{" "}
+            <a className="link" href={DATA_PAGE_PATH}>
+              Data &amp; licensing
+            </a>
+            .
           </div>
         </div>
       </div>
