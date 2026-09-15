@@ -1,0 +1,88 @@
+"""Small, polite, disk-cached JSON HTTP client for enrichment sources.
+
+Every response is cached under ``.cache/signals/<source>/<sha>.json`` so runs are
+resumable, reproducible and cheap to repeat. Failed requests are not cached.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import threading
+import time
+from pathlib import Path
+from typing import Any, Optional
+
+import requests
+
+ROOT = Path(__file__).resolve().parents[2]
+CACHE_ROOT = ROOT / ".cache" / "signals"
+USER_AGENT = "ClinicalTrialFailures-signals/1.0 (+https://clinicaltrialfailures.com/contact)"
+
+_MIN_INTERVAL = {"ctgov": 0.25, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.2, "pubmed": 0.4, "sec": 0.15}
+_last_call: dict[str, float] = {}
+_lock = threading.Lock()
+
+
+class SourceUnavailable(RuntimeError):
+    """Raised when a source cannot be reached (network policy, outage)."""
+
+
+def _throttle(source: str) -> None:
+    interval = _MIN_INTERVAL.get(source, 0.2)
+    with _lock:
+        now = time.monotonic()
+        wait = _last_call.get(source, 0.0) + interval - now
+        _last_call[source] = max(now, _last_call.get(source, 0.0) + interval)
+    if wait > 0:
+        time.sleep(wait)
+
+
+def get_json(source: str, url: str, params: Optional[dict] = None, *, cache: bool = True,
+             retries: int = 3, timeout: float = 30.0) -> Any:
+    key_raw = url + "?" + json.dumps(params or {}, sort_keys=True)
+    key = hashlib.sha256(key_raw.encode()).hexdigest()[:32]
+    path = CACHE_ROOT / source / f"{key}.json"
+    if cache and path.exists():
+        return json.loads(path.read_text())["body"]
+
+    last_error: Optional[Exception] = None
+    for attempt in range(retries):
+        _throttle(source)
+        try:
+            resp = requests.get(url, params=params, timeout=timeout, headers={"User-Agent": USER_AGENT,
+                                                                             "Accept": "application/json"})
+        except requests.exceptions.ProxyError as exc:
+            raise SourceUnavailable(f"{source}: blocked by network policy ({exc.__class__.__name__})") from exc
+        except requests.RequestException as exc:
+            last_error = exc
+            time.sleep(1.5 * (attempt + 1))
+            continue
+        if resp.status_code == 404:
+            body = None
+            break
+        if resp.status_code in (429, 500, 502, 503, 504):
+            last_error = RuntimeError(f"HTTP {resp.status_code}")
+            time.sleep(2.0 * (attempt + 1))
+            continue
+        if resp.status_code != 200:
+            raise SourceUnavailable(f"{source}: HTTP {resp.status_code} for {resp.url}")
+        try:
+            body = resp.json()
+        except ValueError as exc:
+            raise SourceUnavailable(f"{source}: non-JSON response from {resp.url}") from exc
+        break
+    else:
+        raise SourceUnavailable(f"{source}: request failed after {retries} attempts: {last_error}")
+
+    if cache:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"url": url, "params": params, "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "body": body}))
+    return body
+
+
+def probe(source: str, url: str) -> bool:
+    try:
+        requests.get(url, timeout=10, headers={"User-Agent": USER_AGENT})
+        return True
+    except requests.RequestException:
+        return False
