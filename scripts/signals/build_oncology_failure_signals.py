@@ -35,6 +35,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.signals.http_cache import SourceUnavailable, get_json  # noqa: E402
 from scripts.signals.sponsors import resolve_sponsor  # noqa: E402
+from scripts.signals.external_sources import chembl_mechanisms, chembl_molecule, pubmed_for_nct, sec_issuer  # noqa: E402
 
 SOURCE = ROOT / "data/all_oncology_stopped_trials.json"
 OUT = ROOT / "product"
@@ -97,7 +98,7 @@ def name_candidates(iv: dict) -> list[str]:
     raw = [iv.get("name", "")] + list(iv.get("other_names") or [])
     parts: list[str] = []
     for item in raw:
-        for piece in re.split(r"[;,/]| \+ |\+", item or ""):
+        for piece in re.split(r"[;,/]| \+ |\+|\s+(?:plus|and|with)\s+", item or "", flags=re.I):
             piece = piece.strip()
             if not piece:
                 continue
@@ -199,7 +200,7 @@ def assign_role(iv: dict, asset: dict | None) -> tuple[str, str]:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--step", choices=["ctgov", "rxnorm", "build", "all"], default="all")
+    ap.add_argument("--step", choices=["ctgov", "rxnorm", "chembl", "pubmed", "sec", "build", "all"], default="all")
     ap.add_argument("--max-seconds", type=float, default=150.0)
     ap.add_argument("--workers", type=int, default=4)
     args = ap.parse_args()
@@ -274,35 +275,97 @@ def main() -> int:
     if args.step == "rxnorm":
         return 0
 
+    def run_pool(label, fn, items):
+        results = {}
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            futures = {pool.submit(fn, item): item for item in items}
+            for fut in as_completed(futures):
+                results[futures[fut]] = fut.result()
+                if not time_left():
+                    for f in futures:
+                        f.cancel()
+                    print(f"{label}: time budget reached, {len(results)}/{len(items)}; re-run to continue")
+                    raise SystemExit(3)
+        return results
+
+    # 2b. ChEMBL for every drug-name candidate (exact), then mechanisms/targets for matched molecules
+    chembl_hits, chembl_mech = {}, {}
+    try:
+        chembl_hits = run_pool("chembl", chembl_molecule, sorted(names))
+        mol_ids = sorted({m["molecule_chembl_id"] for m in chembl_hits.values() if m})
+        chembl_mech = run_pool("chembl-mechanisms", chembl_mechanisms, mol_ids)
+        source_status["chembl"] = "OK"
+    except SourceUnavailable as exc:
+        source_status["chembl"] = f"UNAVAILABLE: {exc}"
+    print(f"chembl: {sum(1 for v in chembl_hits.values() if v)}/{len(names)} names matched, {len(chembl_mech)} molecules with mechanism lookups")
+    if args.step == "chembl":
+        return 0
+
+    # 2c. PubMed publications mentioning each NCT ID
+    pubmed = {}
+    try:
+        pubmed = run_pool("pubmed", pubmed_for_nct, ncts)
+        source_status["pubmed"] = "OK"
+    except SourceUnavailable as exc:
+        source_status["pubmed"] = f"UNAVAILABLE: {exc}"
+    print(f"pubmed: {sum(1 for v in pubmed.values() if v)}/{len(ncts)} trials with publications")
+    if args.step == "pubmed":
+        return 0
+
+    # 2d. SEC issuer lookup is done per record below (single cached index download)
+    try:
+        sec_issuer("Pfizer")
+        source_status["sec"] = "OK"
+    except SourceUnavailable as exc:
+        source_status["sec"] = f"UNAVAILABLE: {exc}"
+    if args.step == "sec":
+        return 0
+
     # 3. Assemble
     assets: dict[str, dict] = {}
     alias_to_asset: dict[str, str] = {}
 
-    def make_asset(ing: dict) -> dict:
-        aid = f"RXCUI:{ing['rxcui']}"
-        return assets.setdefault(aid, {
-            "asset_id": aid, "canonical_name": ing["name"], "id_source": "RxNorm", "rxcui": ing["rxcui"],
-            "us_marketed_rxnorm": marketed.get(ing["rxcui"]), "mechanism_of_action_medrt": classes.get(ing["rxcui"], {}).get("moa", []),
-            "pharmacologic_class_fda_epc": classes.get(ing["rxcui"], {}).get("epc", []), "aliases": set(), "nct_ids": set(),
+    def make_asset(ing: dict | None, mol: dict | None) -> dict:
+        if mol:
+            aid, name, id_source = f"CHEMBL:{mol['molecule_chembl_id']}", (mol.get("pref_name") or "").lower() or (ing or {}).get("name"), "ChEMBL"
+        else:
+            aid, name, id_source = f"RXCUI:{ing['rxcui']}", ing["name"], "RxNorm"
+        a = assets.setdefault(aid, {
+            "asset_id": aid, "canonical_name": name, "id_source": id_source, "chembl_id": None, "rxcui": None,
+            "chembl_max_phase": None, "chembl_first_approval": None, "molecule_type": None,
+            "us_marketed_rxnorm": None, "mechanism_of_action_medrt": [], "pharmacologic_class_fda_epc": [],
+            "chembl_mechanisms": [], "targets": [], "target_gene_symbols": [], "aliases": set(), "nct_ids": set(),
         })
+        if mol and not a["chembl_id"]:
+            mechs = chembl_mech.get(mol["molecule_chembl_id"]) or []
+            a.update({"chembl_id": mol["molecule_chembl_id"], "chembl_max_phase": mol.get("max_phase"),
+                      "chembl_first_approval": mol.get("first_approval"), "molecule_type": mol.get("molecule_type"),
+                      "chembl_mechanisms": sorted({m["mechanism_of_action"] for m in mechs if m.get("mechanism_of_action")}),
+                      "targets": sorted({m["target_name"] for m in mechs if m.get("target_name")}),
+                      "target_gene_symbols": sorted({g for m in mechs for g in m.get("gene_symbols") or []})})
+        if ing and not a["rxcui"]:
+            a.update({"rxcui": ing["rxcui"], "us_marketed_rxnorm": marketed.get(ing["rxcui"]),
+                      "mechanism_of_action_medrt": classes.get(ing["rxcui"], {}).get("moa", []),
+                      "pharmacologic_class_fda_epc": classes.get(ing["rxcui"], {}).get("epc", [])})
+        return a
 
     def components_for(iv: dict) -> list[dict]:
         """One component per combination partner ('A + B'), otherwise one component
         whose aliases are the intervention name and its registry other names."""
         name = iv.get("name", "")
-        if re.search(r"\s\+\s|\+", name):
-            groups = [{"name": part.strip(), "other_names": []} for part in re.split(r"\s*\+\s*", name) if part.strip()]
+        combo_split = re.compile(r"\s*\+\s*|\s+(?:plus|and|with)\s+|\s*/\s*(?=[A-Za-z]{4})", re.I)
+        parts = [p.strip() for p in combo_split.split(name) if p and p.strip()]
+        if len(parts) > 1 and all(len(p) >= 3 for p in parts):
+            groups = [{"name": part, "other_names": []} for part in parts]
         else:
             groups = [iv]
         comps = []
         for g in groups:
             cands = name_candidates(g)
-            asset, method = None, "UNRESOLVED"
-            for idx, cand in enumerate(cands):
-                hit = lookups.get(cand)
-                if hit:
-                    asset, method = make_asset(hit["ingredient"]), ("RXNORM_NAME" if idx == 0 else "RXNORM_ALIAS")
-                    break
+            ing = next((lookups[c]["ingredient"] for c in cands if lookups.get(c)), None)
+            mol = next((chembl_hits[c] for c in cands if chembl_hits.get(c)), None)
+            asset = make_asset(ing, mol) if (ing or mol) else None
+            method = "+".join(x for x, ok in [("CHEMBL_EXACT", mol), ("RXNORM", ing)] if ok) or "UNRESOLVED"
             comps.append({
                 "label": g.get("name", ""), "asset": asset, "match_method": method,
                 "research_codes": research_codes(g),
@@ -345,7 +408,7 @@ def main() -> int:
             })
         # investigational focus: experimental-arm components not marketed in the US (incl. unresolved codes);
         # if every experimental component is marketed, the whole experimental regimen is the focus.
-        novel = [c for c in exp_components if not (c["asset"] and c["asset"]["us_marketed_rxnorm"] is True)]
+        novel = [c for c in exp_components if not (c["asset"] and (c["asset"]["us_marketed_rxnorm"] is True or str(c["asset"].get("chembl_max_phase")) in ("4", "4.0")))]
         focus = novel or exp_components
         out_rows.append({
             "nct_id": rec["nct_id"],
@@ -378,12 +441,19 @@ def main() -> int:
             "focus_assets": sorted({(c["asset"]["canonical_name"] if c["asset"] else c["label"]) for c in focus}),
             "focus_asset_ids": sorted({c["asset"]["asset_id"] for c in focus if c["asset"]}),
             "focus_research_codes": sorted({code for c in focus for code in c["research_codes"]}),
-            "focus_mechanisms": sorted({m for c in focus if c["asset"] for m in c["asset"]["mechanism_of_action_medrt"]}),
+            "focus_mechanisms": sorted({m for c in focus if c["asset"] for m in (c["asset"]["chembl_mechanisms"] or c["asset"]["mechanism_of_action_medrt"])}),
+            "focus_targets": sorted({t for c in focus if c["asset"] for t in c["asset"]["targets"]}),
+            "focus_target_genes": sorted({g for c in focus if c["asset"] for g in c["asset"]["target_gene_symbols"]}),
+            "focus_max_phase_chembl": max([float(c["asset"]["chembl_max_phase"]) for c in focus if c["asset"] and c["asset"].get("chembl_max_phase") not in (None, "")] or [None], key=lambda v: -1 if v is None else v),
             "focus_pharmacologic_classes": sorted({m for c in focus if c["asset"] for m in c["asset"]["pharmacologic_class_fda_epc"]}),
-            "focus_includes_non_us_marketed": any(not (c["asset"] and c["asset"]["us_marketed_rxnorm"] is True) for c in focus),
-            "evidence_links": [{"type": "REGISTRY", "url": rec.get("url")}],
+            "focus_includes_non_us_marketed": any(not (c["asset"] and (c["asset"]["us_marketed_rxnorm"] is True or str(c["asset"].get("chembl_max_phase")) in ("4", "4.0"))) for c in focus),
+            "publications": pubmed.get(rec["nct_id"]) or [],
+            "publication_count": len(pubmed.get(rec["nct_id"]) or []),
+            "sponsor_issuer_sec": (sec_issuer(sponsor["sponsor_group"], sponsor["lead_sponsor_raw"]) if sponsor["is_industry"] and source_status.get("sec") == "OK" else None),
+            "evidence_links": [{"type": "REGISTRY", "url": rec.get("url")}] + [{"type": "PUBMED", "url": p["url"]} for p in (pubmed.get(rec["nct_id"]) or [])[:5]],
             "enrichment_status": {"ctgov": bool(design), "rxnorm": source_status.get("rxnorm", "NOT_RUN"),
-                                  "ncit": "PENDING_NETWORK", "chembl_targets": "PENDING_NETWORK", "pubmed": "PENDING_NETWORK", "sec_ticker": "PENDING_NETWORK"},
+                                  "chembl": source_status.get("chembl", "NOT_RUN"), "pubmed": source_status.get("pubmed", "NOT_RUN"),
+                                  "sec": source_status.get("sec", "NOT_RUN"), "ncit": "NOT_USED_V1"},
         })
 
     # asset-level repeated-signal features
@@ -410,7 +480,7 @@ def main() -> int:
     focus_cov = sum(1 for r in out_rows if r["focus_asset_ids"] or r["focus_research_codes"]) / max(1, len(out_rows))
     flat_cols = ["nct_id", "brief_title", "phases", "overall_status", "failure_outcome", "failure_primary_reason", "failure_secondary_reasons",
                  "why_stopped", "sponsor_group", "lead_sponsor_raw", "sponsor_class_ctgov", "is_industry", "focus_assets", "focus_asset_ids",
-                 "focus_research_codes", "focus_mechanisms", "focus_pharmacologic_classes", "focus_includes_non_us_marketed", "conditions",
+                 "focus_research_codes", "focus_mechanisms", "focus_targets", "focus_target_genes", "focus_max_phase_chembl", "focus_pharmacologic_classes", "publication_count", "focus_includes_non_us_marketed", "conditions",
                  "enrollment_count", "enrollment_type", "start_date", "primary_completion_date", "last_update_post_date", "registry_url"]
     with open(OUT / "oncology_failure_signals_v1.csv", "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=flat_cols)
@@ -437,7 +507,12 @@ def main() -> int:
         "trials_with_resolved_focus_asset": sum(1 for r in out_rows if r["focus_asset_ids"]) / max(1, len(out_rows)),
         "trials_with_focus_research_code": sum(1 for r in out_rows if r["focus_research_codes"]) / max(1, len(out_rows)),
         "trials_with_focus_asset_or_research_code": focus_cov,
+        "trials_with_focus_target_gene": sum(1 for r in out_rows if r["focus_target_genes"]) / max(1, len(out_rows)),
+        "trials_with_focus_mechanism": sum(1 for r in out_rows if r["focus_mechanisms"]) / max(1, len(out_rows)),
+        "trials_with_pubmed_publication": sum(1 for r in out_rows if r["publications"]) / max(1, len(out_rows)),
+        "industry_trials_with_sec_issuer": sum(1 for r in out_rows if r["sponsor_issuer_sec"]) / max(1, sum(r["is_industry"] for r in out_rows)),
         "unique_assets": len(assets),
+        "unique_assets_chembl": sum(1 for a in assets.values() if a["chembl_id"]),
         "assets_with_repeated_safety_signal": sum(a["repeated_safety_signal"] for a in assets.values()),
         "assets_with_repeated_efficacy_signal": sum(a["repeated_efficacy_signal"] for a in assets.values()),
         "sponsor_group_curated_rate_industry": sum(r["sponsor_group_method"] != "SELF" for r in out_rows if r["is_industry"]) / max(1, sum(r["is_industry"] for r in out_rows)),
@@ -445,17 +520,22 @@ def main() -> int:
         "sources": {
             "ClinicalTrials.gov API v2": "registry fields, arms, interventions, other names, sponsor class",
             "RxNorm / RxClass (U.S. National Library of Medicine)": "ingredient normalization, US-marketed flag, MED-RT mechanism of action, FDA established pharmacologic class",
+            "ChEMBL (EMBL-EBI, CC BY-SA 3.0)": "canonical molecule IDs (exact synonym match, parent molecule), max phase, mechanisms, targets, gene symbols",
+            "PubMed E-utilities (NCBI)": "publications mentioning the NCT identifier (metadata and links only)",
+            "SEC EDGAR company tickers": "issuer CIK and ticker for sponsor groups by exact or unique-prefix normalized name",
         },
         "classification_validation": "docs/validation_heldout_v2.md",
         "limitations": [
-            "Investigational compounds without an RxNorm ingredient remain unresolved to a canonical asset in v1; research codes from registry other-names are retained.",
+            "Assets resolve only on exact ChEMBL/RxNorm name or synonym matches; unmatched investigational codes are retained as research codes.",
+            "PubMed links are publications that mention the NCT ID; they are not necessarily the primary results paper.",
+            "SEC tickers reflect current registrants; acquired or non-SEC-registered sponsors have no ticker.",
             "US-marketed flag reflects presence of RxNorm clinical/branded drug concepts, not current regulatory status.",
             "Sponsor parent groups come from a small curated table of long-standing subsidiaries; tickers are not assigned in v1.",
         ],
     }
     (OUT / "oncology_failure_signals_v1_meta.json").write_text(json.dumps(meta, indent=2) + "\n")
     print(json.dumps({k: meta[k] for k in ["trial_count", "industry_trial_count", "industry_phase2_3_trial_count", "experimental_arm_drug_resolution_rate",
-                                           "trials_with_resolved_focus_asset", "trials_with_focus_research_code", "trials_with_focus_asset_or_research_code", "unique_assets", "source_status"]}, indent=2))
+                                           "trials_with_resolved_focus_asset", "trials_with_focus_research_code", "trials_with_focus_asset_or_research_code", "trials_with_focus_target_gene", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer", "unique_assets", "unique_assets_chembl", "source_status"]}, indent=2))
     return 0
 
 

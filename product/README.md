@@ -38,8 +38,12 @@ documented in `docs/validation_heldout_v2.md` (held-out biological precision 95.
 | `focus_asset_signal_trial_counts` | Number of signal trials per focus asset | Derived |
 | `enrichment_status` | Per-source status; `PENDING_NETWORK` = source not yet reachable | Pipeline |
 
-## Roadmap (blocked on network allowlist)
+| `focus_targets`, `focus_target_genes`, `focus_max_phase_chembl` | Targets, gene symbols and highest development phase | ChEMBL |
+| `publications`, `publication_count` | PubMed records mentioning the NCT ID | PubMed E-utilities |
+| `sponsor_issuer_sec` | CIK, ticker, registrant name, match method | SEC EDGAR |
 
-- NCI Thesaurus and ChEMBL: canonical IDs, targets and mechanisms for investigational compounds
-- PubMed: publications linked by NCT ID
-- SEC EDGAR: ticker/CIK for listed sponsors; 8-K mentions of the asset
+## Source licensing notes
+
+ChEMBL is CC BY-SA 3.0 (attribution and share-alike apply to redistributed ChEMBL-derived fields);
+RxNorm/RxClass, PubMed metadata, ClinicalTrials.gov and SEC EDGAR are U.S. government sources.
+Review ChEMBL share-alike obligations before selling ChEMBL-derived fields under a restrictive license.

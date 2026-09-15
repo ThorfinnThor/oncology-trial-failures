@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CACHE_ROOT = ROOT / ".cache" / "signals"
 USER_AGENT = "ClinicalTrialFailures-signals/1.0 (+https://clinicaltrialfailures.com/contact)"
 
-_MIN_INTERVAL = {"ctgov": 0.25, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.2, "pubmed": 0.4, "sec": 0.15}
+_MIN_INTERVAL = {"ctgov": 0.25, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.06, "pubmed": 0.35, "sec": 0.15}
 _last_call: dict[str, float] = {}
 _lock = threading.Lock()
 

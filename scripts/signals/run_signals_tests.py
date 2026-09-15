@@ -37,6 +37,8 @@ check("codes", research_codes({"name": "Pembrolizumab", "other_names": ["Keytrud
 check("code with suffix", research_codes({"name": "HA121-28 tablets", "other_names": []}), ["HA121-28"])
 check("targets are not codes", research_codes({"name": "Anti-CD19 CAR-T", "other_names": ["COVID-19"]}), [])
 
+check("and-combo", name_candidates({"name": "Gemcitabine and Capecitabine and Avastin", "other_names": []}), ["Gemcitabine", "Capecitabine", "Avastin"])
+
 # roles
 iv = lambda name, typ, arms: {"name": name, "type": typ, "other_names": [], "arm_types": arms}
 check("placebo", assign_role(iv("Matching placebo", "DRUG", ["PLACEBO_COMPARATOR"]), None)[0], "PLACEBO")
