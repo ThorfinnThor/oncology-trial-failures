@@ -236,6 +236,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const classificationV2 = meta?.classification_v2 || {};
   const v2Outcomes = classificationV2.outcomes || {};
   const v2Quality = classificationV2.quality || {};
+  const v2Heldout = classificationV2.heldout_validation || {};
   const reviewGated = classificationV2.needs_review || v2Outcomes.UNKNOWN || 0;
 
   return {
@@ -295,6 +296,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
       },
       assertionPrecision: v2Quality.assertion_precision || 0,
       biologicalPrecision: v2Quality.biological_precision || 0,
+      heldoutBiologicalPrecision: v2Heldout.biological_precision || 0,
+      heldoutAssertionAgreement: v2Heldout.assertion_no_material_disagreement || 0,
     },
   };
 }

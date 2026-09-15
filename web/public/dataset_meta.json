@@ -1,6 +1,6 @@
 {
   "version": "2026-09-14",
-  "generated_at_utc": "2026-09-14T12:56:17Z",
+  "generated_at_utc": "2026-09-15T13:58:51Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23766,
@@ -95,6 +95,33 @@
       "audit_review_recall": 0.2081,
       "audit_review_safe_disposition_recall": 0.8526,
       "overall_review_rate": 0.1098
+    },
+    "heldout_validation": {
+      "method": "Held-out stratified sample; blind LLM double annotation with LLM adjudication",
+      "generated_at_utc": "2026-09-15T13:57:36Z",
+      "classifier_version": "2.7.0",
+      "sample_size": 600,
+      "eligible_records": 13729,
+      "biological_precision": 0.9548387096774194,
+      "biological_precision_ci95": [
+        0.915584415584415,
+        0.9870967741935482
+      ],
+      "biological_recall": 0.9528327460016267,
+      "biological_recall_ci95": [
+        0.9134895472413184,
+        0.9833573242329654
+      ],
+      "assertion_no_material_disagreement": 0.8841777576673175,
+      "assertion_no_material_disagreement_ci95": [
+        0.8513395019343869,
+        0.9134368487979105
+      ],
+      "assertion_outcome_and_primary_precision": 0.781921475895722,
+      "assertion_outcome_and_primary_precision_ci95": [
+        0.7359290709589715,
+        0.8241972221544686
+      ]
     },
     "review_policy": "Mixed, content-free, and novel stop reasons are review-gated rather than forced into a failure bucket."
   },

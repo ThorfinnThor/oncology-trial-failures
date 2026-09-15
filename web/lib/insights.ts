@@ -106,6 +106,8 @@ export type InsightStats = {
     };
     assertionPrecision: number;
     biologicalPrecision: number;
+    heldoutBiologicalPrecision: number;
+    heldoutAssertionAgreement: number;
   };
 };
 
@@ -1961,7 +1963,7 @@ function hydrateClassificationV2Article(article: InsightArticle, stats: InsightS
       `${n(v2.resolved)} records have a supported final classification; ${n(v2.reviewGated)} remain review-gated rather than being forced into a cause.`,
       `${n(biological)} records support a biological failure outcome: ${n(efficacy)} efficacy/futility, ${n(safety)} safety, and ${n(biologicalUnspecified)} biological-unspecified signals.`,
       `${n(nonBiological)} records support a non-biological outcome, while ${n(mixed)} contain explicit mixed causes.`,
-      `The current audit benchmark reports ${pctFromRatio(v2.assertionPrecision)} assertion precision and ${pctFromRatio(v2.biologicalPrecision)} biological precision.`,
+      `An independent held-out validation (600 stop-reason texts, blind double annotation) estimates ${pctFromRatio(v2.heldoutBiologicalPrecision)} precision for biological failure labels; ${pctFromRatio(v2.heldoutAssertionAgreement)} of asserted classifications show no material disagreement with the reference labels.`,
     ],
     sections: article.sections.map((section) => {
       if (section.heading === "A stronger focus on biological evidence") {

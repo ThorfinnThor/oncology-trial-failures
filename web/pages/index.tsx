@@ -41,6 +41,10 @@ type ClassificationStats = {
   decisionOnly: number;
   assertionPrecision: number;
   biologicalPrecision: number;
+  heldoutBiologicalPrecision: number;
+  heldoutBiologicalRecall: number;
+  heldoutAssertionAgreement: number;
+  heldoutSampleSize: number;
 };
 
 type HomeStats = {
@@ -72,7 +76,7 @@ function percent(value: number, total: number): string {
 }
 
 function qualityPercent(value: number): string {
-  return value ? `${(value * 100).toFixed(2)}%` : "Audited";
+  return value ? `${(value * 100).toFixed(1)}%` : "Validated";
 }
 
 function excerpt(value: string, maxLength = 112): string {
@@ -134,6 +138,7 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   const outcomes = meta?.classification_v2?.outcomes || {};
   const reasons = meta?.classification_v2?.primary_reasons || {};
   const quality = meta?.classification_v2?.quality || {};
+  const heldout = meta?.classification_v2?.heldout_validation || {};
   const trialCount = meta?.all?.record_count || rows.length;
   const reviewGated = meta?.classification_v2?.needs_review || outcomes.UNKNOWN || 0;
 
@@ -161,6 +166,10 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
           decisionOnly: reasons.DECISION_WITHOUT_STATED_CAUSE || 0,
           assertionPrecision: quality.assertion_precision || 0,
           biologicalPrecision: quality.biological_precision || 0,
+          heldoutBiologicalPrecision: heldout.biological_precision || 0,
+          heldoutBiologicalRecall: heldout.biological_recall || 0,
+          heldoutAssertionAgreement: heldout.assertion_no_material_disagreement || 0,
+          heldoutSampleSize: heldout.sample_size || 0,
         },
       },
       sampleTrials: buildSampleTrials(rows),
@@ -294,7 +303,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 <dl className="v2HeroMetrics" aria-label="V2 dataset metrics">
                   <div><dt>Registry records</dt><dd>{compactNumber(stats.trialCount)}</dd></div>
                   <div><dt>Biological signals</dt><dd>{compactNumber(v2.biological)}</dd></div>
-                  <div><dt>Assertion precision</dt><dd>{qualityPercent(v2.assertionPrecision)}</dd></div>
+                  <div><dt>Biological precision (held-out)</dt><dd>{qualityPercent(v2.heldoutBiologicalPrecision)}</dd></div>
                 </dl>
               </div>
 
@@ -395,8 +404,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
               </ol>
               <div className="v2AuditStrip">
                 <span>Classifier V{v2.version}</span>
-                <span>{qualityPercent(v2.assertionPrecision)} assertion precision</span>
-                <span>{qualityPercent(v2.biologicalPrecision)} biological precision</span>
+                <span>{qualityPercent(v2.heldoutBiologicalPrecision)} biological precision</span>
+                <span>{qualityPercent(v2.heldoutBiologicalRecall)} biological recall</span>
+                <Link href="/methods#validation">Held-out validation, n={v2.heldoutSampleSize || 600}</Link>
                 <span>{stats.source}</span>
                 <span>Updated {stats.updated}</span>
               </div>
