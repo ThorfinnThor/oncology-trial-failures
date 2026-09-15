@@ -40,7 +40,10 @@ def main() -> int:
     name = f"oncology-failure-signals-sample-{meta['dataset_version']}-{digest}.csv"
     for old in SAMPLE_DIR.glob("oncology-failure-signals-sample-*.csv"):
         if old.name != name:
-            old.write_text("")  # cannot delete in some environments; emptied files are excluded from deploy
+            try:
+                old.unlink()
+            except OSError:
+                old.write_text("")  # cannot delete in some environments; emptied files are excluded from deploy
     with open(SAMPLE_DIR / name, "w", newline="", encoding="utf-8") as fh:
         fh.write(f"# Oncology Failure Signals — evaluation sample ({len(sample)} of {meta['trial_count']} records), dataset {meta['dataset_version']}\n")
         fh.write("# Sources: ClinicalTrials.gov; RxNorm/RxClass (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); PubMed (NCBI); SEC EDGAR. Derived fields by ClinicalTrialFailures.\n")

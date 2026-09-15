@@ -5,8 +5,10 @@ resumable, reproducible and cheap to repeat. Failed requests are not cached.
 """
 from __future__ import annotations
 
+import calendar
 import hashlib
 import json
+import os
 import threading
 import time
 from pathlib import Path
@@ -16,7 +18,10 @@ import requests
 
 ROOT = Path(__file__).resolve().parents[2]
 CACHE_ROOT = ROOT / ".cache" / "signals"
-USER_AGENT = "ClinicalTrialFailures-signals/1.0 (+https://clinicaltrialfailures.com/contact)"
+USER_AGENT = "ClinicalTrialFailures-signals/1.0 (+https://clinicaltrialfailures.com/contact)" + (
+    f" {os.environ['SIGNALS_CONTACT']}" if os.environ.get("SIGNALS_CONTACT") else "")
+# Cached responses older than this are refetched (days).
+MAX_AGE_DAYS = {"ctgov": 30, "rxnav": 90, "chembl": 90, "pubmed": 30, "sec": 7}
 
 _MIN_INTERVAL = {"ctgov": 0.25, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.06, "pubmed": 0.35, "sec": 0.15}
 _last_call: dict[str, float] = {}
@@ -37,13 +42,23 @@ def _throttle(source: str) -> None:
         time.sleep(wait)
 
 
+def _fresh(entry: dict, source: str) -> bool:
+    fetched = entry.get("fetched_at")
+    if not fetched:
+        return False
+    age_days = (time.time() - calendar.timegm(time.strptime(fetched, "%Y-%m-%dT%H:%M:%SZ"))) / 86400
+    return age_days <= MAX_AGE_DAYS.get(source, 30)
+
+
 def get_json(source: str, url: str, params: Optional[dict] = None, *, cache: bool = True,
-             retries: int = 3, timeout: float = 30.0) -> Any:
-    key_raw = url + "?" + json.dumps(params or {}, sort_keys=True)
+             retries: int = 3, timeout: float = 30.0, cache_salt: str = "") -> Any:
+    key_raw = url + "?" + json.dumps(params or {}, sort_keys=True) + "#" + cache_salt
     key = hashlib.sha256(key_raw.encode()).hexdigest()[:32]
     path = CACHE_ROOT / source / f"{key}.json"
     if cache and path.exists():
-        return json.loads(path.read_text())["body"]
+        entry = json.loads(path.read_text())
+        if _fresh(entry, source):
+            return entry["body"]
 
     last_error: Optional[Exception] = None
     for attempt in range(retries):

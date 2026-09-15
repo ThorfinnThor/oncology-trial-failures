@@ -96,8 +96,9 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           <div className="card body">
             <h1 className="h1">Data &amp; licensing</h1>
             <p className="muted lead">
-              The website is free to explore. Bulk data, the enriched oncology dataset and recurring updates are licensed for teams
-              that need clinical trial failure evidence in their own models, screens and research workflows.
+              The website is free to explore. For teams that need clinical trial failure evidence in their own models, screens and
+              research workflows, we license bulk files and recurring releases. The datasets are derived from public registries and
+              reference databases; the classifications, linkages, validation and curation are produced by Clinical Trial Failures.
             </p>
 
             <div className="trustPanel">
@@ -126,6 +127,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </div>
 
             <h2 className="h2">Datasets</h2>
+            <p className="muted">Both datasets are rebuilt every week from the latest ClinicalTrials.gov snapshot and licensed as dated releases.</p>
             <div className="trustPanel">
               <div>
                 <div className="trustTitle">Oncology Failure Signals</div>
@@ -144,10 +146,10 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 </p>
               </div>
               <div>
-                <div className="trustTitle">Updates &amp; alerts</div>
+                <div className="trustTitle">Weekly releases</div>
                 <p className="muted">
-                  Weekly registry refresh with a change report covering newly stopped trials, status changes and reclassifications,
-                  delivered as files with each release.
+                  Each release includes a change report covering newly stopped trials, status changes and reclassifications, so you can
+                  update your own screens without reprocessing the full file.
                 </p>
               </div>
             </div>
@@ -162,13 +164,14 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               </li>
               <li>
                 <span className="strong">Enterprise &amp; AI use</span> — model training or evaluation rights, multiple teams, custom
-                delivery (S3, data share, API).
+                file delivery.
               </li>
             </ul>
             <p className="muted">
               Pilot pricing is available for early customers. Free exports on this site are limited to {EXPORT_ROW_LIMIT} rows per
-              download. Registry facts remain available from ClinicalTrials.gov; licenses cover the derived classifications, linkages
-              and delivery.
+              download. The underlying registry and reference facts remain public at their sources; licenses cover our derived
+              classifications, linkages, validation, curation and delivery. Fields derived from ChEMBL (targets, mechanisms, development
+              phase) remain subject to ChEMBL&apos;s CC BY-SA 3.0 license.
             </p>
 
             <h2 id="sample" className="h2">
@@ -245,7 +248,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             <p className="muted">
               ClinicalTrials.gov (U.S. National Library of Medicine); RxNorm and RxClass (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); PubMed
               (NCBI); SEC EDGAR. Classifications, linkages and derived features are produced by Clinical Trial Failures. Data are
-              analytical research signals, not clinical or investment advice.
+              analytical research signals, not clinical or investment advice. Coverage figures on this page are computed from the
+              current release.
             </p>
           </div>
         </div>

@@ -102,3 +102,48 @@ jobs:
           git diff --cached --quiet && echo "No changes to commit" && exit 0
           git commit -m "Update trial failure dataset"
           git push
+
+      # ---------------------------------------------------------------------------
+      # Oncology Failure Signals enrichment (commercial dataset). Runs after the
+      # classified dataset has been committed, so an outage of an external source
+      # never blocks the weekly registry update.
+      # ---------------------------------------------------------------------------
+      - name: Restore enrichment cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/signals
+          key: signals-${{ github.run_id }}
+          restore-keys: signals-
+
+      - name: Build Oncology Failure Signals
+        id: signals
+        continue-on-error: true
+        env:
+          SIGNALS_CONTACT: ${{ secrets.SIGNALS_CONTACT }}
+        run: |
+          python scripts/signals/run_signals_tests.py
+          python scripts/signals/build_oncology_failure_signals.py --step all --max-seconds 5400 --workers 6
+          python scripts/signals/build_public_sample.py
+
+      - name: Save enrichment cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/signals
+          key: signals-${{ github.run_id }}
+
+      - name: Upload Oncology Failure Signals release
+        if: steps.signals.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: oncology-failure-signals-${{ github.run_id }}
+          path: product/
+          retention-days: 90
+
+      - name: Commit public product summary and sample
+        if: steps.signals.outcome == 'success'
+        run: |
+          git add -A web/data/product_summary.json web/public/samples
+          git diff --cached --quiet && echo "No product summary changes" && exit 0
+          git commit -m "Update Oncology Failure Signals summary and sample"
+          git push

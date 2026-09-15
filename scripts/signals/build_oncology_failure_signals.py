@@ -79,8 +79,9 @@ def in_scope(rec: dict) -> bool:
 
 
 # ---------------------------------------------------------------- ClinicalTrials.gov
-def fetch_design(nct: str) -> dict | None:
-    return get_json("ctgov", CTGOV.format(nct=nct), {"fields": CTGOV_FIELDS, "format": "json"})
+def fetch_design(nct: str, last_update: str = "") -> dict | None:
+    # The registry last-update date salts the cache key, so changed records are refetched.
+    return get_json("ctgov", CTGOV.format(nct=nct), {"fields": CTGOV_FIELDS, "format": "json"}, cache_salt=last_update or "")
 
 
 # ---------------------------------------------------------------- RxNorm / RxClass
@@ -219,8 +220,9 @@ def main() -> int:
         pending = list(ncts)
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             futures = {}
+            last_updates = {r["nct_id"]: r.get("last_update_post_date") or "" for r in records}
             for nct in pending:
-                futures[pool.submit(fetch_design, nct)] = nct
+                futures[pool.submit(fetch_design, nct, last_updates.get(nct, ""))] = nct
             for fut in as_completed(futures):
                 nct = futures[fut]
                 try:
