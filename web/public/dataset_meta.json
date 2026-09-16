@@ -1,10 +1,10 @@
 {
-  "version": "2026-09-14",
-  "generated_at_utc": "2026-09-15T13:58:51Z",
+  "version": "2026-09-15",
+  "generated_at_utc": "2026-09-16T09:51:43Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 23766,
-    "max_last_update_post_date": "2026-09-14"
+    "record_count": 23775,
+    "max_last_update_post_date": "2026-09-15"
   },
   "biological_failure": {
     "record_count": 2380,
@@ -13,11 +13,11 @@
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 8474
+      "count": 8480
     },
     {
       "area": "Other",
-      "count": 5134
+      "count": 5135
     },
     {
       "area": "Infectious Disease",
@@ -29,11 +29,11 @@
     },
     {
       "area": "Gastroenterology & Hepatology",
-      "count": 1352
+      "count": 1353
     },
     {
       "area": "Neurology",
-      "count": 1049
+      "count": 1050
     },
     {
       "area": "Endocrine & Metabolic",
@@ -55,19 +55,19 @@
   "classification_v2": {
     "version": "2.7.0",
     "outcomes": {
-      "NON_BIOLOGICAL": 14271,
-      "UNKNOWN": 3573,
+      "NON_BIOLOGICAL": 14273,
+      "UNKNOWN": 3576,
       "BIOLOGICAL_FAILURE": 2380,
-      "CAUSE_NOT_STATED": 2018,
+      "CAUSE_NOT_STATED": 2022,
       "NON_FAILURE_TRANSITION": 1287,
       "MIXED_CAUSES": 237
     },
     "primary_reasons": {
-      "RECRUITMENT": 6598,
-      "UNSPECIFIED": 3573,
+      "RECRUITMENT": 6599,
+      "UNSPECIFIED": 3576,
       "BUSINESS_STRATEGY": 2240,
-      "FUNDING": 1757,
-      "DECISION_WITHOUT_STATED_CAUSE": 1620,
+      "FUNDING": 1758,
+      "DECISION_WITHOUT_STATED_CAUSE": 1623,
       "EFFICACY_FUTILITY": 1595,
       "STAFFING_RESOURCES": 809,
       "PROTOCOL_FEASIBILITY": 649,
@@ -78,13 +78,13 @@
       "EXTERNAL_DISRUPTION": 489,
       "OPERATIONAL_OTHER": 420,
       "REPLACEMENT_TRANSITION": 415,
-      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 398,
+      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 399,
       "PLANNED_MILESTONE": 364,
       "MULTIPLE": 237,
       "SUPPORT_WITHDRAWAL": 183,
       "BIOLOGICAL_UNSPECIFIED": 168
     },
-    "needs_review": 3573,
+    "needs_review": 3576,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,
@@ -98,7 +98,7 @@
     },
     "heldout_validation": {
       "method": "Held-out stratified sample; blind LLM double annotation with LLM adjudication",
-      "generated_at_utc": "2026-09-15T13:57:36Z",
+      "generated_at_utc": "2026-09-15T13:59:42Z",
       "classifier_version": "2.7.0",
       "sample_size": 600,
       "eligible_records": 13729,
