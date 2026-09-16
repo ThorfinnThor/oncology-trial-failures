@@ -118,6 +118,19 @@ def name_candidates(iv: dict) -> list[str]:
     return out
 
 
+COMBO_SPLIT = re.compile(r"\s*\+\s*|\s+(?:plus|and|with)\s+|\s*/\s*(?=[A-Za-z]{4})", re.I)
+
+
+def component_groups(iv: dict) -> list[dict]:
+    """One group per combination partner ('A + B', 'A and B'), otherwise the whole
+    intervention with its registry other names as aliases."""
+    name = iv.get("name", "")
+    parts = [p.strip() for p in COMBO_SPLIT.split(name) if p and p.strip()]
+    if len(parts) > 1 and all(len(p) >= 3 for p in parts):
+        return [{"name": part, "other_names": []} for part in parts]
+    return [iv]
+
+
 def research_codes(iv: dict) -> list[str]:
     codes = set()
     for cand in name_candidates(iv):
@@ -204,6 +217,7 @@ def main() -> int:
     ap.add_argument("--step", choices=["ctgov", "rxnorm", "chembl", "pubmed", "sec", "build", "all"], default="all")
     ap.add_argument("--max-seconds", type=float, default=150.0)
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--chembl-workers", type=int, default=12, help="ChEMBL latency is high; more parallel requests")
     args = ap.parse_args()
     started = time.monotonic()
 
@@ -223,8 +237,10 @@ def main() -> int:
             last_updates = {r["nct_id"]: r.get("last_update_post_date") or "" for r in records}
             for nct in pending:
                 futures[pool.submit(fetch_design, nct, last_updates.get(nct, ""))] = nct
-            for fut in as_completed(futures):
+            for done, fut in enumerate(as_completed(futures), 1):
                 nct = futures[fut]
+                if done % 100 == 0:
+                    print(f"ctgov: {done}/{len(futures)} ({time.monotonic() - started:.0f}s)", flush=True)
                 try:
                     designs[nct] = fut.result()
                     source_status.setdefault("ctgov", "OK")
@@ -249,8 +265,10 @@ def main() -> int:
     try:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
             futures = {pool.submit(rxnorm_lookup, n): n for n in sorted(names)}
-            for fut in as_completed(futures):
+            for done, fut in enumerate(as_completed(futures), 1):
                 lookups[futures[fut]] = fut.result()
+                if done % 250 == 0:
+                    print(f"rxnorm: {done}/{len(futures)} ({time.monotonic() - started:.0f}s)", flush=True)
                 if not time_left():
                     for f in futures:
                         f.cancel()
@@ -277,12 +295,14 @@ def main() -> int:
     if args.step == "rxnorm":
         return 0
 
-    def run_pool(label, fn, items):
+    def run_pool(label, fn, items, workers=None):
         results = {}
-        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+        with ThreadPoolExecutor(max_workers=workers or args.workers) as pool:
             futures = {pool.submit(fn, item): item for item in items}
-            for fut in as_completed(futures):
+            for done, fut in enumerate(as_completed(futures), 1):
                 results[futures[fut]] = fut.result()
+                if done % 250 == 0:
+                    print(f"{label}: {done}/{len(items)} ({time.monotonic() - started:.0f}s)", flush=True)
                 if not time_left():
                     for f in futures:
                         f.cancel()
@@ -293,13 +313,35 @@ def main() -> int:
     # 2b. ChEMBL for every drug-name candidate (exact), then mechanisms/targets for matched molecules
     chembl_hits, chembl_mech = {}, {}
     try:
-        chembl_hits = run_pool("chembl", chembl_molecule, sorted(names))
+        # Lazy: per component, query candidates in order and stop at the first exact match.
+        candidate_lists = set()
+        for nct in ncts:
+            for iv in intervention_roles(designs.get(nct) or {}):
+                if assign_role(iv, None)[0] in ("PLACEBO", "NON_DRUG"):
+                    continue
+                for g in component_groups(iv):
+                    cands = tuple(name_candidates(g))
+                    if cands:
+                        candidate_lists.add(cands)
+
+        def first_hit(cands: tuple) -> dict:
+            found = {}
+            for cand in cands:
+                mol = chembl_molecule(cand)
+                found[cand] = mol
+                if mol:
+                    break
+            return found
+
+        chembl_hits = {}
+        for found in run_pool("chembl", first_hit, sorted(candidate_lists), args.chembl_workers).values():
+            chembl_hits.update(found)
         mol_ids = sorted({m["molecule_chembl_id"] for m in chembl_hits.values() if m})
-        chembl_mech = run_pool("chembl-mechanisms", chembl_mechanisms, mol_ids)
+        chembl_mech = run_pool("chembl-mechanisms", chembl_mechanisms, mol_ids, args.chembl_workers)
         source_status["chembl"] = "OK"
     except SourceUnavailable as exc:
         source_status["chembl"] = f"UNAVAILABLE: {exc}"
-    print(f"chembl: {sum(1 for v in chembl_hits.values() if v)}/{len(names)} names matched, {len(chembl_mech)} molecules with mechanism lookups")
+    print(f"chembl: {sum(1 for v in chembl_hits.values() if v)}/{len(chembl_hits)} queried names matched, {len(chembl_mech)} molecules with mechanism lookups")
     if args.step == "chembl":
         return 0
 
@@ -354,15 +396,8 @@ def main() -> int:
     def components_for(iv: dict) -> list[dict]:
         """One component per combination partner ('A + B'), otherwise one component
         whose aliases are the intervention name and its registry other names."""
-        name = iv.get("name", "")
-        combo_split = re.compile(r"\s*\+\s*|\s+(?:plus|and|with)\s+|\s*/\s*(?=[A-Za-z]{4})", re.I)
-        parts = [p.strip() for p in combo_split.split(name) if p and p.strip()]
-        if len(parts) > 1 and all(len(p) >= 3 for p in parts):
-            groups = [{"name": part, "other_names": []} for part in parts]
-        else:
-            groups = [iv]
         comps = []
-        for g in groups:
+        for g in component_groups(iv):
             cands = name_candidates(g)
             ing = next((lookups[c]["ingredient"] for c in cands if lookups.get(c)), None)
             mol = next((chembl_hits[c] for c in cands if chembl_hits.get(c)), None)
