@@ -1,4 +1,5 @@
 import { DatasetMeta, TrialIndexRow, UrlState } from "./types";
+import { DATA_PAGE_URL, EXPORT_ROW_LIMIT, limitExportRows } from "./licensing";
 
 export type DownloadScope = "all" | "filtered" | "selected";
 export type DownloadFormat = "csv" | "json";
@@ -89,7 +90,14 @@ export async function downloadTrials(
   scope: DownloadScope,
   format: DownloadFormat
 ) {
-  const md = buildMetadata(meta, state, rows.length);
+  const limited = limitExportRows(rows);
+  rows = limited.rows;
+  const md = {
+    ...buildMetadata(meta, state, rows.length),
+    matching_rows: limited.totalRows,
+    export_row_limit: EXPORT_ROW_LIMIT,
+    full_dataset_and_licensing: DATA_PAGE_URL,
+  };
 
   const baseName =
     scope === "all"
@@ -137,7 +145,8 @@ export async function downloadTrials(
     `# exported_at_utc: ${md.exported_at_utc}`,
     `# dataset: ${md.dataset}`,
     `# source: ${md.source}`,
-    `# result_count: ${md.result_count}`,
+    `# result_count: ${md.result_count} of ${md.matching_rows} matching (export limit ${EXPORT_ROW_LIMIT})`,
+    `# full_dataset_and_licensing: ${DATA_PAGE_URL}`,
     `# filters: ${JSON.stringify(md.filters)}`
   ].join("\n");
 

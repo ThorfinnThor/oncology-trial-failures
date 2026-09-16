@@ -60,6 +60,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
 
   const stableInformationPaths = [
     "/methods",
+    "/data-licensing",
     "/about",
     "/contact",
     "/privacy",

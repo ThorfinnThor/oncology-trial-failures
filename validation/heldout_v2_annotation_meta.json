@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "annotators": [
+    {"id": "annotator_1", "type": "LLM", "model_family": "Claude Opus", "blind_to_classifier": true},
+    {"id": "annotator_2", "type": "LLM", "model_family": "Claude Sonnet", "blind_to_classifier": true}
+  ],
+  "adjudicator": {"type": "LLM", "model_family": "Claude Opus (separate instance)", "blind_to_classifier": true},
+  "guidelines": "validation/LABELING_GUIDELINES.md",
+  "labelled_at": "2026-09-15",
+  "outcome_agreement": 0.9383,
+  "outcome_kappa": 0.920,
+  "outcome_and_primary_agreement": 0.9067,
+  "adjudicated": 56
+}

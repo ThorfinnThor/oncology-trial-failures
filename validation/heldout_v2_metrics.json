@@ -1,0 +1,1543 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-09-15T13:59:42Z",
+  "dataset_version": "2026-09-14",
+  "classifier_version": "2.7.0",
+  "sample_size": 600,
+  "reference_label_status": {
+    "AGREED": 544,
+    "ADJUDICATED": 56
+  },
+  "population": {
+    "records_total": 23766,
+    "excluded_records": {
+      "reviewed_exact": 6302,
+      "tuning_or_audit_overlap": 1573,
+      "empty_stop_reason": 2162
+    },
+    "eligible_records": 13729
+  },
+  "weighted_estimates": {
+    "assertion_outcome_precision": 0.842916835493274,
+    "assertion_outcome_and_primary_precision": 0.781921475895722,
+    "assertion_no_material_disagreement": 0.8841777576673175,
+    "biological_domain_precision": 0.960331949368113,
+    "biological_domain_recall": 0.972445408541063,
+    "biological_precision": 0.9548387096774194,
+    "biological_recall": 0.9528327460016267,
+    "biological_signal_recall_incl_mixed": 0.972445408541063,
+    "outcome_accuracy_all_records": 0.8216297742036112
+  },
+  "weighted_estimates_ci95": {
+    "assertion_outcome_precision": [
+      0.8036792425488057,
+      0.8799813373624382
+    ],
+    "assertion_outcome_and_primary_precision": [
+      0.7359290709589715,
+      0.8241972221544686
+    ],
+    "assertion_no_material_disagreement": [
+      0.8513395019343869,
+      0.9134368487979105
+    ],
+    "biological_domain_precision": [
+      0.9250843949684522,
+      0.9873909278970534
+    ],
+    "biological_domain_recall": [
+      0.9336881078614856,
+      1.0
+    ],
+    "biological_precision": [
+      0.915584415584415,
+      0.9870967741935482
+    ],
+    "biological_recall": [
+      0.9134895472413184,
+      0.9833573242329654
+    ],
+    "biological_signal_recall_incl_mixed": [
+      0.9336881078614856,
+      1.0
+    ],
+    "outcome_accuracy_all_records": [
+      0.7845966875285845,
+      0.8564953469039209
+    ]
+  },
+  "per_predicted_outcome": {
+    "BIOLOGICAL_FAILURE": {
+      "sampled_texts": 150,
+      "eligible_texts": 1520,
+      "eligible_records": 1654,
+      "outcome_precision": 0.96,
+      "outcome_precision_ci95": [
+        0.9154854608728422,
+        0.9815410911130964
+      ],
+      "outcome_and_primary_reason_precision": 0.9266666666666666,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.873463014734016,
+        0.9585616131949707
+      ]
+    },
+    "CAUSE_NOT_STATED": {
+      "sampled_texts": 60,
+      "eligible_texts": 765,
+      "eligible_records": 882,
+      "outcome_precision": 0.8166666666666667,
+      "outcome_precision_ci95": [
+        0.7008000677353371,
+        0.8944231096286387
+      ],
+      "outcome_and_primary_reason_precision": 0.7833333333333333,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.6637973165265748,
+        0.8687707895359299
+      ]
+    },
+    "MIXED_CAUSES": {
+      "sampled_texts": 40,
+      "eligible_texts": 147,
+      "eligible_records": 157,
+      "outcome_precision": 0.425,
+      "outcome_precision_ci95": [
+        0.28509168524815875,
+        0.5780519956394001
+      ],
+      "outcome_and_primary_reason_precision": 0.425,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.28509168524815875,
+        0.5780519956394001
+      ]
+    },
+    "NON_BIOLOGICAL": {
+      "sampled_texts": 200,
+      "eligible_texts": 8004,
+      "eligible_records": 9004,
+      "outcome_precision": 0.835,
+      "outcome_precision_ci95": [
+        0.7773410172613647,
+        0.8800321587733603
+      ],
+      "outcome_and_primary_reason_precision": 0.755,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.6909563161285153,
+        0.809432220853141
+      ]
+    },
+    "NON_FAILURE_TRANSITION": {
+      "sampled_texts": 50,
+      "eligible_texts": 819,
+      "eligible_records": 942,
+      "outcome_precision": 0.78,
+      "outcome_precision_ci95": [
+        0.6475818431054045,
+        0.8724621377569771
+      ],
+      "outcome_and_primary_reason_precision": 0.76,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.6258705062480763,
+        0.8570274759812779
+      ]
+    },
+    "UNKNOWN": {
+      "sampled_texts": 100,
+      "eligible_texts": 967,
+      "eligible_records": 1090,
+      "outcome_precision": 0.54,
+      "outcome_precision_ci95": [
+        0.44264685393523856,
+        0.6343935614666815
+      ],
+      "outcome_and_primary_reason_precision": 0.54,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.44264685393523856,
+        0.6343935614666815
+      ]
+    }
+  },
+  "confusion_pred_vs_ref": [
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 144
+    },
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "MIXED_CAUSES",
+      "count": 2
+    },
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "NON_BIOLOGICAL",
+      "count": 2
+    },
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "UNKNOWN",
+      "count": 2
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 1
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 49
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "NON_BIOLOGICAL",
+      "count": 4
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 4
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "UNKNOWN",
+      "count": 2
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 8
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "MIXED_CAUSES",
+      "count": 17
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "NON_BIOLOGICAL",
+      "count": 11
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 4
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 1
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "MIXED_CAUSES",
+      "count": 25
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "NON_BIOLOGICAL",
+      "count": 167
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 5
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "UNKNOWN",
+      "count": 3
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 1
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "MIXED_CAUSES",
+      "count": 1
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "NON_BIOLOGICAL",
+      "count": 7
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 39
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "UNKNOWN",
+      "count": 2
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 2
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 11
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "MIXED_CAUSES",
+      "count": 2
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "NON_BIOLOGICAL",
+      "count": 18
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 12
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "UNKNOWN",
+      "count": 54
+    }
+  ],
+  "error_count_outcome_or_primary": 154,
+  "errors": [
+    {
+      "sample_id": "HV-0004",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "EFFICACY_FUTILITY",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0038",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "BIOLOGICAL_UNSPECIFIED",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "SAFETY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0042",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "EFFICACY_FUTILITY",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "PROTOCOL_FEASIBILITY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0068",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "SAFETY",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0071",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "BIOLOGICAL_UNSPECIFIED",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "EFFICACY_FUTILITY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0077",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "SAFETY",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "BIOLOGICAL_UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0078",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "SAFETY",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "BIOLOGICAL_UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0104",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "SAFETY",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0112",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "EFFICACY_FUTILITY",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0120",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "BIOLOGICAL_UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "BUSINESS_STRATEGY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0140",
+      "pred_outcome": "BIOLOGICAL_FAILURE",
+      "pred_primary": "SAFETY",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "BIOLOGICAL_UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0152",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0153",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0160",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0170",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "SUPPLY_MANUFACTURING",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0178",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "OPERATIONAL_OTHER",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0179",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "PROTOCOL_FEASIBILITY",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0182",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0189",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "OPERATIONAL_OTHER",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "STAFFING_RESOURCES",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0191",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "EXTERNAL_DISRUPTION",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0193",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0201",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0203",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "STAFFING_RESOURCES",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0204",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0209",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0210",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0211",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0215",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0219",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0226",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0231",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0232",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "SUPPORT_WITHDRAWAL",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "STAFFING_RESOURCES",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0234",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "PROTOCOL_FEASIBILITY",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0236",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0239",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "PROTOCOL_FEASIBILITY",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "RECRUITMENT",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0241",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "OPERATIONAL_OTHER",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "RECRUITMENT",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0249",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0252",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0259",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0262",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "SUPPLY_MANUFACTURING",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0264",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0267",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "PROTOCOL_FEASIBILITY",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "EXTERNAL_DISRUPTION",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0269",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0275",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0278",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "OPERATIONAL_OTHER",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "STAFFING_RESOURCES",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0288",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0305",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "BUSINESS_STRATEGY",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0306",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0308",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0316",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "REGULATORY",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0326",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0327",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "FUNDING",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0329",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0332",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "BUSINESS_STRATEGY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0333",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "EXTERNAL_DISRUPTION",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0343",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0345",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0348",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "SUPPLY_MANUFACTURING",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "SUPPORT_WITHDRAWAL",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0349",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "STAFFING_RESOURCES",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0350",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "SUPPORT_WITHDRAWAL",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "BUSINESS_STRATEGY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0351",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "REPLACEMENT_TRANSITION",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0360",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "BUSINESS_STRATEGY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0361",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0366",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "SUPPORT_WITHDRAWAL",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0370",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0373",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0374",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0377",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "PLANNED_MILESTONE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0383",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0394",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0398",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "SAFETY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0407",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "FUNDING",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0409",
+      "pred_outcome": "CAUSE_NOT_STATED",
+      "pred_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0411",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "REPLACEMENT_TRANSITION",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0413",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "REPLACEMENT_TRANSITION",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "PROTOCOL_FEASIBILITY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0414",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "REPLACEMENT_TRANSITION",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0416",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "PLANNED_MILESTONE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0417",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "REPLACEMENT_TRANSITION",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "PROTOCOL_FEASIBILITY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0419",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "PLANNED_MILESTONE",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0425",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "REPLACEMENT_TRANSITION",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0432",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "REPLACEMENT_TRANSITION",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0434",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "NOT_INITIATED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0438",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "REPLACEMENT_TRANSITION",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "PLANNED_MILESTONE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0450",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "PLANNED_MILESTONE",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0457",
+      "pred_outcome": "NON_FAILURE_TRANSITION",
+      "pred_primary": "PLANNED_MILESTONE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0461",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "SAFETY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0463",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0464",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "SAFETY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0465",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0466",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0471",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "EFFICACY_FUTILITY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0473",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0474",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "EFFICACY_FUTILITY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0475",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "EFFICACY_FUTILITY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0476",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "PLANNED_MILESTONE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0478",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "RECRUITMENT",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0480",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0481",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "REPLACEMENT_TRANSITION",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0482",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "FUNDING",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0483",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "RECRUITMENT",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0487",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "EFFICACY_FUTILITY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0488",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "BIOLOGICAL_UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0491",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0492",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "SUPPLY_MANUFACTURING",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0494",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "STAFFING_RESOURCES",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0497",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "SAFETY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0498",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "PROTOCOL_FEASIBILITY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0500",
+      "pred_outcome": "MIXED_CAUSES",
+      "pred_primary": "MULTIPLE",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": false
+    },
+    {
+      "sample_id": "HV-0502",
+      "pred_outcome": "NON_BIOLOGICAL",
+      "pred_primary": "RECRUITMENT",
+      "ref_outcome": "UNKNOWN",
+      "ref_primary": "UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0503",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0504",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0505",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0506",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "BUSINESS_STRATEGY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0507",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0508",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0509",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0513",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0514",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0524",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "REPLACEMENT_TRANSITION",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0525",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0526",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "REPLACEMENT_TRANSITION",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0527",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "RECRUITMENT",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0529",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "PLANNED_MILESTONE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0532",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0533",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0536",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0539",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "PLANNED_MILESTONE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0540",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0541",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "PROTOCOL_FEASIBILITY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0550",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0551",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0553",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "REPLACEMENT_TRANSITION",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0554",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0556",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0558",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "BIOLOGICAL_UNSPECIFIED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0559",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0560",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "PLANNED_MILESTONE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0562",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0566",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "MIXED_CAUSES",
+      "ref_primary": "MULTIPLE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0567",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0569",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0571",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "FUNDING",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0572",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0573",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "RECRUITMENT",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0575",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "BIOLOGICAL_FAILURE",
+      "ref_primary": "EFFICACY_FUTILITY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0576",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0577",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "BUSINESS_STRATEGY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0580",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "FUNDING",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0585",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0590",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_FAILURE_TRANSITION",
+      "ref_primary": "NOT_INITIATED",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0595",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0596",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "OPERATIONAL_OTHER",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0598",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "CAUSE_NOT_STATED",
+      "ref_primary": "DECISION_WITHOUT_STATED_CAUSE",
+      "materially_different": true
+    },
+    {
+      "sample_id": "HV-0599",
+      "pred_outcome": "UNKNOWN",
+      "pred_primary": "UNSPECIFIED",
+      "ref_outcome": "NON_BIOLOGICAL",
+      "ref_primary": "REGULATORY",
+      "materially_different": true
+    }
+  ]
+}

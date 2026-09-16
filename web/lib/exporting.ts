@@ -1,5 +1,6 @@
 import { DatasetMeta, TrialIndexRow, UrlState } from "./types";
 import { encodeState } from "./urlState";
+import { DATA_PAGE_URL, limitExportRows } from "./licensing";
 
 export type ExportScope = "filtered" | "page" | "compare";
 
@@ -33,7 +34,10 @@ export function buildShareUrl(state: UrlState, baseUrl: string, path = "/explore
 }
 
 export function exportCSV(meta: DatasetMeta | null, state: UrlState, rows: TrialIndexRow[], filename = "trialfailures_export.csv") {
+  const limited = limitExportRows(rows);
+  rows = limited.rows;
   const headerMeta = [
+    `# matching_rows=${limited.totalRows}; full dataset and licensing: ${DATA_PAGE_URL}`,
     `# exported_at_utc=${new Date().toISOString()}`,
     `# dataset_version=${meta?.version || "unknown"}`,
     `# filters=${JSON.stringify(state)}`,
@@ -84,8 +88,12 @@ export function exportCSV(meta: DatasetMeta | null, state: UrlState, rows: Trial
 }
 
 export function exportJSON(meta: DatasetMeta | null, state: UrlState, rows: TrialIndexRow[], filename = "trialfailures_export.json") {
+  const limited = limitExportRows(rows);
+  rows = limited.rows;
   const payload = {
     metadata: {
+      matching_rows: limited.totalRows,
+      full_dataset_and_licensing: DATA_PAGE_URL,
       exported_at_utc: new Date().toISOString(),
       dataset_version: meta?.version || "unknown",
       filters: state,

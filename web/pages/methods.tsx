@@ -15,8 +15,45 @@ const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/methods`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
+type HeldoutValidation = {
+  sample_size?: number;
+  eligible_records?: number;
+  classifier_version?: string;
+  generated_at_utc?: string;
+  biological_precision?: number;
+  biological_precision_ci95?: [number, number];
+  biological_recall?: number;
+  biological_recall_ci95?: [number, number];
+  assertion_no_material_disagreement?: number;
+  assertion_no_material_disagreement_ci95?: [number, number];
+  assertion_outcome_and_primary_precision?: number;
+  assertion_outcome_and_primary_precision_ci95?: [number, number];
+};
+
+function pct(value?: number): string {
+  return typeof value === "number" ? `${(value * 100).toFixed(1)}%` : "—";
+}
+
+function ci(range?: [number, number]): string {
+  return range ? `95% CI ${pct(range[0])}–${pct(range[1])}` : "";
+}
+
 export default function MethodsPage() {
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
+  const [heldout, setHeldout] = useState<HeldoutValidation | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    fetch("/dataset_meta.json")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((raw) => {
+        if (alive && raw?.classification_v2?.heldout_validation) setHeldout(raw.classification_v2.heldout_validation);
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   useEffect(() => {
     let alive = true;
@@ -142,6 +179,44 @@ export default function MethodsPage() {
               <span className="strong">Program stop only</span> means the registry explicitly reports that a development program,
               molecule, or asset was discontinued but supplies no underlying cause. This is kept separate from a bare trial status and
               is likewise not interpreted as evidence of biological failure or a non-biological cause.
+            </p>
+
+            <h2 id="validation" className="h2">
+              Validation
+            </h2>
+            <p className="muted">
+              Classification quality is measured on a held-out sample of {heldout?.sample_size ?? 600} unique stop-reason texts that were never
+              used to write, audit, or adjudicate the rules. The sample is stratified by predicted outcome and weighted back to the{" "}
+              {heldout?.eligible_records ? heldout.eligible_records.toLocaleString("en-US") : "eligible"} rule-classified records it represents.
+              Reference labels were produced blind to the classifier by two independent LLM annotators from different model families, with
+              disagreements resolved by a third LLM adjudicator following written guidelines.
+            </p>
+            <div className="trustPanel">
+              <div>
+                <div className="trustTitle">Biological failure precision</div>
+                <p className="muted">
+                  <span className="strong">{pct(heldout?.biological_precision)}</span> {ci(heldout?.biological_precision_ci95)}
+                </p>
+              </div>
+              <div>
+                <div className="trustTitle">Biological failure recall</div>
+                <p className="muted">
+                  <span className="strong">{pct(heldout?.biological_recall)}</span> {ci(heldout?.biological_recall_ci95)}
+                </p>
+              </div>
+              <div>
+                <div className="trustTitle">Asserted labels without material disagreement</div>
+                <p className="muted">
+                  <span className="strong">{pct(heldout?.assertion_no_material_disagreement)}</span>{" "}
+                  {ci(heldout?.assertion_no_material_disagreement_ci95)}. Exact outcome and primary cause:{" "}
+                  {pct(heldout?.assertion_outcome_and_primary_precision)}.
+                </p>
+              </div>
+            </div>
+            <p className="muted">
+              Limitations: reference labels are LLM-adjudicated rather than expert-curated, the registry text is the only evidence, and records
+              resolved from previously reviewed exact wording or without any stop-reason text are outside this estimate. Most remaining
+              disagreements concern mixed causes and whether an administrative stop counts as a transition or an operational cause.
             </p>
 
             <h2 id="outliers-calculations" className="h2">

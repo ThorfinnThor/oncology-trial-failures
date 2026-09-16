@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "seed": 20260915,
+  "dataset_version": "2026-09-14",
+  "classifier_version": "2.7.0",
+  "population_records_total": 23766,
+  "excluded_records": {
+    "reviewed_exact": 6302,
+    "tuning_or_audit_overlap": 1573,
+    "empty_stop_reason": 2162
+  },
+  "eligible_unique_texts_by_outcome": {
+    "BIOLOGICAL_FAILURE": 1520,
+    "CAUSE_NOT_STATED": 765,
+    "MIXED_CAUSES": 147,
+    "NON_BIOLOGICAL": 8004,
+    "NON_FAILURE_TRANSITION": 819,
+    "UNKNOWN": 967
+  },
+  "eligible_records_by_outcome": {
+    "BIOLOGICAL_FAILURE": 1654,
+    "CAUSE_NOT_STATED": 882,
+    "MIXED_CAUSES": 157,
+    "NON_BIOLOGICAL": 9004,
+    "NON_FAILURE_TRANSITION": 942,
+    "UNKNOWN": 1090
+  },
+  "sampled_unique_texts_by_outcome": {
+    "BIOLOGICAL_FAILURE": 150,
+    "NON_BIOLOGICAL": 200,
+    "CAUSE_NOT_STATED": 60,
+    "NON_FAILURE_TRANSITION": 50,
+    "MIXED_CAUSES": 40,
+    "UNKNOWN": 100
+  },
+  "contaminated_text_hashes": 4159
+}
