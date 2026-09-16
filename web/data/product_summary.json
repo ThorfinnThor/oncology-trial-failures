@@ -1,23 +1,23 @@
 {
   "product": "Oncology Failure Signals",
   "product_version": "1.0.0",
-  "dataset_version": "2026-09-14",
-  "trial_count": 987,
+  "dataset_version": "2026-09-16",
+  "trial_count": 986,
   "industry_trial_count": 444,
   "industry_phase2_3_trial_count": 297,
   "by_primary_reason": {
     "EFFICACY_FUTILITY": 582,
-    "SAFETY": 255,
+    "SAFETY": 254,
     "BIOLOGICAL_UNSPECIFIED": 56,
     "MULTIPLE": 94
   },
-  "trials_with_resolved_focus_asset": 0.7304964539007093,
-  "trials_with_focus_target_gene": 0.5187436676798379,
-  "trials_with_pubmed_publication": 0.2847011144883485,
+  "trials_with_resolved_focus_asset": 0.731237322515213,
+  "trials_with_focus_target_gene": 0.5192697768762677,
+  "trials_with_pubmed_publication": 0.0,
   "industry_trials_with_sec_issuer": 0.509009009009009,
-  "unique_assets": 572,
+  "unique_assets": 570,
   "assets_with_repeated_safety_signal": 70,
-  "assets_with_repeated_efficacy_signal": 121,
-  "sample_file": "/samples/oncology-failure-signals-sample-2026-09-14-4d67f897348743e0.csv",
+  "assets_with_repeated_efficacy_signal": 120,
+  "sample_file": "/samples/oncology-failure-signals-sample-2026-09-16-0285e34947183ee1.csv",
   "sample_record_count": 100
 }
