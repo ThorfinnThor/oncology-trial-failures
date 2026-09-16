@@ -1,23 +1,23 @@
 {
-  "version": "2026-09-15",
-  "generated_at_utc": "2026-09-16T09:51:43Z",
+  "version": "2026-09-16",
+  "generated_at_utc": "2026-09-16T13:43:16Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23775,
-    "max_last_update_post_date": "2026-09-15"
+    "max_last_update_post_date": "2026-09-16"
   },
   "biological_failure": {
-    "record_count": 2380,
+    "record_count": 2379,
     "max_last_update_post_date": "2026-09-14"
   },
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 8480
+      "count": 8482
     },
     {
       "area": "Other",
-      "count": 5135
+      "count": 5134
     },
     {
       "area": "Infectious Disease",
@@ -57,8 +57,8 @@
     "outcomes": {
       "NON_BIOLOGICAL": 14273,
       "UNKNOWN": 3576,
-      "BIOLOGICAL_FAILURE": 2380,
-      "CAUSE_NOT_STATED": 2022,
+      "BIOLOGICAL_FAILURE": 2379,
+      "CAUSE_NOT_STATED": 2023,
       "NON_FAILURE_TRANSITION": 1287,
       "MIXED_CAUSES": 237
     },
@@ -70,15 +70,15 @@
       "DECISION_WITHOUT_STATED_CAUSE": 1623,
       "EFFICACY_FUTILITY": 1595,
       "STAFFING_RESOURCES": 809,
-      "PROTOCOL_FEASIBILITY": 649,
-      "SAFETY": 617,
-      "SUPPLY_MANUFACTURING": 616,
+      "PROTOCOL_FEASIBILITY": 648,
+      "SUPPLY_MANUFACTURING": 617,
+      "SAFETY": 616,
       "REGULATORY": 510,
       "NOT_INITIATED": 508,
       "EXTERNAL_DISRUPTION": 489,
       "OPERATIONAL_OTHER": 420,
       "REPLACEMENT_TRANSITION": 415,
-      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 399,
+      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 400,
       "PLANNED_MILESTONE": 364,
       "MULTIPLE": 237,
       "SUPPORT_WITHDRAWAL": 183,
