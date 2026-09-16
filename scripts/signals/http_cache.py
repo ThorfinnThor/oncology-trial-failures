@@ -56,8 +56,11 @@ def get_json(source: str, url: str, params: Optional[dict] = None, *, cache: boo
     key = hashlib.sha256(key_raw.encode()).hexdigest()[:32]
     path = CACHE_ROOT / source / f"{key}.json"
     if cache and path.exists():
-        entry = json.loads(path.read_text())
-        if _fresh(entry, source):
+        try:
+            entry = json.loads(path.read_text())
+        except (ValueError, OSError):
+            entry = {}  # partial or corrupt cache file (e.g. interrupted write): refetch
+        if entry and _fresh(entry, source):
             return entry["body"]
 
     last_error: Optional[Exception] = None
@@ -92,7 +95,11 @@ def get_json(source: str, url: str, params: Optional[dict] = None, *, cache: boo
 
     if cache:
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps({"url": url, "params": params, "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "body": body}))
+        payload = json.dumps({"url": url, "params": params, "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "body": body})
+        # Atomic write: concurrent threads may request the same URL; readers must never see a half-written file.
+        tmp = path.with_name(f"{path.name}.{os.getpid()}.{threading.get_ident()}.tmp")
+        tmp.write_text(payload)
+        os.replace(tmp, path)
     return body
 
 
