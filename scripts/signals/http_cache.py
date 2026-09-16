@@ -23,7 +23,7 @@ USER_AGENT = "ClinicalTrialFailures-signals/1.0 (+https://clinicaltrialfailures.
 # Cached responses older than this are refetched (days).
 MAX_AGE_DAYS = {"ctgov": 30, "rxnav": 90, "chembl": 90, "pubmed": 30, "sec": 7}
 
-_MIN_INTERVAL = {"ctgov": 0.25, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.06, "pubmed": 0.35, "sec": 0.15}
+_MIN_INTERVAL = {"ctgov": 1.0, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.06, "pubmed": 0.35, "sec": 0.15}
 _last_call: dict[str, float] = {}
 _lock = threading.Lock()
 
@@ -75,9 +75,10 @@ def get_json(source: str, url: str, params: Optional[dict] = None, *, cache: boo
         if resp.status_code == 404:
             body = None
             break
-        if resp.status_code in (429, 500, 502, 503, 504):
+        if resp.status_code in (403, 429, 500, 502, 503, 504) and attempt < retries - 1:
+            # 403/429 are how registries signal throttling of shared cloud IPs; back off.
             last_error = RuntimeError(f"HTTP {resp.status_code}")
-            time.sleep(2.0 * (attempt + 1))
+            time.sleep(min(60.0, float(resp.headers.get("Retry-After") or 0) or 5.0 * (attempt + 1)))
             continue
         if resp.status_code != 200:
             raise SourceUnavailable(f"{source}: HTTP {resp.status_code} for {resp.url}")

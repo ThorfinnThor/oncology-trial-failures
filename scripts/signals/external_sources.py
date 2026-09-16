@@ -20,33 +20,37 @@ def _norm(term: str) -> str:
 
 # ------------------------------------------------------------------ ChEMBL
 def chembl_molecule(term: str) -> Optional[dict]:
-    """Exact (case-insensitive) match on preferred name or synonym. Returns None
-    if no match or if the term maps to more than one distinct parent molecule."""
+    """One ChEMBL full-text search per term, then an exact normalized match on the
+    preferred name or any synonym. Returns the parent molecule, or None when there is
+    no exact match or the term maps to more than one distinct parent molecule."""
     term = (term or "").strip()
-    if len(_norm(term)) < 4:
+    key = _norm(term)
+    if len(key) < 4:
         return None
-    variants = [term] + sorted({term.replace(" ", "-"), term.replace("-", ""), term.replace("-", " ")} - {term})
-    hits: dict[str, dict] = {}
-    for v in variants:
-        for field in ("molecule_synonyms__molecule_synonym__iexact", "pref_name__iexact"):
-            body = get_json("chembl", f"{CHEMBL}/molecule.json", {field: v, "only": MOLECULE_FIELDS, "limit": 5}) or {}
-            for m in body.get("molecules") or []:
-                hits[m["molecule_chembl_id"]] = m
-            if hits:
-                break
-        if hits:
-            break
+    body = get_json("chembl", f"{CHEMBL}/molecule/search.json",
+                    {"q": term, "limit": 25, "only": MOLECULE_FIELDS + ",molecule_synonyms"}) or {}
+    molecules = list(body.get("molecules") or [])
+    if not any(key in {_norm(n) for n in [m.get("pref_name") or ""] + [x.get("molecule_synonym") or "" for x in m.get("molecule_synonyms") or []]}
+               for m in molecules) and re.search(r"\d", term):
+        # Full-text search tokenizes short research codes (e.g. "B-701"); fall back to an exact synonym lookup.
+        exact = get_json("chembl", f"{CHEMBL}/molecule.json",
+                         {"molecule_synonyms__molecule_synonym__iexact": term, "only": MOLECULE_FIELDS + ",molecule_synonyms", "limit": 5}) or {}
+        molecules = list(exact.get("molecules") or [])
     parents: dict[str, dict] = {}
-    for m in hits.values():
+    for m in molecules:
+        names = [m.get("pref_name") or ""] + [s.get("molecule_synonym") or "" for s in m.get("molecule_synonyms") or []]
+        if key not in {_norm(n) for n in names if n}:
+            continue
         parent_id = ((m.get("molecule_hierarchy") or {}).get("parent_chembl_id")) or m["molecule_chembl_id"]
-        if parent_id != m["molecule_chembl_id"]:
-            parent = get_json("chembl", f"{CHEMBL}/molecule/{parent_id}.json", {"only": MOLECULE_FIELDS}) or m
-        else:
-            parent = m
-        parents[parent_id] = parent
+        if parent_id == m["molecule_chembl_id"]:
+            parents[parent_id] = m
+        elif parent_id not in parents:
+            parents[parent_id] = get_json("chembl", f"{CHEMBL}/molecule/{parent_id}.json", {"only": MOLECULE_FIELDS}) or m
     if len(parents) != 1:
         return None
-    return next(iter(parents.values()))
+    mol = dict(next(iter(parents.values())))
+    mol.pop("molecule_synonyms", None)
+    return mol
 
 
 def chembl_mechanisms(chembl_id: str) -> list[dict]:
