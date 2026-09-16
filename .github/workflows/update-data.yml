@@ -122,7 +122,8 @@ jobs:
           SIGNALS_CONTACT: ${{ secrets.SIGNALS_CONTACT }}
         run: |
           python scripts/signals/run_signals_tests.py
-          python scripts/signals/build_oncology_failure_signals.py --step all --max-seconds 5400 --workers 6
+          # Exit code 3 = time budget reached; the cache is saved below and the next run resumes.
+          python -u scripts/signals/build_oncology_failure_signals.py --step all --max-seconds 9000 --workers 6
           python scripts/signals/build_public_sample.py
 
       - name: Save enrichment cache
