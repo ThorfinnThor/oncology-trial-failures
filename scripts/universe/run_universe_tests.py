@@ -44,6 +44,14 @@ check("norm", norm("MK-3475"), "mk3475")
 check("regimen expansion", [g["name"] for g in expand_regimen({"name": "FOLFOX", "other_names": []})], ["fluorouracil", "leucovorin", "oxaliplatin"])
 check("adc modality", modality("Sacituzumab govitecan", {"molecule_type": "Antibody"}, "DRUG"), "ADC")
 check("chembl conjugate type is ADC", modality("XYZ-101", {"molecule_type": "Antibody drug conjugate"}, "DRUG"), "ADC")
+from scripts.universe.resolve import Resolver  # noqa: E402
+_r = Resolver({"names": {"erlotinib": ["CHEMBL553"]}, "molecules": {"CHEMBL553": {"pref_name": "ERLOTINIB", "max_phase": 4, "molecule_type": "Small molecule"}},
+               "mechanisms": {}, "targets": {}}, {"names": {}, "concepts": {}})
+check("dose suffix stripped", _r.component({"name": "Erlotinib DOSE 2", "other_names": []}, "DRUG")["status"], "RESOLVED")
+check("bracket brand stripped", _r.component({"name": "erlotinib [Tarceva]", "other_names": []}, "DRUG")["status"], "RESOLVED")
+check("supportive excluded", _r.component({"name": "Rescue medication", "other_names": []}, "DRUG")["status"], "SUPPORTIVE")
+check("class placeholder", _r.component({"name": "PD-1 inhibitor", "other_names": []}, "DRUG")["target_genes"], ["PDCD1"])
+check("code only", _r.component({"name": "HRS-7058", "other_names": []}, "DRUG")["entity_id"], "CODE:HRS-7058")
 check("cell modality", modality("CD19 CAR-T cells", None, "BIOLOGICAL"), "Cell therapy")
 
 if failures:

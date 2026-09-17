@@ -13,13 +13,45 @@ efficacy, safety or benefit–risk reasons.
 
 ## Entity resolution
 
-- Offline index of clinical-stage ChEMBL molecules (max phase ≥ 0.5) with synonyms, mechanisms and
-  targets (`scripts/universe/chembl_index.py`).
-- Exact normalized matching of component names, registry other names, parenthetical aliases and
-  cleaned forms; common regimen acronyms (FOLFOX, R-CHOP, …) are expanded; several matching molecules
-  = AMBIGUOUS, none = UNRESOLVED (`scripts/universe/resolve.py`).
-- Modality from the ChEMBL molecule type plus name rules for ADCs, cell therapies and vaccines.
-- Resolution rates are published per release in `resolution_report.json`.
+Order of evidence (`scripts/universe/resolve.py`):
+
+1. **ChEMBL** — offline index of clinical-stage molecules (max phase ≥ 0.5) with synonyms, mechanisms
+   and targets (`scripts/universe/chembl_index.py`). Exact normalized match of the intervention label,
+   parenthetical aliases and cleaned forms (dose, formulation, arm/cohort words removed).
+2. **NCI Thesaurus** — offline index of therapeutic-agent concepts (`scripts/universe/ncit_index.py`),
+   which covers many recent research codes (e.g. AK117 = ligufalimab). If the NCIt concept's synonyms
+   identify exactly one ChEMBL molecule the drug is linked to ChEMBL; otherwise the NCIt concept is the
+   entity and targets are extracted from the first sentence of its definition (`target_source =
+   NCIT_DEFINITION`). ChEMBL molecules without mechanism records also take targets from NCIt.
+3. **Registry other names** — used only when the label has no own research code and every resolvable
+   other name points to the same drug (other names often list combination partners).
+4. **Research code only** — an unmatched single research code becomes a stable `CODE:` entity.
+5. **Class labels** — "PD-1 inhibitor", "CD19 CAR-T cells" carry the target but no drug identity.
+
+Regimen acronyms (FOLFOX, R-CHOP, …) and NCIt named regimens are expanded into components; very short
+variants (< 4 characters) are ignored unless curated; supportive care and generic labels are excluded
+from resolution metrics. Modality comes from ChEMBL molecule type, NCIt definitions and name rules.
+
+### Resolution quality (release 2026-09-17, oncology, industry sponsors, experimental-arm drugs)
+
+| Metric | Value |
+| --- | --- |
+| Components | 18,806 |
+| Resolved to a canonical drug (ChEMBL or NCIt) | 86.4% |
+| Identified (canonical drug, stable research code or target class) | 93.5% |
+| With at least one target gene | 70.1% |
+
+Blind audit of 200 resolved components (stratified by source; `validation/resolution_audit_v1.json`),
+judged by an independent LLM curator with web look-ups for obscure codes:
+
+| Check | Result |
+| --- | --- |
+| Identity correct, direct label match (ChEMBL, NCIt, NCIt→ChEMBL) | 173 / 175 (98.9%) |
+| Identity correct, via registry other names | 22 / 25 (88%) — rule tightened after the audit |
+| Target genes wrong where present | 5 / 145 (3.4%) |
+| Target genes missing | 55 / 200 (27.5%) |
+
+Resolution rates are recomputed for every release in `resolution_report.json`.
 
 ## Definitions
 
@@ -50,6 +82,7 @@ Default start window ends four years before the current year so most trials have
 python scripts/universe/run_universe_tests.py
 python scripts/universe/fetch_universe.py
 python scripts/universe/chembl_index.py
+python scripts/universe/ncit_index.py
 python scripts/universe/resolve.py
 python scripts/universe/benchmarks.py --tables --genes TIGIT --with-genes PDCD1,CD274 --compare-with-genes PDCD1,CD274 --start 2015:2024
 ```

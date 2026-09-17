@@ -48,7 +48,7 @@ NON_ASSET_NAME = re.compile(
     r"radiation therapy|radiotherapy|surgery|resection|observation|physician'?s choice|investigator'?s choice)\b", re.I)
 PLACEBO_NAME = re.compile(r"\b(placebo|matching placebo|vehicle)\b", re.I)
 RESEARCH_CODE = re.compile(r"^[A-Z]{1,6}[- ]?\d{2,7}[A-Z]?$")
-CODE_IN_TEXT = re.compile(r"(?<![A-Za-z0-9])([A-Za-z]{1,6}[- ]?\d{2,7}(?:[-][A-Za-z0-9]{1,4})?[A-Za-z]?)(?![A-Za-z0-9])")
+CODE_IN_TEXT = re.compile(r"(?<![A-Za-z0-9])([A-Za-z]{1,6}[- ]?\d{2,7}(?:[-][A-Za-z0-9]{1,4})?[A-Za-z]{0,3})(?![A-Za-z0-9])")
 NOT_A_CODE = re.compile(r"^(COVID|SARS|CD|IL|HER|PD|CTLA|FGFR|EGFR|BRAF|KRAS|TP|NCT|DAY|WEEK|CYCLE|ARM|PHASE|STAGE|MG|MCG|MG/M|GY|Q|V|G)[- ]?\d", re.I)
 CTGOV = "https://clinicaltrials.gov/api/v2/studies/{nct}"
 CTGOV_FIELDS = ",".join([
