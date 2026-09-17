@@ -113,12 +113,23 @@ def sec_index() -> dict[str, list[dict]]:
     return _SEC_INDEX
 
 
+# Legal-form words that distinguish otherwise identically named companies
+# (e.g. Merck KGaA vs Merck & Co.). Suffix stripping must not merge them.
+_DISTINCT_FORMS = re.compile(r"\b(kgaa|&\s*co\b|and\s+co\b)", re.I)
+
+
+def _same_legal_entity(name: str, registrant: str) -> bool:
+    a = {m.lower().replace(" ", "").replace("and", "&") for m in _DISTINCT_FORMS.findall(name or "")}
+    b = {m.lower().replace(" ", "").replace("and", "&") for m in _DISTINCT_FORMS.findall(registrant or "")}
+    return "kgaa" not in (a ^ b)
+
+
 def sec_issuer(*names: str) -> Optional[dict]:
     """Exact normalized-name match against SEC registrants. If one CIK has several
     share classes, the first listed ticker is primary and all are returned."""
     idx = sec_index()
     for name in names:
-        rows = idx.get(normalize_name(name or ""))
+        rows = [r for r in idx.get(normalize_name(name or ""), []) if _same_legal_entity(name, r["title"])]
         if not rows:
             continue
         ciks = {r["cik_str"] for r in rows}
@@ -131,7 +142,7 @@ def sec_issuer(*names: str) -> Optional[dict]:
         key = normalize_name(name or "")
         if len(key) < 5:
             continue
-        rows = [r for title, rs in idx.items() if title.startswith(key + " ") for r in rs]
+        rows = [r for title, rs in idx.items() if title.startswith(key + " ") for r in rs if _same_legal_entity(name, r["title"])]
         ciks = {r["cik_str"] for r in rows}
         if len(ciks) == 1:
             return {"cik": f"{rows[0]['cik_str']:010d}", "ticker": rows[0]["ticker"], "tickers": [r["ticker"] for r in rows],
