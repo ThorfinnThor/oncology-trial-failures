@@ -1,14 +1,14 @@
 {
-  "version": "2026-09-16",
-  "generated_at_utc": "2026-09-17T09:30:14Z",
+  "version": "2026-09-17",
+  "generated_at_utc": "2026-09-17T21:45:01Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 23775,
-    "max_last_update_post_date": "2026-09-16"
+    "record_count": 23778,
+    "max_last_update_post_date": "2026-09-17"
   },
   "biological_failure": {
     "record_count": 2379,
-    "max_last_update_post_date": "2026-09-14"
+    "max_last_update_post_date": "2026-09-17"
   },
   "top_areas": [
     {
@@ -21,7 +21,7 @@
     },
     {
       "area": "Infectious Disease",
-      "count": 1773
+      "count": 1775
     },
     {
       "area": "Cardiovascular",
@@ -33,7 +33,7 @@
     },
     {
       "area": "Neurology",
-      "count": 1050
+      "count": 1051
     },
     {
       "area": "Endocrine & Metabolic",
@@ -55,24 +55,24 @@
   "classification_v2": {
     "version": "2.7.0",
     "outcomes": {
-      "NON_BIOLOGICAL": 14273,
-      "UNKNOWN": 3576,
+      "NON_BIOLOGICAL": 14275,
+      "UNKNOWN": 3579,
       "BIOLOGICAL_FAILURE": 2379,
-      "CAUSE_NOT_STATED": 2023,
+      "CAUSE_NOT_STATED": 2021,
       "NON_FAILURE_TRANSITION": 1287,
       "MIXED_CAUSES": 237
     },
     "primary_reasons": {
       "RECRUITMENT": 6599,
-      "UNSPECIFIED": 3576,
-      "BUSINESS_STRATEGY": 2240,
-      "FUNDING": 1758,
-      "DECISION_WITHOUT_STATED_CAUSE": 1623,
-      "EFFICACY_FUTILITY": 1595,
+      "UNSPECIFIED": 3579,
+      "BUSINESS_STRATEGY": 2241,
+      "FUNDING": 1759,
+      "DECISION_WITHOUT_STATED_CAUSE": 1621,
+      "EFFICACY_FUTILITY": 1596,
       "STAFFING_RESOURCES": 809,
       "PROTOCOL_FEASIBILITY": 648,
       "SUPPLY_MANUFACTURING": 617,
-      "SAFETY": 616,
+      "SAFETY": 615,
       "REGULATORY": 510,
       "NOT_INITIATED": 508,
       "EXTERNAL_DISRUPTION": 489,
@@ -84,7 +84,7 @@
       "SUPPORT_WITHDRAWAL": 183,
       "BIOLOGICAL_UNSPECIFIED": 168
     },
-    "needs_review": 3576,
+    "needs_review": 3579,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,
