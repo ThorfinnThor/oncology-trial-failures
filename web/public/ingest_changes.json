@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-09-16T14:21:09Z",
+  "generated_at_utc": "2026-09-17T09:30:13Z",
   "has_previous_snapshot": true,
   "definition": "New records are NCT IDs present in the current stopped-trial dataset but absent from the immediately preceding ingest snapshot.",
   "previous": {
