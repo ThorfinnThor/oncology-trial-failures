@@ -59,6 +59,19 @@ def main() -> int:
                                      "industry_phase2_3_trial_count", "by_primary_reason", "trials_with_resolved_focus_asset",
                                      "trials_with_focus_target_gene", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer",
                                      "unique_assets", "assets_with_repeated_safety_signal", "assets_with_repeated_efficacy_signal"]}
+    bench_path = PRODUCT / "benchmarks/oncology_benchmarks_v1.json"
+    if bench_path.exists():
+        bench = json.loads(bench_path.read_text())
+        classes = [s for s in bench["segments"] if s["dimension"] == "mechanism_class"]
+        summary["benchmarks"] = {
+            "segments": len(bench["segments"]),
+            "mechanism_classes": len(classes),
+            "universe_closed_trials": bench["baseline"]["closed"],
+            "baseline_rate": bench["baseline"]["rate"],
+            "window": bench["window"],
+        }
+    briefs = sorted((PRODUCT / "briefs").glob("brief_*.html")) if (PRODUCT / "briefs").exists() else []
+    summary["brief_count"] = len(briefs)
     summary["sample_file"] = f"/samples/{name}"
     summary["sample_record_count"] = len(sample)
     SUMMARY.write_text(json.dumps(summary, indent=2) + "\n")

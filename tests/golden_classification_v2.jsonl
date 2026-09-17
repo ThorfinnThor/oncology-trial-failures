@@ -1402,3 +1402,5 @@
 {"why_stopped":"The study was not initiated because the prospective design was no longer feasible.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"The study never started because the sponsor decided not to manufacture the investigational product.","outcome":"NON_BIOLOGICAL","primary_reason":"SUPPLY_MANUFACTURING","needs_review":false}
 {"why_stopped":"The closure was not based on a business decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"The study did not terminate due to safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Study was not terminated for safety reasons but due to low enrollment.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}

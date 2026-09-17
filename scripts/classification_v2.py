@@ -10464,6 +10464,15 @@ def _is_negated(text: str, start: int, end: int, reason: Optional[str] = None) -
         return True
     if re.search(r"\bnot (?:terminated|stopped|halted|suspended|withdrawn|closed|discontinued)\s*$", before):
         return True
+    # "did not terminate due to safety concerns", "was not stopped early because of efficacy"
+    if re.search(
+        r"\b(?:did|does|do|was|were|is|are|has|have|had)\s+not\s+(?:be(?:en)?\s+)?"
+        r"(?:terminat|stop|halt|suspend|withdr|clos|discontinu|end)\w*\s+"
+        r"(?:(?:early|prematurely|the (?:study|trial))\s+)?"
+        r"(?:(?:due to|because of|for|as a result of|owing to)\s+(?:any\s+)?)?$",
+        before,
+    ):
+        return True
     if re.search(
         r"\bnot\b.{0,55}\b(?:due to|because of|related to|prompted by|based on)\b"
         r"[^.;:]{0,100}(?:,|and|or|/)\s*$",

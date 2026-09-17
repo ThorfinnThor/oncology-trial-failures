@@ -10,6 +10,32 @@ import productSummary from "@/data/product_summary.json";
 import { readJsonServerAsset } from "@/lib/server-data";
 import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
 
+// Prices are list prices for a one-year term, excluding VAT. Edit here; the page follows.
+const PRICING = [
+  {
+    name: "Snapshot",
+    price: "€1,500",
+    unit: "one-time",
+    for: "Research, one-off analysis, evaluation before a subscription",
+    includes: ["One dated release (all files)", "Benchmark pack and mechanism-class tables", "Internal use, one team"],
+  },
+  {
+    name: "Annual licence",
+    price: "€4,900",
+    unit: "per year",
+    for: "Investment research, competitive intelligence, trial design",
+    includes: ["Weekly releases for twelve months", "Benchmark pack and all class briefs", "Internal use, one team", "Email support"],
+    highlight: true,
+  },
+  {
+    name: "Enterprise & AI",
+    price: "from €15,000",
+    unit: "per year",
+    for: "Multiple teams, model training, redistribution in a product",
+    includes: ["Everything in the annual licence", "Model training and evaluation rights", "Custom segments and briefs on request", "Custom delivery (S3 or file drop)"],
+  },
+];
+
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/data-licensing`;
 const TITLE = "Data & licensing — Clinical trial failure datasets";
@@ -119,6 +145,13 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 </p>
               </div>
               <div>
+                <div className="trustTitle">Benchmarked, not just listed</div>
+                <p className="muted">
+                  {s.benchmarks ? `${s.benchmarks.segments} segments across ${s.benchmarks.mechanism_classes} mechanism classes` : "Mechanism-class benchmarks"} with
+                  denominators: how often trials in a comparable group stopped for biological reasons, with 95% intervals.
+                </p>
+              </div>
+              <div>
                 <div className="trustTitle">Source-linked</div>
                 <p className="muted">
                   Every record links to ClinicalTrials.gov; drugs to ChEMBL/RxNorm; sponsors to SEC filings; trials to PubMed.
@@ -146,6 +179,14 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 </p>
               </div>
               <div>
+                <div className="trustTitle">Discontinuation benchmarks</div>
+                <p className="muted">
+                  Rates with denominators for every mechanism class, phase, modality, start cohort and sponsor group — plus a
+                  two-page brief per class. Example: TGF-β combined with PD-(L)1 shows a 25.0% biological discontinuation rate
+                  (11 of 44 closed trials) against 4.5% for other PD-(L)1 combinations.
+                </p>
+              </div>
+              <div>
                 <div className="trustTitle">Weekly releases</div>
                 <p className="muted">
                   Each release includes a change report covering newly stopped trials, status changes and reclassifications, so you can
@@ -154,22 +195,30 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               </div>
             </div>
 
-            <h2 className="h2">Licensing options</h2>
-            <ul className="muted list">
-              <li>
-                <span className="strong">Snapshot license</span> — one dataset release for internal research and analysis.
-              </li>
-              <li>
-                <span className="strong">Annual subscription</span> — all releases during the term plus change reports.
-              </li>
-              <li>
-                <span className="strong">Enterprise &amp; AI use</span> — model training or evaluation rights, multiple teams, custom
-                file delivery.
-              </li>
-            </ul>
+            <h2 className="h2">Pricing</h2>
+            <div className="trustPanel">
+              {PRICING.map((tier) => (
+                <div key={tier.name}>
+                  <div className="trustTitle">
+                    {tier.name}
+                    {tier.highlight ? " ★" : ""}
+                  </div>
+                  <p className="muted" style={{ marginBottom: 6 }}>
+                    <span className="strong" style={{ fontSize: "1.35rem" }}>{tier.price}</span> {tier.unit}
+                    <br />
+                    {tier.for}
+                  </p>
+                  <ul className="muted list" style={{ marginTop: 0 }}>
+                    {tier.includes.map((line) => (
+                      <li key={line}>{line}</li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
             <p className="muted">
-              Pilot pricing is available for early customers. Free exports on this site are limited to {EXPORT_ROW_LIMIT} rows per
-              download. The underlying registry and reference facts remain public at their sources; licenses cover our derived
+              List prices for a twelve-month term, excluding VAT. Academic and single-analyst rates on request. Free exports on this
+              site are limited to {EXPORT_ROW_LIMIT} rows per download. The underlying registry and reference facts remain public at their sources; licenses cover our derived
               classifications, linkages, validation, curation and delivery. Fields derived from ChEMBL (targets, mechanisms, development
               phase) remain subject to ChEMBL&apos;s CC BY-SA 3.0 license.
             </p>
@@ -243,6 +292,19 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 {status === "error" ? <div style={{ color: "#b91c1c", fontSize: 13 }}>{message}</div> : null}
               </form>
             )}
+
+            <h2 className="h2">Method &amp; limits</h2>
+            <p className="muted">
+              A discontinuation rate is the share of <span className="strong">closed</span> trials (completed or terminated) that were
+              terminated for an efficacy, safety or benefit–risk reason recorded in the registry, with a 95% Wilson interval. It is not
+              a failure rate: trials that completed and missed their endpoints are not counted, and programmes dropped after a completed
+              trial do not appear. Stop reasons are sponsor-reported. Drug linkage covers 86% of experimental-arm drugs in industry
+              oncology trials, 70% carry a target;{" "}
+              <Link className="link" href="/methods#validation">
+                classification quality
+              </Link>{" "}
+              is measured on a held-out sample.
+            </p>
 
             <h2 className="h2">Sources &amp; attribution</h2>
             <p className="muted">

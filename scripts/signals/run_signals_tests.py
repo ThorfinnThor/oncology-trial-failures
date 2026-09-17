@@ -39,6 +39,11 @@ check("targets are not codes", research_codes({"name": "Anti-CD19 CAR-T", "other
 
 check("and-combo", name_candidates({"name": "Gemcitabine and Capecitabine and Avastin", "other_names": []}), ["Gemcitabine", "Capecitabine", "Avastin"])
 
+from scripts.signals.external_sources import _same_legal_entity  # noqa: E402
+check("kgaa is not merck & co", _same_legal_entity("Merck KGaA", "Merck & Co., Inc."), False)
+check("merck & co matches", _same_legal_entity("Merck & Co.", "Merck & Co., Inc."), True)
+check("plain names match", _same_legal_entity("Pfizer", "PFIZER INC"), True)
+
 # roles
 iv = lambda name, typ, arms: {"name": name, "type": typ, "other_names": [], "arm_types": arms}
 check("placebo", assign_role(iv("Matching placebo", "DRUG", ["PLACEBO_COMPARATOR"]), None)[0], "PLACEBO")

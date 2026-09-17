@@ -48,7 +48,7 @@ NON_ASSET_NAME = re.compile(
     r"radiation therapy|radiotherapy|surgery|resection|observation|physician'?s choice|investigator'?s choice)\b", re.I)
 PLACEBO_NAME = re.compile(r"\b(placebo|matching placebo|vehicle)\b", re.I)
 RESEARCH_CODE = re.compile(r"^[A-Z]{1,6}[- ]?\d{2,7}[A-Z]?$")
-CODE_IN_TEXT = re.compile(r"(?<![A-Za-z0-9])([A-Za-z]{1,6}[- ]?\d{2,7}(?:[-][A-Za-z0-9]{1,4})?[A-Za-z]?)(?![A-Za-z0-9])")
+CODE_IN_TEXT = re.compile(r"(?<![A-Za-z0-9])([A-Za-z]{1,6}[- ]?\d{2,7}(?:[-][A-Za-z0-9]{1,4})?[A-Za-z]{0,3})(?![A-Za-z0-9])")
 NOT_A_CODE = re.compile(r"^(COVID|SARS|CD|IL|HER|PD|CTLA|FGFR|EGFR|BRAF|KRAS|TP|NCT|DAY|WEEK|CYCLE|ARM|PHASE|STAGE|MG|MCG|MG/M|GY|Q|V|G)[- ]?\d", re.I)
 CTGOV = "https://clinicaltrials.gov/api/v2/studies/{nct}"
 CTGOV_FIELDS = ",".join([
@@ -176,7 +176,16 @@ def rxclass(rxcui: str) -> dict:
 def us_marketed(rxcui: str) -> bool:
     body = get_json("rxnav", f"{RXNAV}/rxcui/{rxcui}/related.json", {"tty": "SCD SBD GPCK BPCK"}) or {}
     groups = (body.get("relatedGroup") or {}).get("conceptGroup") or []
-    return any(g.get("conceptProperties") for g in groups)
+    if any(g.get("conceptProperties") for g in groups):
+        return True
+    # Precise ingredients (e.g. "paclitaxel protein-bound" = Abraxane) are often not linked to product
+    # concepts in RxNorm; fall back to the base ingredient's marketed status.
+    props = (get_json("rxnav", f"{RXNAV}/rxcui/{rxcui}/properties.json") or {}).get("properties") or {}
+    if props.get("tty") == "PIN":
+        rel = get_json("rxnav", f"{RXNAV}/rxcui/{rxcui}/related.json", {"tty": "IN"}) or {}
+        bases = [c["rxcui"] for g in (rel.get("relatedGroup") or {}).get("conceptGroup") or [] for c in g.get("conceptProperties") or []]
+        return any(us_marketed(b) for b in bases if b != rxcui)
+    return False
 
 
 # ---------------------------------------------------------------- assembly
@@ -377,7 +386,7 @@ def main() -> int:
             aid, name, id_source = f"RXCUI:{ing['rxcui']}", ing["name"], "RxNorm"
         a = assets.setdefault(aid, {
             "asset_id": aid, "canonical_name": name, "id_source": id_source, "chembl_id": None, "rxcui": None,
-            "chembl_max_phase": None, "chembl_first_approval": None, "molecule_type": None,
+            "chembl_max_phase": None, "chembl_first_approval": None, "molecule_type": None, "approved_chembl": None,
             "us_marketed_rxnorm": None, "mechanism_of_action_medrt": [], "pharmacologic_class_fda_epc": [],
             "chembl_mechanisms": [], "targets": [], "target_gene_symbols": [], "aliases": set(), "nct_ids": set(),
         })
@@ -385,6 +394,7 @@ def main() -> int:
             mechs = chembl_mech.get(mol["molecule_chembl_id"]) or []
             a.update({"chembl_id": mol["molecule_chembl_id"], "chembl_max_phase": mol.get("max_phase"),
                       "chembl_first_approval": mol.get("first_approval"), "molecule_type": mol.get("molecule_type"),
+                      "approved_chembl": str(mol.get("max_phase")) in ("4", "4.0"),
                       "chembl_mechanisms": sorted({m["mechanism_of_action"] for m in mechs if m.get("mechanism_of_action")}),
                       "targets": sorted({m["target_name"] for m in mechs if m.get("target_name")}),
                       "target_gene_symbols": sorted({g for m in mechs for g in m.get("gene_symbols") or []})})
@@ -455,7 +465,12 @@ def main() -> int:
             "registry_url": rec.get("url"),
             "phases": split_semicolon(rec.get("phases")),
             "overall_status": rec.get("overall_status"),
-            "why_stopped": rec.get("why_stopped"),
+            "why_stopped": rec.get("why_stopped") or None,
+            "stop_reason_source": "REGISTRY_WHY_STOPPED" if rec.get("why_stopped") else (
+                "REGISTRY_DESCRIPTION" if rec.get("classification_source") == "DESCRIPTION_FALLBACK" else "NONE"),
+            "stop_reason_text": rec.get("why_stopped") or (
+                (rec.get("classification_evidence") or "").split("source.description_fallback:")[-1].strip()
+                if "source.description_fallback:" in (rec.get("classification_evidence") or "") else None),
             "failure_outcome": rec.get("classification_outcome_v2"),
             "failure_primary_reason": rec.get("classification_primary_reason_v2"),
             "failure_secondary_reasons": split_semicolon(rec.get("classification_secondary_reasons_v2")),
@@ -517,7 +532,7 @@ def main() -> int:
             fh.write(json.dumps(row, ensure_ascii=False) + "\n")
     focus_cov = sum(1 for r in out_rows if r["focus_asset_ids"] or r["focus_research_codes"]) / max(1, len(out_rows))
     flat_cols = ["nct_id", "brief_title", "phases", "overall_status", "failure_outcome", "failure_primary_reason", "failure_secondary_reasons",
-                 "why_stopped", "sponsor_group", "lead_sponsor_raw", "sponsor_class_ctgov", "is_industry", "focus_assets", "focus_asset_ids",
+                 "stop_reason_text", "stop_reason_source", "sponsor_group", "lead_sponsor_raw", "sponsor_class_ctgov", "is_industry", "focus_assets", "focus_asset_ids",
                  "focus_research_codes", "focus_mechanisms", "focus_targets", "focus_target_genes", "focus_max_phase_chembl", "focus_pharmacologic_classes", "publication_count", "focus_includes_non_us_marketed", "conditions",
                  "enrollment_count", "enrollment_type", "start_date", "primary_completion_date", "last_update_post_date", "registry_url"]
     with open(OUT / "oncology_failure_signals_v1.csv", "w", newline="", encoding="utf-8") as fh:
@@ -569,6 +584,7 @@ def main() -> int:
             "SEC tickers reflect current registrants; acquired or non-SEC-registered sponsors have no ticker.",
             "US-marketed flag reflects presence of RxNorm clinical/branded drug concepts, not current regulatory status.",
             "Sponsor parent groups come from a small curated table of long-standing subsidiaries plus registry-stated subsidiaries.",
+            "Stop reasons are sponsor-reported registry text; when the registry reason is blank, a direct sentence from the registry description is used (stop_reason_source).",
         ],
     }
     (OUT / "oncology_failure_signals_v1_meta.json").write_text(json.dumps(meta, indent=2) + "\n")

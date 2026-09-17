@@ -111,7 +111,9 @@ jobs:
       - name: Restore enrichment cache
         uses: actions/cache/restore@v4
         with:
-          path: .cache/signals
+          path: |
+            .cache/signals
+            .cache/universe
           key: signals-${{ github.run_id }}
           restore-keys: signals-
 
@@ -127,15 +129,30 @@ jobs:
           python -u scripts/signals/build_oncology_failure_signals.py --step all --max-seconds 9000 --workers 6
           python scripts/signals/build_public_sample.py
 
+      - name: Build trial universe and discontinuation benchmarks
+        id: benchmarks
+        continue-on-error: true
+        run: |
+          python scripts/universe/run_universe_tests.py
+          python -u scripts/universe/fetch_universe.py --max-seconds 2400
+          python -u scripts/universe/chembl_index.py
+          python -u scripts/universe/ncit_index.py
+          python -u scripts/universe/resolve.py
+          python -u scripts/universe/benchmarks.py --tables --pack --start 2015:2024
+          python -u scripts/briefs/build_brief_catalog.py
+          cp .cache/universe/resolution_report.json product/benchmarks/
+
       - name: Save enrichment cache
         if: always()
         uses: actions/cache/save@v4
         with:
-          path: .cache/signals
+          path: |
+            .cache/signals
+            .cache/universe
           key: signals-${{ github.run_id }}
 
       - name: Upload Oncology Failure Signals release
-        if: steps.signals.outcome == 'success'
+        if: steps.signals.outcome == 'success' || steps.benchmarks.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: oncology-failure-signals-${{ github.run_id }}

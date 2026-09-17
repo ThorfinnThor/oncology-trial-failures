@@ -1,0 +1,3108 @@
+{
+ "summary": {
+  "sample": 200,
+  "identity_correct": 195,
+  "direct_correct": 173,
+  "direct_n": 175,
+  "targets": {
+   "OK": 140,
+   "MISSING": 55,
+   "WRONG": 5
+  },
+  "by_source": {
+   "CHEMBL:CORRECT": 76,
+   "VIA_OTHER_NAME:CORRECT": 22,
+   "VIA_OTHER_NAME:INCORRECT": 3,
+   "CHEMBL:INCORRECT": 1,
+   "NCIT:CORRECT": 68,
+   "NCIT_TO_CHEMBL:CORRECT": 29,
+   "NCIT_TO_CHEMBL:UNCERTAIN": 1
+  }
+ },
+ "items": [
+  {
+   "nct_id": "NCT04349267",
+   "intervention_label": "BMS-986315",
+   "registry_other_names": [],
+   "resolved_name": "ZIMISTOBART",
+   "source": "CHEMBL",
+   "target_genes": [
+    "KLRC1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-001",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01724021",
+   "intervention_label": "Cyclophosphamide, Hydroxydaunorubicin, Oncovin, Prednisone",
+   "registry_other_names": [],
+   "resolved_name": "CYCLOPHOSPHAMIDE ANHYDROUS",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-002",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04619433",
+   "intervention_label": "Camrelizumab;Pemetrexed",
+   "registry_other_names": [],
+   "resolved_name": "CAMRELIZUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-003",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02174549",
+   "intervention_label": "Tirapazamine",
+   "registry_other_names": [],
+   "resolved_name": "TIRAPAZAMINE",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-004",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07157956",
+   "intervention_label": "DS-8201",
+   "registry_other_names": [],
+   "resolved_name": "TRASTUZUMAB DERUXTECAN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ERBB2",
+    "TOP1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-005",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07492680",
+   "intervention_label": "Relatlimab FDC",
+   "registry_other_names": [],
+   "resolved_name": "RELATLIMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "LAG3"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-006",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02348216",
+   "intervention_label": "Tocilizumab",
+   "registry_other_names": [],
+   "resolved_name": "TOCILIZUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "IL6R"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-007",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04306887",
+   "intervention_label": "TQ-B3101 capsule",
+   "registry_other_names": [],
+   "resolved_name": "UNECRITINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ALK",
+    "MET",
+    "ROS1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-008",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05061420",
+   "intervention_label": "SAR444245 (Thor-707)",
+   "registry_other_names": [],
+   "resolved_name": "PEGENZILEUKIN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "IL2RB",
+    "IL2RG"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-009",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04104776",
+   "intervention_label": "Tulmimetostat",
+   "registry_other_names": [],
+   "resolved_name": "TULMIMETOSTAT",
+   "source": "CHEMBL",
+   "target_genes": [
+    "EZH2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-010",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03890731",
+   "intervention_label": "BAY73-4506 (Regorafenib, Stivarga)",
+   "registry_other_names": [],
+   "resolved_name": "REGORAFENIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ABL1",
+    "BRAF",
+    "DDR2",
+    "EPHA2",
+    "FGFR1",
+    "FGFR2",
+    "FLT1",
+    "FLT4",
+    "FRK",
+    "KDR",
+    "KIT",
+    "MAPK11",
+    "NTRK1",
+    "PDGFRA",
+    "PDGFRB",
+    "RAF1",
+    "RET",
+    "TEK"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-011",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01715129",
+   "intervention_label": "Triptorelin Pamoate 11.25mg",
+   "registry_other_names": [],
+   "resolved_name": "TRIPTORELIN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "GNRHR"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-012",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04956692",
+   "intervention_label": "Pembrolizumab SC",
+   "registry_other_names": [],
+   "resolved_name": "PEMBROLIZUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-013",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04593758",
+   "intervention_label": "Hydroxychloroquine",
+   "registry_other_names": [],
+   "resolved_name": "HYDROXYCHLOROQUINE",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TLR7",
+    "TLR9"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-014",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03781063",
+   "intervention_label": "Lasofoxifene",
+   "registry_other_names": [],
+   "resolved_name": "LASOFOXIFENE",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ESR1",
+    "ESR2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-015",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02970682",
+   "intervention_label": "SFX-01",
+   "registry_other_names": [],
+   "resolved_name": "SULFORAPHANE",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-016",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05585320",
+   "intervention_label": "pembrolizumab (Treatment Group E)",
+   "registry_other_names": [],
+   "resolved_name": "PEMBROLIZUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-017",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04129320",
+   "intervention_label": "enoblituzumab",
+   "registry_other_names": [],
+   "resolved_name": "ENOBLITUZUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "CD276"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-018",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03941574",
+   "intervention_label": "HLX10",
+   "registry_other_names": [],
+   "resolved_name": "SERPLULIMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-019",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03558503",
+   "intervention_label": "UGN-102",
+   "registry_other_names": [],
+   "resolved_name": "MITOMYCIN",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-020",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02504489",
+   "intervention_label": "Plinabulin (DP)",
+   "registry_other_names": [],
+   "resolved_name": "PLINABULIN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TUBA1A",
+    "TUBA1B",
+    "TUBA1C",
+    "TUBA3C",
+    "TUBA3E",
+    "TUBA4A",
+    "TUBB",
+    "TUBB1",
+    "TUBB2A",
+    "TUBB2B",
+    "TUBB3",
+    "TUBB4A",
+    "TUBB4B",
+    "TUBB6",
+    "TUBB8"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-021",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05271604",
+   "intervention_label": "Evalstotug (BA3071)",
+   "registry_other_names": [],
+   "resolved_name": "EVALSTOTUG",
+   "source": "CHEMBL",
+   "target_genes": [
+    "CTLA4"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-022",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05021900",
+   "intervention_label": "Tenalisib 1200mg",
+   "registry_other_names": [],
+   "resolved_name": "TENALISIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "PIK3CD",
+    "PIK3CG"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-023",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01263886",
+   "intervention_label": "ombrabulin (AVE8062)",
+   "registry_other_names": [],
+   "resolved_name": "OMBRABULIN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TUBA1A",
+    "TUBA1B",
+    "TUBA1C",
+    "TUBA3C",
+    "TUBA3E",
+    "TUBA4A",
+    "TUBB",
+    "TUBB1",
+    "TUBB2A",
+    "TUBB2B",
+    "TUBB3",
+    "TUBB4A",
+    "TUBB4B",
+    "TUBB6",
+    "TUBB8"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-024",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02614560",
+   "intervention_label": "vadastuximab talirine",
+   "registry_other_names": [],
+   "resolved_name": "VADASTUXIMAB TALIRINE",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "ADC",
+   "audit_id": "RA-025",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03546842",
+   "intervention_label": "9vHPV vaccine",
+   "registry_other_names": [],
+   "resolved_name": "HUMAN PAPILLOMAVIRUS, L1 PROTEIN VIRUS LIKE PARTICLES",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Vaccine",
+   "audit_id": "RA-026",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02796898",
+   "intervention_label": "SM88 (Cohort 1)",
+   "registry_other_names": [],
+   "resolved_name": "RACEMETYROSINE",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-027",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03970746",
+   "intervention_label": "Alimta Injectable Product",
+   "registry_other_names": [],
+   "resolved_name": "PEMETREXED",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "DHFR",
+    "GART",
+    "TYMS",
+    "thyA"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-028",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04550949",
+   "intervention_label": "QL1206",
+   "registry_other_names": [],
+   "resolved_name": "DENOSUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TNFSF11"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-029",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01138046",
+   "intervention_label": "Lapatinib in combination",
+   "registry_other_names": [],
+   "resolved_name": "LAPATINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "EGFR",
+    "ERBB2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-030",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05607550",
+   "intervention_label": "furmonertinib 240 mg oral, daily",
+   "registry_other_names": [],
+   "resolved_name": "FIRMONERTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "EGFR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-031",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05060432",
+   "intervention_label": "EOS-448",
+   "registry_other_names": [],
+   "resolved_name": "BELRESTOTUG",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TIGIT"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-032",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05704049",
+   "intervention_label": "Dexamethasone IV",
+   "registry_other_names": [],
+   "resolved_name": "DEXAMETHASONE",
+   "source": "CHEMBL",
+   "target_genes": [
+    "NR3C1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-033",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05218499",
+   "intervention_label": "Brigimadlin",
+   "registry_other_names": [],
+   "resolved_name": "BRIGIMADLIN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "MDM2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-034",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03416335",
+   "intervention_label": "DSP-0509, Pembrolizumab",
+   "registry_other_names": [],
+   "resolved_name": "GURETOLIMOD",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-035",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05361915",
+   "intervention_label": "Abivertinib",
+   "registry_other_names": [],
+   "resolved_name": "ABIVERTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "BTK",
+    "EGFR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-036",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07551778",
+   "intervention_label": "pemetrexed as first-line maintenance therapy",
+   "registry_other_names": [],
+   "resolved_name": "PEMETREXED",
+   "source": "CHEMBL",
+   "target_genes": [
+    "DHFR",
+    "GART",
+    "TYMS",
+    "thyA"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-037",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02542124",
+   "intervention_label": "NM-IL-12",
+   "registry_other_names": [],
+   "resolved_name": "INTERLEUKIN-12 HUMAN RECOMBINANT",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-038",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02954991",
+   "intervention_label": "Glesatinib",
+   "registry_other_names": [],
+   "resolved_name": "GLESATINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "FLT1",
+    "FLT4",
+    "KDR",
+    "MET",
+    "MST1R",
+    "TEK"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-039",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04379596",
+   "intervention_label": "Volrustomig",
+   "registry_other_names": [],
+   "resolved_name": "VOLRUSTOMIG",
+   "source": "CHEMBL",
+   "target_genes": [
+    "CTLA4",
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-040",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06474455",
+   "intervention_label": "Carboplatin for injection",
+   "registry_other_names": [],
+   "resolved_name": "CARBOPLATIN",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-041",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05249101",
+   "intervention_label": "Ivaltinostat",
+   "registry_other_names": [],
+   "resolved_name": "CG-200745",
+   "source": "CHEMBL",
+   "target_genes": [
+    "HDAC1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-042",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01997840",
+   "intervention_label": "ACY-1215 (Ricolinostat) in combination",
+   "registry_other_names": [],
+   "resolved_name": "RICOLINOSTAT",
+   "source": "CHEMBL",
+   "target_genes": [
+    "HDAC6"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-043",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01234337",
+   "intervention_label": "Sorafenib (Nexavar, BAY43-9006)",
+   "registry_other_names": [],
+   "resolved_name": "SORAFENIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "BRAF",
+    "FLT1",
+    "FLT3",
+    "FLT4",
+    "KDR",
+    "KIT",
+    "PDGFRB",
+    "RAF1",
+    "RET"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-044",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01207440",
+   "intervention_label": "Ponatinib",
+   "registry_other_names": [],
+   "resolved_name": "PONATINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ABL1",
+    "BCR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-045",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02725268",
+   "intervention_label": "MLN1117",
+   "registry_other_names": [],
+   "resolved_name": "SERABELISIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "PIK3CA"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-046",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02360579",
+   "intervention_label": "Lifileucel",
+   "registry_other_names": [],
+   "resolved_name": "LIFILEUCEL",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Cell therapy",
+   "audit_id": "RA-047",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01843374",
+   "intervention_label": "Tremelimumab",
+   "registry_other_names": [],
+   "resolved_name": "TREMELIMUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "CTLA4"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-048",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01214603",
+   "intervention_label": "LY2090314",
+   "registry_other_names": [],
+   "resolved_name": "LY-2090314",
+   "source": "CHEMBL",
+   "target_genes": [
+    "GSK3A",
+    "GSK3B"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-049",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05671822",
+   "intervention_label": "SHR-A181, SHR-1701,",
+   "registry_other_names": [],
+   "resolved_name": "RETLIRAFUSP ALFA",
+   "source": "CHEMBL",
+   "target_genes": [
+    "CD274",
+    "TGFB1"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-050",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03058289",
+   "intervention_label": "anti-PD-1 antibody",
+   "registry_other_names": [],
+   "resolved_name": "PEMBROLIZUMAB",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-051",
+   "identity": "INCORRECT",
+   "targets": "OK",
+   "note": "Generic drug-class label; mapping to pembrolizumab unjustified"
+  },
+  {
+   "nct_id": "NCT01599013",
+   "intervention_label": "Vinflunine, Carboplatin",
+   "registry_other_names": [],
+   "resolved_name": "VINFLUNINE",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TUBA1A",
+    "TUBA1B",
+    "TUBA1C",
+    "TUBA3C",
+    "TUBA3E",
+    "TUBA4A",
+    "TUBB",
+    "TUBB1",
+    "TUBB2A",
+    "TUBB2B",
+    "TUBB3",
+    "TUBB4A",
+    "TUBB4B",
+    "TUBB6",
+    "TUBB8"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-052",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05116891",
+   "intervention_label": "CAN04 (nadunolimab)",
+   "registry_other_names": [],
+   "resolved_name": "NIDANILIMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "IL1RAP"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-053",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02747043",
+   "intervention_label": "ABP 798",
+   "registry_other_names": [],
+   "resolved_name": "RITUXIMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "MS4A1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-054",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06500091",
+   "intervention_label": "doxorubicin hydrochloride for injection",
+   "registry_other_names": [],
+   "resolved_name": "DOXORUBICIN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TOP2A"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-055",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02127710",
+   "intervention_label": "AZD6094",
+   "registry_other_names": [],
+   "resolved_name": "SAVOLITINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "MET"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-056",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04045613",
+   "intervention_label": "Derazantinib 200 mg twice daily monotherapy",
+   "registry_other_names": [],
+   "resolved_name": "DERAZANTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "FGFR1",
+    "FGFR2",
+    "FGFR3",
+    "FGFR4"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-057",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02637687",
+   "intervention_label": "Larotrectinib (Vitrakvi, BAY2757556)",
+   "registry_other_names": [],
+   "resolved_name": "LAROTRECTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "NTRK1",
+    "NTRK2",
+    "NTRK3"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-058",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02747004",
+   "intervention_label": "Tamoxifen",
+   "registry_other_names": [],
+   "resolved_name": "TAMOXIFEN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ESR1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-059",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01137604",
+   "intervention_label": "Lenvatinib",
+   "registry_other_names": [],
+   "resolved_name": "LENVATINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "FLT1",
+    "FLT4",
+    "KDR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-060",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02844699",
+   "intervention_label": "Mobilan (M-VM3)",
+   "registry_other_names": [],
+   "resolved_name": "INDOMETHACIN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "PTGS1",
+    "PTGS2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-061",
+   "identity": "INCORRECT",
+   "targets": "OK",
+   "note": "Mobilan is TLR5/flagellin adenoviral immunotherapy, not indomethacin"
+  },
+  {
+   "nct_id": "NCT04068597",
+   "intervention_label": "Elranatamab",
+   "registry_other_names": [],
+   "resolved_name": "ELRANATAMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "CD3D",
+    "CD3E",
+    "CD3G",
+    "TNFRSF17"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-062",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05395780",
+   "intervention_label": "MAX-40279",
+   "registry_other_names": [],
+   "resolved_name": "NEFEXTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "FLT3"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-063",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02323113",
+   "intervention_label": "TAK-659",
+   "registry_other_names": [],
+   "resolved_name": "MIVAVOTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "SYK"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-064",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04212221",
+   "intervention_label": "Brivanib Alaninate",
+   "registry_other_names": [],
+   "resolved_name": "BRIVANIB ALANINATE",
+   "source": "CHEMBL",
+   "target_genes": [
+    "FGFR1",
+    "FGFR2",
+    "FGFR3",
+    "FGFR4",
+    "FLT1",
+    "FLT4",
+    "KDR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-065",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03334617",
+   "intervention_label": "Trastuzumab deruxtecan",
+   "registry_other_names": [],
+   "resolved_name": "TRASTUZUMAB DERUXTECAN",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ERBB2",
+    "TOP1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-066",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03162536",
+   "intervention_label": "Nemtabrutinib",
+   "registry_other_names": [],
+   "resolved_name": "NEMTABRUTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "BTK"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-067",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01848756",
+   "intervention_label": "SNX-5422",
+   "registry_other_names": [],
+   "resolved_name": "SNX 5422",
+   "source": "CHEMBL",
+   "target_genes": [
+    "HSP90AA1",
+    "HSP90AB1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-068",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05319028",
+   "intervention_label": "Mivavotinib",
+   "registry_other_names": [],
+   "resolved_name": "MIVAVOTINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "SYK"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-069",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01320085",
+   "intervention_label": "MEK162",
+   "registry_other_names": [],
+   "resolved_name": "BINIMETINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "MAP2K1",
+    "MAP2K2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-070",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT00925782",
+   "intervention_label": "Melphalan HCL for Injection (Propylene Glycol-Free)",
+   "registry_other_names": [],
+   "resolved_name": "MELPHALAN",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-071",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03317496",
+   "intervention_label": "cisplatin.",
+   "registry_other_names": [],
+   "resolved_name": "CISPLATIN",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-072",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04925479",
+   "intervention_label": "Asciminib Pediatric formulation group",
+   "registry_other_names": [],
+   "resolved_name": "ASCIMINIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "ABL1",
+    "BCR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-073",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06029127",
+   "intervention_label": "Gimistotug",
+   "registry_other_names": [],
+   "resolved_name": "GIMISTOTUG",
+   "source": "CHEMBL",
+   "target_genes": [
+    "TNFRSF4"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-074",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05532722",
+   "intervention_label": "ABC008",
+   "registry_other_names": [],
+   "resolved_name": "ULVIPRUBART",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Antibody",
+   "audit_id": "RA-075",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04585035",
+   "intervention_label": "D-1553 in combination",
+   "registry_other_names": [],
+   "resolved_name": "GARSORASIB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "KRAS"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-076",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05265052",
+   "intervention_label": "OxyContin monotherapy (Phase IIb)",
+   "registry_other_names": [],
+   "resolved_name": "OXYCODONE",
+   "source": "CHEMBL",
+   "target_genes": [
+    "OPRM1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-077",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01232452",
+   "intervention_label": "Cixutumumab",
+   "registry_other_names": [],
+   "resolved_name": "CIXUTUMUMAB",
+   "source": "CHEMBL",
+   "target_genes": [
+    "IGF1R"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-078",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01376310",
+   "intervention_label": "Everolimus",
+   "registry_other_names": [],
+   "resolved_name": "EVEROLIMUS",
+   "source": "CHEMBL",
+   "target_genes": [
+    "FKBP1A"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-079",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01525589",
+   "intervention_label": "PM01183",
+   "registry_other_names": [],
+   "resolved_name": "LURBINECTEDIN",
+   "source": "CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-080",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03155191",
+   "intervention_label": "TBI-1501",
+   "registry_other_names": [],
+   "resolved_name": "Autologous Anti-CD19 CAR-T Cells TBI-1501",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Cell therapy",
+   "audit_id": "RA-081",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03778619",
+   "intervention_label": "MG4101(allogeneic Natural Killer cell)",
+   "registry_other_names": [],
+   "resolved_name": "Allogeneic Natural Killer Cell Line MG4101",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Cell therapy",
+   "audit_id": "RA-082",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05544552",
+   "intervention_label": "TYRA-300",
+   "registry_other_names": [],
+   "resolved_name": "Dabogratinib",
+   "source": "NCIT",
+   "target_genes": [
+    "FGFR3"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-083",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01188408",
+   "intervention_label": "Liposome Entrapped Docetaxel (LE-DT)",
+   "registry_other_names": [],
+   "resolved_name": "Liposomal Docetaxel",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-084",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02384954",
+   "intervention_label": "N-803",
+   "registry_other_names": [],
+   "resolved_name": "Nogapendekin Alfa Inbakicept",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Protein",
+   "audit_id": "RA-085",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05830097",
+   "intervention_label": "CBP-1019",
+   "registry_other_names": [],
+   "resolved_name": "FRa/TRPV6 Bispecific Ligand-drug Conjugate CBP-1019",
+   "source": "NCIT",
+   "target_genes": [
+    "FOLR1"
+   ],
+   "modality": "Bispecific antibody",
+   "audit_id": "RA-086",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05662670",
+   "intervention_label": "WJ13404 tablets",
+   "registry_other_names": [],
+   "resolved_name": "EGFR Inhibitor WJ13404",
+   "source": "NCIT",
+   "target_genes": [
+    "EGFR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-087",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05617313",
+   "intervention_label": "GT103",
+   "registry_other_names": [],
+   "resolved_name": "Anti-CFH Monoclonal Antibody GT103",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Antibody",
+   "audit_id": "RA-088",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04509466",
+   "intervention_label": "Part 2 (relapsed or refractory patients): Liposomal mitoxantrone hydrochloride",
+   "registry_other_names": [],
+   "resolved_name": "Liposomal Mitoxantrone Hydrochloride",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-089",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04440735",
+   "intervention_label": "DSP107",
+   "registry_other_names": [],
+   "resolved_name": "SIRPa-4-1BBL Fusion Protein DSP107",
+   "source": "NCIT",
+   "target_genes": [
+    "SIRPA",
+    "TNFRSF9"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-090",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06119685",
+   "intervention_label": "IDP-023",
+   "registry_other_names": [],
+   "resolved_name": "Allogeneic Natural Killer Cells IDP-023",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Cell therapy",
+   "audit_id": "RA-091",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06460298",
+   "intervention_label": "ProAgio Dose Expansion",
+   "registry_other_names": [],
+   "resolved_name": "Integrin Alpha V Beta 3-targeting Protein ACT50",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-092",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07684612",
+   "intervention_label": "Mocertatug rezetecan (Mo-Rez)",
+   "registry_other_names": [],
+   "resolved_name": "Mocertatug Rezetecan",
+   "source": "NCIT",
+   "target_genes": [
+    "VTCN1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-093",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06214143",
+   "intervention_label": "T3011 low dose",
+   "registry_other_names": [],
+   "resolved_name": "Oncolytic HSV-1 Expressing IL-12 and Anti-PD-1 Antibody T3011",
+   "source": "NCIT",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Oncolytic virus",
+   "audit_id": "RA-094",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05987358",
+   "intervention_label": "TQB3454 tablets",
+   "registry_other_names": [],
+   "resolved_name": "IDH1 Inhibitor TQB3454",
+   "source": "NCIT",
+   "target_genes": [
+    "IDH1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-095",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07397338",
+   "intervention_label": "Daraxonrasib (Cohort B1 only)",
+   "registry_other_names": [],
+   "resolved_name": "Daraxonrasib",
+   "source": "NCIT",
+   "target_genes": [
+    "HRAS",
+    "KRAS",
+    "NRAS"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-096",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07124117",
+   "intervention_label": "OBI-902",
+   "registry_other_names": [],
+   "resolved_name": "Anti-TROP-2 Antibody-drug Conjugate OBI-902",
+   "source": "NCIT",
+   "target_genes": [
+    "TACSTD2",
+    "TOP1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-097",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06662669",
+   "intervention_label": "YL-13027",
+   "registry_other_names": [],
+   "resolved_name": "TGF-beta Receptor 1 Kinase Inhibitor YL-13027",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-098",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05024773",
+   "intervention_label": "ONCOFID P-B (PACLITAXEL-HYALURONIC ACID)",
+   "registry_other_names": [],
+   "resolved_name": "Paclitaxel and Hyaluronic Acid",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-099",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06345482",
+   "intervention_label": "MHB039A",
+   "registry_other_names": [],
+   "resolved_name": "Anti-PD-1/Anti-VEGF Bispecific Antibody MHB039A",
+   "source": "NCIT",
+   "target_genes": [
+    "PDCD1",
+    "VEGFA"
+   ],
+   "modality": "Bispecific antibody",
+   "audit_id": "RA-100",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02349386",
+   "intervention_label": "BHR-200 (0.36% transdermal 17\u03b2-estradiol gel)",
+   "registry_other_names": [],
+   "resolved_name": "Transdermal 17beta-Estradiol Gel BHR-200",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-101",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT00484341",
+   "intervention_label": "low-dose NGR-hTNF",
+   "registry_other_names": [],
+   "resolved_name": "CNGRC Peptide-TNF Alpha Conjugate",
+   "source": "NCIT_VIA_OTHER_NAME",
+   "target_genes": [
+    "TNF"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-102",
+   "identity": "CORRECT",
+   "targets": "WRONG",
+   "note": "TNF is the payload; targets are ANPEP/CD13 and TNF receptors"
+  },
+  {
+   "nct_id": "NCT06636682",
+   "intervention_label": "FK-PC101",
+   "registry_other_names": [],
+   "resolved_name": "Autologous Modified and Irradiated Tumor Cell Vaccine FK-PC101",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Vaccine",
+   "audit_id": "RA-103",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05850234",
+   "intervention_label": "AZD0120",
+   "registry_other_names": [],
+   "resolved_name": "Autologous Bispecific BCMA/CD19-targeted CAR-T Cells GC012F",
+   "source": "NCIT",
+   "target_genes": [
+    "CD19",
+    "TNFRSF17"
+   ],
+   "modality": "Unknown",
+   "audit_id": "RA-104",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05797168",
+   "intervention_label": "Torvutatug samrotecan",
+   "registry_other_names": [],
+   "resolved_name": "Torvutatug Samrotecan",
+   "source": "NCIT",
+   "target_genes": [
+    "FOLR1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-105",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05920408",
+   "intervention_label": "EXS21546",
+   "registry_other_names": [],
+   "resolved_name": "A2AR Antagonist EXS21546",
+   "source": "NCIT",
+   "target_genes": [
+    "ADORA2A"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-106",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03168061",
+   "intervention_label": "NC 6300",
+   "registry_other_names": [],
+   "resolved_name": "Micellar Nanoparticle-encapsulated Epirubicin",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-107",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04989803",
+   "intervention_label": "KITE-363",
+   "registry_other_names": [],
+   "resolved_name": "Autologous Anti-CD19/CD20 CAR-T Cells KITE-363",
+   "source": "NCIT",
+   "target_genes": [
+    "CD19",
+    "MS4A1"
+   ],
+   "modality": "Cell therapy",
+   "audit_id": "RA-108",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01322490",
+   "intervention_label": "PROSTVAC-F",
+   "registry_other_names": [],
+   "resolved_name": "Rilimogene Glafolivec",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Vaccine",
+   "audit_id": "RA-109",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07197827",
+   "intervention_label": "YL242",
+   "registry_other_names": [],
+   "resolved_name": "Anti-VEGF Antibody-drug Conjugate YL242",
+   "source": "NCIT",
+   "target_genes": [
+    "VEGFA"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-110",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06500884",
+   "intervention_label": "Ramantamig",
+   "registry_other_names": [],
+   "resolved_name": "Ramantamig",
+   "source": "NCIT",
+   "target_genes": [
+    "CD3E",
+    "GPRC5D",
+    "TNFRSF17"
+   ],
+   "modality": "Bispecific antibody",
+   "audit_id": "RA-111",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05318573",
+   "intervention_label": "FF-10832",
+   "registry_other_names": [],
+   "resolved_name": "Gemcitabine Liposome FF-10832",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-112",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04041310",
+   "intervention_label": "MVA-209-FSP high dose",
+   "registry_other_names": [],
+   "resolved_name": "MVA Tumor-specific Neoantigen Boosting Vaccine MVA-209-FSP",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Vaccine",
+   "audit_id": "RA-113",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07192432",
+   "intervention_label": "Dose Level 2, VNX-202",
+   "registry_other_names": [],
+   "resolved_name": "Adeno-associated Viral Vector Encoding Anti-HER2/CD3 Bispecific T-Cell Engager VNX-202",
+   "source": "NCIT",
+   "target_genes": [
+    "CD3E",
+    "ERBB2"
+   ],
+   "modality": "Bispecific antibody",
+   "audit_id": "RA-114",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07339176",
+   "intervention_label": "N17350",
+   "registry_other_names": [],
+   "resolved_name": "Recombinant Mutant Porcine Pancreatic Elastase N17350",
+   "source": "NCIT",
+   "target_genes": [
+    "ELANE"
+   ],
+   "modality": "Unknown",
+   "audit_id": "RA-115",
+   "identity": "CORRECT",
+   "targets": "WRONG",
+   "note": "ELANE is human elastase homolog of drug, not its target"
+  },
+  {
+   "nct_id": "NCT06453902",
+   "intervention_label": "TGRX-678",
+   "registry_other_names": [],
+   "resolved_name": "BCR-ABL Inhibitor TGRX-678",
+   "source": "NCIT",
+   "target_genes": [
+    "BCR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-116",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01640730",
+   "intervention_label": "Kanglaite Injection",
+   "registry_other_names": [],
+   "resolved_name": "Kanglaite",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-117",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02511132",
+   "intervention_label": "Vigil",
+   "registry_other_names": [],
+   "resolved_name": "Gemogenovatucel-T",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-118",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07491497",
+   "intervention_label": "TRI-611",
+   "registry_other_names": [],
+   "resolved_name": "ALK Molecular Glue Degrader TRI-611",
+   "source": "NCIT",
+   "target_genes": [
+    "ALK"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-119",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05328908",
+   "intervention_label": "Nivolumab-relatlimab FDC",
+   "registry_other_names": [],
+   "resolved_name": "Nivolumab/Relatlimab-rmbw",
+   "source": "NCIT_VIA_OTHER_NAME",
+   "target_genes": [
+    "LAG3",
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-120",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06331299",
+   "intervention_label": "UGN-103",
+   "registry_other_names": [],
+   "resolved_name": "Sustained-release Mitomycin C Hydrogel Formulation UGN-103",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-121",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04710641",
+   "intervention_label": "MTL-CEBPA",
+   "registry_other_names": [],
+   "resolved_name": "CEBPA-targeting saRNA MTL-CEBPA Liposome",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-122",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06395519",
+   "intervention_label": "ETX-19477",
+   "registry_other_names": [],
+   "resolved_name": "PARG Inhibitor ETX-19477",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-123",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07136779",
+   "intervention_label": "VBC101",
+   "registry_other_names": [],
+   "resolved_name": "Anti-EGFR/Anti-c-Met Bispecific Antibody-drug Conjugate VBC101",
+   "source": "NCIT",
+   "target_genes": [
+    "EGFR",
+    "MET",
+    "TUBB"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-124",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06092268",
+   "intervention_label": "SHR-A2009 for injection \uff1b Almonertinib Mesilate Tablets",
+   "registry_other_names": [],
+   "resolved_name": "Ruzaltatug Rezetecan",
+   "source": "NCIT",
+   "target_genes": [
+    "ERBB3",
+    "TOP1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-125",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05219500",
+   "intervention_label": "FPI-2265",
+   "registry_other_names": [],
+   "resolved_name": "Actinium Ac 225 Zadavotide Guraxetan",
+   "source": "NCIT",
+   "target_genes": [
+    "FOLH1"
+   ],
+   "modality": "Unknown",
+   "audit_id": "RA-126",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06480240",
+   "intervention_label": "OBI-992",
+   "registry_other_names": [],
+   "resolved_name": "Anti-TROP2 Antibody-drug Conjugate OBI-992",
+   "source": "NCIT",
+   "target_genes": [
+    "TACSTD2"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-127",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07263594",
+   "intervention_label": "DB-1324",
+   "registry_other_names": [],
+   "resolved_name": "Anti-CDH17/Topoisomerase I Inhibitor Antibody-drug Conjugate DB-1324",
+   "source": "NCIT",
+   "target_genes": [
+    "TOP1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-128",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06120140",
+   "intervention_label": "Clobetasol",
+   "registry_other_names": [],
+   "resolved_name": "Clobetasol",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-129",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05970497",
+   "intervention_label": "Opdualag",
+   "registry_other_names": [],
+   "resolved_name": "Nivolumab/Relatlimab-rmbw",
+   "source": "NCIT",
+   "target_genes": [
+    "LAG3",
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-130",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01464593",
+   "intervention_label": "ThermoDox",
+   "registry_other_names": [],
+   "resolved_name": "Lyso-Thermosensitive Liposome Doxorubicin",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-131",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05867251",
+   "intervention_label": "AVZO-021",
+   "registry_other_names": [],
+   "resolved_name": "CDK2 Inhibitor AVZO-021",
+   "source": "NCIT",
+   "target_genes": [
+    "CDK2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-132",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05525247",
+   "intervention_label": "SLC-3010",
+   "registry_other_names": [],
+   "resolved_name": "IL-2/Anti-IL-2 Antibody Conjugate SLC-3010",
+   "source": "NCIT",
+   "target_genes": [
+    "IL2"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-133",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05315700",
+   "intervention_label": "ORIC-114",
+   "registry_other_names": [],
+   "resolved_name": "Enozertinib",
+   "source": "NCIT",
+   "target_genes": [
+    "EGFR",
+    "ERBB2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-134",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04034225",
+   "intervention_label": "SNS-301",
+   "registry_other_names": [],
+   "resolved_name": "HAAH Lambda phage Vaccine SNS-301",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Vaccine",
+   "audit_id": "RA-135",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02743611",
+   "intervention_label": "BPX-701",
+   "registry_other_names": [],
+   "resolved_name": "PRAME-targeting T-cell Receptor/Inducible Caspase 9 BPX-701",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-136",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04585815",
+   "intervention_label": "SEA-TGT",
+   "registry_other_names": [],
+   "resolved_name": "Anti-TIGIT Monoclonal Antibody SGN-TGT",
+   "source": "NCIT",
+   "target_genes": [
+    "TIGIT"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-137",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06561425",
+   "intervention_label": "GLPG5101",
+   "registry_other_names": [],
+   "resolved_name": "Autologous Anti-CD19 CAR T-cells GLPG5101",
+   "source": "NCIT",
+   "target_genes": [
+    "CD19"
+   ],
+   "modality": "Cell therapy",
+   "audit_id": "RA-138",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07640295",
+   "intervention_label": "JAB-23E73 tablet\uff0cnab-paclitaxel\uff0cgemcitabine",
+   "registry_other_names": [],
+   "resolved_name": "Pan-KRAS Inhibitor JAB-23E73",
+   "source": "NCIT",
+   "target_genes": [
+    "KRAS"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-139",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05309421",
+   "intervention_label": "EVX-01",
+   "registry_other_names": [],
+   "resolved_name": "Personalized Liposomal Neoantigen-based Peptide Vaccine EVX-01",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Vaccine",
+   "audit_id": "RA-140",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07673887",
+   "intervention_label": "ASP2138",
+   "registry_other_names": [],
+   "resolved_name": "Emaretamig",
+   "source": "NCIT",
+   "target_genes": [
+    "CD3E",
+    "CLDN18"
+   ],
+   "modality": "Bispecific antibody",
+   "audit_id": "RA-141",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04590326",
+   "intervention_label": "REGN5668",
+   "registry_other_names": [],
+   "resolved_name": "Anti-MUC16/CD28 Bispecific Antibody REGN5668",
+   "source": "NCIT",
+   "target_genes": [
+    "CD28",
+    "MUC16"
+   ],
+   "modality": "Bispecific antibody",
+   "audit_id": "RA-142",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05978284",
+   "intervention_label": "ZG006",
+   "registry_other_names": [],
+   "resolved_name": "Anti-DLL3/DLL3/CD3 Trispecific Antibody ZG006",
+   "source": "NCIT",
+   "target_genes": [
+    "CD3E",
+    "DLL3"
+   ],
+   "modality": "Bispecific antibody",
+   "audit_id": "RA-143",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06277154",
+   "intervention_label": "MASCT-I",
+   "registry_other_names": [],
+   "resolved_name": "Multiple TAA-loaded Dendritic Cell Vaccine",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Vaccine",
+   "audit_id": "RA-144",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06208410",
+   "intervention_label": "JS105",
+   "registry_other_names": [],
+   "resolved_name": "PI3K-alpha Inhibitor JS105",
+   "source": "NCIT",
+   "target_genes": [
+    "PIK3CA"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-145",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04634747",
+   "intervention_label": "PVX-410",
+   "registry_other_names": [],
+   "resolved_name": "XBP1-US/XBP1-SP/CD138/CS1 Multipeptide Vaccine PVX-410",
+   "source": "NCIT",
+   "target_genes": [
+    "CD2",
+    "SLAMF7"
+   ],
+   "modality": "Vaccine",
+   "audit_id": "RA-146",
+   "identity": "CORRECT",
+   "targets": "WRONG",
+   "note": "CD2 wrong; antigens are XBP1, SDC1 (CD138), SLAMF7"
+  },
+  {
+   "nct_id": "NCT06858618",
+   "intervention_label": "FCN-338",
+   "registry_other_names": [],
+   "resolved_name": "Bcl-2 Inhibitor LOXO-338",
+   "source": "NCIT",
+   "target_genes": [
+    "BCL2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-147",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07811232",
+   "intervention_label": "AL8326",
+   "registry_other_names": [],
+   "resolved_name": "Aurora B/VEGFR/FGFR Inhibitor AL8326",
+   "source": "NCIT",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-148",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06848699",
+   "intervention_label": "HLX43 dose 5",
+   "registry_other_names": [],
+   "resolved_name": "Anti-PD-L1 Antibody-drug Conjugate HLX43",
+   "source": "NCIT",
+   "target_genes": [
+    "CD274",
+    "TOP1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-149",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01968109",
+   "intervention_label": "BMS-986213",
+   "registry_other_names": [],
+   "resolved_name": "Nivolumab/Relatlimab-rmbw",
+   "source": "NCIT",
+   "target_genes": [
+    "LAG3",
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-150",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07791745",
+   "intervention_label": "Anyouping\u00ae",
+   "registry_other_names": [],
+   "resolved_name": "FINOTONLIMAB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-151",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06568094",
+   "intervention_label": "SHR2554 tablets",
+   "registry_other_names": [],
+   "resolved_name": "ZEPRUMETOSTAT",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "EZH2"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-152",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06016062",
+   "intervention_label": "RC88 Combination Therapy",
+   "registry_other_names": [],
+   "resolved_name": "MISITATUG BLIVEDOTIN",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "MSLN",
+    "TUBB"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-153",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06474455",
+   "intervention_label": "SHR-A1921 for Injection",
+   "registry_other_names": [],
+   "resolved_name": "TIZETATUG REZETECAN",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "TACSTD2"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-154",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01498484",
+   "intervention_label": "EBV-specific T cells (EBV-CTLs)",
+   "registry_other_names": [],
+   "resolved_name": "TABELECLEUCEL",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [],
+   "modality": "Cell therapy",
+   "audit_id": "RA-155",
+   "identity": "UNCERTAIN",
+   "targets": "MISSING",
+   "note": "Generic EBV-specific CTLs; may not be tabelecleucel product"
+  },
+  {
+   "nct_id": "NCT03625323",
+   "intervention_label": "eftilagimod alpha",
+   "registry_other_names": [],
+   "resolved_name": "EFTILAGIMOD ALFA",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "LAG3"
+   ],
+   "modality": "Unknown",
+   "audit_id": "RA-156",
+   "identity": "CORRECT",
+   "targets": "WRONG",
+   "note": "Soluble LAG-3 fusion; acts via MHC class II, not LAG3"
+  },
+  {
+   "nct_id": "NCT05496569",
+   "intervention_label": "TQB3616 capsule",
+   "registry_other_names": [],
+   "resolved_name": "CULMERCICLIB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "CDK4",
+    "CDK6"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-157",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02400281",
+   "intervention_label": "Azacytidine",
+   "registry_other_names": [],
+   "resolved_name": "AZACITIDINE",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "DNMT1",
+    "DNMT3A"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-158",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07151872",
+   "intervention_label": "QL2107 Injection",
+   "registry_other_names": [],
+   "resolved_name": "PEMBROLIZUMAB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-159",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04417621",
+   "intervention_label": "LTT462",
+   "registry_other_names": [],
+   "resolved_name": "RINETERKIB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "MAPK1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-160",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06219941",
+   "intervention_label": "l-leucovorin",
+   "registry_other_names": [],
+   "resolved_name": "LEVOLEUCOVORIN",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-161",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02328014",
+   "intervention_label": "ACP-319",
+   "registry_other_names": [],
+   "resolved_name": "AMG-319",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "PIK3CD"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-162",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05607420",
+   "intervention_label": "UCART20x22",
+   "registry_other_names": [],
+   "resolved_name": "ETIVELCABTAGENE ERIGEDLEUCEL",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "CD22",
+    "MS4A1"
+   ],
+   "modality": "Gene therapy",
+   "audit_id": "RA-163",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02692742",
+   "intervention_label": "Myelo001",
+   "registry_other_names": [],
+   "resolved_name": "INGAVIRIN",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-164",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03944057",
+   "intervention_label": "ATG-010",
+   "registry_other_names": [],
+   "resolved_name": "SELINEXOR",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "XPO1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-165",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04164199",
+   "intervention_label": "LBL-007",
+   "registry_other_names": [],
+   "resolved_name": "ALCESTOBART",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "LAG3"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-166",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06884254",
+   "intervention_label": "EG1206A",
+   "registry_other_names": [],
+   "resolved_name": "PERTUZUMAB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "ERBB2"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-167",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05456256",
+   "intervention_label": "LP-300",
+   "registry_other_names": [],
+   "resolved_name": "2,2'-DITHIODIETHANESULFONIC ACID",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-168",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01636128",
+   "intervention_label": "difluoromethylornithine",
+   "registry_other_names": [],
+   "resolved_name": "EFLORNITHINE",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "ODC1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-169",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02155322",
+   "intervention_label": "Pegylated Interferon Alfa-2b",
+   "registry_other_names": [],
+   "resolved_name": "PEGINTERFERON ALFA-2B",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "IFNAR1",
+    "IFNAR2"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-170",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06320353",
+   "intervention_label": "RPH-075",
+   "registry_other_names": [],
+   "resolved_name": "PEMBROLIZUMAB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-171",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06710132",
+   "intervention_label": "M9140",
+   "registry_other_names": [],
+   "resolved_name": "PRECEMTABART TOCENTECAN",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "CEACAM5"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-172",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01137071",
+   "intervention_label": "Monoclonal antibody Hu3S193",
+   "registry_other_names": [],
+   "resolved_name": "HU3S193",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-173",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06953323",
+   "intervention_label": "Paclitaxel-albumin",
+   "registry_other_names": [],
+   "resolved_name": "PACLITAXEL",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "TUBA1A",
+    "TUBA1B",
+    "TUBA1C",
+    "TUBA3C",
+    "TUBA3E",
+    "TUBA4A",
+    "TUBB",
+    "TUBB1",
+    "TUBB2A",
+    "TUBB2B",
+    "TUBB3",
+    "TUBB4A",
+    "TUBB4B",
+    "TUBB6",
+    "TUBB8"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-174",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04838613",
+   "intervention_label": "[68Ga]Ga-PSMA-11",
+   "registry_other_names": [],
+   "resolved_name": "GOZETOTIDE",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "FOLH1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-175",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04879043",
+   "intervention_label": "HDP-101",
+   "registry_other_names": [],
+   "resolved_name": "PAMLECTABART TISMANITIN",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "TNFRSF17"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-176",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT07024784",
+   "intervention_label": "IMGN151",
+   "registry_other_names": [],
+   "resolved_name": "OPUGOTAMIG OLATANSINE",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "FOLR1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-177",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05002270",
+   "intervention_label": "JAB-21822 (KRAS G12C inhibitor)",
+   "registry_other_names": [],
+   "resolved_name": "GLECIRASIB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "KRAS"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-178",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01183949",
+   "intervention_label": "AT7519M",
+   "registry_other_names": [],
+   "resolved_name": "AT-7519",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "CDK1",
+    "CDK10",
+    "CDK11B",
+    "CDK12",
+    "CDK13",
+    "CDK14",
+    "CDK15",
+    "CDK16",
+    "CDK17",
+    "CDK18",
+    "CDK19",
+    "CDK2",
+    "CDK20",
+    "CDK3",
+    "CDK4",
+    "CDK5",
+    "CDK6",
+    "CDK7",
+    "CDK8",
+    "CDK9"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-179",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03389815",
+   "intervention_label": "WX-0593 Tablets",
+   "registry_other_names": [],
+   "resolved_name": "IRUPLINALKIB",
+   "source": "NCIT_TO_CHEMBL",
+   "target_genes": [
+    "ALK"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-180",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04381832",
+   "intervention_label": "SG",
+   "registry_other_names": [],
+   "resolved_name": "SACITUZUMAB GOVITECAN",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "TACSTD2",
+    "TOP1"
+   ],
+   "modality": "ADC",
+   "audit_id": "RA-181",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01178411",
+   "intervention_label": "Anti-Cancer Combination Therapy",
+   "registry_other_names": [],
+   "resolved_name": "TIVANTINIB",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "MET"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-182",
+   "identity": "INCORRECT",
+   "targets": "OK",
+   "note": "Generic regimen label; no basis for tivantinib"
+  },
+  {
+   "nct_id": "NCT01527357",
+   "intervention_label": "Fibrocaps",
+   "registry_other_names": [],
+   "resolved_name": "Fibrin Sealant",
+   "source": "NCIT_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Unknown",
+   "audit_id": "RA-183",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02038218",
+   "intervention_label": "4-Demethyl-4-cholestryloxycarbonylpenclomedine",
+   "registry_other_names": [],
+   "resolved_name": "4-DEMETHYL-4-CHOLESTERYLOXYCARBONYLPENCLOMEDINE",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-184",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT04674514",
+   "intervention_label": "Rd",
+   "registry_other_names": [],
+   "resolved_name": "LENALIDOMIDE",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "CRBN",
+    "CUL4A",
+    "DDB1",
+    "RBX1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-185",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01297543",
+   "intervention_label": "human myeloid progenitor cells",
+   "registry_other_names": [],
+   "resolved_name": "ROMYELOCEL-L",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Cell therapy",
+   "audit_id": "RA-186",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT06699836",
+   "intervention_label": "200 mg pembrolizumab",
+   "registry_other_names": [],
+   "resolved_name": "PEMBROLIZUMAB",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-187",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02330562",
+   "intervention_label": "BEV",
+   "registry_other_names": [],
+   "resolved_name": "BEVACIZUMAB",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "VEGFA"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-188",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05284214",
+   "intervention_label": "Ipilimumab-containing therapy",
+   "registry_other_names": [],
+   "resolved_name": "IPILIMUMAB",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "CTLA4"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-189",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT02578940",
+   "intervention_label": "18F-Fluciclovine PET CT",
+   "registry_other_names": [],
+   "resolved_name": "FLUCICLOVINE",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-190",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01795924",
+   "intervention_label": "PD-616",
+   "registry_other_names": [],
+   "resolved_name": "PHORBOL MYRISTATE ACETATE",
+   "source": "NCIT_TO_CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-191",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03989115",
+   "intervention_label": "Drug: Osimertinib",
+   "registry_other_names": [],
+   "resolved_name": "OSIMERTINIB",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "EGFR"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-192",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03636256",
+   "intervention_label": "NanoDoce (intravesical instillation) - Visit 2 Instillation",
+   "registry_other_names": [],
+   "resolved_name": "DOCETAXEL ANHYDROUS",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "TUBA1A",
+    "TUBA1B",
+    "TUBA1C",
+    "TUBA3C",
+    "TUBA3E",
+    "TUBA4A",
+    "TUBB",
+    "TUBB1",
+    "TUBB2A",
+    "TUBB2B",
+    "TUBB3",
+    "TUBB4A",
+    "TUBB4B",
+    "TUBB6",
+    "TUBB8"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-193",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT05622162",
+   "intervention_label": "Radiopharmaceutical 18F-Fluorocholine",
+   "registry_other_names": [],
+   "resolved_name": "FLUOROCHOLINE",
+   "source": "NCIT_TO_CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-194",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03175978",
+   "intervention_label": "IGF/MTX",
+   "registry_other_names": [],
+   "resolved_name": "MECASERMIN",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "IGF1R"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-195",
+   "identity": "INCORRECT",
+   "targets": "OK",
+   "note": "IGF-methotrexate conjugate (765IGF-MTX), not mecasermin"
+  },
+  {
+   "nct_id": "NCT00484341",
+   "intervention_label": "high-dose NGR-hTNF",
+   "registry_other_names": [],
+   "resolved_name": "CNGRC Peptide-TNF Alpha Conjugate",
+   "source": "NCIT_VIA_OTHER_NAME",
+   "target_genes": [
+    "TNF"
+   ],
+   "modality": "Protein",
+   "audit_id": "RA-196",
+   "identity": "CORRECT",
+   "targets": "WRONG",
+   "note": "TNF is the payload; targets are ANPEP/CD13 and TNF receptors"
+  },
+  {
+   "nct_id": "NCT01015521",
+   "intervention_label": "Aminoflavone Prodrug",
+   "registry_other_names": [],
+   "resolved_name": "AFP-464 FREE BASE",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [],
+   "modality": "Small molecule",
+   "audit_id": "RA-197",
+   "identity": "CORRECT",
+   "targets": "MISSING",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT01101581",
+   "intervention_label": "90Y-epratuzumab tetraxetan",
+   "registry_other_names": [],
+   "resolved_name": "YTTRIUM Y 90 EPRATUZUMAB",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "CD22"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-198",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03601078",
+   "intervention_label": "Lenalomide",
+   "registry_other_names": [],
+   "resolved_name": "LENALIDOMIDE",
+   "source": "CHEMBL_VIA_OTHER_NAME",
+   "target_genes": [
+    "CRBN",
+    "CUL4A",
+    "DDB1",
+    "RBX1"
+   ],
+   "modality": "Small molecule",
+   "audit_id": "RA-199",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  },
+  {
+   "nct_id": "NCT03645928",
+   "intervention_label": "Nivolumab-relatlimab",
+   "registry_other_names": [],
+   "resolved_name": "Nivolumab/Relatlimab-rmbw",
+   "source": "NCIT_VIA_OTHER_NAME",
+   "target_genes": [
+    "LAG3",
+    "PDCD1"
+   ],
+   "modality": "Antibody",
+   "audit_id": "RA-200",
+   "identity": "CORRECT",
+   "targets": "OK",
+   "note": ""
+  }
+ ]
+}
