@@ -348,8 +348,9 @@ def main() -> int:
     # 2c. PubMed publications mentioning each NCT ID
     pubmed = {}
     try:
-        pubmed = run_pool("pubmed", pubmed_for_nct, ncts)
-        source_status["pubmed"] = "OK"
+        pubmed = run_pool("pubmed", pubmed_for_nct, ncts, 2)
+        unknown = sum(1 for v in pubmed.values() if v is None)
+        source_status["pubmed"] = "OK" if not unknown else f"PARTIAL: {unknown} trials throttled, retried next run"
     except SourceUnavailable as exc:
         source_status["pubmed"] = f"UNAVAILABLE: {exc}"
     print(f"pubmed: {sum(1 for v in pubmed.values() if v)}/{len(ncts)} trials with publications")
@@ -567,7 +568,7 @@ def main() -> int:
             "PubMed links are publications that mention the NCT ID; they are not necessarily the primary results paper.",
             "SEC tickers reflect current registrants; acquired or non-SEC-registered sponsors have no ticker.",
             "US-marketed flag reflects presence of RxNorm clinical/branded drug concepts, not current regulatory status.",
-            "Sponsor parent groups come from a small curated table of long-standing subsidiaries; tickers are not assigned in v1.",
+            "Sponsor parent groups come from a small curated table of long-standing subsidiaries plus registry-stated subsidiaries.",
         ],
     }
     (OUT / "oncology_failure_signals_v1_meta.json").write_text(json.dumps(meta, indent=2) + "\n")
