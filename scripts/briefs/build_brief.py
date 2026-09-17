@@ -40,9 +40,13 @@ def pct(x) -> str:
     return "—" if x is None else f"{x * 100:.1f}%"
 
 
-def trunc(text, n=95) -> str:
-    t = " ".join((text or "").split())
-    return e(t if len(t) <= n else t[: n - 1].rstrip() + "…")
+NO_REASON = '<span class="muted">no reason recorded in the registry</span>'
+MAX_ROWS = 40
+
+
+def full(text) -> str:
+    """Registry stop reason, verbatim (ClinicalTrials.gov caps this field at 250 chars)."""
+    return e(" ".join((text or "").split()))
 
 
 def drugs(rec) -> str:
@@ -77,7 +81,7 @@ def bar(label, s, maxrate, note=""):
             f'<div class="bnote">{s["biological_stops"]}/{s["closed"]} closed{(" · " + note) if note else ""}</div></div>')
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--class", dest="klass")
     ap.add_argument("--with-class")
@@ -88,7 +92,7 @@ def main() -> int:
     ap.add_argument("--start", default=f"2015:{date.today().year - 2}")
     ap.add_argument("--area", default="Oncology")
     ap.add_argument("--out")
-    args = ap.parse_args()
+    args = ap.parse_args(argv)
 
     start = tuple(int(x) for x in args.start.split(":"))
     phases = [p.strip() for p in args.phases.split(",")]
@@ -138,12 +142,21 @@ def main() -> int:
         "biological_stop_nct_ids": segment["nct_biological_stops"],
     }
 
-    rows_html = "".join(
-        f'<tr><td class="mono">{e(r["nct_id"])}</td><td>{"3" if "3" in r["_phase"] else "2"}</td>'
-        f'<td>{e(r["_sponsor_group"])}{f" <span class=tk>{e(r[chr(95)+chr(116)+chr(105)+chr(99)+chr(107)+chr(101)+chr(114)])}</span>" if r["_ticker"] else ""}</td>'
-        f'<td>{e(drugs(r))}</td><td>{e((r.get("stop_date_estimate") or "")[:7])}</td>'
-        f'<td>{"Safety" if "SAFETY" in r["_reasons"] else "Efficacy" if "EFFICACY_FUTILITY" in r["_reasons"] else "Benefit–risk"}</td>'
-        f'<td>{trunc(r.get("why_stopped"))}</td></tr>' for r in stops[:28])
+    row_items = []
+    for r in stops[:MAX_ROWS]:
+        tk_html = f' <span class="tk">{e(r["_ticker"])}</span>' if r["_ticker"] else ""
+        reason = full(r.get("why_stopped")) or NO_REASON
+        kind = "Safety" if "SAFETY" in r["_reasons"] else "Efficacy" if "EFFICACY_FUTILITY" in r["_reasons"] else "Benefit–risk"
+        row_items.append(
+            f'<tr><td class="mono">{e(r["nct_id"])}</td>'
+            f'<td>{"3" if "3" in r["_phase"] else "2"}</td>'
+            f'<td>{e(r["_sponsor_group"])}{tk_html}</td>'
+            f'<td>{e(drugs(r))}</td>'
+            f'<td>{e((r.get("stop_date_estimate") or "")[:7])}</td>'
+            f'<td>{kind}</td>'
+            f'<td class="reason">{reason}</td></tr>'
+        )
+    rows_html = "".join(row_items)
 
     cohort_html = "".join(
         f'<tr><td>{e(c)}</td><td>{s["biological_stops"]}</td><td>{s["closed"]}</td><td>{pct(s["rate"])}</td>'
@@ -169,6 +182,9 @@ table {{ width:100%; border-collapse:collapse; font-size:7.6pt; }}
 th {{ text-align:left; color:var(--muted); font-weight:600; border-bottom:1px solid var(--ink); padding:3px 4px; }}
 td {{ border-bottom:1px solid var(--rule); padding:2.5px 4px; vertical-align:top; }}
 .mono {{ font-family:"SFMono-Regular",Menlo,Consolas,monospace; font-size:7.4pt; white-space:nowrap; }}
+.reason {{ font-size:7.2pt; line-height:1.28; width:40%; overflow-wrap:anywhere; }} .muted {{ color:var(--muted); }}
+table.stops td:nth-child(4) {{ width:16%; }} table.stops td:nth-child(3) {{ width:13%; }}
+table {{ page-break-inside:auto; }} tr {{ page-break-inside:avoid; }}
 .tk {{ font-size:7pt; border:1px solid var(--rule); border-radius:3px; padding:0 3px; color:var(--ink2); }}
 .box {{ background:#f4f3ef; padding:8px 10px; border-radius:4px; font-size:7.8pt; color:var(--ink2); }}
 .box b {{ color:var(--ink); }}
@@ -202,8 +218,8 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 </div>
 </div>
 <h2>The stopped trials</h2>
-<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th><th>Stopped</th><th>Type</th><th>Registry stop reason</th></tr></thead><tbody>{rows_html}</tbody></table>
-{f'<p style="font-size:7.4pt;color:var(--muted)">Showing 28 of {len(stops)} stopped trials; the full list ships with the dataset.</p>' if len(stops) > 28 else ''}
+<table class="stops"><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th><th>Stopped</th><th>Type</th><th>Registry stop reason</th></tr></thead><tbody>{rows_html}</tbody></table>
+{f'<p style="font-size:7.4pt;color:var(--muted)">Showing {MAX_ROWS} of {len(stops)} stopped trials; the full list ships with the dataset.</p>' if len(stops) > MAX_ROWS else ''}
 <div class="cols" style="margin-top:10px">
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase {e(args.phases)} {e(args.area.lower())} trials started {start[0]}–{start[1]} that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; 86% of industry oncology experimental-arm drugs resolve to a canonical molecule, 70% carry a target. Intervals are Wilson 95%.</div>
 <div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>

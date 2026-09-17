@@ -19,6 +19,7 @@ import argparse
 import csv
 import gzip
 import json
+from functools import lru_cache
 import math
 import sys  # noqa: F401
 from collections import defaultdict
@@ -69,6 +70,7 @@ def is_bio_stop(rec: dict) -> bool:
     return outcome == "BIOLOGICAL_FAILURE" or (outcome == "MIXED_CAUSES" and bool(reasons(rec) & BIO))
 
 
+@lru_cache(maxsize=4)
 def load(area: str | None = "Oncology") -> list[dict]:
     rows = []
     with gzip.open(UNIVERSE, "rt", encoding="utf-8") as fh:

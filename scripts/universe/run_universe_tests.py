@@ -55,9 +55,12 @@ check("class placeholder", _r.component({"name": "PD-1 inhibitor", "other_names"
 check("code only", _r.component({"name": "HRS-7058", "other_names": []}, "DRUG")["entity_id"], "CODE:HRS-7058")
 check("cell modality", modality("CD19 CAR-T cells", None, "BIOLOGICAL"), "Cell therapy")
 
-from scripts.briefs.build_brief import drugs, pct, trunc  # noqa: E402
+from scripts.briefs.build_brief import NO_REASON, drugs, full, pct  # noqa: E402
 check("pct", pct(0.0433), "4.3%")
-check("trunc", trunc("a" * 200)[-1], "…")
+check("full_verbatim", full("  Terminated   due to\nslow accrual "), "Terminated due to slow accrual")
+check("full_escapes", full("a <b> & c"), "a &lt;b&gt; &amp; c")
+check("full_no_truncation", len(full("a " * 150).split()), 150)
+check("full_empty", full(None) or NO_REASON, NO_REASON)
 check("drug list from arms", drugs({"interventions": [
     {"role": "EXPERIMENTAL_ARM", "components": [{"status": "RESOLVED", "name": "PEMBROLIZUMAB", "label": "Keytruda"},
                                                 {"status": "SUPPORTIVE", "name": None, "label": "G-CSF"}]},
