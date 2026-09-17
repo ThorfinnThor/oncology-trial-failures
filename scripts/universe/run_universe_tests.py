@@ -9,6 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from scripts.universe.benchmarks import is_bio_stop, phase_groups, summarize, wilson  # noqa: E402
 from scripts.universe.chembl_index import norm  # noqa: E402
+from scripts.universe.mechanism_classes import CLASSES  # noqa: E402
 from scripts.universe.resolve import expand_regimen, modality  # noqa: E402
 
 failures = 0
@@ -53,6 +54,15 @@ check("supportive excluded", _r.component({"name": "Rescue medication", "other_n
 check("class placeholder", _r.component({"name": "PD-1 inhibitor", "other_names": []}, "DRUG")["target_genes"], ["PDCD1"])
 check("code only", _r.component({"name": "HRS-7058", "other_names": []}, "DRUG")["entity_id"], "CODE:HRS-7058")
 check("cell modality", modality("CD19 CAR-T cells", None, "BIOLOGICAL"), "Cell therapy")
+
+from scripts.briefs.build_brief import drugs, pct, trunc  # noqa: E402
+check("pct", pct(0.0433), "4.3%")
+check("trunc", trunc("a" * 200)[-1], "…")
+check("drug list from arms", drugs({"interventions": [
+    {"role": "EXPERIMENTAL_ARM", "components": [{"status": "RESOLVED", "name": "PEMBROLIZUMAB", "label": "Keytruda"},
+                                                {"status": "SUPPORTIVE", "name": None, "label": "G-CSF"}]},
+    {"role": "COMPARATOR", "components": [{"status": "RESOLVED", "name": "DOCETAXEL", "label": "Docetaxel"}]}]}), "PEMBROLIZUMAB")
+check("mechanism classes cover PD-(L)1", "PD-(L)1" in CLASSES, True)
 
 if failures:
     print(f"{failures} universe test(s) failed")

@@ -19,5 +19,20 @@
   "assets_with_repeated_safety_signal": 70,
   "assets_with_repeated_efficacy_signal": 120,
   "sample_file": "/samples/oncology-failure-signals-sample-2026-09-16-0285e34947183ee1.csv",
-  "sample_record_count": 100
+  "sample_record_count": 100,
+  "benchmarks": {
+    "segments": 194,
+    "mechanism_classes": 39,
+    "universe_closed_trials": 7798,
+    "baseline_rate": 0.043344447294177996,
+    "window": {
+      "start_year_from": 2015,
+      "start_year_to": 2024,
+      "phases": [
+        "2",
+        "3"
+      ]
+    }
+  },
+  "brief_count": 42
 }

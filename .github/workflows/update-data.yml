@@ -138,7 +138,8 @@ jobs:
           python -u scripts/universe/chembl_index.py
           python -u scripts/universe/ncit_index.py
           python -u scripts/universe/resolve.py
-          python -u scripts/universe/benchmarks.py --tables --genes TIGIT --with-genes PDCD1,CD274 --compare-with-genes PDCD1,CD274 --start 2015:2024
+          python -u scripts/universe/benchmarks.py --tables --pack --start 2015:2024
+          python -u scripts/briefs/build_brief_catalog.py
           cp .cache/universe/resolution_report.json product/benchmarks/
 
       - name: Save enrichment cache

@@ -76,6 +76,28 @@ Default start window ends four years before the current year so most trials have
 - Rates among closed trials can be inflated for recent cohorts because early stops close sooner than
   completions; use older start windows and the lower bound for recent cohorts.
 
+## Mechanism classes and briefs
+
+Benchmarks are grouped into 43 curated mechanism classes (`scripts/universe/mechanism_classes.py`) —
+the units analysts use ("PD-(L)1", "PARP", "KRAS", "TGF-β"), each defined as a set of HGNC gene
+symbols. A trial belongs to a class when any drug in an experimental arm targets one of its genes;
+combination filters also consider drugs given as the backbone in both arms.
+
+Each release writes:
+
+| File | Content |
+| --- | --- |
+| `product/benchmarks/oncology_benchmarks_v1.json` | Baseline plus every segment (class, class × phase, class + PD-(L)1, modality, phase, start year, sponsor class, sponsor group) with counts, rate, 95% CI and the NCT IDs behind each rate |
+| `product/benchmarks/oncology_benchmarks_by_*.csv` | Flat tables per dimension |
+| `product/briefs/brief_<segment>.html` + `.facts.json` | Benchmark-led brief per class with enough data (≥20 closed trials, ≥3 stops), and the facts behind every number |
+
+`scripts/briefs/build_brief.py` generates a brief for any segment on demand:
+
+```bash
+python scripts/briefs/build_brief.py --class "TGF-β" --with-class "PD-(L)1" --start 2015:2024
+python scripts/briefs/build_brief.py --sponsor-group Novartis
+```
+
 ## Reproduce
 
 ```bash
@@ -84,5 +106,6 @@ python scripts/universe/fetch_universe.py
 python scripts/universe/chembl_index.py
 python scripts/universe/ncit_index.py
 python scripts/universe/resolve.py
-python scripts/universe/benchmarks.py --tables --genes TIGIT --with-genes PDCD1,CD274 --compare-with-genes PDCD1,CD274 --start 2015:2024
+python scripts/universe/benchmarks.py --tables --pack --start 2015:2024
+python scripts/briefs/build_brief_catalog.py
 ```

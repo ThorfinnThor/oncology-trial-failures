@@ -20,10 +20,16 @@ import csv
 import gzip
 import json
 import math
-import sys
+import sys  # noqa: F401
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
+
+ROOT_ = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT_))
+
+from scripts.signals.sponsors import resolve_sponsor  # noqa: E402
+from scripts.universe.mechanism_classes import CLASSES, classes_for  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 UNIVERSE = ROOT / ".cache/universe/universe_resolved_v1.jsonl.gz"
@@ -80,12 +86,16 @@ def load(area: str | None = "Oncology") -> list[dict]:
             r["_genes_regimen"] = r["_genes"] | {g for i in r["interventions"] if i["role"] in ("EXPERIMENTAL_ARM", "BACKGROUND_OR_BACKBONE")
                                                   for c in i["components"] for g in c.get("target_genes", [])}
             r["_targets"] = {t for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM" for c in i["components"] for t in c.get("target_names", [])}
+            r["_classes"] = classes_for(r["_genes"])
+            r["_classes_regimen"] = classes_for(r["_genes_regimen"])
+            r["_sponsor_group"] = resolve_sponsor(r.get("lead_sponsor") or "", r.get("lead_sponsor_class") or "")["sponsor_group"]
             r["_modalities"] = {c["modality"] for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM" for c in i["components"]}
             rows.append(r)
     return rows
 
 
-def select(rows, *, genes=None, with_genes=None, modality=None, phases=None, start=None, sponsor_class=None, exclude_genes=None):
+def select(rows, *, genes=None, with_genes=None, modality=None, phases=None, start=None, sponsor_class=None,
+           exclude_genes=None, klass=None, with_class=None, exclude_class=None, sponsor_group=None):
     out = []
     for r in rows:
         if phases and not (r["_phase"] & set(phases)):
@@ -101,6 +111,14 @@ def select(rows, *, genes=None, with_genes=None, modality=None, phases=None, sta
         if exclude_genes and (r["_genes_regimen"] & set(exclude_genes)):
             continue
         if modality and modality not in r["_modalities"]:
+            continue
+        if klass and klass not in r["_classes"]:
+            continue
+        if with_class and with_class not in r["_classes_regimen"]:
+            continue
+        if exclude_class and exclude_class in r["_classes_regimen"]:
+            continue
+        if sponsor_group and r["_sponsor_group"] != sponsor_group:
             continue
         out.append(r)
     return out
@@ -135,6 +153,8 @@ def standard_tables(rows, out_dir: Path, start, phases) -> None:
     base = select(rows, phases=phases, start=start)
     out_dir.mkdir(parents=True, exist_ok=True)
     tables = {
+        "by_mechanism_class": lambda r: r["_classes"],
+        "by_sponsor_group": lambda r: {r["_sponsor_group"]} if r.get("lead_sponsor_class") == "INDUSTRY" else set(),
         "by_target": lambda r: r["_targets"],
         "by_target_gene": lambda r: r["_genes"],
         "by_modality": lambda r: r["_modalities"],
@@ -161,6 +181,60 @@ def standard_tables(rows, out_dir: Path, start, phases) -> None:
         print("wrote", path.relative_to(ROOT))
 
 
+def product_json(rows, start, phases, out: Path) -> dict:
+    """Machine-readable benchmark pack: baseline plus every segment with enough closed trials."""
+    base = select(rows, phases=phases, start=start)
+    baseline = summarize(base)
+    segments = []
+
+    def add(dimension, segment, subset, extra=None):
+        s = summarize(subset)
+        if s["closed"] < 10:
+            return
+        segments.append({"dimension": dimension, "segment": segment, **{k: v for k, v in s.items() if k != "nct_biological_stops"},
+                         "biological_stop_nct_ids": s["nct_biological_stops"], **(extra or {})})
+
+    for name in CLASSES:
+        add("mechanism_class", name, select(base, klass=name))
+        for ph in phases:
+            add("mechanism_class_x_phase", f"{name} | Phase {ph}", select(base, klass=name, phases=[ph]))
+        if name != "PD-(L)1":
+            add("mechanism_class_with_pd1", f"{name} + PD-(L)1", select(base, klass=name, with_class="PD-(L)1"))
+    for modality in sorted({m for r in base for m in r["_modalities"]}):
+        add("modality", modality, select(base, modality=modality))
+    for ph in phases:
+        add("phase", f"Phase {ph}", select(base, phases=[ph]))
+    for year in sorted({r["_start_year"] for r in base if r["_start_year"]}):
+        add("start_year", str(year), [r for r in base if r["_start_year"] == year])
+    for cls in sorted({r.get("lead_sponsor_class") for r in base if r.get("lead_sponsor_class")}):
+        add("sponsor_class", cls, select(base, sponsor_class=cls))
+    groups = defaultdict(list)
+    for r in base:
+        if r.get("lead_sponsor_class") == "INDUSTRY":
+            groups[r["_sponsor_group"]].append(r)
+    for group, subset in groups.items():
+        add("sponsor_group", group, subset)
+
+    pack = {
+        "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "product": "Clinical Trial Failure Benchmarks (oncology)",
+        "window": {"start_year_from": start[0], "start_year_to": start[1], "phases": phases},
+        "definitions": {
+            "closed": "overall status COMPLETED or TERMINATED; withdrawn, suspended, unknown and ongoing excluded",
+            "biological_stop": "TERMINATED with outcome BIOLOGICAL_FAILURE, or MIXED_CAUSES including an efficacy/safety/biological cause",
+            "rate": "biological stops / closed trials, 95% Wilson interval",
+            "lower_bound": "biological stops / all trials that were not withdrawn",
+            "not_a_failure_rate": "completed trials that missed their endpoints are not detected",
+        },
+        "baseline": {k: v for k, v in baseline.items() if k != "nct_biological_stops"},
+        "segments": sorted(segments, key=lambda s: (s["dimension"], -s["closed"])),
+    }
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(pack, indent=1))
+    print(f"wrote {out.relative_to(ROOT)} ({len(segments)} segments)")
+    return pack
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--genes", help="comma-separated target genes of any experimental-arm drug, e.g. TIGIT")
@@ -170,6 +244,10 @@ def main() -> int:
     ap.add_argument("--phases", default="2,3")
     ap.add_argument("--start", default=f"2010:{date.today().year - 4}")
     ap.add_argument("--sponsor-class")
+    ap.add_argument("--class", dest="klass", help="mechanism class, e.g. 'TIGIT'")
+    ap.add_argument("--with-class", help="combination partner class, e.g. 'PD-(L)1'")
+    ap.add_argument("--sponsor-group")
+    ap.add_argument("--pack", action="store_true", help="write the machine-readable benchmark pack")
     ap.add_argument("--tables", action="store_true", help="write standard benchmark tables to product/benchmarks")
     args = ap.parse_args()
     split = lambda s: [x.strip() for x in s.split(",")] if s else None
@@ -178,15 +256,25 @@ def main() -> int:
     rows = load()
     if args.tables:
         standard_tables(rows, ROOT / "product/benchmarks", start, phases)
+    if args.pack:
+        product_json(rows, start, phases, ROOT / "product/benchmarks/oncology_benchmarks_v1.json")
     common = dict(phases=phases, start=start, sponsor_class=args.sponsor_class, modality=args.modality)
     print(f"Oncology Phase {args.phases} interventional trials started {start[0]}–{start[1]}:")
     print("  all:", fmt(summarize(select(rows, **common))))
-    if args.genes or args.with_genes:
-        seg = select(rows, genes=split(args.genes), with_genes=split(args.with_genes), **common)
-        print(f"  segment genes={args.genes} with={args.with_genes}:", fmt(summarize(seg)))
-        if args.compare_with_genes:
+    if args.genes or args.with_genes or args.klass or args.sponsor_group:
+        seg = select(rows, genes=split(args.genes), with_genes=split(args.with_genes), klass=args.klass,
+                     with_class=args.with_class, sponsor_group=args.sponsor_group, **common)
+        label = args.klass or args.genes or args.sponsor_group
+        print(f"  segment {label}{' + ' + args.with_class if args.with_class else ''}:", fmt(summarize(seg)))
+        if args.with_class:
+            ref = select(rows, with_class=args.with_class, exclude_class=args.klass, **common)
+            print(f"  reference {args.with_class} combinations excluding {args.klass}:", fmt(summarize(ref)))
+        elif args.compare_with_genes:
             ref = select(rows, with_genes=split(args.compare_with_genes), exclude_genes=split(args.genes), **common)
             print(f"  reference with={args.compare_with_genes} excluding {args.genes}:", fmt(summarize(ref)))
+        elif args.klass:
+            ref = select(rows, exclude_class=args.klass, **common)
+            print(f"  reference all oncology excluding {args.klass}:", fmt(summarize(ref)))
     return 0
 
 
