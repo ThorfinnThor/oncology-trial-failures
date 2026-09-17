@@ -23,7 +23,7 @@ USER_AGENT = "ClinicalTrialFailures-signals/1.0 (+https://clinicaltrialfailures.
 # Cached responses older than this are refetched (days).
 MAX_AGE_DAYS = {"ctgov": 30, "rxnav": 90, "chembl": 90, "pubmed": 30, "sec": 7}
 
-_MIN_INTERVAL = {"ctgov": 1.0, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.06, "pubmed": 0.35, "sec": 0.15}
+_MIN_INTERVAL = {"ctgov": 1.0, "rxnav": 0.08, "ncit": 0.15, "chembl": 0.06, "pubmed": 0.12 if os.environ.get("NCBI_API_KEY") else 0.4, "sec": 0.15}
 _last_call: dict[str, float] = {}
 _lock = threading.Lock()
 
@@ -67,7 +67,10 @@ def get_json(source: str, url: str, params: Optional[dict] = None, *, cache: boo
     for attempt in range(retries):
         _throttle(source)
         try:
-            resp = requests.get(url, params=params, timeout=timeout, headers={"User-Agent": USER_AGENT,
+            send_params = dict(params or {})
+            if source == "pubmed" and os.environ.get("NCBI_API_KEY"):
+                send_params["api_key"] = os.environ["NCBI_API_KEY"]  # not part of the cache key
+            resp = requests.get(url, params=send_params, timeout=timeout, headers={"User-Agent": USER_AGENT,
                                                                              "Accept": "application/json"})
         except requests.exceptions.ProxyError as exc:
             raise SourceUnavailable(f"{source}: blocked by network policy ({exc.__class__.__name__})") from exc

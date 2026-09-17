@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Optional
 
-from scripts.signals.http_cache import get_json
+from scripts.signals.http_cache import SourceUnavailable, get_json
 from scripts.signals.sponsors import normalize_name
 
 CHEMBL = "https://www.ebi.ac.uk/chembl/api/data"
@@ -70,15 +70,24 @@ def chembl_mechanisms(chembl_id: str) -> list[dict]:
 
 
 # ------------------------------------------------------------------ PubMed
-def pubmed_for_nct(nct_id: str, limit: int = 20) -> list[dict]:
-    search = get_json("pubmed", f"{EUTILS}/esearch.fcgi", {"db": "pubmed", "term": nct_id, "retmode": "json", "retmax": limit}) or {}
+def pubmed_for_nct(nct_id: str, limit: int = 20) -> Optional[list[dict]]:
+    """Publications mentioning the NCT ID. Returns None (unknown) when NCBI keeps throttling,
+    so one rate-limited trial never discards the results for all others."""
+    try:
+        return _pubmed_for_nct(nct_id, limit)
+    except SourceUnavailable:
+        return None
+
+
+def _pubmed_for_nct(nct_id: str, limit: int) -> list[dict]:
+    search = get_json("pubmed", f"{EUTILS}/esearch.fcgi", {"db": "pubmed", "term": nct_id, "retmode": "json", "retmax": limit}, retries=6) or {}
     result = search.get("esearchresult") or {}
     if result.get("errorlist", {}).get("phrasesnotfound"):
         return []
     ids = result.get("idlist") or []
     if not ids:
         return []
-    summary = get_json("pubmed", f"{EUTILS}/esummary.fcgi", {"db": "pubmed", "id": ",".join(ids), "retmode": "json"}) or {}
+    summary = get_json("pubmed", f"{EUTILS}/esummary.fcgi", {"db": "pubmed", "id": ",".join(ids), "retmode": "json"}, retries=6) or {}
     res = summary.get("result") or {}
     pubs = []
     for pmid in ids:

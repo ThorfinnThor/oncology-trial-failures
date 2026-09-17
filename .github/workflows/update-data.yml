@@ -120,6 +120,7 @@ jobs:
         continue-on-error: true
         env:
           SIGNALS_CONTACT: ${{ secrets.SIGNALS_CONTACT }}
+          NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
         run: |
           python scripts/signals/run_signals_tests.py
           # Exit code 3 = time budget reached; the cache is saved below and the next run resumes.
