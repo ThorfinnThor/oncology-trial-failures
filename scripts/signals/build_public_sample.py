@@ -18,10 +18,26 @@ PRODUCT = ROOT / "product"
 SAMPLE_DIR = ROOT / "web/public/samples"
 SUMMARY = ROOT / "web/data/product_summary.json"
 QUOTAS = {"EFFICACY_FUTILITY": 55, "SAFETY": 30, "MULTIPLE": 10, "BIOLOGICAL_UNSPECIFIED": 5}
-COLUMNS = ["nct_id", "brief_title", "phases", "overall_status", "failure_outcome", "failure_primary_reason", "failure_secondary_reasons",
-           "why_stopped", "sponsor_group", "sponsor_ticker", "focus_assets", "focus_asset_ids", "focus_research_codes", "focus_mechanisms",
-           "focus_target_genes", "focus_max_phase_chembl", "conditions", "enrollment_count", "start_date", "last_update_post_date",
-           "publication_count", "registry_url"]
+# The sample ships every column of the licensed CSV plus the SEC ticker, so an evaluator
+# sees exactly what they would receive. Order follows the licensed file.
+LICENSED_COLUMNS = ["nct_id", "brief_title", "phases", "overall_status", "failure_outcome", "failure_primary_reason",
+                    "failure_secondary_reasons", "why_stopped", "sponsor_group", "lead_sponsor_raw", "sponsor_class_ctgov",
+                    "is_industry", "focus_assets", "focus_asset_ids", "focus_research_codes", "focus_mechanisms",
+                    "focus_targets", "focus_target_genes", "focus_max_phase_chembl", "focus_pharmacologic_classes",
+                    "publication_count", "focus_includes_non_us_marketed", "conditions", "enrollment_count",
+                    "enrollment_type", "start_date", "primary_completion_date", "last_update_post_date", "registry_url"]
+COLUMNS = LICENSED_COLUMNS[:9] + ["sponsor_ticker"] + LICENSED_COLUMNS[9:]
+
+README = """Oncology Failure Signals - evaluation sample
+{count} of {total} records, dataset {version}.
+
+Sources: ClinicalTrials.gov (U.S. National Library of Medicine); RxNorm and RxClass (NLM);
+ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); PubMed (NCBI); SEC EDGAR.
+Classifications, linkages and derived fields by Clinical Trial Failures.
+
+Evaluation use only. Data are analytical research signals, not clinical or investment advice.
+Full dataset and licensing: https://clinicaltrialfailures.com/data-licensing
+"""
 
 
 def _stats(label: str, seg: dict) -> dict:
@@ -70,16 +86,24 @@ def main() -> int:
                 old.unlink()
             except OSError:
                 old.write_text("")  # cannot delete in some environments; emptied files are excluded from deploy
-    with open(SAMPLE_DIR / name, "w", newline="", encoding="utf-8") as fh:
-        fh.write(f"# Oncology Failure Signals — evaluation sample ({len(sample)} of {meta['trial_count']} records), dataset {meta['dataset_version']}\n")
-        fh.write("# Sources: ClinicalTrials.gov; RxNorm/RxClass (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); PubMed (NCBI); SEC EDGAR. Derived fields by ClinicalTrialFailures.\n")
-        fh.write("# Evaluation use only. Full dataset and licensing: https://clinicaltrialfailures.com/data-licensing\n")
+    # No comment preamble: a leading "#" line makes Excel and Numbers treat the whole file as one
+    # column. Provenance ships in a sibling README. utf-8-sig so Excel renders "TGF-beta" correctly.
+    with open(SAMPLE_DIR / name, "w", newline="", encoding="utf-8-sig") as fh:
         w = csv.DictWriter(fh, fieldnames=COLUMNS)
         w.writeheader()
         for r in sample:
             out = {k: r.get(k) for k in COLUMNS}
             out["sponsor_ticker"] = (r.get("sponsor_issuer_sec") or {}).get("ticker")
             w.writerow({k: "; ".join(map(str, v)) if isinstance(v, list) else v for k, v in out.items()})
+    readme_name = name.replace(".csv", "-README.txt")
+    for old in SAMPLE_DIR.glob("oncology-failure-signals-sample-*-README.txt"):
+        if old.name != readme_name:
+            try:
+                old.unlink()
+            except OSError:
+                old.write_text("")
+    (SAMPLE_DIR / readme_name).write_text(
+        README.format(count=len(sample), total=meta["trial_count"], version=meta["dataset_version"]), encoding="utf-8")
 
     summary = {k: meta[k] for k in ["product", "product_version", "dataset_version", "trial_count", "industry_trial_count",
                                      "industry_phase2_3_trial_count", "by_primary_reason", "trials_with_resolved_focus_asset",
@@ -104,6 +128,7 @@ def main() -> int:
     summary["sample_file"] = f"/samples/{name}"
     summary["sample_record_count"] = len(sample)
     summary["sample_columns"] = COLUMNS
+    summary["sample_readme_file"] = f"/samples/{readme_name}"
     csv_path = PRODUCT / "oncology_failure_signals_v1.csv"
     if csv_path.exists():
         with open(csv_path, newline="", encoding="utf-8") as fh:

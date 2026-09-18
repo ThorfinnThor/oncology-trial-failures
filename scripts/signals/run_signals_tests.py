@@ -58,6 +58,14 @@ check("bio in scope", in_scope({"classification_outcome_v2": "BIOLOGICAL_FAILURE
 check("mixed bio in scope", in_scope({"classification_outcome_v2": "MIXED_CAUSES", "classification_secondary_reasons_v2": "SAFETY; FUNDING"}), True)
 check("mixed non-bio out", in_scope({"classification_outcome_v2": "MIXED_CAUSES", "classification_secondary_reasons_v2": "RECRUITMENT; FUNDING"}), False)
 
+# public sample: the page promises "every column of the licensed file", and a comment preamble
+# makes Excel and Numbers read the whole CSV as one column.
+from scripts.signals.build_public_sample import COLUMNS, LICENSED_COLUMNS  # noqa: E402
+
+check("sample covers licensed columns", [c for c in LICENSED_COLUMNS if c not in COLUMNS], [])
+check("sample adds ticker", "sponsor_ticker" in COLUMNS, True)
+check("sample header is first column", COLUMNS[0], "nct_id")
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)
