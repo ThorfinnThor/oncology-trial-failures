@@ -24,6 +24,32 @@ COLUMNS = ["nct_id", "brief_title", "phases", "overall_status", "failure_outcome
            "publication_count", "registry_url"]
 
 
+def _stats(label: str, seg: dict) -> dict:
+    return {"label": label, "rate": seg["rate"], "stops": seg["biological_stops"], "closed": seg["closed"], "ci95": seg["ci95"]}
+
+
+def featured_benchmark(bench: dict) -> dict | None:
+    """The segment whose discontinuation rate is highest among those whose 95% interval clears the
+    oncology baseline, so the example on the licensing page is never a small-sample artefact."""
+    baseline = bench["baseline"]
+    window = bench["window"]
+    phases = "/".join(window["phases"])
+    cands = [s for s in bench["segments"]
+             if s["dimension"] in ("mechanism_class", "mechanism_class_with_pd1")
+             and s["closed"] >= 30 and s["biological_stops"] >= 5 and s["ci95"][0] > baseline["rate"]]
+    if not cands:
+        return None
+    best = max(cands, key=lambda s: s["rate"])
+    out = {"segment": _stats(best["segment"], best),
+           "baseline": _stats(f"All oncology Phase {phases}", baseline)}
+    if best["dimension"] == "mechanism_class_with_pd1":
+        pd1 = next((s for s in bench["segments"]
+                    if s["dimension"] == "mechanism_class" and s["segment"] == "PD-(L)1"), None)
+        if pd1:
+            out["reference"] = _stats("All PD-(L)1 trials", pd1)
+    return out
+
+
 def main() -> int:
     rows = [json.loads(l) for l in (PRODUCT / "oncology_failure_signals_v1.jsonl").read_text().splitlines() if l.strip()]
     meta = json.loads((PRODUCT / "oncology_failure_signals_v1_meta.json").read_text())
@@ -70,10 +96,18 @@ def main() -> int:
             "baseline_rate": bench["baseline"]["rate"],
             "window": bench["window"],
         }
+        featured = featured_benchmark(bench)
+        if featured:
+            summary["featured_benchmark"] = featured
     briefs = sorted((PRODUCT / "briefs").glob("brief_*.html")) if (PRODUCT / "briefs").exists() else []
     summary["brief_count"] = len(briefs)
     summary["sample_file"] = f"/samples/{name}"
     summary["sample_record_count"] = len(sample)
+    summary["sample_columns"] = COLUMNS
+    csv_path = PRODUCT / "oncology_failure_signals_v1.csv"
+    if csv_path.exists():
+        with open(csv_path, newline="", encoding="utf-8") as fh:
+            summary["signals_column_count"] = len(next(csv.reader(fh)))
     SUMMARY.write_text(json.dumps(summary, indent=2) + "\n")
     print(json.dumps(summary, indent=2))
     return 0
