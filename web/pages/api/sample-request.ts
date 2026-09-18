@@ -55,7 +55,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log(JSON.stringify({ event: "lead", ...lead }));
   try {
     const kv = (globalThis as CloudflareGlobal)[Symbol.for("__cloudflare-context__")]?.env?.LEADS;
-    if (kv) await kv.put(`lead:${lead.requested_at}:${email}`, JSON.stringify(lead));
+    if (kv) {
+      await kv.put(`lead:${lead.requested_at}:${email}`, JSON.stringify(lead));
+    } else {
+      // Without the binding a lead survives only as long as Workers Logs retention. See docs/leads.md.
+      console.warn(JSON.stringify({ event: "lead_store_missing", hint: "KV binding LEADS is not configured" }));
+    }
   } catch (error) {
     console.error(JSON.stringify({ event: "lead_store_failed", message: String(error) }));
   }

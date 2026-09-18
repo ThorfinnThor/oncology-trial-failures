@@ -128,6 +128,8 @@ jobs:
           # Exit code 3 = time budget reached; the cache is saved below and the next run resumes.
           python -u scripts/signals/build_oncology_failure_signals.py --step all --max-seconds 9000 --workers 6
           python scripts/signals/build_public_sample.py
+          # Diffs against the snapshot in .cache/signals, then refreshes it for the next run.
+          python scripts/signals/build_change_report.py
 
       - name: Build trial universe and discontinuation benchmarks
         id: benchmarks
@@ -141,6 +143,14 @@ jobs:
           python -u scripts/universe/benchmarks.py --tables --pack --start 2015:2024
           python -u scripts/briefs/build_brief_catalog.py
           cp .cache/universe/resolution_report.json product/benchmarks/
+
+      - name: Render benchmark briefs to PDF
+        if: steps.benchmarks.outcome == 'success'
+        continue-on-error: true
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+          python -u scripts/briefs/render_brief_pdfs.py --workers 4
 
       - name: Save enrichment cache
         if: always()

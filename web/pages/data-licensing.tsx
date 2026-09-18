@@ -290,20 +290,21 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <div className="tagRow">
                   {bench ? <span className="tag">{bench.segments} segments</span> : null}
                   {s.brief_count ? <span className="tag">{s.brief_count} briefs</span> : null}
-                  <span className="tag">JSON · CSV · PDF</span>
+                  <span className="tag">JSON · CSV · HTML + PDF</span>
                 </div>
               </div>
 
               <div className="card dsCard">
                 <div className="dsTitle">Weekly change report</div>
                 <p className="dsBody">
-                  Newly stopped trials, status changes and reclassifications since the previous release, so you can update your own
-                  screens and models without reprocessing the full file.
+                  A diff against the previous release, by trial: newly stopped trials, trials that left the dataset, registry status
+                  and stop-reason changes, reclassifications and new drug linkages. JSON for your pipeline, Markdown to read. Update
+                  your own screens without reprocessing the full file.
                 </p>
                 <div className="tagRow">
                   <span className="tag">Weekly</span>
                   <span className="tag">Dated releases</span>
-                  <span className="tag">Diff format</span>
+                  <span className="tag">JSON · Markdown</span>
                 </div>
               </div>
             </div>
@@ -411,8 +412,9 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <li>
                     <span className="dot">1</span>
                     <span>
-                      <b>Full column set.</b> Drug and research codes, ChEMBL/RxNorm IDs, mechanism, target genes, sponsor group and
-                      ticker, publications and the registry stop reason.
+                      <b>Every column.</b> All {s.signals_column_count} columns of the licensed file plus the sponsor&apos;s SEC
+                      ticker — drug and research codes, ChEMBL IDs, mechanism, targets and target genes, sponsor group and class,
+                      publications and the registry stop reason.
                     </span>
                   </li>
                   <li>
@@ -426,6 +428,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                     <span className="dot">3</span>
                     <span>
                       <b>Checkable.</b> Every row carries its NCT ID and registry URL, so each label can be verified at the source.
+                      Plain UTF-8 CSV — it opens in Excel, Numbers or pandas without cleaning.
                     </span>
                   </li>
                 </ul>
@@ -450,6 +453,13 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <a className="submit asLink" href={sampleUrl} download>
                     Download the sample (CSV)
                   </a>
+                  {s.sample_readme_file ? (
+                    <p className="formFoot">
+                      <a className="link" href={s.sample_readme_file} download>
+                        Sources and terms (README)
+                      </a>
+                    </p>
+                  ) : null}
                   <p className="formFoot">
                     For a larger evaluation extract or pricing, email{" "}
                     <a className="link" href={mailto("Oncology Failure Signals licensing")}>
@@ -461,7 +471,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <form onSubmit={onSubmit} className="card form">
                   <div className="formTitle">Request the free sample</div>
                   <p className="formSub">
-                    {s.sample_record_count} records from dataset {datasetVersion}, delivered as CSV.
+                    {s.sample_record_count} records from dataset {datasetVersion}, as a CSV with {s.sample_columns?.length ?? ""} columns.
                   </p>
                   <div className="field">
                     <label htmlFor="lic-email">Work email</label>

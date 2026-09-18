@@ -10,5 +10,14 @@
   },
   "observability": {
     "enabled": true
-  }
+  },
+
+  // Lead capture for the /data-licensing sample form. Workers Logs keep a lead only for the
+  // observability retention window, so leads are also written to this KV namespace.
+  // Create it once, then paste the id here (see docs/leads.md):
+  //   npx wrangler kv namespace create LEADS
+  // Uncomment with the real id — a placeholder id fails the deploy:
+  // "kv_namespaces": [
+  //   { "binding": "LEADS", "id": "<id printed by the command above>" }
+  // ]
 }
