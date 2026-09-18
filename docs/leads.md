@@ -4,17 +4,15 @@ The `/data-licensing` sample form posts to `web/pages/api/sample-request.ts`. Ev
 written twice: to Workers Logs (short retention) and, when the binding exists, to a KV namespace
 that keeps it indefinitely. Without KV, a lead is lost once the log retention window passes.
 
-## One-time setup
+## Setup
 
-```bash
-cd web
-npx wrangler login                       # opens the browser; no token is pasted anywhere
-npx wrangler kv namespace create LEADS   # prints the namespace id
-```
+Done: the namespace `LEADS` exists in the Cloudflare account and its id is bound in
+`web/wrangler.jsonc`. It takes effect on the next deploy (`npm run cloudflare:deploy`).
 
-Then uncomment the `kv_namespaces` block at the bottom of `web/wrangler.jsonc` and paste the id.
-Deploy as usual (`npm run cloudflare:deploy`). A placeholder id fails the deploy, so the block
-stays commented until the real id is in place.
+To recreate it in another account: Cloudflare dashboard → Storage & databases → Workers KV →
+Create a KV namespace → name it `LEADS`, then put the id shown in the namespace URL into the
+`kv_namespaces` block in `web/wrangler.jsonc`. (`npx wrangler kv namespace create LEADS` does the
+same from the CLI.) The id is an identifier, not a secret; it grants nothing on its own.
 
 ## Reading the leads
 
