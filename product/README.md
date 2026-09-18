@@ -24,6 +24,8 @@ their sources; the classification, linkage, validation and curation are derived 
 | `oncology_failure_signals_v1.csv` | Flat analyst view (list values joined with `; `) |
 | `oncology_failure_signals_assets_v1.json` | One record per canonical drug: aliases, mechanisms, targets, approval status, signal counts |
 | `oncology_failure_signals_v1_meta.json` | Release date, counts, coverage metrics, source status, limitations |
+| `oncology_failure_signals_change_report_v1.json` | Diff against the previous release: trials added and removed, and per-trial changes to status, stop reason, classification, drug linkage, targets, mechanisms, sponsor and completion date |
+| `oncology_failure_signals_change_report_v1.md` | The same diff, written to be read |
 
 ## Trial record fields
 
@@ -75,6 +77,7 @@ their sources; the classification, linkage, validation and curation are derived 
 | `benchmarks/oncology_benchmarks_by_*.csv` | The same segments as flat tables |
 | `benchmarks/resolution_report.json` | Drug-linking coverage for the release |
 | `briefs/brief_<segment>.html` | Two-page benchmark brief per mechanism class, with the facts file behind every number |
+| `briefs/brief_<segment>.pdf` | The same brief as a PDF, for forwarding |
 
 A discontinuation rate is biological stops ÷ closed trials (completed or terminated); see
 `docs/benchmarks_methodology.md` for the full definitions and limits. It is not a failure rate:

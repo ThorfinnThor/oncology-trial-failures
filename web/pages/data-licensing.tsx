@@ -290,20 +290,21 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <div className="tagRow">
                   {bench ? <span className="tag">{bench.segments} segments</span> : null}
                   {s.brief_count ? <span className="tag">{s.brief_count} briefs</span> : null}
-                  <span className="tag">JSON · CSV · PDF</span>
+                  <span className="tag">JSON · CSV · HTML + PDF</span>
                 </div>
               </div>
 
               <div className="card dsCard">
                 <div className="dsTitle">Weekly change report</div>
                 <p className="dsBody">
-                  Newly stopped trials, status changes and reclassifications since the previous release, so you can update your own
-                  screens and models without reprocessing the full file.
+                  A diff against the previous release, by trial: newly stopped trials, trials that left the dataset, registry status
+                  and stop-reason changes, reclassifications and new drug linkages. JSON for your pipeline, Markdown to read. Update
+                  your own screens without reprocessing the full file.
                 </p>
                 <div className="tagRow">
                   <span className="tag">Weekly</span>
                   <span className="tag">Dated releases</span>
-                  <span className="tag">Diff format</span>
+                  <span className="tag">JSON · Markdown</span>
                 </div>
               </div>
             </div>
