@@ -11,6 +11,7 @@ import csv
 import hashlib
 import json
 import random
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -109,6 +110,10 @@ def main() -> int:
                                      "industry_phase2_3_trial_count", "by_primary_reason", "trials_with_resolved_focus_asset",
                                      "trials_with_focus_target_gene", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer",
                                      "unique_assets", "assets_with_repeated_safety_signal", "assets_with_repeated_efficacy_signal"]}
+    # The benchmark pack is built by a later, separately-failing workflow step. If it is missing,
+    # carry the previous release's benchmark figures instead of dropping them: the licensing page
+    # renders "—" and hides the denominators section when these keys disappear.
+    previous = json.loads(SUMMARY.read_text()) if SUMMARY.exists() else {}
     bench_path = PRODUCT / "benchmarks/oncology_benchmarks_v1.json"
     if bench_path.exists():
         bench = json.loads(bench_path.read_text())
@@ -123,8 +128,16 @@ def main() -> int:
         featured = featured_benchmark(bench)
         if featured:
             summary["featured_benchmark"] = featured
+    else:
+        for key in ("benchmarks", "featured_benchmark"):
+            if key in previous:
+                summary[key] = previous[key]
+        if "benchmarks" in summary:
+            summary["benchmarks_from_release"] = previous.get("dataset_version")
+            print(f"WARNING: no benchmark pack in this build; kept figures from release "
+                  f"{previous.get('dataset_version')}", file=sys.stderr)
     briefs = sorted((PRODUCT / "briefs").glob("brief_*.html")) if (PRODUCT / "briefs").exists() else []
-    summary["brief_count"] = len(briefs)
+    summary["brief_count"] = len(briefs) or previous.get("brief_count", 0)
     summary["sample_file"] = f"/samples/{name}"
     summary["sample_record_count"] = len(sample)
     summary["sample_columns"] = COLUMNS
