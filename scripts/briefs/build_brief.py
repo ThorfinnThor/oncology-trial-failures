@@ -108,8 +108,11 @@ def main(argv: list[str] | None = None) -> int:
         ref_label = f"{args.with_class} combinations without {args.klass or args.genes or args.modality}"  # shown verbatim
         reference = summarize(select(rows, with_class=args.with_class, exclude_class=args.klass, **common))
     else:
+        # Without a combination partner the reference IS the baseline; the brief then shows one
+        # comparison instead of printing the same rate twice under two different names.
         ref_label = f"all {args.area.lower()} Phase {args.phases} trials"
         reference = baseline
+    has_reference = reference is not baseline
     if not segment["closed"]:
         print("No closed trials in this segment; nothing to publish.")
         return 2
@@ -166,6 +169,12 @@ def main(argv: list[str] | None = None) -> int:
 @page {{ size:A4; margin:14mm 13mm; }}
 :root {{ --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }}
 body {{ font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }}
+/* On screen the brief keeps its A4 measure instead of stretching across the window. */
+@media screen {{
+  body {{ background:#eceae5; padding:24px 16px; font-size:10.5pt; }}
+  .sheet {{ max-width:210mm; margin:0 auto; background:#fff; padding:16mm 14mm; box-shadow:0 2px 24px rgba(0,0,0,.10); border-radius:2px; }}
+}}
+@media print {{ .sheet {{ max-width:none; margin:0; padding:0; box-shadow:none; }} }}
 .kicker {{ font-size:7.6pt; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; }}
 h1 {{ font-size:18pt; line-height:1.15; margin:4px 0 6px; letter-spacing:-.01em; }}
 .dek {{ color:var(--ink2); font-size:9.6pt; margin:0 0 10px; }}
@@ -191,9 +200,10 @@ table {{ page-break-inside:auto; }} tr {{ page-break-inside:avoid; }}
 .cta {{ border:1.5px solid var(--ink); padding:8px 10px; border-radius:4px; margin-top:10px; font-size:8.4pt; }}
 .foot {{ margin-top:8px; font-size:7.2pt; color:var(--muted); border-top:1px solid var(--rule); padding-top:5px; }}
 </style></head><body>
+<div class="sheet">
 <div class="kicker">Clinical Trial Failures · Discontinuation benchmark · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
 <h1>{e(name)}: {pct(segment['rate'])} of closed trials stopped for biological reasons</h1>
-<p class="dek">Against {pct(reference['rate'])} for {e(ref_label)} and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials in the same window.
+<p class="dek">Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
 Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
 <div class="stats">
  <div class="stat"><b>{pct(segment['rate'])}</b><span>{segment['biological_stops']} of {segment['closed']} closed trials (95% CI {pct(segment['ci95'][0])}–{pct(segment['ci95'][1])})</span></div>
@@ -205,7 +215,7 @@ Rates count trials that stopped early for efficacy, safety or benefit–risk rea
 <div>
 <h2>How this compares</h2>
 {bar(name, segment, maxrate)}
-{bar(ref_label, reference, maxrate)}
+{bar(ref_label, reference, maxrate) if has_reference else ""}
 {bar(f"All {args.area.lower()} Phase {args.phases}", baseline, maxrate)}
 <p style="font-size:7.4pt;color:var(--muted);margin-top:6px">Bars show the share of closed trials stopped for biological reasons. Confidence intervals overlap where sample sizes are small — read the counts, not just the bars.</p>
 </div>
@@ -226,6 +236,7 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 </div>
 <div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped oncology trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
 <div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and benchmarks by Clinical Trial Failures. Generated {facts['generated_at_utc']}.</div>
+</div>
 </body></html>"""
 
     slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")

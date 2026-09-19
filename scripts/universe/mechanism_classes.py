@@ -52,5 +52,89 @@ CLASSES: dict[str, list[str]] = {
 }
 
 
-def classes_for(genes: set[str]) -> list[str]:
-    return sorted(name for name, members in CLASSES.items() if genes & set(members))
+
+# Immunology & autoimmune. Same idea as the oncology classes: coarse groups an analyst names
+# ("anti-TNF", "IL-23", "JAK"), not individual proteins. Drawn from the targets that actually
+# appear in Phase 2/3 immunology trials in the universe, not from a textbook.
+IMMUNOLOGY_CLASSES: dict[str, list[str]] = {
+    "TNF": ["TNF"],
+    "IL-23 / IL-12": ["IL23A", "IL12B", "IL12A", "IL23R"],
+    "IL-17": ["IL17A", "IL17F", "IL17RA", "IL17RC"],
+    "JAK / TYK2": ["JAK1", "JAK2", "JAK3", "TYK2"],
+    "IL-6": ["IL6", "IL6R", "IL6ST"],
+    "IL-1": ["IL1B", "IL1A", "IL1R1", "IL1RN"],
+    "IL-4 / IL-13": ["IL4", "IL4R", "IL13", "IL13RA1", "IL13RA2"],
+    "IL-5 / eosinophil": ["IL5", "IL5RA", "CCR3"],
+    "TSLP": ["TSLP", "CRLF2"],
+    "TL1A": ["TNFSF15", "TNFRSF25"],
+    "Integrin (α4β7 / LFA-1)": ["ITGA4", "ITGB7", "ITGAL", "ITGB2", "ITGAE"],
+    "S1P receptor": ["S1PR1", "S1PR4", "S1PR5"],
+    "CD20 B-cell depletion": ["MS4A1"],
+    "BAFF / APRIL": ["TNFSF13B", "TNFSF13", "TNFRSF13B", "TNFRSF13C"],
+    "CD40 / CD40L": ["CD40", "CD40LG"],
+    "T-cell costimulation (CTLA-4 / CD28)": ["CTLA4", "CD80", "CD86", "CD28"],
+    "Type I interferon": ["IFNAR1", "IFNA1", "IFNB1"],
+    "Complement": ["C5", "C3", "C1S", "C1R", "CFB", "CFD", "C5AR1"],
+    "FcRn": ["FCGRT"],
+    "BTK": ["BTK"],
+    "PDE4": ["PDE4A", "PDE4B", "PDE4C", "PDE4D"],
+    "Glucocorticoid receptor": ["NR3C1"],
+    "Antimetabolite immunosuppressant": ["IMPDH1", "IMPDH2", "DHODH", "DHFR"],
+    "Calcineurin / mTOR": ["PPP3CA", "PPP3CB", "PPP3R1", "MTOR", "FKBP1A"],
+    "IgE": ["IGHE", "FCER1A", "MS4A2"],
+    "IL-2 / Treg": ["IL2", "IL2RA", "IL2RB"],
+    "OX40 / OX40L": ["TNFRSF4", "TNFSF4"],
+    "Plasma-cell depletion (CD38 / BCMA / CD19)": ["CD38", "TNFRSF17", "CD19"],
+}
+
+# Neurology & CNS. Drawn from the targets that appear in Phase 2/3 neurology trials in the
+# universe: antiseizure, migraine, movement disorders, neuroimmunology, neurodegeneration.
+NEUROLOGY_CLASSES: dict[str, list[str]] = {
+    "CGRP (migraine)": ["CALCA", "CALCB", "CALCRL", "RAMP1"],
+    "Sodium channel": ["SCN1A", "SCN2A", "SCN3A", "SCN4A", "SCN5A", "SCN7A", "SCN8A", "SCN9A", "SCN10A", "SCN11A"],
+    "GABA-A": ["GABRA1", "GABRA2", "GABRA3", "GABRA4", "GABRA5", "GABRA6", "GABRB1", "GABRB2", "GABRB3",
+               "GABRD", "GABRE", "GABRG1", "GABRG2", "GABRG3", "GABRP", "GABRQ"],
+    "SV2A (antiseizure)": ["SV2A"],
+    "Calcium channel": ["CACNA1A", "CACNA1B", "CACNA1C", "CACNA2D1", "CACNA2D2"],
+    "Dopaminergic": ["DRD1", "DRD2", "DRD3", "DRD4", "DRD5", "SLC6A3", "DDC", "COMT", "MAOB"],
+    "Serotonergic": ["HTR1A", "HTR1B", "HTR1D", "HTR2A", "HTR2B", "HTR2C", "HTR3A", "SLC6A4"],
+    "Glutamatergic (NMDA / AMPA)": ["GRIN1", "GRIN2A", "GRIN2B", "GRIA1", "GRIA2", "GRM5"],
+    "Cannabinoid": ["CNR1", "CNR2"],
+    "Opioid receptor": ["OPRM1", "OPRK1", "OPRD1"],
+    "Cholinergic": ["ACHE", "CHRNA4", "CHRNA7", "CHRM1", "CHRM4", "BCHE"],
+    "Amyloid (Alzheimer's)": ["APP", "BACE1", "PSEN1"],
+    "Tau": ["MAPT"],
+    "α-synuclein": ["SNCA"],
+    "Huntingtin / gene-targeted": ["HTT", "SMN1", "SMN2"],
+    "CD20 B-cell depletion (MS)": ["MS4A1"],
+    "S1P receptor (MS)": ["S1PR1", "S1PR5"],
+    "Integrin α4 (MS)": ["ITGA4"],
+    "BTK (MS)": ["BTK"],
+    "Complement (neuromuscular)": ["C5", "C1S", "C1R"],
+    "FcRn (neuromuscular)": ["FCGRT"],
+    "Neurotrophic / growth factor": ["NGF", "NTRK1", "BDNF", "GDNF"],
+    "Orexin": ["HCRTR1", "HCRTR2"],
+    "Prostaglandin / COX": ["PTGS1", "PTGS2"],
+    "Adenosine / A2A": ["ADORA2A"],
+    "SOD1 / ALS gene-targeted": ["SOD1", "FUS", "TARDBP", "C9orf72"],
+}
+
+# Classes are per disease area: a gene set that means "checkpoint inhibitor" in oncology means
+# something different in autoimmune disease, and each area's analysts name different groups.
+CLASSES_BY_AREA: dict[str, dict[str, list[str]]] = {
+    "Oncology": CLASSES,
+    "Immunology & Autoimmune": IMMUNOLOGY_CLASSES,
+    "Neurology": NEUROLOGY_CLASSES,
+}
+
+COMBINATION_PARTNER: dict[str, str] = {"Oncology": "PD-(L)1"}
+
+
+def classes_of(area: str | None) -> dict[str, list[str]]:
+    """The class lexicon for a disease area; empty when we have not curated one yet."""
+    return CLASSES_BY_AREA.get(area or "", {})
+
+
+def classes_for(genes: set[str], area: str | None = "Oncology") -> list[str]:
+    lexicon = classes_of(area)
+    return sorted(name for name, members in lexicon.items() if genes & set(members))

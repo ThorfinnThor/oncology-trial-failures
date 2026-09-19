@@ -19,6 +19,7 @@ import argparse
 import csv
 import gzip
 import json
+import re
 from functools import lru_cache
 import math
 import sys  # noqa: F401
@@ -30,7 +31,7 @@ ROOT_ = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT_))
 
 from scripts.signals.sponsors import resolve_sponsor  # noqa: E402
-from scripts.universe.mechanism_classes import CLASSES, classes_for  # noqa: E402
+from scripts.universe.mechanism_classes import COMBINATION_PARTNER, classes_for, classes_of  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 UNIVERSE = ROOT / ".cache/universe/universe_resolved_v1.jsonl.gz"
@@ -70,13 +71,27 @@ def is_bio_stop(rec: dict) -> bool:
     return outcome == "BIOLOGICAL_FAILURE" or (outcome == "MIXED_CAUSES" and bool(reasons(rec) & BIO))
 
 
-@lru_cache(maxsize=4)
-def load(area: str | None = "Oncology") -> list[dict]:
+def areas_of(r: dict) -> set[str]:
+    raw = r.get("disease_areas_matched") or r.get("disease_area") or ""
+    return {a.strip() for a in raw.replace(";", ",").split(",") if a.strip()}
+
+
+@lru_cache(maxsize=8)
+def load(area: str | None = "Oncology", exclude_oncology: bool | None = None) -> list[dict]:
+    """Trials in a disease area. Areas are multi-label and oncology is everywhere: 48% of
+    respiratory trials and 18% of neurology trials are also cancer trials (lung cancer, brain
+    metastases). Counting those in a respiratory rate measures oncology, so a non-oncology area
+    excludes them by default; pass exclude_oncology=False to see the area as tagged."""
+    if exclude_oncology is None:
+        exclude_oncology = bool(area) and area != "Oncology"
     rows = []
     with gzip.open(UNIVERSE, "rt", encoding="utf-8") as fh:
         for line in fh:
             r = json.loads(line)
-            if area and area not in (r.get("disease_areas_matched") or r.get("disease_area") or ""):
+            tags = areas_of(r)
+            if area and area not in tags:
+                continue
+            if exclude_oncology and "Oncology" in tags:
                 continue
             r["_phase"] = phase_groups(r.get("phases"))
             r["_start_year"] = int(r["start_date"][:4]) if r.get("start_date") else None
@@ -88,8 +103,8 @@ def load(area: str | None = "Oncology") -> list[dict]:
             r["_genes_regimen"] = r["_genes"] | {g for i in r["interventions"] if i["role"] in ("EXPERIMENTAL_ARM", "BACKGROUND_OR_BACKBONE")
                                                   for c in i["components"] for g in c.get("target_genes", [])}
             r["_targets"] = {t for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM" for c in i["components"] for t in c.get("target_names", [])}
-            r["_classes"] = classes_for(r["_genes"])
-            r["_classes_regimen"] = classes_for(r["_genes_regimen"])
+            r["_classes"] = classes_for(r["_genes"], area)
+            r["_classes_regimen"] = classes_for(r["_genes_regimen"], area)
             r["_sponsor_group"] = resolve_sponsor(r.get("lead_sponsor") or "", r.get("lead_sponsor_class") or "")["sponsor_group"]
             r["_modalities"] = {c["modality"] for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM" for c in i["components"]}
             rows.append(r)
@@ -151,7 +166,7 @@ def fmt(s: dict) -> str:
             f"{s['trials']} trials total, {s['open_or_other']} open/other; lower bound over all started {s['rate_lower_bound_all_started']*100:.1f}%")
 
 
-def standard_tables(rows, out_dir: Path, start, phases) -> None:
+def standard_tables(rows, out_dir: Path, start, phases, slug: str = "oncology") -> None:
     base = select(rows, phases=phases, start=start)
     out_dir.mkdir(parents=True, exist_ok=True)
     tables = {
@@ -170,7 +185,7 @@ def standard_tables(rows, out_dir: Path, start, phases) -> None:
             for k in keyfn(r) or []:
                 if k is not None:
                     groups[k].append(r)
-        path = out_dir / f"oncology_benchmarks_{name}.csv"
+        path = out_dir / f"{slug}_benchmarks_{name}.csv"
         with open(path, "w", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["segment", "trials", "closed", "biological_stops", "efficacy_stops", "safety_stops", "rate", "ci95_low", "ci95_high"])
@@ -183,7 +198,7 @@ def standard_tables(rows, out_dir: Path, start, phases) -> None:
         print("wrote", path.relative_to(ROOT))
 
 
-def product_json(rows, start, phases, out: Path) -> dict:
+def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") -> dict:
     """Machine-readable benchmark pack: baseline plus every segment with enough closed trials."""
     base = select(rows, phases=phases, start=start)
     baseline = summarize(base)
@@ -196,12 +211,15 @@ def product_json(rows, start, phases, out: Path) -> dict:
         segments.append({"dimension": dimension, "segment": segment, **{k: v for k, v in s.items() if k != "nct_biological_stops"},
                          "biological_stop_nct_ids": s["nct_biological_stops"], **(extra or {})})
 
-    for name in CLASSES:
+    # Each area has its own classes, and its own class that everything is combined with
+    # (PD-(L)1 in oncology). Areas without a curated lexicon still get the other dimensions.
+    partner = COMBINATION_PARTNER.get(area or "")
+    for name in classes_of(area):
         add("mechanism_class", name, select(base, klass=name))
         for ph in phases:
             add("mechanism_class_x_phase", f"{name} | Phase {ph}", select(base, klass=name, phases=[ph]))
-        if name != "PD-(L)1":
-            add("mechanism_class_with_pd1", f"{name} + PD-(L)1", select(base, klass=name, with_class="PD-(L)1"))
+        if partner and name != partner:
+            add("mechanism_class_with_pd1", f"{name} + {partner}", select(base, klass=name, with_class=partner))
     for modality in sorted({m for r in base for m in r["_modalities"]}):
         add("modality", modality, select(base, modality=modality))
     for ph in phases:
@@ -251,17 +269,19 @@ def main() -> int:
     ap.add_argument("--sponsor-group")
     ap.add_argument("--pack", action="store_true", help="write the machine-readable benchmark pack")
     ap.add_argument("--tables", action="store_true", help="write standard benchmark tables to product/benchmarks")
+    ap.add_argument("--area", default="Oncology", help="disease area, e.g. 'Immunology & Autoimmune'")
     args = ap.parse_args()
     split = lambda s: [x.strip() for x in s.split(",")] if s else None
     start = tuple(int(x) for x in args.start.split(":"))
     phases = split(args.phases)
-    rows = load()
+    rows = load(args.area)
+    slug = re.sub(r"[^a-z0-9]+", "-", args.area.lower()).strip("-")
     if args.tables:
-        standard_tables(rows, ROOT / "product/benchmarks", start, phases)
+        standard_tables(rows, ROOT / "product/benchmarks", start, phases, slug=slug)
     if args.pack:
-        product_json(rows, start, phases, ROOT / "product/benchmarks/oncology_benchmarks_v1.json")
+        product_json(rows, start, phases, ROOT / f"product/benchmarks/{slug}_benchmarks_v1.json", area=args.area)
     common = dict(phases=phases, start=start, sponsor_class=args.sponsor_class, modality=args.modality)
-    print(f"Oncology Phase {args.phases} interventional trials started {start[0]}–{start[1]}:")
+    print(f"{args.area} Phase {args.phases} interventional trials started {start[0]}–{start[1]}:")
     print("  all:", fmt(summarize(select(rows, **common))))
     if args.genes or args.with_genes or args.klass or args.sponsor_group:
         seg = select(rows, genes=split(args.genes), with_genes=split(args.with_genes), klass=args.klass,
