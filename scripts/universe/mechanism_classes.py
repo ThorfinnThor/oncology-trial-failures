@@ -87,11 +87,44 @@ IMMUNOLOGY_CLASSES: dict[str, list[str]] = {
     "Plasma-cell depletion (CD38 / BCMA / CD19)": ["CD38", "TNFRSF17", "CD19"],
 }
 
+# Neurology & CNS. Drawn from the targets that appear in Phase 2/3 neurology trials in the
+# universe: antiseizure, migraine, movement disorders, neuroimmunology, neurodegeneration.
+NEUROLOGY_CLASSES: dict[str, list[str]] = {
+    "CGRP (migraine)": ["CALCA", "CALCB", "CALCRL", "RAMP1"],
+    "Sodium channel": ["SCN1A", "SCN2A", "SCN3A", "SCN4A", "SCN5A", "SCN7A", "SCN8A", "SCN9A", "SCN10A", "SCN11A"],
+    "GABA-A": ["GABRA1", "GABRA2", "GABRA3", "GABRA4", "GABRA5", "GABRA6", "GABRB1", "GABRB2", "GABRB3",
+               "GABRD", "GABRE", "GABRG1", "GABRG2", "GABRG3", "GABRP", "GABRQ"],
+    "SV2A (antiseizure)": ["SV2A"],
+    "Calcium channel": ["CACNA1A", "CACNA1B", "CACNA1C", "CACNA2D1", "CACNA2D2"],
+    "Dopaminergic": ["DRD1", "DRD2", "DRD3", "DRD4", "DRD5", "SLC6A3", "DDC", "COMT", "MAOB"],
+    "Serotonergic": ["HTR1A", "HTR1B", "HTR1D", "HTR2A", "HTR2B", "HTR2C", "HTR3A", "SLC6A4"],
+    "Glutamatergic (NMDA / AMPA)": ["GRIN1", "GRIN2A", "GRIN2B", "GRIA1", "GRIA2", "GRM5"],
+    "Cannabinoid": ["CNR1", "CNR2"],
+    "Opioid receptor": ["OPRM1", "OPRK1", "OPRD1"],
+    "Cholinergic": ["ACHE", "CHRNA4", "CHRNA7", "CHRM1", "CHRM4", "BCHE"],
+    "Amyloid (Alzheimer's)": ["APP", "BACE1", "PSEN1"],
+    "Tau": ["MAPT"],
+    "α-synuclein": ["SNCA"],
+    "Huntingtin / gene-targeted": ["HTT", "SMN1", "SMN2"],
+    "CD20 B-cell depletion (MS)": ["MS4A1"],
+    "S1P receptor (MS)": ["S1PR1", "S1PR5"],
+    "Integrin α4 (MS)": ["ITGA4"],
+    "BTK (MS)": ["BTK"],
+    "Complement (neuromuscular)": ["C5", "C1S", "C1R"],
+    "FcRn (neuromuscular)": ["FCGRT"],
+    "Neurotrophic / growth factor": ["NGF", "NTRK1", "BDNF", "GDNF"],
+    "Orexin": ["HCRTR1", "HCRTR2"],
+    "Prostaglandin / COX": ["PTGS1", "PTGS2"],
+    "Adenosine / A2A": ["ADORA2A"],
+    "SOD1 / ALS gene-targeted": ["SOD1", "FUS", "TARDBP", "C9orf72"],
+}
+
 # Classes are per disease area: a gene set that means "checkpoint inhibitor" in oncology means
 # something different in autoimmune disease, and each area's analysts name different groups.
 CLASSES_BY_AREA: dict[str, dict[str, list[str]]] = {
     "Oncology": CLASSES,
     "Immunology & Autoimmune": IMMUNOLOGY_CLASSES,
+    "Neurology": NEUROLOGY_CLASSES,
 }
 
 COMBINATION_PARTNER: dict[str, str] = {"Oncology": "PD-(L)1"}

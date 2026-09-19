@@ -71,13 +71,27 @@ def is_bio_stop(rec: dict) -> bool:
     return outcome == "BIOLOGICAL_FAILURE" or (outcome == "MIXED_CAUSES" and bool(reasons(rec) & BIO))
 
 
-@lru_cache(maxsize=4)
-def load(area: str | None = "Oncology") -> list[dict]:
+def areas_of(r: dict) -> set[str]:
+    raw = r.get("disease_areas_matched") or r.get("disease_area") or ""
+    return {a.strip() for a in raw.replace(";", ",").split(",") if a.strip()}
+
+
+@lru_cache(maxsize=8)
+def load(area: str | None = "Oncology", exclude_oncology: bool | None = None) -> list[dict]:
+    """Trials in a disease area. Areas are multi-label and oncology is everywhere: 48% of
+    respiratory trials and 18% of neurology trials are also cancer trials (lung cancer, brain
+    metastases). Counting those in a respiratory rate measures oncology, so a non-oncology area
+    excludes them by default; pass exclude_oncology=False to see the area as tagged."""
+    if exclude_oncology is None:
+        exclude_oncology = bool(area) and area != "Oncology"
     rows = []
     with gzip.open(UNIVERSE, "rt", encoding="utf-8") as fh:
         for line in fh:
             r = json.loads(line)
-            if area and area not in (r.get("disease_areas_matched") or r.get("disease_area") or ""):
+            tags = areas_of(r)
+            if area and area not in tags:
+                continue
+            if exclude_oncology and "Oncology" in tags:
                 continue
             r["_phase"] = phase_groups(r.get("phases"))
             r["_start_year"] = int(r["start_date"][:4]) if r.get("start_date") else None
