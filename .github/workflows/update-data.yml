@@ -141,6 +141,11 @@ jobs:
           python -u scripts/universe/resolve.py
           python -u scripts/universe/benchmarks.py --tables --pack --start 2015:2024
           python -u scripts/briefs/build_brief_catalog.py
+          # Disease areas beyond oncology reuse the same universe; each needs only a class lexicon.
+          for area in "Neurology" "Immunology & Autoimmune"; do
+            python -u scripts/universe/benchmarks.py --tables --pack --start 2015:2024 --area "$area"
+            python -u scripts/briefs/build_brief_catalog.py --area "$area"
+          done
           cp .cache/universe/resolution_report.json product/benchmarks/
 
       - name: Render benchmark briefs to PDF
