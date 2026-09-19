@@ -1,0 +1,381 @@
+// web/pages/briefs/index.tsx
+
+import Head from "next/head";
+import Link from "next/link";
+import { useState } from "react";
+
+import PrimaryNav from "@/components/PrimaryNav";
+import briefsIndex from "@/data/briefs_index.json";
+import { LICENSING_EMAIL } from "@/lib/licensing";
+
+const SITE_URL = "https://clinicaltrialfailures.com";
+const CANONICAL_URL = `${SITE_URL}/briefs`;
+const TITLE = "Discontinuation briefs — how often trials of each mechanism stop early";
+const DESCRIPTION =
+  "One brief per mechanism class: the share of closed trials stopped early for efficacy, safety or benefit–risk reasons, against the rate for the whole disease area, with the trials behind every number.";
+
+type Brief = (typeof briefsIndex.briefs)[number];
+
+const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
+const n = (v: number) => v.toLocaleString("en-US");
+
+export default function BriefsIndexPage() {
+  const all = briefsIndex.briefs as Brief[];
+  const areas = briefsIndex.areas as string[];
+  const [area, setArea] = useState<string>("All");
+  const shown = area === "All" ? all : all.filter((b) => b.area === area);
+
+  // The strongest three lead the page: a reader scanning it is looking for the outliers.
+  const featured = all.slice(0, 3);
+
+  return (
+    <>
+      <Head>
+        <title>{TITLE}</title>
+        <meta name="description" content={DESCRIPTION} />
+        <meta name="robots" content="index,follow" />
+        <link rel="canonical" href={CANONICAL_URL} />
+        <meta property="og:title" content={TITLE} />
+        <meta property="og:description" content={DESCRIPTION} />
+        <meta property="og:url" content={CANONICAL_URL} />
+      </Head>
+
+      <header className="topbar">
+        <div className="topbar-inner">
+          <div className="topbar-left">
+            <Link href="/" className="brand">
+              Clinical trial failures
+            </Link>
+            <PrimaryNav active="briefs" />
+          </div>
+        </div>
+      </header>
+
+      <main className="page">
+        <div className="wrap">
+          <section className="intro">
+            <div className="eyebrow">Discontinuation briefs</div>
+            <h1>How often do trials of this mechanism stop early?</h1>
+            <p className="lead">
+              {briefsIndex.brief_count} briefs, one per mechanism class. Each gives the share of closed trials stopped early for an
+              efficacy, safety or benefit–risk reason, the rate for the whole disease area to compare it against, and the trials
+              behind the number with their registry stop reasons. Rebuilt weekly.
+            </p>
+          </section>
+
+          <section className="section">
+            <h2>The clearest signals</h2>
+            <div className="featured">
+              {featured.map((b) => (
+                <Link key={b.slug} href={`/briefs/${b.slug}`} className="featureCard">
+                  <div className="featureArea">{b.area}</div>
+                  <div className="featureName">{b.segment}</div>
+                  <div className="featureRate">{pct(b.rate)}</div>
+                  <div className="featureMeta">
+                    {b.biological_stops} of {n(b.closed)} closed trials stopped early, against {pct(b.baseline_rate)} across{" "}
+                    {b.area.toLowerCase()}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="section">
+            <div className="listHead">
+              <h2>All briefs</h2>
+              <div className="filters">
+                {["All", ...areas].map((a) => (
+                  <button
+                    key={a}
+                    type="button"
+                    className={a === area ? "chip chipOn" : "chip"}
+                    onClick={() => setArea(a)}
+                    aria-pressed={a === area}
+                  >
+                    {a}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="tableWrap">
+              <table className="briefTable">
+                <thead>
+                  <tr>
+                    <th>Mechanism class</th>
+                    <th>Area</th>
+                    <th className="num">Rate</th>
+                    <th className="num">Stops / closed</th>
+                    <th className="num">95% CI</th>
+                    <th className="num">Area baseline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {shown.map((b) => (
+                    <tr key={b.slug}>
+                      <td>
+                        <Link className="link" href={`/briefs/${b.slug}`}>
+                          {b.segment}
+                        </Link>
+                      </td>
+                      <td className="muted">{b.area}</td>
+                      <td className="num strong">{pct(b.rate)}</td>
+                      <td className="num muted">
+                        {b.biological_stops} / {n(b.closed)}
+                      </td>
+                      <td className="num muted">
+                        {pct(b.ci95[0])}–{pct(b.ci95[1])}
+                      </td>
+                      <td className="num muted">{pct(b.baseline_rate)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="fine">
+              A rate is the share of <b>closed</b> trials (completed or terminated) that were terminated for an efficacy, safety or
+              benefit–risk reason recorded in the registry, with a 95% Wilson interval. It is not a failure rate: trials that
+              completed and missed their endpoints are not counted. Where the interval is wide, the segment is small — read the
+              counts, not just the rate.
+            </p>
+          </section>
+
+          <div className="cta">
+            <div>
+              <div className="ctaTitle">Every mechanism, sponsor and indication — updated weekly</div>
+              <p className="muted">
+                The briefs are generated from the licensed dataset: stopped trials linked to drugs, targets and sponsors, plus the
+                full trial universe that gives every rate its denominator.
+              </p>
+            </div>
+            <div className="ctaActions">
+              <Link className="btnPrimary" href="/data-licensing">
+                Data &amp; licensing
+              </Link>
+              <a className="btnGhost" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Discontinuation briefs")}`}>
+                Ask a question
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <style jsx>{`
+        .wrap {
+          max-width: 1120px;
+          margin: 0 auto;
+        }
+        .intro {
+          padding: 10px 0 4px;
+        }
+        .eyebrow {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: var(--accent);
+        }
+        h1 {
+          margin: 8px 0 0;
+          font-size: 30px;
+          line-height: 1.12;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+          max-width: 22ch;
+        }
+        .lead {
+          margin: 12px 0 0;
+          font-size: 15px;
+          line-height: 1.55;
+          color: var(--text-muted);
+          max-width: 78ch;
+        }
+        .section {
+          margin-top: 34px;
+        }
+        .section h2 {
+          margin: 0;
+          font-size: 19px;
+          font-weight: 900;
+          letter-spacing: -0.015em;
+        }
+        .featured {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+          margin-top: 14px;
+        }
+        .featureCard {
+          display: block;
+          text-decoration: none;
+          color: inherit;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          box-shadow: var(--shadow-soft);
+          padding: 18px 20px;
+        }
+        .featureCard:hover {
+          border-color: rgba(79, 70, 229, 0.45);
+        }
+        .featureArea {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .featureName {
+          margin-top: 6px;
+          font-size: 15px;
+          font-weight: 850;
+        }
+        .featureRate {
+          margin-top: 6px;
+          font-size: 34px;
+          font-weight: 900;
+          letter-spacing: -0.025em;
+          font-variant-numeric: tabular-nums;
+          line-height: 1.05;
+        }
+        .featureMeta {
+          margin-top: 4px;
+          font-size: 13px;
+          line-height: 1.5;
+          color: var(--text-muted);
+        }
+        .listHead {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+        .filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+        .chip {
+          font-size: 12.5px;
+          font-weight: 700;
+          color: var(--text-muted);
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          padding: 5px 12px;
+          cursor: pointer;
+          font-family: inherit;
+        }
+        .chipOn {
+          background: var(--accent);
+          border-color: var(--accent);
+          color: #fff;
+        }
+        .tableWrap {
+          margin-top: 14px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          box-shadow: var(--shadow-soft);
+          overflow-x: auto;
+        }
+        .briefTable {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 14px;
+        }
+        .briefTable th {
+          text-align: left;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+          padding: 12px 16px;
+          border-bottom: 1px solid var(--border);
+          white-space: nowrap;
+        }
+        .briefTable td {
+          padding: 11px 16px;
+          border-bottom: 1px solid var(--surface-2);
+          white-space: nowrap;
+        }
+        .briefTable tr:last-child td {
+          border-bottom: 0;
+        }
+        .num {
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+        }
+        .strong {
+          font-weight: 850;
+        }
+        .muted {
+          color: var(--text-muted);
+        }
+        .fine {
+          margin: 14px 0 0;
+          font-size: 12.5px;
+          line-height: 1.55;
+          color: var(--text-muted);
+          max-width: 96ch;
+        }
+        .cta {
+          margin-top: 36px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          box-shadow: var(--shadow-soft);
+          padding: 20px 22px;
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+        }
+        .ctaTitle {
+          font-size: 15px;
+          font-weight: 850;
+        }
+        .cta p {
+          margin: 4px 0 0;
+          font-size: 13.5px;
+          line-height: 1.5;
+          max-width: 70ch;
+        }
+        .ctaActions {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .btnPrimary,
+        .btnGhost {
+          border-radius: 12px;
+          padding: 10px 16px;
+          font-size: 13.5px;
+          font-weight: 800;
+          text-decoration: none;
+          white-space: nowrap;
+        }
+        .btnPrimary {
+          background: var(--accent);
+          color: #fff;
+        }
+        .btnGhost {
+          background: var(--surface);
+          color: var(--text);
+          border: 1px solid var(--border);
+        }
+        @media (max-width: 900px) {
+          .featured {
+            grid-template-columns: 1fr;
+          }
+          h1 {
+            font-size: 25px;
+          }
+        }
+      `}</style>
+    </>
+  );
+}

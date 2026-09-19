@@ -147,6 +147,18 @@ def main(argv: list[str] | None = None) -> int:
         "baseline_stats": {k: v for k, v in baseline.items() if k != "nct_biological_stops"},
         "cohorts": [{"cohort": c, **{k: v for k, v in s.items() if k != "nct_biological_stops"}} for c, s in cohorts],
         "biological_stop_nct_ids": segment["nct_biological_stops"],
+        # Trial-level rows so the same facts file can feed the web pages, not just this HTML.
+        "trials": [{
+            "nct_id": r["nct_id"],
+            "phase": "3" if "3" in r["_phase"] else "2",
+            "sponsor_group": r["_sponsor_group"],
+            "sponsor_ticker": r["_ticker"],
+            "drugs": drugs(r),
+            "stopped": (r.get("stop_date_estimate") or "")[:7],
+            "type": "Safety" if "SAFETY" in r["_reasons"] else "Efficacy" if "EFFICACY_FUTILITY" in r["_reasons"] else "Benefit\u2013risk",
+            "why_stopped": " ".join((r.get("why_stopped") or "").split()),
+            "registry_url": f"https://clinicaltrials.gov/study/{r['nct_id']}",
+        } for r in stops],
     }
 
     row_items = []
@@ -239,12 +251,15 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 <div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
 <div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped {e(args.area.lower())} trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
-<div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and benchmarks by Clinical Trial Failures. Generated {facts['generated_at_utc']}.</div>
+<div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and benchmarks by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>
 </div>
 </body></html>"""
 
+    # The file name carries the area: BTK and JAK/TYK2 are classes in both oncology and
+    # immunology, and without it the second area silently overwrote the first area's brief.
     slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
-    out = Path(args.out) if args.out else OUT_DIR / f"brief_{slug}_{start[0]}-{start[1]}.html"
+    area_slug = re.sub(r"[^a-z0-9]+", "-", (args.area or "").lower()).strip("-")
+    out = Path(args.out) if args.out else OUT_DIR / f"brief_{area_slug}_{slug}_{start[0]}-{start[1]}.html"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(doc, encoding="utf-8")
     out.with_suffix(".facts.json").write_text(json.dumps(facts, indent=1))

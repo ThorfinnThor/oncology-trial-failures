@@ -1,0 +1,5391 @@
+{
+  "schema_version": 1,
+  "brief_count": 48,
+  "areas": [
+    "Immunology & Autoimmune",
+    "Neurology",
+    "Oncology"
+  ],
+  "definition": "Share of closed trials (completed or terminated) in the segment that were terminated for an efficacy, safety or benefit-risk reason recorded in the registry, with a 95% Wilson interval.",
+  "briefs": [
+    {
+      "slug": "neurology-tau",
+      "file_stem": "brief_neurology_tau_2015-2024",
+      "segment": "Tau",
+      "area": "Neurology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.7,
+      "closed": 10,
+      "trials_in_segment": 10,
+      "biological_stops": 7,
+      "efficacy_stops": 7,
+      "safety_stops": 0,
+      "ci95": [
+        0.39677321997956516,
+        0.892210712513788
+      ],
+      "reference_label": "all neurology Phase 2,3 trials",
+      "reference_rate": 0.05886157826649418,
+      "reference_closed": 1546,
+      "reference_stops": 91,
+      "baseline_rate": 0.05886157826649418,
+      "baseline_closed": 1546,
+      "baseline_stops": 91,
+      "cohorts": [
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 3,
+          "closed": 5,
+          "rate": 0.6,
+          "ci95": [
+            0.23071993220883708,
+            0.8823817688407467
+          ]
+        }
+      ],
+      "trial_count": 7,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04619420",
+          "phase": "2",
+          "sponsor_group": "Johnson & Johnson",
+          "sponsor_ticker": "JNJ",
+          "drugs": "POSDINEMAB",
+          "stopped": "2025-10",
+          "type": "Efficacy",
+          "why_stopped": "Posdinemab did not achieve statistical significance in slowing clinical decline",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04619420"
+        },
+        {
+          "nct_id": "NCT03712787",
+          "phase": "2",
+          "sponsor_group": "AbbVie",
+          "sponsor_ticker": "ABBV",
+          "drugs": "TILAVONEMAB",
+          "stopped": "2021-09",
+          "type": "Efficacy",
+          "why_stopped": "Discontinued because of lack of efficacy in the parent study (Study M15-566; NCT02880956).",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03712787"
+        },
+        {
+          "nct_id": "NCT03352557",
+          "phase": "2",
+          "sponsor_group": "Biogen",
+          "sponsor_ticker": "BIIB",
+          "drugs": "GOSURANEMAB",
+          "stopped": "2021-08",
+          "type": "Efficacy",
+          "why_stopped": "The study (NCT03352557) was terminated based on lack of efficacy following the placebo-controlled period readout.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03352557"
+        },
+        {
+          "nct_id": "NCT03289143",
+          "phase": "2",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "SEMORINEMAB",
+          "stopped": "2021-01",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated during Open Label Extension period because analyses of placebo-controlled Blinded portion of study did not show any evidence of clinical efficacy or modulation of accumulation of tau PET signal at any of the doses studied.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03289143"
+        },
+        {
+          "nct_id": "NCT03391765",
+          "phase": "2",
+          "sponsor_group": "AbbVie",
+          "sponsor_ticker": "ABBV",
+          "drugs": "TILAVONEMAB",
+          "stopped": "2019-12",
+          "type": "Efficacy",
+          "why_stopped": "This study was prematurely discontinued because the program for progressive supranuclear palsy was discontinued due to lack of efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03391765"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:31:35Z"
+    },
+    {
+      "slug": "neurology-amyloid-alzheimer-s",
+      "file_stem": "brief_neurology_amyloid-alzheimer-s_2015-2024",
+      "segment": "Amyloid (Alzheimer's)",
+      "area": "Neurology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.4166666666666667,
+      "closed": 24,
+      "trials_in_segment": 32,
+      "biological_stops": 10,
+      "efficacy_stops": 9,
+      "safety_stops": 1,
+      "ci95": [
+        0.24467347246538232,
+        0.6116566235061137
+      ],
+      "reference_label": "all neurology Phase 2,3 trials",
+      "reference_rate": 0.05886157826649418,
+      "reference_closed": 1546,
+      "reference_stops": 91,
+      "baseline_rate": 0.05886157826649418,
+      "baseline_closed": 1546,
+      "baseline_stops": 91,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 9,
+          "closed": 10,
+          "rate": 0.9,
+          "ci95": [
+            0.5958436145024278,
+            0.9821242504842788
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 10,
+          "rate": 0.1,
+          "ci95": [
+            0.01787574951572113,
+            0.4041563854975721
+          ]
+        }
+      ],
+      "trial_count": 10,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02956486",
+          "phase": "3",
+          "sponsor_group": "Eisai",
+          "sponsor_ticker": "",
+          "drugs": "ELENBECESTAT",
+          "stopped": "2020-01",
+          "type": "Safety",
+          "why_stopped": "Due to an unfavorable risk-benefit ratio including no evidence of potential efficacy, and the adverse event profile of E2609 being worse than placebo.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02956486"
+        },
+        {
+          "nct_id": "NCT02477800",
+          "phase": "3",
+          "sponsor_group": "Biogen",
+          "sponsor_ticker": "BIIB",
+          "drugs": "ADUCANUMAB",
+          "stopped": "2019-08",
+          "type": "Efficacy",
+          "why_stopped": "Study was discontinued based on futility analysis done and not based on safety concerns. Follow-up visits and closing out study activities are completed",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02477800"
+        },
+        {
+          "nct_id": "NCT02484547",
+          "phase": "3",
+          "sponsor_group": "Biogen",
+          "sponsor_ticker": "BIIB",
+          "drugs": "ADUCANUMAB",
+          "stopped": "2019-08",
+          "type": "Efficacy",
+          "why_stopped": "Study was discontinued based on futility analysis done and not based on safety concerns. Follow-up visits and closing out study activities are completed",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02484547"
+        },
+        {
+          "nct_id": "NCT03639987",
+          "phase": "2",
+          "sponsor_group": "Biogen",
+          "sponsor_ticker": "BIIB",
+          "drugs": "ADUCANUMAB",
+          "stopped": "2019-07",
+          "type": "Efficacy",
+          "why_stopped": "Study was discontinued based on futility analysis conducted on Phase 3 trials (NCT02477800 and NCT02484547) and not based on safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03639987"
+        },
+        {
+          "nct_id": "NCT03114657",
+          "phase": "3",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "CRENEZUMAB",
+          "stopped": "2019-06",
+          "type": "Efficacy",
+          "why_stopped": "This study was discontinued due to an interim analysis in the BN29552 study, which indicated that Crenezumab was unlikely to meet its primary endpoint.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03114657"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:28Z"
+    },
+    {
+      "slug": "oncology-tgf-pd-l-1",
+      "file_stem": "brief_oncology_tgf-pd-l-1_2015-2024",
+      "segment": "TGF-β + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.25,
+      "closed": 44,
+      "trials_in_segment": 83,
+      "biological_stops": 11,
+      "efficacy_stops": 5,
+      "safety_stops": 5,
+      "ci95": [
+        0.14574066080685744,
+        0.39440849808414946
+      ],
+      "reference_label": "PD-(L)1 combinations without TGF-β",
+      "reference_rate": 0.04496487119437939,
+      "reference_closed": 2135,
+      "reference_stops": 96,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 7,
+          "closed": 27,
+          "rate": 0.25925925925925924,
+          "ci95": [
+            0.13170208422866778,
+            0.4467893040261568
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 4,
+          "closed": 16,
+          "rate": 0.25,
+          "ci95": [
+            0.10181901984237346,
+            0.49498768929398645
+          ]
+        }
+      ],
+      "trial_count": 11,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04952753",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "NISEVOKITUG, TISLELIZUMAB",
+          "stopped": "2025-01",
+          "type": "Safety",
+          "why_stopped": "The study was terminated early due to the halt of NIS793 treatment and urgent safety measures issued in July and August 2023, respectively, as continued evaluation of Standard of Care alone will not support the trial's purpose.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04952753"
+        },
+        {
+          "nct_id": "NCT04390763",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "NISEVOKITUG, SPARTALIZUMAB",
+          "stopped": "2024-04",
+          "type": "Safety",
+          "why_stopped": "The study was early terminated following the NIS793 treatment halt and urgent safety measure issued in July 2023, as the continued evaluation of Standard of Care alone will not support the original purpose of this phase 2 clinical trial.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04390763"
+        },
+        {
+          "nct_id": "NCT04396535",
+          "phase": "2",
+          "sponsor_group": "Mayo Clinic",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2023-12",
+          "type": "Efficacy",
+          "why_stopped": "EMD Serono recommendation based on three other studies that failed to show benefit for bintrafusp alfa",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04396535"
+        },
+        {
+          "nct_id": "NCT03840902",
+          "phase": "2",
+          "sponsor_group": "Merck KGaA",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "Based on recommendations by an external Independent data Monitoring Committee (IDMC), Sponsor decided to discontinue this clinical study due to a low likelihood of achieving superiority in the efficacy endpoints versus standard of care.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03840902"
+        },
+        {
+          "nct_id": "NCT04489940",
+          "phase": "2",
+          "sponsor_group": "Merck KGaA",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2022-01",
+          "type": "Efficacy",
+          "why_stopped": "The study was prematurely discontinued by the sponsor due to probability of success which was too low to justify the continuation of recruitment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04489940"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-tgf",
+      "file_stem": "brief_oncology_tgf_2015-2024",
+      "segment": "TGF-β",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.19298245614035087,
+      "closed": 57,
+      "trials_in_segment": 117,
+      "biological_stops": 11,
+      "efficacy_stops": 5,
+      "safety_stops": 5,
+      "ci95": [
+        0.11132633377760481,
+        0.3134093733701362
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 7,
+          "closed": 34,
+          "rate": 0.20588235294117646,
+          "ci95": [
+            0.1034939602235132,
+            0.3679871610821398
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 4,
+          "closed": 21,
+          "rate": 0.19047619047619047,
+          "ci95": [
+            0.07667440615177301,
+            0.40000986539273287
+          ]
+        }
+      ],
+      "trial_count": 11,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04952753",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "NISEVOKITUG, TISLELIZUMAB",
+          "stopped": "2025-01",
+          "type": "Safety",
+          "why_stopped": "The study was terminated early due to the halt of NIS793 treatment and urgent safety measures issued in July and August 2023, respectively, as continued evaluation of Standard of Care alone will not support the trial's purpose.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04952753"
+        },
+        {
+          "nct_id": "NCT04390763",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "NISEVOKITUG, SPARTALIZUMAB",
+          "stopped": "2024-04",
+          "type": "Safety",
+          "why_stopped": "The study was early terminated following the NIS793 treatment halt and urgent safety measure issued in July 2023, as the continued evaluation of Standard of Care alone will not support the original purpose of this phase 2 clinical trial.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04390763"
+        },
+        {
+          "nct_id": "NCT04396535",
+          "phase": "2",
+          "sponsor_group": "Mayo Clinic",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2023-12",
+          "type": "Efficacy",
+          "why_stopped": "EMD Serono recommendation based on three other studies that failed to show benefit for bintrafusp alfa",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04396535"
+        },
+        {
+          "nct_id": "NCT03840902",
+          "phase": "2",
+          "sponsor_group": "Merck KGaA",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "Based on recommendations by an external Independent data Monitoring Committee (IDMC), Sponsor decided to discontinue this clinical study due to a low likelihood of achieving superiority in the efficacy endpoints versus standard of care.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03840902"
+        },
+        {
+          "nct_id": "NCT04489940",
+          "phase": "2",
+          "sponsor_group": "Merck KGaA",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2022-01",
+          "type": "Efficacy",
+          "why_stopped": "The study was prematurely discontinued by the sponsor due to probability of success which was too low to justify the continuation of recruitment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04489940"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-ox40-4-1bb-gitr",
+      "file_stem": "brief_oncology_ox40-4-1bb-gitr_2015-2024",
+      "segment": "OX40 / 4-1BB / GITR",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.15151515151515152,
+      "closed": 33,
+      "trials_in_segment": 86,
+      "biological_stops": 5,
+      "efficacy_stops": 5,
+      "safety_stops": 0,
+      "ci95": [
+        0.06650359257960956,
+        0.30920213138460484
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 2,
+          "closed": 13,
+          "rate": 0.15384615384615385,
+          "ci95": [
+            0.04325726318273798,
+            0.4223517050863101
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 12,
+          "rate": 0.08333333333333333,
+          "ci95": [
+            0.014864709450773478,
+            0.35388592179859524
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 8,
+          "rate": 0.25,
+          "ci95": [
+            0.07147768885802763,
+            0.5907301208974108
+          ]
+        }
+      ],
+      "trial_count": 5,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05491317",
+          "phase": "2",
+          "sponsor_group": "Genmab",
+          "sponsor_ticker": "GMAB",
+          "drugs": "Tecaginlimab, PEMBROLIZUMAB",
+          "stopped": "2025-08",
+          "type": "Efficacy",
+          "why_stopped": "After reviewing all available data from Part 1 of the trial, the Sponsor has decided not to proceed to Part 2 (randomized Phase 2) of the trial due to lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05491317"
+        },
+        {
+          "nct_id": "NCT04775680",
+          "phase": "2",
+          "sponsor_group": "Adagene (Suzhou) Limited",
+          "sponsor_ticker": "ADAG",
+          "drugs": "ADG-106, PD-1 antibody injection",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "The safety of ADG106 combined with triprilimab has been fully understood.The overall clinical benefit of enrolled subjects was limited and further development of ADG106 was reconsidered.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04775680"
+        },
+        {
+          "nct_id": "NCT06160609",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "BELANTAMAB MAFODOTIN, GSK-3174998",
+          "stopped": "2023-01",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to lack of efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06160609"
+        },
+        {
+          "nct_id": "NCT03323398",
+          "phase": "2",
+          "sponsor_group": "ModernaTX, Inc.",
+          "sponsor_ticker": "",
+          "drugs": "Lipid Nanoparticle Encapsulated O…, DURVALUMAB",
+          "stopped": "2021-08",
+          "type": "Efficacy",
+          "why_stopped": "This study was halted prematurely because the efficacy endpoints were not met for either treatment arm.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03323398"
+        },
+        {
+          "nct_id": "NCT02951156",
+          "phase": "3",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "AVELUMAB, UTOMILUMAB",
+          "stopped": "2019-12",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated due to closure of study arms following futility analysis and difficulty in enrolling participants due to evolving treatment landscape",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02951156"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-bcma",
+      "file_stem": "brief_oncology_bcma_2015-2024",
+      "segment": "BCMA",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.14285714285714285,
+      "closed": 28,
+      "trials_in_segment": 134,
+      "biological_stops": 4,
+      "efficacy_stops": 4,
+      "safety_stops": 0,
+      "ci95": [
+        0.056989129307017855,
+        0.31490173044877334
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 10,
+          "rate": 0.1,
+          "ci95": [
+            0.01787574951572113,
+            0.4041563854975721
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 16,
+          "rate": 0.125,
+          "ci95": [
+            0.034976749337057134,
+            0.3602333143674828
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT06655818",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "BELANTAMAB MAFODOTIN, DOSTARLIMAB",
+          "stopped": "2024-02",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06655818"
+        },
+        {
+          "nct_id": "NCT04676360",
+          "phase": "2",
+          "sponsor_group": "Jacob Soumerai, MD",
+          "sponsor_ticker": "",
+          "drugs": "BELANTAMAB MAFODOTIN",
+          "stopped": "2023-11",
+          "type": "Efficacy",
+          "why_stopped": "The study was closed given lack of efficacy and plans to publish this negative study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04676360"
+        },
+        {
+          "nct_id": "NCT06160609",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "BELANTAMAB MAFODOTIN, GSK-3174998",
+          "stopped": "2023-01",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to lack of efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06160609"
+        },
+        {
+          "nct_id": "NCT03287804",
+          "phase": "2",
+          "sponsor_group": "Autolus Limited",
+          "sponsor_ticker": "AUTL",
+          "drugs": "Autologous BCMA/TACI-targeted CAR…",
+          "stopped": "2019-09",
+          "type": "Efficacy",
+          "why_stopped": "Preliminary efficacy seen to date following treatment with AUTO2 has been determined not sufficient to warrant further development",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03287804"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-her3",
+      "file_stem": "brief_oncology_her3_2015-2024",
+      "segment": "HER3",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.13333333333333333,
+      "closed": 30,
+      "trials_in_segment": 91,
+      "biological_stops": 4,
+      "efficacy_stops": 4,
+      "safety_stops": 0,
+      "ci95": [
+        0.05309569424218104,
+        0.2968168394441695
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 15,
+          "rate": 0.2,
+          "ci95": [
+            0.07047420643610414,
+            0.4518593533465045
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 8,
+          "rate": 0.125,
+          "ci95": [
+            0.02241690886329617,
+            0.4708948057698615
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 7,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.35433884297520657
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04479436",
+          "phase": "2",
+          "sponsor_group": "Daiichi Sankyo",
+          "sponsor_ticker": "",
+          "drugs": "PATRITUMAB DERUXTECAN",
+          "stopped": "2022-02",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated early given the Interim Analysis for Part 1 (signal finding) did not meet pre-specified criteria and will not proceed to Part 2. Sponsor will proceed closing the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04479436"
+        },
+        {
+          "nct_id": "NCT02633800",
+          "phase": "2",
+          "sponsor_group": "Daiichi Sankyo",
+          "sponsor_ticker": "",
+          "drugs": "PATRITUMAB",
+          "stopped": "2018-01",
+          "type": "Efficacy",
+          "why_stopped": "Trial was terminated by sponsor due to lack of efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02633800"
+        },
+        {
+          "nct_id": "NCT02454842",
+          "phase": "2",
+          "sponsor_group": "Rain Oncology Inc",
+          "sponsor_ticker": "",
+          "drugs": "TARLOXOTINIB",
+          "stopped": "2017-01",
+          "type": "Efficacy",
+          "why_stopped": "Lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02454842"
+        },
+        {
+          "nct_id": "NCT02449681",
+          "phase": "2",
+          "sponsor_group": "Rain Oncology Inc",
+          "sponsor_ticker": "",
+          "drugs": "TARLOXOTINIB",
+          "stopped": "2017-01",
+          "type": "Efficacy",
+          "why_stopped": "Lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02449681"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "immunology-autoimmune-btk",
+      "file_stem": "brief_immunology-autoimmune_btk_2015-2024",
+      "segment": "BTK",
+      "area": "Immunology & Autoimmune",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.12,
+      "closed": 25,
+      "trials_in_segment": 40,
+      "biological_stops": 3,
+      "efficacy_stops": 2,
+      "safety_stops": 0,
+      "ci95": [
+        0.04166741357068093,
+        0.2995619218337349
+      ],
+      "reference_label": "all immunology & autoimmune Phase 2,3 trials",
+      "reference_rate": 0.03355363497712252,
+      "reference_closed": 1967,
+      "reference_stops": 66,
+      "baseline_rate": 0.03355363497712252,
+      "baseline_closed": 1967,
+      "baseline_stops": 66,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 11,
+          "rate": 0.09090909090909091,
+          "ci95": [
+            0.01623175226282597,
+            0.3773646254862038
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 2,
+          "closed": 12,
+          "rate": 0.16666666666666666,
+          "ci95": [
+            0.04696414761482223,
+            0.44803635738467273
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT03823378",
+          "phase": "2",
+          "sponsor_group": "AbbVie",
+          "sponsor_ticker": "ABBV",
+          "drugs": "ELSUBRUTINIB, UPADACITINIB",
+          "stopped": "2020-09",
+          "type": "Efficacy",
+          "why_stopped": "Study M16-763 was terminated early as the benefit of each treatment arm from the feeder study (Study M16-063) did not provide appreciable evidence of differentiated clinical effect to warrant further long-term continuation.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03823378"
+        },
+        {
+          "nct_id": "NCT03407482",
+          "phase": "2",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "FENEBRUTINIB",
+          "stopped": "2019-11",
+          "type": "Efficacy",
+          "why_stopped": "The study was ended early due to the lack of efficacy seen in the parent study GA30044.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03407482"
+        },
+        {
+          "nct_id": "NCT02628028",
+          "phase": "2",
+          "sponsor_group": "Eli Lilly",
+          "sponsor_ticker": "LLY",
+          "drugs": "POSELTINIB",
+          "stopped": "2018-04",
+          "type": "Benefit–risk",
+          "why_stopped": "The trial was terminated after an interim analysis of efficacy and safety data did not warrant continuation of the trial.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02628028"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:29Z"
+    },
+    {
+      "slug": "oncology-cd47-sirp",
+      "file_stem": "brief_oncology_cd47-sirp_2015-2024",
+      "segment": "CD47 / SIRPα",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.12,
+      "closed": 25,
+      "trials_in_segment": 62,
+      "biological_stops": 3,
+      "efficacy_stops": 2,
+      "safety_stops": 1,
+      "ci95": [
+        0.04166741357068093,
+        0.2995619218337349
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 5,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.43449149475208104
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 18,
+          "rate": 0.16666666666666666,
+          "ci95": [
+            0.05836470400465757,
+            0.39222499638359243
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05167409",
+          "phase": "2",
+          "sponsor_group": "University of Colorado, Denver",
+          "sponsor_ticker": "",
+          "drugs": "EVORPACEPT, CETUXIMAB, PEMBROLIZUMAB",
+          "stopped": "2024-10",
+          "type": "Safety",
+          "why_stopped": "Accrual was terminated due to safety concerns",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05167409"
+        },
+        {
+          "nct_id": "NCT05079230",
+          "phase": "3",
+          "sponsor_group": "Gilead Sciences",
+          "sponsor_ticker": "GILD",
+          "drugs": "MAGROLIMAB",
+          "stopped": "2024-04",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated due to futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05079230"
+        },
+        {
+          "nct_id": "NCT04778397",
+          "phase": "3",
+          "sponsor_group": "Gilead Sciences",
+          "sponsor_ticker": "GILD",
+          "drugs": "MAGROLIMAB",
+          "stopped": "2024-03",
+          "type": "Efficacy",
+          "why_stopped": "Study discontinued due to futility.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04778397"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-cd38",
+      "file_stem": "brief_oncology_cd38_2015-2024",
+      "segment": "CD38",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.11267605633802817,
+      "closed": 71,
+      "trials_in_segment": 209,
+      "biological_stops": 8,
+      "efficacy_stops": 6,
+      "safety_stops": 1,
+      "ci95": [
+        0.05821202176555296,
+        0.20690256691240155
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 29,
+          "rate": 0.10344827586206896,
+          "ci95": [
+            0.035814240381301043,
+            0.26385447247069155
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 5,
+          "closed": 33,
+          "rate": 0.15151515151515152,
+          "ci95": [
+            0.06650359257960956,
+            0.30920213138460484
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 9,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.2991527535509594
+          ]
+        }
+      ],
+      "trial_count": 8,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04157517",
+          "phase": "2",
+          "sponsor_group": "Teva Branded Pharmaceutical Products R&D LLC",
+          "sponsor_ticker": "",
+          "drugs": "MODAKAFUSP ALFA, PEMBROLIZUMAB",
+          "stopped": "2023-12",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated early due to futility.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04157517"
+        },
+        {
+          "nct_id": "NCT03067571",
+          "phase": "2",
+          "sponsor_group": "M.D. Anderson Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "DARATUMUMAB",
+          "stopped": "2022-11",
+          "type": "Efficacy",
+          "why_stopped": "Study terminated early because of lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03067571"
+        },
+        {
+          "nct_id": "NCT03860844",
+          "phase": "2",
+          "sponsor_group": "Sanofi",
+          "sponsor_ticker": "SNY",
+          "drugs": "ISATUXIMAB, DEXAMETHASONE, FLUDARABINE, CYTARABINE",
+          "stopped": "2022-09",
+          "type": "Efficacy",
+          "why_stopped": "Study was prematurely stopped due to sponsor decision (stage 2 efficacy criteria not met); not due to safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03860844"
+        },
+        {
+          "nct_id": "NCT03637764",
+          "phase": "2",
+          "sponsor_group": "Sanofi",
+          "sponsor_ticker": "SNY",
+          "drugs": "ISATUXIMAB, ATEZOLIZUMAB",
+          "stopped": "2022-05",
+          "type": "Efficacy",
+          "why_stopped": "Study was stopped after interim analysis for 4 cohorts (HCC, SCCHN, EOC, and GBM) indicated that the results did not fulfill the preplanned interim analysis criteria to move to Phase 2 stage 2 in all 4 cohorts.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03637764"
+        },
+        {
+          "nct_id": "NCT04251065",
+          "phase": "2",
+          "sponsor_group": "Fondazione Italiana Linfomi - ETS",
+          "sponsor_ticker": "",
+          "drugs": "DARATUMUMAB",
+          "stopped": "2021-12",
+          "type": "Safety",
+          "why_stopped": "The enrolment was prematurely terminated after the planned monitoring of the first 5 patients because of an unacceptable level of relevant toxicities, according to statistical stopping rules and the DSMB recommendation.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04251065"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-androgen-receptor-axis",
+      "file_stem": "brief_oncology_androgen-receptor-axis_2015-2024",
+      "segment": "Androgen receptor axis",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.104,
+      "closed": 125,
+      "trials_in_segment": 295,
+      "biological_stops": 13,
+      "efficacy_stops": 10,
+      "safety_stops": 3,
+      "ci95": [
+        0.061790380266841645,
+        0.16982425351603594
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 61,
+          "rate": 0.04918032786885246,
+          "ci95": [
+            0.016865676835230686,
+            0.1349134279370143
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 8,
+          "closed": 41,
+          "rate": 0.1951219512195122,
+          "ci95": [
+            0.10234315749205929,
+            0.34013882352556724
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 23,
+          "rate": 0.08695652173913043,
+          "ci95": [
+            0.02417949540723341,
+            0.2679640429809402
+          ]
+        }
+      ],
+      "trial_count": 13,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05689021",
+          "phase": "2",
+          "sponsor_group": "Mayo Clinic",
+          "sponsor_ticker": "",
+          "drugs": "ABIRATERONE ACETATE, NIRAPARIB, PREDNISONE",
+          "stopped": "2026-07",
+          "type": "Efficacy",
+          "why_stopped": "Sponsor decided to close due to slow accrual and lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05689021"
+        },
+        {
+          "nct_id": "NCT04179864",
+          "phase": "2",
+          "sponsor_group": "Epizyme, Inc.",
+          "sponsor_ticker": "",
+          "drugs": "TAZEMETOSTAT, ABIRATERONE, PREDNISONE",
+          "stopped": "2024-11",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated early as Sponsor decided to discontinue the development of tazemetostat in metastatic castration resistant prostate cancer and the primary endpoint was not met for this study. There were no safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04179864"
+        },
+        {
+          "nct_id": "NCT05075577",
+          "phase": "2",
+          "sponsor_group": "ESSA Pharmaceuticals",
+          "sponsor_ticker": "",
+          "drugs": "MASOFANITEN, ENZALUTAMIDE",
+          "stopped": "2024-10",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated early due to a lack of improved efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05075577"
+        },
+        {
+          "nct_id": "NCT04458311",
+          "phase": "2",
+          "sponsor_group": "Institute of Cancer Research, United Kingdom",
+          "sponsor_ticker": "",
+          "drugs": "ABIRATERONE ACETATE, TILDRAKIZUMAB",
+          "stopped": "2023-04",
+          "type": "Efficacy",
+          "why_stopped": "Funder decided that response outcomes to date did not support continuation of the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04458311"
+        },
+        {
+          "nct_id": "NCT04142060",
+          "phase": "2",
+          "sponsor_group": "SOLTI Breast Cancer Research Group",
+          "sponsor_ticker": "",
+          "drugs": "ENZALUTAMIDE",
+          "stopped": "2022-10",
+          "type": "Efficacy",
+          "why_stopped": "Lack of effectiveness",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04142060"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-met-pd-l-1",
+      "file_stem": "brief_oncology_met-pd-l-1_2015-2024",
+      "segment": "MET + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.09375,
+      "closed": 32,
+      "trials_in_segment": 104,
+      "biological_stops": 3,
+      "efficacy_stops": 1,
+      "safety_stops": 2,
+      "ci95": [
+        0.032400962626319516,
+        0.24218499335778831
+      ],
+      "reference_label": "PD-(L)1 combinations without MET",
+      "reference_rate": 0.04799627213420317,
+      "reference_closed": 2146,
+      "reference_stops": 103,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 0,
+          "closed": 11,
+          "rate": 0.0,
+          "ci95": [
+            2.7755575615628914e-17,
+            0.2588400172488141
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 3,
+          "closed": 14,
+          "rate": 0.21428571428571427,
+          "ci95": [
+            0.0757124833691637,
+            0.4758972377320828
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 7,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.35433884297520657
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04323436",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "SPARTALIZUMAB, CAPMATINIB",
+          "stopped": "2022-12",
+          "type": "Safety",
+          "why_stopped": "Study termination based on sponsor decision due to lack of tolerability observed with capmatinib and spartalizumab combination treatment when compared to data from capmatinib single agent studies",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04323436"
+        },
+        {
+          "nct_id": "NCT03838848",
+          "phase": "2",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, CARBOPLATIN, PEMETREXED, NINGETINIB",
+          "stopped": "2022-07",
+          "type": "Efficacy",
+          "why_stopped": "Cohort A,B,C end enrollments. Cohort D and E were considered to have no significant clinical benefit at the SMC meeting and decided to terminate enrollment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
+        },
+        {
+          "nct_id": "NCT04139317",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "CAPMATINIB",
+          "stopped": "2022-01",
+          "type": "Safety",
+          "why_stopped": "Sponsor decision to terminate due to the lack of tolerability observed in patients treated with capmatinib and pembrolizumab in the combination arm as compared to patients treated with pembrolizumab alone in the pembrolizumab single agent arm",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04139317"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-met",
+      "file_stem": "brief_oncology_met_2015-2024",
+      "segment": "MET",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.09090909090909091,
+      "closed": 121,
+      "trials_in_segment": 319,
+      "biological_stops": 11,
+      "efficacy_stops": 6,
+      "safety_stops": 4,
+      "ci95": [
+        0.05152070313989317,
+        0.15547440105614402
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 2,
+          "closed": 42,
+          "rate": 0.047619047619047616,
+          "ci95": [
+            0.013157248639206365,
+            0.1579013531547973
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 7,
+          "closed": 46,
+          "rate": 0.15217391304347827,
+          "ci95": [
+            0.07572186234017478,
+            0.28224417406315094
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 33,
+          "rate": 0.06060606060606061,
+          "ci95": [
+            0.016780530429070947,
+            0.19606581717798194
+          ]
+        }
+      ],
+      "trial_count": 11,
+      "trials_preview": [
+        {
+          "nct_id": "NCT06685068",
+          "phase": "2",
+          "sponsor_group": "Genmab",
+          "sponsor_ticker": "GMAB",
+          "drugs": "Anti-EGFR/c-Met Antibody-drug Con…",
+          "stopped": "2026-03",
+          "type": "Benefit–risk",
+          "why_stopped": "Genmab has decided to terminate the GEN1286 program due to an unfavorable benefit-risk profile not supporting further development.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06685068"
+        },
+        {
+          "nct_id": "NCT05653427",
+          "phase": "2",
+          "sponsor_group": "Johnson & Johnson",
+          "sponsor_ticker": "JNJ",
+          "drugs": "AMIVANTAMAB",
+          "stopped": "2023-10",
+          "type": "Efficacy",
+          "why_stopped": "N\\~15 subjects data analysis did not meet statistical consideration of ORR and study primary/secondary objectives were not met. Enrollment was terminated for futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05653427"
+        },
+        {
+          "nct_id": "NCT04323436",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "SPARTALIZUMAB, CAPMATINIB",
+          "stopped": "2022-12",
+          "type": "Safety",
+          "why_stopped": "Study termination based on sponsor decision due to lack of tolerability observed with capmatinib and spartalizumab combination treatment when compared to data from capmatinib single agent studies",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04323436"
+        },
+        {
+          "nct_id": "NCT03838848",
+          "phase": "2",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, CARBOPLATIN, PEMETREXED, NINGETINIB",
+          "stopped": "2022-07",
+          "type": "Efficacy",
+          "why_stopped": "Cohort A,B,C end enrollments. Cohort D and E were considered to have no significant clinical benefit at the SMC meeting and decided to terminate enrollment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
+        },
+        {
+          "nct_id": "NCT04139317",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "CAPMATINIB",
+          "stopped": "2022-01",
+          "type": "Safety",
+          "why_stopped": "Sponsor decision to terminate due to the lack of tolerability observed in patients treated with capmatinib and pembrolizumab in the combination arm as compared to patients treated with pembrolizumab alone in the pembrolizumab single agent arm",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04139317"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-jak-tyk2",
+      "file_stem": "brief_oncology_jak-tyk2_2015-2024",
+      "segment": "JAK / TYK2",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.0851063829787234,
+      "closed": 47,
+      "trials_in_segment": 100,
+      "biological_stops": 4,
+      "efficacy_stops": 2,
+      "safety_stops": 2,
+      "ci95": [
+        0.033593579469713086,
+        0.19931805195022648
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 21,
+          "rate": 0.14285714285714285,
+          "ci95": [
+            0.04980921798213492,
+            0.346364941492295
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 15,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.20388926630434784
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 1,
+          "closed": 11,
+          "rate": 0.09090909090909091,
+          "ci95": [
+            0.01623175226282597,
+            0.3773646254862038
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04635059",
+          "phase": "2",
+          "sponsor_group": "Medical College of Wisconsin",
+          "sponsor_ticker": "",
+          "drugs": "PACRITINIB",
+          "stopped": "2023-11",
+          "type": "Efficacy",
+          "why_stopped": "futility and drug supplier in favor of new metastatic protocol.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04635059"
+        },
+        {
+          "nct_id": "NCT02420717",
+          "phase": "2",
+          "sponsor_group": "M.D. Anderson Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "CYCLOPHOSPHAMIDE ANHYDROUS, CYTARABINE, DASATINIB ANHYDROUS, DEXAMETHASONE",
+          "stopped": "2021-01",
+          "type": "Efficacy",
+          "why_stopped": "Study was closed early due to low accrual and lack of response.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02420717"
+        },
+        {
+          "nct_id": "NCT02711137",
+          "phase": "2",
+          "sponsor_group": "Incyte",
+          "sponsor_ticker": "INCY",
+          "drugs": "INCB-057643, GEMCITABINE, PACLITAXEL, RUCAPARIB",
+          "stopped": "2019-02",
+          "type": "Safety",
+          "why_stopped": "Study terminated due to safety issues.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02711137"
+        },
+        {
+          "nct_id": "NCT02277093",
+          "phase": "2",
+          "sponsor_group": "Washington University School of Medicine",
+          "sponsor_ticker": "",
+          "drugs": "PACRITINIB",
+          "stopped": "2016-03",
+          "type": "Safety",
+          "why_stopped": "FDA issued a clinical hold as pacritinib had increased side effects",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02277093"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "neurology-gaba-a",
+      "file_stem": "brief_neurology_gaba-a_2015-2024",
+      "segment": "GABA-A",
+      "area": "Neurology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.08108108108108109,
+      "closed": 37,
+      "trials_in_segment": 49,
+      "biological_stops": 3,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "ci95": [
+        0.027960066396321384,
+        0.2130099249850153
+      ],
+      "reference_label": "all neurology Phase 2,3 trials",
+      "reference_rate": 0.05886157826649418,
+      "reference_closed": 1546,
+      "reference_stops": 91,
+      "baseline_rate": 0.05886157826649418,
+      "baseline_closed": 1546,
+      "baseline_stops": 91,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 17,
+          "rate": 0.058823529411764705,
+          "ci95": [
+            0.01046013064516424,
+            0.269825452035628
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 15,
+          "rate": 0.06666666666666667,
+          "ci95": [
+            0.011866588606194856,
+            0.2981707755242399
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 1,
+          "closed": 5,
+          "rate": 0.2,
+          "ci95": [
+            0.03622316096978745,
+            0.6244717358814613
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04686786",
+          "phase": "2",
+          "sponsor_group": "AbbVie",
+          "sponsor_ticker": "ABBV",
+          "drugs": "DARIGABAT",
+          "stopped": "2024-12",
+          "type": "Efficacy",
+          "why_stopped": "Closed early after CVL-865-SZ-001 (NCT04244175) did not meet its primary objective",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04686786"
+        },
+        {
+          "nct_id": "NCT04726592",
+          "phase": "3",
+          "sponsor_group": "Assistance Publique - Hôpitaux de Paris",
+          "sponsor_ticker": "",
+          "drugs": "CLORAZEPIC ACID",
+          "stopped": "2024-04",
+          "type": "Efficacy",
+          "why_stopped": "It has been determined that continuing with enrollments in this study is no longer justified due to the lack of significant impact on the expected outcomes.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04726592"
+        },
+        {
+          "nct_id": "NCT02519439",
+          "phase": "3",
+          "sponsor_group": "Marinus Pharmaceuticals",
+          "sponsor_ticker": "",
+          "drugs": "GANAXOLONE",
+          "stopped": "2016-12",
+          "type": "Efficacy",
+          "why_stopped": "Ganaxolone missed its primary endpoint in the double-blind portion of the 1042-0603 study. Due to this outcome Marinus discontinued this extension study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02519439"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:28Z"
+    },
+    {
+      "slug": "oncology-ido1",
+      "file_stem": "brief_oncology_ido1_2015-2024",
+      "segment": "IDO1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.08108108108108109,
+      "closed": 37,
+      "trials_in_segment": 61,
+      "biological_stops": 3,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "ci95": [
+        0.027960066396321384,
+        0.2130099249850153
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 18,
+          "rate": 0.05555555555555555,
+          "ci95": [
+            0.009874935830924525,
+            0.2575779980200754
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 2,
+          "closed": 16,
+          "rate": 0.125,
+          "ci95": [
+            0.034976749337057134,
+            0.3602333143674828
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04445064",
+          "phase": "2",
+          "sponsor_group": "Cliniques universitaires Saint-Luc- Université Catholique de Louvain",
+          "sponsor_ticker": "",
+          "drugs": "IMSAPEPIMUT, ETIMUPEPIMUT",
+          "stopped": "2024-06",
+          "type": "Efficacy",
+          "why_stopped": "unmet primary endpoint",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04445064"
+        },
+        {
+          "nct_id": "NCT03823131",
+          "phase": "2",
+          "sponsor_group": "Chase Heaton, MD",
+          "sponsor_ticker": "",
+          "drugs": "EPACADOSTAT, PEMBROLIZUMAB, SARS-CoV-2 Spike Protein Plasmid …, TAVOKINOGENE TELSEPLASMID",
+          "stopped": "2022-07",
+          "type": "Efficacy",
+          "why_stopped": "Treatment Ineffective",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03823131"
+        },
+        {
+          "nct_id": "NCT02575807",
+          "phase": "2",
+          "sponsor_group": "Aduro Biotech, Inc.",
+          "sponsor_ticker": "",
+          "drugs": "Live-Attenuated Listeria Encoding…, EPACADOSTAT, PEMBROLIZUMAB",
+          "stopped": "2018-04",
+          "type": "Efficacy",
+          "why_stopped": "Study was stopped due to low enrollment and lack of clinical activity.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02575807"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-parp-pd-l-1",
+      "file_stem": "brief_oncology_parp-pd-l-1_2015-2024",
+      "segment": "PARP + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.07936507936507936,
+      "closed": 63,
+      "trials_in_segment": 195,
+      "biological_stops": 5,
+      "efficacy_stops": 5,
+      "safety_stops": 0,
+      "ci95": [
+        0.03437534033651937,
+        0.17270528011541472
+      ],
+      "reference_label": "PD-(L)1 combinations without PARP",
+      "reference_rate": 0.048249763481551564,
+      "reference_closed": 2114,
+      "reference_stops": 102,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 0,
+          "closed": 10,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.2775401687666166
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 5,
+          "closed": 42,
+          "rate": 0.11904761904761904,
+          "ci95": [
+            0.05193726765019084,
+            0.2500068180710754
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 11,
+          "rate": 0.0,
+          "ci95": [
+            2.7755575615628914e-17,
+            0.2588400172488141
+          ]
+        }
+      ],
+      "trial_count": 5,
+      "trials_preview": [
+        {
+          "nct_id": "NCT03642132",
+          "phase": "3",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "AVELUMAB, TALAZOPARIB, Chemotherapy followed by talazopa…",
+          "stopped": "2021-12",
+          "type": "Efficacy",
+          "why_stopped": "Phase 3 B9991010 study was stopped due to futility of efficacy at interim analysis on 21Dec2018, and approvals of PARP inhibitors in front-line maintenance setting, Pfizer decided stopping enrollment in the B9991030 study on 19Mar2019.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03642132"
+        },
+        {
+          "nct_id": "NCT03955471",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "NIRAPARIB, DOSTARLIMAB",
+          "stopped": "2021-08",
+          "type": "Efficacy",
+          "why_stopped": "The study will not resume based on the results of a planned interim analysis that showed futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03955471"
+        },
+        {
+          "nct_id": "NCT03637491",
+          "phase": "2",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "AVELUMAB, BINIMETINIB, TALAZOPARIB",
+          "stopped": "2020-12",
+          "type": "Efficacy",
+          "why_stopped": "Available clinical data has shown limited anti-tumor activity and reaching target study drug dose levels may not be feasible.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03637491"
+        },
+        {
+          "nct_id": "NCT04052204",
+          "phase": "2",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "AVELUMAB, BEMPEGALDESLEUKIN, TALAZOPARIB, ENZALUTAMIDE",
+          "stopped": "2020-09",
+          "type": "Efficacy",
+          "why_stopped": "Study prematurely terminated as the experimental treatments evaluated in study B9991040 may not provide additional clinical benefit over current or future Standard of Care in the different therapeutic indications that this trial was to evaluate.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04052204"
+        },
+        {
+          "nct_id": "NCT03572478",
+          "phase": "2",
+          "sponsor_group": "University of Chicago",
+          "sponsor_ticker": "",
+          "drugs": "RUCAPARIB, NIVOLUMAB",
+          "stopped": "2020-02",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to lack of efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03572478"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "neurology-dopaminergic",
+      "file_stem": "brief_neurology_dopaminergic_2015-2024",
+      "segment": "Dopaminergic",
+      "area": "Neurology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.07692307692307693,
+      "closed": 52,
+      "trials_in_segment": 72,
+      "biological_stops": 4,
+      "efficacy_stops": 3,
+      "safety_stops": 1,
+      "ci95": [
+        0.03031885429734589,
+        0.1817381068212467
+      ],
+      "reference_label": "all neurology Phase 2,3 trials",
+      "reference_rate": 0.05886157826649418,
+      "reference_closed": 1546,
+      "reference_stops": 91,
+      "baseline_rate": 0.05886157826649418,
+      "baseline_closed": 1546,
+      "baseline_stops": 91,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 4,
+          "closed": 28,
+          "rate": 0.14285714285714285,
+          "ci95": [
+            0.056989129307017855,
+            0.31490173044877334
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 14,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.21531701192718142
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 10,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.2775401687666166
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02817906",
+          "phase": "3",
+          "sponsor_group": "Intra-Cellular Therapies, Inc.",
+          "sponsor_ticker": "",
+          "drugs": "LUMATEPERONE",
+          "stopped": "2019-01",
+          "type": "Efficacy",
+          "why_stopped": "Pre-specified Interim Analysis Indicated Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02817906"
+        },
+        {
+          "nct_id": "NCT02847650",
+          "phase": "2",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "TAVAPADON",
+          "stopped": "2018-01",
+          "type": "Efficacy",
+          "why_stopped": "Study B7601011 was terminated on 29 Jan 2018 due to lack of efficacy in moderate/advanced Parkinson's disease.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02847650"
+        },
+        {
+          "nct_id": "NCT02687542",
+          "phase": "2",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "TAVAPADON, PF-06649751 middle dose 1 (3 mg Q…, PF-06649751 middle dose 2 (7 mg Q…",
+          "stopped": "2017-11",
+          "type": "Efficacy",
+          "why_stopped": "Terminated 25Sep17 due to insufficient efficacy. Not due to safety reasons.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02687542"
+        },
+        {
+          "nct_id": "NCT02820519",
+          "phase": "2",
+          "sponsor_group": "University of Witten/Herdecke",
+          "sponsor_ticker": "",
+          "drugs": "LOXAPINE",
+          "stopped": "2017-05",
+          "type": "Safety",
+          "why_stopped": "Intolerable high amount of adverse events",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02820519"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:28Z"
+    },
+    {
+      "slug": "oncology-egfr",
+      "file_stem": "brief_oncology_egfr_2015-2024",
+      "segment": "EGFR",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.07380073800738007,
+      "closed": 271,
+      "trials_in_segment": 971,
+      "biological_stops": 20,
+      "efficacy_stops": 15,
+      "safety_stops": 4,
+      "ci95": [
+        0.048279228366164606,
+        0.1112366527813764
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 8,
+          "closed": 130,
+          "rate": 0.06153846153846154,
+          "ci95": [
+            0.0315089074737391,
+            0.11673797540871297
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 5,
+          "closed": 79,
+          "rate": 0.06329113924050633,
+          "ci95": [
+            0.0273344618147294,
+            0.13975067415560433
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 7,
+          "closed": 62,
+          "rate": 0.11290322580645161,
+          "ci95": [
+            0.05577792691334926,
+            0.21519969209955447
+          ]
+        }
+      ],
+      "trial_count": 20,
+      "trials_preview": [
+        {
+          "nct_id": "NCT06685068",
+          "phase": "2",
+          "sponsor_group": "Genmab",
+          "sponsor_ticker": "GMAB",
+          "drugs": "Anti-EGFR/c-Met Antibody-drug Con…",
+          "stopped": "2026-03",
+          "type": "Benefit–risk",
+          "why_stopped": "Genmab has decided to terminate the GEN1286 program due to an unfavorable benefit-risk profile not supporting further development.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06685068"
+        },
+        {
+          "nct_id": "NCT04844073",
+          "phase": "2",
+          "sponsor_group": "Takeda",
+          "sponsor_ticker": "TAK",
+          "drugs": "TAK-186",
+          "stopped": "2025-06",
+          "type": "Efficacy",
+          "why_stopped": "Sponsor decision based on limited anti-cancer activity of TAK-186.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04844073"
+        },
+        {
+          "nct_id": "NCT05167409",
+          "phase": "2",
+          "sponsor_group": "University of Colorado, Denver",
+          "sponsor_ticker": "",
+          "drugs": "EVORPACEPT, CETUXIMAB, PEMBROLIZUMAB",
+          "stopped": "2024-10",
+          "type": "Safety",
+          "why_stopped": "Accrual was terminated due to safety concerns",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05167409"
+        },
+        {
+          "nct_id": "NCT05619172",
+          "phase": "2",
+          "sponsor_group": "SOTIO Biotech AG",
+          "sponsor_ticker": "",
+          "drugs": "NANRILKEFUSP ALFA, CETUXIMAB",
+          "stopped": "2024-03",
+          "type": "Efficacy",
+          "why_stopped": "Due to lack of efficacy shown at the time of the interim analysis.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05619172"
+        },
+        {
+          "nct_id": "NCT04853043",
+          "phase": "2",
+          "sponsor_group": "University of Utah",
+          "sponsor_ticker": "",
+          "drugs": "CETUXIMAB",
+          "stopped": "2024-02",
+          "type": "Efficacy",
+          "why_stopped": "PI Determination - Slow recruitment, funding concerns, poor response to treatment",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04853043"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-pi3k-akt-mtor",
+      "file_stem": "brief_oncology_pi3k-akt-mtor_2015-2024",
+      "segment": "PI3K / AKT / mTOR",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.07303370786516854,
+      "closed": 178,
+      "trials_in_segment": 352,
+      "biological_stops": 13,
+      "efficacy_stops": 10,
+      "safety_stops": 4,
+      "ci95": [
+        0.043174612835219436,
+        0.12093305009779477
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 10,
+          "closed": 90,
+          "rate": 0.1111111111111111,
+          "ci95": [
+            0.0614825297021024,
+            0.19257963462587152
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 3,
+          "closed": 56,
+          "rate": 0.05357142857142857,
+          "ci95": [
+            0.01838544792866792,
+            0.14607539536429218
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 32,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.1071827150573635
+          ]
+        }
+      ],
+      "trial_count": 13,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02626455",
+          "phase": "3",
+          "sponsor_group": "Bayer",
+          "sponsor_ticker": "",
+          "drugs": "COPANLISIB",
+          "stopped": "2023-09",
+          "type": "Efficacy",
+          "why_stopped": "Company decided to terminate this study due to study did not meet the primary endpoint.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02626455"
+        },
+        {
+          "nct_id": "NCT03458728",
+          "phase": "2",
+          "sponsor_group": "Bayer",
+          "sponsor_ticker": "",
+          "drugs": "COPANLISIB",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "no anticipated benefit over available standard therapies",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03458728"
+        },
+        {
+          "nct_id": "NCT02340221",
+          "phase": "3",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "TASELISIB",
+          "stopped": "2021-06",
+          "type": "Safety",
+          "why_stopped": "The Sponsor discontinued the manufacturing and development of taselisib due to modest clinical benefit and limited tolerability.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02340221"
+        },
+        {
+          "nct_id": "NCT03890289",
+          "phase": "2",
+          "sponsor_group": "Fondazione Italiana Linfomi - ETS",
+          "sponsor_ticker": "",
+          "drugs": "IDELALISIB, OBINUTUZUMAB",
+          "stopped": "2021-04",
+          "type": "Safety",
+          "why_stopped": "Study was halted prematurely due to safety, since tocity stopping rules have been met",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03890289"
+        },
+        {
+          "nct_id": "NCT04209621",
+          "phase": "2",
+          "sponsor_group": "National Heart, Lung, and Blood Institute (NHLBI)",
+          "sponsor_ticker": "",
+          "drugs": "DUVELISIB, IBRUTINIB",
+          "stopped": "2021-01",
+          "type": "Safety",
+          "why_stopped": "Due to unexpected sudden death on study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04209621"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-cd3-t-cell-engagers",
+      "file_stem": "brief_oncology_cd3-t-cell-engagers_2015-2024",
+      "segment": "CD3 T-cell engagers",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.06451612903225806,
+      "closed": 62,
+      "trials_in_segment": 283,
+      "biological_stops": 4,
+      "efficacy_stops": 2,
+      "safety_stops": 2,
+      "ci95": [
+        0.025372494807644003,
+        0.15447732658187266
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 16,
+          "rate": 0.0625,
+          "ci95": [
+            0.01111905730833121,
+            0.2832926836802987
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 17,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.18432366037156456
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 29,
+          "rate": 0.10344827586206896,
+          "ci95": [
+            0.035814240381301043,
+            0.26385447247069155
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05220098",
+          "phase": "2",
+          "sponsor_group": "Takeda",
+          "sponsor_ticker": "TAK",
+          "drugs": "B7H3/CD3-targeting T-cell Engagin…",
+          "stopped": "2025-07",
+          "type": "Efficacy",
+          "why_stopped": "Terminated due to limited anti-cancer activity",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05220098"
+        },
+        {
+          "nct_id": "NCT04844073",
+          "phase": "2",
+          "sponsor_group": "Takeda",
+          "sponsor_ticker": "TAK",
+          "drugs": "TAK-186",
+          "stopped": "2025-06",
+          "type": "Efficacy",
+          "why_stopped": "Sponsor decision based on limited anti-cancer activity of TAK-186.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04844073"
+        },
+        {
+          "nct_id": "NCT04934670",
+          "phase": "3",
+          "sponsor_group": "Xenikos",
+          "sponsor_ticker": "",
+          "drugs": "Anti-CD3/CD7-Ricin Toxin A Immuno…",
+          "stopped": "2022-11",
+          "type": "Safety",
+          "why_stopped": "The study met the protocol defined stopping boundary for Day 60 mortality when comparing mortality between the T-Guard and ruxolitinib arms",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04934670"
+        },
+        {
+          "nct_id": "NCT02535364",
+          "phase": "2",
+          "sponsor_group": "Bristol Myers Squibb",
+          "sponsor_ticker": "BMY",
+          "drugs": "VADACABTAGENE LERALEUCEL",
+          "stopped": "2017-04",
+          "type": "Safety",
+          "why_stopped": "Safety reasons",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02535364"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-hdac",
+      "file_stem": "brief_oncology_hdac_2015-2024",
+      "segment": "HDAC",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.06153846153846154,
+      "closed": 65,
+      "trials_in_segment": 216,
+      "biological_stops": 4,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "ci95": [
+        0.024188663436562223,
+        0.14782360821313795
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 2,
+          "closed": 33,
+          "rate": 0.06060606060606061,
+          "ci95": [
+            0.016780530429070947,
+            0.19606581717798194
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 23,
+          "rate": 0.043478260869565216,
+          "ci95": [
+            0.0077164669621267445,
+            0.20991586494059142
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 1,
+          "closed": 9,
+          "rate": 0.1111111111111111,
+          "ci95": [
+            0.019890371327130535,
+            0.4350062147680601
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05770882",
+          "phase": "2",
+          "sponsor_group": "Great Novel Therapeutics Biotech & Medicals Corporation",
+          "sponsor_ticker": "",
+          "drugs": "TUCIDINOSTAT, REGORAFENIB",
+          "stopped": "2025-01",
+          "type": "Benefit–risk",
+          "why_stopped": "The overall profile does not support development for Hepatocellular Carcinoma",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05770882"
+        },
+        {
+          "nct_id": "NCT04651127",
+          "phase": "2",
+          "sponsor_group": "Sun Yat-sen University",
+          "sponsor_ticker": "",
+          "drugs": "TORIPALIMAB, TUCIDINOSTAT",
+          "stopped": "2023-01",
+          "type": "Efficacy",
+          "why_stopped": "Five patients were enrolled in the study, but no treatment response was observed and all the patients had the best of response of prgressive disease. Given the lack of efficacy, the trial was terminated.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04651127"
+        },
+        {
+          "nct_id": "NCT03151408",
+          "phase": "3",
+          "sponsor_group": "Helsinn Healthcare SA",
+          "sponsor_ticker": "",
+          "drugs": "PRACINOSTAT",
+          "stopped": "2020-08",
+          "type": "Efficacy",
+          "why_stopped": "The IDMC recommended to stop the study prematurely due to a lack of efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03151408"
+        },
+        {
+          "nct_id": "NCT02395627",
+          "phase": "2",
+          "sponsor_group": "University of California, San Francisco",
+          "sponsor_ticker": "",
+          "drugs": "TAMOXIFEN, VORINOSTAT, PEMBROLIZUMAB",
+          "stopped": "2019-06",
+          "type": "Efficacy",
+          "why_stopped": "Insufficient efficacy in an unselected patient population",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02395627"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-parp",
+      "file_stem": "brief_oncology_parp_2015-2024",
+      "segment": "PARP",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.05853658536585366,
+      "closed": 205,
+      "trials_in_segment": 541,
+      "biological_stops": 12,
+      "efficacy_stops": 10,
+      "safety_stops": 2,
+      "ci95": [
+        0.03379868421266013,
+        0.09951575122549011
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 54,
+          "rate": 0.018518518518518517,
+          "ci95": [
+            0.0032764033153519848,
+            0.09771665358487208
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 7,
+          "closed": 116,
+          "rate": 0.0603448275862069,
+          "ci95": [
+            0.0295351773943901,
+            0.11934133960805313
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 4,
+          "closed": 35,
+          "rate": 0.11428571428571428,
+          "ci95": [
+            0.0453510585448975,
+            0.2595179478812023
+          ]
+        }
+      ],
+      "trial_count": 12,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05689021",
+          "phase": "2",
+          "sponsor_group": "Mayo Clinic",
+          "sponsor_ticker": "",
+          "drugs": "ABIRATERONE ACETATE, NIRAPARIB, PREDNISONE",
+          "stopped": "2026-07",
+          "type": "Efficacy",
+          "why_stopped": "Sponsor decided to close due to slow accrual and lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05689021"
+        },
+        {
+          "nct_id": "NCT05286827",
+          "phase": "2",
+          "sponsor_group": "National Cancer Institute (NCI)",
+          "sponsor_ticker": "",
+          "drugs": "OLAPARIB",
+          "stopped": "2024-12",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to low accrual and insufficient efficacy seen in first few participants treated.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05286827"
+        },
+        {
+          "nct_id": "NCT06964165",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "NIRAPARIB, CARBOPLATIN, PACLITAXEL",
+          "stopped": "2024-06",
+          "type": "Efficacy",
+          "why_stopped": "The study stopped after meeting pre-specified futility criteria",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06964165"
+        },
+        {
+          "nct_id": "NCT06065059",
+          "phase": "2",
+          "sponsor_group": "Tango Therapeutics, Inc.",
+          "sponsor_ticker": "TNGX",
+          "drugs": "USP1 Inhibitor TNG348, OLAPARIB",
+          "stopped": "2024-05",
+          "type": "Safety",
+          "why_stopped": "Terminated due to safety",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06065059"
+        },
+        {
+          "nct_id": "NCT03901469",
+          "phase": "2",
+          "sponsor_group": "Zenith Epigenetics",
+          "sponsor_ticker": "",
+          "drugs": "ZEN-3694, TALAZOPARIB",
+          "stopped": "2024-03",
+          "type": "Efficacy",
+          "why_stopped": "Parts 1 and 2 and Expansion Cohort C were completed. Expansion Cohorts A and B were discontinued based on results from an interim futility analysis and not due to safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03901469"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-flt3-kit",
+      "file_stem": "brief_oncology_flt3-kit_2015-2024",
+      "segment": "FLT3 / KIT",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.05737704918032787,
+      "closed": 244,
+      "trials_in_segment": 744,
+      "biological_stops": 14,
+      "efficacy_stops": 7,
+      "safety_stops": 5,
+      "ci95": [
+        0.0344821601933716,
+        0.09399344680722879
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 5,
+          "closed": 117,
+          "rate": 0.042735042735042736,
+          "ci95": [
+            0.018389559879770763,
+            0.0961537761899271
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 6,
+          "closed": 78,
+          "rate": 0.07692307692307693,
+          "ci95": [
+            0.03572997725324493,
+            0.15783417594024104
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 49,
+          "rate": 0.061224489795918366,
+          "ci95": [
+            0.021039764955529186,
+            0.16520743422087725
+          ]
+        }
+      ],
+      "trial_count": 14,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05770882",
+          "phase": "2",
+          "sponsor_group": "Great Novel Therapeutics Biotech & Medicals Corporation",
+          "sponsor_ticker": "",
+          "drugs": "TUCIDINOSTAT, REGORAFENIB",
+          "stopped": "2025-01",
+          "type": "Benefit–risk",
+          "why_stopped": "The overall profile does not support development for Hepatocellular Carcinoma",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05770882"
+        },
+        {
+          "nct_id": "NCT05160168",
+          "phase": "2",
+          "sponsor_group": "Theseus Pharmaceuticals",
+          "sponsor_ticker": "",
+          "drugs": "Pan-variant KIT Inhibitor THE-630",
+          "stopped": "2024-02",
+          "type": "Safety",
+          "why_stopped": "The Sponsor terminated the study due to early dose-limiting toxicities.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05160168"
+        },
+        {
+          "nct_id": "NCT04635059",
+          "phase": "2",
+          "sponsor_group": "Medical College of Wisconsin",
+          "sponsor_ticker": "",
+          "drugs": "PACRITINIB",
+          "stopped": "2023-11",
+          "type": "Efficacy",
+          "why_stopped": "futility and drug supplier in favor of new metastatic protocol.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04635059"
+        },
+        {
+          "nct_id": "NCT03686345",
+          "phase": "2",
+          "sponsor_group": "Niguarda Hospital",
+          "sponsor_ticker": "",
+          "drugs": "MIDOSTAURIN",
+          "stopped": "2023-06",
+          "type": "Efficacy",
+          "why_stopped": "didn't reach the primary endpoint",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03686345"
+        },
+        {
+          "nct_id": "NCT04438902",
+          "phase": "2",
+          "sponsor_group": "First Affiliated Hospital of Zhejiang University",
+          "sponsor_ticker": "",
+          "drugs": "OSIMERTINIB, CATEQUENTINIB",
+          "stopped": "2022-12",
+          "type": "Safety",
+          "why_stopped": "Many patients can't tolerate the combination treatment due to adverse events.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04438902"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-tigit-pd-l-1",
+      "file_stem": "brief_oncology_tigit-pd-l-1_2015-2024",
+      "segment": "TIGIT + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.05263157894736842,
+      "closed": 57,
+      "trials_in_segment": 126,
+      "biological_stops": 3,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "ci95": [
+        0.01805996809628102,
+        0.14369777660471303
+      ],
+      "reference_label": "PD-(L)1 combinations without TIGIT",
+      "reference_rate": 0.04905660377358491,
+      "reference_closed": 2120,
+      "reference_stops": 104,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 19,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.16818436536845052
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 34,
+          "rate": 0.08823529411764706,
+          "ci95": [
+            0.030465390304310128,
+            0.22960817952360413
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04746924",
+          "phase": "3",
+          "sponsor_group": "BeOne Medicines",
+          "sponsor_ticker": "ONC",
+          "drugs": "OCIPERLIMAB",
+          "stopped": "2025-05",
+          "type": "Efficacy",
+          "why_stopped": "This decision was conducted by the sponsor based on lack of efficacy and not driven by safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04746924"
+        },
+        {
+          "nct_id": "NCT05226598",
+          "phase": "3",
+          "sponsor_group": "Merck & Co.",
+          "sponsor_ticker": "MRK",
+          "drugs": "PEMBROLIZUMAB, VIBOSTOLIMAB",
+          "stopped": "2024-09",
+          "type": "Efficacy",
+          "why_stopped": "MK-7684A-007 was terminated early due to futility. A non-submission CSR, not intended to support any registration, was issued; therefore, an abbreviated CSR was generated.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05226598"
+        },
+        {
+          "nct_id": "NCT04308785",
+          "phase": "2",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "ATEZOLIZUMAB, TIRAGOLUMAB",
+          "stopped": "2023-07",
+          "type": "Efficacy",
+          "why_stopped": "The sponsor's decision was based on the negative results of SKYSCRAPER-02.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04308785"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-tigit",
+      "file_stem": "brief_oncology_tigit_2015-2024",
+      "segment": "TIGIT",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.05172413793103448,
+      "closed": 58,
+      "trials_in_segment": 128,
+      "biological_stops": 3,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "ci95": [
+        0.017745812831795674,
+        0.14139625335019185
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 20,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.16113012549493322
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 34,
+          "rate": 0.08823529411764706,
+          "ci95": [
+            0.030465390304310128,
+            0.22960817952360413
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04746924",
+          "phase": "3",
+          "sponsor_group": "BeOne Medicines",
+          "sponsor_ticker": "ONC",
+          "drugs": "OCIPERLIMAB",
+          "stopped": "2025-05",
+          "type": "Efficacy",
+          "why_stopped": "This decision was conducted by the sponsor based on lack of efficacy and not driven by safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04746924"
+        },
+        {
+          "nct_id": "NCT05226598",
+          "phase": "3",
+          "sponsor_group": "Merck & Co.",
+          "sponsor_ticker": "MRK",
+          "drugs": "PEMBROLIZUMAB, VIBOSTOLIMAB",
+          "stopped": "2024-09",
+          "type": "Efficacy",
+          "why_stopped": "MK-7684A-007 was terminated early due to futility. A non-submission CSR, not intended to support any registration, was issued; therefore, an abbreviated CSR was generated.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05226598"
+        },
+        {
+          "nct_id": "NCT04308785",
+          "phase": "2",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "ATEZOLIZUMAB, TIRAGOLUMAB",
+          "stopped": "2023-07",
+          "type": "Efficacy",
+          "why_stopped": "The sponsor's decision was based on the negative results of SKYSCRAPER-02.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04308785"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "immunology-autoimmune-jak-tyk2",
+      "file_stem": "brief_immunology-autoimmune_jak-tyk2_2015-2024",
+      "segment": "JAK / TYK2",
+      "area": "Immunology & Autoimmune",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.05063291139240506,
+      "closed": 79,
+      "trials_in_segment": 127,
+      "biological_stops": 4,
+      "efficacy_stops": 2,
+      "safety_stops": 0,
+      "ci95": [
+        0.01986372131473304,
+        0.12307895482865383
+      ],
+      "reference_label": "all immunology & autoimmune Phase 2,3 trials",
+      "reference_rate": 0.03355363497712252,
+      "reference_closed": 1967,
+      "reference_stops": 66,
+      "baseline_rate": 0.03355363497712252,
+      "baseline_closed": 1967,
+      "baseline_stops": 66,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 0,
+          "closed": 36,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.09642183044857634
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 4,
+          "closed": 35,
+          "rate": 0.11428571428571428,
+          "ci95": [
+            0.0453510585448975,
+            0.2595179478812023
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 8,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.3244156195108769
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT03599622",
+          "phase": "2",
+          "sponsor_group": "Bristol Myers Squibb",
+          "sponsor_ticker": "BMY",
+          "drugs": "CRAVACITINIB",
+          "stopped": "2022-12",
+          "type": "Efficacy",
+          "why_stopped": "Trial terminated because of lack of efficacy in the short term acute phase",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03599622"
+        },
+        {
+          "nct_id": "NCT03843125",
+          "phase": "3",
+          "sponsor_group": "Eli Lilly",
+          "sponsor_ticker": "LLY",
+          "drugs": "BARICITINIB",
+          "stopped": "2022-04",
+          "type": "Benefit–risk",
+          "why_stopped": "Study terminated due to insufficient evidence to support a positive benefit: risk profile. Safety findings were consistent with previously published OLUMIANT data",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03843125"
+        },
+        {
+          "nct_id": "NCT03616912",
+          "phase": "3",
+          "sponsor_group": "Eli Lilly",
+          "sponsor_ticker": "LLY",
+          "drugs": "BARICITINIB",
+          "stopped": "2021-11",
+          "type": "Benefit–risk",
+          "why_stopped": "Study terminated due to insufficient evidence to support a positive benefit: risk profile in systemic lupus erythematosus patients.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03616912"
+        },
+        {
+          "nct_id": "NCT03823378",
+          "phase": "2",
+          "sponsor_group": "AbbVie",
+          "sponsor_ticker": "ABBV",
+          "drugs": "ELSUBRUTINIB, UPADACITINIB",
+          "stopped": "2020-09",
+          "type": "Efficacy",
+          "why_stopped": "Study M16-763 was terminated early as the benefit of each treatment arm from the feeder study (Study M16-063) did not provide appreciable evidence of differentiated clinical effect to warrant further long-term continuation.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03823378"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:29Z"
+    },
+    {
+      "slug": "oncology-bcl-2",
+      "file_stem": "brief_oncology_bcl-2_2015-2024",
+      "segment": "BCL-2",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.04950495049504951,
+      "closed": 101,
+      "trials_in_segment": 341,
+      "biological_stops": 5,
+      "efficacy_stops": 5,
+      "safety_stops": 1,
+      "ci95": [
+        0.021328195361982306,
+        0.11069573407060934
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 22,
+          "rate": 0.045454545454545456,
+          "ci95": [
+            0.008069219301147859,
+            0.21798489499518053
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 4,
+          "closed": 52,
+          "rate": 0.07692307692307693,
+          "ci95": [
+            0.03031885429734589,
+            0.1817381068212467
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 27,
+          "rate": 0.0,
+          "ci95": [
+            6.938893903907228e-18,
+            0.12455903714463581
+          ]
+        }
+      ],
+      "trial_count": 5,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04150029",
+          "phase": "2",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "SABATOLIMAB, VENETOCLAX, AZACITIDINE",
+          "stopped": "2024-10",
+          "type": "Efficacy",
+          "why_stopped": "Novartis made a decision to early terminate the sabatolimab clinical development program, including the CMBG453C12201 trial, following the negative results from other 2 trials.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04150029"
+        },
+        {
+          "nct_id": "NCT04029688",
+          "phase": "2",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "IDASANUTLIN, VENETOCLAX, CYCLOPHOSPHAMIDE ANHYDROUS, TOPOTECAN",
+          "stopped": "2024-05",
+          "type": "Safety",
+          "why_stopped": "Study was terminated by the sponsor based on insufficient tolerability and efficacy to proceed beyond Part 1b.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04029688"
+        },
+        {
+          "nct_id": "NCT03176277",
+          "phase": "2",
+          "sponsor_group": "Ono Pharmaceutical Co., Ltd.",
+          "sponsor_ticker": "",
+          "drugs": "TAMNORZATINIB, VENETOCLAX",
+          "stopped": "2022-12",
+          "type": "Efficacy",
+          "why_stopped": "Protocol defined futility criteria",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03176277"
+        },
+        {
+          "nct_id": "NCT03634228",
+          "phase": "2",
+          "sponsor_group": "M.D. Anderson Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "CYTARABINE, MILADEMETAN, VENETOCLAX",
+          "stopped": "2022-04",
+          "type": "Efficacy",
+          "why_stopped": "This study was terminated early due to lack of adequate response, and did not move to the Phase II portion of the study",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03634228"
+        },
+        {
+          "nct_id": "NCT03552692",
+          "phase": "2",
+          "sponsor_group": "Fondazione Italiana Linfomi - ETS",
+          "sponsor_ticker": "",
+          "drugs": "VENETOCLAX",
+          "stopped": "2020-03",
+          "type": "Efficacy",
+          "why_stopped": "efficacy lower than expected",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03552692"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-pd-l-1",
+      "file_stem": "brief_oncology_pd-l-1_2015-2024",
+      "segment": "PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.04701890450799806,
+      "closed": 2063,
+      "trials_in_segment": 5680,
+      "biological_stops": 97,
+      "efficacy_stops": 76,
+      "safety_stops": 19,
+      "ci95": [
+        0.03869608759512371,
+        0.057025616477408995
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 29,
+          "closed": 730,
+          "rate": 0.03972602739726028,
+          "ci95": [
+            0.027800021704597954,
+            0.05647102534424747
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 44,
+          "closed": 861,
+          "rate": 0.05110336817653891,
+          "ci95": [
+            0.03828603552721531,
+            0.06790867111039325
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 24,
+          "closed": 472,
+          "rate": 0.05084745762711865,
+          "ci95": [
+            0.03440418071643129,
+            0.07454299834483616
+          ]
+        }
+      ],
+      "trial_count": 97,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05860296",
+          "phase": "2",
+          "sponsor_group": "SignalChem Lifesciences Corporation",
+          "sponsor_ticker": "",
+          "drugs": "SLC-391, PEMBROLIZUMAB",
+          "stopped": "2025-12",
+          "type": "Efficacy",
+          "why_stopped": "Lack of efficacy and enrollment challenges",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05860296"
+        },
+        {
+          "nct_id": "NCT03274258",
+          "phase": "2",
+          "sponsor_group": "M.D. Anderson Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "IPILIMUMAB, NIVOLUMAB",
+          "stopped": "2025-11",
+          "type": "Efficacy",
+          "why_stopped": "The study met its prespecified futility criteria during the prespecified interim futility analysis after enrolling the first cohort of 10 patients.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03274258"
+        },
+        {
+          "nct_id": "NCT03225547",
+          "phase": "2",
+          "sponsor_group": "University of Chicago",
+          "sponsor_ticker": "",
+          "drugs": "PEMBROLIZUMAB, MIFEPRISTONE",
+          "stopped": "2025-09",
+          "type": "Safety",
+          "why_stopped": "side effects (rash)",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03225547"
+        },
+        {
+          "nct_id": "NCT05491317",
+          "phase": "2",
+          "sponsor_group": "Genmab",
+          "sponsor_ticker": "GMAB",
+          "drugs": "Tecaginlimab, PEMBROLIZUMAB",
+          "stopped": "2025-08",
+          "type": "Efficacy",
+          "why_stopped": "After reviewing all available data from Part 1 of the trial, the Sponsor has decided not to proceed to Part 2 (randomized Phase 2) of the trial due to lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05491317"
+        },
+        {
+          "nct_id": "NCT05617313",
+          "phase": "2",
+          "sponsor_group": "Jeffrey Clarke",
+          "sponsor_ticker": "",
+          "drugs": "PEMBROLIZUMAB, Anti-CFH Monoclonal Antibody GT10…",
+          "stopped": "2025-06",
+          "type": "Efficacy",
+          "why_stopped": "Study did not meet the criteria for continuation after interim analysis",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05617313"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-braf-mek-pd-l-1",
+      "file_stem": "brief_oncology_braf-mek-pd-l-1_2015-2024",
+      "segment": "BRAF / MEK + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.046875,
+      "closed": 64,
+      "trials_in_segment": 161,
+      "biological_stops": 3,
+      "efficacy_stops": 2,
+      "safety_stops": 1,
+      "ci95": [
+        0.016068725432185196,
+        0.12899860788542522
+      ],
+      "reference_label": "PD-(L)1 combinations without BRAF / MEK",
+      "reference_rate": 0.04924242424242424,
+      "reference_closed": 2112,
+      "reference_stops": 104,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 22,
+          "rate": 0.045454545454545456,
+          "ci95": [
+            0.008069219301147859,
+            0.21798489499518053
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 2,
+          "closed": 25,
+          "rate": 0.08,
+          "ci95": [
+            0.02221993369109193,
+            0.24966512122957818
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 17,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.18432366037156456
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04214418",
+          "phase": "2",
+          "sponsor_group": "Columbia University",
+          "sponsor_ticker": "",
+          "drugs": "COBIMETINIB, HYDROXYCHLOROQUINE, ATEZOLIZUMAB",
+          "stopped": "2022-04",
+          "type": "Safety",
+          "why_stopped": "Toxicity and Lack of Efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04214418"
+        },
+        {
+          "nct_id": "NCT03637491",
+          "phase": "2",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "AVELUMAB, BINIMETINIB, TALAZOPARIB",
+          "stopped": "2020-12",
+          "type": "Efficacy",
+          "why_stopped": "Available clinical data has shown limited anti-tumor activity and reaching target study drug dose levels may not be feasible.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03637491"
+        },
+        {
+          "nct_id": "NCT03273153",
+          "phase": "3",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "COBIMETINIB, ATEZOLIZUMAB",
+          "stopped": "2019-04",
+          "type": "Benefit–risk",
+          "why_stopped": "This study was terminated due to benefit/risk analysis.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03273153"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-alk-ros1-ret",
+      "file_stem": "brief_oncology_alk-ros1-ret_2015-2024",
+      "segment": "ALK / ROS1 / RET",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.0457516339869281,
+      "closed": 153,
+      "trials_in_segment": 414,
+      "biological_stops": 7,
+      "efficacy_stops": 4,
+      "safety_stops": 0,
+      "ci95": [
+        0.022335930569900464,
+        0.0914196036761159
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 80,
+          "rate": 0.0375,
+          "ci95": [
+            0.012834336300788757,
+            0.10454891974394322
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 43,
+          "rate": 0.023255813953488372,
+          "ci95": [
+            0.004116981177419918,
+            0.12059267861216882
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 30,
+          "rate": 0.1,
+          "ci95": [
+            0.03459925995971615,
+            0.25621441315266624
+          ]
+        }
+      ],
+      "trial_count": 7,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05770882",
+          "phase": "2",
+          "sponsor_group": "Great Novel Therapeutics Biotech & Medicals Corporation",
+          "sponsor_ticker": "",
+          "drugs": "TUCIDINOSTAT, REGORAFENIB",
+          "stopped": "2025-01",
+          "type": "Benefit–risk",
+          "why_stopped": "The overall profile does not support development for Hepatocellular Carcinoma",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05770882"
+        },
+        {
+          "nct_id": "NCT05071183",
+          "phase": "2",
+          "sponsor_group": "Bristol Myers Squibb",
+          "sponsor_ticker": "BMY",
+          "drugs": "REPOTRECTINIB, TRAMETINIB",
+          "stopped": "2023-03",
+          "type": "Benefit–risk",
+          "why_stopped": "Inability to achieve and optimize a dose that could provide a positive benefit risk profile",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05071183"
+        },
+        {
+          "nct_id": "NCT04784520",
+          "phase": "2",
+          "sponsor_group": "CSPC ZhongQi Pharmaceutical Technology Co., Ltd.",
+          "sponsor_ticker": "",
+          "drugs": "EGFR/VEGFR/RET Inhibitor HA121-28",
+          "stopped": "2022-12",
+          "type": "Efficacy",
+          "why_stopped": "The primary endpoint did not meet expectation.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04784520"
+        },
+        {
+          "nct_id": "NCT03722108",
+          "phase": "2",
+          "sponsor_group": "UNICANCER",
+          "sponsor_ticker": "",
+          "drugs": "REGORAFENIB, IRINOTECAN",
+          "stopped": "2022-05",
+          "type": "Benefit–risk",
+          "why_stopped": "Unfavorable benefit-risk balance in the experimental arm following the IDMC for intermediate efficacy and safety analysis",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03722108"
+        },
+        {
+          "nct_id": "NCT02867280",
+          "phase": "3",
+          "sponsor_group": "Sun Yat-sen University",
+          "sponsor_ticker": "",
+          "drugs": "SORAFENIB",
+          "stopped": "2019-08",
+          "type": "Efficacy",
+          "why_stopped": "Midterm analysis showed negative results.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02867280"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-braf-mek",
+      "file_stem": "brief_oncology_braf-mek_2015-2024",
+      "segment": "BRAF / MEK",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.04285714285714286,
+      "closed": 210,
+      "trials_in_segment": 480,
+      "biological_stops": 9,
+      "efficacy_stops": 4,
+      "safety_stops": 2,
+      "ci95": [
+        0.02270827634074077,
+        0.07943087712612443
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 2,
+          "closed": 93,
+          "rate": 0.021505376344086023,
+          "ci95": [
+            0.005917375771978241,
+            0.07505609017653975
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 3,
+          "closed": 72,
+          "rate": 0.041666666666666664,
+          "ci95": [
+            0.01427054877259009,
+            0.11549464605452325
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 4,
+          "closed": 45,
+          "rate": 0.08888888888888889,
+          "ci95": [
+            0.035110548134203154,
+            0.20733851168365702
+          ]
+        }
+      ],
+      "trial_count": 9,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05518110",
+          "phase": "2",
+          "sponsor_group": "Cancer Trials Ireland",
+          "sponsor_ticker": "",
+          "drugs": "TRAMETINIB, HYDROXYCHLOROQUINE",
+          "stopped": "2026-03",
+          "type": "Efficacy",
+          "why_stopped": "Study terminated due to futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05518110"
+        },
+        {
+          "nct_id": "NCT05770882",
+          "phase": "2",
+          "sponsor_group": "Great Novel Therapeutics Biotech & Medicals Corporation",
+          "sponsor_ticker": "",
+          "drugs": "TUCIDINOSTAT, REGORAFENIB",
+          "stopped": "2025-01",
+          "type": "Benefit–risk",
+          "why_stopped": "The overall profile does not support development for Hepatocellular Carcinoma",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05770882"
+        },
+        {
+          "nct_id": "NCT05580770",
+          "phase": "2",
+          "sponsor_group": "SpringWorks Therapeutics, Inc., a healthcare company of Merck KGaA, Darmstadt, Germany",
+          "sponsor_ticker": "",
+          "drugs": "MIRDAMETINIB, BRIMARAFENIB",
+          "stopped": "2025-01",
+          "type": "Safety",
+          "why_stopped": "Lack of tolerability of BGB-3245 (Brimarafenib) when given in combination with Mirdametinib",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05580770"
+        },
+        {
+          "nct_id": "NCT05071183",
+          "phase": "2",
+          "sponsor_group": "Bristol Myers Squibb",
+          "sponsor_ticker": "BMY",
+          "drugs": "REPOTRECTINIB, TRAMETINIB",
+          "stopped": "2023-03",
+          "type": "Benefit–risk",
+          "why_stopped": "Inability to achieve and optimize a dose that could provide a positive benefit risk profile",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05071183"
+        },
+        {
+          "nct_id": "NCT03722108",
+          "phase": "2",
+          "sponsor_group": "UNICANCER",
+          "sponsor_ticker": "",
+          "drugs": "REGORAFENIB, IRINOTECAN",
+          "stopped": "2022-05",
+          "type": "Benefit–risk",
+          "why_stopped": "Unfavorable benefit-risk balance in the experimental arm following the IDMC for intermediate efficacy and safety analysis",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03722108"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-cdk4-6",
+      "file_stem": "brief_oncology_cdk4-6_2015-2024",
+      "segment": "CDK4/6",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.041666666666666664,
+      "closed": 144,
+      "trials_in_segment": 369,
+      "biological_stops": 6,
+      "efficacy_stops": 5,
+      "safety_stops": 1,
+      "ci95": [
+        0.01923362439471795,
+        0.0879188955996544
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 63,
+          "rate": 0.047619047619047616,
+          "ci95": [
+            0.016325872842212416,
+            0.13091177556835826
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 2,
+          "closed": 52,
+          "rate": 0.038461538461538464,
+          "ci95": [
+            0.010611488322077554,
+            0.12981428744365978
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 1,
+          "closed": 29,
+          "rate": 0.034482758620689655,
+          "ci95": [
+            0.006113056614032261,
+            0.1717589106470025
+          ]
+        }
+      ],
+      "trial_count": 6,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05580588",
+          "phase": "2",
+          "sponsor_group": "Shanghai Pharma Biotherapeutics USA Inc.",
+          "sponsor_ticker": "",
+          "drugs": "CDK4/6 Inhibitor SPH4336",
+          "stopped": "2024-10",
+          "type": "Efficacy",
+          "why_stopped": "Although no safety issues with SPH4336 were identified, efficacy in liposarcoma patient was less than anticipated.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05580588"
+        },
+        {
+          "nct_id": "NCT04534283",
+          "phase": "2",
+          "sponsor_group": "Anita Turk",
+          "sponsor_ticker": "",
+          "drugs": "ABEMACICLIB, TEMUTERKIB",
+          "stopped": "2023-08",
+          "type": "Efficacy",
+          "why_stopped": "Lack of efficacy.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04534283"
+        },
+        {
+          "nct_id": "NCT02555189",
+          "phase": "2",
+          "sponsor_group": "Sidney Kimmel Comprehensive Cancer Center at Thomas Jefferson University",
+          "sponsor_ticker": "",
+          "drugs": "RIBOCICLIB",
+          "stopped": "2022-12",
+          "type": "Efficacy",
+          "why_stopped": "Sponsor-PI decision. An analysis of the primary endpoint concluded that the addition of ribociclib to standard of care enzalutamide did not demonstrate benefit, an all active subjects were removed from the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02555189"
+        },
+        {
+          "nct_id": "NCT04165031",
+          "phase": "2",
+          "sponsor_group": "Eli Lilly",
+          "sponsor_ticker": "LLY",
+          "drugs": "LY-3499446, ABEMACICLIB, CETUXIMAB, ERLOTINIB",
+          "stopped": "2020-10",
+          "type": "Safety",
+          "why_stopped": "The study was terminated due to an unexpected toxicity finding.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04165031"
+        },
+        {
+          "nct_id": "NCT02907918",
+          "phase": "2",
+          "sponsor_group": "Washington University School of Medicine",
+          "sponsor_ticker": "",
+          "drugs": "PALBOCICLIB, LETROZOLE, TRASTUZUMAB, GOSERELIN",
+          "stopped": "2020-08",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02907918"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-antifolate-nucleoside",
+      "file_stem": "brief_oncology_antifolate-nucleoside_2015-2024",
+      "segment": "Antifolate / nucleoside",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.040152963671128104,
+      "closed": 523,
+      "trials_in_segment": 1683,
+      "biological_stops": 21,
+      "efficacy_stops": 14,
+      "safety_stops": 8,
+      "ci95": [
+        0.02641007370346873,
+        0.060602037716738
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 12,
+          "closed": 238,
+          "rate": 0.05042016806722689,
+          "ci95": [
+            0.029074249110593406,
+            0.08604903819812437
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 5,
+          "closed": 172,
+          "rate": 0.029069767441860465,
+          "ci95": [
+            0.012479266745217172,
+            0.06623703246953064
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 4,
+          "closed": 113,
+          "rate": 0.035398230088495575,
+          "ci95": [
+            0.0138499544653361,
+            0.08749751082100028
+          ]
+        }
+      ],
+      "trial_count": 21,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04141995",
+          "phase": "2",
+          "sponsor_group": "University of Nebraska",
+          "sponsor_ticker": "",
+          "drugs": "DIGOXIN, FLUOROURACIL, CALCIUM, IRINOTECAN",
+          "stopped": "2025-05",
+          "type": "Efficacy",
+          "why_stopped": "Due to low accrual and futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04141995"
+        },
+        {
+          "nct_id": "NCT05469178",
+          "phase": "2",
+          "sponsor_group": "BerGenBio ASA",
+          "sponsor_ticker": "",
+          "drugs": "BEMCENTINIB, PEMBROLIZUMAB, PEMETREXED, CARBOPLATIN",
+          "stopped": "2025-04",
+          "type": "Efficacy",
+          "why_stopped": "Lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05469178"
+        },
+        {
+          "nct_id": "NCT04856176",
+          "phase": "2",
+          "sponsor_group": "Tufts Medical Center",
+          "sponsor_ticker": "",
+          "drugs": "Granulocyte-Macrophage Colony-Sti…, PEMBROLIZUMAB, PEMETREXED, PACLITAXEL",
+          "stopped": "2024-12",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04856176"
+        },
+        {
+          "nct_id": "NCT03333486",
+          "phase": "2",
+          "sponsor_group": "Roswell Park Cancer Institute",
+          "sponsor_ticker": "",
+          "drugs": "CYCLOPHOSPHAMIDE ANHYDROUS, FLUDARABINE PHOSPHATE",
+          "stopped": "2023-08",
+          "type": "Efficacy",
+          "why_stopped": "Futility analysis determined closure",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03333486"
+        },
+        {
+          "nct_id": "NCT04937738",
+          "phase": "2",
+          "sponsor_group": "Ukrainian Society of Clinical Oncology",
+          "sponsor_ticker": "",
+          "drugs": "DOCETAXEL ANHYDROUS, OXALIPLATIN, LEUCOVORIN, FLUOROURACIL",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "High rate of disease progression in XELOX arm",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04937738"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:26Z"
+    },
+    {
+      "slug": "oncology-antifolate-nucleoside-pd-l-1",
+      "file_stem": "brief_oncology_antifolate-nucleoside-pd-l-1_2015-2024",
+      "segment": "Antifolate / nucleoside + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.03977272727272727,
+      "closed": 176,
+      "trials_in_segment": 610,
+      "biological_stops": 7,
+      "efficacy_stops": 4,
+      "safety_stops": 3,
+      "ci95": [
+        0.019396984200525064,
+        0.07981031822560992
+      ],
+      "reference_label": "PD-(L)1 combinations without Antifolate / nucleoside",
+      "reference_rate": 0.048243314105925535,
+      "reference_closed": 1907,
+      "reference_stops": 92,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 44,
+          "rate": 0.022727272727272728,
+          "ci95": [
+            0.004023148385637013,
+            0.11807979131537633
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 4,
+          "closed": 78,
+          "rate": 0.05128205128205128,
+          "ci95": [
+            0.020120686846503345,
+            0.1245685665405272
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 54,
+          "rate": 0.037037037037037035,
+          "ci95": [
+            0.010216153585413057,
+            0.12535409343403314
+          ]
+        }
+      ],
+      "trial_count": 7,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05469178",
+          "phase": "2",
+          "sponsor_group": "BerGenBio ASA",
+          "sponsor_ticker": "",
+          "drugs": "BEMCENTINIB, PEMBROLIZUMAB, PEMETREXED, CARBOPLATIN",
+          "stopped": "2025-04",
+          "type": "Efficacy",
+          "why_stopped": "Lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05469178"
+        },
+        {
+          "nct_id": "NCT04856176",
+          "phase": "2",
+          "sponsor_group": "Tufts Medical Center",
+          "sponsor_ticker": "",
+          "drugs": "Granulocyte-Macrophage Colony-Sti…, PEMBROLIZUMAB, PEMETREXED, PACLITAXEL",
+          "stopped": "2024-12",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04856176"
+        },
+        {
+          "nct_id": "NCT03838848",
+          "phase": "2",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, CARBOPLATIN, PEMETREXED, NINGETINIB",
+          "stopped": "2022-07",
+          "type": "Efficacy",
+          "why_stopped": "Cohort A,B,C end enrollments. Cohort D and E were considered to have no significant clinical benefit at the SMC meeting and decided to terminate enrollment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
+        },
+        {
+          "nct_id": "NCT03713944",
+          "phase": "2",
+          "sponsor_group": "Nasser Hanna",
+          "sponsor_ticker": "",
+          "drugs": "CARBOPLATIN, PEMETREXED, ATEZOLIZUMAB, BEVACIZUMAB",
+          "stopped": "2021-12",
+          "type": "Safety",
+          "why_stopped": "Extreme toxicity, thromboembolic events",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03713944"
+        },
+        {
+          "nct_id": "NCT03631199",
+          "phase": "3",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "CANAKINUMAB, PEMBROLIZUMAB, CARBOPLATIN, CISPLATIN",
+          "stopped": "2021-08",
+          "type": "Efficacy",
+          "why_stopped": "Results of primary analysis showed addition of canakinumab to combination treatment did not improve tumor response or overall survival; the decision to stop the trial was not due to safety concerns",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03631199"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:26Z"
+    },
+    {
+      "slug": "oncology-microtubule",
+      "file_stem": "brief_oncology_microtubule_2015-2024",
+      "segment": "Microtubule",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.03969465648854962,
+      "closed": 655,
+      "trials_in_segment": 1905,
+      "biological_stops": 26,
+      "efficacy_stops": 21,
+      "safety_stops": 6,
+      "ci95": [
+        0.027230375359716563,
+        0.0575268712986608
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 12,
+          "closed": 319,
+          "rate": 0.03761755485893417,
+          "ci95": [
+            0.02164734121562088,
+            0.06459185472443145
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 7,
+          "closed": 194,
+          "rate": 0.03608247422680412,
+          "ci95": [
+            0.01758608255370182,
+            0.07259515334410734
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 7,
+          "closed": 142,
+          "rate": 0.04929577464788732,
+          "ci95": [
+            0.024080963350659727,
+            0.09825450197610572
+          ]
+        }
+      ],
+      "trial_count": 26,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05420636",
+          "phase": "2",
+          "sponsor_group": "Fox Chase Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "IADADEMSTAT, PACLITAXEL",
+          "stopped": "2025-07",
+          "type": "Efficacy",
+          "why_stopped": "Closed to accrual due to low probability of successful outcomes",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05420636"
+        },
+        {
+          "nct_id": "NCT05583110",
+          "phase": "2",
+          "sponsor_group": "Spanish Breast Cancer Research Group",
+          "sponsor_ticker": "",
+          "drugs": "TUCATINIB, TRASTUZUMAB, VINORELBINE",
+          "stopped": "2025-05",
+          "type": "Safety",
+          "why_stopped": "The study was closed early due to safety concerns and an unfavorable benefit-risk balance. Unexpected high neutropenia rates required a costly sub-study, which was not feasible, forcing the sponsor to terminate the trial prematurely.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05583110"
+        },
+        {
+          "nct_id": "NCT04856176",
+          "phase": "2",
+          "sponsor_group": "Tufts Medical Center",
+          "sponsor_ticker": "",
+          "drugs": "Granulocyte-Macrophage Colony-Sti…, PEMBROLIZUMAB, PEMETREXED, PACLITAXEL",
+          "stopped": "2024-12",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04856176"
+        },
+        {
+          "nct_id": "NCT06964165",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "NIRAPARIB, CARBOPLATIN, PACLITAXEL",
+          "stopped": "2024-06",
+          "type": "Efficacy",
+          "why_stopped": "The study stopped after meeting pre-specified futility criteria",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06964165"
+        },
+        {
+          "nct_id": "NCT06655818",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "BELANTAMAB MAFODOTIN, DOSTARLIMAB",
+          "stopped": "2024-02",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06655818"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:26Z"
+    },
+    {
+      "slug": "oncology-topoisomerase",
+      "file_stem": "brief_oncology_topoisomerase_2015-2024",
+      "segment": "Topoisomerase",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.03880597014925373,
+      "closed": 335,
+      "trials_in_segment": 1134,
+      "biological_stops": 13,
+      "efficacy_stops": 10,
+      "safety_stops": 3,
+      "ci95": [
+        0.02281616615703969,
+        0.0652533034712468
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 5,
+          "closed": 158,
+          "rate": 0.03164556962025317,
+          "ci95": [
+            0.013591135465855646,
+            0.07193446487422996
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 7,
+          "closed": 104,
+          "rate": 0.0673076923076923,
+          "ci95": [
+            0.032983269269930095,
+            0.1324593799489242
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 1,
+          "closed": 73,
+          "rate": 0.0136986301369863,
+          "ci95": [
+            0.0024221890927605197,
+            0.0735991326912731
+          ]
+        }
+      ],
+      "trial_count": 13,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04141995",
+          "phase": "2",
+          "sponsor_group": "University of Nebraska",
+          "sponsor_ticker": "",
+          "drugs": "DIGOXIN, FLUOROURACIL, CALCIUM, IRINOTECAN",
+          "stopped": "2025-05",
+          "type": "Efficacy",
+          "why_stopped": "Due to low accrual and futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04141995"
+        },
+        {
+          "nct_id": "NCT04029688",
+          "phase": "2",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "IDASANUTLIN, VENETOCLAX, CYCLOPHOSPHAMIDE ANHYDROUS, TOPOTECAN",
+          "stopped": "2024-05",
+          "type": "Safety",
+          "why_stopped": "Study was terminated by the sponsor based on insufficient tolerability and efficacy to proceed beyond Part 1b.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04029688"
+        },
+        {
+          "nct_id": "NCT03879798",
+          "phase": "2",
+          "sponsor_group": "Memorial Sloan Kettering Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "VALEMETOSTAT, IRINOTECAN",
+          "stopped": "2023-05",
+          "type": "Safety",
+          "why_stopped": "Due to DLTs",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03879798"
+        },
+        {
+          "nct_id": "NCT03860844",
+          "phase": "2",
+          "sponsor_group": "Sanofi",
+          "sponsor_ticker": "SNY",
+          "drugs": "ISATUXIMAB, DEXAMETHASONE, FLUDARABINE, CYTARABINE",
+          "stopped": "2022-09",
+          "type": "Efficacy",
+          "why_stopped": "Study was prematurely stopped due to sponsor decision (stage 2 efficacy criteria not met); not due to safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03860844"
+        },
+        {
+          "nct_id": "NCT03722108",
+          "phase": "2",
+          "sponsor_group": "UNICANCER",
+          "sponsor_ticker": "",
+          "drugs": "REGORAFENIB, IRINOTECAN",
+          "stopped": "2022-05",
+          "type": "Benefit–risk",
+          "why_stopped": "Unfavorable benefit-risk balance in the experimental arm following the IDMC for intermediate efficacy and safety analysis",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03722108"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:26Z"
+    },
+    {
+      "slug": "oncology-btk",
+      "file_stem": "brief_oncology_btk_2015-2024",
+      "segment": "BTK",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.03816793893129771,
+      "closed": 131,
+      "trials_in_segment": 401,
+      "biological_stops": 5,
+      "efficacy_stops": 4,
+      "safety_stops": 1,
+      "ci95": [
+        0.016411091437379455,
+        0.08623972255474167
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 4,
+          "closed": 77,
+          "rate": 0.05194805194805195,
+          "ci95": [
+            0.02038438860493938,
+            0.12609465188906374
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 40,
+          "rate": 0.025,
+          "ci95": [
+            0.0044267174077949195,
+            0.1288165948800778
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 14,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.21531701192718142
+          ]
+        }
+      ],
+      "trial_count": 5,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02703272",
+          "phase": "3",
+          "sponsor_group": "Johnson & Johnson",
+          "sponsor_ticker": "JNJ",
+          "drugs": "IBRUTINIB, RITUXIMAB, IFOSFAMIDE, CARBOPLATIN",
+          "stopped": "2021-06",
+          "type": "Efficacy",
+          "why_stopped": "IDMC recommended that enrolment be stoped, as the EFS hazard ratio and associated p-value crossed the futility boundary specified in protocol (July 2020).",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02703272"
+        },
+        {
+          "nct_id": "NCT04209621",
+          "phase": "2",
+          "sponsor_group": "National Heart, Lung, and Blood Institute (NHLBI)",
+          "sponsor_ticker": "",
+          "drugs": "DUVELISIB, IBRUTINIB",
+          "stopped": "2021-01",
+          "type": "Safety",
+          "why_stopped": "Due to unexpected sudden death on study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04209621"
+        },
+        {
+          "nct_id": "NCT03037645",
+          "phase": "2",
+          "sponsor_group": "Sunesis Pharmaceuticals",
+          "sponsor_ticker": "",
+          "drugs": "VECABRUTINIB",
+          "stopped": "2020-08",
+          "type": "Efficacy",
+          "why_stopped": "Phase 1b portion completed. Sponsor decided not to proceed with P2 portion of study. Vecabrutinib was very well tolerated, there was insufficient evidence of activity at the doses tested in the Phase 1b to advance to Phase 2.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03037645"
+        },
+        {
+          "nct_id": "NCT02351037",
+          "phase": "2",
+          "sponsor_group": "AbbVie",
+          "sponsor_ticker": "ABBV",
+          "drugs": "IBRUTINIB, LD-AraC, AZACITIDINE",
+          "stopped": "2017-04",
+          "type": "Efficacy",
+          "why_stopped": "Study data do not support development in AML.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02351037"
+        },
+        {
+          "nct_id": "NCT02670317",
+          "phase": "2",
+          "sponsor_group": "Fondazione Italiana Linfomi - ETS",
+          "sponsor_ticker": "",
+          "drugs": "OBINUTUZUMAB, IBRUTINIB, CYCLOPHOSPHAMIDE ANHYDROUS, DOXORUBICIN",
+          "stopped": "2017-02",
+          "type": "Efficacy",
+          "why_stopped": "GA101-CHOP not advantage from rituximab-CHOP",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02670317"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-ctla-4",
+      "file_stem": "brief_oncology_ctla-4_2015-2024",
+      "segment": "CTLA-4",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.03618421052631579,
+      "closed": 304,
+      "trials_in_segment": 760,
+      "biological_stops": 11,
+      "efficacy_stops": 10,
+      "safety_stops": 1,
+      "ci95": [
+        0.020322516045756994,
+        0.06362195409732958
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 0,
+          "closed": 142,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.02634090684688045
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 8,
+          "closed": 111,
+          "rate": 0.07207207207207207,
+          "ci95": [
+            0.03696964141610903,
+            0.1358039876521032
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 51,
+          "rate": 0.058823529411764705,
+          "ci95": [
+            0.020206272864052077,
+            0.15924873938941972
+          ]
+        }
+      ],
+      "trial_count": 11,
+      "trials_preview": [
+        {
+          "nct_id": "NCT03274258",
+          "phase": "2",
+          "sponsor_group": "M.D. Anderson Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "IPILIMUMAB, NIVOLUMAB",
+          "stopped": "2025-11",
+          "type": "Efficacy",
+          "why_stopped": "The study met its prespecified futility criteria during the prespecified interim futility analysis after enrolling the first cohort of 10 patients.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03274258"
+        },
+        {
+          "nct_id": "NCT05116917",
+          "phase": "2",
+          "sponsor_group": "Herlev Hospital",
+          "sponsor_ticker": "",
+          "drugs": "NIVOLUMAB, IPILIMUMAB, Influenza vaccine",
+          "stopped": "2023-10",
+          "type": "Efficacy",
+          "why_stopped": "Based on the precpecified interim analysis the predictive probability was below 10% for the prespecified endpoint.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05116917"
+        },
+        {
+          "nct_id": "NCT04925947",
+          "phase": "2",
+          "sponsor_group": "Weill Medical College of Cornell University",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB",
+          "stopped": "2023-05",
+          "type": "Efficacy",
+          "why_stopped": "Data collected did not support the study endpoints",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04925947"
+        },
+        {
+          "nct_id": "NCT05001724",
+          "phase": "3",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, LENVATINIB",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "Because the efficacy data did not meet expectations, the sponsor decided to terminate the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05001724"
+        },
+        {
+          "nct_id": "NCT03838848",
+          "phase": "2",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, CARBOPLATIN, PEMETREXED, NINGETINIB",
+          "stopped": "2022-07",
+          "type": "Efficacy",
+          "why_stopped": "Cohort A,B,C end enrollments. Cohort D and E were considered to have no significant clinical benefit at the SMC meeting and decided to terminate enrollment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-fgfr",
+      "file_stem": "brief_oncology_fgfr_2015-2024",
+      "segment": "FGFR",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.03592814371257485,
+      "closed": 167,
+      "trials_in_segment": 351,
+      "biological_stops": 6,
+      "efficacy_stops": 4,
+      "safety_stops": 1,
+      "ci95": [
+        0.01656809995480029,
+        0.07615873004445048
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 75,
+          "rate": 0.013333333333333334,
+          "ci95": [
+            0.002357490433136912,
+            0.07173537424743781
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 3,
+          "closed": 53,
+          "rate": 0.05660377358490566,
+          "ci95": [
+            0.019436308927314183,
+            0.15370448936126319
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 39,
+          "rate": 0.05128205128205128,
+          "ci95": [
+            0.014177657646399527,
+            0.1688593904563791
+          ]
+        }
+      ],
+      "trial_count": 6,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05770882",
+          "phase": "2",
+          "sponsor_group": "Great Novel Therapeutics Biotech & Medicals Corporation",
+          "sponsor_ticker": "",
+          "drugs": "TUCIDINOSTAT, REGORAFENIB",
+          "stopped": "2025-01",
+          "type": "Benefit–risk",
+          "why_stopped": "The overall profile does not support development for Hepatocellular Carcinoma",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05770882"
+        },
+        {
+          "nct_id": "NCT05267106",
+          "phase": "2",
+          "sponsor_group": "Incyte",
+          "sponsor_ticker": "INCY",
+          "drugs": "PEMIGATINIB",
+          "stopped": "2024-12",
+          "type": "Efficacy",
+          "why_stopped": "Recruitment ceased after a pre-planned futility interim analysis indicated a low probability to confer a clinically meaningful improvement in objective response when compared to currently available therapies. There were no safety related concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05267106"
+        },
+        {
+          "nct_id": "NCT03722108",
+          "phase": "2",
+          "sponsor_group": "UNICANCER",
+          "sponsor_ticker": "",
+          "drugs": "REGORAFENIB, IRINOTECAN",
+          "stopped": "2022-05",
+          "type": "Benefit–risk",
+          "why_stopped": "Unfavorable benefit-risk balance in the experimental arm following the IDMC for intermediate efficacy and safety analysis",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03722108"
+        },
+        {
+          "nct_id": "NCT02902484",
+          "phase": "2",
+          "sponsor_group": "University of Texas Southwestern Medical Center",
+          "sponsor_ticker": "",
+          "drugs": "NINTEDANIB",
+          "stopped": "2021-10",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to futility and lack of future funding",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02902484"
+        },
+        {
+          "nct_id": "NCT03834220",
+          "phase": "2",
+          "sponsor_group": "Debiopharm International SA",
+          "sponsor_ticker": "",
+          "drugs": "FGFR INHIBITOR DEBIO 1347",
+          "stopped": "2020-12",
+          "type": "Efficacy",
+          "why_stopped": "Due to lower antitumor activity than expected",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03834220"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-cd20",
+      "file_stem": "brief_oncology_cd20_2015-2024",
+      "segment": "CD20",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.03550295857988166,
+      "closed": 169,
+      "trials_in_segment": 504,
+      "biological_stops": 6,
+      "efficacy_stops": 4,
+      "safety_stops": 1,
+      "ci95": [
+        0.016370816649777457,
+        0.07528304445773368
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 4,
+          "closed": 88,
+          "rate": 0.045454545454545456,
+          "ci95": [
+            0.017815960935119883,
+            0.11111907503986312
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 52,
+          "rate": 0.019230769230769232,
+          "ci95": [
+            0.0034027204090655225,
+            0.10120746268024422
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 1,
+          "closed": 29,
+          "rate": 0.034482758620689655,
+          "ci95": [
+            0.006113056614032261,
+            0.1717589106470025
+          ]
+        }
+      ],
+      "trial_count": 6,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05144009",
+          "phase": "2",
+          "sponsor_group": "ADC Therapeutics S.A.",
+          "sponsor_ticker": "",
+          "drugs": "LONCASTUXIMAB TESIRINE, RITUXIMAB",
+          "stopped": "2024-01",
+          "type": "Benefit–risk",
+          "why_stopped": "The benefit-risk profile does not support continuation of the LOTIS-9 trial.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05144009"
+        },
+        {
+          "nct_id": "NCT02703272",
+          "phase": "3",
+          "sponsor_group": "Johnson & Johnson",
+          "sponsor_ticker": "JNJ",
+          "drugs": "IBRUTINIB, RITUXIMAB, IFOSFAMIDE, CARBOPLATIN",
+          "stopped": "2021-06",
+          "type": "Efficacy",
+          "why_stopped": "IDMC recommended that enrolment be stoped, as the EFS hazard ratio and associated p-value crossed the futility boundary specified in protocol (July 2020).",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02703272"
+        },
+        {
+          "nct_id": "NCT03890289",
+          "phase": "2",
+          "sponsor_group": "Fondazione Italiana Linfomi - ETS",
+          "sponsor_ticker": "",
+          "drugs": "IDELALISIB, OBINUTUZUMAB",
+          "stopped": "2021-04",
+          "type": "Safety",
+          "why_stopped": "Study was halted prematurely due to safety, since tocity stopping rules have been met",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03890289"
+        },
+        {
+          "nct_id": "NCT02420717",
+          "phase": "2",
+          "sponsor_group": "M.D. Anderson Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "CYCLOPHOSPHAMIDE ANHYDROUS, CYTARABINE, DASATINIB ANHYDROUS, DEXAMETHASONE",
+          "stopped": "2021-01",
+          "type": "Efficacy",
+          "why_stopped": "Study was closed early due to low accrual and lack of response.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02420717"
+        },
+        {
+          "nct_id": "NCT02495454",
+          "phase": "2",
+          "sponsor_group": "Fondazione Italiana Linfomi - ETS",
+          "sponsor_ticker": "",
+          "drugs": "OBINUTUZUMAB",
+          "stopped": "2017-03",
+          "type": "Efficacy",
+          "why_stopped": "Primary objective not obtained after interim analysis",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02495454"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-ctla-4-pd-l-1",
+      "file_stem": "brief_oncology_ctla-4-pd-l-1_2015-2024",
+      "segment": "CTLA-4 + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.035211267605633804,
+      "closed": 284,
+      "trials_in_segment": 718,
+      "biological_stops": 10,
+      "efficacy_stops": 9,
+      "safety_stops": 1,
+      "ci95": [
+        0.01923630319946255,
+        0.06359258602294311
+      ],
+      "reference_label": "PD-(L)1 combinations without CTLA-4",
+      "reference_rate": 0.051458885941644564,
+      "reference_closed": 1885,
+      "reference_stops": 97,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 0,
+          "closed": 130,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.02870258574314712
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 7,
+          "closed": 106,
+          "rate": 0.0660377358490566,
+          "ci95": [
+            0.0323537353402859,
+            0.13007652787510787
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 48,
+          "rate": 0.0625,
+          "ci95": [
+            0.021482843131227225,
+            0.1683569766274222
+          ]
+        }
+      ],
+      "trial_count": 10,
+      "trials_preview": [
+        {
+          "nct_id": "NCT03274258",
+          "phase": "2",
+          "sponsor_group": "M.D. Anderson Cancer Center",
+          "sponsor_ticker": "",
+          "drugs": "IPILIMUMAB, NIVOLUMAB",
+          "stopped": "2025-11",
+          "type": "Efficacy",
+          "why_stopped": "The study met its prespecified futility criteria during the prespecified interim futility analysis after enrolling the first cohort of 10 patients.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03274258"
+        },
+        {
+          "nct_id": "NCT05116917",
+          "phase": "2",
+          "sponsor_group": "Herlev Hospital",
+          "sponsor_ticker": "",
+          "drugs": "NIVOLUMAB, IPILIMUMAB, Influenza vaccine",
+          "stopped": "2023-10",
+          "type": "Efficacy",
+          "why_stopped": "Based on the precpecified interim analysis the predictive probability was below 10% for the prespecified endpoint.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05116917"
+        },
+        {
+          "nct_id": "NCT04925947",
+          "phase": "2",
+          "sponsor_group": "Weill Medical College of Cornell University",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB",
+          "stopped": "2023-05",
+          "type": "Efficacy",
+          "why_stopped": "Data collected did not support the study endpoints",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04925947"
+        },
+        {
+          "nct_id": "NCT05001724",
+          "phase": "3",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, LENVATINIB",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "Because the efficacy data did not meet expectations, the sponsor decided to terminate the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05001724"
+        },
+        {
+          "nct_id": "NCT03838848",
+          "phase": "2",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, CARBOPLATIN, PEMETREXED, NINGETINIB",
+          "stopped": "2022-07",
+          "type": "Efficacy",
+          "why_stopped": "Cohort A,B,C end enrollments. Cohort D and E were considered to have no significant clinical benefit at the SMC meeting and decided to terminate enrollment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:23Z"
+    },
+    {
+      "slug": "oncology-her2",
+      "file_stem": "brief_oncology_her2_2015-2024",
+      "segment": "HER2",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.035,
+      "closed": 200,
+      "trials_in_segment": 766,
+      "biological_stops": 7,
+      "efficacy_stops": 5,
+      "safety_stops": 2,
+      "ci95": [
+        0.017055324637357105,
+        0.07047146086668134
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 5,
+          "closed": 88,
+          "rate": 0.056818181818181816,
+          "ci95": [
+            0.024510666532829656,
+            0.1262009935427788
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 72,
+          "rate": 0.013888888888888888,
+          "ci95": [
+            0.002455888640432169,
+            0.07456780284286987
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 1,
+          "closed": 40,
+          "rate": 0.025,
+          "ci95": [
+            0.0044267174077949195,
+            0.1288165948800778
+          ]
+        }
+      ],
+      "trial_count": 7,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05583110",
+          "phase": "2",
+          "sponsor_group": "Spanish Breast Cancer Research Group",
+          "sponsor_ticker": "",
+          "drugs": "TUCATINIB, TRASTUZUMAB, VINORELBINE",
+          "stopped": "2025-05",
+          "type": "Safety",
+          "why_stopped": "The study was closed early due to safety concerns and an unfavorable benefit-risk balance. Unexpected high neutropenia rates required a costly sub-study, which was not feasible, forcing the sponsor to terminate the trial prematurely.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05583110"
+        },
+        {
+          "nct_id": "NCT03784599",
+          "phase": "2",
+          "sponsor_group": "The Netherlands Cancer Institute",
+          "sponsor_ticker": "",
+          "drugs": "TRASTUZUMAB EMTANSINE, OSIMERTINIB",
+          "stopped": "2021-05",
+          "type": "Efficacy",
+          "why_stopped": "insufficient effectiveness",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03784599"
+        },
+        {
+          "nct_id": "NCT02907918",
+          "phase": "2",
+          "sponsor_group": "Washington University School of Medicine",
+          "sponsor_ticker": "",
+          "drugs": "PALBOCICLIB, LETROZOLE, TRASTUZUMAB, GOSERELIN",
+          "stopped": "2020-08",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02907918"
+        },
+        {
+          "nct_id": "NCT02658084",
+          "phase": "2",
+          "sponsor_group": "University of Miami",
+          "sponsor_ticker": "",
+          "drugs": "VINORELBINE, TRASTUZUMAB EMTANSINE",
+          "stopped": "2018-10",
+          "type": "Safety",
+          "why_stopped": "Terminated due to low accrual and toxicity concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02658084"
+        },
+        {
+          "nct_id": "NCT02595840",
+          "phase": "2",
+          "sponsor_group": "Universität Duisburg-Essen",
+          "sponsor_ticker": "",
+          "drugs": "AFATINIB, PEMETREXED",
+          "stopped": "2017-11",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02595840"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-vegf-vegfr",
+      "file_stem": "brief_oncology_vegf-vegfr_2015-2024",
+      "segment": "VEGF / VEGFR",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.030627871362940276,
+      "closed": 653,
+      "trials_in_segment": 2172,
+      "biological_stops": 20,
+      "efficacy_stops": 13,
+      "safety_stops": 5,
+      "ci95": [
+        0.01991274264374253,
+        0.04683333434041925
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 7,
+          "closed": 241,
+          "rate": 0.029045643153526972,
+          "ci95": [
+            0.014139341400025898,
+            0.05873062840902615
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 10,
+          "closed": 248,
+          "rate": 0.04032258064516129,
+          "ci95": [
+            0.02204721594037865,
+            0.07262181411660956
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 3,
+          "closed": 164,
+          "rate": 0.018292682926829267,
+          "ci95": [
+            0.0062402341407821645,
+            0.05239600383597687
+          ]
+        }
+      ],
+      "trial_count": 20,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04955743",
+          "phase": "2",
+          "sponsor_group": "Yale University",
+          "sponsor_ticker": "",
+          "drugs": "PEMBROLIZUMAB, LENVATINIB",
+          "stopped": "2025-05",
+          "type": "Efficacy",
+          "why_stopped": "Lack of activity in the drugs",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04955743"
+        },
+        {
+          "nct_id": "NCT05770882",
+          "phase": "2",
+          "sponsor_group": "Great Novel Therapeutics Biotech & Medicals Corporation",
+          "sponsor_ticker": "",
+          "drugs": "TUCIDINOSTAT, REGORAFENIB",
+          "stopped": "2025-01",
+          "type": "Benefit–risk",
+          "why_stopped": "The overall profile does not support development for Hepatocellular Carcinoma",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05770882"
+        },
+        {
+          "nct_id": "NCT03686345",
+          "phase": "2",
+          "sponsor_group": "Niguarda Hospital",
+          "sponsor_ticker": "",
+          "drugs": "MIDOSTAURIN",
+          "stopped": "2023-06",
+          "type": "Efficacy",
+          "why_stopped": "didn't reach the primary endpoint",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03686345"
+        },
+        {
+          "nct_id": "NCT04145700",
+          "phase": "2",
+          "sponsor_group": "Eli Lilly",
+          "sponsor_ticker": "LLY",
+          "drugs": "RAMUCIRUMAB",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "Study terminated for meeting protocol specified futility criteria.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04145700"
+        },
+        {
+          "nct_id": "NCT05001724",
+          "phase": "3",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, LENVATINIB",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "Because the efficacy data did not meet expectations, the sponsor decided to terminate the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05001724"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-proteasome",
+      "file_stem": "brief_oncology_proteasome_2015-2024",
+      "segment": "Proteasome",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.0297029702970297,
+      "closed": 101,
+      "trials_in_segment": 249,
+      "biological_stops": 3,
+      "efficacy_stops": 1,
+      "safety_stops": 2,
+      "ci95": [
+        0.010152296701083398,
+        0.08371883842085293
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 63,
+          "rate": 0.047619047619047616,
+          "ci95": [
+            0.016325872842212416,
+            0.13091177556835826
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 32,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.1071827150573635
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 6,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.3903430336530645
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02897830",
+          "phase": "2",
+          "sponsor_group": "University Hospital, Toulouse",
+          "sponsor_ticker": "",
+          "drugs": "IXAZOMIB, LENALIDOMIDE, DEXAMETHASONE",
+          "stopped": "2018-11",
+          "type": "Efficacy",
+          "why_stopped": "negatives results",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02897830"
+        },
+        {
+          "nct_id": "NCT02372240",
+          "phase": "2",
+          "sponsor_group": "Vivolux AB",
+          "sponsor_ticker": "",
+          "drugs": "USP14/UCHL5 Inhibitor VLX1570, DEXAMETHASONE",
+          "stopped": "2017-05",
+          "type": "Safety",
+          "why_stopped": "Dose limiting tox is observed. Study put on full clinical hold.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02372240"
+        },
+        {
+          "nct_id": "NCT02254551",
+          "phase": "2",
+          "sponsor_group": "SCRI Development Innovations, LLC",
+          "sponsor_ticker": "",
+          "drugs": "SONIDEGIB, BORTEZOMIB",
+          "stopped": "2015-10",
+          "type": "Safety",
+          "why_stopped": "Safety lead-in data did not support continuation of study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02254551"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-er-aromatase",
+      "file_stem": "brief_oncology_er-aromatase_2015-2024",
+      "segment": "ER / aromatase",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.022727272727272728,
+      "closed": 132,
+      "trials_in_segment": 377,
+      "biological_stops": 3,
+      "efficacy_stops": 2,
+      "safety_stops": 1,
+      "ci95": [
+        0.00775884364242789,
+        0.06469024411861142
+      ],
+      "reference_label": "all oncology Phase 2,3 trials",
+      "reference_rate": 0.043344447294177996,
+      "reference_closed": 7798,
+      "reference_stops": 338,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 3,
+          "closed": 64,
+          "rate": 0.046875,
+          "ci95": [
+            0.016068725432185196,
+            0.12899860788542522
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 41,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.08567044886890744
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 27,
+          "rate": 0.0,
+          "ci95": [
+            6.938893903907228e-18,
+            0.12455903714463581
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02907918",
+          "phase": "2",
+          "sponsor_group": "Washington University School of Medicine",
+          "sponsor_ticker": "",
+          "drugs": "PALBOCICLIB, LETROZOLE, TRASTUZUMAB, GOSERELIN",
+          "stopped": "2020-08",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02907918"
+        },
+        {
+          "nct_id": "NCT02395627",
+          "phase": "2",
+          "sponsor_group": "University of California, San Francisco",
+          "sponsor_ticker": "",
+          "drugs": "TAMOXIFEN, VORINOSTAT, PEMBROLIZUMAB",
+          "stopped": "2019-06",
+          "type": "Efficacy",
+          "why_stopped": "Insufficient efficacy in an unselected patient population",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02395627"
+        },
+        {
+          "nct_id": "NCT02585388",
+          "phase": "2",
+          "sponsor_group": "ARCAGY/ GINECO GROUP",
+          "sponsor_ticker": "",
+          "drugs": "LETROZOLE, ANASTROZOLE",
+          "stopped": "2017-05",
+          "type": "Safety",
+          "why_stopped": "Treatment toxicity",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02585388"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:25Z"
+    },
+    {
+      "slug": "oncology-vegf-vegfr-pd-l-1",
+      "file_stem": "brief_oncology_vegf-vegfr-pd-l-1_2015-2024",
+      "segment": "VEGF / VEGFR + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.01824817518248175,
+      "closed": 274,
+      "trials_in_segment": 1080,
+      "biological_stops": 5,
+      "efficacy_stops": 4,
+      "safety_stops": 1,
+      "ci95": [
+        0.007818972728213917,
+        0.04199934101602021
+      ],
+      "reference_label": "PD-(L)1 combinations without VEGF / VEGFR",
+      "reference_rate": 0.05321979776476849,
+      "reference_closed": 1879,
+      "reference_stops": 100,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 41,
+          "rate": 0.024390243902439025,
+          "ci95": [
+            0.00431842027071648,
+            0.12595347011678087
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 2,
+          "closed": 127,
+          "rate": 0.015748031496062992,
+          "ci95": [
+            0.00432926528219783,
+            0.05560274410931068
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 106,
+          "rate": 0.018867924528301886,
+          "ci95": [
+            0.005189500019088127,
+            0.0662005744153702
+          ]
+        }
+      ],
+      "trial_count": 5,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04955743",
+          "phase": "2",
+          "sponsor_group": "Yale University",
+          "sponsor_ticker": "",
+          "drugs": "PEMBROLIZUMAB, LENVATINIB",
+          "stopped": "2025-05",
+          "type": "Efficacy",
+          "why_stopped": "Lack of activity in the drugs",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04955743"
+        },
+        {
+          "nct_id": "NCT05001724",
+          "phase": "3",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, LENVATINIB",
+          "stopped": "2023-02",
+          "type": "Efficacy",
+          "why_stopped": "Because the efficacy data did not meet expectations, the sponsor decided to terminate the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05001724"
+        },
+        {
+          "nct_id": "NCT03838848",
+          "phase": "2",
+          "sponsor_group": "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+          "sponsor_ticker": "",
+          "drugs": "ERFONRILIMAB, CARBOPLATIN, PEMETREXED, NINGETINIB",
+          "stopped": "2022-07",
+          "type": "Efficacy",
+          "why_stopped": "Cohort A,B,C end enrollments. Cohort D and E were considered to have no significant clinical benefit at the SMC meeting and decided to terminate enrollment.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
+        },
+        {
+          "nct_id": "NCT03713944",
+          "phase": "2",
+          "sponsor_group": "Nasser Hanna",
+          "sponsor_ticker": "",
+          "drugs": "CARBOPLATIN, PEMETREXED, ATEZOLIZUMAB, BEVACIZUMAB",
+          "stopped": "2021-12",
+          "type": "Safety",
+          "why_stopped": "Extreme toxicity, thromboembolic events",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03713944"
+        },
+        {
+          "nct_id": "NCT02982694",
+          "phase": "2",
+          "sponsor_group": "Vall d'Hebron Institute of Oncology",
+          "sponsor_ticker": "",
+          "drugs": "ATEZOLIZUMAB, BEVACIZUMAB",
+          "stopped": "2020-11",
+          "type": "Efficacy",
+          "why_stopped": "The results of the interim analysis showed that the efficacy in the MSS subgroup (MSI like) is inferior to the expected, and this situation is very unlikely to be reversed if the trial is fully completed.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02982694"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:24Z"
+    },
+    {
+      "slug": "oncology-microtubule-pd-l-1",
+      "file_stem": "brief_oncology_microtubule-pd-l-1_2015-2024",
+      "segment": "Microtubule + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.015,
+      "closed": 200,
+      "trials_in_segment": 676,
+      "biological_stops": 3,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "ci95": [
+        0.005114145184492387,
+        0.043166480556278884
+      ],
+      "reference_label": "PD-(L)1 combinations without Microtubule",
+      "reference_rate": 0.05042016806722689,
+      "reference_closed": 1904,
+      "reference_stops": 96,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 0,
+          "closed": 59,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.061131479784092065
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 79,
+          "rate": 0.012658227848101266,
+          "ci95": [
+            0.002237936230769212,
+            0.06827736043177712
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 2,
+          "closed": 62,
+          "rate": 0.03225806451612903,
+          "ci95": [
+            0.008891184997076397,
+            0.11020677131018222
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04856176",
+          "phase": "2",
+          "sponsor_group": "Tufts Medical Center",
+          "sponsor_ticker": "",
+          "drugs": "Granulocyte-Macrophage Colony-Sti…, PEMBROLIZUMAB, PEMETREXED, PACLITAXEL",
+          "stopped": "2024-12",
+          "type": "Efficacy",
+          "why_stopped": "Futility",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04856176"
+        },
+        {
+          "nct_id": "NCT06655818",
+          "phase": "2",
+          "sponsor_group": "GSK",
+          "sponsor_ticker": "GSK",
+          "drugs": "BELANTAMAB MAFODOTIN, DOSTARLIMAB",
+          "stopped": "2024-02",
+          "type": "Efficacy",
+          "why_stopped": "The study was terminated due to lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT06655818"
+        },
+        {
+          "nct_id": "NCT03631199",
+          "phase": "3",
+          "sponsor_group": "Novartis",
+          "sponsor_ticker": "NVS",
+          "drugs": "CANAKINUMAB, PEMBROLIZUMAB, CARBOPLATIN, CISPLATIN",
+          "stopped": "2021-08",
+          "type": "Efficacy",
+          "why_stopped": "Results of primary analysis showed addition of canakinumab to combination treatment did not improve tumor response or overall survival; the decision to stop the trial was not due to safety concerns",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03631199"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-19T21:28:26Z"
+    }
+  ]
+}

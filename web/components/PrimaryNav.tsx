@@ -12,6 +12,7 @@ export type PrimaryNavItem =
   | "outliers"
   | "top-entities"
   | "methods"
+  | "briefs"
   | "data";
 
 type PrimaryNavProps = {
@@ -64,6 +65,9 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
         </Link>
         <Link className="navlink" href="/methods" aria-current={current(active, "methods")} onClick={closeMobileNav}>
           Methods
+        </Link>
+        <Link className="navlink" href="/briefs" aria-current={current(active, "briefs")} onClick={closeMobileNav}>
+          Briefs
         </Link>
         <Link className="navlink" href="/data-licensing" aria-current={current(active, "data")} onClick={closeMobileNav}>
           Data &amp; licensing
