@@ -145,12 +145,19 @@ def summarize(rows) -> dict:
     closed = [r for r in rows if r["_closed"]]
     started = [r for r in rows if r.get("overall_status") != "WITHDRAWN"]
     bio = [r for r in closed if r["_bio"]]
+    # A trial can be stopped for efficacy AND safety, so "any mention" counts overlap and do not
+    # sum to biological_stops. Both views are published: efficacy_stops/safety_stops count any
+    # mention, the stops_* fields partition the same trials and always reconcile.
     eff = sum(1 for r in bio if "EFFICACY_FUTILITY" in r["_reasons"])
     saf = sum(1 for r in bio if "SAFETY" in r["_reasons"])
+    both = sum(1 for r in bio if "EFFICACY_FUTILITY" in r["_reasons"] and "SAFETY" in r["_reasons"])
     lo, hi = wilson(len(bio), len(closed))
     return {
         "trials": len(rows), "closed": len(closed), "open_or_other": len(rows) - len(closed),
+        "closed_share": (len(closed) / len(rows)) if rows else None,
         "biological_stops": len(bio), "efficacy_stops": eff, "safety_stops": saf,
+        "stops_efficacy_only": eff - both, "stops_safety_only": saf - both, "stops_efficacy_and_safety": both,
+        "stops_benefit_risk_only": len(bio) - (eff + saf - both),
         "rate": (len(bio) / len(closed)) if closed else None, "ci95": [lo, hi],
         "rate_lower_bound_all_started": (len(bio) / len(started)) if started else None,
         "efficacy_rate": (eff / len(closed)) if closed else None, "safety_rate": (saf / len(closed)) if closed else None,
@@ -162,7 +169,8 @@ def fmt(s: dict) -> str:
     if not s["closed"]:
         return f"n={s['trials']} trials, none closed"
     return (f"{s['biological_stops']}/{s['closed']} closed trials = {s['rate']*100:.1f}% "
-            f"(95% CI {s['ci95'][0]*100:.1f}–{s['ci95'][1]*100:.1f}%); efficacy {s['efficacy_stops']}, safety {s['safety_stops']}; "
+            f"(95% CI {s['ci95'][0]*100:.1f}–{s['ci95'][1]*100:.1f}%); efficacy only {s['stops_efficacy_only']}, "
+            f"safety only {s['stops_safety_only']}, both {s['stops_efficacy_and_safety']}, benefit-risk {s['stops_benefit_risk_only']}; "
             f"{s['trials']} trials total, {s['open_or_other']} open/other; lower bound over all started {s['rate_lower_bound_all_started']*100:.1f}%")
 
 
@@ -188,12 +196,16 @@ def standard_tables(rows, out_dir: Path, start, phases, slug: str = "oncology") 
         path = out_dir / f"{slug}_benchmarks_{name}.csv"
         with open(path, "w", newline="") as fh:
             w = csv.writer(fh)
-            w.writerow(["segment", "trials", "closed", "biological_stops", "efficacy_stops", "safety_stops", "rate", "ci95_low", "ci95_high"])
+            w.writerow(["segment", "trials", "closed", "closed_share", "biological_stops", "stops_efficacy_only", "stops_safety_only",
+                        "stops_efficacy_and_safety", "stops_benefit_risk_only", "efficacy_stops_any", "safety_stops_any",
+                        "rate", "ci95_low", "ci95_high"])
             for k, rs in sorted(groups.items(), key=lambda kv: -len(kv[1])):
                 s = summarize(rs)
                 if s["closed"] < 10:
                     continue
-                w.writerow([k, s["trials"], s["closed"], s["biological_stops"], s["efficacy_stops"], s["safety_stops"],
+                w.writerow([k, s["trials"], s["closed"], round(s["closed_share"] or 0, 4), s["biological_stops"],
+                            s["stops_efficacy_only"], s["stops_safety_only"], s["stops_efficacy_and_safety"],
+                            s["stops_benefit_risk_only"], s["efficacy_stops"], s["safety_stops"],
                             round(s["rate"], 4), round(s["ci95"][0], 4), round(s["ci95"][1], 4)])
         print("wrote", path.relative_to(ROOT))
 

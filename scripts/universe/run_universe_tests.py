@@ -2,12 +2,13 @@
 """Offline tests for benchmark definitions and resolution helpers."""
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from scripts.universe.benchmarks import is_bio_stop, phase_groups, summarize, wilson  # noqa: E402
+from scripts.universe.benchmarks import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
 from scripts.universe.chembl_index import norm  # noqa: E402
 from scripts.universe.mechanism_classes import CLASSES  # noqa: E402
 from scripts.universe.resolve import expand_regimen, modality  # noqa: E402
@@ -66,6 +67,37 @@ check("drug list from arms", drugs({"interventions": [
                                                 {"status": "SUPPORTIVE", "name": None, "label": "G-CSF"}]},
     {"role": "COMPARATOR", "components": [{"status": "RESOLVED", "name": "DOCETAXEL", "label": "Docetaxel"}]}]}), "PEMBROLIZUMAB")
 check("mechanism classes cover PD-(L)1", "PD-(L)1" in CLASSES, True)
+
+# Reconciliation: a published brief must never show parts that disagree with its own headline.
+# A single trial stopped for efficacy AND safety used to be counted in both "any mention" tallies,
+# so the stat tile added up to one more than the number of stopped trials listed below it.
+import glob as _glob  # noqa: E402
+
+_rows = load("Oncology")
+_base = select(_rows, phases=["2", "3"], start=(2015, 2024))
+for _klass in ["Antifolate / nucleoside", "PD-(L)1", "PARP", "EGFR"]:
+    _s = summarize(select(_base, klass=_klass))
+    _parts = (_s["stops_efficacy_only"] + _s["stops_safety_only"]
+              + _s["stops_efficacy_and_safety"] + _s["stops_benefit_risk_only"])
+    check(f"{_klass}: exclusive parts sum to biological_stops", _parts, _s["biological_stops"])
+    check(f"{_klass}: any-mention counts are not below exclusive", 
+          _s["efficacy_stops"] >= _s["stops_efficacy_only"] and _s["safety_stops"] >= _s["stops_safety_only"], True)
+    check(f"{_klass}: closed never exceeds trials", _s["closed"] <= _s["trials"], True)
+    check(f"{_klass}: stops never exceed closed", _s["biological_stops"] <= _s["closed"], True)
+
+# Every published brief's facts file must be internally consistent.
+for _facts_path in sorted(_glob.glob(str(Path(__file__).resolve().parents[2] / "product/briefs/*.facts.json")))[:60]:
+    _f = json.loads(Path(_facts_path).read_text())
+    _seg, _name = _f["segment_stats"], Path(_facts_path).name
+    _parts = (_seg["stops_efficacy_only"] + _seg["stops_safety_only"]
+              + _seg["stops_efficacy_and_safety"] + _seg["stops_benefit_risk_only"])
+    check(f"{_name}: parts reconcile", _parts, _seg["biological_stops"])
+    check(f"{_name}: one row per stopped trial", len(_f.get("trials", [])), _seg["biological_stops"])
+    check(f"{_name}: rate matches counts", round(_seg["biological_stops"] / _seg["closed"], 6), round(_seg["rate"], 6))
+    check(f"{_name}: interval brackets the rate",
+          _seg["ci95"][0] <= _seg["rate"] <= _seg["ci95"][1], True)
+    _cohort_stops = sum(c["biological_stops"] for c in _f["cohorts"])
+    check(f"{_name}: cohort stops do not exceed segment stops", _cohort_stops <= _seg["biological_stops"], True)
 
 if failures:
     print(f"{failures} universe test(s) failed")

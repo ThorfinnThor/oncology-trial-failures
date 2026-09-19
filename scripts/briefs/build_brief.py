@@ -136,8 +136,11 @@ def main(argv: list[str] | None = None) -> int:
         if sub["closed"] >= 5:
             cohorts.append((f"{lo}–{hi}", sub))
     sponsors = Counter(r["_sponsor_group"] for r in stops).most_common(6)
-    reasons = Counter("Safety" if "SAFETY" in r["_reasons"] else "Efficacy / futility" if "EFFICACY_FUTILITY" in r["_reasons"]
-                      else "Benefit–risk" for r in stops)
+    def bucket(r) -> str:
+        eff, saf = "EFFICACY_FUTILITY" in r["_reasons"], "SAFETY" in r["_reasons"]
+        return "Efficacy and safety" if eff and saf else "Safety" if saf else "Efficacy / futility" if eff else "Benefit–risk"
+
+    reasons = Counter(bucket(r) for r in stops)
 
     facts = {
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -155,7 +158,7 @@ def main(argv: list[str] | None = None) -> int:
             "sponsor_ticker": r["_ticker"],
             "drugs": drugs(r),
             "stopped": (r.get("stop_date_estimate") or "")[:7],
-            "type": "Safety" if "SAFETY" in r["_reasons"] else "Efficacy" if "EFFICACY_FUTILITY" in r["_reasons"] else "Benefit\u2013risk",
+            "type": bucket(r).replace("Efficacy / futility", "Efficacy").replace("Efficacy and safety", "Efficacy + safety"),
             "why_stopped": " ".join((r.get("why_stopped") or "").split()),
             "registry_url": f"https://clinicaltrials.gov/study/{r['nct_id']}",
         } for r in stops],
@@ -165,7 +168,7 @@ def main(argv: list[str] | None = None) -> int:
     for r in stops[:MAX_ROWS]:
         tk_html = f' <span class="tk">{e(r["_ticker"])}</span>' if r["_ticker"] else ""
         reason = full(r.get("why_stopped")) or NO_REASON
-        kind = "Safety" if "SAFETY" in r["_reasons"] else "Efficacy" if "EFFICACY_FUTILITY" in r["_reasons"] else "Benefit–risk"
+        kind = bucket(r).replace("Efficacy / futility", "Efficacy").replace("Efficacy and safety", "Efficacy + safety")
         row_items.append(
             f'<tr><td class="mono">{e(r["nct_id"])}</td>'
             f'<td>{"3" if "3" in r["_phase"] else "2"}</td>'
@@ -223,8 +226,8 @@ table {{ page-break-inside:auto; }} tr {{ page-break-inside:avoid; }}
 Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
 <div class="stats">
  <div class="stat"><b>{pct(segment['rate'])}</b><span>{segment['biological_stops']} of {segment['closed']} closed trials (95% CI {pct(segment['ci95'][0])}–{pct(segment['ci95'][1])})</span></div>
- <div class="stat"><b>{segment['efficacy_stops']} / {segment['safety_stops']}</b><span>efficacy&nbsp;/&nbsp;safety stops</span></div>
- <div class="stat"><b>{segment['trials']}</b><span>trials in segment · {segment['open_or_other']} still open or unresolved</span></div>
+ <div class="stat"><b>{segment['stops_efficacy_only']} / {segment['stops_safety_only']} / {segment['stops_efficacy_and_safety']}</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to {segment['biological_stops']})</span></div>
+ <div class="stat"><b>{pct(segment['closed_share'])}</b><span>of {segment['trials']} trials have closed · {segment['open_or_other']} still open or unresolved</span></div>
  <div class="stat"><b>{pct(segment['rate_lower_bound_all_started'])}</b><span>lower bound if every open trial completes</span></div>
 </div>
 <div class="cols">
@@ -248,7 +251,7 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 {f'<p style="font-size:7.4pt;color:var(--muted)">Showing {MAX_ROWS} of {len(stops)} stopped trials; the full list ships with the dataset.</p>' if len(stops) > MAX_ROWS else ''}
 <div class="cols" style="margin-top:10px">
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase {e(args.phases)} {e(args.area.lower())} trials started {start[0]}–{start[1]} that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; {linked_pct}% of industry {e(args.area.lower())} trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
-<div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
+<div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only {pct(segment['closed_share'])} of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
 <div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped {e(args.area.lower())} trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
 <div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and benchmarks by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>

@@ -46,6 +46,13 @@ def main() -> int:
             "biological_stops": seg["biological_stops"],
             "efficacy_stops": seg["efficacy_stops"],
             "safety_stops": seg["safety_stops"],
+            # Exclusive parts that sum to biological_stops, and how mature the segment is:
+            # a rate over few closed trials is a provisional number, and the page says so.
+            "stops_efficacy_only": seg["stops_efficacy_only"],
+            "stops_safety_only": seg["stops_safety_only"],
+            "stops_efficacy_and_safety": seg["stops_efficacy_and_safety"],
+            "stops_benefit_risk_only": seg["stops_benefit_risk_only"],
+            "closed_share": seg["closed_share"],
             "ci95": seg["ci95"],
             "reference_label": f["reference_label"],
             "reference_rate": f["reference_stats"]["rate"],
