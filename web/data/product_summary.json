@@ -18,7 +18,7 @@
   "unique_assets": 569,
   "assets_with_repeated_safety_signal": 71,
   "assets_with_repeated_efficacy_signal": 123,
-  "brief_count": 0,
+  "brief_count": 42,
   "sample_file": "/samples/oncology-failure-signals-sample-2026-09-18-7bd4b15776d664f2.csv",
   "sample_record_count": 100,
   "sample_columns": [
@@ -54,5 +54,52 @@
     "registry_url"
   ],
   "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-09-18-7bd4b15776d664f2-README.txt",
-  "signals_column_count": 30
+  "signals_column_count": 30,
+  "benchmarks": {
+    "segments": 194,
+    "mechanism_classes": 39,
+    "universe_closed_trials": 7798,
+    "baseline_rate": 0.043344447294177996,
+    "window": {
+      "start_year_from": 2015,
+      "start_year_to": 2024,
+      "phases": [
+        "2",
+        "3"
+      ]
+    }
+  },
+  "featured_benchmark": {
+    "segment": {
+      "label": "TGF-\u03b2 + PD-(L)1",
+      "rate": 0.25,
+      "stops": 11,
+      "closed": 44,
+      "ci95": [
+        0.14574066080685744,
+        0.39440849808414946
+      ]
+    },
+    "baseline": {
+      "label": "All oncology Phase 2/3",
+      "rate": 0.043344447294177996,
+      "stops": 338,
+      "closed": 7798,
+      "ci95": [
+        0.03904513102638861,
+        0.04809347481251999
+      ]
+    },
+    "reference": {
+      "label": "All PD-(L)1 trials",
+      "rate": 0.04701890450799806,
+      "stops": 97,
+      "closed": 2063,
+      "ci95": [
+        0.03869608759512371,
+        0.057025616477408995
+      ]
+    }
+  },
+  "benchmarks_from_release": "2026-09-17"
 }

@@ -127,7 +127,6 @@ jobs:
           python scripts/signals/run_signals_tests.py
           # Exit code 3 = time budget reached; the cache is saved below and the next run resumes.
           python -u scripts/signals/build_oncology_failure_signals.py --step all --max-seconds 9000 --workers 6
-          python scripts/signals/build_public_sample.py
           # Diffs against the snapshot in .cache/signals, then refreshes it for the next run.
           python scripts/signals/build_change_report.py
 
@@ -151,6 +150,15 @@ jobs:
           pip install playwright
           playwright install --with-deps chromium
           python -u scripts/briefs/render_brief_pdfs.py --workers 4
+
+      # The public summary reads the benchmark pack and counts the briefs, so it is built after
+      # those steps. Run inside the signals step it wrote a summary with no benchmark figures,
+      # and the licensing page rendered "—" for every benchmark number.
+      - name: Build public product summary and sample
+        if: steps.signals.outcome == 'success'
+        continue-on-error: true
+        run: |
+          python scripts/signals/build_public_sample.py
 
       - name: Save enrichment cache
         if: always()
