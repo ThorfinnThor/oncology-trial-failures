@@ -168,6 +168,7 @@ jobs:
         run: |
           python scripts/signals/build_public_sample.py
           python scripts/briefs/build_briefs_index.py
+          python scripts/build_validation_public.py
 
       - name: Save enrichment cache
         if: always()
@@ -189,7 +190,7 @@ jobs:
       - name: Commit public product summary and sample
         if: steps.signals.outcome == 'success'
         run: |
-          git add -A web/data/product_summary.json web/data/briefs_index.json web/public/samples web/public/briefs
+          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/public/samples web/public/briefs
           git diff --cached --quiet && echo "No product summary changes" && exit 0
           git commit -m "Update product summary, sample and briefs"
           git push

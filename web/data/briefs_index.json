@@ -25,6 +25,11 @@
       "biological_stops": 7,
       "efficacy_stops": 7,
       "safety_stops": 0,
+      "stops_efficacy_only": 7,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 1.0,
       "ci95": [
         0.39677321997956516,
         0.892210712513788
@@ -107,7 +112,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:31:35Z"
+      "generated_at_utc": "2026-09-19T21:43:09Z"
     },
     {
       "slug": "neurology-amyloid-alzheimer-s",
@@ -126,6 +131,11 @@
       "biological_stops": 10,
       "efficacy_stops": 9,
       "safety_stops": 1,
+      "stops_efficacy_only": 8,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.75,
       "ci95": [
         0.24467347246538232,
         0.6116566235061137
@@ -168,7 +178,7 @@
           "sponsor_ticker": "",
           "drugs": "ELENBECESTAT",
           "stopped": "2020-01",
-          "type": "Safety",
+          "type": "Efficacy + safety",
           "why_stopped": "Due to an unfavorable risk-benefit ratio including no evidence of potential efficacy, and the adverse event profile of E2609 being worse than placebo.",
           "registry_url": "https://clinicaltrials.gov/study/NCT02956486"
         },
@@ -218,7 +228,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:28Z"
+      "generated_at_utc": "2026-09-19T21:43:09Z"
     },
     {
       "slug": "oncology-tgf-pd-l-1",
@@ -237,6 +247,11 @@
       "biological_stops": 11,
       "efficacy_stops": 5,
       "safety_stops": 5,
+      "stops_efficacy_only": 5,
+      "stops_safety_only": 5,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.5301204819277109,
       "ci95": [
         0.14574066080685744,
         0.39440849808414946
@@ -329,7 +344,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-tgf",
@@ -348,6 +363,11 @@
       "biological_stops": 11,
       "efficacy_stops": 5,
       "safety_stops": 5,
+      "stops_efficacy_only": 5,
+      "stops_safety_only": 5,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.48717948717948717,
       "ci95": [
         0.11132633377760481,
         0.3134093733701362
@@ -440,7 +460,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-ox40-4-1bb-gitr",
@@ -459,6 +479,11 @@
       "biological_stops": 5,
       "efficacy_stops": 5,
       "safety_stops": 0,
+      "stops_efficacy_only": 5,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.38372093023255816,
       "ci95": [
         0.06650359257960956,
         0.30920213138460484
@@ -561,7 +586,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-bcma",
@@ -580,6 +605,11 @@
       "biological_stops": 4,
       "efficacy_stops": 4,
       "safety_stops": 0,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.208955223880597,
       "ci95": [
         0.056989129307017855,
         0.31490173044877334
@@ -661,7 +691,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-her3",
@@ -680,6 +710,11 @@
       "biological_stops": 4,
       "efficacy_stops": 4,
       "safety_stops": 0,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.32967032967032966,
       "ci95": [
         0.05309569424218104,
         0.2968168394441695
@@ -771,7 +806,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "immunology-autoimmune-btk",
@@ -790,6 +825,11 @@
       "biological_stops": 3,
       "efficacy_stops": 2,
       "safety_stops": 0,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.625,
       "ci95": [
         0.04166741357068093,
         0.2995619218337349
@@ -860,7 +900,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:29Z"
+      "generated_at_utc": "2026-09-19T21:43:10Z"
     },
     {
       "slug": "oncology-cd47-sirp",
@@ -879,6 +919,11 @@
       "biological_stops": 3,
       "efficacy_stops": 2,
       "safety_stops": 1,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.4032258064516129,
       "ci95": [
         0.04166741357068093,
         0.2995619218337349
@@ -949,7 +994,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-cd38",
@@ -968,6 +1013,11 @@
       "biological_stops": 8,
       "efficacy_stops": 6,
       "safety_stops": 1,
+      "stops_efficacy_only": 6,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.3397129186602871,
       "ci95": [
         0.05821202176555296,
         0.20690256691240155
@@ -1070,7 +1120,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-androgen-receptor-axis",
@@ -1089,6 +1139,11 @@
       "biological_stops": 13,
       "efficacy_stops": 10,
       "safety_stops": 3,
+      "stops_efficacy_only": 10,
+      "stops_safety_only": 3,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.423728813559322,
       "ci95": [
         0.061790380266841645,
         0.16982425351603594
@@ -1191,7 +1246,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-met-pd-l-1",
@@ -1210,6 +1265,11 @@
       "biological_stops": 3,
       "efficacy_stops": 1,
       "safety_stops": 2,
+      "stops_efficacy_only": 1,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3076923076923077,
       "ci95": [
         0.032400962626319516,
         0.24218499335778831
@@ -1290,7 +1350,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-met",
@@ -1309,6 +1369,11 @@
       "biological_stops": 11,
       "efficacy_stops": 6,
       "safety_stops": 4,
+      "stops_efficacy_only": 6,
+      "stops_safety_only": 4,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.3793103448275862,
       "ci95": [
         0.05152070313989317,
         0.15547440105614402
@@ -1411,7 +1476,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-jak-tyk2",
@@ -1430,6 +1495,11 @@
       "biological_stops": 4,
       "efficacy_stops": 2,
       "safety_stops": 2,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.47,
       "ci95": [
         0.033593579469713086,
         0.19931805195022648
@@ -1521,7 +1591,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "neurology-gaba-a",
@@ -1540,6 +1610,11 @@
       "biological_stops": 3,
       "efficacy_stops": 3,
       "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.7551020408163265,
       "ci95": [
         0.027960066396321384,
         0.2130099249850153
@@ -1620,7 +1695,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:28Z"
+      "generated_at_utc": "2026-09-19T21:43:09Z"
     },
     {
       "slug": "oncology-ido1",
@@ -1639,6 +1714,11 @@
       "biological_stops": 3,
       "efficacy_stops": 3,
       "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.6065573770491803,
       "ci95": [
         0.027960066396321384,
         0.2130099249850153
@@ -1709,7 +1789,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-parp-pd-l-1",
@@ -1728,6 +1808,11 @@
       "biological_stops": 5,
       "efficacy_stops": 5,
       "safety_stops": 0,
+      "stops_efficacy_only": 5,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3230769230769231,
       "ci95": [
         0.03437534033651937,
         0.17270528011541472
@@ -1830,7 +1915,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "neurology-dopaminergic",
@@ -1849,6 +1934,11 @@
       "biological_stops": 4,
       "efficacy_stops": 3,
       "safety_stops": 1,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.7222222222222222,
       "ci95": [
         0.03031885429734589,
         0.1817381068212467
@@ -1940,7 +2030,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:28Z"
+      "generated_at_utc": "2026-09-19T21:43:09Z"
     },
     {
       "slug": "oncology-egfr",
@@ -1959,6 +2049,11 @@
       "biological_stops": 20,
       "efficacy_stops": 15,
       "safety_stops": 4,
+      "stops_efficacy_only": 15,
+      "stops_safety_only": 4,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.27909371781668385,
       "ci95": [
         0.048279228366164606,
         0.1112366527813764
@@ -2061,7 +2156,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-pi3k-akt-mtor",
@@ -2080,6 +2175,11 @@
       "biological_stops": 13,
       "efficacy_stops": 10,
       "safety_stops": 4,
+      "stops_efficacy_only": 9,
+      "stops_safety_only": 3,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.5056818181818182,
       "ci95": [
         0.043174612835219436,
         0.12093305009779477
@@ -2154,7 +2254,7 @@
           "sponsor_ticker": "",
           "drugs": "TASELISIB",
           "stopped": "2021-06",
-          "type": "Safety",
+          "type": "Efficacy + safety",
           "why_stopped": "The Sponsor discontinued the manufacturing and development of taselisib due to modest clinical benefit and limited tolerability.",
           "registry_url": "https://clinicaltrials.gov/study/NCT02340221"
         },
@@ -2182,7 +2282,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-cd3-t-cell-engagers",
@@ -2201,6 +2301,11 @@
       "biological_stops": 4,
       "efficacy_stops": 2,
       "safety_stops": 2,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.21908127208480566,
       "ci95": [
         0.025372494807644003,
         0.15447732658187266
@@ -2292,7 +2397,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-hdac",
@@ -2311,6 +2416,11 @@
       "biological_stops": 4,
       "efficacy_stops": 3,
       "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.30092592592592593,
       "ci95": [
         0.024188663436562223,
         0.14782360821313795
@@ -2402,7 +2512,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-parp",
@@ -2421,6 +2531,11 @@
       "biological_stops": 12,
       "efficacy_stops": 10,
       "safety_stops": 2,
+      "stops_efficacy_only": 10,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3789279112754159,
       "ci95": [
         0.03379868421266013,
         0.09951575122549011
@@ -2523,7 +2638,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-flt3-kit",
@@ -2542,6 +2657,11 @@
       "biological_stops": 14,
       "efficacy_stops": 7,
       "safety_stops": 5,
+      "stops_efficacy_only": 7,
+      "stops_safety_only": 5,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 2,
+      "closed_share": 0.3279569892473118,
       "ci95": [
         0.0344821601933716,
         0.09399344680722879
@@ -2644,7 +2764,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-tigit-pd-l-1",
@@ -2663,6 +2783,11 @@
       "biological_stops": 3,
       "efficacy_stops": 3,
       "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.4523809523809524,
       "ci95": [
         0.01805996809628102,
         0.14369777660471303
@@ -2733,7 +2858,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-tigit",
@@ -2752,6 +2877,11 @@
       "biological_stops": 3,
       "efficacy_stops": 3,
       "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.453125,
       "ci95": [
         0.017745812831795674,
         0.14139625335019185
@@ -2822,7 +2952,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "immunology-autoimmune-jak-tyk2",
@@ -2841,6 +2971,11 @@
       "biological_stops": 4,
       "efficacy_stops": 2,
       "safety_stops": 0,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 2,
+      "closed_share": 0.6220472440944882,
       "ci95": [
         0.01986372131473304,
         0.12307895482865383
@@ -2932,7 +3067,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:29Z"
+      "generated_at_utc": "2026-09-19T21:43:10Z"
     },
     {
       "slug": "oncology-bcl-2",
@@ -2951,6 +3086,11 @@
       "biological_stops": 5,
       "efficacy_stops": 5,
       "safety_stops": 1,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.2961876832844575,
       "ci95": [
         0.021328195361982306,
         0.11069573407060934
@@ -3014,7 +3154,7 @@
           "sponsor_ticker": "",
           "drugs": "IDASANUTLIN, VENETOCLAX, CYCLOPHOSPHAMIDE ANHYDROUS, TOPOTECAN",
           "stopped": "2024-05",
-          "type": "Safety",
+          "type": "Efficacy + safety",
           "why_stopped": "Study was terminated by the sponsor based on insufficient tolerability and efficacy to proceed beyond Part 1b.",
           "registry_url": "https://clinicaltrials.gov/study/NCT04029688"
         },
@@ -3053,7 +3193,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-pd-l-1",
@@ -3072,6 +3212,11 @@
       "biological_stops": 97,
       "efficacy_stops": 76,
       "safety_stops": 19,
+      "stops_efficacy_only": 75,
+      "stops_safety_only": 18,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 3,
+      "closed_share": 0.36320422535211266,
       "ci95": [
         0.03869608759512371,
         0.057025616477408995
@@ -3174,7 +3319,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:04Z"
     },
     {
       "slug": "oncology-braf-mek-pd-l-1",
@@ -3193,6 +3338,11 @@
       "biological_stops": 3,
       "efficacy_stops": 2,
       "safety_stops": 1,
+      "stops_efficacy_only": 1,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.39751552795031053,
       "ci95": [
         0.016068725432185196,
         0.12899860788542522
@@ -3245,7 +3395,7 @@
           "sponsor_ticker": "",
           "drugs": "COBIMETINIB, HYDROXYCHLOROQUINE, ATEZOLIZUMAB",
           "stopped": "2022-04",
-          "type": "Safety",
+          "type": "Efficacy + safety",
           "why_stopped": "Toxicity and Lack of Efficacy",
           "registry_url": "https://clinicaltrials.gov/study/NCT04214418"
         },
@@ -3273,7 +3423,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-alk-ros1-ret",
@@ -3292,6 +3442,11 @@
       "biological_stops": 7,
       "efficacy_stops": 4,
       "safety_stops": 0,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 3,
+      "closed_share": 0.3695652173913043,
       "ci95": [
         0.022335930569900464,
         0.0914196036761159
@@ -3394,7 +3549,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-braf-mek",
@@ -3413,6 +3568,11 @@
       "biological_stops": 9,
       "efficacy_stops": 4,
       "safety_stops": 2,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 4,
+      "closed_share": 0.4375,
       "ci95": [
         0.02270827634074077,
         0.07943087712612443
@@ -3515,7 +3675,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-cdk4-6",
@@ -3534,6 +3694,11 @@
       "biological_stops": 6,
       "efficacy_stops": 5,
       "safety_stops": 1,
+      "stops_efficacy_only": 5,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3902439024390244,
       "ci95": [
         0.01923362439471795,
         0.0879188955996544
@@ -3636,7 +3801,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-antifolate-nucleoside",
@@ -3655,6 +3820,11 @@
       "biological_stops": 21,
       "efficacy_stops": 14,
       "safety_stops": 8,
+      "stops_efficacy_only": 13,
+      "stops_safety_only": 7,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3107546048722519,
       "ci95": [
         0.02641007370346873,
         0.060602037716738
@@ -3757,7 +3927,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:26Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-antifolate-nucleoside-pd-l-1",
@@ -3776,6 +3946,11 @@
       "biological_stops": 7,
       "efficacy_stops": 4,
       "safety_stops": 3,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 3,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.28852459016393445,
       "ci95": [
         0.019396984200525064,
         0.07981031822560992
@@ -3878,7 +4053,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:26Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-microtubule",
@@ -3897,6 +4072,11 @@
       "biological_stops": 26,
       "efficacy_stops": 21,
       "safety_stops": 6,
+      "stops_efficacy_only": 20,
+      "stops_safety_only": 5,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3438320209973753,
       "ci95": [
         0.027230375359716563,
         0.0575268712986608
@@ -3999,7 +4179,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:26Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-topoisomerase",
@@ -4018,6 +4198,11 @@
       "biological_stops": 13,
       "efficacy_stops": 10,
       "safety_stops": 3,
+      "stops_efficacy_only": 9,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.29541446208112876,
       "ci95": [
         0.02281616615703969,
         0.0652533034712468
@@ -4081,7 +4266,7 @@
           "sponsor_ticker": "",
           "drugs": "IDASANUTLIN, VENETOCLAX, CYCLOPHOSPHAMIDE ANHYDROUS, TOPOTECAN",
           "stopped": "2024-05",
-          "type": "Safety",
+          "type": "Efficacy + safety",
           "why_stopped": "Study was terminated by the sponsor based on insufficient tolerability and efficacy to proceed beyond Part 1b.",
           "registry_url": "https://clinicaltrials.gov/study/NCT04029688"
         },
@@ -4120,7 +4305,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:26Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-btk",
@@ -4139,6 +4324,11 @@
       "biological_stops": 5,
       "efficacy_stops": 4,
       "safety_stops": 1,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3266832917705736,
       "ci95": [
         0.016411091437379455,
         0.08623972255474167
@@ -4241,7 +4431,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-ctla-4",
@@ -4260,6 +4450,11 @@
       "biological_stops": 11,
       "efficacy_stops": 10,
       "safety_stops": 1,
+      "stops_efficacy_only": 10,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.4,
       "ci95": [
         0.020322516045756994,
         0.06362195409732958
@@ -4362,7 +4557,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:04Z"
     },
     {
       "slug": "oncology-fgfr",
@@ -4381,6 +4576,11 @@
       "biological_stops": 6,
       "efficacy_stops": 4,
       "safety_stops": 1,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 2,
+      "closed_share": 0.4757834757834758,
       "ci95": [
         0.01656809995480029,
         0.07615873004445048
@@ -4483,7 +4683,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-cd20",
@@ -4502,6 +4702,11 @@
       "biological_stops": 6,
       "efficacy_stops": 4,
       "safety_stops": 1,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 0.3353174603174603,
       "ci95": [
         0.016370816649777457,
         0.07528304445773368
@@ -4604,7 +4809,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-ctla-4-pd-l-1",
@@ -4623,6 +4828,11 @@
       "biological_stops": 10,
       "efficacy_stops": 9,
       "safety_stops": 1,
+      "stops_efficacy_only": 9,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.3955431754874652,
       "ci95": [
         0.01923630319946255,
         0.06359258602294311
@@ -4725,7 +4935,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:23Z"
+      "generated_at_utc": "2026-09-19T21:43:04Z"
     },
     {
       "slug": "oncology-her2",
@@ -4744,6 +4954,11 @@
       "biological_stops": 7,
       "efficacy_stops": 5,
       "safety_stops": 2,
+      "stops_efficacy_only": 5,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.26109660574412535,
       "ci95": [
         0.017055324637357105,
         0.07047146086668134
@@ -4846,7 +5061,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:05Z"
     },
     {
       "slug": "oncology-vegf-vegfr",
@@ -4865,6 +5080,11 @@
       "biological_stops": 20,
       "efficacy_stops": 13,
       "safety_stops": 5,
+      "stops_efficacy_only": 13,
+      "stops_safety_only": 5,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 2,
+      "closed_share": 0.30064456721915284,
       "ci95": [
         0.01991274264374253,
         0.04683333434041925
@@ -4967,7 +5187,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-proteasome",
@@ -4986,6 +5206,11 @@
       "biological_stops": 3,
       "efficacy_stops": 1,
       "safety_stops": 2,
+      "stops_efficacy_only": 1,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.40562248995983935,
       "ci95": [
         0.010152296701083398,
         0.08371883842085293
@@ -5066,7 +5291,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-er-aromatase",
@@ -5085,6 +5310,11 @@
       "biological_stops": 3,
       "efficacy_stops": 2,
       "safety_stops": 1,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.35013262599469497,
       "ci95": [
         0.00775884364242789,
         0.06469024411861142
@@ -5165,7 +5395,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:25Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     },
     {
       "slug": "oncology-vegf-vegfr-pd-l-1",
@@ -5184,6 +5414,11 @@
       "biological_stops": 5,
       "efficacy_stops": 4,
       "safety_stops": 1,
+      "stops_efficacy_only": 4,
+      "stops_safety_only": 1,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.2537037037037037,
       "ci95": [
         0.007818972728213917,
         0.04199934101602021
@@ -5286,7 +5521,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:24Z"
+      "generated_at_utc": "2026-09-19T21:43:06Z"
     },
     {
       "slug": "oncology-microtubule-pd-l-1",
@@ -5305,6 +5540,11 @@
       "biological_stops": 3,
       "efficacy_stops": 3,
       "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.2958579881656805,
       "ci95": [
         0.005114145184492387,
         0.043166480556278884
@@ -5385,7 +5625,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:28:26Z"
+      "generated_at_utc": "2026-09-19T21:43:07Z"
     }
   ]
 }

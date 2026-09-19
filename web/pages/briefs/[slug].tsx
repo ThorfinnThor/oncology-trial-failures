@@ -116,13 +116,13 @@ export default function BriefPage({ brief }: Props) {
             </div>
             <div className="stat">
               <b>
-                {brief.efficacy_stops} / {brief.safety_stops}
+                {brief.stops_efficacy_only} / {brief.stops_safety_only} / {brief.stops_efficacy_and_safety}
               </b>
-              <span>efficacy / safety stops</span>
+              <span>efficacy / safety / both — adds to {brief.biological_stops}</span>
             </div>
             <div className="stat">
-              <b>{n(brief.trials_in_segment)}</b>
-              <span>trials in segment, {n(brief.trials_in_segment - brief.closed)} still open or unresolved</span>
+              <b>{pct(brief.closed_share, 0)}</b>
+              <span>of {n(brief.trials_in_segment)} trials have closed, {n(brief.trials_in_segment - brief.closed)} still open</span>
             </div>
             <div className="stat">
               <b>{pct(brief.baseline_rate)}</b>
@@ -174,6 +174,14 @@ export default function BriefPage({ brief }: Props) {
             </div>
             <p className="fine">
               Intervals overlap where sample sizes are small — read the counts, not just the bars.
+              {brief.closed_share < 0.5 ? (
+                <>
+                  {" "}
+                  <b>This segment is immature:</b> only {pct(brief.closed_share, 0)} of its trials have closed. A trial that stops
+                  early enters the denominator sooner than one that runs to completion, so a rate computed this early can overstate
+                  the eventual figure. This is a closed-trial proportion, not a time-to-event estimate.
+                </>
+              ) : null}
             </p>
           </section>
 
@@ -335,7 +343,7 @@ export default function BriefPage({ brief }: Props) {
                 is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%,
                 recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus, and a trial without a resolved target cannot
                 enter a mechanism class. Intervals are Wilson 95%.{" "}
-                <Link className="link" href="/methods#validation">
+                <Link className="link" href="/validation">
                   How we validate
                 </Link>
                 .
@@ -345,7 +353,11 @@ export default function BriefPage({ brief }: Props) {
               <h3>Limits</h3>
               <p>
                 Not a failure rate: trials that completed with negative results are not counted, and programmes discontinued after a
-                completed trial do not appear. Stop reasons are sponsor-reported. Recent cohorts have fewer closed trials, so their
+                completed trial do not appear. Stop reasons are sponsor-reported and optional, so a sponsor that files nothing looks
+                clean here. Rates are proportions over closed trials, not time-to-event estimates, and they are descriptive: the
+                segment and its comparison group differ in tumour type, line of therapy, trial size, sponsor and calendar year, so a
+                gap is a reason to look, not evidence that the mechanism caused it. Where a trial was stopped for more than one
+                reason the table says so rather than picking one. Recent cohorts have fewer closed trials, so their
                 rates are less stable. Research signals, not clinical or investment advice. Questions:{" "}
                 <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(brief.segment + " brief")}`}>
                   {LICENSING_EMAIL}

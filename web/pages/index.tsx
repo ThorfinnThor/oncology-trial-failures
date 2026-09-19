@@ -406,7 +406,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 <span>Classifier V{v2.version}</span>
                 <span>{qualityPercent(v2.heldoutBiologicalPrecision)} biological precision</span>
                 <span>{qualityPercent(v2.heldoutBiologicalRecall)} biological recall</span>
-                <Link href="/methods#validation">Held-out validation, n={v2.heldoutSampleSize || 600}</Link>
+                <Link href="/validation">Held-out validation, n={v2.heldoutSampleSize || 600}</Link>
                 <span>{stats.source}</span>
                 <span>Updated {stats.updated}</span>
               </div>

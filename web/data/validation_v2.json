@@ -1,0 +1,365 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-09-15T13:59:42Z",
+  "dataset_version": "2026-09-14",
+  "classifier_version": "2.7.0",
+  "sample_size": 600,
+  "population": {
+    "records_total": 23766,
+    "excluded_records": {
+      "reviewed_exact": 6302,
+      "tuning_or_audit_overlap": 1573,
+      "empty_stop_reason": 2162
+    },
+    "eligible_records": 13729
+  },
+  "sampling": {
+    "seed": 20260915,
+    "excluded_records": {
+      "reviewed_exact": 6302,
+      "tuning_or_audit_overlap": 1573,
+      "empty_stop_reason": 2162
+    },
+    "eligible_unique_texts_by_outcome": {
+      "BIOLOGICAL_FAILURE": 1520,
+      "CAUSE_NOT_STATED": 765,
+      "MIXED_CAUSES": 147,
+      "NON_BIOLOGICAL": 8004,
+      "NON_FAILURE_TRANSITION": 819,
+      "UNKNOWN": 967
+    },
+    "eligible_records_by_outcome": {
+      "BIOLOGICAL_FAILURE": 1654,
+      "CAUSE_NOT_STATED": 882,
+      "MIXED_CAUSES": 157,
+      "NON_BIOLOGICAL": 9004,
+      "NON_FAILURE_TRANSITION": 942,
+      "UNKNOWN": 1090
+    },
+    "sampled_unique_texts_by_outcome": {
+      "BIOLOGICAL_FAILURE": 150,
+      "NON_BIOLOGICAL": 200,
+      "CAUSE_NOT_STATED": 60,
+      "NON_FAILURE_TRANSITION": 50,
+      "MIXED_CAUSES": 40,
+      "UNKNOWN": 100
+    }
+  },
+  "annotation": {
+    "schema_version": 1,
+    "annotators": [
+      {
+        "id": "annotator_1",
+        "type": "LLM",
+        "model_family": "Claude Opus",
+        "blind_to_classifier": true
+      },
+      {
+        "id": "annotator_2",
+        "type": "LLM",
+        "model_family": "Claude Sonnet",
+        "blind_to_classifier": true
+      }
+    ],
+    "adjudicator": {
+      "type": "LLM",
+      "model_family": "Claude Opus (separate instance)",
+      "blind_to_classifier": true
+    },
+    "guidelines": "validation/LABELING_GUIDELINES.md",
+    "labelled_at": "2026-09-15",
+    "outcome_agreement": 0.9383,
+    "outcome_kappa": 0.92,
+    "outcome_and_primary_agreement": 0.9067,
+    "adjudicated": 56
+  },
+  "estimates": {
+    "assertion_outcome_precision": 0.842916835493274,
+    "assertion_outcome_and_primary_precision": 0.781921475895722,
+    "assertion_no_material_disagreement": 0.8841777576673175,
+    "biological_domain_precision": 0.960331949368113,
+    "biological_domain_recall": 0.972445408541063,
+    "biological_precision": 0.9548387096774194,
+    "biological_recall": 0.9528327460016267,
+    "biological_signal_recall_incl_mixed": 0.972445408541063,
+    "outcome_accuracy_all_records": 0.8216297742036112
+  },
+  "estimates_ci95": {
+    "assertion_outcome_precision": [
+      0.8036792425488057,
+      0.8799813373624382
+    ],
+    "assertion_outcome_and_primary_precision": [
+      0.7359290709589715,
+      0.8241972221544686
+    ],
+    "assertion_no_material_disagreement": [
+      0.8513395019343869,
+      0.9134368487979105
+    ],
+    "biological_domain_precision": [
+      0.9250843949684522,
+      0.9873909278970534
+    ],
+    "biological_domain_recall": [
+      0.9336881078614856,
+      1.0
+    ],
+    "biological_precision": [
+      0.915584415584415,
+      0.9870967741935482
+    ],
+    "biological_recall": [
+      0.9134895472413184,
+      0.9833573242329654
+    ],
+    "biological_signal_recall_incl_mixed": [
+      0.9336881078614856,
+      1.0
+    ],
+    "outcome_accuracy_all_records": [
+      0.7845966875285845,
+      0.8564953469039209
+    ]
+  },
+  "per_predicted_outcome": {
+    "BIOLOGICAL_FAILURE": {
+      "sampled_texts": 150,
+      "eligible_texts": 1520,
+      "eligible_records": 1654,
+      "outcome_precision": 0.96,
+      "outcome_precision_ci95": [
+        0.9154854608728422,
+        0.9815410911130964
+      ],
+      "outcome_and_primary_reason_precision": 0.9266666666666666,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.873463014734016,
+        0.9585616131949707
+      ]
+    },
+    "CAUSE_NOT_STATED": {
+      "sampled_texts": 60,
+      "eligible_texts": 765,
+      "eligible_records": 882,
+      "outcome_precision": 0.8166666666666667,
+      "outcome_precision_ci95": [
+        0.7008000677353371,
+        0.8944231096286387
+      ],
+      "outcome_and_primary_reason_precision": 0.7833333333333333,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.6637973165265748,
+        0.8687707895359299
+      ]
+    },
+    "MIXED_CAUSES": {
+      "sampled_texts": 40,
+      "eligible_texts": 147,
+      "eligible_records": 157,
+      "outcome_precision": 0.425,
+      "outcome_precision_ci95": [
+        0.28509168524815875,
+        0.5780519956394001
+      ],
+      "outcome_and_primary_reason_precision": 0.425,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.28509168524815875,
+        0.5780519956394001
+      ]
+    },
+    "NON_BIOLOGICAL": {
+      "sampled_texts": 200,
+      "eligible_texts": 8004,
+      "eligible_records": 9004,
+      "outcome_precision": 0.835,
+      "outcome_precision_ci95": [
+        0.7773410172613647,
+        0.8800321587733603
+      ],
+      "outcome_and_primary_reason_precision": 0.755,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.6909563161285153,
+        0.809432220853141
+      ]
+    },
+    "NON_FAILURE_TRANSITION": {
+      "sampled_texts": 50,
+      "eligible_texts": 819,
+      "eligible_records": 942,
+      "outcome_precision": 0.78,
+      "outcome_precision_ci95": [
+        0.6475818431054045,
+        0.8724621377569771
+      ],
+      "outcome_and_primary_reason_precision": 0.76,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.6258705062480763,
+        0.8570274759812779
+      ]
+    },
+    "UNKNOWN": {
+      "sampled_texts": 100,
+      "eligible_texts": 967,
+      "eligible_records": 1090,
+      "outcome_precision": 0.54,
+      "outcome_precision_ci95": [
+        0.44264685393523856,
+        0.6343935614666815
+      ],
+      "outcome_and_primary_reason_precision": 0.54,
+      "outcome_and_primary_reason_precision_ci95": [
+        0.44264685393523856,
+        0.6343935614666815
+      ]
+    }
+  },
+  "confusion_pred_vs_ref": [
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 144
+    },
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "MIXED_CAUSES",
+      "count": 2
+    },
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "NON_BIOLOGICAL",
+      "count": 2
+    },
+    {
+      "predicted": "BIOLOGICAL_FAILURE",
+      "reference": "UNKNOWN",
+      "count": 2
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 1
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 49
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "NON_BIOLOGICAL",
+      "count": 4
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 4
+    },
+    {
+      "predicted": "CAUSE_NOT_STATED",
+      "reference": "UNKNOWN",
+      "count": 2
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 8
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "MIXED_CAUSES",
+      "count": 17
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "NON_BIOLOGICAL",
+      "count": 11
+    },
+    {
+      "predicted": "MIXED_CAUSES",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 4
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 1
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "MIXED_CAUSES",
+      "count": 25
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "NON_BIOLOGICAL",
+      "count": 167
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 5
+    },
+    {
+      "predicted": "NON_BIOLOGICAL",
+      "reference": "UNKNOWN",
+      "count": 3
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 1
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "MIXED_CAUSES",
+      "count": 1
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "NON_BIOLOGICAL",
+      "count": 7
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 39
+    },
+    {
+      "predicted": "NON_FAILURE_TRANSITION",
+      "reference": "UNKNOWN",
+      "count": 2
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "BIOLOGICAL_FAILURE",
+      "count": 2
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "CAUSE_NOT_STATED",
+      "count": 11
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "MIXED_CAUSES",
+      "count": 2
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "NON_BIOLOGICAL",
+      "count": 18
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "NON_FAILURE_TRANSITION",
+      "count": 12
+    },
+    {
+      "predicted": "UNKNOWN",
+      "reference": "UNKNOWN",
+      "count": 54
+    }
+  ],
+  "error_count_outcome_or_primary": 154
+}
