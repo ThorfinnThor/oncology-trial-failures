@@ -556,7 +556,14 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <label className="consent">
                     <input name="consent" type="checkbox" required />
                     <span>
-                      I will use the sample for evaluation only and agree to be contacted about the dataset. See our{" "}
+                      I will use the sample for evaluation only.
+                    </span>
+                  </label>
+                  <label className="consent">
+                    <input name="marketing" type="checkbox" />
+                    <span>
+                      Optional: email me about the dataset. Leave it unticked and you still get the sample — we will only reply
+                      about this request. See our{" "}
                       <Link className="link" href="/privacy">
                         privacy notice
                       </Link>

@@ -32,6 +32,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const company = clean(body.company, 160);
   const useCase = clean(body.useCase, 40);
   const consent = body.consent === true || body.consent === "true" || body.consent === "on";
+  // Marketing permission is separate from the evaluation term and never blocks delivery.
+  const marketing = body.marketing === true || body.marketing === "true" || body.marketing === "on";
 
   if (!EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
   if (!company) return res.status(400).json({ ok: false, error: "Please enter your company or institution." });
@@ -46,6 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     name,
     company,
     use_case: useCase,
+    marketing_consent: marketing,
     free_mail_domain: FREE_MAIL.test(email),
     requested_at: new Date().toISOString(),
     country: clean(req.headers["cf-ipcountry"], 4),

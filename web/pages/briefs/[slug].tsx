@@ -425,9 +425,10 @@ export default function BriefPage({ brief }: Props) {
                     style={{ position: "absolute", left: "-9999px" }}
                   />
                   <label className="consent">
-                    <input name="consent" type="checkbox" required />
+                    <input name="marketing" type="checkbox" />
                     <span>
-                      I agree to be contacted about the dataset. See our{" "}
+                      Optional: email me when there is something new on this mechanism. Leave it unticked and you still get the
+                      PDF — we will only reply about this request. See our{" "}
                       <Link className="link" href="/privacy">
                         privacy notice
                       </Link>

@@ -35,14 +35,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const email = clean(body.email, 254).toLowerCase();
   const company = clean(body.company, 160);
   const slug = clean(body.slug, 120);
-  const consent = body.consent === true || body.consent === "true" || body.consent === "on";
+  // Delivering the file someone asked for is not marketing, so it is not gated on marketing
+  // permission. The permission is recorded as its own field, unticked by default.
+  const marketing = body.marketing === true || body.marketing === "true" || body.marketing === "on";
 
   const brief = briefsIndex.briefs.find((b) => b.slug === slug);
   if (!brief) return res.status(404).json({ ok: false, error: "Unknown brief." });
   if (!brief.has_pdf) return res.status(503).json({ ok: false, error: "This brief's PDF is being rebuilt. Please try again shortly." });
   if (!EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
   if (!company) return res.status(400).json({ ok: false, error: "Please enter your company or institution." });
-  if (!consent) return res.status(400).json({ ok: false, error: "Please confirm you agree to be contacted." });
 
   const lead = {
     type: "brief_request",
@@ -51,6 +52,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     slug,
     email,
     company,
+    marketing_consent: marketing,
     free_mail_domain: FREE_MAIL.test(email),
     requested_at: new Date().toISOString(),
     country: clean(req.headers["cf-ipcountry"], 4),
