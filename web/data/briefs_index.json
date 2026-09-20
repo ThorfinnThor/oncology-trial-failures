@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "brief_count": 48,
+  "open_access_slug": "oncology-tgf-pd-l-1",
   "areas": [
     "Immunology & Autoimmune",
     "Neurology",
@@ -218,7 +219,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "open_access": false
     },
     {
       "slug": "neurology-amyloid-alzheimer-s",
@@ -439,7 +441,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "open_access": false
     },
     {
       "slug": "oncology-tgf-pd-l-1",
@@ -657,10 +660,77 @@
           "type": "Efficacy",
           "why_stopped": "The study was prematurely discontinued by the sponsor due to probability of success which was too low to justify the continuation of recruitment.",
           "registry_url": "https://clinicaltrials.gov/study/NCT04489940"
+        },
+        {
+          "nct_id": "NCT04327986",
+          "phase": "2",
+          "sponsor_group": "National Cancer Institute (NCI)",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA, IMMUNOCYTOKINE NHS-IL12",
+          "stopped": "2022-01",
+          "type": "Benefit–risk",
+          "why_stopped": "Study closed to accrual due to the worsening risk: benefit ratio for participants receiving bintrafusp alfa (M7824).",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04327986"
+        },
+        {
+          "nct_id": "NCT04727541",
+          "phase": "2",
+          "sponsor_group": "AIO-Studien-gGmbH",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2021-10",
+          "type": "Efficacy",
+          "why_stopped": "Based on results of another phase II study with bintrafusp alfa in combination with gemcitabine plus cisplatin, that was discontinued as it was unlikely to meet the primary endpoint of OS, the recruitment for this study was stopped prematurely.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04727541"
+        },
+        {
+          "nct_id": "NCT04428047",
+          "phase": "2",
+          "sponsor_group": "UNICANCER",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2021-09",
+          "type": "Safety",
+          "why_stopped": "Sponsor decision following information on cases of hyperprogression and early toxicities with bintrafusp alfa in other studies",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04428047"
+        },
+        {
+          "nct_id": "NCT04066491",
+          "phase": "3",
+          "sponsor_group": "Merck KGaA",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2021-05",
+          "type": "Efficacy",
+          "why_stopped": "Based on a review of data conducted by the Independent Data Monitoring Committee (IDMC), Sponsor decided to discontinue this study as the study was unlikely to achieve the primary objective of overall survival.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04066491"
+        },
+        {
+          "nct_id": "NCT04501094",
+          "phase": "2",
+          "sponsor_group": "National Cancer Institute (NCI)",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA",
+          "stopped": "2021-01",
+          "type": "Safety",
+          "why_stopped": "Because of the low accrual and the safety concerns we closed the study.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04501094"
+        },
+        {
+          "nct_id": "NCT03451773",
+          "phase": "2",
+          "sponsor_group": "National Cancer Institute (NCI)",
+          "sponsor_ticker": "",
+          "drugs": "BINTRAFUSP ALFA, GEMCITABINE",
+          "stopped": "2020-05",
+          "type": "Safety",
+          "why_stopped": "Study was closed after one treatment related death.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03451773"
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "open_access": true
     },
     {
       "slug": "oncology-tgf",
@@ -881,7 +951,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "open_access": false
     },
     {
       "slug": "oncology-ox40-4-1bb-gitr",
@@ -1112,7 +1183,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "open_access": false
     },
     {
       "slug": "oncology-bcma",
@@ -1322,7 +1394,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "open_access": false
     },
     {
       "slug": "oncology-her3",
@@ -1542,7 +1615,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "open_access": false
     },
     {
       "slug": "immunology-autoimmune-btk",
@@ -1741,7 +1815,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:56Z"
+      "generated_at_utc": "2026-09-20T19:00:56Z",
+      "open_access": false
     },
     {
       "slug": "oncology-cd47-sirp",
@@ -1940,7 +2015,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "open_access": false
     },
     {
       "slug": "oncology-cd38",
@@ -2171,7 +2247,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "open_access": false
     },
     {
       "slug": "oncology-androgen-receptor-axis",
@@ -2402,7 +2479,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "open_access": false
     },
     {
       "slug": "oncology-met-pd-l-1",
@@ -2611,7 +2689,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "open_access": false
     },
     {
       "slug": "oncology-met",
@@ -2842,7 +2921,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "open_access": false
     },
     {
       "slug": "oncology-jak-tyk2",
@@ -3062,7 +3142,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "open_access": false
     },
     {
       "slug": "neurology-gaba-a",
@@ -3271,7 +3352,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "open_access": false
     },
     {
       "slug": "oncology-ido1",
@@ -3470,7 +3552,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "open_access": false
     },
     {
       "slug": "oncology-parp-pd-l-1",
@@ -3701,7 +3784,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "open_access": false
     },
     {
       "slug": "neurology-dopaminergic",
@@ -3921,7 +4005,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "open_access": false
     },
     {
       "slug": "oncology-egfr",
@@ -4152,7 +4237,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "open_access": false
     },
     {
       "slug": "oncology-pi3k-akt-mtor",
@@ -4383,7 +4469,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "open_access": false
     },
     {
       "slug": "oncology-cd3-t-cell-engagers",
@@ -4603,7 +4690,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "open_access": false
     },
     {
       "slug": "oncology-hdac",
@@ -4823,7 +4911,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "open_access": false
     },
     {
       "slug": "oncology-parp",
@@ -5054,7 +5143,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "open_access": false
     },
     {
       "slug": "oncology-flt3-kit",
@@ -5285,7 +5375,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "open_access": false
     },
     {
       "slug": "oncology-tigit-pd-l-1",
@@ -5484,7 +5575,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "open_access": false
     },
     {
       "slug": "oncology-tigit",
@@ -5683,7 +5775,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "open_access": false
     },
     {
       "slug": "immunology-autoimmune-jak-tyk2",
@@ -5903,7 +5996,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:56Z"
+      "generated_at_utc": "2026-09-20T19:00:56Z",
+      "open_access": false
     },
     {
       "slug": "oncology-bcl-2",
@@ -6134,7 +6228,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "open_access": false
     },
     {
       "slug": "oncology-pd-l-1",
@@ -6365,7 +6460,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "open_access": false
     },
     {
       "slug": "oncology-braf-mek-pd-l-1",
@@ -6574,7 +6670,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "open_access": false
     },
     {
       "slug": "oncology-alk-ros1-ret",
@@ -6805,7 +6902,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "open_access": false
     },
     {
       "slug": "oncology-braf-mek",
@@ -7036,7 +7134,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "open_access": false
     },
     {
       "slug": "oncology-cdk4-6",
@@ -7267,7 +7366,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "open_access": false
     },
     {
       "slug": "oncology-antifolate-nucleoside",
@@ -7498,7 +7598,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:53Z"
+      "generated_at_utc": "2026-09-20T19:00:53Z",
+      "open_access": false
     },
     {
       "slug": "oncology-antifolate-nucleoside-pd-l-1",
@@ -7729,7 +7830,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:53Z"
+      "generated_at_utc": "2026-09-20T19:00:53Z",
+      "open_access": false
     },
     {
       "slug": "oncology-microtubule",
@@ -7960,7 +8062,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "open_access": false
     },
     {
       "slug": "oncology-topoisomerase",
@@ -8191,7 +8294,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "open_access": false
     },
     {
       "slug": "oncology-btk",
@@ -8422,7 +8526,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "open_access": false
     },
     {
       "slug": "oncology-ctla-4",
@@ -8653,7 +8758,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "open_access": false
     },
     {
       "slug": "oncology-fgfr",
@@ -8884,7 +8990,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "open_access": false
     },
     {
       "slug": "oncology-cd20",
@@ -9115,7 +9222,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "open_access": false
     },
     {
       "slug": "oncology-ctla-4-pd-l-1",
@@ -9346,7 +9454,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "open_access": false
     },
     {
       "slug": "oncology-her2",
@@ -9577,7 +9686,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "open_access": false
     },
     {
       "slug": "oncology-vegf-vegfr",
@@ -9808,7 +9918,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "open_access": false
     },
     {
       "slug": "oncology-proteasome",
@@ -10017,7 +10128,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "open_access": false
     },
     {
       "slug": "oncology-er-aromatase",
@@ -10226,7 +10338,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "open_access": false
     },
     {
       "slug": "oncology-vegf-vegfr-pd-l-1",
@@ -10457,7 +10570,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "open_access": false
     },
     {
       "slug": "oncology-microtubule-pd-l-1",
@@ -10666,7 +10780,8 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:53Z"
+      "generated_at_utc": "2026-09-20T19:00:53Z",
+      "open_access": false
     }
   ]
 }
