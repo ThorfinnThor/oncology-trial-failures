@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a catalogue of benchmark briefs for every mechanism class with enough data.
+"""Build a catalogue of discontinuation-rate briefs for every mechanism class with enough data.
 
 Runs the brief generator for each class (standalone, and combined with PD-(L)1 where that
 combination has enough closed trials). Briefs are written to product/briefs/ as HTML.
@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.briefs.build_brief import main as build_one  # noqa: E402
-from scripts.universe.benchmarks import load, select, summarize  # noqa: E402
+from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
 from scripts.universe.mechanism_classes import COMBINATION_PARTNER, classes_of  # noqa: E402
 
 MIN_CLOSED = 20

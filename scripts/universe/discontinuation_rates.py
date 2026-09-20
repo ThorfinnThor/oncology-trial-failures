@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Biological discontinuation benchmarks with denominators.
+"""Biological discontinuation rates with denominators.
 
 Definitions (stated in every output):
   closed trial        overall status COMPLETED or TERMINATED. WITHDRAWN (never enrolled),
@@ -193,7 +193,7 @@ def standard_tables(rows, out_dir: Path, start, phases, slug: str = "oncology") 
             for k in keyfn(r) or []:
                 if k is not None:
                     groups[k].append(r)
-        path = out_dir / f"{slug}_benchmarks_{name}.csv"
+        path = out_dir / f"{slug}_discontinuation_rates_{name}.csv"
         with open(path, "w", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["segment", "trials", "closed", "closed_share", "biological_stops", "stops_efficacy_only", "stops_safety_only",
@@ -211,7 +211,7 @@ def standard_tables(rows, out_dir: Path, start, phases, slug: str = "oncology") 
 
 
 def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") -> dict:
-    """Machine-readable benchmark pack: baseline plus every segment with enough closed trials."""
+    """Machine-readable rate pack: baseline plus every segment with enough closed trials."""
     base = select(rows, phases=phases, start=start)
     baseline = summarize(base)
     segments = []
@@ -249,7 +249,8 @@ def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") 
 
     pack = {
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "product": "Clinical Trial Failure Benchmarks (oncology)",
+        "product": f"Clinical Trial Failure Discontinuation Rates ({area})",
+        "disease_area": area,
         "window": {"start_year_from": start[0], "start_year_to": start[1], "phases": phases},
         "definitions": {
             "closed": "overall status COMPLETED or TERMINATED; withdrawn, suspended, unknown and ongoing excluded",
@@ -279,8 +280,8 @@ def main() -> int:
     ap.add_argument("--class", dest="klass", help="mechanism class, e.g. 'TIGIT'")
     ap.add_argument("--with-class", help="combination partner class, e.g. 'PD-(L)1'")
     ap.add_argument("--sponsor-group")
-    ap.add_argument("--pack", action="store_true", help="write the machine-readable benchmark pack")
-    ap.add_argument("--tables", action="store_true", help="write standard benchmark tables to product/benchmarks")
+    ap.add_argument("--pack", action="store_true", help="write the machine-readable rate pack")
+    ap.add_argument("--tables", action="store_true", help="write standard rate tables to product/discontinuation_rates")
     ap.add_argument("--area", default="Oncology", help="disease area, e.g. 'Immunology & Autoimmune'")
     args = ap.parse_args()
     split = lambda s: [x.strip() for x in s.split(",")] if s else None
@@ -289,9 +290,9 @@ def main() -> int:
     rows = load(args.area)
     slug = re.sub(r"[^a-z0-9]+", "-", args.area.lower()).strip("-")
     if args.tables:
-        standard_tables(rows, ROOT / "product/benchmarks", start, phases, slug=slug)
+        standard_tables(rows, ROOT / "product/discontinuation_rates", start, phases, slug=slug)
     if args.pack:
-        product_json(rows, start, phases, ROOT / f"product/benchmarks/{slug}_benchmarks_v1.json", area=args.area)
+        product_json(rows, start, phases, ROOT / f"product/discontinuation_rates/{slug}_discontinuation_rates_v1.json", area=args.area)
     common = dict(phases=phases, start=start, sponsor_class=args.sponsor_class, modality=args.modality)
     print(f"{args.area} Phase {args.phases} interventional trials started {start[0]}–{start[1]}:")
     print("  all:", fmt(summarize(select(rows, **common))))

@@ -130,8 +130,8 @@ jobs:
           # Diffs against the snapshot in .cache/signals, then refreshes it for the next run.
           python scripts/signals/build_change_report.py
 
-      - name: Build trial universe and discontinuation benchmarks
-        id: benchmarks
+      - name: Build trial universe and discontinuation rates
+        id: discontinuation_rates
         continue-on-error: true
         run: |
           python scripts/universe/run_universe_tests.py
@@ -139,17 +139,17 @@ jobs:
           python -u scripts/universe/chembl_index.py
           python -u scripts/universe/ncit_index.py
           python -u scripts/universe/resolve.py
-          python -u scripts/universe/benchmarks.py --tables --pack --start 2015:2024
+          python -u scripts/universe/discontinuation_rates.py --tables --pack --start 2015:2024
           python -u scripts/briefs/build_brief_catalog.py
           # Disease areas beyond oncology reuse the same universe; each needs only a class lexicon.
           for area in "Neurology" "Immunology & Autoimmune"; do
-            python -u scripts/universe/benchmarks.py --tables --pack --start 2015:2024 --area "$area"
+            python -u scripts/universe/discontinuation_rates.py --tables --pack --start 2015:2024 --area "$area"
             python -u scripts/briefs/build_brief_catalog.py --area "$area"
           done
-          cp .cache/universe/resolution_report.json product/benchmarks/
+          cp .cache/universe/resolution_report.json product/discontinuation_rates/
 
-      - name: Render benchmark briefs to PDF
-        if: steps.benchmarks.outcome == 'success'
+      - name: Render discontinuation-rate briefs to PDF
+        if: steps.discontinuation_rates.outcome == 'success'
         continue-on-error: true
         run: |
           pip install playwright
@@ -159,9 +159,9 @@ jobs:
           mkdir -p web/public/briefs
           cp product/briefs/*.pdf web/public/briefs/ 2>/dev/null || true
 
-      # The public summary reads the benchmark pack and counts the briefs, so it is built after
-      # those steps. Run inside the signals step it wrote a summary with no benchmark figures,
-      # and the licensing page rendered "—" for every benchmark number.
+      # The public summary reads the rate pack and counts the briefs, so it is built after
+      # those steps. Run inside the signals step it wrote a summary with no rate figures,
+      # and the licensing page rendered "—" for every rate.
       - name: Build public product summary and sample
         if: steps.signals.outcome == 'success'
         continue-on-error: true
@@ -180,7 +180,7 @@ jobs:
           key: signals-${{ github.run_id }}
 
       - name: Upload Oncology Failure Signals release
-        if: steps.signals.outcome == 'success' || steps.benchmarks.outcome == 'success'
+        if: steps.signals.outcome == 'success' || steps.discontinuation_rates.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: oncology-failure-signals-${{ github.run_id }}

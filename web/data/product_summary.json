@@ -18,7 +18,7 @@
   "unique_assets": 569,
   "assets_with_repeated_safety_signal": 71,
   "assets_with_repeated_efficacy_signal": 123,
-  "benchmarks": {
+  "discontinuation_rates": {
     "segments": 194,
     "mechanism_classes": 39,
     "universe_closed_trials": 7798,
@@ -32,7 +32,7 @@
       ]
     }
   },
-  "featured_benchmark": {
+  "featured_segment": {
     "segment": {
       "label": "TGF-\u03b2 + PD-(L)1",
       "rate": 0.25,

@@ -18,7 +18,7 @@ const PRICING = [
     price: "€1,500",
     unit: "one-time",
     for: "Research, a one-off analysis, or evaluation before a subscription.",
-    includes: ["One dated release, all files", "Benchmark pack and class tables", "Internal use, one team"],
+    includes: ["One dated release, all files", "Discontinuation rate tables, all segments", "Internal use, one team"],
     cta: "Request a quote",
   },
   {
@@ -29,7 +29,7 @@ const PRICING = [
     for: "Investment research, competitive intelligence and trial design.",
     includes: [
       "Weekly releases for twelve months",
-      "Benchmark pack and every mechanism-class brief",
+      "Discontinuation rates and every mechanism-class brief",
       "Weekly change report",
       "Internal use, one team · email support",
     ],
@@ -57,7 +57,7 @@ const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/data-licensing`;
 const TITLE = "Data & licensing — Clinical trial failure datasets";
 const DESCRIPTION =
-  "License the complete classified stopped-trial dataset, the Oncology Failure Signals dataset and discontinuation benchmarks with denominators: biological failure labels linked to drugs, targets, sponsors, tickers and publications.";
+  "License the complete classified stopped-trial dataset, the Oncology Failure Signals dataset and discontinuation rates with denominators: biological failure labels linked to drugs, targets, sponsors, tickers and publications.";
 
 type Props = {
   datasetVersion: string;
@@ -111,8 +111,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
   }
 
   const s: any = productSummary;
-  const bench = s.benchmarks;
-  const featured = s.featured_benchmark;
+  const rates = s.discontinuation_rates;
+  const featured = s.featured_segment;
   const featuredBars: any[] = featured ? [featured.segment, featured.reference, featured.baseline].filter(Boolean) : [];
   const maxRate = featuredBars.length ? Math.max(...featuredBars.map((b) => b.rate)) : 1;
   const mailto = (subject: string) => `mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(subject)}`;
@@ -186,10 +186,10 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <span>Classified stopped trials</span>
                 <b>{n(totalRecords)}</b>
               </div>
-              {bench ? (
+              {rates ? (
                 <div className="releaseRow">
-                  <span>Benchmark segments</span>
-                  <b>{n(bench.segments)}</b>
+                  <span>Segments with a rate</span>
+                  <b>{n(rates.segments)}</b>
                 </div>
               ) : null}
               {s.brief_count ? (
@@ -229,16 +229,16 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               </div>
             </div>
             <div className="stat">
-              <div className="statValue">{bench ? n(bench.segments) : "—"}</div>
-              <div className="statLabel">Benchmark segments</div>
-              <div className="statNote">{bench ? `${bench.mechanism_classes} mechanism classes, each with a 95% interval` : ""}</div>
+              <div className="statValue">{rates ? n(rates.segments) : "—"}</div>
+              <div className="statLabel">Segments with a rate</div>
+              <div className="statNote">{rates ? `${rates.mechanism_classes} mechanism classes, each with a 95% interval` : ""}</div>
             </div>
             <div className="stat">
-              <div className="statValue">{bench ? n(bench.universe_closed_trials) : "—"}</div>
+              <div className="statValue">{rates ? n(rates.universe_closed_trials) : "—"}</div>
               <div className="statLabel">Closed trials as denominator</div>
               <div className="statNote">
-                {bench
-                  ? `Phase ${bench.window.phases.join("/")} oncology, starts ${bench.window.start_year_from}–${bench.window.start_year_to}`
+                {rates
+                  ? `Phase ${rates.window.phases.join("/")} oncology, starts ${rates.window.start_year_from}–${rates.window.start_year_to}`
                   : ""}
               </div>
             </div>
@@ -282,13 +282,13 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               </div>
 
               <div className="card dsCard">
-                <div className="dsTitle">Discontinuation benchmarks</div>
+                <div className="dsTitle">Discontinuation rates</div>
                 <p className="dsBody">
                   Rates with denominators for every mechanism class, phase, modality, start cohort and sponsor group, each with a 95%
                   Wilson interval — plus a two-page brief per class listing the underlying trials and their registry stop reasons.
                 </p>
                 <div className="tagRow">
-                  {bench ? <span className="tag">{bench.segments} segments</span> : null}
+                  {rates ? <span className="tag">{rates.segments} segments</span> : null}
                   {s.brief_count ? <span className="tag">{s.brief_count} briefs</span> : null}
                   <span className="tag">JSON · CSV · HTML + PDF</span>
                 </div>
@@ -310,7 +310,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </div>
           </section>
 
-          {/* ---------------- benchmark proof ---------------- */}
+          {/* ---------------- rate proof ---------------- */}
           {featured ? (
             <section className="section">
               <h2>Denominators, not anecdotes</h2>
@@ -328,7 +328,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                       believed.
                     </p>
                     <p className="proofNote">
-                      Share of closed Phase {bench ? bench.window.phases.join("/") : "2/3"} oncology trials (completed or terminated)
+                      Share of closed Phase {rates ? rates.window.phases.join("/") : "2/3"} oncology trials (completed or terminated)
                       terminated for an efficacy, safety or benefit–risk reason recorded in the registry. Not a failure rate: trials
                       that completed and missed their endpoints are not counted.
                     </p>
@@ -539,7 +539,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <div className="faq">
                 <h3>How is the data delivered?</h3>
                 <p>
-                  A dated release with CSV and JSON files, the benchmark pack and the change report, by download link — or into your S3
+                  A dated release with CSV and JSON files, the discontinuation rate tables and the change report, by download link — or into your S3
                   bucket on the enterprise tier.
                 </p>
               </div>
@@ -832,7 +832,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           font-size: 11px;
         }
 
-        /* ---------- benchmark proof ---------- */
+        /* ---------- rate proof ---------- */
         .proof {
           padding: 22px 24px;
           margin-top: 18px;

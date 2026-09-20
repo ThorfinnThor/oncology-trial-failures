@@ -45,13 +45,13 @@ def _stats(label: str, seg: dict) -> dict:
     return {"label": label, "rate": seg["rate"], "stops": seg["biological_stops"], "closed": seg["closed"], "ci95": seg["ci95"]}
 
 
-def featured_benchmark(bench: dict) -> dict | None:
+def featured_segment(rates: dict) -> dict | None:
     """The segment whose discontinuation rate is highest among those whose 95% interval clears the
     oncology baseline, so the example on the licensing page is never a small-sample artefact."""
-    baseline = bench["baseline"]
-    window = bench["window"]
+    baseline = rates["baseline"]
+    window = rates["window"]
     phases = "/".join(window["phases"])
-    cands = [s for s in bench["segments"]
+    cands = [s for s in rates["segments"]
              if s["dimension"] in ("mechanism_class", "mechanism_class_with_pd1")
              and s["closed"] >= 30 and s["biological_stops"] >= 5 and s["ci95"][0] > baseline["rate"]]
     if not cands:
@@ -60,7 +60,7 @@ def featured_benchmark(bench: dict) -> dict | None:
     out = {"segment": _stats(best["segment"], best),
            "baseline": _stats(f"All oncology Phase {phases}", baseline)}
     if best["dimension"] == "mechanism_class_with_pd1":
-        pd1 = next((s for s in bench["segments"]
+        pd1 = next((s for s in rates["segments"]
                     if s["dimension"] == "mechanism_class" and s["segment"] == "PD-(L)1"), None)
         if pd1:
             out["reference"] = _stats("All PD-(L)1 trials", pd1)
@@ -110,31 +110,34 @@ def main() -> int:
                                      "industry_phase2_3_trial_count", "by_primary_reason", "trials_with_resolved_focus_asset",
                                      "trials_with_focus_target_gene", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer",
                                      "unique_assets", "assets_with_repeated_safety_signal", "assets_with_repeated_efficacy_signal"]}
-    # The benchmark pack is built by a later, separately-failing workflow step. If it is missing,
-    # carry the previous release's benchmark figures instead of dropping them: the licensing page
+    # The rate pack is built by a later, separately-failing workflow step. If it is missing,
+    # carry the previous release's figures instead of dropping them: the licensing page
     # renders "—" and hides the denominators section when these keys disappear.
     previous = json.loads(SUMMARY.read_text()) if SUMMARY.exists() else {}
-    bench_path = PRODUCT / "benchmarks/oncology_benchmarks_v1.json"
-    if bench_path.exists():
-        bench = json.loads(bench_path.read_text())
-        classes = [s for s in bench["segments"] if s["dimension"] == "mechanism_class"]
-        summary["benchmarks"] = {
-            "segments": len(bench["segments"]),
+    rates_path = PRODUCT / "discontinuation_rates/oncology_discontinuation_rates_v1.json"
+    if rates_path.exists():
+        rates = json.loads(rates_path.read_text())
+        classes = [s for s in rates["segments"] if s["dimension"] == "mechanism_class"]
+        summary["discontinuation_rates"] = {
+            "segments": len(rates["segments"]),
             "mechanism_classes": len(classes),
-            "universe_closed_trials": bench["baseline"]["closed"],
-            "baseline_rate": bench["baseline"]["rate"],
-            "window": bench["window"],
+            "universe_closed_trials": rates["baseline"]["closed"],
+            "baseline_rate": rates["baseline"]["rate"],
+            "window": rates["window"],
         }
-        featured = featured_benchmark(bench)
+        featured = featured_segment(rates)
         if featured:
-            summary["featured_benchmark"] = featured
+            summary["featured_segment"] = featured
     else:
-        for key in ("benchmarks", "featured_benchmark"):
+        # Releases before the rename carried the same figures under "benchmarks".
+        for key, legacy in (("discontinuation_rates", "benchmarks"), ("featured_segment", "featured_benchmark")):
             if key in previous:
                 summary[key] = previous[key]
-        if "benchmarks" in summary:
-            summary["benchmarks_from_release"] = previous.get("dataset_version")
-            print(f"WARNING: no benchmark pack in this build; kept figures from release "
+            elif legacy in previous:
+                summary[key] = previous[legacy]
+        if "discontinuation_rates" in summary:
+            summary["rates_from_release"] = previous.get("dataset_version")
+            print(f"WARNING: no rate pack in this build; kept figures from release "
                   f"{previous.get('dataset_version')}", file=sys.stderr)
     briefs = sorted((PRODUCT / "briefs").glob("brief_*.html")) if (PRODUCT / "briefs").exists() else []
     summary["brief_count"] = len(briefs) or previous.get("brief_count", 0)

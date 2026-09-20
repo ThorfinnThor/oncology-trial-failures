@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render every benchmark brief to PDF.
+"""Render every discontinuation-rate brief to PDF.
 
 Briefs are built as HTML, but a brief is something a licensee forwards, so the release
 ships PDFs too. Chromium is used because the layout relies on CSS grid and @page rules.
