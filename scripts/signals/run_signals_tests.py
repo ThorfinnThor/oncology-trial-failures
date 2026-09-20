@@ -219,6 +219,45 @@ check("no stops, no claim", signature([])["molecules"], 0)
 check("assets carry the trials behind them",
       sorted(failed_assets(_one)[0]["trials"]), ["NCT0", "NCT1", "NCT2"])
 
+# Comparing the customer's asset against the molecules that failed. The answer "this cohort is
+# not about you" has to come out as readily as the answer "it is", or the comparison is just
+# a way of agreeing with whoever paid for it.
+from scripts.signals.build_evidence_package import compare_asset  # noqa: E402
+
+_failed = [
+    {"asset": "Tilavonemab", "modalities": ["Antibody"], "target_genes": ["MAPT"],
+     "mechanisms": ["Microtubule-associated protein tau inhibitor"], "trial_count": 3, "trials": ["NCT1"]},
+    {"asset": "Verubecestat", "modalities": ["Small molecule"], "target_genes": ["BACE1"],
+     "mechanisms": ["Beta-secretase 1 inhibitor"], "trial_count": 1, "trials": ["NCT2"]},
+    {"asset": "Unresolvable", "modalities": [], "target_genes": [], "mechanisms": [],
+     "trial_count": 1, "trials": ["NCT3"]},
+]
+_anti_tau_ab = {"asset": "BEPRANEMAB", "modality": "Antibody", "target_genes": ["MAPT"], "mechanisms": []}
+_by_asset = {c["asset"]: c for c in compare_asset(_anti_tau_ab, _failed)}
+check("same target and modality is the closest match", _by_asset["Tilavonemab"]["verdict"], "closest")
+check("a different target is not", _by_asset["Verubecestat"]["verdict"], "distant")
+check("an unresolved molecule cannot be compared", _by_asset["Unresolvable"]["verdict"], "unknown")
+check("the shared target is named", _by_asset["Tilavonemab"]["shared_target_genes"], ["MAPT"])
+
+# Same target, different modality: related, not closest.
+_tau_small = {"asset": "SOMETHING", "modality": "Small molecule", "target_genes": ["MAPT"], "mechanisms": []}
+check("same target, different modality is related",
+      {c["asset"]: c for c in compare_asset(_tau_small, _failed)}["Tilavonemab"]["verdict"], "related")
+
+# Same modality, different target: weak. An anti-amyloid antibody is not an anti-tau antibody.
+_amyloid_ab = {"asset": "LECANEMAB", "modality": "Antibody", "target_genes": ["APP"], "mechanisms": []}
+check("same modality alone is weak",
+      {c["asset"]: c for c in compare_asset(_amyloid_ab, _failed)}["Tilavonemab"]["verdict"], "weak")
+
+# A shared mechanism string counts even when the gene symbols differ.
+_mech = {"asset": "OTHER", "modality": "Peptide", "target_genes": [],
+         "mechanisms": ["Microtubule-associated protein tau inhibitor"]}
+check("an overlapping mechanism counts",
+      {c["asset"]: c for c in compare_asset(_mech, _failed)}["Tilavonemab"]["verdict"], "related")
+
+# Closest matches sort to the top, because that is the row someone has to answer for.
+check("the closest match leads the table", compare_asset(_anti_tau_ab, _failed)[0]["asset"], "Tilavonemab")
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

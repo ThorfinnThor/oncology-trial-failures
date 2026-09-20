@@ -43,7 +43,11 @@ def pct(x) -> str:
 
 
 NO_REASON = '<span class="muted">no reason recorded in the registry</span>'
-MAX_ROWS = 40
+# The brief is a free sample of the work, not the work. It names every molecule behind the
+# stops — that is the finding — and shows the most recent stops as evidence that the reading is
+# sound. The complete trial list belongs to the dataset and the evidence package. One brief
+# is published in full and deliberately breaks this rule.
+MAX_ROWS = 6
 
 
 def full(text) -> str:
@@ -355,7 +359,7 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 </div>
 <h2>The stopped trials</h2>
 <table class="stops"><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th><th>Stopped</th><th>Type</th><th>Registry stop reason</th></tr></thead><tbody>{rows_html}</tbody></table>
-{f'<p style="font-size:7.4pt;color:var(--muted)">Showing {MAX_ROWS} of {len(stops)} stopped trials; the full list ships with the dataset.</p>' if len(stops) > MAX_ROWS else ''}
+{f'<p style="font-size:7.4pt;color:var(--muted)">The {MAX_ROWS} most recent of {len(stops)} stopped trials. Every molecule behind all {len(stops)} is named above; the complete trial list, the trials still running and the terminations with no readable cause ship with the dataset and the evidence package.</p>' if len(stops) > MAX_ROWS else ''}
 <div class="cols" style="margin-top:10px">
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase {e(args.phases)} {e(args.area.lower())} trials started {start[0]}–{start[1]} that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; {linked_pct}% of industry {e(args.area.lower())} trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
 <div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only {pct(segment['closed_share'])} of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>

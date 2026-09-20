@@ -192,6 +192,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "BACE1"
+            ],
+            "mechanisms": [
+              "Beta-secretase 1 inhibitor"
+            ],
             "sponsors": [
               "AstraZeneca"
             ],
@@ -207,6 +213,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "BACE1"
+            ],
+            "mechanisms": [
+              "Beta-secretase 1 inhibitor"
+            ],
             "sponsors": [
               "Johnson & Johnson"
             ],
@@ -220,6 +232,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "BACE1"
+            ],
+            "mechanisms": [
+              "Beta-secretase 1 inhibitor"
             ],
             "sponsors": [
               "Eisai"
@@ -290,7 +308,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:18Z",
+      "generated_at_utc": "2026-09-20T21:04:20Z",
       "open_access": false
     },
     {
@@ -483,6 +501,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "MAPT"
+            ],
+            "mechanisms": [
+              "Microtubule-associated protein tau inhibitor"
+            ],
             "sponsors": [
               "AbbVie"
             ],
@@ -499,6 +523,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "MAPT"
+            ],
+            "mechanisms": [
+              "Microtubule-associated protein tau inhibitor"
+            ],
             "sponsors": [
               "Biogen"
             ],
@@ -514,6 +544,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "MAPT"
+            ],
+            "mechanisms": [
+              "Microtubule-associated protein tau inhibitor"
+            ],
             "sponsors": [
               "Johnson & Johnson"
             ],
@@ -527,6 +563,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "MAPT"
+            ],
+            "mechanisms": [
+              "Microtubule-associated protein tau inhibitor"
             ],
             "sponsors": [
               "Roche"
@@ -619,7 +661,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:18Z",
+      "generated_at_utc": "2026-09-20T21:04:20Z",
       "open_access": false
     },
     {
@@ -1070,6 +1112,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "APP"
+            ],
+            "mechanisms": [
+              "Amyloid-beta A4 protein binding agent"
+            ],
             "sponsors": [
               "Biogen"
             ],
@@ -1086,6 +1134,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "APP"
+            ],
+            "mechanisms": [
+              "Amyloid-beta A4 protein inhibitor"
+            ],
             "sponsors": [
               "Roche"
             ],
@@ -1100,6 +1154,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "APP"
+            ],
+            "mechanisms": [
+              "Amyloid-beta A4 protein binding agent"
             ],
             "sponsors": [
               "Eli Lilly"
@@ -1202,7 +1262,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:18Z",
+      "generated_at_utc": "2026-09-20T21:04:20Z",
       "open_access": false
     },
     {
@@ -1352,8 +1412,8 @@
           "Small molecule": 5,
           "Unknown": 2,
           "Protein": 2,
-          "Oncolytic virus": 1,
           "Oligosaccharide": 1,
+          "Oncolytic virus": 1,
           "Vaccine": 1
         },
         "top_assets": [
@@ -1434,6 +1494,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD38"
+            ],
+            "mechanisms": [
+              "Lymphocyte differentiation antigen CD38 inhibitor"
+            ],
             "sponsors": [
               "Sanofi"
             ],
@@ -1449,6 +1515,10 @@
             "modalities": [
               "Protein"
             ],
+            "target_genes": [
+              "CD38"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Teva Branded Pharmaceutical Products R&D LLC"
             ],
@@ -1528,7 +1598,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:10Z",
+      "generated_at_utc": "2026-09-20T21:04:13Z",
       "open_access": false
     },
     {
@@ -1763,6 +1833,16 @@
             "modalities": [
               "Protein"
             ],
+            "target_genes": [
+              "CD274",
+              "TGFB1",
+              "TGFB2",
+              "TGFB3"
+            ],
+            "mechanisms": [
+              "Programmed cell death 1 ligand 1 binding agent",
+              "Transforming growth factor beta binding agent"
+            ],
             "sponsors": [
               "AIO-Studien-gGmbH",
               "Mayo Clinic",
@@ -1789,6 +1869,10 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "TGFB1"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Novartis"
             ],
@@ -1957,7 +2041,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:08Z",
+      "generated_at_utc": "2026-09-20T21:04:11Z",
       "open_access": true
     },
     {
@@ -2192,6 +2276,16 @@
             "modalities": [
               "Protein"
             ],
+            "target_genes": [
+              "CD274",
+              "TGFB1",
+              "TGFB2",
+              "TGFB3"
+            ],
+            "mechanisms": [
+              "Programmed cell death 1 ligand 1 binding agent",
+              "Transforming growth factor beta binding agent"
+            ],
             "sponsors": [
               "AIO-Studien-gGmbH",
               "Mayo Clinic",
@@ -2218,6 +2312,10 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "TGFB1"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Novartis"
             ],
@@ -2320,7 +2418,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:08Z",
+      "generated_at_utc": "2026-09-20T21:04:11Z",
       "open_access": false
     },
     {
@@ -2555,6 +2653,11 @@
             "modalities": [
               "Unknown"
             ],
+            "target_genes": [
+              "TNFRSF4",
+              "TNFSF4"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "ModernaTX, Inc."
             ],
@@ -2569,6 +2672,11 @@
             "modalities": [
               "Bispecific antibody"
             ],
+            "target_genes": [
+              "CD40",
+              "TNFRSF9"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Genmab"
             ],
@@ -2582,6 +2690,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "TNFRSF9"
+            ],
+            "mechanisms": [
+              "Tumor necrosis factor receptor superfamily member 9 agonist"
             ],
             "sponsors": [
               "Pfizer"
@@ -2662,7 +2776,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:09Z",
+      "generated_at_utc": "2026-09-20T21:04:12Z",
       "open_access": false
     },
     {
@@ -2899,6 +3013,10 @@
             "modalities": [
               "Unknown"
             ],
+            "target_genes": [
+              "TNFRSF9"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Adagene (Suzhou) Limited"
             ],
@@ -2912,6 +3030,12 @@
             "resolved": true,
             "modalities": [
               "Unknown"
+            ],
+            "target_genes": [
+              "TNFRSF4"
+            ],
+            "mechanisms": [
+              "Tumor necrosis factor receptor superfamily member 4 agonist"
             ],
             "sponsors": [
               "GSK"
@@ -2927,6 +3051,11 @@
             "modalities": [
               "Unknown"
             ],
+            "target_genes": [
+              "TNFRSF4",
+              "TNFSF4"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "ModernaTX, Inc."
             ],
@@ -2941,6 +3070,11 @@
             "modalities": [
               "Bispecific antibody"
             ],
+            "target_genes": [
+              "CD40",
+              "TNFRSF9"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Genmab"
             ],
@@ -2954,6 +3088,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "TNFRSF9"
+            ],
+            "mechanisms": [
+              "Tumor necrosis factor receptor superfamily member 9 agonist"
             ],
             "sponsors": [
               "Pfizer"
@@ -3066,7 +3206,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:09Z",
+      "generated_at_utc": "2026-09-20T21:04:11Z",
       "open_access": false
     },
     {
@@ -3299,6 +3439,28 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "TNFRSF17",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor",
+              "Tumor necrosis factor receptor superfamily member 17 binding agent"
+            ],
             "sponsors": [
               "GSK",
               "Jacob Soumerai, MD"
@@ -3316,6 +3478,11 @@
             "modalities": [
               "Cell therapy"
             ],
+            "target_genes": [
+              "TNFRSF17",
+              "TNFSF13"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Autolus Limited"
             ],
@@ -3406,7 +3573,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:09Z",
+      "generated_at_utc": "2026-09-20T21:04:12Z",
       "open_access": false
     },
     {
@@ -3637,6 +3804,15 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR",
+              "ERBB2",
+              "ERBB3",
+              "ERBB4"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Rain Oncology Inc"
             ],
@@ -3652,6 +3828,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "ERBB3"
+            ],
+            "mechanisms": [
+              "Receptor tyrosine-protein kinase erbB-3 inhibitor"
+            ],
             "sponsors": [
               "Daiichi Sankyo"
             ],
@@ -3665,6 +3847,14 @@
             "resolved": true,
             "modalities": [
               "ADC"
+            ],
+            "target_genes": [
+              "ERBB3",
+              "TOP1"
+            ],
+            "mechanisms": [
+              "DNA topoisomerase I inhibitor",
+              "Receptor tyrosine-protein kinase erbB-3 binding agent"
             ],
             "sponsors": [
               "Daiichi Sankyo"
@@ -3766,7 +3956,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:10Z",
+      "generated_at_utc": "2026-09-20T21:04:13Z",
       "open_access": false
     },
     {
@@ -3992,6 +4182,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "BTK"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase BTK inhibitor"
+            ],
             "sponsors": [
               "AbbVie"
             ],
@@ -4006,6 +4202,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "BTK"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase BTK inhibitor"
+            ],
             "sponsors": [
               "Roche"
             ],
@@ -4019,6 +4221,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "BTK"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase BTK inhibitor"
             ],
             "sponsors": [
               "Eli Lilly"
@@ -4099,7 +4307,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:19Z",
+      "generated_at_utc": "2026-09-20T21:04:22Z",
       "open_access": false
     },
     {
@@ -4331,6 +4539,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD47"
+            ],
+            "mechanisms": [
+              "Leukocyte surface antigen CD47 inhibitor"
+            ],
             "sponsors": [
               "Gilead Sciences"
             ],
@@ -4345,6 +4559,12 @@
             "resolved": true,
             "modalities": [
               "Protein"
+            ],
+            "target_genes": [
+              "CD47"
+            ],
+            "mechanisms": [
+              "Leukocyte surface antigen CD47 inhibitor"
             ],
             "sponsors": [
               "University of Colorado, Denver"
@@ -4425,7 +4645,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:08Z",
+      "generated_at_utc": "2026-09-20T21:04:11Z",
       "open_access": false
     },
     {
@@ -4578,8 +4798,8 @@
           "Unknown": 8,
           "Gene therapy": 4,
           "Cell therapy": 2,
-          "Oncolytic virus": 1,
           "Oligosaccharide": 1,
+          "Oncolytic virus": 1,
           "Bispecific antibody": 1,
           "Vaccine": 1
         },
@@ -4661,6 +4881,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD38"
+            ],
+            "mechanisms": [
+              "Lymphocyte differentiation antigen CD38 inhibitor"
+            ],
             "sponsors": [
               "Sanofi"
             ],
@@ -4677,6 +4903,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "CD38"
+            ],
+            "mechanisms": [
+              "Lymphocyte differentiation antigen CD38 inhibitor"
             ],
             "sponsors": [
               "Fondazione Italiana Linfomi - ETS",
@@ -4696,6 +4928,10 @@
             "modalities": [
               "Protein"
             ],
+            "target_genes": [
+              "CD38"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Teva Branded Pharmaceutical Products R&D LLC"
             ],
@@ -4807,7 +5043,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:10Z",
+      "generated_at_utc": "2026-09-20T21:04:12Z",
       "open_access": false
     },
     {
@@ -5039,6 +5275,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "AR"
+            ],
+            "mechanisms": [
+              "Androgen Receptor antagonist"
+            ],
             "sponsors": [
               "Bayer",
               "Corcept Therapeutics",
@@ -5063,6 +5305,18 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "AR",
+              "CYP17A1",
+              "SRD5A1",
+              "SRD5A2",
+              "SRD5A3"
+            ],
+            "mechanisms": [
+              "Androgen Receptor antagonist",
+              "Cytochrome P450 17A1 inhibitor",
+              "Steroid 5-alpha-reductase inhibitor"
+            ],
             "sponsors": [
               "Epizyme, Inc.",
               "Incyte",
@@ -5081,6 +5335,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "CYP17A1"
+            ],
+            "mechanisms": [
+              "Cytochrome P450 17A1 inhibitor"
+            ],
             "sponsors": [
               "Institute of Cancer Research, United Kingdom",
               "Mayo Clinic"
@@ -5097,6 +5357,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "AR"
+            ],
+            "mechanisms": [
+              "Androgen Receptor antagonist"
+            ],
             "sponsors": [
               "Dana-Farber Cancer Institute"
             ],
@@ -5110,6 +5376,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "AR"
+            ],
+            "mechanisms": [
+              "Androgen Receptor antagonist"
             ],
             "sponsors": [
               "Bayer"
@@ -5125,6 +5397,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "AR"
+            ],
+            "mechanisms": [
+              "Androgen Receptor modulator"
+            ],
             "sponsors": [
               "GTx"
             ],
@@ -5139,6 +5417,10 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "AR"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "ESSA Pharmaceuticals"
             ],
@@ -5250,7 +5532,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:14Z",
+      "generated_at_utc": "2026-09-20T21:04:17Z",
       "open_access": false
     },
     {
@@ -5479,6 +5761,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Novartis"
             ],
@@ -5493,6 +5781,20 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "AXL",
+              "FLT3",
+              "KDR",
+              "MERTK",
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor",
+              "Proto-oncogene tyrosine-protein kinase MER inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor UFO inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
             ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
@@ -5583,7 +5885,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:11Z",
+      "generated_at_utc": "2026-09-20T21:04:14Z",
       "open_access": false
     },
     {
@@ -5815,6 +6117,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "KDR",
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
+            ],
             "sponsors": [
               "Patrick Joseph Loehrer Sr.",
               "Radboud University Medical Center",
@@ -5833,6 +6143,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Novartis"
             ],
@@ -5848,6 +6164,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "NantPharma, LLC"
             ],
@@ -5861,6 +6183,14 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "EGFR",
+              "MET"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor",
+              "Hepatocyte growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Johnson & Johnson"
@@ -5876,6 +6206,11 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "EGFR",
+              "MET"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Genmab"
             ],
@@ -5889,6 +6224,20 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "AXL",
+              "FLT3",
+              "KDR",
+              "MERTK",
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor",
+              "Proto-oncogene tyrosine-protein kinase MER inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor UFO inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
             ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
@@ -5904,6 +6253,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FLT3",
+              "KDR",
+              "MET"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Sunshine Lake Pharma Co., Ltd."
             ],
@@ -5917,6 +6272,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Istituto Oncologico Veneto IRCCS"
@@ -6029,7 +6390,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:11Z",
+      "generated_at_utc": "2026-09-20T21:04:14Z",
       "open_access": false
     },
     {
@@ -6259,6 +6620,18 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ACVR1",
+              "FLT3",
+              "IRAK1",
+              "JAK2"
+            ],
+            "mechanisms": [
+              "Activin receptor type-1 inhibitor",
+              "Interleukin-1 receptor-associated kinase 1 inhibitor",
+              "Tyrosine-protein kinase JAK2 inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor"
+            ],
             "sponsors": [
               "Medical College of Wisconsin",
               "Washington University School of Medicine"
@@ -6274,6 +6647,18 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "JAK1",
+              "JAK2",
+              "JAK3",
+              "TYK2"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase JAK1 inhibitor",
+              "Tyrosine-protein kinase JAK2 inhibitor",
+              "Tyrosine-protein kinase JAK3 inhibitor",
+              "Tyrosine-protein kinase TYK2 inhibitor"
             ],
             "sponsors": [
               "Incyte",
@@ -6377,7 +6762,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:14Z",
+      "generated_at_utc": "2026-09-20T21:04:16Z",
       "open_access": false
     },
     {
@@ -6603,6 +6988,27 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "GABRA1",
+              "GABRA2",
+              "GABRA3",
+              "GABRA4",
+              "GABRA5",
+              "GABRA6",
+              "GABRB1",
+              "GABRB2",
+              "GABRB3",
+              "GABRD",
+              "GABRE",
+              "GABRG1",
+              "GABRG2",
+              "GABRG3",
+              "GABRP",
+              "GABRQ"
+            ],
+            "mechanisms": [
+              "GABA-A receptor; anion channel positive allosteric modulator"
+            ],
             "sponsors": [
               "Assistance Publique - Hôpitaux de Paris"
             ],
@@ -6617,6 +7023,27 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "GABRA1",
+              "GABRA2",
+              "GABRA3",
+              "GABRA4",
+              "GABRA5",
+              "GABRA6",
+              "GABRB1",
+              "GABRB2",
+              "GABRB3",
+              "GABRD",
+              "GABRE",
+              "GABRG1",
+              "GABRG2",
+              "GABRG3",
+              "GABRP",
+              "GABRQ"
+            ],
+            "mechanisms": [
+              "GABA-A receptor; anion channel agonist"
+            ],
             "sponsors": [
               "AbbVie"
             ],
@@ -6630,6 +7057,27 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "GABRA1",
+              "GABRA2",
+              "GABRA3",
+              "GABRA4",
+              "GABRA5",
+              "GABRA6",
+              "GABRB1",
+              "GABRB2",
+              "GABRB3",
+              "GABRD",
+              "GABRE",
+              "GABRG1",
+              "GABRG2",
+              "GABRG3",
+              "GABRP",
+              "GABRQ"
+            ],
+            "mechanisms": [
+              "GABA-A receptor; anion channel positive allosteric modulator"
             ],
             "sponsors": [
               "Marinus Pharmaceuticals"
@@ -6720,7 +7168,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:18Z",
+      "generated_at_utc": "2026-09-20T21:04:20Z",
       "open_access": false
     },
     {
@@ -6951,6 +7399,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "IDO1"
+            ],
+            "mechanisms": [
+              "Indoleamine 2,3-dioxygenase inhibitor"
+            ],
             "sponsors": [
               "Aduro Biotech, Inc.",
               "Chase Heaton, MD"
@@ -6967,6 +7421,10 @@
             "modalities": [
               "Protein"
             ],
+            "target_genes": [
+              "IDO1"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Cliniques universitaires Saint-Luc- Université Catholique de Louvain"
             ],
@@ -7046,7 +7504,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:08Z",
+      "generated_at_utc": "2026-09-20T21:04:11Z",
       "open_access": false
     },
     {
@@ -7277,6 +7735,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "PARP1",
+              "PARP2"
+            ],
+            "mechanisms": [
+              "Poly [ADP-ribose] polymerase 2 inhibitor",
+              "Poly [ADP-ribose] polymerase-1 inhibitor"
+            ],
             "sponsors": [
               "Pfizer"
             ],
@@ -7293,6 +7759,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "PARP1",
+              "PARP2"
+            ],
+            "mechanisms": [
+              "Poly [ADP-ribose] polymerase 2 inhibitor",
+              "Poly [ADP-ribose] polymerase-1 inhibitor"
+            ],
             "sponsors": [
               "GSK"
             ],
@@ -7306,6 +7780,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "PARP1",
+              "PARP2",
+              "PARP3"
+            ],
+            "mechanisms": [
+              "PARP 1, 2 and 3 inhibitor"
             ],
             "sponsors": [
               "University of Chicago"
@@ -7418,7 +7900,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:13Z",
+      "generated_at_utc": "2026-09-20T21:04:16Z",
       "open_access": false
     },
     {
@@ -7645,6 +8127,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "DRD1",
+              "DRD5"
+            ],
+            "mechanisms": [
+              "Dopamine D1 receptor partial agonist",
+              "Dopamine D5 receptor partial agonist"
+            ],
             "sponsors": [
               "Pfizer"
             ],
@@ -7660,6 +8150,18 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "DRD2",
+              "DRD3",
+              "DRD4",
+              "HTR2A",
+              "HTR2C"
+            ],
+            "mechanisms": [
+              "D2-like dopamine receptor antagonist",
+              "Serotonin 2a (5-HT2a) receptor antagonist",
+              "Serotonin 2c (5-HT2c) receptor antagonist"
+            ],
             "sponsors": [
               "University of Witten/Herdecke"
             ],
@@ -7673,6 +8175,16 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "DRD2",
+              "HTR2A",
+              "SLC6A4"
+            ],
+            "mechanisms": [
+              "Dopamine D2 receptor antagonist",
+              "Serotonin 2a (5-HT2a) receptor antagonist",
+              "Serotonin transporter inhibitor"
             ],
             "sponsors": [
               "Intra-Cellular Therapies, Inc."
@@ -7774,7 +8286,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:18Z",
+      "generated_at_utc": "2026-09-20T21:04:20Z",
       "open_access": false
     },
     {
@@ -8012,6 +8524,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "EGFR"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor"
+            ],
             "sponsors": [
               "Eli Lilly",
               "SOTIO Biotech AG",
@@ -8034,6 +8552,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor"
+            ],
             "sponsors": [
               "Astellas Pharma",
               "Eli Lilly",
@@ -8052,6 +8576,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor"
+            ],
             "sponsors": [
               "First Affiliated Hospital of Zhejiang University",
               "The Netherlands Cancer Institute"
@@ -8068,6 +8598,15 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR",
+              "ERBB2",
+              "ERBB3",
+              "ERBB4"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Rain Oncology Inc"
             ],
@@ -8083,6 +8622,16 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR",
+              "ERBB2",
+              "ERBB4"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor",
+              "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+              "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+            ],
             "sponsors": [
               "Universität Duisburg-Essen"
             ],
@@ -8096,6 +8645,14 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "EGFR",
+              "MET"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor",
+              "Hepatocyte growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Johnson & Johnson"
@@ -8111,6 +8668,10 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "EGFR"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Formation Biologics"
             ],
@@ -8125,6 +8686,11 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "EGFR",
+              "MET"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Genmab"
             ],
@@ -8138,6 +8704,28 @@
             "resolved": true,
             "modalities": [
               "ADC"
+            ],
+            "target_genes": [
+              "EGFR",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 binding agent",
+              "Tubulin inhibitor"
             ],
             "sponsors": [
               "AbbVie"
@@ -8153,6 +8741,11 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR",
+              "RET"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
             ],
@@ -8166,6 +8759,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "EGFR"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor"
             ],
             "sponsors": [
               "Eli Lilly"
@@ -8181,6 +8780,11 @@
             "modalities": [
               "Gene therapy"
             ],
+            "target_genes": [
+              "EGFR",
+              "MSLN"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Johnson & Johnson"
             ],
@@ -8195,6 +8799,11 @@
             "modalities": [
               "Unknown"
             ],
+            "target_genes": [
+              "CD3E",
+              "EGFR"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Takeda"
             ],
@@ -8306,7 +8915,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:10Z",
+      "generated_at_utc": "2026-09-20T21:04:13Z",
       "open_access": false
     },
     {
@@ -8536,6 +9145,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "PIK3CA",
+              "PIK3CD"
+            ],
+            "mechanisms": [
+              "PI3-kinase p110-alpha subunit inhibitor",
+              "PI3-kinase p110-delta subunit inhibitor"
+            ],
             "sponsors": [
               "Bayer",
               "UNICANCER"
@@ -8553,6 +9170,19 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "PIK3CA",
+              "PIK3CB",
+              "PIK3CD",
+              "PIK3CG",
+              "PIK3R1",
+              "PIK3R2",
+              "PIK3R3",
+              "PIK3R5"
+            ],
+            "mechanisms": [
+              "PI3-kinase class I inhibitor"
+            ],
             "sponsors": [
               "Roche",
               "Vanderbilt-Ingram Cancer Center"
@@ -8569,6 +9199,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MTOR"
+            ],
+            "mechanisms": [
+              "Serine/threonine-protein kinase mTOR inhibitor"
+            ],
             "sponsors": [
               "Samsung Medical Center"
             ],
@@ -8584,6 +9220,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "AKT1",
+              "AKT2",
+              "AKT3"
+            ],
+            "mechanisms": [
+              "Serine/threonine-protein kinase AKT inhibitor"
+            ],
             "sponsors": [
               "Samsung Medical Center"
             ],
@@ -8597,6 +9241,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "PIK3CD",
+              "PIK3CG"
+            ],
+            "mechanisms": [
+              "PI3-kinase p110-delta subunit inhibitor",
+              "PI3-kinase p110-gamma subunit inhibitor"
             ],
             "sponsors": [
               "National Heart, Lung, and Blood Institute (NHLBI)"
@@ -8612,6 +9264,21 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MTOR",
+              "PIK3CA",
+              "PIK3CB",
+              "PIK3CD",
+              "PIK3CG",
+              "PIK3R1",
+              "PIK3R2",
+              "PIK3R3",
+              "PIK3R5"
+            ],
+            "mechanisms": [
+              "PI3-kinase class I inhibitor",
+              "Serine/threonine-protein kinase mTOR inhibitor"
+            ],
             "sponsors": [
               "Institut Curie"
             ],
@@ -8625,6 +9292,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "PIK3CD"
+            ],
+            "mechanisms": [
+              "PI3-kinase p110-delta subunit inhibitor"
             ],
             "sponsors": [
               "Fondazione Italiana Linfomi - ETS"
@@ -8640,6 +9313,21 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MTOR",
+              "PIK3CA",
+              "PIK3CB",
+              "PIK3CD",
+              "PIK3CG",
+              "PIK3R1",
+              "PIK3R2",
+              "PIK3R3",
+              "PIK3R5"
+            ],
+            "mechanisms": [
+              "PI3-kinase class I inhibitor",
+              "Serine/threonine-protein kinase mTOR inhibitor"
+            ],
             "sponsors": [
               "Eli Lilly"
             ],
@@ -8653,6 +9341,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "PIK3CA"
+            ],
+            "mechanisms": [
+              "PI3-kinase p110-alpha subunit inhibitor"
             ],
             "sponsors": [
               "Takeda"
@@ -8765,7 +9459,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:12Z",
+      "generated_at_utc": "2026-09-20T21:04:15Z",
       "open_access": false
     },
     {
@@ -9000,6 +9694,10 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "CD3E"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Xenikos"
             ],
@@ -9014,6 +9712,11 @@
             "modalities": [
               "Bispecific antibody"
             ],
+            "target_genes": [
+              "CD276",
+              "CD3E"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Takeda"
             ],
@@ -9028,6 +9731,11 @@
             "modalities": [
               "Unknown"
             ],
+            "target_genes": [
+              "CD3E",
+              "EGFR"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Takeda"
             ],
@@ -9042,6 +9750,11 @@
             "modalities": [
               "Cell therapy"
             ],
+            "target_genes": [
+              "CD28",
+              "CD3E"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Bristol Myers Squibb"
             ],
@@ -9142,7 +9855,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:09Z",
+      "generated_at_utc": "2026-09-20T21:04:12Z",
       "open_access": false
     },
     {
@@ -9373,6 +10086,10 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "HDAC1"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Great Novel Therapeutics Biotech & Medicals Corporation",
               "Sun Yat-sen University"
@@ -9389,6 +10106,10 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "HDAC1"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Helsinn Healthcare SA"
             ],
@@ -9402,6 +10123,18 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "HDAC1",
+              "HDAC2",
+              "HDAC3",
+              "HDAC6"
+            ],
+            "mechanisms": [
+              "Histone deacetylase 1 inhibitor",
+              "Histone deacetylase 2 inhibitor",
+              "Histone deacetylase 3 inhibitor",
+              "Histone deacetylase 6 inhibitor"
             ],
             "sponsors": [
               "University of California, San Francisco"
@@ -9503,7 +10236,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:14Z",
+      "generated_at_utc": "2026-09-20T21:04:16Z",
       "open_access": false
     },
     {
@@ -9735,6 +10468,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "PARP1",
+              "PARP2"
+            ],
+            "mechanisms": [
+              "Poly [ADP-ribose] polymerase 2 inhibitor",
+              "Poly [ADP-ribose] polymerase-1 inhibitor"
+            ],
             "sponsors": [
               "Pfizer",
               "Zenith Epigenetics"
@@ -9753,6 +10494,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "PARP1",
+              "PARP2"
+            ],
+            "mechanisms": [
+              "Poly [ADP-ribose] polymerase 2 inhibitor",
+              "Poly [ADP-ribose] polymerase-1 inhibitor"
+            ],
             "sponsors": [
               "GSK",
               "Mayo Clinic"
@@ -9769,6 +10518,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "PARP1",
+              "PARP2",
+              "PARP3"
+            ],
+            "mechanisms": [
+              "PARP 1, 2 and 3 inhibitor"
             ],
             "sponsors": [
               "Incyte",
@@ -9787,6 +10544,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "PARP1",
+              "PARP2",
+              "PARP3"
+            ],
+            "mechanisms": [
+              "PARP 1, 2 and 3 inhibitor"
             ],
             "sponsors": [
               "National Cancer Institute (NCI)",
@@ -9901,7 +10666,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:13Z",
+      "generated_at_utc": "2026-09-20T21:04:15Z",
       "open_access": false
     },
     {
@@ -10132,6 +10897,18 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FLT4",
+              "KDR",
+              "KIT",
+              "PDGFRB"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor beta inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor",
+              "Vascular endothelial growth factor receptor 3 inhibitor"
+            ],
             "sponsors": [
               "First Affiliated Hospital of Zhejiang University",
               "Shandong Cancer Hospital and Institute"
@@ -10147,6 +10924,18 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "ACVR1",
+              "FLT3",
+              "IRAK1",
+              "JAK2"
+            ],
+            "mechanisms": [
+              "Activin receptor type-1 inhibitor",
+              "Interleukin-1 receptor-associated kinase 1 inhibitor",
+              "Tyrosine-protein kinase JAK2 inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor"
             ],
             "sponsors": [
               "Medical College of Wisconsin",
@@ -10164,6 +10953,43 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ABL1",
+              "BRAF",
+              "DDR2",
+              "EPHA2",
+              "FGFR1",
+              "FGFR2",
+              "FLT1",
+              "FLT4",
+              "FRK",
+              "KDR",
+              "KIT",
+              "MAPK11",
+              "NTRK1",
+              "PDGFRA",
+              "PDGFRB",
+              "RAF1",
+              "RET",
+              "TEK"
+            ],
+            "mechanisms": [
+              "Discoidin domain-containing receptor 2 inhibitor",
+              "Ephrin type-A receptor 2 inhibitor",
+              "Fibroblast growth factor receptor 1 inhibitor",
+              "Fibroblast growth factor receptor 2 inhibitor",
+              "MAP kinase p38 beta inhibitor",
+              "Nerve growth factor receptor Trk-A inhibitor",
+              "Platelet-derived growth factor receptor inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase ABL inhibitor",
+              "Tyrosine-protein kinase FRK inhibitor",
+              "Tyrosine-protein kinase TIE-2 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Great Novel Therapeutics Biotech & Medicals Corporation",
               "UNICANCER"
@@ -10180,6 +11006,31 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ABL1",
+              "BCR",
+              "BLK",
+              "EPHA2",
+              "FGR",
+              "FRK",
+              "FYN",
+              "HCK",
+              "KIT",
+              "LCK",
+              "LYN",
+              "PDGFRB",
+              "SRC",
+              "SRMS",
+              "YES1"
+            ],
+            "mechanisms": [
+              "Bcr/Abl fusion protein inhibitor",
+              "Ephrin type-A receptor 2 inhibitor",
+              "Platelet-derived growth factor receptor beta inhibitor",
+              "SRC inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase ABL inhibitor"
+            ],
             "sponsors": [
               "M.D. Anderson Cancer Center"
             ],
@@ -10193,6 +11044,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "AXL",
+              "FLT3"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor UFO inhibitor"
             ],
             "sponsors": [
               "Astellas Pharma"
@@ -10208,6 +11067,31 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FLT3",
+              "KDR",
+              "KIT",
+              "PDGFRA",
+              "PDGFRB",
+              "PRKCA",
+              "PRKCB",
+              "PRKCD",
+              "PRKCE",
+              "PRKCG",
+              "PRKCH",
+              "PRKCI",
+              "PRKCQ",
+              "PRKCZ",
+              "PRKD1",
+              "PRKD3"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor inhibitor",
+              "Protein kinase C (PKC) inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
+            ],
             "sponsors": [
               "Niguarda Hospital"
             ],
@@ -10221,6 +11105,20 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "AXL",
+              "FLT3",
+              "KDR",
+              "MERTK",
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor",
+              "Proto-oncogene tyrosine-protein kinase MER inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor UFO inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
             ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
@@ -10236,6 +11134,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FLT3",
+              "KDR",
+              "MET"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Sunshine Lake Pharma Co., Ltd."
             ],
@@ -10250,6 +11154,10 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "KIT"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Theseus Pharmaceuticals"
             ],
@@ -10264,6 +11172,16 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "CSF1R",
+              "FLT3",
+              "KIT"
+            ],
+            "mechanisms": [
+              "Macrophage colony stimulating factor receptor inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor"
+            ],
             "sponsors": [
               "Daiichi Sankyo"
             ],
@@ -10277,6 +11195,26 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "BRAF",
+              "FLT1",
+              "FLT3",
+              "FLT4",
+              "KDR",
+              "KIT",
+              "PDGFRB",
+              "RAF1",
+              "RET"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor beta inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Sun Yat-sen University"
@@ -10389,7 +11327,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:15Z",
+      "generated_at_utc": "2026-09-20T21:04:17Z",
       "open_access": false
     },
     {
@@ -10619,6 +11557,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "TIGIT"
+            ],
+            "mechanisms": [
+              "T-cell immunoreceptor with Ig and ITIM domains inhibitor"
+            ],
             "sponsors": [
               "BeOne Medicines"
             ],
@@ -10633,6 +11577,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "TIGIT"
+            ],
+            "mechanisms": [
+              "T-cell immunoreceptor with Ig and ITIM domains inhibitor"
+            ],
             "sponsors": [
               "Roche"
             ],
@@ -10646,6 +11596,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "TIGIT"
+            ],
+            "mechanisms": [
+              "T-cell immunoreceptor with Ig and ITIM domains antagonist"
             ],
             "sponsors": [
               "Merck & Co."
@@ -10726,7 +11682,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:08Z",
+      "generated_at_utc": "2026-09-20T21:04:10Z",
       "open_access": false
     },
     {
@@ -10956,6 +11912,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "TIGIT"
+            ],
+            "mechanisms": [
+              "T-cell immunoreceptor with Ig and ITIM domains inhibitor"
+            ],
             "sponsors": [
               "BeOne Medicines"
             ],
@@ -10970,6 +11932,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "TIGIT"
+            ],
+            "mechanisms": [
+              "T-cell immunoreceptor with Ig and ITIM domains inhibitor"
+            ],
             "sponsors": [
               "Roche"
             ],
@@ -10983,6 +11951,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "TIGIT"
+            ],
+            "mechanisms": [
+              "T-cell immunoreceptor with Ig and ITIM domains antagonist"
             ],
             "sponsors": [
               "Merck & Co."
@@ -11063,7 +12037,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:07Z",
+      "generated_at_utc": "2026-09-20T21:04:10Z",
       "open_access": false
     },
     {
@@ -11291,6 +12265,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "JAK1",
+              "JAK2"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase JAK1 inhibitor",
+              "Tyrosine-protein kinase JAK2 inhibitor"
+            ],
             "sponsors": [
               "Eli Lilly"
             ],
@@ -11306,6 +12288,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TYK2"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase TYK2 negative allosteric modulator"
+            ],
             "sponsors": [
               "Bristol Myers Squibb"
             ],
@@ -11319,6 +12307,18 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "JAK1",
+              "JAK2",
+              "JAK3",
+              "TYK2"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase JAK1 inhibitor",
+              "Tyrosine-protein kinase JAK2 inhibitor",
+              "Tyrosine-protein kinase JAK3 inhibitor",
+              "Tyrosine-protein kinase TYK2 inhibitor"
             ],
             "sponsors": [
               "AbbVie"
@@ -11420,7 +12420,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:19Z",
+      "generated_at_utc": "2026-09-20T21:04:22Z",
       "open_access": false
     },
     {
@@ -11651,6 +12651,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "BCL2"
+            ],
+            "mechanisms": [
+              "Apoptosis regulator Bcl-2 inhibitor"
+            ],
             "sponsors": [
               "Fondazione Italiana Linfomi - ETS",
               "M.D. Anderson Cancer Center",
@@ -11770,7 +12776,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:13Z",
+      "generated_at_utc": "2026-09-20T21:04:16Z",
       "open_access": false
     },
     {
@@ -12007,6 +13013,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 inhibitor"
+            ],
             "sponsors": [
               "Aduro Biotech, Inc.",
               "BerGenBio ASA",
@@ -12076,6 +13088,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 inhibitor"
+            ],
             "sponsors": [
               "Abramson Cancer Center at Penn Medicine",
               "Barbara Ann Karmanos Cancer Institute",
@@ -12121,6 +13139,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD274"
+            ],
+            "mechanisms": [
+              "Programmed cell death 1 ligand 1 inhibitor"
+            ],
             "sponsors": [
               "Columbia University",
               "European Organisation for Research and Treatment of Cancer - EORTC",
@@ -12160,6 +13184,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD274"
+            ],
+            "mechanisms": [
+              "Programmed cell death 1 ligand 1 other"
+            ],
             "sponsors": [
               "Jodi Layton, MD",
               "Nathan Bahary, MD",
@@ -12184,6 +13214,16 @@
             "resolved": true,
             "modalities": [
               "Protein"
+            ],
+            "target_genes": [
+              "CD274",
+              "TGFB1",
+              "TGFB2",
+              "TGFB3"
+            ],
+            "mechanisms": [
+              "Programmed cell death 1 ligand 1 binding agent",
+              "Transforming growth factor beta binding agent"
             ],
             "sponsors": [
               "AIO-Studien-gGmbH",
@@ -12211,6 +13251,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD274"
+            ],
+            "mechanisms": [
+              "Programmed cell death 1 ligand 1 inhibitor"
+            ],
             "sponsors": [
               "H. Lee Moffitt Cancer Center and Research Institute",
               "Intergroupe Francophone de Cancerologie Thoracique",
@@ -12231,6 +13277,14 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD274",
+              "CTLA4"
+            ],
+            "mechanisms": [
+              "Cytotoxic T-lymphocyte protein 4 inhibitor",
+              "Programmed cell death 1 ligand 1 inhibitor"
+            ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
               "Weill Medical College of Cornell University"
@@ -12248,6 +13302,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 antagonist"
+            ],
             "sponsors": [
               "GSK"
             ],
@@ -12263,6 +13323,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 antagonist"
+            ],
             "sponsors": [
               "Novartis"
             ],
@@ -12277,6 +13343,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 inhibitor"
             ],
             "sponsors": [
               "BeOne Medicines",
@@ -12294,6 +13366,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 inhibitor"
+            ],
             "sponsors": [
               "Sanofi"
             ],
@@ -12308,6 +13386,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 antagonist"
+            ],
             "sponsors": [
               "Zhejiang University"
             ],
@@ -12321,6 +13405,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "PDCD1"
+            ],
+            "mechanisms": [
+              "Programmed cell death protein 1 antagonist"
             ],
             "sponsors": [
               "Sun Yat-sen University"
@@ -12433,7 +13523,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:07Z",
+      "generated_at_utc": "2026-09-20T21:04:09Z",
       "open_access": false
     },
     {
@@ -12663,6 +13753,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MAP2K1",
+              "MAP2K2"
+            ],
+            "mechanisms": [
+              "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+              "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor"
+            ],
             "sponsors": [
               "Columbia University",
               "Roche"
@@ -12678,6 +13776,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "MAP2K1",
+              "MAP2K2"
+            ],
+            "mechanisms": [
+              "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+              "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor"
             ],
             "sponsors": [
               "Pfizer"
@@ -12768,7 +13874,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:12Z",
+      "generated_at_utc": "2026-09-20T21:04:15Z",
       "open_access": false
     },
     {
@@ -12997,6 +14103,43 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ABL1",
+              "BRAF",
+              "DDR2",
+              "EPHA2",
+              "FGFR1",
+              "FGFR2",
+              "FLT1",
+              "FLT4",
+              "FRK",
+              "KDR",
+              "KIT",
+              "MAPK11",
+              "NTRK1",
+              "PDGFRA",
+              "PDGFRB",
+              "RAF1",
+              "RET",
+              "TEK"
+            ],
+            "mechanisms": [
+              "Discoidin domain-containing receptor 2 inhibitor",
+              "Ephrin type-A receptor 2 inhibitor",
+              "Fibroblast growth factor receptor 1 inhibitor",
+              "Fibroblast growth factor receptor 2 inhibitor",
+              "MAP kinase p38 beta inhibitor",
+              "Nerve growth factor receptor Trk-A inhibitor",
+              "Platelet-derived growth factor receptor inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase ABL inhibitor",
+              "Tyrosine-protein kinase FRK inhibitor",
+              "Tyrosine-protein kinase TIE-2 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Great Novel Therapeutics Biotech & Medicals Corporation",
               "UNICANCER"
@@ -13013,6 +14156,16 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ALK",
+              "EML4",
+              "RET"
+            ],
+            "mechanisms": [
+              "ALK tyrosine kinase receptor inhibitor",
+              "EML4-ALK inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor"
+            ],
             "sponsors": [
               "Dana-Farber Cancer Institute"
             ],
@@ -13026,6 +14179,16 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "ALK",
+              "EML4",
+              "NPM1"
+            ],
+            "mechanisms": [
+              "ALK tyrosine kinase receptor inhibitor",
+              "EML4-ALK inhibitor",
+              "NPM/ALK (Nucleophosmin/ALK tyrosine kinase receptor) inhibitor"
             ],
             "sponsors": [
               "National Health Research Institutes, Taiwan"
@@ -13041,6 +14204,11 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR",
+              "RET"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
             ],
@@ -13055,6 +14223,22 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "CD74",
+              "NTRK1",
+              "NTRK2",
+              "NTRK3",
+              "ROS1",
+              "SDC4"
+            ],
+            "mechanisms": [
+              "CD74-ROS1 inhibitor",
+              "NT-3 growth factor receptor inhibitor",
+              "Nerve growth factor receptor Trk-A inhibitor",
+              "Neurotrophic tyrosine kinase receptor type 2 inhibitor",
+              "Proto-oncogene tyrosine-protein kinase ROS inhibitor",
+              "ROS1-SDC4 inhibitor"
+            ],
             "sponsors": [
               "Bristol Myers Squibb"
             ],
@@ -13068,6 +14252,26 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "BRAF",
+              "FLT1",
+              "FLT3",
+              "FLT4",
+              "KDR",
+              "KIT",
+              "PDGFRB",
+              "RAF1",
+              "RET"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor beta inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Sun Yat-sen University"
@@ -13180,7 +14384,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:12Z",
+      "generated_at_utc": "2026-09-20T21:04:14Z",
       "open_access": false
     },
     {
@@ -13411,6 +14615,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MAP2K1",
+              "MAP2K2"
+            ],
+            "mechanisms": [
+              "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+              "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor"
+            ],
             "sponsors": [
               "Columbia University",
               "Roche"
@@ -13426,6 +14638,43 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "ABL1",
+              "BRAF",
+              "DDR2",
+              "EPHA2",
+              "FGFR1",
+              "FGFR2",
+              "FLT1",
+              "FLT4",
+              "FRK",
+              "KDR",
+              "KIT",
+              "MAPK11",
+              "NTRK1",
+              "PDGFRA",
+              "PDGFRB",
+              "RAF1",
+              "RET",
+              "TEK"
+            ],
+            "mechanisms": [
+              "Discoidin domain-containing receptor 2 inhibitor",
+              "Ephrin type-A receptor 2 inhibitor",
+              "Fibroblast growth factor receptor 1 inhibitor",
+              "Fibroblast growth factor receptor 2 inhibitor",
+              "MAP kinase p38 beta inhibitor",
+              "Nerve growth factor receptor Trk-A inhibitor",
+              "Platelet-derived growth factor receptor inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase ABL inhibitor",
+              "Tyrosine-protein kinase FRK inhibitor",
+              "Tyrosine-protein kinase TIE-2 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Great Novel Therapeutics Biotech & Medicals Corporation",
@@ -13443,6 +14692,15 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MAP2K1",
+              "MAP2K2"
+            ],
+            "mechanisms": [
+              "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+              "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor",
+              "Dual specificity mitogen-activated protein kinase kinase; MEK1/2 inhibitor"
+            ],
             "sponsors": [
               "Bristol Myers Squibb",
               "Cancer Trials Ireland"
@@ -13459,6 +14717,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MAP2K1",
+              "MAP2K2"
+            ],
+            "mechanisms": [
+              "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+              "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor"
+            ],
             "sponsors": [
               "Pfizer"
             ],
@@ -13473,6 +14739,10 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "BRAF"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "SpringWorks Therapeutics, Inc., a healthcare company of Merck KGaA, Darmstadt, Germany"
             ],
@@ -13487,6 +14757,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "MAP2K1",
+              "MAP2K2"
+            ],
+            "mechanisms": [
+              "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+              "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor"
+            ],
             "sponsors": [
               "SpringWorks Therapeutics, Inc., a healthcare company of Merck KGaA, Darmstadt, Germany"
             ],
@@ -13500,6 +14778,26 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "BRAF",
+              "FLT1",
+              "FLT3",
+              "FLT4",
+              "KDR",
+              "KIT",
+              "PDGFRB",
+              "RAF1",
+              "RET"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor beta inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Sun Yat-sen University"
@@ -13612,7 +14910,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:12Z",
+      "generated_at_utc": "2026-09-20T21:04:15Z",
       "open_access": false
     },
     {
@@ -13842,6 +15140,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "CDK4",
+              "CDK6"
+            ],
+            "mechanisms": [
+              "Cyclin-dependent kinase 4 inhibitor",
+              "Cyclin-dependent kinase 6 inhibitor"
+            ],
             "sponsors": [
               "Anita Turk",
               "Eli Lilly"
@@ -13857,6 +15163,15 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "CCND1",
+              "CDK4",
+              "CDK6"
+            ],
+            "mechanisms": [
+              "CDK6/cyclin D1 inhibitor",
+              "Cyclin-dependent kinase 4/cyclin D1 inhibitor"
             ],
             "sponsors": [
               "UNC Lineberger Comprehensive Cancer Center",
@@ -13874,6 +15189,11 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "CDK4",
+              "CDK6"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Shanghai Pharma Biotherapeutics USA Inc."
             ],
@@ -13887,6 +15207,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "CDK4",
+              "CDK6"
+            ],
+            "mechanisms": [
+              "Cyclin-dependent kinase 4 inhibitor",
+              "Cyclin-dependent kinase 6 inhibitor"
             ],
             "sponsors": [
               "Sidney Kimmel Comprehensive Cancer Center at Thomas Jefferson University"
@@ -13999,7 +15327,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:12Z",
+      "generated_at_utc": "2026-09-20T21:04:15Z",
       "open_access": false
     },
     {
@@ -14234,6 +15562,26 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "POLA1",
+              "POLA2",
+              "POLD1",
+              "POLD2",
+              "POLD3",
+              "POLD4",
+              "POLE",
+              "POLE2",
+              "POLE3",
+              "PRIM1",
+              "PRIM2",
+              "RRM1",
+              "RRM2",
+              "RRM2B"
+            ],
+            "mechanisms": [
+              "DNA polymerase (alpha/delta/epsilon) inhibitor",
+              "Ribonucleoside-diphosphate reductase RR1 inhibitor"
+            ],
             "sponsors": [
               "AHS Cancer Control Alberta",
               "Assistance Publique - Hôpitaux de Paris",
@@ -14264,6 +15612,17 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "DHFR",
+              "GART",
+              "TYMS",
+              "thyA"
+            ],
+            "mechanisms": [
+              "Dihydrofolate reductase inhibitor",
+              "GAR transformylase inhibitor",
+              "Thymidylate synthase inhibitor"
+            ],
             "sponsors": [
               "BerGenBio ASA",
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
@@ -14288,6 +15647,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TYMS"
+            ],
+            "mechanisms": [
+              "DNA inhibitor",
+              "RNA inhibitor",
+              "Thymidylate synthase inhibitor"
+            ],
             "sponsors": [
               "Essentia Health",
               "Ukrainian Society of Clinical Oncology",
@@ -14306,6 +15673,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "DHFR"
+            ],
+            "mechanisms": [
+              "Dihydrofolate reductase inhibitor"
+            ],
             "sponsors": [
               "M.D. Anderson Cancer Center",
               "Sanofi"
@@ -14322,6 +15695,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TYMS"
+            ],
+            "mechanisms": [
+              "DNA inhibitor",
+              "RNA inhibitor",
+              "Thymidylate synthase inhibitor"
+            ],
             "sponsors": [
               "Istituto Romagnolo per lo Studio dei Tumori Dino Amadori IRST S.r.l. IRCCS"
             ],
@@ -14336,6 +15717,26 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "POLA1",
+              "POLA2",
+              "POLD1",
+              "POLD2",
+              "POLD3",
+              "POLD4",
+              "POLE",
+              "POLE2",
+              "POLE3",
+              "PRIM1",
+              "PRIM2",
+              "RRM1",
+              "RRM2",
+              "RRM2B"
+            ],
+            "mechanisms": [
+              "DNA polymerase (alpha/delta/epsilon) inhibitor",
+              "Ribonucleoside-diphosphate reductase RR1 inhibitor"
+            ],
             "sponsors": [
               "Roswell Park Cancer Institute"
             ],
@@ -14349,6 +15750,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "RRM1",
+              "RRM2",
+              "RRM2B"
+            ],
+            "mechanisms": [
+              "Ribonucleoside-diphosphate reductase RR1 inhibitor"
             ],
             "sponsors": [
               "Sanofi"
@@ -14461,7 +15870,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:16Z",
+      "generated_at_utc": "2026-09-20T21:04:18Z",
       "open_access": false
     },
     {
@@ -14695,6 +16104,17 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "DHFR",
+              "GART",
+              "TYMS",
+              "thyA"
+            ],
+            "mechanisms": [
+              "Dihydrofolate reductase inhibitor",
+              "GAR transformylase inhibitor",
+              "Thymidylate synthase inhibitor"
+            ],
             "sponsors": [
               "BerGenBio ASA",
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
@@ -14716,6 +16136,26 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "POLA1",
+              "POLA2",
+              "POLD1",
+              "POLD2",
+              "POLD3",
+              "POLD4",
+              "POLE",
+              "POLE2",
+              "POLE3",
+              "PRIM1",
+              "PRIM2",
+              "RRM1",
+              "RRM2",
+              "RRM2B"
+            ],
+            "mechanisms": [
+              "DNA polymerase (alpha/delta/epsilon) inhibitor",
+              "Ribonucleoside-diphosphate reductase RR1 inhibitor"
             ],
             "sponsors": [
               "Nathan Bahary, MD",
@@ -14830,7 +16270,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:16Z",
+      "generated_at_utc": "2026-09-20T21:04:19Z",
       "open_access": false
     },
     {
@@ -15067,6 +16507,26 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor"
+            ],
             "sponsors": [
               "Corcept Therapeutics",
               "Essentia Health",
@@ -15095,6 +16555,26 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor"
+            ],
             "sponsors": [
               "Fondazione Italiana Linfomi - ETS",
               "Johnson & Johnson",
@@ -15117,6 +16597,28 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "TNFRSF17",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor",
+              "Tumor necrosis factor receptor superfamily member 17 binding agent"
+            ],
             "sponsors": [
               "GSK",
               "Jacob Soumerai, MD"
@@ -15133,6 +16635,27 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor",
+              "Tubulin stabiliser"
             ],
             "sponsors": [
               "Dana-Farber Cancer Institute",
@@ -15152,6 +16675,28 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "ERBB2",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Receptor protein-tyrosine kinase erbB-2 binding agent",
+              "Tubulin inhibitor"
+            ],
             "sponsors": [
               "The Netherlands Cancer Institute",
               "University of Miami"
@@ -15167,6 +16712,26 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor"
             ],
             "sponsors": [
               "Spanish Breast Cancer Research Group",
@@ -15184,6 +16749,10 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "TUBB"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "OBI Pharma, Inc"
             ],
@@ -15197,6 +16766,28 @@
             "resolved": true,
             "modalities": [
               "ADC"
+            ],
+            "target_genes": [
+              "EGFR",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 binding agent",
+              "Tubulin inhibitor"
             ],
             "sponsors": [
               "AbbVie"
@@ -15212,6 +16803,28 @@
             "modalities": [
               "Unknown"
             ],
+            "target_genes": [
+              "MUC1",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Mucin-1 binding agent",
+              "Tubulin inhibitor"
+            ],
             "sponsors": [
               "Sanofi"
             ],
@@ -15225,6 +16838,26 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor"
             ],
             "sponsors": [
               "Gustave Roussy, Cancer Campus, Grand Paris"
@@ -15337,7 +16970,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:15Z",
+      "generated_at_utc": "2026-09-20T21:04:18Z",
       "open_access": false
     },
     {
@@ -15573,6 +17206,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TOP1"
+            ],
+            "mechanisms": [
+              "DNA topoisomerase I inhibitor"
+            ],
             "sponsors": [
               "Essentia Health",
               "Memorial Sloan Kettering Cancer Center",
@@ -15595,6 +17234,13 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TOP2A"
+            ],
+            "mechanisms": [
+              "DNA inhibitor",
+              "DNA topoisomerase II alpha inhibitor"
+            ],
             "sponsors": [
               "Fondazione Italiana Linfomi - ETS",
               "Institut für Klinische Krebsforschung IKF GmbH at Krankenhaus Nordwest",
@@ -15615,6 +17261,13 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TOP2A",
+              "TOP2B"
+            ],
+            "mechanisms": [
+              "DNA topoisomerase II inhibitor"
+            ],
             "sponsors": [
               "Johnson & Johnson",
               "Peking University",
@@ -15633,6 +17286,13 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TOP2A"
+            ],
+            "mechanisms": [
+              "DNA inhibitor",
+              "DNA topoisomerase II alpha inhibitor"
+            ],
             "sponsors": [
               "Johnson & Johnson",
               "Sanofi"
@@ -15648,6 +17308,13 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "TOP2A"
+            ],
+            "mechanisms": [
+              "DNA inhibitor",
+              "DNA topoisomerase II alpha inhibitor"
             ],
             "sponsors": [
               "Cornerstone Pharmaceuticals",
@@ -15665,6 +17332,13 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TOP2A"
+            ],
+            "mechanisms": [
+              "DNA inhibitor",
+              "DNA topoisomerase II alpha inhibitor"
+            ],
             "sponsors": [
               "Sanofi"
             ],
@@ -15678,6 +17352,15 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "TOP2A",
+              "TOP2B"
+            ],
+            "mechanisms": [
+              "DNA topoisomerase II inhibitor",
+              "Iron chelating agent",
+              "Iron sequestering agent"
             ],
             "sponsors": [
               "Institut für Klinische Krebsforschung IKF GmbH at Krankenhaus Nordwest"
@@ -15693,6 +17376,14 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "ERBB3",
+              "TOP1"
+            ],
+            "mechanisms": [
+              "DNA topoisomerase I inhibitor",
+              "Receptor tyrosine-protein kinase erbB-3 binding agent"
+            ],
             "sponsors": [
               "Daiichi Sankyo"
             ],
@@ -15706,6 +17397,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "TOP1"
+            ],
+            "mechanisms": [
+              "DNA topoisomerase I inhibitor"
             ],
             "sponsors": [
               "Roche"
@@ -15818,7 +17515,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:15Z",
+      "generated_at_utc": "2026-09-20T21:04:18Z",
       "open_access": false
     },
     {
@@ -16052,6 +17749,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "BTK"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase BTK inhibitor"
+            ],
             "sponsors": [
               "AbbVie",
               "Fondazione Italiana Linfomi - ETS",
@@ -16071,6 +17774,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "BTK"
+            ],
+            "mechanisms": [
+              "Tyrosine-protein kinase BTK inhibitor"
             ],
             "sponsors": [
               "Sunesis Pharmaceuticals"
@@ -16183,7 +17892,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:13Z",
+      "generated_at_utc": "2026-09-20T21:04:16Z",
       "open_access": false
     },
     {
@@ -16418,6 +18127,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CTLA4"
+            ],
+            "mechanisms": [
+              "Cytotoxic T-lymphocyte protein 4 inhibitor"
+            ],
             "sponsors": [
               "Abramson Cancer Center at Penn Medicine",
               "Dana-Farber Cancer Institute",
@@ -16443,6 +18158,14 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD274",
+              "CTLA4"
+            ],
+            "mechanisms": [
+              "Cytotoxic T-lymphocyte protein 4 inhibitor",
+              "Programmed cell death 1 ligand 1 inhibitor"
+            ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
               "Weill Medical College of Cornell University"
@@ -16459,6 +18182,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "CTLA4"
+            ],
+            "mechanisms": [
+              "Cytotoxic T-lymphocyte protein 4 inhibitor"
             ],
             "sponsors": [
               "University of Washington"
@@ -16571,7 +18300,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:07Z",
+      "generated_at_utc": "2026-09-20T21:04:10Z",
       "open_access": false
     },
     {
@@ -16801,6 +18530,43 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ABL1",
+              "BRAF",
+              "DDR2",
+              "EPHA2",
+              "FGFR1",
+              "FGFR2",
+              "FLT1",
+              "FLT4",
+              "FRK",
+              "KDR",
+              "KIT",
+              "MAPK11",
+              "NTRK1",
+              "PDGFRA",
+              "PDGFRB",
+              "RAF1",
+              "RET",
+              "TEK"
+            ],
+            "mechanisms": [
+              "Discoidin domain-containing receptor 2 inhibitor",
+              "Ephrin type-A receptor 2 inhibitor",
+              "Fibroblast growth factor receptor 1 inhibitor",
+              "Fibroblast growth factor receptor 2 inhibitor",
+              "MAP kinase p38 beta inhibitor",
+              "Nerve growth factor receptor Trk-A inhibitor",
+              "Platelet-derived growth factor receptor inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase ABL inhibitor",
+              "Tyrosine-protein kinase FRK inhibitor",
+              "Tyrosine-protein kinase TIE-2 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Great Novel Therapeutics Biotech & Medicals Corporation",
               "UNICANCER"
@@ -16817,6 +18583,16 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FGFR1",
+              "FGFR2",
+              "FGFR3"
+            ],
+            "mechanisms": [
+              "Fibroblast growth factor receptor 1 inhibitor",
+              "Fibroblast growth factor receptor 2 inhibitor",
+              "Fibroblast growth factor receptor 3 inhibitor"
+            ],
             "sponsors": [
               "Debiopharm International SA"
             ],
@@ -16830,6 +18606,15 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "FGFR1",
+              "FGFR2",
+              "FGFR3",
+              "FGFR4"
+            ],
+            "mechanisms": [
+              "Fibroblast growth factor receptor inhibitor"
             ],
             "sponsors": [
               "National Institute of Dental and Craniofacial Research (NIDCR)"
@@ -16845,6 +18630,22 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FGFR1",
+              "FGFR2",
+              "FGFR3",
+              "FGFR4",
+              "FLT1",
+              "FLT4",
+              "KDR",
+              "PDGFRA",
+              "PDGFRB"
+            ],
+            "mechanisms": [
+              "Fibroblast growth factor receptor inhibitor",
+              "Platelet-derived growth factor receptor inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "University of Texas Southwestern Medical Center"
             ],
@@ -16858,6 +18659,16 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "FGFR1",
+              "FGFR2",
+              "FGFR3"
+            ],
+            "mechanisms": [
+              "Fibroblast growth factor receptor 1 inhibitor",
+              "Fibroblast growth factor receptor 2 inhibitor",
+              "Fibroblast growth factor receptor 3 inhibitor"
             ],
             "sponsors": [
               "Incyte"
@@ -16970,7 +18781,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:11Z",
+      "generated_at_utc": "2026-09-20T21:04:14Z",
       "open_access": false
     },
     {
@@ -17204,6 +19015,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "MS4A1"
+            ],
+            "mechanisms": [
+              "B-lymphocyte antigen CD20 binding agent"
+            ],
             "sponsors": [
               "Fondazione Italiana Linfomi - ETS"
             ],
@@ -17219,6 +19036,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "MS4A1"
+            ],
+            "mechanisms": [
+              "B-lymphocyte antigen CD20 binding agent"
             ],
             "sponsors": [
               "ADC Therapeutics S.A.",
@@ -17335,7 +19158,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:09Z",
+      "generated_at_utc": "2026-09-20T21:04:12Z",
       "open_access": false
     },
     {
@@ -17570,6 +19393,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CTLA4"
+            ],
+            "mechanisms": [
+              "Cytotoxic T-lymphocyte protein 4 inhibitor"
+            ],
             "sponsors": [
               "Abramson Cancer Center at Penn Medicine",
               "Dana-Farber Cancer Institute",
@@ -17593,6 +19422,14 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "CD274",
+              "CTLA4"
+            ],
+            "mechanisms": [
+              "Cytotoxic T-lymphocyte protein 4 inhibitor",
+              "Programmed cell death 1 ligand 1 inhibitor"
+            ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
               "Weill Medical College of Cornell University"
@@ -17609,6 +19446,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "CTLA4"
+            ],
+            "mechanisms": [
+              "Cytotoxic T-lymphocyte protein 4 inhibitor"
             ],
             "sponsors": [
               "University of Washington"
@@ -17721,7 +19564,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:07Z",
+      "generated_at_utc": "2026-09-20T21:04:10Z",
       "open_access": false
     },
     {
@@ -17958,6 +19801,15 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR",
+              "ERBB2",
+              "ERBB3",
+              "ERBB4"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Rain Oncology Inc"
             ],
@@ -17972,6 +19824,12 @@
             "resolved": true,
             "modalities": [
               "Antibody"
+            ],
+            "target_genes": [
+              "ERBB2"
+            ],
+            "mechanisms": [
+              "Receptor protein-tyrosine kinase erbB-2 inhibitor"
             ],
             "sponsors": [
               "Spanish Breast Cancer Research Group",
@@ -17989,6 +19847,28 @@
             "modalities": [
               "ADC"
             ],
+            "target_genes": [
+              "ERBB2",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Receptor protein-tyrosine kinase erbB-2 binding agent",
+              "Tubulin inhibitor"
+            ],
             "sponsors": [
               "The Netherlands Cancer Institute",
               "University of Miami"
@@ -18005,6 +19885,16 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "EGFR",
+              "ERBB2",
+              "ERBB4"
+            ],
+            "mechanisms": [
+              "Epidermal growth factor receptor erbB1 inhibitor",
+              "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+              "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+            ],
             "sponsors": [
               "Universität Duisburg-Essen"
             ],
@@ -18018,6 +19908,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "ERBB2"
+            ],
+            "mechanisms": [
+              "Receptor protein-tyrosine kinase erbB-2 inhibitor"
             ],
             "sponsors": [
               "Spanish Breast Cancer Research Group"
@@ -18130,7 +20026,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:10Z",
+      "generated_at_utc": "2026-09-20T21:04:13Z",
       "open_access": false
     },
     {
@@ -18366,6 +20262,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "KDR",
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
+            ],
             "sponsors": [
               "Patrick Joseph Loehrer Sr.",
               "Radboud University Medical Center",
@@ -18383,6 +20287,14 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "FLT1",
+              "FLT4",
+              "KDR"
+            ],
+            "mechanisms": [
+              "Vascular endothelial growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Eisai",
@@ -18402,6 +20314,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "VEGFA"
+            ],
+            "mechanisms": [
+              "Vascular endothelial growth factor A inhibitor"
+            ],
             "sponsors": [
               "Nasser Hanna",
               "Vall d'Hebron Institute of Oncology"
@@ -18417,6 +20335,18 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "FLT4",
+              "KDR",
+              "KIT",
+              "PDGFRB"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor beta inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor",
+              "Vascular endothelial growth factor receptor 3 inhibitor"
             ],
             "sponsors": [
               "First Affiliated Hospital of Zhejiang University",
@@ -18434,6 +20364,43 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ABL1",
+              "BRAF",
+              "DDR2",
+              "EPHA2",
+              "FGFR1",
+              "FGFR2",
+              "FLT1",
+              "FLT4",
+              "FRK",
+              "KDR",
+              "KIT",
+              "MAPK11",
+              "NTRK1",
+              "PDGFRA",
+              "PDGFRB",
+              "RAF1",
+              "RET",
+              "TEK"
+            ],
+            "mechanisms": [
+              "Discoidin domain-containing receptor 2 inhibitor",
+              "Ephrin type-A receptor 2 inhibitor",
+              "Fibroblast growth factor receptor 1 inhibitor",
+              "Fibroblast growth factor receptor 2 inhibitor",
+              "MAP kinase p38 beta inhibitor",
+              "Nerve growth factor receptor Trk-A inhibitor",
+              "Platelet-derived growth factor receptor inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase ABL inhibitor",
+              "Tyrosine-protein kinase FRK inhibitor",
+              "Tyrosine-protein kinase TIE-2 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Great Novel Therapeutics Biotech & Medicals Corporation",
               "UNICANCER"
@@ -18450,6 +20417,10 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "VEGFA"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "University Medical Center Groningen"
             ],
@@ -18463,6 +20434,31 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "FLT3",
+              "KDR",
+              "KIT",
+              "PDGFRA",
+              "PDGFRB",
+              "PRKCA",
+              "PRKCB",
+              "PRKCD",
+              "PRKCE",
+              "PRKCG",
+              "PRKCH",
+              "PRKCI",
+              "PRKCQ",
+              "PRKCZ",
+              "PRKD1",
+              "PRKD3"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor inhibitor",
+              "Protein kinase C (PKC) inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
             ],
             "sponsors": [
               "Niguarda Hospital"
@@ -18478,6 +20474,20 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "AXL",
+              "FLT3",
+              "KDR",
+              "MERTK",
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor",
+              "Proto-oncogene tyrosine-protein kinase MER inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor UFO inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
+            ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
             ],
@@ -18492,6 +20502,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FLT3",
+              "KDR",
+              "MET"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Sunshine Lake Pharma Co., Ltd."
             ],
@@ -18505,6 +20521,22 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "FGFR1",
+              "FGFR2",
+              "FGFR3",
+              "FGFR4",
+              "FLT1",
+              "FLT4",
+              "KDR",
+              "PDGFRA",
+              "PDGFRB"
+            ],
+            "mechanisms": [
+              "Fibroblast growth factor receptor inhibitor",
+              "Platelet-derived growth factor receptor inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
             ],
             "sponsors": [
               "University of Texas Southwestern Medical Center"
@@ -18520,6 +20552,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "KDR"
+            ],
+            "mechanisms": [
+              "Vascular endothelial growth factor receptor 2 inhibitor"
+            ],
             "sponsors": [
               "Eli Lilly"
             ],
@@ -18534,6 +20572,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "KDR"
+            ],
+            "mechanisms": [
+              "Vascular endothelial growth factor receptor 2 inhibitor"
+            ],
             "sponsors": [
               "Sun Yat-sen University"
             ],
@@ -18547,6 +20591,26 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "BRAF",
+              "FLT1",
+              "FLT3",
+              "FLT4",
+              "KDR",
+              "KIT",
+              "PDGFRB",
+              "RAF1",
+              "RET"
+            ],
+            "mechanisms": [
+              "Platelet-derived growth factor receptor beta inhibitor",
+              "Serine/threonine-protein kinase B-raf inhibitor",
+              "Serine/threonine-protein kinase RAF inhibitor",
+              "Stem cell growth factor receptor inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor RET inhibitor",
+              "Vascular endothelial growth factor receptor inhibitor"
             ],
             "sponsors": [
               "Sun Yat-sen University"
@@ -18659,7 +20723,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:11Z",
+      "generated_at_utc": "2026-09-20T21:04:13Z",
       "open_access": false
     },
     {
@@ -18891,6 +20955,49 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "ADRM1",
+              "PSMA1",
+              "PSMA2",
+              "PSMA3",
+              "PSMA4",
+              "PSMA5",
+              "PSMA6",
+              "PSMA7",
+              "PSMA8",
+              "PSMB1",
+              "PSMB10",
+              "PSMB11",
+              "PSMB2",
+              "PSMB3",
+              "PSMB4",
+              "PSMB5",
+              "PSMB6",
+              "PSMB7",
+              "PSMB8",
+              "PSMB9",
+              "PSMC1",
+              "PSMC2",
+              "PSMC3",
+              "PSMC4",
+              "PSMC5",
+              "PSMC6",
+              "PSMD1",
+              "PSMD11",
+              "PSMD12",
+              "PSMD13",
+              "PSMD14",
+              "PSMD2",
+              "PSMD3",
+              "PSMD4",
+              "PSMD6",
+              "PSMD7",
+              "PSMD8",
+              "SEM1"
+            ],
+            "mechanisms": [
+              "26S proteasome inhibitor"
+            ],
             "sponsors": [
               "SCRI Development Innovations, LLC"
             ],
@@ -18904,6 +21011,49 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "ADRM1",
+              "PSMA1",
+              "PSMA2",
+              "PSMA3",
+              "PSMA4",
+              "PSMA5",
+              "PSMA6",
+              "PSMA7",
+              "PSMA8",
+              "PSMB1",
+              "PSMB10",
+              "PSMB11",
+              "PSMB2",
+              "PSMB3",
+              "PSMB4",
+              "PSMB5",
+              "PSMB6",
+              "PSMB7",
+              "PSMB8",
+              "PSMB9",
+              "PSMC1",
+              "PSMC2",
+              "PSMC3",
+              "PSMC4",
+              "PSMC5",
+              "PSMC6",
+              "PSMD1",
+              "PSMD11",
+              "PSMD12",
+              "PSMD13",
+              "PSMD14",
+              "PSMD2",
+              "PSMD3",
+              "PSMD4",
+              "PSMD6",
+              "PSMD7",
+              "PSMD8",
+              "SEM1"
+            ],
+            "mechanisms": [
+              "26S proteasome inhibitor"
             ],
             "sponsors": [
               "University Hospital, Toulouse"
@@ -18919,6 +21069,10 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "PSMB5"
+            ],
+            "mechanisms": [],
             "sponsors": [
               "Vivolux AB"
             ],
@@ -19008,7 +21162,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:14Z",
+      "generated_at_utc": "2026-09-20T21:04:17Z",
       "open_access": false
     },
     {
@@ -19159,8 +21313,8 @@
           "Antibody": 57,
           "Protein": 37,
           "ADC": 14,
-          "Oncolytic virus": 5,
           "Cell therapy": 5,
+          "Oncolytic virus": 5,
           "Vaccine": 5,
           "Bispecific antibody": 2
         },
@@ -19241,6 +21395,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "CYP19A1"
+            ],
+            "mechanisms": [
+              "Cytochrome P450 19A1 inhibitor"
+            ],
             "sponsors": [
               "ARCAGY/ GINECO GROUP",
               "Washington University School of Medicine"
@@ -19257,6 +21417,12 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "CYP19A1"
+            ],
+            "mechanisms": [
+              "Cytochrome P450 19A1 inhibitor"
+            ],
             "sponsors": [
               "ARCAGY/ GINECO GROUP"
             ],
@@ -19270,6 +21436,12 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "ESR1"
+            ],
+            "mechanisms": [
+              "Estrogen receptor alpha modulator"
             ],
             "sponsors": [
               "University of California, San Francisco"
@@ -19360,7 +21532,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:14Z",
+      "generated_at_utc": "2026-09-20T21:04:17Z",
       "open_access": false
     },
     {
@@ -19596,6 +21768,12 @@
             "modalities": [
               "Antibody"
             ],
+            "target_genes": [
+              "VEGFA"
+            ],
+            "mechanisms": [
+              "Vascular endothelial growth factor A inhibitor"
+            ],
             "sponsors": [
               "Nasser Hanna",
               "Vall d'Hebron Institute of Oncology"
@@ -19612,6 +21790,14 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "FLT1",
+              "FLT4",
+              "KDR"
+            ],
+            "mechanisms": [
+              "Vascular endothelial growth factor receptor inhibitor"
+            ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
               "Yale University"
@@ -19627,6 +21813,20 @@
             "resolved": true,
             "modalities": [
               "Small molecule"
+            ],
+            "target_genes": [
+              "AXL",
+              "FLT3",
+              "KDR",
+              "MERTK",
+              "MET"
+            ],
+            "mechanisms": [
+              "Hepatocyte growth factor receptor inhibitor",
+              "Proto-oncogene tyrosine-protein kinase MER inhibitor",
+              "Tyrosine-protein kinase receptor FLT3 inhibitor",
+              "Tyrosine-protein kinase receptor UFO inhibitor",
+              "Vascular endothelial growth factor receptor 2 inhibitor"
             ],
             "sponsors": [
               "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
@@ -19739,7 +21939,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:11Z",
+      "generated_at_utc": "2026-09-20T21:04:14Z",
       "open_access": false
     },
     {
@@ -19975,6 +22175,26 @@
             "modalities": [
               "Small molecule"
             ],
+            "target_genes": [
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor"
+            ],
             "sponsors": [
               "Novartis",
               "Tufts Medical Center"
@@ -19990,6 +22210,28 @@
             "resolved": true,
             "modalities": [
               "ADC"
+            ],
+            "target_genes": [
+              "TNFRSF17",
+              "TUBA1A",
+              "TUBA1B",
+              "TUBA1C",
+              "TUBA3C",
+              "TUBA3E",
+              "TUBA4A",
+              "TUBB",
+              "TUBB1",
+              "TUBB2A",
+              "TUBB2B",
+              "TUBB3",
+              "TUBB4A",
+              "TUBB4B",
+              "TUBB6",
+              "TUBB8"
+            ],
+            "mechanisms": [
+              "Tubulin inhibitor",
+              "Tumor necrosis factor receptor superfamily member 17 binding agent"
             ],
             "sponsors": [
               "GSK"
@@ -20080,7 +22322,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:48:15Z",
+      "generated_at_utc": "2026-09-20T21:04:18Z",
       "open_access": false
     }
   ]

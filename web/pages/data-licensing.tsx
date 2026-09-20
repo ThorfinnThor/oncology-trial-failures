@@ -7,6 +7,7 @@ import { FormEvent, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import productSummary from "@/data/product_summary.json";
+import briefsIndex from "@/data/briefs_index.json";
 import { readJsonServerAsset } from "@/lib/server-data";
 import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
 
@@ -33,6 +34,7 @@ const PRICING = [
       "Written interpretation, kept separate from the extracted facts",
     ],
     cta: "Scope a package",
+    href: "#evidence-package",
   },
   {
     name: "Annual licence",
@@ -146,6 +148,32 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
   }
 
   const s: any = productSummary;
+  const [pkgStatus, setPkgStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [pkgMessage, setPkgMessage] = useState("");
+
+  async function submitPackage(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPkgStatus("sending");
+    const form = new FormData(event.currentTarget);
+    try {
+      const response = await fetch("/api/package-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(form.entries())),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "Request failed");
+      setPkgMessage(data.message || "Thanks — we'll be in touch.");
+      setPkgStatus("done");
+    } catch (error: any) {
+      setPkgMessage(error?.message || "Request failed. Please email us instead.");
+      setPkgStatus("error");
+    }
+  }
+
+  // The strongest briefs lead the teaser: the ones that clear a multiplicity correction.
+  const featuredBriefs = (briefsIndex.briefs as any[]).filter((b) => b.survives_fdr_10pct).slice(0, 4);
+
   const rates = s.discontinuation_rates;
   const featured = s.featured_segment;
   const featuredBars: any[] = featured ? [featured.segment, featured.reference, featured.baseline].filter(Boolean) : [];
@@ -356,6 +384,98 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </div>
           </section>
 
+          <section className="section">
+            <div className="sectionHead">
+              <h2>{briefsIndex.brief_count} mechanism briefs, free to read</h2>
+              <Link className="btnGhost" href="/briefs">
+                Browse all {briefsIndex.brief_count}
+              </Link>
+            </div>
+            <p className="sectionSub">
+              One per mechanism class, rebuilt weekly. Each leads with how many distinct molecules are behind the stopped
+              trials, because a sponsor abandoning one drug closes every trial of it at once. These four are the ones still
+              unusual after correcting for having screened every class.
+            </p>
+            <div className="briefGrid">
+              {featuredBriefs.map((b) => (
+                <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefTile">
+                  <div className="briefArea">{b.area}</div>
+                  <div className="briefName">{b.segment}</div>
+                  <div className="briefBig">
+                    {b.failure_signature ? b.failure_signature.molecules : "—"}
+                    <span> molecules</span>
+                  </div>
+                  <div className="briefMeta">
+                    {b.biological_stops} of {b.closed} closed trials stopped early
+                    {b.failure_signature?.shared_modality ? `, all ${b.failure_signature.shared_modality.toLowerCase()}s` : ""}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          {/* ---------------- evidence package request ---------------- */}
+          <section className="section" id="evidence-package">
+            <div className="pkgBox">
+              <div>
+                <h2>Ask for an evidence package</h2>
+                <p className="sectionSub">
+                  Name the mechanism, target or asset you are evaluating. You get the cohort with its rules written out, every
+                  trial in it with the registry stop reason, which stops were that trial&rsquo;s own verdict and which followed a
+                  decision taken elsewhere, the rate and time-to-event curve against a like-for-like comparator, and the cases we
+                  could not resolve — listed, not hidden. €1,500 for one cohort.
+                </p>
+                <ul className="list">
+                  <li>We reply with the cohort as we would define it before anything is built or paid</li>
+                  <li>If the data cannot answer your question, we say so and there is no package</li>
+                  <li>Automated analysis — no clinician has reviewed these records, and we do not price as though one has</li>
+                </ul>
+              </div>
+              {pkgStatus === "done" ? (
+                <div className="formDone">{pkgMessage}</div>
+              ) : (
+                <form className="form" onSubmit={submitPackage}>
+                  <div className="field">
+                    <label htmlFor="pkg-cohort">Mechanism, target or asset</label>
+                    <input id="pkg-cohort" className="input" name="cohort" type="text" required
+                           placeholder="e.g. anti-tau antibodies, or BACE1" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="pkg-asset">The asset you are evaluating <span className="opt">optional</span></label>
+                    <input id="pkg-asset" className="input" name="asset" type="text"
+                           placeholder="Name or code — we compare it against every molecule that failed" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="pkg-context">What you need to decide <span className="opt">optional</span></label>
+                    <textarea id="pkg-context" className="input" name="context" rows={3}
+                              placeholder="A licensing decision, a trial design, a diligence meeting next week…" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="pkg-email">Work email</label>
+                    <input id="pkg-email" className="input" name="email" type="email" required autoComplete="email" />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="pkg-company">Company or institution</label>
+                    <input id="pkg-company" className="input" name="company" type="text" required
+                           autoComplete="organization" />
+                  </div>
+                  <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true"
+                         style={{ position: "absolute", left: "-9999px" }} />
+                  <label className="consent">
+                    <input name="marketing" type="checkbox" />
+                    <span>
+                      Optional: email me about the dataset too. Leave it unticked and we only reply about this request.
+                    </span>
+                  </label>
+                  <button className="submit" type="submit" disabled={pkgStatus === "sending"}>
+                    {pkgStatus === "sending" ? "Sending…" : "Ask for a package"}
+                  </button>
+                  {pkgStatus === "error" ? <div className="formError">{pkgMessage}</div> : null}
+                </form>
+              )}
+            </div>
+          </section>
+
           {/* ---------------- rate proof ---------------- */}
           {featured ? (
             <section className="section">
@@ -430,7 +550,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <div className="tierCta">
                     <a
                       className={tier.highlight ? "solid" : "outline"}
-                      href={mailto(`${tier.name} — Oncology Failure Signals`)}
+                      href={(tier as any).href ?? mailto(`${tier.name} — Oncology Failure Signals`)}
                     >
                       {tier.cta}
                     </a>
@@ -885,6 +1005,93 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           font-size: 11px;
         }
 
+        .sectionHead {
+          display: flex;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+        .briefGrid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+          gap: 12px;
+          margin-top: 14px;
+        }
+        .briefTile {
+          display: block;
+          text-decoration: none;
+          color: inherit;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          padding: 14px 16px;
+        }
+        .briefTile:hover {
+          border-color: rgba(79, 70, 229, 0.45);
+        }
+        .briefArea {
+          font-size: 10.5px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .briefName {
+          margin-top: 6px;
+          font-size: 14.5px;
+          font-weight: 850;
+          line-height: 1.25;
+        }
+        .briefBig {
+          margin-top: 8px;
+          font-size: 27px;
+          font-weight: 900;
+          letter-spacing: -0.025em;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+        }
+        .briefBig span {
+          font-size: 13px;
+          font-weight: 700;
+          color: var(--text-muted);
+          letter-spacing: 0;
+        }
+        .briefMeta {
+          margin-top: 6px;
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: var(--text-muted);
+        }
+        .pkgBox {
+          display: grid;
+          grid-template-columns: 1.1fr 0.9fr;
+          gap: 28px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 18px;
+          box-shadow: var(--shadow-soft);
+          padding: 24px 26px;
+          margin-top: 14px;
+        }
+        .pkgBox h2 {
+          margin-top: 0;
+        }
+        .opt {
+          font-weight: 600;
+          color: var(--text-muted);
+          text-transform: none;
+          letter-spacing: 0;
+        }
+        textarea.input {
+          resize: vertical;
+          font-family: inherit;
+        }
+        @media (max-width: 900px) {
+          .pkgBox {
+            grid-template-columns: 1fr;
+          }
+        }
         .honestGrid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));

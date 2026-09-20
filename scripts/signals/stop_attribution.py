@@ -255,13 +255,16 @@ def failed_assets(stops: list[dict], area: str | None = None, klass: str | None 
             # Nothing resolved, or nothing in the class: the trial is its own molecule.
             key = f"unresolved:{r.get('nct_id')}"
             entry = groups.setdefault(key, {"asset": None, "modalities": set(), "sponsors": set(),
-                                            "trials": [], "resolved": False})
+                                            "trials": [], "resolved": False, "genes": set(), "mechanisms": set()})
             entry["trials"].append(r.get("nct_id"))
             entry["sponsors"].add(r.get("_sponsor_group") or r.get("lead_sponsor") or "unknown sponsor")
             continue
         for c in picked:
             entry = groups.setdefault(c["entity_id"], {"asset": None, "modalities": set(), "sponsors": set(),
-                                                       "trials": [], "resolved": True})
+                                                       "trials": [], "resolved": True, "genes": set(),
+                                                       "mechanisms": set()})
+            entry["genes"].update(c.get("target_genes") or [])
+            entry["mechanisms"].update(c.get("mechanisms") or [])
             if not entry["asset"]:
                 entry["asset"] = _title(c.get("name") or c.get("label") or "")
             if c.get("modality"):
@@ -276,6 +279,8 @@ def failed_assets(stops: list[dict], area: str | None = None, klass: str | None 
             "asset": entry["asset"] or "unidentified drug",
             "resolved": entry["resolved"],
             "modalities": sorted(entry["modalities"]),
+            "target_genes": sorted(entry["genes"]),
+            "mechanisms": sorted(entry["mechanisms"]),
             "sponsors": sorted(entry["sponsors"]),
             "trials": sorted(entry["trials"]),
             "trial_count": len(entry["trials"]),
