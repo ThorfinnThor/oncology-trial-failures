@@ -265,6 +265,7 @@ def standard_tables(rows, out_dir: Path, start, phases, slug: str = "oncology") 
 def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") -> dict:
     """Machine-readable rate pack: baseline plus every segment with enough closed trials."""
     from scripts.universe.cumulative_incidence import curve  # local: only the pack needs it
+    from scripts.universe.multiplicity import annotate
 
     base = select(rows, phases=phases, start=start)
     baseline = summarize(base)
@@ -278,7 +279,12 @@ def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") 
 
     def add(dimension, segment, subset, extra=None):
         s = summarize(subset)
-        if s["closed"] < 10:
+        # Small segments are kept when the evidence is unambiguous and spread across sponsors:
+        # BACE / gamma-secretase is 4 of 4 closed trials from 3 independent programmes, and a
+        # flat size threshold would drop the clearest finding in neurology.
+        small_but_certain = (s["biological_stops"] >= 3 and s["stop_programmes"] >= 3
+                             and s["closed"] >= 3 and s["ci95"][0] > (baseline_resolved["rate"] or 0))
+        if s["closed"] < 10 and not small_but_certain:
             return
         segments.append({"dimension": dimension, "segment": segment, **{k: v for k, v in s.items() if k != "nct_biological_stops"},
                          "cumulative_incidence": curve(subset),
@@ -308,6 +314,27 @@ def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") 
     for group, subset in groups.items():
         add("sponsor_group", group, subset)
 
+    # Every segment is tested against the comparator appropriate to it: a mechanism class can
+    # only contain trials whose drug resolved to a target, so it is tested against the resolved
+    # baseline; a phase or start-year segment is the whole population sliced, so it is tested
+    # against the whole baseline. Then the whole family is corrected for multiplicity, because
+    # 194 segments were screened and the striking ones were not chosen at random.
+    CLASS_DIMENSIONS = {"mechanism_class", "mechanism_class_x_phase", "mechanism_class_with_pd1", "target", "target_gene"}
+    for seg in segments:
+        seg["_baseline_rate"] = (baseline_resolved["rate"] if seg["dimension"] in CLASS_DIMENSIONS
+                                 else baseline["rate"]) or 0.0
+        seg["baseline_compared_against"] = ("target-resolved" if seg["dimension"] in CLASS_DIMENSIONS else "all trials")
+        if seg["dimension"] in ("sponsor_group", "sponsor_class"):
+            # Industry terminations are two to three times likelier than academic ones to state
+            # no readable cause, so a sponsor's rate is substantially a measure of what that
+            # sponsor discloses. See scripts/universe/reporting_quality.py.
+            seg["interpretation_warning"] = ("A sponsor-level rate partly measures disclosure practice, not outcomes: "
+                                             "sponsors differ several-fold in how often they record a readable cause "
+                                             "for a termination. Do not read this as a ranking of scientific success.")
+    annotate(segments)
+    for seg in segments:
+        seg.pop("_baseline_rate", None)
+
     pack = {
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "product": f"Clinical Trial Failure Discontinuation Rates ({area})",
@@ -325,6 +352,10 @@ def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") 
                                                        "text names no readable cause counted as biological",
             "rate_leave_one_programme_out": "the rate after removing every trial of the single sponsor-asset programme that "
                                              "contributed the most stops, from numerator and denominator alike",
+            "q_value_by": "Benjamini-Yekutieli false-discovery rate across every segment in this pack, from a one-sided "
+                           "exact binomial test against the segment's own comparator. Yekutieli rather than Hochberg because "
+                           "these segments overlap by construction and are not independent tests. A q of 0.10 means: calling "
+                           "this segment unusual, along with everything at least as extreme, would be wrong about 10% of the time.",
             "cumulative_incidence": "Aalen-Johansen probability that a trial has been stopped for a biological reason by 12, 24, "
                                      "36, 48 and 60 months from its start date, with completion and non-biological termination as "
                                      "competing events and ongoing trials censored at their last registry update",

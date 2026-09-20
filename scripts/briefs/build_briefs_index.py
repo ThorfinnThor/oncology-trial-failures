@@ -89,6 +89,13 @@ def main() -> int:
             # Time to event, which does not move with cohort maturity the way the rate does.
             "cumulative_incidence": _cif(f.get("segment_cumulative_incidence")),
             "baseline_cumulative_incidence": _cif(f.get("baseline_cumulative_incidence")),
+            # Screening many segments and reporting the striking ones is a selection effect;
+            # the q-value is how much of one.
+            "q_value_by": (f.get("multiplicity") or {}).get("q_value_by"),
+            "family_size": (f.get("multiplicity") or {}).get("family_size"),
+            "survives_fdr_10pct": ((f.get("multiplicity") or {}).get("q_value_by") is not None
+                                   and (f.get("multiplicity") or {}).get("q_value_by") <= 0.10),
+            "composition": f.get("segment_composition"),
             "median_followup_months": (f.get("segment_cumulative_incidence") or {}).get("median_followup_months"),
             "cohorts": [{k: c[k] for k in ("cohort", "biological_stops", "closed", "rate", "ci95")} for c in f["cohorts"]],
             "trial_count": len(trials),

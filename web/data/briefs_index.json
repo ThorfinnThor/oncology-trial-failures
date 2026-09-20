@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "brief_count": 48,
+  "brief_count": 52,
   "open_access_slug": "oncology-tgf-pd-l-1",
   "areas": [
     "Immunology & Autoimmune",
@@ -10,6 +10,225 @@
   "definition": "Share of closed trials (completed or terminated) in the segment that were terminated for an efficacy, safety or benefit-risk reason recorded in the registry, with a 95% Wilson interval.",
   "cumulative_incidence_definition": "Aalen-Johansen probability that a trial has been stopped for a biological reason by the stated month from its start date, with completion and non-biological termination as competing events and ongoing trials censored at their last registry update. Unlike the rate, it does not move with cohort maturity.",
   "briefs": [
+    {
+      "slug": "neurology-bace-secretase",
+      "file_stem": "brief_neurology_bace-secretase_2015-2024",
+      "segment": "BACE / γ-secretase",
+      "area": "Neurology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 1.0,
+      "closed": 4,
+      "trials_in_segment": 4,
+      "biological_stops": 4,
+      "efficacy_stops": 3,
+      "safety_stops": 1,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 1,
+      "stops_benefit_risk_only": 1,
+      "closed_share": 1.0,
+      "ci95": [
+        0.5100999795960008,
+        1.0
+      ],
+      "reference_label": "all neurology trials with a resolved drug target",
+      "reference_rate": 0.08469539375928678,
+      "reference_closed": 673,
+      "reference_stops": 57,
+      "baseline_rate": 0.05886157826649418,
+      "baseline_closed": 1546,
+      "baseline_stops": 91,
+      "baseline_resolved_rate": 0.08469539375928678,
+      "baseline_resolved_closed": 673,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "AstraZeneca",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 1.0,
+      "unresolved_terminations": 0,
+      "rate_if_all_unresolved_were_biological": 1.0,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 4
+        },
+        {
+          "months": 24,
+          "cif": 0.25,
+          "ci95": [
+            0.03944996047710758,
+            0.8720625897601522
+          ],
+          "n_risk": 3
+        },
+        {
+          "months": 36,
+          "cif": 0.5,
+          "ci95": [
+            0.1551350185894722,
+            0.9421571999461335
+          ],
+          "n_risk": 2
+        },
+        {
+          "months": 48,
+          "cif": 1.0,
+          "ci95": [
+            0.9999999793480442,
+            1.0
+          ],
+          "n_risk": 0
+        },
+        {
+          "months": 60,
+          "cif": 1.0,
+          "ci95": [
+            0.9999999793480442,
+            1.0
+          ],
+          "n_risk": 0
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.00598295136286497,
+          "ci95": [
+            0.0034782649482461014,
+            0.010281925178749929
+          ],
+          "n_risk": 1952
+        },
+        {
+          "months": 24,
+          "cif": 0.019263536005663273,
+          "ci95": [
+            0.014162677498584242,
+            0.026176989224404368
+          ],
+          "n_risk": 1360
+        },
+        {
+          "months": 36,
+          "cif": 0.031389402094264426,
+          "ci95": [
+            0.024537950190552604,
+            0.04011421042448471
+          ],
+          "n_risk": 842
+        },
+        {
+          "months": 48,
+          "cif": 0.043167296064743774,
+          "ci95": [
+            0.03481563182691794,
+            0.05346622081459007
+          ],
+          "n_risk": 510
+        },
+        {
+          "months": 60,
+          "cif": 0.046911658456284554,
+          "ci95": [
+            0.038057856660143385,
+            0.057762568123782665
+          ],
+          "n_risk": 276
+        }
+      ],
+      "q_value_by": 0.00270324,
+      "family_size": 27,
+      "survives_fdr_10pct": true,
+      "composition": {
+        "distinct_assets": 3,
+        "modalities": {
+          "Small molecule": 4
+        },
+        "top_assets": [
+          {
+            "asset": "LANABECESTAT",
+            "trials": 2
+          },
+          {
+            "asset": "ATABECESTAT",
+            "trials": 1
+          },
+          {
+            "asset": "ELENBECESTAT",
+            "trials": 1
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Beta-secretase 1 inhibitor",
+            "components": 5
+          }
+        ]
+      },
+      "median_followup_months": null,
+      "cohorts": [],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02956486",
+          "phase": "3",
+          "sponsor_group": "Eisai",
+          "sponsor_ticker": "",
+          "drugs": "ELENBECESTAT",
+          "stopped": "2020-01",
+          "type": "Efficacy + safety",
+          "why_stopped": "Due to an unfavorable risk-benefit ratio including no evidence of potential efficacy, and the adverse event profile of E2609 being worse than placebo.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02956486"
+        },
+        {
+          "nct_id": "NCT02569398",
+          "phase": "3",
+          "sponsor_group": "Johnson & Johnson",
+          "sponsor_ticker": "JNJ",
+          "drugs": "ATABECESTAT",
+          "stopped": "2018-12",
+          "type": "Benefit–risk",
+          "why_stopped": "Change in benefit-risk profile for individuals with early sporadic Alzheimer Disease because of elevations in liver enzymes in subjects receiving atabecestat",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02569398"
+        },
+        {
+          "nct_id": "NCT02972658",
+          "phase": "3",
+          "sponsor_group": "AstraZeneca",
+          "sponsor_ticker": "AZN",
+          "drugs": "LANABECESTAT",
+          "stopped": "2018-10",
+          "type": "Efficacy",
+          "why_stopped": "As the feeder study (AZES) was stopped for futility after an independent assessment, this trial was also stopped.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02972658"
+        },
+        {
+          "nct_id": "NCT02783573",
+          "phase": "3",
+          "sponsor_group": "AstraZeneca",
+          "sponsor_ticker": "AZN",
+          "drugs": "LANABECESTAT",
+          "stopped": "2018-09",
+          "type": "Efficacy",
+          "why_stopped": "An independent assessment concluded the trial was not likely to meet the primary endpoint upon completion and therefore, trial stopped for futility.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02783573"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-20T20:08:36Z",
+      "open_access": false
+    },
     {
       "slug": "neurology-tau",
       "file_stem": "brief_neurology_tau_2015-2024",
@@ -147,6 +366,43 @@
           "n_risk": 276
         }
       ],
+      "q_value_by": 0.00031296,
+      "family_size": 27,
+      "survives_fdr_10pct": true,
+      "composition": {
+        "distinct_assets": 5,
+        "modalities": {
+          "Antibody": 10
+        },
+        "top_assets": [
+          {
+            "asset": "TILAVONEMAB",
+            "trials": 4
+          },
+          {
+            "asset": "GOSURANEMAB",
+            "trials": 2
+          },
+          {
+            "asset": "SEMORINEMAB",
+            "trials": 2
+          },
+          {
+            "asset": "ZAGOTENEMAB",
+            "trials": 1
+          },
+          {
+            "asset": "POSDINEMAB",
+            "trials": 1
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Microtubule-associated protein tau inhibitor",
+            "components": 10
+          }
+        ]
+      },
       "median_followup_months": null,
       "cohorts": [
         {
@@ -219,7 +475,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "generated_at_utc": "2026-09-20T20:08:36Z",
       "open_access": false
     },
     {
@@ -359,6 +615,10 @@
           "n_risk": 276
         }
       ],
+      "q_value_by": null,
+      "family_size": null,
+      "survives_fdr_10pct": false,
+      "composition": null,
       "median_followup_months": 70.6694,
       "cohorts": [
         {
@@ -442,6 +702,570 @@
       ],
       "has_pdf": false,
       "generated_at_utc": "2026-09-20T19:00:55Z",
+      "open_access": false
+    },
+    {
+      "slug": "neurology-amyloid-directed",
+      "file_stem": "brief_neurology_amyloid-directed_2015-2024",
+      "segment": "Amyloid-β directed",
+      "area": "Neurology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.3,
+      "closed": 20,
+      "trials_in_segment": 28,
+      "biological_stops": 6,
+      "efficacy_stops": 6,
+      "safety_stops": 0,
+      "stops_efficacy_only": 6,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.7142857142857143,
+      "ci95": [
+        0.14547527396899385,
+        0.5189767762289793
+      ],
+      "reference_label": "all neurology trials with a resolved drug target",
+      "reference_rate": 0.08469539375928678,
+      "reference_closed": 673,
+      "reference_stops": 57,
+      "baseline_rate": 0.05886157826649418,
+      "baseline_closed": 1546,
+      "baseline_stops": 91,
+      "baseline_resolved_rate": 0.08469539375928678,
+      "baseline_resolved_closed": 673,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Biogen",
+      "largest_programme_stops": 3,
+      "rate_leave_one_programme_out": 0.2,
+      "unresolved_terminations": 9,
+      "rate_if_all_unresolved_were_biological": 0.75,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.07142857142857142,
+          "ci95": [
+            0.01835729451618129,
+            0.25652317916204337
+          ],
+          "n_risk": 24
+        },
+        {
+          "months": 24,
+          "cif": 0.07142857142857142,
+          "ci95": [
+            0.01835729451618129,
+            0.25652317916204337
+          ],
+          "n_risk": 23
+        },
+        {
+          "months": 36,
+          "cif": 0.11040249433106576,
+          "ci95": [
+            0.03692107827025293,
+            0.30496308551247076
+          ],
+          "n_risk": 16
+        },
+        {
+          "months": 48,
+          "cif": 0.24171463457177744,
+          "ci95": [
+            0.11574816962713286,
+            0.46333141447682147
+          ],
+          "n_risk": 8
+        },
+        {
+          "months": 60,
+          "cif": 0.24171463457177744,
+          "ci95": [
+            0.11574816962713286,
+            0.4633314144768216
+          ],
+          "n_risk": 3
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.00598295136286497,
+          "ci95": [
+            0.0034782649482461014,
+            0.010281925178749929
+          ],
+          "n_risk": 1952
+        },
+        {
+          "months": 24,
+          "cif": 0.019263536005663273,
+          "ci95": [
+            0.014162677498584242,
+            0.026176989224404368
+          ],
+          "n_risk": 1360
+        },
+        {
+          "months": 36,
+          "cif": 0.031389402094264426,
+          "ci95": [
+            0.024537950190552604,
+            0.04011421042448471
+          ],
+          "n_risk": 842
+        },
+        {
+          "months": 48,
+          "cif": 0.043167296064743774,
+          "ci95": [
+            0.03481563182691794,
+            0.05346622081459007
+          ],
+          "n_risk": 510
+        },
+        {
+          "months": 60,
+          "cif": 0.046911658456284554,
+          "ci95": [
+            0.038057856660143385,
+            0.057762568123782665
+          ],
+          "n_risk": 276
+        }
+      ],
+      "q_value_by": 0.176605,
+      "family_size": 27,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 9,
+        "modalities": {
+          "Antibody": 27,
+          "Small molecule": 2,
+          "Unknown": 1
+        },
+        "top_assets": [
+          {
+            "asset": "DONANEMAB",
+            "trials": 7
+          },
+          {
+            "asset": "GANTENERUMAB",
+            "trials": 7
+          },
+          {
+            "asset": "ADUCANUMAB",
+            "trials": 5
+          },
+          {
+            "asset": "LECANEMAB",
+            "trials": 4
+          },
+          {
+            "asset": "CRENEZUMAB",
+            "trials": 3
+          },
+          {
+            "asset": "SOLANEZUMAB",
+            "trials": 1
+          },
+          {
+            "asset": "VALILTRAMIPROSATE",
+            "trials": 1
+          },
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 1
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Amyloid-beta A4 protein binding agent",
+            "components": 16
+          },
+          {
+            "mechanism": "Amyloid-beta A4 protein inhibitor",
+            "components": 8
+          },
+          {
+            "mechanism": "Amyloid-beta A4 protein disrupting agent",
+            "components": 7
+          },
+          {
+            "mechanism": "Amyloid-beta A4 protein stabiliser",
+            "components": 1
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 1
+          }
+        ]
+      },
+      "median_followup_months": 70.6694,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 5,
+          "closed": 6,
+          "rate": 0.8333333333333334,
+          "ci95": [
+            0.43649056343635395,
+            0.9699474141282697
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 1,
+          "closed": 10,
+          "rate": 0.1,
+          "ci95": [
+            0.01787574951572113,
+            0.4041563854975721
+          ]
+        }
+      ],
+      "trial_count": 6,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02477800",
+          "phase": "3",
+          "sponsor_group": "Biogen",
+          "sponsor_ticker": "BIIB",
+          "drugs": "ADUCANUMAB",
+          "stopped": "2019-08",
+          "type": "Efficacy",
+          "why_stopped": "Study was discontinued based on futility analysis done and not based on safety concerns. Follow-up visits and closing out study activities are completed",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02477800"
+        },
+        {
+          "nct_id": "NCT02484547",
+          "phase": "3",
+          "sponsor_group": "Biogen",
+          "sponsor_ticker": "BIIB",
+          "drugs": "ADUCANUMAB",
+          "stopped": "2019-08",
+          "type": "Efficacy",
+          "why_stopped": "Study was discontinued based on futility analysis done and not based on safety concerns. Follow-up visits and closing out study activities are completed",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02484547"
+        },
+        {
+          "nct_id": "NCT03639987",
+          "phase": "2",
+          "sponsor_group": "Biogen",
+          "sponsor_ticker": "BIIB",
+          "drugs": "ADUCANUMAB",
+          "stopped": "2019-07",
+          "type": "Efficacy",
+          "why_stopped": "Study was discontinued based on futility analysis conducted on Phase 3 trials (NCT02477800 and NCT02484547) and not based on safety concerns.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03639987"
+        },
+        {
+          "nct_id": "NCT03114657",
+          "phase": "3",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "CRENEZUMAB",
+          "stopped": "2019-06",
+          "type": "Efficacy",
+          "why_stopped": "This study was discontinued due to an interim analysis in the BN29552 study, which indicated that Crenezumab was unlikely to meet its primary endpoint.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03114657"
+        },
+        {
+          "nct_id": "NCT02670083",
+          "phase": "3",
+          "sponsor_group": "Roche",
+          "sponsor_ticker": "",
+          "drugs": "CRENEZUMAB",
+          "stopped": "2019-05",
+          "type": "Efficacy",
+          "why_stopped": "This study was discontinued due to an interim analysis in this study, which indicated that Crenezumab was unlikely to meet its primary endpoint.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02670083"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-20T20:08:36Z",
+      "open_access": false
+    },
+    {
+      "slug": "oncology-cd38-pd-l-1",
+      "file_stem": "brief_oncology_cd38-pd-l-1_2015-2024",
+      "segment": "CD38 + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.25,
+      "closed": 12,
+      "trials_in_segment": 17,
+      "biological_stops": 3,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.7058823529411765,
+      "ci95": [
+        0.08894003962896138,
+        0.53231033912066
+      ],
+      "reference_label": "PD-(L)1 combinations without CD38",
+      "reference_rate": 0.04801477377654663,
+      "reference_closed": 2166,
+      "reference_stops": 104,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 2,
+      "stop_assets": 3,
+      "largest_programme": "Teva Branded Pharmaceutical Products R&D LLC",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.18181818181818182,
+      "unresolved_terminations": 1,
+      "rate_if_all_unresolved_were_biological": 0.3333333333333333,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 14
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 14
+        },
+        {
+          "months": 36,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 13
+        },
+        {
+          "months": 48,
+          "cif": 0.140625,
+          "ci95": [
+            0.03704445978116355,
+            0.4558002142082658
+          ],
+          "n_risk": 7
+        },
+        {
+          "months": 60,
+          "cif": 0.2142857142857143,
+          "ci95": [
+            0.07455240309824962,
+            0.5279431252373583
+          ],
+          "n_risk": 4
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 36,
+        "modalities": {
+          "Antibody": 17,
+          "Small molecule": 5,
+          "Unknown": 2,
+          "Protein": 2,
+          "Oligosaccharide": 1,
+          "Oncolytic virus": 1,
+          "Vaccine": 1
+        },
+        "top_assets": [
+          {
+            "asset": "DARATUMUMAB",
+            "trials": 9
+          },
+          {
+            "asset": "ISATUXIMAB",
+            "trials": 7
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 4
+          },
+          {
+            "asset": "CEMIPLIMAB",
+            "trials": 4
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 3
+          },
+          {
+            "asset": "POMALIDOMIDE",
+            "trials": 3
+          },
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 3
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 3
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Lymphocyte differentiation antigen CD38 inhibitor",
+            "components": 17
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 13
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 5
+          },
+          {
+            "mechanism": "CRL4(CRBN) E3 ubiquitin ligase inhibitor",
+            "components": 5
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 4
+          },
+          {
+            "mechanism": "Lymphocyte activation gene 3 protein inhibitor",
+            "components": 3
+          }
+        ]
+      },
+      "median_followup_months": 83.6468,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 0,
+          "closed": 6,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.3903430336530645
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 3,
+          "closed": 5,
+          "rate": 0.6,
+          "ci95": [
+            0.23071993220883708,
+            0.8823817688407467
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT04157517",
+          "phase": "2",
+          "sponsor_group": "Teva Branded Pharmaceutical Products R&D LLC",
+          "sponsor_ticker": "",
+          "drugs": "MODAKAFUSP ALFA, PEMBROLIZUMAB",
+          "stopped": "2023-12",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated early due to futility.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04157517"
+        },
+        {
+          "nct_id": "NCT03637764",
+          "phase": "2",
+          "sponsor_group": "Sanofi",
+          "sponsor_ticker": "SNY",
+          "drugs": "ISATUXIMAB, ATEZOLIZUMAB",
+          "stopped": "2022-05",
+          "type": "Efficacy",
+          "why_stopped": "Study was stopped after interim analysis for 4 cohorts (HCC, SCCHN, EOC, and GBM) indicated that the results did not fulfill the preplanned interim analysis criteria to move to Phase 2 stage 2 in all 4 cohorts.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03637764"
+        },
+        {
+          "nct_id": "NCT03367819",
+          "phase": "2",
+          "sponsor_group": "Sanofi",
+          "sponsor_ticker": "SNY",
+          "drugs": "ISATUXIMAB, CEMIPLIMAB",
+          "stopped": "2021-03",
+          "type": "Efficacy",
+          "why_stopped": "The study was stopped after interim analysis indicated that overall result was not sufficient to satisfy per-protocol criteria to move forward in metastatic, castration-resistant prostate cancer (mCRPC) and non-small cell lung cancer (NSCLC) cohorts.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03367819"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-20T20:08:27Z",
       "open_access": false
     },
     {
@@ -581,6 +1405,84 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 0.00335252,
+      "family_size": 83,
+      "survives_fdr_10pct": true,
+      "composition": {
+        "distinct_assets": 85,
+        "modalities": {
+          "Protein": 69,
+          "Small molecule": 38,
+          "Unknown": 19,
+          "Antibody": 18,
+          "Vaccine": 4,
+          "Bispecific antibody": 3,
+          "ADC": 3,
+          "Gene therapy": 1,
+          "Oncolytic virus": 1,
+          "Cell therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "BINTRAFUSP ALFA",
+            "trials": 40
+          },
+          {
+            "asset": "RETLIRAFUSP ALFA",
+            "trials": 19
+          },
+          {
+            "asset": "CISPLATIN",
+            "trials": 7
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 7
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 7
+          },
+          {
+            "asset": "IMMUNOCYTOKINE NHS-IL12",
+            "trials": 6
+          },
+          {
+            "asset": "FAMITINIB",
+            "trials": 5
+          },
+          {
+            "asset": "Nogapendekin Alfa Inbakicept",
+            "trials": 4
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 binding agent",
+            "components": 41
+          },
+          {
+            "mechanism": "Transforming growth factor beta binding agent",
+            "components": 41
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 30
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 12
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 11
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor 2 inhibitor",
+            "components": 10
+          }
+        ]
+      },
       "median_followup_months": 66.2998,
       "cohorts": [
         {
@@ -729,7 +1631,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "generated_at_utc": "2026-09-20T20:08:26Z",
       "open_access": true
     },
     {
@@ -869,6 +1771,84 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 0.0221103,
+      "family_size": 83,
+      "survives_fdr_10pct": true,
+      "composition": {
+        "distinct_assets": 114,
+        "modalities": {
+          "Protein": 77,
+          "Small molecule": 58,
+          "Antibody": 25,
+          "Unknown": 25,
+          "Cell therapy": 6,
+          "Vaccine": 4,
+          "ADC": 4,
+          "Bispecific antibody": 3,
+          "Gene therapy": 1,
+          "Oncolytic virus": 1
+        },
+        "top_assets": [
+          {
+            "asset": "BINTRAFUSP ALFA",
+            "trials": 40
+          },
+          {
+            "asset": "RETLIRAFUSP ALFA",
+            "trials": 19
+          },
+          {
+            "asset": "VACTOSERTIB",
+            "trials": 13
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 9
+          },
+          {
+            "asset": "GEMCITABINE",
+            "trials": 7
+          },
+          {
+            "asset": "CISPLATIN",
+            "trials": 7
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 7
+          },
+          {
+            "asset": "GALUNISERTIB",
+            "trials": 6
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 binding agent",
+            "components": 41
+          },
+          {
+            "mechanism": "Transforming growth factor beta binding agent",
+            "components": 41
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 35
+          },
+          {
+            "mechanism": "TGF-beta receptor type I inhibitor",
+            "components": 23
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 15
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 14
+          }
+        ]
+      },
       "median_followup_months": 64.6571,
       "cohorts": [
         {
@@ -951,7 +1931,284 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "generated_at_utc": "2026-09-20T20:08:25Z",
+      "open_access": false
+    },
+    {
+      "slug": "oncology-ox40-4-1bb-gitr-pd-l-1",
+      "file_stem": "brief_oncology_ox40-4-1bb-gitr-pd-l-1_2015-2024",
+      "segment": "OX40 / 4-1BB / GITR + PD-(L)1",
+      "area": "Oncology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.16666666666666666,
+      "closed": 18,
+      "trials_in_segment": 46,
+      "biological_stops": 3,
+      "efficacy_stops": 3,
+      "safety_stops": 0,
+      "stops_efficacy_only": 3,
+      "stops_safety_only": 0,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.391304347826087,
+      "ci95": [
+        0.05836470400465757,
+        0.39222499638359243
+      ],
+      "reference_label": "PD-(L)1 combinations without OX40 / 4-1BB / GITR",
+      "reference_rate": 0.04812586765386395,
+      "reference_closed": 2161,
+      "reference_stops": 104,
+      "baseline_rate": 0.043344447294177996,
+      "baseline_closed": 7798,
+      "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Pfizer",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.11764705882352941,
+      "unresolved_terminations": 1,
+      "rate_if_all_unresolved_were_biological": 0.2222222222222222,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 38
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 31
+        },
+        {
+          "months": 36,
+          "cif": 0.061207609594706364,
+          "ci95": [
+            0.015674470961221654,
+            0.22315124933900132
+          ],
+          "n_risk": 26
+        },
+        {
+          "months": 48,
+          "cif": 0.061207609594706364,
+          "ci95": [
+            0.015674470961221654,
+            0.22315124933900132
+          ],
+          "n_risk": 23
+        },
+        {
+          "months": 60,
+          "cif": 0.09416555322262518,
+          "ci95": [
+            0.031344223359675905,
+            0.26444745761567
+          ],
+          "n_risk": 13
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 84,
+        "modalities": {
+          "Antibody": 39,
+          "Small molecule": 18,
+          "Unknown": 12,
+          "Bispecific antibody": 9,
+          "Oncolytic virus": 3,
+          "ADC": 2,
+          "Vaccine": 1,
+          "Oligosaccharide": 1,
+          "Protein": 1
+        },
+        "top_assets": [
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 9
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 9
+          },
+          {
+            "asset": "AVELUMAB",
+            "trials": 7
+          },
+          {
+            "asset": "UTOMILUMAB",
+            "trials": 6
+          },
+          {
+            "asset": "IVUXOLIMAB",
+            "trials": 5
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 4
+          },
+          {
+            "asset": "RAGIFILIMAB",
+            "trials": 4
+          },
+          {
+            "asset": "ACASUNLIMAB",
+            "trials": 4
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 22
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 10
+          },
+          {
+            "mechanism": "Tumor necrosis factor receptor superfamily member 9 agonist",
+            "components": 9
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 other",
+            "components": 7
+          },
+          {
+            "mechanism": "Tumor necrosis factor receptor superfamily member 4 agonist",
+            "components": 6
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 6
+          }
+        ]
+      },
+      "median_followup_months": 78.9487,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 2,
+          "closed": 10,
+          "rate": 0.2,
+          "ci95": [
+            0.056680947980693314,
+            0.5098431532792765
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 0,
+          "closed": 6,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.3903430336530645
+          ]
+        }
+      ],
+      "trial_count": 3,
+      "trials_preview": [
+        {
+          "nct_id": "NCT05491317",
+          "phase": "2",
+          "sponsor_group": "Genmab",
+          "sponsor_ticker": "GMAB",
+          "drugs": "Tecaginlimab, PEMBROLIZUMAB",
+          "stopped": "2025-08",
+          "type": "Efficacy",
+          "why_stopped": "After reviewing all available data from Part 1 of the trial, the Sponsor has decided not to proceed to Part 2 (randomized Phase 2) of the trial due to lack of efficacy",
+          "registry_url": "https://clinicaltrials.gov/study/NCT05491317"
+        },
+        {
+          "nct_id": "NCT03323398",
+          "phase": "2",
+          "sponsor_group": "ModernaTX, Inc.",
+          "sponsor_ticker": "",
+          "drugs": "Lipid Nanoparticle Encapsulated O…, DURVALUMAB",
+          "stopped": "2021-08",
+          "type": "Efficacy",
+          "why_stopped": "This study was halted prematurely because the efficacy endpoints were not met for either treatment arm.",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03323398"
+        },
+        {
+          "nct_id": "NCT02951156",
+          "phase": "3",
+          "sponsor_group": "Pfizer",
+          "sponsor_ticker": "PFE",
+          "drugs": "AVELUMAB, UTOMILUMAB",
+          "stopped": "2019-12",
+          "type": "Efficacy",
+          "why_stopped": "Study was terminated due to closure of study arms following futility analysis and difficulty in enrolling participants due to evolving treatment landscape",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02951156"
+        }
+      ],
+      "has_pdf": false,
+      "generated_at_utc": "2026-09-20T20:08:26Z",
       "open_access": false
     },
     {
@@ -1091,6 +2348,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 124,
+        "modalities": {
+          "Antibody": 51,
+          "Small molecule": 27,
+          "Unknown": 21,
+          "Bispecific antibody": 13,
+          "Cell therapy": 12,
+          "Protein": 7,
+          "Oncolytic virus": 4,
+          "Gene therapy": 4,
+          "ADC": 3,
+          "Vaccine": 1,
+          "Oligosaccharide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 9
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 9
+          },
+          {
+            "asset": "UTOMILUMAB",
+            "trials": 8
+          },
+          {
+            "asset": "AVELUMAB",
+            "trials": 7
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 7
+          },
+          {
+            "asset": "IVUXOLIMAB",
+            "trials": 6
+          },
+          {
+            "asset": "RAGIFILIMAB",
+            "trials": 5
+          },
+          {
+            "asset": "URELUMAB",
+            "trials": 4
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 22
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 18
+          },
+          {
+            "mechanism": "Tumor necrosis factor receptor superfamily member 9 agonist",
+            "components": 12
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 10
+          },
+          {
+            "mechanism": "Tumor necrosis factor receptor superfamily member 4 agonist",
+            "components": 8
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 other",
+            "components": 7
+          }
+        ]
+      },
       "median_followup_months": 54.078,
       "cohorts": [
         {
@@ -1183,7 +2519,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "generated_at_utc": "2026-09-20T20:08:26Z",
       "open_access": false
     },
     {
@@ -1323,6 +2659,82 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 68,
+        "modalities": {
+          "Antibody": 66,
+          "Small molecule": 52,
+          "ADC": 42,
+          "Gene therapy": 22,
+          "Cell therapy": 19,
+          "Unknown": 12,
+          "Protein": 8,
+          "Bispecific antibody": 3
+        },
+        "top_assets": [
+          {
+            "asset": "BELANTAMAB MAFODOTIN",
+            "trials": 41
+          },
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 32
+          },
+          {
+            "asset": "LENALIDOMIDE",
+            "trials": 22
+          },
+          {
+            "asset": "TECLISTAMAB",
+            "trials": 19
+          },
+          {
+            "asset": "BORTEZOMIB",
+            "trials": 16
+          },
+          {
+            "asset": "DARATUMUMAB",
+            "trials": 16
+          },
+          {
+            "asset": "ELRANATAMAB",
+            "trials": 16
+          },
+          {
+            "asset": "POMALIDOMIDE",
+            "trials": 15
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tumor necrosis factor receptor superfamily member 17 binding agent",
+            "components": 96
+          },
+          {
+            "mechanism": "T cell surface glycoprotein CD3 binding agent",
+            "components": 49
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 41
+          },
+          {
+            "mechanism": "CRL4(CRBN) E3 ubiquitin ligase inhibitor",
+            "components": 37
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 32
+          },
+          {
+            "mechanism": "26S proteasome inhibitor",
+            "components": 25
+          }
+        ]
+      },
       "median_followup_months": 45.4374,
       "cohorts": [
         {
@@ -1394,7 +2806,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "generated_at_utc": "2026-09-20T20:08:27Z",
       "open_access": false
     },
     {
@@ -1534,6 +2946,79 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 96,
+        "modalities": {
+          "Small molecule": 48,
+          "ADC": 47,
+          "Antibody": 40,
+          "Unknown": 16,
+          "Protein": 1
+        },
+        "top_assets": [
+          {
+            "asset": "IZALONTAMAB BRENGITECAN",
+            "trials": 23
+          },
+          {
+            "asset": "PATRITUMAB DERUXTECAN",
+            "trials": 15
+          },
+          {
+            "asset": "POZIOTINIB",
+            "trials": 10
+          },
+          {
+            "asset": "IZALONTAMAB",
+            "trials": 10
+          },
+          {
+            "asset": "DANVILOSTOMIG",
+            "trials": 10
+          },
+          {
+            "asset": "Ruzaltatug Rezetecan",
+            "trials": 7
+          },
+          {
+            "asset": "DOCETAXEL ANHYDROUS",
+            "trials": 7
+          },
+          {
+            "asset": "PEMETREXED",
+            "trials": 5
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Epidermal growth factor receptor inhibitor",
+            "components": 22
+          },
+          {
+            "mechanism": "DNA topoisomerase I inhibitor",
+            "components": 20
+          },
+          {
+            "mechanism": "Receptor tyrosine-protein kinase erbB-3 binding agent",
+            "components": 16
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 16
+          },
+          {
+            "mechanism": "Epidermal growth factor receptor erbB1 inhibitor",
+            "components": 15
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 13
+          }
+        ]
+      },
       "median_followup_months": 31.6386,
       "cohorts": [
         {
@@ -1615,7 +3100,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "generated_at_utc": "2026-09-20T20:08:28Z",
       "open_access": false
     },
     {
@@ -1755,6 +3240,76 @@
           "n_risk": 303
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 28,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 18,
+        "modalities": {
+          "Small molecule": 40,
+          "Unknown": 1
+        },
+        "top_assets": [
+          {
+            "asset": "ZANUBRUTINIB",
+            "trials": 8
+          },
+          {
+            "asset": "ORELABRUTINIB",
+            "trials": 6
+          },
+          {
+            "asset": "FENEBRUTINIB",
+            "trials": 4
+          },
+          {
+            "asset": "RITLECITINIB",
+            "trials": 4
+          },
+          {
+            "asset": "ELSUBRUTINIB",
+            "trials": 4
+          },
+          {
+            "asset": "UPADACITINIB",
+            "trials": 4
+          },
+          {
+            "asset": "RILZABRUTINIB",
+            "trials": 4
+          },
+          {
+            "asset": "EVOBRUTINIB",
+            "trials": 3
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tyrosine-protein kinase BTK inhibitor",
+            "components": 45
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase JAK3 inhibitor",
+            "components": 8
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase JAK1 inhibitor",
+            "components": 6
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase TYK2 inhibitor",
+            "components": 6
+          },
+          {
+            "mechanism": "TEC family kinase inhibitor",
+            "components": 4
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase JAK2 inhibitor",
+            "components": 4
+          }
+        ]
+      },
       "median_followup_months": 53.9138,
       "cohorts": [
         {
@@ -1815,7 +3370,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:56Z",
+      "generated_at_utc": "2026-09-20T20:08:38Z",
       "open_access": false
     },
     {
@@ -1955,6 +3510,81 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 73,
+        "modalities": {
+          "Antibody": 47,
+          "Small molecule": 28,
+          "Protein": 22,
+          "Unknown": 10,
+          "ADC": 3,
+          "Bispecific antibody": 2,
+          "Cell therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "MAGROLIMAB",
+            "trials": 15
+          },
+          {
+            "asset": "EVORPACEPT",
+            "trials": 10
+          },
+          {
+            "asset": "Ligufalimab",
+            "trials": 10
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 7
+          },
+          {
+            "asset": "AZACITIDINE",
+            "trials": 6
+          },
+          {
+            "asset": "OXALIPLATIN",
+            "trials": 5
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 5
+          },
+          {
+            "asset": "IVONESCIMAB",
+            "trials": 5
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 33
+          },
+          {
+            "mechanism": "Leukocyte surface antigen CD47 inhibitor",
+            "components": 25
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 17
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 13
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 12
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 9
+          }
+        ]
+      },
       "median_followup_months": 42.6448,
       "cohorts": [
         {
@@ -2015,7 +3645,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "generated_at_utc": "2026-09-20T20:08:25Z",
       "open_access": false
     },
     {
@@ -2155,6 +3785,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 105,
+        "modalities": {
+          "Antibody": 205,
+          "Small molecule": 131,
+          "Protein": 49,
+          "ADC": 8,
+          "Unknown": 8,
+          "Gene therapy": 4,
+          "Cell therapy": 2,
+          "Oligosaccharide": 1,
+          "Oncolytic virus": 1,
+          "Bispecific antibody": 1,
+          "Vaccine": 1
+        },
+        "top_assets": [
+          {
+            "asset": "DARATUMUMAB",
+            "trials": 149
+          },
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 106
+          },
+          {
+            "asset": "LENALIDOMIDE",
+            "trials": 55
+          },
+          {
+            "asset": "ISATUXIMAB",
+            "trials": 50
+          },
+          {
+            "asset": "BORTEZOMIB",
+            "trials": 45
+          },
+          {
+            "asset": "CARFILZOMIB",
+            "trials": 37
+          },
+          {
+            "asset": "POMALIDOMIDE",
+            "trials": 30
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 14
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Lymphocyte differentiation antigen CD38 inhibitor",
+            "components": 212
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 113
+          },
+          {
+            "mechanism": "26S proteasome inhibitor",
+            "components": 97
+          },
+          {
+            "mechanism": "CRL4(CRBN) E3 ubiquitin ligase inhibitor",
+            "components": 87
+          },
+          {
+            "mechanism": "CRL4(CRBN) E3 ubiquitin ligase modulator",
+            "components": 65
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 41
+          }
+        ]
+      },
       "median_followup_months": 63.8029,
       "cohorts": [
         {
@@ -2247,7 +3956,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "generated_at_utc": "2026-09-20T20:08:27Z",
       "open_access": false
     },
     {
@@ -2387,6 +4096,82 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 190,
+        "modalities": {
+          "Small molecule": 288,
+          "Unknown": 50,
+          "Protein": 41,
+          "Antibody": 35,
+          "ADC": 4,
+          "Cell therapy": 3,
+          "Vaccine": 2,
+          "Gene therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "ENZALUTAMIDE",
+            "trials": 100
+          },
+          {
+            "asset": "APALUTAMIDE",
+            "trials": 57
+          },
+          {
+            "asset": "PREDNISONE",
+            "trials": 53
+          },
+          {
+            "asset": "ABIRATERONE ACETATE",
+            "trials": 53
+          },
+          {
+            "asset": "DAROLUTAMIDE",
+            "trials": 43
+          },
+          {
+            "asset": "ABIRATERONE",
+            "trials": 38
+          },
+          {
+            "asset": "LEUPROLIDE",
+            "trials": 20
+          },
+          {
+            "asset": "REZVILUTAMIDE",
+            "trials": 17
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Androgen Receptor antagonist",
+            "components": 266
+          },
+          {
+            "mechanism": "Cytochrome P450 17A1 inhibitor",
+            "components": 95
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 57
+          },
+          {
+            "mechanism": "Gonadotropin-releasing hormone receptor agonist",
+            "components": 46
+          },
+          {
+            "mechanism": "Steroid 5-alpha-reductase inhibitor",
+            "components": 40
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 23
+          }
+        ]
+      },
       "median_followup_months": 69.191,
       "cohorts": [
         {
@@ -2479,7 +4264,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "generated_at_utc": "2026-09-20T20:08:33Z",
       "open_access": false
     },
     {
@@ -2619,6 +4404,79 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 163,
+        "modalities": {
+          "Small molecule": 103,
+          "Antibody": 95,
+          "Unknown": 9,
+          "ADC": 6,
+          "Protein": 3
+        },
+        "top_assets": [
+          {
+            "asset": "CABOZANTINIB",
+            "trials": 63
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 40
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 19
+          },
+          {
+            "asset": "IPILIMUMAB",
+            "trials": 19
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 15
+          },
+          {
+            "asset": "DURVALUMAB",
+            "trials": 14
+          },
+          {
+            "asset": "PALBOCICLIB",
+            "trials": 10
+          },
+          {
+            "asset": "CAPMATINIB",
+            "trials": 10
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Hepatocyte growth factor receptor inhibitor",
+            "components": 99
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor 2 inhibitor",
+            "components": 71
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 60
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 36
+          },
+          {
+            "mechanism": "Epidermal growth factor receptor erbB1 inhibitor",
+            "components": 34
+          },
+          {
+            "mechanism": "ALK tyrosine kinase receptor inhibitor",
+            "components": 26
+          }
+        ]
+      },
       "median_followup_months": 67.2197,
       "cohorts": [
         {
@@ -2689,7 +4547,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "generated_at_utc": "2026-09-20T20:08:29Z",
       "open_access": false
     },
     {
@@ -2829,6 +4687,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 213,
+        "modalities": {
+          "Small molecule": 296,
+          "Antibody": 135,
+          "Unknown": 22,
+          "ADC": 12,
+          "Protein": 5,
+          "Bispecific antibody": 2
+        },
+        "top_assets": [
+          {
+            "asset": "CABOZANTINIB",
+            "trials": 134
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 40
+          },
+          {
+            "asset": "CRIZOTINIB",
+            "trials": 34
+          },
+          {
+            "asset": "CAPMATINIB",
+            "trials": 29
+          },
+          {
+            "asset": "AMIVANTAMAB",
+            "trials": 28
+          },
+          {
+            "asset": "SAVOLITINIB",
+            "trials": 24
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 19
+          },
+          {
+            "asset": "IPILIMUMAB",
+            "trials": 19
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Hepatocyte growth factor receptor inhibitor",
+            "components": 281
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor 2 inhibitor",
+            "components": 151
+          },
+          {
+            "mechanism": "Epidermal growth factor receptor erbB1 inhibitor",
+            "components": 107
+          },
+          {
+            "mechanism": "ALK tyrosine kinase receptor inhibitor",
+            "components": 65
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 60
+          },
+          {
+            "mechanism": "EML4-ALK inhibitor",
+            "components": 54
+          }
+        ]
+      },
       "median_followup_months": 58.9733,
       "cohorts": [
         {
@@ -2921,7 +4853,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "generated_at_utc": "2026-09-20T20:08:29Z",
       "open_access": false
     },
     {
@@ -3061,6 +4993,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 114,
+        "modalities": {
+          "Small molecule": 99,
+          "Unknown": 13,
+          "Antibody": 9,
+          "Protein": 4,
+          "ADC": 1,
+          "Cell therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "RUXOLITINIB",
+            "trials": 48
+          },
+          {
+            "asset": "ITACITINIB",
+            "trials": 14
+          },
+          {
+            "asset": "GOLIDOCITINIB",
+            "trials": 14
+          },
+          {
+            "asset": "PACRITINIB",
+            "trials": 9
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 8
+          },
+          {
+            "asset": "METHOTREXATE",
+            "trials": 6
+          },
+          {
+            "asset": "PREDNISONE",
+            "trials": 6
+          },
+          {
+            "asset": "DOXORUBICIN",
+            "trials": 5
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tyrosine-protein kinase JAK1 inhibitor",
+            "components": 86
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase JAK2 inhibitor",
+            "components": 65
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase JAK3 inhibitor",
+            "components": 51
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase TYK2 inhibitor",
+            "components": 51
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 43
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase receptor FLT3 inhibitor",
+            "components": 15
+          }
+        ]
+      },
       "median_followup_months": 78.7515,
       "cohorts": [
         {
@@ -3142,7 +5148,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "generated_at_utc": "2026-09-20T20:08:32Z",
       "open_access": false
     },
     {
@@ -3282,6 +5288,76 @@
           "n_risk": 276
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 27,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 110,
+        "modalities": {
+          "Small molecule": 49,
+          "Unknown": 6
+        },
+        "top_assets": [
+          {
+            "asset": "DIAZEPAM",
+            "trials": 9
+          },
+          {
+            "asset": "GANAXOLONE",
+            "trials": 7
+          },
+          {
+            "asset": "CENOBAMATE",
+            "trials": 7
+          },
+          {
+            "asset": "PADSEVONIL",
+            "trials": 5
+          },
+          {
+            "asset": "TOPIRAMATE",
+            "trials": 4
+          },
+          {
+            "asset": "CLOBAZAM",
+            "trials": 4
+          },
+          {
+            "asset": "MIDAZOLAM",
+            "trials": 4
+          },
+          {
+            "asset": "CLONAZEPAM",
+            "trials": 3
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "GABA-A receptor; anion channel positive allosteric modulator",
+            "components": 46
+          },
+          {
+            "mechanism": "Serotonin 2a (5-HT2a) receptor antagonist",
+            "components": 14
+          },
+          {
+            "mechanism": "Dopamine D2 receptor antagonist",
+            "components": 13
+          },
+          {
+            "mechanism": "Serotonin transporter inhibitor",
+            "components": 13
+          },
+          {
+            "mechanism": "Sodium channel alpha subunit blocker",
+            "components": 10
+          },
+          {
+            "mechanism": "Serotonin 2c (5-HT2c) receptor antagonist",
+            "components": 10
+          }
+        ]
+      },
       "median_followup_months": null,
       "cohorts": [
         {
@@ -3352,7 +5428,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "generated_at_utc": "2026-09-20T20:08:36Z",
       "open_access": false
     },
     {
@@ -3492,6 +5568,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 46,
+        "modalities": {
+          "Small molecule": 54,
+          "Antibody": 49,
+          "Vaccine": 9,
+          "Unknown": 3,
+          "Protein": 3,
+          "Gene therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "EPACADOSTAT",
+            "trials": 40
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 29
+          },
+          {
+            "asset": "LINRODOSTAT",
+            "trials": 14
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 13
+          },
+          {
+            "asset": "IPILIMUMAB",
+            "trials": 6
+          },
+          {
+            "asset": "RELATLIMAB",
+            "trials": 4
+          },
+          {
+            "asset": "PD-L1/IDO Peptide Vaccine IO102-103",
+            "trials": 4
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 3
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Indoleamine 2,3-dioxygenase inhibitor",
+            "components": 55
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 43
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 11
+          },
+          {
+            "mechanism": "Cytotoxic T-lymphocyte protein 4 inhibitor",
+            "components": 6
+          },
+          {
+            "mechanism": "Lymphocyte activation gene 3 protein inhibitor",
+            "components": 4
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 4
+          }
+        ]
+      },
       "median_followup_months": 73.922,
       "cohorts": [
         {
@@ -3552,7 +5702,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:46Z",
+      "generated_at_utc": "2026-09-20T20:08:25Z",
       "open_access": false
     },
     {
@@ -3692,6 +5842,81 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 197,
+        "modalities": {
+          "Small molecule": 193,
+          "Antibody": 184,
+          "Unknown": 21,
+          "ADC": 13,
+          "Protein": 8,
+          "Oligonucleotide": 1,
+          "Bispecific antibody": 1
+        },
+        "top_assets": [
+          {
+            "asset": "OLAPARIB",
+            "trials": 95
+          },
+          {
+            "asset": "DURVALUMAB",
+            "trials": 48
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 43
+          },
+          {
+            "asset": "NIRAPARIB",
+            "trials": 39
+          },
+          {
+            "asset": "DOSTARLIMAB",
+            "trials": 24
+          },
+          {
+            "asset": "BEVACIZUMAB",
+            "trials": 20
+          },
+          {
+            "asset": "TALAZOPARIB",
+            "trials": 20
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 18
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "PARP 1, 2 and 3 inhibitor",
+            "components": 117
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 77
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 72
+          },
+          {
+            "mechanism": "Poly [ADP-ribose] polymerase 2 inhibitor",
+            "components": 70
+          },
+          {
+            "mechanism": "Poly [ADP-ribose] polymerase-1 inhibitor",
+            "components": 70
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 52
+          }
+        ]
+      },
       "median_followup_months": 64.7885,
       "cohorts": [
         {
@@ -3784,7 +6009,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "generated_at_utc": "2026-09-20T20:08:31Z",
       "open_access": false
     },
     {
@@ -3924,6 +6149,77 @@
           "n_risk": 276
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 27,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 133,
+        "modalities": {
+          "Small molecule": 72,
+          "Unknown": 13,
+          "Protein": 1
+        },
+        "top_assets": [
+          {
+            "asset": "LEVODOPA",
+            "trials": 10
+          },
+          {
+            "asset": "APOMORPHINE",
+            "trials": 9
+          },
+          {
+            "asset": "RASAGILINE",
+            "trials": 6
+          },
+          {
+            "asset": "TAVAPADON",
+            "trials": 6
+          },
+          {
+            "asset": "CARBIDOPA ANHYDROUS",
+            "trials": 5
+          },
+          {
+            "asset": "BREXPIPRAZOLE",
+            "trials": 4
+          },
+          {
+            "asset": "PIMOZIDE",
+            "trials": 3
+          },
+          {
+            "asset": "MODAFINIL",
+            "trials": 3
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Serotonin 2a (5-HT2a) receptor antagonist",
+            "components": 27
+          },
+          {
+            "mechanism": "Dopamine D2 receptor antagonist",
+            "components": 20
+          },
+          {
+            "mechanism": "D2-like dopamine receptor agonist",
+            "components": 17
+          },
+          {
+            "mechanism": "Serotonin transporter inhibitor",
+            "components": 15
+          },
+          {
+            "mechanism": "GABA-A receptor; anion channel positive allosteric modulator",
+            "components": 12
+          },
+          {
+            "mechanism": "Serotonin 2c (5-HT2c) receptor antagonist",
+            "components": 11
+          }
+        ]
+      },
       "median_followup_months": 124.5503,
       "cohorts": [
         {
@@ -4005,7 +6301,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "generated_at_utc": "2026-09-20T20:08:36Z",
       "open_access": false
     },
     {
@@ -4145,6 +6441,84 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 377,
+        "modalities": {
+          "Small molecule": 773,
+          "Antibody": 457,
+          "Unknown": 131,
+          "ADC": 62,
+          "Protein": 19,
+          "Cell therapy": 14,
+          "Bispecific antibody": 8,
+          "Vaccine": 6,
+          "Oncolytic virus": 5,
+          "Gene therapy": 2
+        },
+        "top_assets": [
+          {
+            "asset": "CETUXIMAB",
+            "trials": 176
+          },
+          {
+            "asset": "OSIMERTINIB",
+            "trials": 114
+          },
+          {
+            "asset": "PYROTINIB",
+            "trials": 114
+          },
+          {
+            "asset": "AFATINIB",
+            "trials": 53
+          },
+          {
+            "asset": "NIMOTUZUMAB",
+            "trials": 52
+          },
+          {
+            "asset": "FLUOROURACIL",
+            "trials": 52
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 51
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 50
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Epidermal growth factor receptor erbB1 inhibitor",
+            "components": 904
+          },
+          {
+            "mechanism": "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+            "components": 291
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 257
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 158
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 106
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 97
+          }
+        ]
+      },
       "median_followup_months": 40.0493,
       "cohorts": [
         {
@@ -4237,7 +6611,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "generated_at_utc": "2026-09-20T20:08:28Z",
       "open_access": false
     },
     {
@@ -4377,6 +6751,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 253,
+        "modalities": {
+          "Small molecule": 351,
+          "Antibody": 94,
+          "Unknown": 19,
+          "ADC": 14,
+          "Protein": 11,
+          "Oligonucleotide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "ALPELISIB",
+            "trials": 41
+          },
+          {
+            "asset": "COPANLISIB",
+            "trials": 38
+          },
+          {
+            "asset": "IPATASERTIB",
+            "trials": 33
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 26
+          },
+          {
+            "asset": "FULVESTRANT",
+            "trials": 24
+          },
+          {
+            "asset": "SAPANISERTIB",
+            "trials": 23
+          },
+          {
+            "asset": "UMBRALISIB",
+            "trials": 22
+          },
+          {
+            "asset": "CAPIVASERTIB",
+            "trials": 22
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "PI3-kinase p110-delta subunit inhibitor",
+            "components": 130
+          },
+          {
+            "mechanism": "PI3-kinase p110-alpha subunit inhibitor",
+            "components": 104
+          },
+          {
+            "mechanism": "Serine/threonine-protein kinase AKT inhibitor",
+            "components": 59
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 58
+          },
+          {
+            "mechanism": "Serine/threonine-protein kinase mTOR inhibitor",
+            "components": 55
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 53
+          }
+        ]
+      },
       "median_followup_months": 73.922,
       "cohorts": [
         {
@@ -4469,7 +6917,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "generated_at_utc": "2026-09-20T20:08:30Z",
       "open_access": false
     },
     {
@@ -4609,6 +7057,82 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 173,
+        "modalities": {
+          "Antibody": 239,
+          "Small molecule": 94,
+          "Unknown": 28,
+          "Bispecific antibody": 28,
+          "ADC": 27,
+          "Cell therapy": 17,
+          "Protein": 15,
+          "Gene therapy": 10
+        },
+        "top_assets": [
+          {
+            "asset": "BLINATUMOMAB",
+            "trials": 70
+          },
+          {
+            "asset": "MOSUNETUZUMAB",
+            "trials": 32
+          },
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 30
+          },
+          {
+            "asset": "RITUXIMAB",
+            "trials": 27
+          },
+          {
+            "asset": "GLOFITAMAB",
+            "trials": 27
+          },
+          {
+            "asset": "LENALIDOMIDE",
+            "trials": 27
+          },
+          {
+            "asset": "EPCORITAMAB",
+            "trials": 26
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 25
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "B-lymphocyte antigen CD20 binding agent",
+            "components": 171
+          },
+          {
+            "mechanism": "T cell surface glycoprotein CD3 binding agent",
+            "components": 170
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 93
+          },
+          {
+            "mechanism": "T cell surface glycoprotein CD3 cross-linking agent",
+            "components": 76
+          },
+          {
+            "mechanism": "B-lymphocyte antigen CD19 cross-linking agent",
+            "components": 74
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 49
+          }
+        ]
+      },
       "median_followup_months": 36.731,
       "cohorts": [
         {
@@ -4690,7 +7214,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "generated_at_utc": "2026-09-20T20:08:26Z",
       "open_access": false
     },
     {
@@ -4830,6 +7354,81 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 162,
+        "modalities": {
+          "Small molecule": 213,
+          "Antibody": 62,
+          "Unknown": 37,
+          "Protein": 30,
+          "ADC": 3,
+          "Oligosaccharide": 1,
+          "Cell therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "TUCIDINOSTAT",
+            "trials": 128
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 18
+          },
+          {
+            "asset": "ENTINOSTAT",
+            "trials": 16
+          },
+          {
+            "asset": "VORINOSTAT",
+            "trials": 16
+          },
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 15
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 14
+          },
+          {
+            "asset": "AZACITIDINE",
+            "trials": 14
+          },
+          {
+            "asset": "ROMIDEPSIN",
+            "trials": 12
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 113
+          },
+          {
+            "mechanism": "Histone deacetylase inhibitor",
+            "components": 53
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 28
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 28
+          },
+          {
+            "mechanism": "Histone deacetylase 1 inhibitor",
+            "components": 23
+          },
+          {
+            "mechanism": "Histone deacetylase 2 inhibitor",
+            "components": 23
+          }
+        ]
+      },
       "median_followup_months": 42.8419,
       "cohorts": [
         {
@@ -4911,7 +7510,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "generated_at_utc": "2026-09-20T20:08:32Z",
       "open_access": false
     },
     {
@@ -5051,6 +7650,82 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 266,
+        "modalities": {
+          "Small molecule": 539,
+          "Antibody": 205,
+          "Unknown": 46,
+          "ADC": 23,
+          "Protein": 12,
+          "Oligonucleotide": 1,
+          "Bispecific antibody": 1,
+          "Cell therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "OLAPARIB",
+            "trials": 222
+          },
+          {
+            "asset": "NIRAPARIB",
+            "trials": 114
+          },
+          {
+            "asset": "TALAZOPARIB",
+            "trials": 56
+          },
+          {
+            "asset": "FLUZOPARIB",
+            "trials": 54
+          },
+          {
+            "asset": "DURVALUMAB",
+            "trials": 48
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 43
+          },
+          {
+            "asset": "RUCAPARIB",
+            "trials": 40
+          },
+          {
+            "asset": "BEVACIZUMAB",
+            "trials": 32
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "PARP 1, 2 and 3 inhibitor",
+            "components": 277
+          },
+          {
+            "mechanism": "Poly [ADP-ribose] polymerase 2 inhibitor",
+            "components": 208
+          },
+          {
+            "mechanism": "Poly [ADP-ribose] polymerase-1 inhibitor",
+            "components": 208
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 92
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 77
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 72
+          }
+        ]
+      },
       "median_followup_months": 66.3655,
       "cohorts": [
         {
@@ -5143,7 +7818,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "generated_at_utc": "2026-09-20T20:08:31Z",
       "open_access": false
     },
     {
@@ -5283,6 +7958,81 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 308,
+        "modalities": {
+          "Small molecule": 735,
+          "Antibody": 243,
+          "Unknown": 109,
+          "Protein": 30,
+          "ADC": 16,
+          "Oligonucleotide": 2,
+          "Bispecific antibody": 1
+        },
+        "top_assets": [
+          {
+            "asset": "CATEQUENTINIB",
+            "trials": 259
+          },
+          {
+            "asset": "REGORAFENIB",
+            "trials": 109
+          },
+          {
+            "asset": "SORAFENIB",
+            "trials": 76
+          },
+          {
+            "asset": "DASATINIB ANHYDROUS",
+            "trials": 47
+          },
+          {
+            "asset": "CYTARABINE",
+            "trials": 35
+          },
+          {
+            "asset": "SUNITINIB",
+            "trials": 35
+          },
+          {
+            "asset": "IMATINIB",
+            "trials": 34
+          },
+          {
+            "asset": "BENMELSTOBART",
+            "trials": 32
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Stem cell growth factor receptor inhibitor",
+            "components": 732
+          },
+          {
+            "mechanism": "Platelet-derived growth factor receptor beta inhibitor",
+            "components": 487
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor 2 inhibitor",
+            "components": 374
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor 3 inhibitor",
+            "components": 343
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 295
+          },
+          {
+            "mechanism": "Platelet-derived growth factor receptor inhibitor",
+            "components": 264
+          }
+        ]
+      },
       "median_followup_months": 47.2115,
       "cohorts": [
         {
@@ -5375,7 +8125,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "generated_at_utc": "2026-09-20T20:08:33Z",
       "open_access": false
     },
     {
@@ -5515,6 +8265,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 126,
+        "modalities": {
+          "Antibody": 120,
+          "Small molecule": 38,
+          "ADC": 14,
+          "Unknown": 8,
+          "Bispecific antibody": 8,
+          "Protein": 5
+        },
+        "top_assets": [
+          {
+            "asset": "TIRAGOLUMAB",
+            "trials": 47
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 34
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 19
+          },
+          {
+            "asset": "VIBOSTOLIMAB",
+            "trials": 16
+          },
+          {
+            "asset": "RILVEGOSTOMIG",
+            "trials": 15
+          },
+          {
+            "asset": "DOMVANALIMAB",
+            "trials": 13
+          },
+          {
+            "asset": "BEVACIZUMAB",
+            "trials": 12
+          },
+          {
+            "asset": "OCIPERLIMAB",
+            "trials": 12
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "T-cell immunoreceptor with Ig and ITIM domains inhibitor",
+            "components": 75
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 55
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 42
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 40
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 19
+          },
+          {
+            "mechanism": "T-cell immunoreceptor with Ig and ITIM domains antagonist",
+            "components": 16
+          }
+        ]
+      },
       "median_followup_months": 56.6407,
       "cohorts": [
         {
@@ -5575,7 +8399,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "generated_at_utc": "2026-09-20T20:08:25Z",
       "open_access": false
     },
     {
@@ -5715,6 +8539,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 128,
+        "modalities": {
+          "Antibody": 122,
+          "Small molecule": 39,
+          "ADC": 14,
+          "Unknown": 9,
+          "Bispecific antibody": 8,
+          "Protein": 5
+        },
+        "top_assets": [
+          {
+            "asset": "TIRAGOLUMAB",
+            "trials": 48
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 34
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 19
+          },
+          {
+            "asset": "VIBOSTOLIMAB",
+            "trials": 16
+          },
+          {
+            "asset": "RILVEGOSTOMIG",
+            "trials": 15
+          },
+          {
+            "asset": "DOMVANALIMAB",
+            "trials": 13
+          },
+          {
+            "asset": "BEVACIZUMAB",
+            "trials": 12
+          },
+          {
+            "asset": "OCIPERLIMAB",
+            "trials": 12
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "T-cell immunoreceptor with Ig and ITIM domains inhibitor",
+            "components": 76
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 55
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 42
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 40
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 19
+          },
+          {
+            "mechanism": "T-cell immunoreceptor with Ig and ITIM domains antagonist",
+            "components": 16
+          }
+        ]
+      },
       "median_followup_months": 56.6407,
       "cohorts": [
         {
@@ -5775,7 +8673,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "generated_at_utc": "2026-09-20T20:08:24Z",
       "open_access": false
     },
     {
@@ -5915,6 +8813,78 @@
           "n_risk": 303
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 28,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 37,
+        "modalities": {
+          "Small molecule": 127,
+          "Unknown": 3,
+          "Antibody": 2,
+          "Protein": 1
+        },
+        "top_assets": [
+          {
+            "asset": "FILGOTINIB",
+            "trials": 25
+          },
+          {
+            "asset": "BARICITINIB",
+            "trials": 20
+          },
+          {
+            "asset": "TOFACITINIB",
+            "trials": 19
+          },
+          {
+            "asset": "UPADACITINIB",
+            "trials": 19
+          },
+          {
+            "asset": "CRAVACITINIB",
+            "trials": 18
+          },
+          {
+            "asset": "RUXOLITINIB",
+            "trials": 7
+          },
+          {
+            "asset": "BREPOCITINIB",
+            "trials": 6
+          },
+          {
+            "asset": "IVARMACITINIB",
+            "trials": 5
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tyrosine-protein kinase JAK1 inhibitor",
+            "components": 85
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase JAK2 inhibitor",
+            "components": 75
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase TYK2 inhibitor",
+            "components": 64
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase JAK3 inhibitor",
+            "components": 56
+          },
+          {
+            "mechanism": "Janus Kinase (JAK) inhibitor",
+            "components": 21
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase TYK2 negative allosteric modulator",
+            "components": 18
+          }
+        ]
+      },
       "median_followup_months": 77.9302,
       "cohorts": [
         {
@@ -5996,7 +8966,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:56Z",
+      "generated_at_utc": "2026-09-20T20:08:38Z",
       "open_access": false
     },
     {
@@ -6136,6 +9106,81 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 183,
+        "modalities": {
+          "Small molecule": 336,
+          "Antibody": 91,
+          "Unknown": 48,
+          "Protein": 16,
+          "ADC": 11,
+          "Gene therapy": 1,
+          "Cell therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "VENETOCLAX",
+            "trials": 306
+          },
+          {
+            "asset": "AZACITIDINE",
+            "trials": 89
+          },
+          {
+            "asset": "OBINUTUZUMAB",
+            "trials": 38
+          },
+          {
+            "asset": "CYTARABINE",
+            "trials": 37
+          },
+          {
+            "asset": "IBRUTINIB",
+            "trials": 31
+          },
+          {
+            "asset": "DECITABINE",
+            "trials": 31
+          },
+          {
+            "asset": "RITUXIMAB",
+            "trials": 29
+          },
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 19
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Apoptosis regulator Bcl-2 inhibitor",
+            "components": 344
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 247
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 146
+          },
+          {
+            "mechanism": "DNA (cytosine-5)-methyltransferase 1 inhibitor",
+            "components": 140
+          },
+          {
+            "mechanism": "DNA (cytosine-5)-methyltransferase 3A inhibitor",
+            "components": 140
+          },
+          {
+            "mechanism": "B-lymphocyte antigen CD20 binding agent",
+            "components": 82
+          }
+        ]
+      },
       "median_followup_months": 57.9877,
       "cohorts": [
         {
@@ -6228,7 +9273,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "generated_at_utc": "2026-09-20T20:08:32Z",
       "open_access": false
     },
     {
@@ -6368,6 +9413,86 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 1086,
+        "modalities": {
+          "Antibody": 5385,
+          "Small molecule": 2616,
+          "Unknown": 974,
+          "Protein": 321,
+          "ADC": 216,
+          "Vaccine": 107,
+          "Cell therapy": 74,
+          "Bispecific antibody": 53,
+          "Oncolytic virus": 46,
+          "Gene therapy": 42,
+          "Oligonucleotide": 11,
+          "Oligosaccharide": 6
+        },
+        "top_assets": [
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 1321
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 911
+          },
+          {
+            "asset": "DURVALUMAB",
+            "trials": 463
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 434
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 415
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 336
+          },
+          {
+            "asset": "TISLELIZUMAB",
+            "trials": 327
+          },
+          {
+            "asset": "CAMRELIZUMAB",
+            "trials": 321
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 3069
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 1651
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 antagonist",
+            "components": 1144
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 1102
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 702
+          },
+          {
+            "mechanism": "Cytotoxic T-lymphocyte protein 4 inhibitor",
+            "components": 641
+          }
+        ]
+      },
       "median_followup_months": 53.6509,
       "cohorts": [
         {
@@ -6460,7 +9585,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "generated_at_utc": "2026-09-20T20:08:24Z",
       "open_access": false
     },
     {
@@ -6600,6 +9725,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 190,
+        "modalities": {
+          "Small molecule": 161,
+          "Antibody": 151,
+          "Unknown": 27,
+          "ADC": 12,
+          "Protein": 7,
+          "Oncolytic virus": 1
+        },
+        "top_assets": [
+          {
+            "asset": "REGORAFENIB",
+            "trials": 46
+          },
+          {
+            "asset": "COBIMETINIB",
+            "trials": 42
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 42
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 32
+          },
+          {
+            "asset": "TRAMETINIB",
+            "trials": 23
+          },
+          {
+            "asset": "VEMURAFENIB",
+            "trials": 23
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 23
+          },
+          {
+            "asset": "BINIMETINIB",
+            "trials": 22
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Serine/threonine-protein kinase B-raf inhibitor",
+            "components": 129
+          },
+          {
+            "mechanism": "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+            "components": 100
+          },
+          {
+            "mechanism": "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor",
+            "components": 100
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase receptor RET inhibitor",
+            "components": 91
+          },
+          {
+            "mechanism": "Stem cell growth factor receptor inhibitor",
+            "components": 80
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 79
+          }
+        ]
+      },
       "median_followup_months": 68.271,
       "cohorts": [
         {
@@ -6670,7 +9869,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "generated_at_utc": "2026-09-20T20:08:30Z",
       "open_access": false
     },
     {
@@ -6810,6 +10009,79 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 239,
+        "modalities": {
+          "Small molecule": 413,
+          "Antibody": 99,
+          "Unknown": 56,
+          "ADC": 13,
+          "Protein": 11
+        },
+        "top_assets": [
+          {
+            "asset": "REGORAFENIB",
+            "trials": 109
+          },
+          {
+            "asset": "SORAFENIB",
+            "trials": 76
+          },
+          {
+            "asset": "ALECTINIB",
+            "trials": 37
+          },
+          {
+            "asset": "SUNITINIB",
+            "trials": 35
+          },
+          {
+            "asset": "CRIZOTINIB",
+            "trials": 34
+          },
+          {
+            "asset": "LORLATINIB",
+            "trials": 23
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 22
+          },
+          {
+            "asset": "ENTRECTINIB",
+            "trials": 18
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tyrosine-protein kinase receptor RET inhibitor",
+            "components": 310
+          },
+          {
+            "mechanism": "Stem cell growth factor receptor inhibitor",
+            "components": 258
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 245
+          },
+          {
+            "mechanism": "Serine/threonine-protein kinase B-raf inhibitor",
+            "components": 219
+          },
+          {
+            "mechanism": "Serine/threonine-protein kinase RAF inhibitor",
+            "components": 189
+          },
+          {
+            "mechanism": "Platelet-derived growth factor receptor inhibitor",
+            "components": 169
+          }
+        ]
+      },
       "median_followup_months": 58.4148,
       "cohorts": [
         {
@@ -6902,7 +10174,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "generated_at_utc": "2026-09-20T20:08:30Z",
       "open_access": false
     },
     {
@@ -7042,6 +10314,81 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 277,
+        "modalities": {
+          "Small molecule": 480,
+          "Antibody": 178,
+          "Unknown": 61,
+          "ADC": 16,
+          "Protein": 14,
+          "Gene therapy": 1,
+          "Oncolytic virus": 1
+        },
+        "top_assets": [
+          {
+            "asset": "REGORAFENIB",
+            "trials": 109
+          },
+          {
+            "asset": "TRAMETINIB",
+            "trials": 85
+          },
+          {
+            "asset": "SORAFENIB",
+            "trials": 76
+          },
+          {
+            "asset": "BINIMETINIB",
+            "trials": 65
+          },
+          {
+            "asset": "COBIMETINIB",
+            "trials": 60
+          },
+          {
+            "asset": "DABRAFENIB",
+            "trials": 49
+          },
+          {
+            "asset": "VEMURAFENIB",
+            "trials": 49
+          },
+          {
+            "asset": "ENCORAFENIB",
+            "trials": 49
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Serine/threonine-protein kinase B-raf inhibitor",
+            "components": 341
+          },
+          {
+            "mechanism": "Dual specificity mitogen-activated protein kinase kinase 1 inhibitor",
+            "components": 273
+          },
+          {
+            "mechanism": "Dual specificity mitogen-activated protein kinase kinase 2 inhibitor",
+            "components": 273
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase receptor RET inhibitor",
+            "components": 223
+          },
+          {
+            "mechanism": "Stem cell growth factor receptor inhibitor",
+            "components": 215
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 214
+          }
+        ]
+      },
       "median_followup_months": 67.4497,
       "cohorts": [
         {
@@ -7134,7 +10481,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "generated_at_utc": "2026-09-20T20:08:30Z",
       "open_access": false
     },
     {
@@ -7274,6 +10621,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 242,
+        "modalities": {
+          "Small molecule": 367,
+          "Antibody": 72,
+          "Unknown": 47,
+          "Protein": 19,
+          "ADC": 17,
+          "Bispecific antibody": 1
+        },
+        "top_assets": [
+          {
+            "asset": "PALBOCICLIB",
+            "trials": 142
+          },
+          {
+            "asset": "ABEMACICLIB",
+            "trials": 107
+          },
+          {
+            "asset": "RIBOCICLIB",
+            "trials": 67
+          },
+          {
+            "asset": "LETROZOLE",
+            "trials": 64
+          },
+          {
+            "asset": "FULVESTRANT",
+            "trials": 57
+          },
+          {
+            "asset": "TRILACICLIB",
+            "trials": 27
+          },
+          {
+            "asset": "TRASTUZUMAB",
+            "trials": 23
+          },
+          {
+            "asset": "EVEROLIMUS",
+            "trials": 17
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Cyclin-dependent kinase 4 inhibitor",
+            "components": 213
+          },
+          {
+            "mechanism": "Cyclin-dependent kinase 6 inhibitor",
+            "components": 212
+          },
+          {
+            "mechanism": "CDK6/cyclin D1 inhibitor",
+            "components": 153
+          },
+          {
+            "mechanism": "Cyclin-dependent kinase 4/cyclin D1 inhibitor",
+            "components": 153
+          },
+          {
+            "mechanism": "Cytochrome P450 19A1 inhibitor",
+            "components": 97
+          },
+          {
+            "mechanism": "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+            "components": 67
+          }
+        ]
+      },
       "median_followup_months": 71.5565,
       "cohorts": [
         {
@@ -7366,7 +10787,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "generated_at_utc": "2026-09-20T20:08:31Z",
       "open_access": false
     },
     {
@@ -7506,6 +10927,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 553,
+        "modalities": {
+          "Small molecule": 1683,
+          "Antibody": 756,
+          "Unknown": 340,
+          "Protein": 131,
+          "ADC": 54,
+          "Cell therapy": 40,
+          "Vaccine": 21,
+          "Oncolytic virus": 19,
+          "Gene therapy": 8,
+          "Bispecific antibody": 7,
+          "Oligosaccharide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "GEMCITABINE",
+            "trials": 503
+          },
+          {
+            "asset": "CAPECITABINE",
+            "trials": 440
+          },
+          {
+            "asset": "OXALIPLATIN",
+            "trials": 395
+          },
+          {
+            "asset": "FLUOROURACIL",
+            "trials": 393
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 301
+          },
+          {
+            "asset": "CISPLATIN",
+            "trials": 293
+          },
+          {
+            "asset": "LEUCOVORIN",
+            "trials": 273
+          },
+          {
+            "asset": "PEMETREXED",
+            "trials": 231
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 2432
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 1270
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 1050
+          },
+          {
+            "mechanism": "DNA polymerase (alpha/delta/epsilon) inhibitor",
+            "components": 658
+          },
+          {
+            "mechanism": "Ribonucleoside-diphosphate reductase RR1 inhibitor",
+            "components": 603
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 543
+          }
+        ]
+      },
       "median_followup_months": 44.5503,
       "cohorts": [
         {
@@ -7598,7 +11098,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:53Z",
+      "generated_at_utc": "2026-09-20T20:08:34Z",
       "open_access": false
     },
     {
@@ -7738,6 +11238,84 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 310,
+        "modalities": {
+          "Small molecule": 610,
+          "Antibody": 569,
+          "Unknown": 112,
+          "Protein": 51,
+          "Cell therapy": 27,
+          "ADC": 22,
+          "Oncolytic virus": 19,
+          "Vaccine": 18,
+          "Bispecific antibody": 5,
+          "Gene therapy": 3
+        },
+        "top_assets": [
+          {
+            "asset": "OXALIPLATIN",
+            "trials": 194
+          },
+          {
+            "asset": "GEMCITABINE",
+            "trials": 189
+          },
+          {
+            "asset": "CAPECITABINE",
+            "trials": 189
+          },
+          {
+            "asset": "CISPLATIN",
+            "trials": 165
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 148
+          },
+          {
+            "asset": "FLUOROURACIL",
+            "trials": 145
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 138
+          },
+          {
+            "asset": "PEMETREXED",
+            "trials": 129
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 983
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 535
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 394
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 310
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 227
+          },
+          {
+            "mechanism": "Ribonucleoside-diphosphate reductase RR1 inhibitor",
+            "components": 217
+          }
+        ]
+      },
       "median_followup_months": 38.6366,
       "cohorts": [
         {
@@ -7830,7 +11408,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:53Z",
+      "generated_at_utc": "2026-09-20T20:08:34Z",
       "open_access": false
     },
     {
@@ -7970,6 +11548,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 651,
+        "modalities": {
+          "Small molecule": 1631,
+          "Antibody": 913,
+          "ADC": 440,
+          "Unknown": 268,
+          "Protein": 137,
+          "Cell therapy": 27,
+          "Vaccine": 25,
+          "Oncolytic virus": 18,
+          "Bispecific antibody": 11,
+          "Gene therapy": 7,
+          "Oligonucleotide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "PACLITAXEL",
+            "trials": 884
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 344
+          },
+          {
+            "asset": "DOCETAXEL ANHYDROUS",
+            "trials": 320
+          },
+          {
+            "asset": "CISPLATIN",
+            "trials": 244
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 225
+          },
+          {
+            "asset": "GEMCITABINE",
+            "trials": 221
+          },
+          {
+            "asset": "DOXORUBICIN",
+            "trials": 184
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 171
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 1952
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 1645
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 380
+          },
+          {
+            "mechanism": "Tubulin stabiliser",
+            "components": 331
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 325
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 300
+          }
+        ]
+      },
       "median_followup_months": 53.848,
       "cohorts": [
         {
@@ -8062,7 +11719,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "generated_at_utc": "2026-09-20T20:08:34Z",
       "open_access": false
     },
     {
@@ -8202,6 +11859,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 515,
+        "modalities": {
+          "Small molecule": 957,
+          "Antibody": 472,
+          "ADC": 285,
+          "Unknown": 202,
+          "Protein": 102,
+          "Cell therapy": 18,
+          "Vaccine": 11,
+          "Oncolytic virus": 9,
+          "Bispecific antibody": 6,
+          "Gene therapy": 2,
+          "Oligonucleotide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "IRINOTECAN",
+            "trials": 315
+          },
+          {
+            "asset": "DOXORUBICIN",
+            "trials": 279
+          },
+          {
+            "asset": "ETOPOSIDE",
+            "trials": 225
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 208
+          },
+          {
+            "asset": "FLUOROURACIL",
+            "trials": 167
+          },
+          {
+            "asset": "LEUCOVORIN",
+            "trials": 141
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 131
+          },
+          {
+            "asset": "VINCRISTINE",
+            "trials": 128
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 1640
+          },
+          {
+            "mechanism": "DNA topoisomerase I inhibitor",
+            "components": 551
+          },
+          {
+            "mechanism": "DNA topoisomerase II alpha inhibitor",
+            "components": 461
+          },
+          {
+            "mechanism": "RNA inhibitor",
+            "components": 390
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 347
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 257
+          }
+        ]
+      },
       "median_followup_months": 47.9343,
       "cohorts": [
         {
@@ -8294,7 +12030,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "generated_at_utc": "2026-09-20T20:08:33Z",
       "open_access": false
     },
     {
@@ -8434,6 +12170,84 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 138,
+        "modalities": {
+          "Small molecule": 396,
+          "Antibody": 184,
+          "Unknown": 40,
+          "ADC": 10,
+          "Gene therapy": 7,
+          "Cell therapy": 6,
+          "Protein": 2,
+          "Vaccine component": 1,
+          "Vaccine": 1,
+          "Oligonucleotide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "IBRUTINIB",
+            "trials": 155
+          },
+          {
+            "asset": "ACALABRUTINIB",
+            "trials": 85
+          },
+          {
+            "asset": "RITUXIMAB",
+            "trials": 83
+          },
+          {
+            "asset": "ZANUBRUTINIB",
+            "trials": 74
+          },
+          {
+            "asset": "VENETOCLAX",
+            "trials": 60
+          },
+          {
+            "asset": "OBINUTUZUMAB",
+            "trials": 56
+          },
+          {
+            "asset": "ORELABRUTINIB",
+            "trials": 40
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 28
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tyrosine-protein kinase BTK inhibitor",
+            "components": 415
+          },
+          {
+            "mechanism": "B-lymphocyte antigen CD20 binding agent",
+            "components": 166
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 100
+          },
+          {
+            "mechanism": "Apoptosis regulator Bcl-2 inhibitor",
+            "components": 66
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 36
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 32
+          }
+        ]
+      },
       "median_followup_months": 61.5031,
       "cohorts": [
         {
@@ -8526,7 +12340,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:50Z",
+      "generated_at_utc": "2026-09-20T20:08:31Z",
       "open_access": false
     },
     {
@@ -8666,6 +12480,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 286,
+        "modalities": {
+          "Antibody": 754,
+          "Small molecule": 252,
+          "Unknown": 91,
+          "ADC": 32,
+          "Protein": 19,
+          "Vaccine": 12,
+          "Cell therapy": 7,
+          "Gene therapy": 6,
+          "Oligonucleotide": 4,
+          "Bispecific antibody": 3,
+          "Oncolytic virus": 2
+        },
+        "top_assets": [
+          {
+            "asset": "IPILIMUMAB",
+            "trials": 349
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 295
+          },
+          {
+            "asset": "CADONILIMAB",
+            "trials": 139
+          },
+          {
+            "asset": "DURVALUMAB",
+            "trials": 129
+          },
+          {
+            "asset": "TREMELIMUMAB",
+            "trials": 129
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 51
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 47
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 37
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Cytotoxic T-lymphocyte protein 4 inhibitor",
+            "components": 693
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 534
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 194
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 178
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 81
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 69
+          }
+        ]
+      },
       "median_followup_months": 67.384,
       "cohorts": [
         {
@@ -8758,7 +12651,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "generated_at_utc": "2026-09-20T20:08:24Z",
       "open_access": false
     },
     {
@@ -8898,6 +12791,80 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 212,
+        "modalities": {
+          "Small molecule": 341,
+          "Antibody": 126,
+          "Unknown": 46,
+          "ADC": 7,
+          "Protein": 6,
+          "Oligosaccharide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "REGORAFENIB",
+            "trials": 109
+          },
+          {
+            "asset": "SURUFATINIB",
+            "trials": 67
+          },
+          {
+            "asset": "PEMIGATINIB",
+            "trials": 36
+          },
+          {
+            "asset": "PAZOPANIB",
+            "trials": 26
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 23
+          },
+          {
+            "asset": "ERDAFITINIB",
+            "trials": 22
+          },
+          {
+            "asset": "NINTEDANIB",
+            "trials": 18
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 16
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Fibroblast growth factor receptor 1 inhibitor",
+            "components": 263
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 256
+          },
+          {
+            "mechanism": "Fibroblast growth factor receptor 2 inhibitor",
+            "components": 171
+          },
+          {
+            "mechanism": "Platelet-derived growth factor receptor inhibitor",
+            "components": 164
+          },
+          {
+            "mechanism": "Stem cell growth factor receptor inhibitor",
+            "components": 155
+          },
+          {
+            "mechanism": "Serine/threonine-protein kinase B-raf inhibitor",
+            "components": 132
+          }
+        ]
+      },
       "median_followup_months": 63.9014,
       "cohorts": [
         {
@@ -8990,7 +12957,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:49Z",
+      "generated_at_utc": "2026-09-20T20:08:29Z",
       "open_access": false
     },
     {
@@ -9130,6 +13097,84 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 203,
+        "modalities": {
+          "Antibody": 482,
+          "Small molecule": 385,
+          "Unknown": 53,
+          "ADC": 48,
+          "Protein": 45,
+          "Cell therapy": 25,
+          "Gene therapy": 6,
+          "Bispecific antibody": 5,
+          "Vaccine": 2,
+          "Oligosaccharide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "RITUXIMAB",
+            "trials": 302
+          },
+          {
+            "asset": "OBINUTUZUMAB",
+            "trials": 130
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 120
+          },
+          {
+            "asset": "PREDNISONE",
+            "trials": 90
+          },
+          {
+            "asset": "VINCRISTINE",
+            "trials": 89
+          },
+          {
+            "asset": "DOXORUBICIN",
+            "trials": 83
+          },
+          {
+            "asset": "LENALIDOMIDE",
+            "trials": 73
+          },
+          {
+            "asset": "VENETOCLAX",
+            "trials": 66
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "B-lymphocyte antigen CD20 binding agent",
+            "components": 590
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 404
+          },
+          {
+            "mechanism": "Tyrosine-protein kinase BTK inhibitor",
+            "components": 154
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 141
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 131
+          },
+          {
+            "mechanism": "T cell surface glycoprotein CD3 binding agent",
+            "components": 111
+          }
+        ]
+      },
       "median_followup_months": 58.2834,
       "cohorts": [
         {
@@ -9222,7 +13267,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "generated_at_utc": "2026-09-20T20:08:27Z",
       "open_access": false
     },
     {
@@ -9362,6 +13407,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 276,
+        "modalities": {
+          "Antibody": 714,
+          "Small molecule": 244,
+          "Unknown": 78,
+          "ADC": 32,
+          "Protein": 14,
+          "Vaccine": 10,
+          "Cell therapy": 7,
+          "Gene therapy": 5,
+          "Oligonucleotide": 4,
+          "Bispecific antibody": 3,
+          "Oncolytic virus": 2
+        },
+        "top_assets": [
+          {
+            "asset": "IPILIMUMAB",
+            "trials": 321
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 295
+          },
+          {
+            "asset": "CADONILIMAB",
+            "trials": 139
+          },
+          {
+            "asset": "DURVALUMAB",
+            "trials": 129
+          },
+          {
+            "asset": "TREMELIMUMAB",
+            "trials": 122
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 48
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 47
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 37
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Cytotoxic T-lymphocyte protein 4 inhibitor",
+            "components": 653
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 534
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 194
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 172
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 78
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 67
+          }
+        ]
+      },
       "median_followup_months": 67.384,
       "cohorts": [
         {
@@ -9454,7 +13578,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:45Z",
+      "generated_at_utc": "2026-09-20T20:08:24Z",
       "open_access": false
     },
     {
@@ -9594,6 +13718,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 345,
+        "modalities": {
+          "Small molecule": 477,
+          "Antibody": 382,
+          "ADC": 271,
+          "Unknown": 125,
+          "Protein": 37,
+          "Vaccine": 27,
+          "Cell therapy": 13,
+          "Oncolytic virus": 9,
+          "Bispecific antibody": 5,
+          "Oligonucleotide": 1,
+          "Gene therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "TRASTUZUMAB",
+            "trials": 220
+          },
+          {
+            "asset": "PYROTINIB",
+            "trials": 114
+          },
+          {
+            "asset": "PERTUZUMAB",
+            "trials": 96
+          },
+          {
+            "asset": "DISITAMAB VEDOTIN",
+            "trials": 81
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 70
+          },
+          {
+            "asset": "CAPECITABINE",
+            "trials": 70
+          },
+          {
+            "asset": "TRASTUZUMAB DERUXTECAN",
+            "trials": 68
+          },
+          {
+            "asset": "AFATINIB",
+            "trials": 53
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+            "components": 643
+          },
+          {
+            "mechanism": "Epidermal growth factor receptor erbB1 inhibitor",
+            "components": 268
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 237
+          },
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 189
+          },
+          {
+            "mechanism": "Receptor protein-tyrosine kinase erbB-2 binding agent",
+            "components": 123
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 112
+          }
+        ]
+      },
       "median_followup_months": 39.4251,
       "cohorts": [
         {
@@ -9686,7 +13889,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:47Z",
+      "generated_at_utc": "2026-09-20T20:08:28Z",
       "open_access": false
     },
     {
@@ -9826,6 +14029,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 471,
+        "modalities": {
+          "Small molecule": 1849,
+          "Antibody": 1286,
+          "Unknown": 364,
+          "Protein": 76,
+          "ADC": 52,
+          "Bispecific antibody": 21,
+          "Vaccine": 19,
+          "Cell therapy": 18,
+          "Oncolytic virus": 15,
+          "Oligonucleotide": 1,
+          "Oligosaccharide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "BEVACIZUMAB",
+            "trials": 474
+          },
+          {
+            "asset": "RIVOCERANIB",
+            "trials": 343
+          },
+          {
+            "asset": "LENVATINIB",
+            "trials": 267
+          },
+          {
+            "asset": "CATEQUENTINIB",
+            "trials": 259
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 159
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 150
+          },
+          {
+            "asset": "CABOZANTINIB",
+            "trials": 134
+          },
+          {
+            "asset": "CAMRELIZUMAB",
+            "trials": 130
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Vascular endothelial growth factor receptor 2 inhibitor",
+            "components": 925
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 820
+          },
+          {
+            "mechanism": "Stem cell growth factor receptor inhibitor",
+            "components": 615
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 551
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor A inhibitor",
+            "components": 498
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 423
+          }
+        ]
+      },
       "median_followup_months": 39.0637,
       "cohorts": [
         {
@@ -9918,7 +14200,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "generated_at_utc": "2026-09-20T20:08:28Z",
       "open_access": false
     },
     {
@@ -10058,6 +14340,82 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 108,
+        "modalities": {
+          "Small molecule": 240,
+          "Antibody": 113,
+          "Protein": 91,
+          "Unknown": 11,
+          "ADC": 7,
+          "Gene therapy": 5,
+          "Bispecific antibody": 1,
+          "Cell therapy": 1
+        },
+        "top_assets": [
+          {
+            "asset": "DEXAMETHASONE",
+            "trials": 170
+          },
+          {
+            "asset": "BORTEZOMIB",
+            "trials": 116
+          },
+          {
+            "asset": "CARFILZOMIB",
+            "trials": 79
+          },
+          {
+            "asset": "LENALIDOMIDE",
+            "trials": 76
+          },
+          {
+            "asset": "DARATUMUMAB",
+            "trials": 66
+          },
+          {
+            "asset": "IXAZOMIB",
+            "trials": 51
+          },
+          {
+            "asset": "POMALIDOMIDE",
+            "trials": 36
+          },
+          {
+            "asset": "CYCLOPHOSPHAMIDE ANHYDROUS",
+            "trials": 33
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "26S proteasome inhibitor",
+            "components": 269
+          },
+          {
+            "mechanism": "Glucocorticoid receptor agonist",
+            "components": 187
+          },
+          {
+            "mechanism": "CRL4(CRBN) E3 ubiquitin ligase inhibitor",
+            "components": 118
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 98
+          },
+          {
+            "mechanism": "Lymphocyte differentiation antigen CD38 inhibitor",
+            "components": 84
+          },
+          {
+            "mechanism": "CRL4(CRBN) E3 ubiquitin ligase modulator",
+            "components": 83
+          }
+        ]
+      },
       "median_followup_months": 74.6119,
       "cohorts": [
         {
@@ -10128,7 +14486,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:51Z",
+      "generated_at_utc": "2026-09-20T20:08:33Z",
       "open_access": false
     },
     {
@@ -10268,6 +14626,83 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 206,
+        "modalities": {
+          "Small molecule": 372,
+          "Unknown": 62,
+          "Antibody": 57,
+          "Protein": 37,
+          "ADC": 14,
+          "Cell therapy": 5,
+          "Vaccine": 5,
+          "Oncolytic virus": 5,
+          "Bispecific antibody": 2
+        },
+        "top_assets": [
+          {
+            "asset": "LETROZOLE",
+            "trials": 137
+          },
+          {
+            "asset": "FULVESTRANT",
+            "trials": 134
+          },
+          {
+            "asset": "PALBOCICLIB",
+            "trials": 56
+          },
+          {
+            "asset": "TAMOXIFEN",
+            "trials": 50
+          },
+          {
+            "asset": "EXEMESTANE",
+            "trials": 42
+          },
+          {
+            "asset": "ABEMACICLIB",
+            "trials": 42
+          },
+          {
+            "asset": "ANASTROZOLE",
+            "trials": 39
+          },
+          {
+            "asset": "RIBOCICLIB",
+            "trials": 26
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Cytochrome P450 19A1 inhibitor",
+            "components": 223
+          },
+          {
+            "mechanism": "Estrogen receptor degrader",
+            "components": 138
+          },
+          {
+            "mechanism": "Estrogen receptor alpha antagonist",
+            "components": 137
+          },
+          {
+            "mechanism": "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+            "components": 71
+          },
+          {
+            "mechanism": "Cyclin-dependent kinase 4 inhibitor",
+            "components": 69
+          },
+          {
+            "mechanism": "Cyclin-dependent kinase 6 inhibitor",
+            "components": 69
+          }
+        ]
+      },
       "median_followup_months": 56.5092,
       "cohorts": [
         {
@@ -10338,7 +14773,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:52Z",
+      "generated_at_utc": "2026-09-20T20:08:33Z",
       "open_access": false
     },
     {
@@ -10478,6 +14913,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 362,
+        "modalities": {
+          "Antibody": 1017,
+          "Small molecule": 893,
+          "Unknown": 191,
+          "Protein": 52,
+          "ADC": 27,
+          "Cell therapy": 18,
+          "Vaccine": 18,
+          "Bispecific antibody": 18,
+          "Oncolytic virus": 15,
+          "Oligonucleotide": 1,
+          "Oligosaccharide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "BEVACIZUMAB",
+            "trials": 272
+          },
+          {
+            "asset": "LENVATINIB",
+            "trials": 198
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 159
+          },
+          {
+            "asset": "RIVOCERANIB",
+            "trials": 140
+          },
+          {
+            "asset": "CAMRELIZUMAB",
+            "trials": 130
+          },
+          {
+            "asset": "CATEQUENTINIB",
+            "trials": 116
+          },
+          {
+            "asset": "ATEZOLIZUMAB",
+            "trials": 112
+          },
+          {
+            "asset": "PACLITAXEL",
+            "trials": 103
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 423
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor inhibitor",
+            "components": 418
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor receptor 2 inhibitor",
+            "components": 390
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 antagonist",
+            "components": 329
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 326
+          },
+          {
+            "mechanism": "Vascular endothelial growth factor A inhibitor",
+            "components": 281
+          }
+        ]
+      },
       "median_followup_months": 36.9938,
       "cohorts": [
         {
@@ -10570,7 +15084,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:48Z",
+      "generated_at_utc": "2026-09-20T20:08:29Z",
       "open_access": false
     },
     {
@@ -10710,6 +15224,85 @@
           "n_risk": 4402
         }
       ],
+      "q_value_by": 1.0,
+      "family_size": 83,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 368,
+        "modalities": {
+          "Antibody": 647,
+          "Small molecule": 605,
+          "ADC": 121,
+          "Unknown": 95,
+          "Protein": 49,
+          "Cell therapy": 19,
+          "Oncolytic virus": 18,
+          "Vaccine": 17,
+          "Bispecific antibody": 9,
+          "Gene therapy": 2,
+          "Oligonucleotide": 1
+        },
+        "top_assets": [
+          {
+            "asset": "PACLITAXEL",
+            "trials": 419
+          },
+          {
+            "asset": "CARBOPLATIN",
+            "trials": 192
+          },
+          {
+            "asset": "PEMBROLIZUMAB",
+            "trials": 171
+          },
+          {
+            "asset": "CISPLATIN",
+            "trials": 138
+          },
+          {
+            "asset": "DOCETAXEL ANHYDROUS",
+            "trials": 114
+          },
+          {
+            "asset": "NIVOLUMAB",
+            "trials": 78
+          },
+          {
+            "asset": "GEMCITABINE",
+            "trials": 77
+          },
+          {
+            "asset": "PEMETREXED",
+            "trials": 57
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Tubulin inhibitor",
+            "components": 714
+          },
+          {
+            "mechanism": "DNA inhibitor",
+            "components": 672
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 inhibitor",
+            "components": 380
+          },
+          {
+            "mechanism": "Thymidylate synthase inhibitor",
+            "components": 185
+          },
+          {
+            "mechanism": "Programmed cell death protein 1 antagonist",
+            "components": 144
+          },
+          {
+            "mechanism": "Programmed cell death 1 ligand 1 inhibitor",
+            "components": 130
+          }
+        ]
+      },
       "median_followup_months": 51.5154,
       "cohorts": [
         {
@@ -10780,7 +15373,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:53Z",
+      "generated_at_utc": "2026-09-20T20:08:34Z",
       "open_access": false
     }
   ]
