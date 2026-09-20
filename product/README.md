@@ -69,6 +69,16 @@ their sources; the classification, linkage, validation and curation are derived 
 | `focus_signal_trial_count`, `focus_efficacy_signal_count`, `focus_safety_signal_count` | Signal trials where the drug is the investigational focus | Derived |
 | `repeated_efficacy_signal`, `repeated_safety_signal` | Two or more such trials | Derived |
 
+## Evidence packages
+
+| File | Content |
+| --- | --- |
+| `evidence_packages/<area>-<cohort>.html` | One cohort assembled for a buyer: the rules that define it written out, the rate and the time-to-event curve against a like-for-like comparator, every stop with its registry reason and whether it was that trial's own verdict or followed a decision elsewhere, the terminations whose cause cannot be read, and the trials still open. Our interpretation sits in its own labelled block. |
+| `evidence_packages/<area>-<cohort>.json` | Every input to every figure in the report. |
+
+Built with `scripts/signals/build_evidence_package.py --area <area> --class <class>`;
+`--with-class`, `--genes`, `--sponsor-group` and `--modality` narrow the cohort further.
+
 ## Discontinuation rates and briefs
 
 | File | Content |
