@@ -1,10 +1,12 @@
 // web/pages/validation.tsx
 
 import Head from "next/head";
+import { useState } from "react";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import validation from "@/data/validation_v2.json";
+import cohortFlow from "@/data/cohort_flow.json";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/validation`;
@@ -41,6 +43,10 @@ export default function ValidationPage() {
     ["Stated cause — precision", "assertion_outcome_precision"],
     ["No material disagreement", "assertion_no_material_disagreement"],
   ].map(([name, key]) => ({ name, value: est[key as string], interval: ci[key as string], raw: counts[key as string] }));
+
+  const flow: any = cohortFlow;
+  const [flowArea, setFlowArea] = useState<string>(flow.areas[0].area);
+  const shownFlow = flow.areas.find((a: any) => a.area === flowArea) || flow.areas[0];
 
   const cell = (predicted: string, reference: string) =>
     confusion.find((c) => c.predicted === predicted && c.reference === reference)?.count ?? 0;
@@ -80,6 +86,77 @@ export default function ValidationPage() {
             annotators, the adjudication, the per-class results and the confusion matrix. Classifier {v.classifier_version},
             dataset {v.dataset_version}, sample of {v.sample_size}.
           </p>
+
+          <section className="section">
+            <h2>From the registry to the denominator</h2>
+            <p className="sectionSub">
+              Every filter between the whole eligible registry and a published rate, with what each one removes. A denominator is
+              only worth something if you can see how it was built.
+            </p>
+            <div className="filters">
+              {flow.areas.map((a: any) => (
+                <button
+                  key={a.area}
+                  type="button"
+                  className={a.area === flowArea ? "chip chipOn" : "chip"}
+                  onClick={() => setFlowArea(a.area)}
+                  aria-pressed={a.area === flowArea}
+                >
+                  {a.area}
+                </button>
+              ))}
+            </div>
+            <div className="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th className="num">Trials</th>
+                    <th>Why</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {shownFlow.steps.map((st: any, i: number) => (
+                    <tr key={st.step}>
+                      <td className={i === shownFlow.steps.length - 1 ? "strong" : ""}>{st.step}</td>
+                      <td className="num strong">{n(st.trials)}</td>
+                      <td className="muted small">{st.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="fine">
+              {pct(shownFlow.rate)} = {n(shownFlow.biological_stops)} ÷ {n(shownFlow.closed)}. Of those closed trials,{" "}
+              {n(shownFlow.aside.closed_with_resolved_target)} have a drug that resolves to a target — the population any mechanism
+              class is drawn from, and the one a class rate should be compared against.{" "}
+              {n(shownFlow.aside.terminated_with_no_readable_cause)} of the{" "}
+              {n(shownFlow.aside.terminated_any_reason)} terminations state no cause the classifier can read; they are counted in
+              the denominator and not in the numerator, which is why every segment also carries a band up to the rate that would
+              hold if all of them were biological. A further {n(shownFlow.aside.still_open_or_unknown)} trials in the window are
+              still open or of unknown status and are in neither.
+            </p>
+            {flow.signals_reconciliation ? (
+              <>
+                <h3 className="subhead">Why the stopped-trial dataset says {n(flow.signals_reconciliation.dataset_rows)} and the
+                  oncology rate says {n(flow.areas[0].biological_stops)}</h3>
+                <div className="tableWrap">
+                  <table>
+                    <tbody>
+                      {flow.signals_reconciliation.steps.map((st: any) => (
+                        <tr key={st.step}>
+                          <td>{st.step}</td>
+                          <td className="num strong">{n(st.trials)}</td>
+                          <td className="muted small">{st.note}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ) : null}
+            <p className="fine">{flow.source}</p>
+          </section>
 
           <section className="section">
             <h2>Headline estimates</h2>
@@ -438,6 +515,38 @@ export default function ValidationPage() {
         }
         .matrix .zero {
           color: rgba(15, 23, 42, 0.3);
+        }
+        .filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin: 12px 0 0;
+        }
+        .chip {
+          font-size: 12.5px;
+          font-weight: 700;
+          color: var(--text-muted);
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          padding: 5px 12px;
+          cursor: pointer;
+          font-family: inherit;
+        }
+        .chipOn {
+          background: var(--accent);
+          border-color: var(--accent);
+          color: #fff;
+        }
+        .subhead {
+          margin: 22px 0 0;
+          font-size: 14.5px;
+          font-weight: 850;
+          max-width: 70ch;
+        }
+        .small {
+          font-size: 12.5px;
+          line-height: 1.45;
         }
         .fine {
           margin: 12px 0 0;
