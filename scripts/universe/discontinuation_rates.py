@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Biological discontinuation benchmarks with denominators.
+"""Biological discontinuation rates with denominators.
 
 Definitions (stated in every output):
   closed trial        overall status COMPLETED or TERMINATED. WITHDRAWN (never enrolled),
@@ -141,6 +141,46 @@ def select(rows, *, genes=None, with_genes=None, modality=None, phases=None, sta
     return out
 
 
+# Ten NCT records are not ten independent experiments. Several can be one molecule, one
+# sponsor, or one programme-wide decision taken once and applied to every trial of that drug.
+# A programme is a sponsor's development of one asset; where the asset could not be resolved
+# the trial counts as its own programme, so concentration is never overstated.
+UNRESOLVED_TERMINATIONS = {"CAUSE_NOT_STATED", "UNKNOWN"}
+
+
+def programme(r: dict) -> tuple:
+    ids = tuple(sorted(r.get("focus_entity_ids") or []))
+    sponsor = r.get("_sponsor_group") or r.get("lead_sponsor") or "unknown sponsor"
+    return (sponsor, ids if ids else f"unresolved:{r.get('nct_id')}")
+
+
+def concentration(bio: list[dict], closed: list[dict]) -> dict:
+    """How many independent decisions produced the stops, and what survives removing the largest."""
+    if not bio:
+        return {"stop_programmes": 0, "stop_sponsors": 0, "stop_assets": 0,
+                "largest_programme": None, "largest_programme_stops": 0,
+                "stops_with_unresolved_asset": 0, "rate_leave_one_programme_out": None}
+    progs = defaultdict(list)
+    for r in bio:
+        progs[programme(r)].append(r)
+    top, top_rows = max(progs.items(), key=lambda kv: (len(kv[1]), kv[0][0]))
+    # Remove that programme's trials from numerator and denominator alike: the question is what
+    # the segment looks like if the biggest single decision had never been taken.
+    kept_closed = [r for r in closed if programme(r) != top]
+    kept_bio = [r for r in kept_closed if r["_bio"]]
+    return {
+        "stop_programmes": len(progs),
+        "stop_sponsors": len({programme(r)[0] for r in bio}),
+        "stop_assets": len({tuple(sorted(r.get("focus_entity_ids") or [])) for r in bio if r.get("focus_entity_ids")}),
+        "largest_programme": top[0],
+        "largest_programme_stops": len(top_rows),
+        "stops_with_unresolved_asset": sum(1 for r in bio if not r.get("focus_entity_ids")),
+        "rate_leave_one_programme_out": (len(kept_bio) / len(kept_closed)) if kept_closed else None,
+        "closed_leave_one_programme_out": len(kept_closed),
+        "stops_leave_one_programme_out": len(kept_bio),
+    }
+
+
 def summarize(rows) -> dict:
     closed = [r for r in rows if r["_closed"]]
     started = [r for r in rows if r.get("overall_status") != "WITHDRAWN"]
@@ -151,6 +191,11 @@ def summarize(rows) -> dict:
     eff = sum(1 for r in bio if "EFFICACY_FUTILITY" in r["_reasons"])
     saf = sum(1 for r in bio if "SAFETY" in r["_reasons"])
     both = sum(1 for r in bio if "EFFICACY_FUTILITY" in r["_reasons"] and "SAFETY" in r["_reasons"])
+    # Terminated trials whose registry text names no cause, or none we can read. They are not
+    # biological stops, but they are not evidence of absence either: the honest headline is a
+    # band from the confirmed rate to the rate if every one of them were biological.
+    unresolved = [r for r in closed if r.get("overall_status") == "TERMINATED"
+                  and r.get("classification_outcome_v2") in UNRESOLVED_TERMINATIONS]
     lo, hi = wilson(len(bio), len(closed))
     return {
         "trials": len(rows), "closed": len(closed), "open_or_other": len(rows) - len(closed),
@@ -161,6 +206,9 @@ def summarize(rows) -> dict:
         "rate": (len(bio) / len(closed)) if closed else None, "ci95": [lo, hi],
         "rate_lower_bound_all_started": (len(bio) / len(started)) if started else None,
         "efficacy_rate": (eff / len(closed)) if closed else None, "safety_rate": (saf / len(closed)) if closed else None,
+        "unresolved_terminations": len(unresolved),
+        "rate_if_all_unresolved_were_biological": ((len(bio) + len(unresolved)) / len(closed)) if closed else None,
+        **concentration(bio, closed),
         "nct_biological_stops": sorted(r["nct_id"] for r in bio),
     }
 
@@ -193,12 +241,13 @@ def standard_tables(rows, out_dir: Path, start, phases, slug: str = "oncology") 
             for k in keyfn(r) or []:
                 if k is not None:
                     groups[k].append(r)
-        path = out_dir / f"{slug}_benchmarks_{name}.csv"
+        path = out_dir / f"{slug}_discontinuation_rates_{name}.csv"
         with open(path, "w", newline="") as fh:
             w = csv.writer(fh)
             w.writerow(["segment", "trials", "closed", "closed_share", "biological_stops", "stops_efficacy_only", "stops_safety_only",
                         "stops_efficacy_and_safety", "stops_benefit_risk_only", "efficacy_stops_any", "safety_stops_any",
-                        "rate", "ci95_low", "ci95_high"])
+                        "rate", "ci95_low", "ci95_high", "unresolved_terminations", "rate_if_all_unresolved_were_biological",
+                        "stop_programmes", "stop_sponsors", "largest_programme_stops", "rate_leave_one_programme_out"])
             for k, rs in sorted(groups.items(), key=lambda kv: -len(kv[1])):
                 s = summarize(rs)
                 if s["closed"] < 10:
@@ -206,21 +255,39 @@ def standard_tables(rows, out_dir: Path, start, phases, slug: str = "oncology") 
                 w.writerow([k, s["trials"], s["closed"], round(s["closed_share"] or 0, 4), s["biological_stops"],
                             s["stops_efficacy_only"], s["stops_safety_only"], s["stops_efficacy_and_safety"],
                             s["stops_benefit_risk_only"], s["efficacy_stops"], s["safety_stops"],
-                            round(s["rate"], 4), round(s["ci95"][0], 4), round(s["ci95"][1], 4)])
+                            round(s["rate"], 4), round(s["ci95"][0], 4), round(s["ci95"][1], 4),
+                            s["unresolved_terminations"], round(s["rate_if_all_unresolved_were_biological"], 4),
+                            s["stop_programmes"], s["stop_sponsors"], s["largest_programme_stops"],
+                            round(s["rate_leave_one_programme_out"], 4) if s["rate_leave_one_programme_out"] is not None else ""])
         print("wrote", path.relative_to(ROOT))
 
 
 def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") -> dict:
-    """Machine-readable benchmark pack: baseline plus every segment with enough closed trials."""
+    """Machine-readable rate pack: baseline plus every segment with enough closed trials."""
+    from scripts.universe.cumulative_incidence import curve  # local: only the pack needs it
+    from scripts.universe.multiplicity import annotate
+
     base = select(rows, phases=phases, start=start)
     baseline = summarize(base)
+    # A mechanism class can only contain trials whose drug was resolved to a target, and a
+    # resolved trial is not a random trial: in oncology 84% of biological stops resolve against
+    # 72% of all trials, so comparing a class with the all-trials baseline compares mapping
+    # eligibility as much as biology. The resolved baseline is the like-for-like comparator.
+    resolved = [r for r in base if r["_genes"]]
+    baseline_resolved = summarize(resolved)
     segments = []
 
     def add(dimension, segment, subset, extra=None):
         s = summarize(subset)
-        if s["closed"] < 10:
+        # Small segments are kept when the evidence is unambiguous and spread across sponsors:
+        # BACE / gamma-secretase is 4 of 4 closed trials from 3 independent programmes, and a
+        # flat size threshold would drop the clearest finding in neurology.
+        small_but_certain = (s["biological_stops"] >= 3 and s["stop_programmes"] >= 3
+                             and s["closed"] >= 3 and s["ci95"][0] > (baseline_resolved["rate"] or 0))
+        if s["closed"] < 10 and not small_but_certain:
             return
         segments.append({"dimension": dimension, "segment": segment, **{k: v for k, v in s.items() if k != "nct_biological_stops"},
+                         "cumulative_incidence": curve(subset),
                          "biological_stop_nct_ids": s["nct_biological_stops"], **(extra or {})})
 
     # Each area has its own classes, and its own class that everything is combined with
@@ -247,9 +314,31 @@ def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") 
     for group, subset in groups.items():
         add("sponsor_group", group, subset)
 
+    # Every segment is tested against the comparator appropriate to it: a mechanism class can
+    # only contain trials whose drug resolved to a target, so it is tested against the resolved
+    # baseline; a phase or start-year segment is the whole population sliced, so it is tested
+    # against the whole baseline. Then the whole family is corrected for multiplicity, because
+    # 194 segments were screened and the striking ones were not chosen at random.
+    CLASS_DIMENSIONS = {"mechanism_class", "mechanism_class_x_phase", "mechanism_class_with_pd1", "target", "target_gene"}
+    for seg in segments:
+        seg["_baseline_rate"] = (baseline_resolved["rate"] if seg["dimension"] in CLASS_DIMENSIONS
+                                 else baseline["rate"]) or 0.0
+        seg["baseline_compared_against"] = ("target-resolved" if seg["dimension"] in CLASS_DIMENSIONS else "all trials")
+        if seg["dimension"] in ("sponsor_group", "sponsor_class"):
+            # Industry terminations are two to three times likelier than academic ones to state
+            # no readable cause, so a sponsor's rate is substantially a measure of what that
+            # sponsor discloses. See scripts/universe/reporting_quality.py.
+            seg["interpretation_warning"] = ("A sponsor-level rate partly measures disclosure practice, not outcomes: "
+                                             "sponsors differ several-fold in how often they record a readable cause "
+                                             "for a termination. Do not read this as a ranking of scientific success.")
+    annotate(segments)
+    for seg in segments:
+        seg.pop("_baseline_rate", None)
+
     pack = {
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "product": "Clinical Trial Failure Benchmarks (oncology)",
+        "product": f"Clinical Trial Failure Discontinuation Rates ({area})",
+        "disease_area": area,
         "window": {"start_year_from": start[0], "start_year_to": start[1], "phases": phases},
         "definitions": {
             "closed": "overall status COMPLETED or TERMINATED; withdrawn, suspended, unknown and ongoing excluded",
@@ -257,8 +346,23 @@ def product_json(rows, start, phases, out: Path, area: str | None = "Oncology") 
             "rate": "biological stops / closed trials, 95% Wilson interval",
             "lower_bound": "biological stops / all trials that were not withdrawn",
             "not_a_failure_rate": "completed trials that missed their endpoints are not detected",
+            "baseline_target_resolved": "the same baseline restricted to trials whose experimental drug resolved to a target; "
+                                        "the like-for-like comparator for any mechanism-class segment",
+            "rate_if_all_unresolved_were_biological": "upper edge of the ambiguity band: every terminated trial whose registry "
+                                                       "text names no readable cause counted as biological",
+            "rate_leave_one_programme_out": "the rate after removing every trial of the single sponsor-asset programme that "
+                                             "contributed the most stops, from numerator and denominator alike",
+            "q_value_by": "Benjamini-Yekutieli false-discovery rate across every segment in this pack, from a one-sided "
+                           "exact binomial test against the segment's own comparator. Yekutieli rather than Hochberg because "
+                           "these segments overlap by construction and are not independent tests. A q of 0.10 means: calling "
+                           "this segment unusual, along with everything at least as extreme, would be wrong about 10% of the time.",
+            "cumulative_incidence": "Aalen-Johansen probability that a trial has been stopped for a biological reason by 12, 24, "
+                                     "36, 48 and 60 months from its start date, with completion and non-biological termination as "
+                                     "competing events and ongoing trials censored at their last registry update",
         },
         "baseline": {k: v for k, v in baseline.items() if k != "nct_biological_stops"},
+        "baseline_cumulative_incidence": curve(base),
+        "baseline_target_resolved": {k: v for k, v in baseline_resolved.items() if k != "nct_biological_stops"},
         "segments": sorted(segments, key=lambda s: (s["dimension"], -s["closed"])),
     }
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -279,8 +383,8 @@ def main() -> int:
     ap.add_argument("--class", dest="klass", help="mechanism class, e.g. 'TIGIT'")
     ap.add_argument("--with-class", help="combination partner class, e.g. 'PD-(L)1'")
     ap.add_argument("--sponsor-group")
-    ap.add_argument("--pack", action="store_true", help="write the machine-readable benchmark pack")
-    ap.add_argument("--tables", action="store_true", help="write standard benchmark tables to product/benchmarks")
+    ap.add_argument("--pack", action="store_true", help="write the machine-readable rate pack")
+    ap.add_argument("--tables", action="store_true", help="write standard rate tables to product/discontinuation_rates")
     ap.add_argument("--area", default="Oncology", help="disease area, e.g. 'Immunology & Autoimmune'")
     args = ap.parse_args()
     split = lambda s: [x.strip() for x in s.split(",")] if s else None
@@ -289,9 +393,9 @@ def main() -> int:
     rows = load(args.area)
     slug = re.sub(r"[^a-z0-9]+", "-", args.area.lower()).strip("-")
     if args.tables:
-        standard_tables(rows, ROOT / "product/benchmarks", start, phases, slug=slug)
+        standard_tables(rows, ROOT / "product/discontinuation_rates", start, phases, slug=slug)
     if args.pack:
-        product_json(rows, start, phases, ROOT / f"product/benchmarks/{slug}_benchmarks_v1.json", area=args.area)
+        product_json(rows, start, phases, ROOT / f"product/discontinuation_rates/{slug}_discontinuation_rates_v1.json", area=args.area)
     common = dict(phases=phases, start=start, sponsor_class=args.sponsor_class, modality=args.modality)
     print(f"{args.area} Phase {args.phases} interventional trials started {start[0]}–{start[1]}:")
     print("  all:", fmt(summarize(select(rows, **common))))

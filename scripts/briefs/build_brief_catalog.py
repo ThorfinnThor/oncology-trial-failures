@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a catalogue of benchmark briefs for every mechanism class with enough data.
+"""Build a catalogue of discontinuation-rate briefs for every mechanism class with enough data.
 
 Runs the brief generator for each class (standalone, and combined with PD-(L)1 where that
 combination has enough closed trials). Briefs are written to product/briefs/ as HTML.
@@ -14,15 +14,20 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.briefs.build_brief import main as build_one  # noqa: E402
-from scripts.universe.benchmarks import load, select, summarize  # noqa: E402
+from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
 from scripts.universe.mechanism_classes import COMBINATION_PARTNER, classes_of  # noqa: E402
+from scripts.universe.multiplicity import benjamini_yekutieli, binom_sf  # noqa: E402
 
 MIN_CLOSED = 20
 MIN_STOPS = 3
-# A small segment is worth a brief when its interval clears the area baseline outright: tau
-# is 7 stops in 10 closed trials (39.7-89.2% against a 5.9% baseline) and the size rule alone
-# would drop the clearest finding in the data.
-SMALL_BUT_CERTAIN_STOPS = 5
+# A small segment is worth a brief when its interval clears the area baseline outright AND the
+# stops came from several independent sponsor-asset programmes. Counting records would keep the
+# wrong things: one sponsor abandoning five trials of one molecule is one decision, while four
+# trials stopped by three different sponsors is three. Tau (7 stops, 4 programmes) and BACE /
+# gamma-secretase (4 of 4 closed trials, 3 sponsors) are the clearest findings in the data and a
+# raw stop threshold drops the second.
+SMALL_BUT_CERTAIN_STOPS = 3
+SMALL_BUT_CERTAIN_PROGRAMMES = 3
 
 
 def main() -> int:
@@ -35,22 +40,36 @@ def main() -> int:
     base = select(rows, phases=phases, start=start)
     window = ["--start", f"{start[0]}:{start[1]}", "--area", args.area]
     partner = COMBINATION_PARTNER.get(args.area)
-    baseline_rate = summarize(base)["rate"]
+    # Scored against the same like-for-like baseline the briefs use: trials whose drug resolved
+    # to a target, since a class segment can only ever contain those.
+    baseline_rate = summarize([r for r in base if r["_genes"]])["rate"]
 
     def worth_a_brief(s: dict) -> bool:
         if s["closed"] >= MIN_CLOSED and s["biological_stops"] >= MIN_STOPS:
             return True
-        return s["biological_stops"] >= SMALL_BUT_CERTAIN_STOPS and s["ci95"][0] > baseline_rate
-    jobs: list[tuple[str, list[str]]] = []
+        return (s["biological_stops"] >= SMALL_BUT_CERTAIN_STOPS
+                and s["stop_programmes"] >= SMALL_BUT_CERTAIN_PROGRAMMES
+                and s["ci95"][0] > baseline_rate)
+    # Every class this area could have produced a brief for is one test in one family. The
+    # q-value each brief prints is computed over that whole family, not over the ones that
+    # happened to clear the publication threshold — otherwise the correction would be applied
+    # to a set already filtered for being extreme, which is the selection effect it exists to
+    # measure. Yekutieli because a class and that class combined with a partner share trials.
+    candidates: list[tuple[str, list[str], dict]] = []
     for name in classes_of(args.area):
-        s = summarize(select(base, klass=name))
-        if worth_a_brief(s):
-            jobs.append((name, ["--class", name, *window]))
-        if not partner or name == partner:
-            continue
-        combo = summarize(select(base, klass=name, with_class=partner))
-        if worth_a_brief(combo):
-            jobs.append((f"{name} + {partner}", ["--class", name, "--with-class", partner, *window]))
+        candidates.append((name, ["--class", name, *window], summarize(select(base, klass=name))))
+        if partner and name != partner:
+            candidates.append((f"{name} + {partner}", ["--class", name, "--with-class", partner, *window],
+                               summarize(select(base, klass=name, with_class=partner))))
+    ps = [binom_sf(c[2]["biological_stops"], c[2]["closed"], baseline_rate) if c[2]["closed"] else 1.0
+          for c in candidates]
+    qs = benjamini_yekutieli(ps)
+    family_size = len(candidates)
+
+    jobs: list[tuple[str, list[str]]] = []
+    for (label, job_args, stats), q in zip(candidates, qs):
+        if worth_a_brief(stats):
+            jobs.append((label, [*job_args, "--q-value", f"{q:.6g}", "--family-size", str(family_size)]))
 
     # One process, one universe load: building 40+ briefs as subprocesses re-read the
     # whole universe each time and exhausted memory when run in parallel.

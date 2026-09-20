@@ -1,0 +1,79 @@
+{
+ "schema_version": 1,
+ "question": "Event ascertainment: when the registry's stop-reason field states no cause, is the cause recorded elsewhere in the record — and if so, is it biological?",
+ "method": "Every terminated trial whose stop-reason field states no readable cause, checked against its brief summary and detailed description. A sentence counts only if it reports this trial being stopped in the past or present perfect; conditional sentences are protocol stopping rules, not events, and are excluded. Recovered sentences run through the same Classification V2 rules as the registry field.",
+ "does_not_change_published_rates": "The published rate is a statement about one registry field, computed the same way every week and reproducible by anyone holding that field. This is a sensitivity analysis beside it, not a correction to it.",
+ "terminations_with_no_readable_cause": 2253,
+ "descriptions_checked": 2253,
+ "reason_recovered": 67,
+ "recovered_share": 0.029738126941855306,
+ "recovered_biological": 4,
+ "recovered_by_outcome": {
+  "UNKNOWN": 46,
+  "CAUSE_NOT_STATED": 9,
+  "NON_BIOLOGICAL": 8,
+  "BIOLOGICAL_FAILURE": 4
+ },
+ "examples": [
+  {
+   "nct_id": "NCT01146561",
+   "outcome": "UNKNOWN",
+   "sentence": "Recruitment of Study A4091044 was stopped effective 27 Dec 2010."
+  },
+  {
+   "nct_id": "NCT01239758",
+   "outcome": "UNKNOWN",
+   "sentence": "To evaluate the long-term safety and tolerability of ACE-031 administration in subjects with Duchenne muscular dystrophy (DMD) who participated in Study A031-03. \\[Note: This study was terminated based on preliminary safety data."
+  },
+  {
+   "nct_id": "NCT01209689",
+   "outcome": "BIOLOGICAL_FAILURE",
+   "sentence": "This study and all further clinical development of tocilizumab AS was halted after a review of 12-week data from Study NA22823, a randomized double-blind, placebo-controlled study in TNF antagonist naïve AS patients, failed to demonstrate efficacy."
+  },
+  {
+   "nct_id": "NCT01069861",
+   "outcome": "UNKNOWN",
+   "sentence": "Letter to investigator dated 18 June 2012 that study was to be terminated."
+  },
+  {
+   "nct_id": "NCT01103063",
+   "outcome": "UNKNOWN",
+   "sentence": "After interim analysis of efficacy data by an External Data Monitoring Committee, this study was terminated."
+  },
+  {
+   "nct_id": "NCT01176058",
+   "outcome": "UNKNOWN",
+   "sentence": "The decision to terminate the trial was not based on any safety concerns."
+  },
+  {
+   "nct_id": "NCT01208233",
+   "outcome": "BIOLOGICAL_FAILURE",
+   "sentence": "The interim analysis for the POC study A9541004 demonstrated futility, and the study was stopped on the 6th of November 2013."
+  },
+  {
+   "nct_id": "NCT01147458",
+   "outcome": "BIOLOGICAL_FAILURE",
+   "sentence": "This study has been terminated in response to a reported serious adverse event (SAE)."
+  },
+  {
+   "nct_id": "NCT01103713",
+   "outcome": "UNKNOWN",
+   "sentence": "After interim analysis of efficacy data by an External Data Monitoring Committee, this study was terminated."
+  },
+  {
+   "nct_id": "NCT01345630",
+   "outcome": "UNKNOWN",
+   "sentence": "The study was terminated on October 8, 2013 following a preliminary review of the Week 48 primary efficacy data by the study's external independent Data Monitoring Committee (DMC)."
+  },
+  {
+   "nct_id": "NCT01441414",
+   "outcome": "UNKNOWN",
+   "sentence": "The study was prematurely discontinued on 06Nov2012 due to tolerability findings in patients treated in Part I of the study that have prompted the Sponsor to re-evaluate the strategic development of the program."
+  },
+  {
+   "nct_id": "NCT01254656",
+   "outcome": "CAUSE_NOT_STATED",
+   "sentence": "The trial was terminated prematurely on January 29, 2013, due to the decision of the sponsor to discontinue development of lersivirine. The decision to terminate the trial was not based on any safety or efficacy concerns."
+  }
+ ]
+}

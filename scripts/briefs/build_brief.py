@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a benchmark-led signal brief for any mechanism class, gene set or sponsor.
+"""Generate a discontinuation-rate brief for any mechanism class, gene set or sponsor.
 
 The brief leads with the discontinuation rate and its comparison group, then lists the
 underlying stopped trials. Output: a self-contained HTML file plus a JSON fact sheet
@@ -26,7 +26,8 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.signals.external_sources import sec_issuer  # noqa: E402
 from scripts.signals.http_cache import SourceUnavailable  # noqa: E402
-from scripts.universe.benchmarks import fmt, load, select, summarize  # noqa: E402
+from scripts.universe.discontinuation_rates import fmt, load, select, summarize  # noqa: E402
+from scripts.universe.cumulative_incidence import curve  # noqa: E402
 
 OUT_DIR = ROOT / "product/briefs"
 COHORTS = [(2015, 2017), (2018, 2020), (2021, 2024)]
@@ -90,6 +91,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--modality")
     ap.add_argument("--phases", default="2,3")
     ap.add_argument("--start", default=f"2015:{date.today().year - 2}")
+    ap.add_argument("--q-value", type=float, help="false-discovery q for this segment within its family of tests")
+    ap.add_argument("--family-size", type=int, help="how many segments were screened alongside it")
     ap.add_argument("--area", default="Oncology")
     ap.add_argument("--out")
     args = ap.parse_args(argv)
@@ -103,10 +106,22 @@ def main(argv: list[str] | None = None) -> int:
     segment_rows = select(rows, klass=args.klass, with_class=args.with_class, genes=genes,
                           sponsor_group=args.sponsor_group, modality=args.modality, **common)
     segment = summarize(segment_rows)
-    baseline = summarize(select(rows, **common))
+    base_rows = select(rows, **common)
+    baseline = summarize(base_rows)
+    # A mechanism class can only contain a trial whose drug resolved to a target, and resolved
+    # trials are not a random sample of trials: in oncology 84% of biological stops resolve
+    # against 72% of all trials. Comparing a class with the all-trials baseline therefore
+    # compares mapping eligibility as much as biology, so a class brief is scored against the
+    # resolved baseline and the all-trials figure is shown underneath it.
+    resolved_rows = [r for r in base_rows if r["_genes"]]
+    baseline_resolved = summarize(resolved_rows)
+    is_class_segment = bool(args.klass or args.genes)
     if args.with_class:
         ref_label = f"{args.with_class} combinations without {args.klass or args.genes or args.modality}"  # shown verbatim
         reference = summarize(select(rows, with_class=args.with_class, exclude_class=args.klass, **common))
+    elif is_class_segment:
+        ref_label = f"all {args.area.lower()} trials with a resolved drug target"
+        reference = baseline_resolved
     else:
         # Without a combination partner the reference IS the baseline; the brief then shows one
         # comparison instead of printing the same rate twice under two different names.
@@ -125,10 +140,39 @@ def main(argv: list[str] | None = None) -> int:
     for r in stops:
         r["_ticker"] = ticker(r)
     maxrate = max(x["rate"] or 0 for x in (segment, reference, baseline)) or 1
+    seg_curve = curve(segment_rows)
+    base_curve = curve(base_rows)
+    cif36 = next((h for h in seg_curve.get("cif", []) if h["months"] == 36), None)
+    base36 = next((h for h in base_curve.get("cif", []) if h["months"] == 36), None)
     # Linkage coverage differs by area (oncology resolves far better than CNS), so the method
     # box states this area's own figure rather than quoting oncology's everywhere.
     industry = [r for r in select(rows, **common) if r.get("lead_sponsor_class") == "INDUSTRY"]
     linked_pct = round(100 * sum(1 for r in industry if r["_genes"]) / len(industry)) if industry else 0
+
+    # What is actually inside this class. A pathway label is not automatically a coherent risk
+    # class: pooled as one "amyloid" segment, antibodies and secretase inhibitors read 41.7%,
+    # a figure that described neither half. Publishing the composition makes that visible for
+    # every class rather than only the one somebody thought to check.
+    def experimental_components(r):
+        return [c for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM" for c in i["components"]]
+
+    modality_mix = Counter(m for r in segment_rows for m in r["_modalities"])
+    asset_trials = Counter()
+    mechanism_mix = Counter()
+    for r in segment_rows:
+        seen = set()
+        for c in experimental_components(r):
+            if c.get("name") and c["name"] not in seen:
+                seen.add(c["name"])
+                asset_trials[c["name"]] += 1
+            for mech in c.get("mechanisms") or []:
+                mechanism_mix[mech] += 1
+    composition = {
+        "distinct_assets": len(asset_trials),
+        "modalities": dict(modality_mix.most_common()),
+        "top_assets": [{"asset": a, "trials": n} for a, n in asset_trials.most_common(8)],
+        "top_mechanisms": [{"mechanism": m, "components": n} for m, n in mechanism_mix.most_common(6)],
+    }
 
     cohorts = []
     for lo, hi in COHORTS:
@@ -148,6 +192,14 @@ def main(argv: list[str] | None = None) -> int:
         "segment_stats": {k: v for k, v in segment.items() if k != "nct_biological_stops"},
         "reference_label": ref_label, "reference_stats": {k: v for k, v in reference.items() if k != "nct_biological_stops"},
         "baseline_stats": {k: v for k, v in baseline.items() if k != "nct_biological_stops"},
+        "baseline_target_resolved_stats": {k: v for k, v in baseline_resolved.items() if k != "nct_biological_stops"},
+        "segment_composition": composition,
+        "multiplicity": {"q_value_by": args.q_value, "family_size": args.family_size,
+                         "method": "Benjamini-Yekutieli over a one-sided exact binomial test against the "
+                                   "target-resolved baseline, valid under arbitrary dependence because the "
+                                   "segments in the family overlap by construction."} if args.q_value is not None else None,
+        "segment_cumulative_incidence": seg_curve,
+        "baseline_cumulative_incidence": base_curve,
         "cohorts": [{"cohort": c, **{k: v for k, v in s.items() if k != "nct_biological_stops"}} for c, s in cohorts],
         "biological_stop_nct_ids": segment["nct_biological_stops"],
         # Trial-level rows so the same facts file can feed the web pages, not just this HTML.
@@ -184,7 +236,43 @@ def main(argv: list[str] | None = None) -> int:
         f'<tr><td>{e(c)}</td><td>{s["biological_stops"]}</td><td>{s["closed"]}</td><td>{pct(s["rate"])}</td>'
         f'<td>{pct(s["ci95"][0])}–{pct(s["ci95"][1])}</td></tr>' for c, s in cohorts)
 
-    doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>{e(name)} — discontinuation benchmark</title><style>
+    if cif36 and seg_curve.get("trials"):
+        cif36_value = pct(cif36["cif"])
+        cif36_note = (f"stopped for a biological reason within 3 years of starting "
+                      f"(95% CI {pct(cif36['ci95'][0])}–{pct(cif36['ci95'][1])}; {cif36['n_risk']} still at risk"
+                      + (f"; {pct(base36['cif'])} area-wide)" if base36 else ")"))
+    else:
+        cif36_value, cif36_note = "—", "too few trials for a time-to-event estimate"
+
+    lopo = segment.get("rate_leave_one_programme_out")
+    robust_bits = [
+        f"The {segment['biological_stops']} stops came from {segment['stop_programmes']} sponsor-asset "
+        f"programme{'s' if segment['stop_programmes'] != 1 else ''} across {segment['stop_sponsors']} "
+        f"sponsor{'s' if segment['stop_sponsors'] != 1 else ''}"]
+    if segment["largest_programme"]:
+        robust_bits.append(f"the largest ({e(segment['largest_programme'])}) contributed "
+                           f"{segment['largest_programme_stops']}")
+    if lopo is not None:
+        robust_bits.append(f"removing that programme's trials from both sides leaves {pct(lopo)}")
+    robust = "; ".join(robust_bits) + "."
+    if args.q_value is not None and args.family_size:
+        verdict = ("survives" if args.q_value <= 0.10 else "does not survive")
+        robust += (f" Screened alongside {args.family_size} other segments in this area, it {verdict} a 10% "
+                   f"false-discovery correction (q={args.q_value:.3g}, Benjamini-Yekutieli).")
+    if segment["unresolved_terminations"]:
+        robust += (f" A further {segment['unresolved_terminations']} closed trials here were terminated with no cause "
+                   f"recorded in the registry; if every one of them were biological the rate would be "
+                   f"{pct(segment['rate_if_all_unresolved_were_biological'])}.")
+
+    mod_bits = ", ".join(f"{k.lower()} {v}" for k, v in list(modality_mix.most_common())[:4]) or "not resolved"
+    asset_bits = ", ".join(f"{e(a)} ({n})" for a, n in asset_trials.most_common(5))
+    composition_line = (f"<b>What is in this class:</b> {composition['distinct_assets']} distinct experimental drugs "
+                        f"across {segment['trials']} trials ({mod_bits})."
+                        + (f" Most tested: {asset_bits}." if asset_bits else "")
+                        + " A class groups drugs by what they act on; check that the grouping is one you would make"
+                          " before reading the rate as a property of the mechanism.")
+
+    doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>{e(name)} — discontinuation rate</title><style>
 @page {{ size:A4; margin:14mm 13mm; }}
 :root {{ --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }}
 body {{ font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }}
@@ -197,6 +285,7 @@ body {{ font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink);
 .kicker {{ font-size:7.6pt; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; }}
 h1 {{ font-size:18pt; line-height:1.15; margin:4px 0 6px; letter-spacing:-.01em; }}
 .dek {{ color:var(--ink2); font-size:9.6pt; margin:0 0 10px; }}
+.robust {{ color:var(--ink2); font-size:8.4pt; line-height:1.45; margin:8px 0 0; }}
 .stats {{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:8px 0 12px; }}
 .stat {{ border-top:2px solid var(--ink); padding-top:5px; }} .stat b {{ display:block; font-size:17pt; font-variant-numeric:tabular-nums; }}
 .stat span {{ color:var(--ink2); font-size:7.8pt; }}
@@ -220,7 +309,7 @@ table {{ page-break-inside:auto; }} tr {{ page-break-inside:avoid; }}
 .foot {{ margin-top:8px; font-size:7.2pt; color:var(--muted); border-top:1px solid var(--rule); padding-top:5px; }}
 </style></head><body>
 <div class="sheet">
-<div class="kicker">Clinical Trial Failures · Discontinuation benchmark · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
+<div class="kicker">Clinical Trial Failures · Discontinuation rate · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
 <h1>{e(name)}: {pct(segment['rate'])} of closed trials stopped for biological reasons</h1>
 <p class="dek">Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
 Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
@@ -228,7 +317,7 @@ Rates count trials that stopped early for efficacy, safety or benefit–risk rea
  <div class="stat"><b>{pct(segment['rate'])}</b><span>{segment['biological_stops']} of {segment['closed']} closed trials (95% CI {pct(segment['ci95'][0])}–{pct(segment['ci95'][1])})</span></div>
  <div class="stat"><b>{segment['stops_efficacy_only']} / {segment['stops_safety_only']} / {segment['stops_efficacy_and_safety']}</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to {segment['biological_stops']})</span></div>
  <div class="stat"><b>{pct(segment['closed_share'])}</b><span>of {segment['trials']} trials have closed · {segment['open_or_other']} still open or unresolved</span></div>
- <div class="stat"><b>{pct(segment['rate_lower_bound_all_started'])}</b><span>lower bound if every open trial completes</span></div>
+ <div class="stat"><b>{cif36_value}</b><span>{cif36_note}</span></div>
 </div>
 <div class="cols">
 <div>
@@ -236,6 +325,9 @@ Rates count trials that stopped early for efficacy, safety or benefit–risk rea
 {bar(name, segment, maxrate)}
 {bar(ref_label, reference, maxrate) if has_reference else ""}
 {bar(f"All {args.area.lower()} Phase {args.phases}", baseline, maxrate)}
+<p class="robust">{composition_line}</p>
+<p class="robust"><b>How much does this rest on one decision?</b> {robust} Read it as a screen worth checking against the
+underlying trials.</p>
 <p style="font-size:7.4pt;color:var(--muted);margin-top:6px">Bars show the share of closed trials stopped for biological reasons. Confidence intervals overlap where sample sizes are small — read the counts, not just the bars.</p>
 </div>
 <div>
@@ -254,7 +346,7 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 <div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only {pct(segment['closed_share'])} of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
 <div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped {e(args.area.lower())} trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
-<div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and benchmarks by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>
+<div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>
 </div>
 </body></html>"""
 

@@ -10,28 +10,42 @@ import productSummary from "@/data/product_summary.json";
 import { readJsonServerAsset } from "@/lib/server-data";
 import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
 
-// Prices are list prices for a one-year term, excluding VAT. Edit here; the page follows.
+// Prices are list prices, excluding VAT. Edit here; the page follows.
+//
+// The offer is deliberately built around a deliverable rather than around access to a file.
+// A dated copy of a database is worth what the buyer's own SQL would cost; the work they
+// cannot do cheaply is assembling a defensible cohort for one asset and showing what is and
+// is not comparable. That is what the entry tier sells, and the subscription is the version
+// of it that keeps running.
 const PRICING = [
   {
-    name: "Snapshot",
+    name: "Evidence package",
     prefix: "",
     price: "€1,500",
-    unit: "one-time",
-    for: "Research, a one-off analysis, or evaluation before a subscription.",
-    includes: ["One dated release, all files", "Benchmark pack and class tables", "Internal use, one team"],
-    cta: "Request a quote",
+    unit: "one cohort",
+    for: "One asset, target or mechanism you are evaluating now — diligence, a licensing decision, a trial design.",
+    includes: [
+      "A cohort you define, with the inclusion and exclusion rules written out",
+      "Every trial in it, with its registry stop reason and a link to the record",
+      "Stops attributable to that trial's own data, separated from programme-wide decisions",
+      "Discontinuation rate and time-to-event curve against a like-for-like comparator",
+      "Unresolved and unreadable cases listed, not hidden",
+      "Written interpretation, kept separate from the extracted facts",
+    ],
+    cta: "Scope a package",
   },
   {
     name: "Annual licence",
     prefix: "",
     price: "€4,900",
     unit: "per year",
-    for: "Investment research, competitive intelligence and trial design.",
+    for: "A team that returns to the same questions: competitive intelligence, portfolio review, investment research.",
     includes: [
-      "Weekly releases for twelve months",
-      "Benchmark pack and every mechanism-class brief",
-      "Weekly change report",
-      "Internal use, one team · email support",
+      "Four evidence packages a year, cohorts of your choosing",
+      "Watchlists on named assets, targets and sponsors",
+      "Weekly alerts, split into registry events and our own pipeline changes",
+      "The full dataset, rate tables and every mechanism brief, updated weekly",
+      "Corrections tracked and dated · email support",
     ],
     cta: "Start a licence",
     highlight: true,
@@ -42,14 +56,35 @@ const PRICING = [
     prefix: "from ",
     price: "€15,000",
     unit: "per year",
-    for: "Multiple teams, model training, or redistribution inside a product.",
+    for: "Several teams, delivery into your own systems, or redistribution inside a product you sell.",
     includes: [
-      "Everything in the annual licence",
-      "Model training and evaluation rights",
-      "Custom segments and briefs on request",
-      "Custom delivery (S3 or file drop)",
+      "Everything in the annual licence, across every disease area we cover",
+      "Delivery into your S3 or file drop, and API access",
+      "Redistribution inside your product, and model training and evaluation rights",
+      "Cohort rules built to your definitions and held stable across releases",
+      "Named contact and an agreed correction turnaround",
     ],
     cta: "Talk to us",
+  },
+];
+
+// Said plainly, in the buyer's own words, because the alternative is that they assume it.
+const HONESTY = [
+  {
+    title: "What you are buying",
+    body: "Traceable evidence and a cohort you can audit. Every headline moves to the trials behind it, every trial to its "
+      + "registry record. The work this replaces is a week of an analyst's searching and reconciling.",
+  },
+  {
+    title: "What this is not",
+    body: "Extraction, classification and interpretation are automated. No clinician has reviewed these records, and we do not "
+      + "price as though one has. Where the evidence does not settle a question, the output says so rather than filling the gap.",
+  },
+  {
+    title: "What the numbers do and do not estimate",
+    body: "A discontinuation rate describes trials that have already closed in a stated cohort. It is not a forecast of whether "
+      + "your asset will fail, and a mechanism with no observed stops is not a validated mechanism — it is a cohort in which "
+      + "none were recorded.",
   },
 ];
 
@@ -57,7 +92,7 @@ const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/data-licensing`;
 const TITLE = "Data & licensing — Clinical trial failure datasets";
 const DESCRIPTION =
-  "License the complete classified stopped-trial dataset, the Oncology Failure Signals dataset and discontinuation benchmarks with denominators: biological failure labels linked to drugs, targets, sponsors, tickers and publications.";
+  "License the complete classified stopped-trial dataset, the Oncology Failure Signals dataset and discontinuation rates with denominators: biological failure labels linked to drugs, targets, sponsors, tickers and publications.";
 
 type Props = {
   datasetVersion: string;
@@ -111,8 +146,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
   }
 
   const s: any = productSummary;
-  const bench = s.benchmarks;
-  const featured = s.featured_benchmark;
+  const rates = s.discontinuation_rates;
+  const featured = s.featured_segment;
   const featuredBars: any[] = featured ? [featured.segment, featured.reference, featured.baseline].filter(Boolean) : [];
   const maxRate = featuredBars.length ? Math.max(...featuredBars.map((b) => b.rate)) : 1;
   const mailto = (subject: string) => `mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(subject)}`;
@@ -186,10 +221,10 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <span>Classified stopped trials</span>
                 <b>{n(totalRecords)}</b>
               </div>
-              {bench ? (
+              {rates ? (
                 <div className="releaseRow">
-                  <span>Benchmark segments</span>
-                  <b>{n(bench.segments)}</b>
+                  <span>Segments with a rate</span>
+                  <b>{n(rates.segments)}</b>
                 </div>
               ) : null}
               {s.brief_count ? (
@@ -229,16 +264,16 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               </div>
             </div>
             <div className="stat">
-              <div className="statValue">{bench ? n(bench.segments) : "—"}</div>
-              <div className="statLabel">Benchmark segments</div>
-              <div className="statNote">{bench ? `${bench.mechanism_classes} mechanism classes, each with a 95% interval` : ""}</div>
+              <div className="statValue">{rates ? n(rates.segments) : "—"}</div>
+              <div className="statLabel">Segments with a rate</div>
+              <div className="statNote">{rates ? `${rates.mechanism_classes} mechanism classes, each with a 95% interval` : ""}</div>
             </div>
             <div className="stat">
-              <div className="statValue">{bench ? n(bench.universe_closed_trials) : "—"}</div>
+              <div className="statValue">{rates ? n(rates.universe_closed_trials) : "—"}</div>
               <div className="statLabel">Closed trials as denominator</div>
               <div className="statNote">
-                {bench
-                  ? `Phase ${bench.window.phases.join("/")} oncology, starts ${bench.window.start_year_from}–${bench.window.start_year_to}`
+                {rates
+                  ? `Phase ${rates.window.phases.join("/")} oncology, starts ${rates.window.start_year_from}–${rates.window.start_year_to}`
                   : ""}
               </div>
             </div>
@@ -282,13 +317,13 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               </div>
 
               <div className="card dsCard">
-                <div className="dsTitle">Discontinuation benchmarks</div>
+                <div className="dsTitle">Discontinuation rates</div>
                 <p className="dsBody">
                   Rates with denominators for every mechanism class, phase, modality, start cohort and sponsor group, each with a 95%
                   Wilson interval — plus a two-page brief per class listing the underlying trials and their registry stop reasons.
                 </p>
                 <div className="tagRow">
-                  {bench ? <span className="tag">{bench.segments} segments</span> : null}
+                  {rates ? <span className="tag">{rates.segments} segments</span> : null}
                   {s.brief_count ? <span className="tag">{s.brief_count} briefs</span> : null}
                   <span className="tag">JSON · CSV · HTML + PDF</span>
                 </div>
@@ -310,7 +345,18 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </div>
           </section>
 
-          {/* ---------------- benchmark proof ---------------- */}
+          <section className="section">
+            <div className="honestGrid">
+              {HONESTY.map((h) => (
+                <div className="honestCard" key={h.title}>
+                  <div className="honestTitle">{h.title}</div>
+                  <p>{h.body}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ---------------- rate proof ---------------- */}
           {featured ? (
             <section className="section">
               <h2>Denominators, not anecdotes</h2>
@@ -328,7 +374,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                       believed.
                     </p>
                     <p className="proofNote">
-                      Share of closed Phase {bench ? bench.window.phases.join("/") : "2/3"} oncology trials (completed or terminated)
+                      Share of closed Phase {rates ? rates.window.phases.join("/") : "2/3"} oncology trials (completed or terminated)
                       terminated for an efficacy, safety or benefit–risk reason recorded in the registry. Not a failure rate: trials
                       that completed and missed their endpoints are not counted.
                     </p>
@@ -510,7 +556,14 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <label className="consent">
                     <input name="consent" type="checkbox" required />
                     <span>
-                      I will use the sample for evaluation only and agree to be contacted about the dataset. See our{" "}
+                      I will use the sample for evaluation only.
+                    </span>
+                  </label>
+                  <label className="consent">
+                    <input name="marketing" type="checkbox" />
+                    <span>
+                      Optional: email me about the dataset. Leave it unticked and you still get the sample — we will only reply
+                      about this request. See our{" "}
                       <Link className="link" href="/privacy">
                         privacy notice
                       </Link>
@@ -539,7 +592,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <div className="faq">
                 <h3>How is the data delivered?</h3>
                 <p>
-                  A dated release with CSV and JSON files, the benchmark pack and the change report, by download link — or into your S3
+                  A dated release with CSV and JSON files, the discontinuation rate tables and the change report, by download link — or into your S3
                   bucket on the enterprise tier.
                 </p>
               </div>
@@ -832,7 +885,36 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           font-size: 11px;
         }
 
-        /* ---------- benchmark proof ---------- */
+        .honestGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+        }
+        .honestCard {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 18px 20px;
+        }
+        .honestTitle {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .honestCard p {
+          margin: 8px 0 0;
+          font-size: 13.5px;
+          line-height: 1.55;
+        }
+        @media (max-width: 900px) {
+          .honestGrid {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        /* ---------- rate proof ---------- */
         .proof {
           padding: 22px 24px;
           margin-top: 18px;

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline tests for benchmark definitions and resolution helpers."""
+"""Offline tests for discontinuation-rate definitions and resolution helpers."""
 from __future__ import annotations
 
 import json
@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from scripts.universe.benchmarks import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
+from scripts.universe.discontinuation_rates import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
 from scripts.universe.chembl_index import norm  # noqa: E402
 from scripts.universe.mechanism_classes import CLASSES  # noqa: E402
 from scripts.universe.resolve import expand_regimen, modality  # noqa: E402
@@ -98,6 +98,105 @@ for _facts_path in sorted(_glob.glob(str(Path(__file__).resolve().parents[2] / "
           _seg["ci95"][0] <= _seg["rate"] <= _seg["ci95"][1], True)
     _cohort_stops = sum(c["biological_stops"] for c in _f["cohorts"])
     check(f"{_name}: cohort stops do not exceed segment stops", _cohort_stops <= _seg["biological_stops"], True)
+
+# ---------------------------------------------------------------------------
+# Cumulative incidence (competing risks)
+# ---------------------------------------------------------------------------
+from scripts.universe.cumulative_incidence import (  # noqa: E402
+    EVENT_BIO, EVENT_NONE, EVENT_OTHER, aalen_johansen, at, bootstrap_ci, curve, observation,
+)
+
+# Hand-computable example. Four trials: a biological stop at 1 month, a completion at 2, a
+# censoring at 3, a biological stop at 4.
+#   t=1  n=4  d1=1        CIF = 1.00 * 1/4          = 0.25   S = 0.75
+#   t=2  n=3        d2=1  CIF unchanged                       S = 0.50
+#   t=3  n=2  censored
+#   t=4  n=1  d1=1        CIF = 0.25 + 0.50 * 1/1   = 0.75
+_toy = [(1.0, EVENT_BIO), (2.0, EVENT_OTHER), (3.0, EVENT_NONE), (4.0, EVENT_BIO)]
+_pts = aalen_johansen(_toy)
+check("CIF after the first event", round(at(_pts, 1)["cif"], 6), 0.25)
+check("competing event does not raise the CIF", round(at(_pts, 2)["cif"], 6), 0.25)
+check("CIF before anything happens", round(at(_pts, 0.5)["cif"], 6), 0.0)
+check("CIF after the last event", round(at(_pts, 4)["cif"], 6), 0.75)
+
+# Treating the competing event as censoring (1 - Kaplan-Meier) would give 1.0 here: the
+# completed trial would be assumed to still be capable of terminating. That overstatement is
+# the whole reason this module uses Aalen-Johansen.
+check("Aalen-Johansen stays below 1 - KM", at(_pts, 4)["cif"] < 1.0, True)
+
+# The curve can only go up, and the competing risks together cannot exceed certainty.
+_mono = all(b["cif"] >= a["cif"] - 1e-12 for a, b in zip(_pts, _pts[1:]))
+check("CIF is non-decreasing", _mono, True)
+_other = aalen_johansen([(t, EVENT_BIO if c == EVENT_OTHER else EVENT_OTHER if c == EVENT_BIO else c) for t, c in _toy])
+check("the two cumulative incidences sum to at most 1", at(_pts, 99)["cif"] + at(_other, 99)["cif"] <= 1 + 1e-9, True)
+
+# A trial that never enrolled, or was never observed running, contributes no follow-up.
+check("withdrawn trials are excluded", observation({"start_date": "2018-01-01", "overall_status": "WITHDRAWN"}), None)
+check("a record last updated before its start date is excluded",
+      observation({"start_date": "2024-06-01", "overall_status": "UNKNOWN", "last_update_post_date": "2023-01-01"}), None)
+_term = observation({"start_date": "2018-01-01", "overall_status": "TERMINATED", "completion_date": "2019-01-01",
+                     "last_update_post_date": "2021-05-01", "_bio": True})
+check("a stop is dated at its completion date, not its last update", round(_term[0]), 12)
+check("a stop is the event of interest", _term[1], EVENT_BIO)
+
+# Against the real cohort: the two metrics must share a numerator, and the analytic interval
+# must agree with a bootstrap that makes no distributional assumption at all.
+_rows = load("Oncology")
+_onc = select(_rows, phases=["2", "3"], start=(2015, 2024))
+_c = curve(_onc)
+_naive = summarize(_onc)
+check("CIF keeps every biological stop the closed-trial rate counts", _c["events_biological"], _naive["biological_stops"])
+check("the risk set is larger than the closed set", _c["trials"] > _naive["closed"], True)
+check("every excluded trial has a stated reason", sum(_c["excluded"].values()), _c["excluded_total"])
+
+_seg = [o for o in (observation(r) for r in select(_rows, klass="PD-(L)1", phases=["2", "3"], start=(2015, 2024))) if o]
+for _t in (24, 48):
+    _a = at(aalen_johansen(_seg), _t)["ci95"]
+    _b = bootstrap_ci(_seg, _t, draws=200)
+    # Within a fifth of the analytic width: the two should agree closely at this sample size.
+    _tol = 0.2 * (_a[1] - _a[0])
+    check(f"analytic interval at {_t}m matches the bootstrap",
+          abs(_a[0] - _b[0]) < _tol and abs(_a[1] - _b[1]) < _tol, True)
+
+# ---------------------------------------------------------------------------
+# Multiplicity: exact binomial tails and false-discovery control
+# ---------------------------------------------------------------------------
+from math import comb as _comb  # noqa: E402
+from fractions import Fraction as _Frac  # noqa: E402
+
+from scripts.universe.multiplicity import (  # noqa: E402
+    benjamini_hochberg, benjamini_yekutieli, binom_sf,
+)
+
+
+def _exact_sf(k, n, p):
+    """Brute force with exact rationals — the oracle for the beta-function version."""
+    q = _Frac(p).limit_denominator(10 ** 6)
+    return float(sum(_comb(n, i) * q ** i * (1 - q) ** (n - i) for i in range(k, n + 1)))
+
+
+for _k, _n, _p in [(11, 44, 0.05), (7, 10, 0.085), (4, 4, 0.085), (2, 30, 0.05), (97, 2063, 0.05)]:
+    _got, _want = binom_sf(_k, _n, _p), _exact_sf(_k, _n, _p)
+    check(f"exact binomial tail {_k}/{_n} vs {_p}", abs(_got - _want) / max(_want, 1e-300) < 1e-9, True)
+
+check("no successes is certain", binom_sf(0, 44, 0.05), 1.0)
+check("more successes than trials is impossible", binom_sf(45, 44, 0.05), 0.0)
+
+_ps = [0.001, 0.01, 0.03, 0.2, 0.5]
+_bh, _by = benjamini_hochberg(_ps), benjamini_yekutieli(_ps)
+check("BH never reports below the raw p", all(q >= p - 1e-12 for p, q in zip(_ps, _bh)), True)
+check("Yekutieli is never laxer than Hochberg", all(b >= h - 1e-12 for h, b in zip(_bh, _by)), True)
+check("q-values keep the p-value ordering", _bh == sorted(_bh), True)
+check("q-values stay in [0, 1]", all(0 <= q <= 1 for q in _by), True)
+check("a lone test is uncorrected", round(benjamini_hochberg([0.04])[0], 10), 0.04)
+
+# Nothing may be called unusual on the site that the correction does not support.
+_index = json.loads((Path(__file__).resolve().parents[2] / "web/data/briefs_index.json").read_text())
+for _b in _index["briefs"]:
+    if _b.get("q_value_by") is None:
+        continue
+    check(f"{_b['slug']}: the survivor flag matches its q",
+          _b["survives_fdr_10pct"], _b["q_value_by"] <= 0.10)
 
 if failures:
     print(f"{failures} universe test(s) failed")

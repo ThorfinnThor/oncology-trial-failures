@@ -1,10 +1,14 @@
 // web/pages/validation.tsx
 
 import Head from "next/head";
+import { useState } from "react";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import validation from "@/data/validation_v2.json";
+import cohortFlow from "@/data/cohort_flow.json";
+import reportingQuality from "@/data/reporting_quality.json";
+import eventAscertainment from "@/data/event_ascertainment.json";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/validation`;
@@ -32,14 +36,23 @@ export default function ValidationPage() {
   const perOutcome: Record<string, any> = v.per_predicted_outcome;
   const confusion: { predicted: string; reference: string; count: number }[] = v.confusion_pred_vs_ref;
 
+  const counts: Record<string, { k: number; n: number }> = v.sample_counts_unweighted || {};
   const headline = [
-    ["Biological failure — precision", est.biological_precision, ci.biological_precision],
-    ["Biological failure — recall", est.biological_recall, ci.biological_recall],
-    ["Biological domain — precision", est.biological_domain_precision, ci.biological_domain_precision],
-    ["Biological domain — recall", est.biological_domain_recall, ci.biological_domain_recall],
-    ["Stated cause — precision", est.assertion_outcome_precision, ci.assertion_outcome_precision],
-    ["No material disagreement", est.assertion_no_material_disagreement, ci.assertion_no_material_disagreement],
-  ] as const;
+    ["Biological failure — precision", "biological_precision"],
+    ["Biological failure — recall", "biological_recall"],
+    ["Biological domain — precision", "biological_domain_precision"],
+    ["Biological domain — recall", "biological_domain_recall"],
+    ["Stated cause — precision", "assertion_outcome_precision"],
+    ["No material disagreement", "assertion_no_material_disagreement"],
+  ].map(([name, key]) => ({ name, value: est[key as string], interval: ci[key as string], raw: counts[key as string] }));
+
+  const ea: any = eventAscertainment;
+  const rq: any = reportingQuality;
+  const rqArea = rq.areas[0];
+  const rqClass: Record<string, any> = Object.fromEntries(rqArea.by_sponsor_class.map((g: any) => [g.group, g]));
+  const flow: any = cohortFlow;
+  const [flowArea, setFlowArea] = useState<string>(flow.areas[0].area);
+  const shownFlow = flow.areas.find((a: any) => a.area === flowArea) || flow.areas[0];
 
   const cell = (predicted: string, reference: string) =>
     confusion.find((c) => c.predicted === predicted && c.reference === reference)?.count ?? 0;
@@ -81,28 +94,200 @@ export default function ValidationPage() {
           </p>
 
           <section className="section">
+            <h2>From the registry to the denominator</h2>
+            <p className="sectionSub">
+              Every filter between the whole eligible registry and a published rate, with what each one removes. A denominator is
+              only worth something if you can see how it was built.
+            </p>
+            <div className="filters">
+              {flow.areas.map((a: any) => (
+                <button
+                  key={a.area}
+                  type="button"
+                  className={a.area === flowArea ? "chip chipOn" : "chip"}
+                  onClick={() => setFlowArea(a.area)}
+                  aria-pressed={a.area === flowArea}
+                >
+                  {a.area}
+                </button>
+              ))}
+            </div>
+            <div className="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Step</th>
+                    <th className="num">Trials</th>
+                    <th>Why</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {shownFlow.steps.map((st: any, i: number) => (
+                    <tr key={st.step}>
+                      <td className={i === shownFlow.steps.length - 1 ? "strong" : ""}>{st.step}</td>
+                      <td className="num strong">{n(st.trials)}</td>
+                      <td className="muted small">{st.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="fine">
+              {pct(shownFlow.rate)} = {n(shownFlow.biological_stops)} ÷ {n(shownFlow.closed)}. Of those closed trials,{" "}
+              {n(shownFlow.aside.closed_with_resolved_target)} have a drug that resolves to a target — the population any mechanism
+              class is drawn from, and the one a class rate should be compared against.{" "}
+              {n(shownFlow.aside.terminated_with_no_readable_cause)} of the{" "}
+              {n(shownFlow.aside.terminated_any_reason)} terminations state no cause the classifier can read; they are counted in
+              the denominator and not in the numerator, which is why every segment also carries a band up to the rate that would
+              hold if all of them were biological. A further {n(shownFlow.aside.still_open_or_unknown)} trials in the window are
+              still open or of unknown status and are in neither.
+            </p>
+            {flow.signals_reconciliation ? (
+              <>
+                <h3 className="subhead">Why the stopped-trial dataset says {n(flow.signals_reconciliation.dataset_rows)} and the
+                  oncology rate says {n(flow.areas[0].biological_stops)}</h3>
+                <div className="tableWrap">
+                  <table>
+                    <tbody>
+                      {flow.signals_reconciliation.steps.map((st: any) => (
+                        <tr key={st.step}>
+                          <td>{st.step}</td>
+                          <td className="num strong">{n(st.trials)}</td>
+                          <td className="muted small">{st.note}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            ) : null}
+            <p className="fine">{flow.source}</p>
+          </section>
+
+          <section className="section">
+            <h2>What the metric measures about disclosure</h2>
+            <p className="sectionSub">
+              The rate rewards sponsors who write down why they stopped. A sponsor who files &ldquo;futility&rdquo; enters the
+              numerator; one who files &ldquo;business decision&rdquo;, or nothing, does not — even where the circumstances were
+              the same. That is not a claim about honesty. It is a claim about vocabulary, and it is large enough to measure.
+            </p>
+            <div className="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>{rqArea.area} terminations</th>
+                    <th className="num">Terminations</th>
+                    <th className="num">No readable cause</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rqArea.by_sponsor_class.map((g: any) => (
+                    <tr key={g.group}>
+                      <td>{label(g.group)}</td>
+                      <td className="num">{n(g.terminations)}</td>
+                      <td className="num strong">{pct(g.unreadable_share)}</td>
+                    </tr>
+                  ))}
+                  {rqArea.by_phase.map((g: any) => (
+                    <tr key={g.group}>
+                      <td className="muted">{g.group}</td>
+                      <td className="num muted">{n(g.terminations)}</td>
+                      <td className="num muted">{pct(g.unreadable_share)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {rqClass.INDUSTRY && rqClass.OTHER ? (
+              <p className="fine">
+                Industry sponsors are about {(rqClass.INDUSTRY.unreadable_share / rqClass.OTHER.unreadable_share).toFixed(1)}×
+                likelier than academic ones to terminate a trial without recording a cause we can read (
+                {pct(rqClass.INDUSTRY.unreadable_share)} against {pct(rqClass.OTHER.unreadable_share)}), and the pattern holds in
+                every disease area we cover. The consequence is direct: industry trials read{" "}
+                {pct(rqArea.consequence.industry.rate)} on the headline rate with a band up to{" "}
+                {pct(rqArea.consequence.industry.rate_if_all_unresolved_were_biological)}, academic trials{" "}
+                {pct(rqArea.consequence.non_industry.rate)} with a band up to{" "}
+                {pct(rqArea.consequence.non_industry.rate_if_all_unresolved_were_biological)}. Most of the gap between the two is
+                a gap in what gets written down.
+              </p>
+            ) : null}
+            <p className="fine">
+              Individual sponsors differ several-fold on the same measure, which is why this product publishes no sponsor league
+              table and why sponsor-level segments in the dataset carry an explicit warning. A low discontinuation rate beside a
+              high unreadable share is not evidence of a better drug.
+            </p>
+          </section>
+
+          <section className="section">
+            <h2>Did we look in the wrong place?</h2>
+            <p className="sectionSub">
+              The rate reads one registry field. A sponsor who recorded why they stopped somewhere else — most often at the end
+              of the study description — would look to us like a termination with no stated cause: counted in the denominator,
+              never in the numerator. If those hidden reasons were mostly biological, every rate here would be too low. So we
+              measured it rather than disclosing it as a limitation.
+            </p>
+            <div className="statRow">
+              <div className="statBox">
+                <b>{n(ea.descriptions_checked)}</b>
+                <span>terminations with no readable cause, every one checked against its study description</span>
+              </div>
+              <div className="statBox">
+                <b>{pct(ea.recovered_share)}</b>
+                <span>
+                  have a sentence reporting the trial being stopped ({n(ea.reason_recovered)} trials)
+                </span>
+              </div>
+              <div className="statBox">
+                <b>{n(ea.recovered_biological)}</b>
+                <span>of those name a biological cause — none of them in oncology</span>
+              </div>
+            </div>
+            <p className="fine">
+              Recovering a reason is harder than finding the word &ldquo;terminated&rdquo;: study descriptions are full of
+              stopping rules (&ldquo;the arm <i>will be</i> stopped if fewer than three of five respond&rdquo;) that describe a
+              plan rather than an event, and of negated ones (&ldquo;the programme was <i>not</i> discontinued for safety
+              reasons&rdquo;). Only sentences reporting this trial being stopped, in the past or present perfect, are counted;
+              the exclusions are unit-tested against real false positives found in review. Recovered sentences then run through
+              the same classifier rules as the registry field.
+            </p>
+            <p className="fine">
+              <b>What it means for the numbers:</b> adding every recovered biological cause moves the oncology headline by
+              nothing at all — none of them fall in that cohort — so the published rate stands as a statement about one registry
+              field, reproducible by anyone holding that field. It also means the ambiguity band each segment carries, which
+              assumes <i>every</i> unreadable termination might be biological, is very conservative: on this evidence the true
+              figure sits near the bottom of it. What this does not establish is that the sponsors who wrote nothing anywhere had
+              nothing biological to report.
+            </p>
+          </section>
+
+          <section className="section">
             <h2>Headline estimates</h2>
             <p className="sectionSub">
-              Weighted back to the eligible population, so a class that was over-sampled does not distort the estimate. Intervals
-              are 95%.
+              The sample deliberately over-draws the rarer predicted outcomes, so every estimate is weighted back to the eligible
+              population before it is reported. Intervals are 95% from a stratified bootstrap
+              {v.interval_method ? ` (${n(v.interval_method.draws)} draws, resampled within each predicted-outcome stratum)` : ""} —
+              not Wilson intervals, which would not apply to a weighted estimate. The raw counts in the drawn sample are given
+              alongside, so the weighting can be checked rather than taken on trust.
             </p>
             <div className="tableWrap">
               <table>
                 <thead>
                   <tr>
                     <th>Measure</th>
-                    <th className="num">Estimate</th>
+                    <th className="num">Weighted estimate</th>
                     <th className="num">95% CI</th>
+                    <th className="num">In the sample</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {headline.map(([name, value, interval]) => (
-                    <tr key={name as string}>
-                      <td>{name as string}</td>
-                      <td className="num strong">{pct(value as number)}</td>
+                  {headline.map((row) => (
+                    <tr key={row.name as string}>
+                      <td>{row.name as string}</td>
+                      <td className="num strong">{pct(row.value as number)}</td>
                       <td className="num muted">
-                        {pct((interval as number[])[0])}–{pct((interval as number[])[1])}
+                        {pct((row.interval as number[])[0])}–{pct((row.interval as number[])[1])}
                       </td>
+                      <td className="num muted">{row.raw ? `${row.raw.k} / ${row.raw.n}` : "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -262,8 +447,16 @@ export default function ValidationPage() {
                 <div className="cardTitle">Bounds of the claim</div>
                 <ul className="list">
                   <li>
-                    The reference labels are LLM annotations against written guidelines, not clinician adjudication. They measure
-                    whether the text was read correctly, not whether the sponsor told the truth.
+                    These are precision and recall against a held-out, LLM-adjudicated reference set. They are not independently
+                    verified clinical accuracy, and calling the classifier &quot;95% accurate&quot; would collapse three different
+                    claims into one number.
+                  </li>
+                  <li>
+                    Three questions need answering and only the first is measured here. <b>Text interpretation:</b> did the
+                    classifier read the available wording correctly? Measured. <b>Event ascertainment:</b> did the pipeline find
+                    the explanation at all, including where a sponsor put it in the description field instead? Not measured.
+                    <b> Clinical attribution:</b> does the evidence support a biological cause, attributable to the experimental
+                    drug rather than a comparator or a programme-wide decision? Not measured.
                   </li>
                   <li>
                     No temporal hold-out: the sample is drawn from the same release the classifier was built against, so it does
@@ -280,8 +473,10 @@ export default function ValidationPage() {
                     {pct(est.biological_precision)} precision, {pct(est.biological_recall)} recall.
                   </li>
                   <li>
-                    Tuning examples are excluded by text hash, so the estimate is not inflated by texts the rules were written
-                    against.
+                    Tuning examples are excluded by exact text hash, so the estimate is not inflated by texts the rules were
+                    written against. That is a narrow guarantee: it does not exclude near-identical sponsor templates or other
+                    trials from the same programme, and it says nothing about whether an annotating model met this material
+                    during training.
                   </li>
                   <li>
                     Every trial behind every rate is listed with its NCT ID, so any number can be checked against the registry
@@ -422,6 +617,70 @@ export default function ValidationPage() {
         }
         .matrix .zero {
           color: rgba(15, 23, 42, 0.3);
+        }
+        .statRow {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+          margin-top: 14px;
+        }
+        .statBox {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 16px 18px;
+        }
+        .statBox b {
+          display: block;
+          font-size: 30px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+          font-variant-numeric: tabular-nums;
+          line-height: 1.05;
+        }
+        .statBox span {
+          display: block;
+          margin-top: 6px;
+          font-size: 13px;
+          line-height: 1.5;
+          color: var(--text-muted);
+        }
+        @media (max-width: 900px) {
+          .statRow {
+            grid-template-columns: 1fr;
+          }
+        }
+        .filters {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin: 12px 0 0;
+        }
+        .chip {
+          font-size: 12.5px;
+          font-weight: 700;
+          color: var(--text-muted);
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          padding: 5px 12px;
+          cursor: pointer;
+          font-family: inherit;
+        }
+        .chipOn {
+          background: var(--accent);
+          border-color: var(--accent);
+          color: #fff;
+        }
+        .subhead {
+          margin: 22px 0 0;
+          font-size: 14.5px;
+          font-weight: 850;
+          max-width: 70ch;
+        }
+        .small {
+          font-size: 12.5px;
+          line-height: 1.45;
         }
         .fine {
           margin: 12px 0 0;

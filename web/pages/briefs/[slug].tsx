@@ -42,7 +42,13 @@ export default function BriefPage({ brief }: Props) {
   const hasReference = Math.abs(brief.reference_rate - brief.baseline_rate) > 1e-9;
   const maxRate = Math.max(brief.rate, brief.reference_rate, brief.baseline_rate) || 1;
   const width = (rate: number) => `${(rate / maxRate) * 100}%`;
-  const ratio = brief.baseline_rate ? brief.rate / brief.baseline_rate : 0;
+  // A class segment can only hold trials whose drug resolved to a target, and those are not a
+  // random sample of the area, so the like-for-like comparator is the resolved baseline.
+  const comparator: number = brief.baseline_resolved_rate ?? brief.baseline_rate;
+  const ratio = comparator ? brief.rate / comparator : 0;
+  const cif = (brief.cumulative_incidence || []) as { months: number; cif: number; ci95: number[]; n_risk: number }[];
+  const cif36 = cif.find((h) => h.months === 36);
+  const baseCif36 = ((brief.baseline_cumulative_incidence || []) as typeof cif).find((h) => h.months === 36);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -102,9 +108,10 @@ export default function BriefPage({ brief }: Props) {
             {brief.segment}: {pct(brief.rate)} of closed trials stopped early for biological reasons
           </h1>
           <p className="lead">
-            Against {pct(brief.baseline_rate)} across all {area} Phase {phases} trials started {brief.start_from}–{brief.start_to}
-            {ratio >= 1.5 ? ` — ${ratio.toFixed(1)}× the area rate` : ""}. Rates count trials that stopped early for efficacy,
-            safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.
+            Against {pct(comparator)} across {area} trials whose drug resolves to a target — the like-for-like comparison, since
+            a mechanism class can only contain those
+            {ratio >= 1.5 ? ` — ${ratio.toFixed(1)}× that rate` : ""}. Rates count trials that stopped early for efficacy, safety
+            or benefit–risk reasons; trials that completed and missed their endpoints are not counted.
           </p>
 
           <div className="stats">
@@ -125,8 +132,17 @@ export default function BriefPage({ brief }: Props) {
               <span>of {n(brief.trials_in_segment)} trials have closed, {n(brief.trials_in_segment - brief.closed)} still open</span>
             </div>
             <div className="stat">
-              <b>{pct(brief.baseline_rate)}</b>
-              <span>all {area} Phase {phases} trials in the same window</span>
+              <b>{cif36 ? pct(cif36.cif) : "—"}</b>
+              <span>
+                {cif36 ? (
+                  <>
+                    stopped within 3 years of starting (95% CI {pct(cif36.ci95[0])}–{pct(cif36.ci95[1])})
+                    {baseCif36 ? `, against ${pct(baseCif36.cif)} area-wide` : ""}
+                  </>
+                ) : (
+                  "too few trials for a time-to-event estimate"
+                )}
+              </span>
             </div>
           </div>
 
@@ -182,6 +198,103 @@ export default function BriefPage({ brief }: Props) {
                   the eventual figure. This is a closed-trial proportion, not a time-to-event estimate.
                 </>
               ) : null}
+            </p>
+          </section>
+
+          <section className="section">
+            <h2>How much of this rests on one decision?</h2>
+            <div className="robustGrid">
+              <div className="robustCard">
+                <div className="robustTitle">Independent decisions</div>
+                <p>
+                  The {brief.biological_stops} stops came from <b>{brief.stop_programmes}</b> sponsor–asset{" "}
+                  {brief.stop_programmes === 1 ? "programme" : "programmes"} across <b>{brief.stop_sponsors}</b>{" "}
+                  {brief.stop_sponsors === 1 ? "sponsor" : "sponsors"}.
+                  {brief.largest_programme ? (
+                    <>
+                      {" "}
+                      The largest ({brief.largest_programme}) contributed {brief.largest_programme_stops}.
+                    </>
+                  ) : null}
+                  {typeof brief.rate_leave_one_programme_out === "number" ? (
+                    <>
+                      {" "}
+                      Removing that programme&rsquo;s trials from both sides leaves{" "}
+                      <b>{pct(brief.rate_leave_one_programme_out)}</b>.
+                    </>
+                  ) : null}{" "}
+                  Ten registry records are not ten independent experiments; this is the check.
+                </p>
+              </div>
+              <div className="robustCard">
+                <div className="robustTitle">What we cannot read</div>
+                <p>
+                  {brief.unresolved_terminations ? (
+                    <>
+                      A further <b>{brief.unresolved_terminations}</b> closed trials here were terminated with no cause recorded in
+                      the registry. They are not counted as biological stops, and they are not evidence of absence either: if every
+                      one of them were biological, the rate would be{" "}
+                      <b>{pct(brief.rate_if_all_unresolved_were_biological)}</b>. The honest headline is the band between the two.
+                    </>
+                  ) : (
+                    <>
+                      Every terminated trial in this segment states a cause the classifier could read, so there is no ambiguity band
+                      above the headline rate.
+                    </>
+                  )}
+                </p>
+              </div>
+              <div className="robustCard">
+                <div className="robustTitle">What is in this class</div>
+                <p>
+                  {(brief as any).composition ? (
+                    <>
+                      {(brief as any).composition.distinct_assets} distinct experimental drugs across{" "}
+                      {n(brief.trials_in_segment)} trials
+                      {Object.keys((brief as any).composition.modalities || {}).length ? (
+                        <>
+                          {" "}
+                          ({Object.entries((brief as any).composition.modalities)
+                            .slice(0, 3)
+                            .map(([k, v]) => `${String(k).toLowerCase()} ${v}`)
+                            .join(", ")})
+                        </>
+                      ) : null}
+                      . A class groups drugs by what they act on, and a pathway label is not automatically one risk class — check
+                      that the grouping is one you would make before reading the rate as a property of the mechanism.
+                    </>
+                  ) : (
+                    "Composition not available for this segment."
+                  )}
+                </p>
+              </div>
+              <div className="robustCard">
+                <div className="robustTitle">Time, not maturity</div>
+                <p>
+                  A rate over closed trials moves with how mature the cohort is: stops happen sooner than completions, so a young
+                  segment reads high. The cumulative incidence above uses every trial from its start date, with completion and
+                  non-biological termination as competing events and ongoing trials censored at their last registry update, so it
+                  does not.
+                  {brief.median_followup_months ? ` Median follow-up here is ${Math.round(brief.median_followup_months)} months.` : ""}
+                </p>
+              </div>
+            </div>
+            <p className="fine">
+              {typeof (brief as any).q_value_by === "number" ? (
+                <>
+                  Screened alongside {(brief as any).family_size} other segments in {area}, this one{" "}
+                  <b>{(brief as any).survives_fdr_10pct ? "survives" : "does not survive"}</b> a 10% false-discovery correction
+                  (q={(brief as any).q_value_by.toPrecision(2)}, Benjamini–Yekutieli, valid under the overlap between segments).{" "}
+                  {(brief as any).survives_fdr_10pct
+                    ? "It is still a screen over registry records rather than a controlled comparison, but the size of the gap is not explained by having looked at many segments."
+                    : "That does not make it uninteresting — a small cohort cannot clear any correction — but the rate alone is not evidence of anything unusual, and it should be read as a lead to check rather than a finding."}
+                </>
+              ) : (
+                <>
+                  Picking the most striking of many segments is itself a selection effect, and no interval here corrects for it.
+                  Read this as a screen worth checking against the underlying trials.
+                </>
+              )}
             </p>
           </section>
 
@@ -265,7 +378,40 @@ export default function BriefPage({ brief }: Props) {
             ) : null}
           </section>
 
-          {brief.has_pdf ? (
+          {brief.open_access ? (
+            <section className="section" id="pdf">
+              <div className="pdfBox">
+                <div>
+                  <h2>This one is open — no form</h2>
+                  <p className="sectionSub">
+                    One brief is published in full so the method can be judged before anything is bought: every trial above rather
+                    than a sample, the denominator built step by step on the methods page, the programme concentration, the
+                    unreadable terminations, and the PDF itself. If the cohort construction does not survive your scrutiny here, it
+                    will not survive it anywhere else on this site either.
+                  </p>
+                  <ul className="list">
+                    <li>All {brief.trial_count} stopped trials listed above, with registry links</li>
+                    <li>
+                      <Link className="link" href="/validation">
+                        The full path from the registry to this denominator
+                      </Link>
+                    </li>
+                    <li>No email, no gate</li>
+                  </ul>
+                </div>
+                <div className="pdfActions">
+                  {brief.has_pdf ? (
+                    <a className="btnPrimary" href={`/briefs/${brief.file_stem}.pdf`} target="_blank" rel="noopener noreferrer">
+                      Download the PDF
+                    </a>
+                  ) : null}
+                  <a className="btnGhost" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}>
+                    Ask for this on your own asset
+                  </a>
+                </div>
+              </div>
+            </section>
+          ) : brief.has_pdf ? (
           <section className="section" id="pdf">
             <div className="pdfBox">
               <div>
@@ -315,9 +461,10 @@ export default function BriefPage({ brief }: Props) {
                     style={{ position: "absolute", left: "-9999px" }}
                   />
                   <label className="consent">
-                    <input name="consent" type="checkbox" required />
+                    <input name="marketing" type="checkbox" />
                     <span>
-                      I agree to be contacted about the dataset. See our{" "}
+                      Optional: email me when there is something new on this mechanism. Leave it unticked and you still get the
+                      PDF — we will only reply about this request. See our{" "}
                       <Link className="link" href="/privacy">
                         privacy notice
                       </Link>
@@ -536,12 +683,67 @@ export default function BriefPage({ brief }: Props) {
           padding: 1px 4px;
           color: var(--text-muted);
         }
+        .robustGrid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px;
+          margin-top: 14px;
+        }
+        .robustCard {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          box-shadow: var(--shadow-soft);
+          padding: 16px 18px;
+        }
+        .robustTitle {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .robustCard p {
+          margin: 8px 0 0;
+          font-size: 13.5px;
+          line-height: 1.55;
+        }
+        @media (max-width: 900px) {
+          .robustGrid {
+            grid-template-columns: 1fr;
+          }
+        }
         .fine {
           margin: 12px 0 0;
           font-size: 12.5px;
           line-height: 1.55;
           color: var(--text-muted);
           max-width: 92ch;
+        }
+        .pdfActions {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          align-self: center;
+        }
+        .btnPrimary,
+        .btnGhost {
+          border-radius: 12px;
+          padding: 11px 18px;
+          font-size: 13.5px;
+          font-weight: 800;
+          text-decoration: none;
+          text-align: center;
+          white-space: nowrap;
+        }
+        .btnPrimary {
+          background: var(--accent);
+          color: #fff;
+        }
+        .btnGhost {
+          background: var(--surface);
+          color: var(--text);
+          border: 1px solid var(--border);
         }
         .pdfBox {
           margin-top: 14px;

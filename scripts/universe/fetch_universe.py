@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch the trial universe used as denominator for discontinuation benchmarks.
+"""Fetch the trial universe used as denominator for discontinuation rates.
 
 Universe: interventional Phase 2 / Phase 3 trials (including Phase 1/2 and 2/3)
 on ClinicalTrials.gov with a start date from 2010, all statuses, all therapeutic

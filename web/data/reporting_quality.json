@@ -1,0 +1,263 @@
+{
+ "schema_version": 1,
+ "window": {
+  "start_from": 2015,
+  "start_to": 2024,
+  "phases": [
+   "2",
+   "3"
+  ]
+ },
+ "definition": "An 'unreadable' termination is one where the registry's stop-reason field names no cause the classifier can resolve — it is empty, or it says only that a decision was taken. Such a trial stays in the denominator and never enters the numerator, so a sponsor or cohort that discloses less will show a lower rate for reasons that have nothing to do with the drug.",
+ "not_a_ranking": "These are disclosure statistics. A high unreadable share is not evidence of concealment, and a low discontinuation rate next to a high unreadable share is not evidence of a better drug. No sponsor league table is published from this product for exactly this reason.",
+ "min_terminations_to_name_a_sponsor": 25,
+ "areas": [
+  {
+   "area": "Oncology",
+   "terminations": 2430,
+   "unreadable": 482,
+   "by_sponsor_class": [
+    {
+     "group": "OTHER",
+     "terminations": 1277,
+     "unreadable": 176,
+     "unreadable_share": 0.13782302270947533
+    },
+    {
+     "group": "INDUSTRY",
+     "terminations": 1048,
+     "unreadable": 291,
+     "unreadable_share": 0.2776717557251908
+    },
+    {
+     "group": "NIH",
+     "terminations": 61,
+     "unreadable": 6,
+     "unreadable_share": 0.09836065573770492
+    },
+    {
+     "group": "NETWORK",
+     "terminations": 32,
+     "unreadable": 6,
+     "unreadable_share": 0.1875
+    }
+   ],
+   "by_start_era": [
+    {
+     "group": "2015–2019",
+     "terminations": 1431,
+     "unreadable": 277,
+     "unreadable_share": 0.19357092941998602
+    },
+    {
+     "group": "2020–2024",
+     "terminations": 999,
+     "unreadable": 205,
+     "unreadable_share": 0.20520520520520522
+    }
+   ],
+   "by_phase": [
+    {
+     "group": "Phase 2",
+     "terminations": 2102,
+     "unreadable": 403,
+     "unreadable_share": 0.1917221693625119
+    },
+    {
+     "group": "Phase 3",
+     "terminations": 328,
+     "unreadable": 79,
+     "unreadable_share": 0.24085365853658536
+    }
+   ],
+   "by_sponsor_group": [
+    {
+     "sponsor_group": "Sanofi",
+     "terminations": 29,
+     "unreadable": 14,
+     "unreadable_share": 0.4827586206896552
+    },
+    {
+     "sponsor_group": "Roche",
+     "terminations": 38,
+     "unreadable": 18,
+     "unreadable_share": 0.47368421052631576
+    },
+    {
+     "sponsor_group": "Novartis",
+     "terminations": 33,
+     "unreadable": 9,
+     "unreadable_share": 0.2727272727272727
+    },
+    {
+     "sponsor_group": "Incyte",
+     "terminations": 25,
+     "unreadable": 6,
+     "unreadable_share": 0.24
+    },
+    {
+     "sponsor_group": "Bristol Myers Squibb",
+     "terminations": 34,
+     "unreadable": 6,
+     "unreadable_share": 0.17647058823529413
+    },
+    {
+     "sponsor_group": "Merck & Co.",
+     "terminations": 25,
+     "unreadable": 3,
+     "unreadable_share": 0.12
+    },
+    {
+     "sponsor_group": "Pfizer",
+     "terminations": 35,
+     "unreadable": 1,
+     "unreadable_share": 0.02857142857142857
+    }
+   ],
+   "consequence": {
+    "industry": {
+     "closed": 3008,
+     "biological_stops": 177,
+     "rate": 0.05884308510638298,
+     "unresolved_terminations": 291,
+     "rate_if_all_unresolved_were_biological": 0.15558510638297873
+    },
+    "non_industry": {
+     "closed": 4790,
+     "biological_stops": 161,
+     "rate": 0.03361169102296451,
+     "unresolved_terminations": 191,
+     "rate_if_all_unresolved_were_biological": 0.07348643006263048
+    }
+   }
+  },
+  {
+   "area": "Neurology",
+   "terminations": 329,
+   "unreadable": 87,
+   "by_sponsor_class": [
+    {
+     "group": "INDUSTRY",
+     "terminations": 235,
+     "unreadable": 74,
+     "unreadable_share": 0.3148936170212766
+    },
+    {
+     "group": "OTHER",
+     "terminations": 89,
+     "unreadable": 12,
+     "unreadable_share": 0.1348314606741573
+    }
+   ],
+   "by_start_era": [
+    {
+     "group": "2015–2019",
+     "terminations": 179,
+     "unreadable": 39,
+     "unreadable_share": 0.21787709497206703
+    },
+    {
+     "group": "2020–2024",
+     "terminations": 150,
+     "unreadable": 48,
+     "unreadable_share": 0.32
+    }
+   ],
+   "by_phase": [
+    {
+     "group": "Phase 2",
+     "terminations": 188,
+     "unreadable": 44,
+     "unreadable_share": 0.23404255319148937
+    },
+    {
+     "group": "Phase 3",
+     "terminations": 141,
+     "unreadable": 43,
+     "unreadable_share": 0.3049645390070922
+    }
+   ],
+   "by_sponsor_group": [],
+   "consequence": {
+    "industry": {
+     "closed": 946,
+     "biological_stops": 79,
+     "rate": 0.08350951374207188,
+     "unresolved_terminations": 74,
+     "rate_if_all_unresolved_were_biological": 0.16173361522198731
+    },
+    "non_industry": {
+     "closed": 600,
+     "biological_stops": 12,
+     "rate": 0.02,
+     "unresolved_terminations": 13,
+     "rate_if_all_unresolved_were_biological": 0.041666666666666664
+    }
+   }
+  },
+  {
+   "area": "Immunology & Autoimmune",
+   "terminations": 341,
+   "unreadable": 97,
+   "by_sponsor_class": [
+    {
+     "group": "INDUSTRY",
+     "terminations": 237,
+     "unreadable": 85,
+     "unreadable_share": 0.35864978902953587
+    },
+    {
+     "group": "OTHER",
+     "terminations": 90,
+     "unreadable": 10,
+     "unreadable_share": 0.1111111111111111
+    }
+   ],
+   "by_start_era": [
+    {
+     "group": "2020–2024",
+     "terminations": 172,
+     "unreadable": 47,
+     "unreadable_share": 0.27325581395348836
+    },
+    {
+     "group": "2015–2019",
+     "terminations": 169,
+     "unreadable": 50,
+     "unreadable_share": 0.2958579881656805
+    }
+   ],
+   "by_phase": [
+    {
+     "group": "Phase 2",
+     "terminations": 235,
+     "unreadable": 63,
+     "unreadable_share": 0.2680851063829787
+    },
+    {
+     "group": "Phase 3",
+     "terminations": 106,
+     "unreadable": 34,
+     "unreadable_share": 0.32075471698113206
+    }
+   ],
+   "by_sponsor_group": [],
+   "consequence": {
+    "industry": {
+     "closed": 1324,
+     "biological_stops": 59,
+     "rate": 0.0445619335347432,
+     "unresolved_terminations": 85,
+     "rate_if_all_unresolved_were_biological": 0.10876132930513595
+    },
+    "non_industry": {
+     "closed": 643,
+     "biological_stops": 7,
+     "rate": 0.01088646967340591,
+     "unresolved_terminations": 12,
+     "rate_if_all_unresolved_were_biological": 0.029548989113530325
+    }
+   }
+  }
+ ]
+}

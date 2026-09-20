@@ -69,18 +69,28 @@ their sources; the classification, linkage, validation and curation are derived 
 | `focus_signal_trial_count`, `focus_efficacy_signal_count`, `focus_safety_signal_count` | Signal trials where the drug is the investigational focus | Derived |
 | `repeated_efficacy_signal`, `repeated_safety_signal` | Two or more such trials | Derived |
 
-## Benchmarks and briefs
+## Evidence packages
 
 | File | Content |
 | --- | --- |
-| `benchmarks/oncology_benchmarks_v1.json` | Discontinuation rates with denominators: baseline plus segments by mechanism class, class × phase, class + PD-(L)1, modality, phase, start year, sponsor class and sponsor group — each with closed trials, stops, rate, 95% CI and the NCT IDs behind it |
-| `benchmarks/oncology_benchmarks_by_*.csv` | The same segments as flat tables |
-| `benchmarks/resolution_report.json` | Drug-linking coverage for the release |
-| `briefs/brief_<segment>.html` | Two-page benchmark brief per mechanism class, with the facts file behind every number |
+| `evidence_packages/<area>-<cohort>.html` | One cohort assembled for a buyer: the rules that define it written out, the rate and the time-to-event curve against a like-for-like comparator, every stop with its registry reason and whether it was that trial's own verdict or followed a decision elsewhere, the terminations whose cause cannot be read, and the trials still open. Our interpretation sits in its own labelled block. |
+| `evidence_packages/<area>-<cohort>.json` | Every input to every figure in the report. |
+
+Built with `scripts/signals/build_evidence_package.py --area <area> --class <class>`;
+`--with-class`, `--genes`, `--sponsor-group` and `--modality` narrow the cohort further.
+
+## Discontinuation rates and briefs
+
+| File | Content |
+| --- | --- |
+| `discontinuation_rates/oncology_discontinuation_rates_v1.json` | Discontinuation rates with denominators: baseline plus segments by mechanism class, class × phase, class + PD-(L)1, modality, phase, start year, sponsor class and sponsor group — each with closed trials, stops, rate, 95% CI and the NCT IDs behind it |
+| `discontinuation_rates/oncology_discontinuation_rates_by_*.csv` | The same segments as flat tables |
+| `discontinuation_rates/resolution_report.json` | Drug-linking coverage for the release |
+| `briefs/brief_<segment>.html` | Two-page discontinuation-rate brief per mechanism class, with the facts file behind every number |
 | `briefs/brief_<segment>.pdf` | The same brief as a PDF, for forwarding |
 
 A discontinuation rate is biological stops ÷ closed trials (completed or terminated); see
-`docs/benchmarks_methodology.md` for the full definitions and limits. It is not a failure rate:
+`docs/discontinuation_rates_methodology.md` for the full definitions and limits. It is not a failure rate:
 trials that completed and missed their endpoints are not counted.
 
 ## Limitations

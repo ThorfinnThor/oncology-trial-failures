@@ -1,4 +1,4 @@
-"""Curated mechanism classes for benchmarking.
+"""Curated mechanism classes for discontinuation rates.
 
 A class is a set of HGNC gene symbols; a trial belongs to a class when any drug in an
 experimental arm targets one of those genes. Classes are deliberately coarse and are
@@ -102,7 +102,12 @@ NEUROLOGY_CLASSES: dict[str, list[str]] = {
     "Cannabinoid": ["CNR1", "CNR2"],
     "Opioid receptor": ["OPRM1", "OPRK1", "OPRD1"],
     "Cholinergic": ["ACHE", "CHRNA4", "CHRNA7", "CHRM1", "CHRM4", "BCHE"],
-    "Amyloid (Alzheimer's)": ["APP", "BACE1", "PSEN1"],
+    # Split deliberately. Pooled as one "amyloid" class these read 41.7%, a number that
+    # describes neither half: Abeta-directed agents are mostly antibodies and the class has
+    # produced approvals, while every closed Phase 2/3 trial of a secretase inhibitor stopped
+    # early, across three sponsors. A pathway label is not a risk class.
+    "Amyloid-β directed": ["APP"],
+    "BACE / γ-secretase": ["BACE1", "PSEN1"],
     "Tau": ["MAPT"],
     "α-synuclein": ["SNCA"],
     "Huntingtin / gene-targeted": ["HTT", "SMN1", "SMN2"],

@@ -1,0 +1,181 @@
+{
+ "schema_version": 1,
+ "universe_trials": 94153,
+ "window": {
+  "start_from": 2015,
+  "start_to": 2024,
+  "phases": [
+   "2",
+   "3"
+  ]
+ },
+ "areas": [
+  {
+   "area": "Oncology",
+   "steps": [
+    {
+     "step": "Interventional Phase 2/3 trials registered since 2010",
+     "trials": 94153,
+     "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
+    },
+    {
+     "step": "Tagged Oncology",
+     "trials": 34210,
+     "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
+    },
+    {
+     "step": "Phase 2 or Phase 3",
+     "trials": 34210,
+     "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
+    },
+    {
+     "step": "Started 2015–2024",
+     "trials": 21513,
+     "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
+    },
+    {
+     "step": "Closed: completed or terminated",
+     "trials": 7798,
+     "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
+    },
+    {
+     "step": "Terminated for an efficacy, safety or benefit–risk reason",
+     "trials": 338,
+     "note": "The rate's numerator, from the registry's own stop-reason text."
+    }
+   ],
+   "closed": 7798,
+   "biological_stops": 338,
+   "rate": 0.043344447294177996,
+   "aside": {
+    "closed_with_resolved_target": 5677,
+    "closed_with_resolved_target_stops": 284,
+    "terminated_any_reason": 2430,
+    "terminated_with_no_readable_cause": 482,
+    "still_open_or_unknown": 13715
+   }
+  },
+  {
+   "area": "Neurology",
+   "steps": [
+    {
+     "step": "Interventional Phase 2/3 trials registered since 2010",
+     "trials": 94153,
+     "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
+    },
+    {
+     "step": "Tagged Neurology",
+     "trials": 5177,
+     "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
+    },
+    {
+     "step": "Excluding trials also tagged Oncology",
+     "trials": 4237,
+     "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
+    },
+    {
+     "step": "Phase 2 or Phase 3",
+     "trials": 4237,
+     "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
+    },
+    {
+     "step": "Started 2015–2024",
+     "trials": 2536,
+     "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
+    },
+    {
+     "step": "Closed: completed or terminated",
+     "trials": 1546,
+     "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
+    },
+    {
+     "step": "Terminated for an efficacy, safety or benefit–risk reason",
+     "trials": 91,
+     "note": "The rate's numerator, from the registry's own stop-reason text."
+    }
+   ],
+   "closed": 1546,
+   "biological_stops": 91,
+   "rate": 0.05886157826649418,
+   "aside": {
+    "closed_with_resolved_target": 673,
+    "closed_with_resolved_target_stops": 57,
+    "terminated_any_reason": 329,
+    "terminated_with_no_readable_cause": 87,
+    "still_open_or_unknown": 990
+   }
+  },
+  {
+   "area": "Immunology & Autoimmune",
+   "steps": [
+    {
+     "step": "Interventional Phase 2/3 trials registered since 2010",
+     "trials": 94153,
+     "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
+    },
+    {
+     "step": "Tagged Immunology & Autoimmune",
+     "trials": 6037,
+     "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
+    },
+    {
+     "step": "Excluding trials also tagged Oncology",
+     "trials": 5482,
+     "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
+    },
+    {
+     "step": "Phase 2 or Phase 3",
+     "trials": 5482,
+     "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
+    },
+    {
+     "step": "Started 2015–2024",
+     "trials": 3216,
+     "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
+    },
+    {
+     "step": "Closed: completed or terminated",
+     "trials": 1967,
+     "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
+    },
+    {
+     "step": "Terminated for an efficacy, safety or benefit–risk reason",
+     "trials": 66,
+     "note": "The rate's numerator, from the registry's own stop-reason text."
+    }
+   ],
+   "closed": 1967,
+   "biological_stops": 66,
+   "rate": 0.03355363497712252,
+   "aside": {
+    "closed_with_resolved_target": 857,
+    "closed_with_resolved_target_stops": 30,
+    "terminated_any_reason": 341,
+    "terminated_with_no_readable_cause": 97,
+    "still_open_or_unknown": 1249
+   }
+  }
+ ],
+ "signals_reconciliation": {
+  "dataset_rows": 987,
+  "note": "The two products count different things and both counts are correct.",
+  "steps": [
+   {
+    "step": "Oncology trials in the stopped-trial dataset",
+    "trials": 987,
+    "note": "Every phase, every start year — the dataset is a catalogue of stopped trials."
+   },
+   {
+    "step": "…restricted to Phase 2 or 3 registered since 2010",
+    "trials": 531,
+    "note": "Phase 1 and Phase 4 trials, and trials predating the universe, drop out: a rate needs a denominator and the universe only carries Phase 2/3 since 2010."
+   },
+   {
+    "step": "…started 2015–2024",
+    "trials": 338,
+    "note": "The rate's window. This is the numerator behind the oncology headline."
+   }
+  ]
+ },
+ "source": "ClinicalTrials.gov, via the weekly build. 'Every eligible record' means every ClinicalTrials.gov registration meeting these filters — not every trial ever conducted."
+}
