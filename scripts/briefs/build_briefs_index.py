@@ -18,6 +18,10 @@ ROOT = Path(__file__).resolve().parents[2]
 BRIEFS = ROOT / "product/briefs"
 OUT = ROOT / "web/data/briefs_index.json"
 PREVIEW_TRIALS = 5
+# One brief is published in full, with no email gate: every trial, the denominator, the
+# uncertainties and the PDF. A buyer cannot judge whether our cohort construction survives
+# scrutiny if the thing they must scrutinise is behind a form. This is the worked example.
+OPEN_ACCESS_SLUG = "oncology-tgf-pd-l-1"
 
 
 def _cif(c: dict | None) -> list | None:
@@ -88,10 +92,15 @@ def main() -> int:
             "median_followup_months": (f.get("segment_cumulative_incidence") or {}).get("median_followup_months"),
             "cohorts": [{k: c[k] for k in ("cohort", "biological_stops", "closed", "rate", "ci95")} for c in f["cohorts"]],
             "trial_count": len(trials),
-            "trials_preview": trials[:PREVIEW_TRIALS],
+            "trials_preview": trials,
             "has_pdf": (BRIEFS / f"{stem}.pdf").exists(),
             "generated_at_utc": f["generated_at_utc"],
         })
+
+    for e in entries:
+        e["open_access"] = e["slug"] == OPEN_ACCESS_SLUG
+        if not e["open_access"]:
+            e["trials_preview"] = e["trials_preview"][:PREVIEW_TRIALS]
 
     # Highest rate first: a reader scanning the index is looking for the outliers.
     entries.sort(key=lambda e: (-e["rate"], e["segment"]))
@@ -99,6 +108,7 @@ def main() -> int:
     OUT.write_text(json.dumps({
         "schema_version": 1,
         "brief_count": len(entries),
+        "open_access_slug": OPEN_ACCESS_SLUG,
         "areas": areas,
         "definition": "Share of closed trials (completed or terminated) in the segment that were terminated "
                       "for an efficacy, safety or benefit-risk reason recorded in the registry, with a 95% Wilson interval.",

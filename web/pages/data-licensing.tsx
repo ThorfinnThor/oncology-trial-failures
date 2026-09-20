@@ -10,28 +10,42 @@ import productSummary from "@/data/product_summary.json";
 import { readJsonServerAsset } from "@/lib/server-data";
 import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
 
-// Prices are list prices for a one-year term, excluding VAT. Edit here; the page follows.
+// Prices are list prices, excluding VAT. Edit here; the page follows.
+//
+// The offer is deliberately built around a deliverable rather than around access to a file.
+// A dated copy of a database is worth what the buyer's own SQL would cost; the work they
+// cannot do cheaply is assembling a defensible cohort for one asset and showing what is and
+// is not comparable. That is what the entry tier sells, and the subscription is the version
+// of it that keeps running.
 const PRICING = [
   {
-    name: "Snapshot",
+    name: "Evidence package",
     prefix: "",
     price: "€1,500",
-    unit: "one-time",
-    for: "Research, a one-off analysis, or evaluation before a subscription.",
-    includes: ["One dated release, all files", "Discontinuation rate tables, all segments", "Internal use, one team"],
-    cta: "Request a quote",
+    unit: "one cohort",
+    for: "One asset, target or mechanism you are evaluating now — diligence, a licensing decision, a trial design.",
+    includes: [
+      "A cohort you define, with the inclusion and exclusion rules written out",
+      "Every trial in it, with its registry stop reason and a link to the record",
+      "Stops attributable to that trial's own data, separated from programme-wide decisions",
+      "Discontinuation rate and time-to-event curve against a like-for-like comparator",
+      "Unresolved and unreadable cases listed, not hidden",
+      "Written interpretation, kept separate from the extracted facts",
+    ],
+    cta: "Scope a package",
   },
   {
     name: "Annual licence",
     prefix: "",
     price: "€4,900",
     unit: "per year",
-    for: "Investment research, competitive intelligence and trial design.",
+    for: "A team that returns to the same questions: competitive intelligence, portfolio review, investment research.",
     includes: [
-      "Weekly releases for twelve months",
-      "Discontinuation rates and every mechanism-class brief",
-      "Weekly change report",
-      "Internal use, one team · email support",
+      "Four evidence packages a year, cohorts of your choosing",
+      "Watchlists on named assets, targets and sponsors",
+      "Weekly alerts, split into registry events and our own pipeline changes",
+      "The full dataset, rate tables and every mechanism brief, updated weekly",
+      "Corrections tracked and dated · email support",
     ],
     cta: "Start a licence",
     highlight: true,
@@ -42,14 +56,35 @@ const PRICING = [
     prefix: "from ",
     price: "€15,000",
     unit: "per year",
-    for: "Multiple teams, model training, or redistribution inside a product.",
+    for: "Several teams, delivery into your own systems, or redistribution inside a product you sell.",
     includes: [
-      "Everything in the annual licence",
-      "Model training and evaluation rights",
-      "Custom segments and briefs on request",
-      "Custom delivery (S3 or file drop)",
+      "Everything in the annual licence, across every disease area we cover",
+      "Delivery into your S3 or file drop, and API access",
+      "Redistribution inside your product, and model training and evaluation rights",
+      "Cohort rules built to your definitions and held stable across releases",
+      "Named contact and an agreed correction turnaround",
     ],
     cta: "Talk to us",
+  },
+];
+
+// Said plainly, in the buyer's own words, because the alternative is that they assume it.
+const HONESTY = [
+  {
+    title: "What you are buying",
+    body: "Traceable evidence and a cohort you can audit. Every headline moves to the trials behind it, every trial to its "
+      + "registry record. The work this replaces is a week of an analyst's searching and reconciling.",
+  },
+  {
+    title: "What this is not",
+    body: "Extraction, classification and interpretation are automated. No clinician has reviewed these records, and we do not "
+      + "price as though one has. Where the evidence does not settle a question, the output says so rather than filling the gap.",
+  },
+  {
+    title: "What the numbers do and do not estimate",
+    body: "A discontinuation rate describes trials that have already closed in a stated cohort. It is not a forecast of whether "
+      + "your asset will fail, and a mechanism with no observed stops is not a validated mechanism — it is a cohort in which "
+      + "none were recorded.",
   },
 ];
 
@@ -307,6 +342,17 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <span className="tag">JSON · Markdown</span>
                 </div>
               </div>
+            </div>
+          </section>
+
+          <section className="section">
+            <div className="honestGrid">
+              {HONESTY.map((h) => (
+                <div className="honestCard" key={h.title}>
+                  <div className="honestTitle">{h.title}</div>
+                  <p>{h.body}</p>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -830,6 +876,35 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           font-family: var(--font-mono);
           font-weight: 600;
           font-size: 11px;
+        }
+
+        .honestGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+        }
+        .honestCard {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 18px 20px;
+        }
+        .honestTitle {
+          font-size: 11px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .honestCard p {
+          margin: 8px 0 0;
+          font-size: 13.5px;
+          line-height: 1.55;
+        }
+        @media (max-width: 900px) {
+          .honestGrid {
+            grid-template-columns: 1fr;
+          }
         }
 
         /* ---------- rate proof ---------- */

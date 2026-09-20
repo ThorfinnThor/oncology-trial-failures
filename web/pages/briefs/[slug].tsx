@@ -342,7 +342,40 @@ export default function BriefPage({ brief }: Props) {
             ) : null}
           </section>
 
-          {brief.has_pdf ? (
+          {brief.open_access ? (
+            <section className="section" id="pdf">
+              <div className="pdfBox">
+                <div>
+                  <h2>This one is open — no form</h2>
+                  <p className="sectionSub">
+                    One brief is published in full so the method can be judged before anything is bought: every trial above rather
+                    than a sample, the denominator built step by step on the methods page, the programme concentration, the
+                    unreadable terminations, and the PDF itself. If the cohort construction does not survive your scrutiny here, it
+                    will not survive it anywhere else on this site either.
+                  </p>
+                  <ul className="list">
+                    <li>All {brief.trial_count} stopped trials listed above, with registry links</li>
+                    <li>
+                      <Link className="link" href="/validation">
+                        The full path from the registry to this denominator
+                      </Link>
+                    </li>
+                    <li>No email, no gate</li>
+                  </ul>
+                </div>
+                <div className="pdfActions">
+                  {brief.has_pdf ? (
+                    <a className="btnPrimary" href={`/briefs/${brief.file_stem}.pdf`} target="_blank" rel="noopener noreferrer">
+                      Download the PDF
+                    </a>
+                  ) : null}
+                  <a className="btnGhost" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}>
+                    Ask for this on your own asset
+                  </a>
+                </div>
+              </div>
+            </section>
+          ) : brief.has_pdf ? (
           <section className="section" id="pdf">
             <div className="pdfBox">
               <div>
@@ -649,6 +682,31 @@ export default function BriefPage({ brief }: Props) {
           line-height: 1.55;
           color: var(--text-muted);
           max-width: 92ch;
+        }
+        .pdfActions {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          align-self: center;
+        }
+        .btnPrimary,
+        .btnGhost {
+          border-radius: 12px;
+          padding: 11px 18px;
+          font-size: 13.5px;
+          font-weight: 800;
+          text-decoration: none;
+          text-align: center;
+          white-space: nowrap;
+        }
+        .btnPrimary {
+          background: var(--accent);
+          color: #fff;
+        }
+        .btnGhost {
+          background: var(--surface);
+          color: var(--text);
+          border: 1px solid var(--border);
         }
         .pdfBox {
           margin-top: 14px;
