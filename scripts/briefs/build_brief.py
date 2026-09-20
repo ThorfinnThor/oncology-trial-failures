@@ -91,6 +91,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--modality")
     ap.add_argument("--phases", default="2,3")
     ap.add_argument("--start", default=f"2015:{date.today().year - 2}")
+    ap.add_argument("--q-value", type=float, help="false-discovery q for this segment within its family of tests")
+    ap.add_argument("--family-size", type=int, help="how many segments were screened alongside it")
     ap.add_argument("--area", default="Oncology")
     ap.add_argument("--out")
     args = ap.parse_args(argv)
@@ -147,6 +149,31 @@ def main(argv: list[str] | None = None) -> int:
     industry = [r for r in select(rows, **common) if r.get("lead_sponsor_class") == "INDUSTRY"]
     linked_pct = round(100 * sum(1 for r in industry if r["_genes"]) / len(industry)) if industry else 0
 
+    # What is actually inside this class. A pathway label is not automatically a coherent risk
+    # class: pooled as one "amyloid" segment, antibodies and secretase inhibitors read 41.7%,
+    # a figure that described neither half. Publishing the composition makes that visible for
+    # every class rather than only the one somebody thought to check.
+    def experimental_components(r):
+        return [c for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM" for c in i["components"]]
+
+    modality_mix = Counter(m for r in segment_rows for m in r["_modalities"])
+    asset_trials = Counter()
+    mechanism_mix = Counter()
+    for r in segment_rows:
+        seen = set()
+        for c in experimental_components(r):
+            if c.get("name") and c["name"] not in seen:
+                seen.add(c["name"])
+                asset_trials[c["name"]] += 1
+            for mech in c.get("mechanisms") or []:
+                mechanism_mix[mech] += 1
+    composition = {
+        "distinct_assets": len(asset_trials),
+        "modalities": dict(modality_mix.most_common()),
+        "top_assets": [{"asset": a, "trials": n} for a, n in asset_trials.most_common(8)],
+        "top_mechanisms": [{"mechanism": m, "components": n} for m, n in mechanism_mix.most_common(6)],
+    }
+
     cohorts = []
     for lo, hi in COHORTS:
         sub = summarize(select(segment_rows, start=(lo, hi), phases=phases))
@@ -166,6 +193,11 @@ def main(argv: list[str] | None = None) -> int:
         "reference_label": ref_label, "reference_stats": {k: v for k, v in reference.items() if k != "nct_biological_stops"},
         "baseline_stats": {k: v for k, v in baseline.items() if k != "nct_biological_stops"},
         "baseline_target_resolved_stats": {k: v for k, v in baseline_resolved.items() if k != "nct_biological_stops"},
+        "segment_composition": composition,
+        "multiplicity": {"q_value_by": args.q_value, "family_size": args.family_size,
+                         "method": "Benjamini-Yekutieli over a one-sided exact binomial test against the "
+                                   "target-resolved baseline, valid under arbitrary dependence because the "
+                                   "segments in the family overlap by construction."} if args.q_value is not None else None,
         "segment_cumulative_incidence": seg_curve,
         "baseline_cumulative_incidence": base_curve,
         "cohorts": [{"cohort": c, **{k: v for k, v in s.items() if k != "nct_biological_stops"}} for c, s in cohorts],
@@ -223,10 +255,22 @@ def main(argv: list[str] | None = None) -> int:
     if lopo is not None:
         robust_bits.append(f"removing that programme's trials from both sides leaves {pct(lopo)}")
     robust = "; ".join(robust_bits) + "."
+    if args.q_value is not None and args.family_size:
+        verdict = ("survives" if args.q_value <= 0.10 else "does not survive")
+        robust += (f" Screened alongside {args.family_size} other segments in this area, it {verdict} a 10% "
+                   f"false-discovery correction (q={args.q_value:.3g}, Benjamini-Yekutieli).")
     if segment["unresolved_terminations"]:
         robust += (f" A further {segment['unresolved_terminations']} closed trials here were terminated with no cause "
                    f"recorded in the registry; if every one of them were biological the rate would be "
                    f"{pct(segment['rate_if_all_unresolved_were_biological'])}.")
+
+    mod_bits = ", ".join(f"{k.lower()} {v}" for k, v in list(modality_mix.most_common())[:4]) or "not resolved"
+    asset_bits = ", ".join(f"{e(a)} ({n})" for a, n in asset_trials.most_common(5))
+    composition_line = (f"<b>What is in this class:</b> {composition['distinct_assets']} distinct experimental drugs "
+                        f"across {segment['trials']} trials ({mod_bits})."
+                        + (f" Most tested: {asset_bits}." if asset_bits else "")
+                        + " A class groups drugs by what they act on; check that the grouping is one you would make"
+                          " before reading the rate as a property of the mechanism.")
 
     doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>{e(name)} — discontinuation rate</title><style>
 @page {{ size:A4; margin:14mm 13mm; }}
@@ -281,8 +325,9 @@ Rates count trials that stopped early for efficacy, safety or benefit–risk rea
 {bar(name, segment, maxrate)}
 {bar(ref_label, reference, maxrate) if has_reference else ""}
 {bar(f"All {args.area.lower()} Phase {args.phases}", baseline, maxrate)}
-<p class="robust"><b>How much does this rest on one decision?</b> {robust} This segment is one of many screened the
-same way: read it as a screen worth checking, not as a tested hypothesis.</p>
+<p class="robust">{composition_line}</p>
+<p class="robust"><b>How much does this rest on one decision?</b> {robust} Read it as a screen worth checking against the
+underlying trials.</p>
 <p style="font-size:7.4pt;color:var(--muted);margin-top:6px">Bars show the share of closed trials stopped for biological reasons. Confidence intervals overlap where sample sizes are small — read the counts, not just the bars.</p>
 </div>
 <div>

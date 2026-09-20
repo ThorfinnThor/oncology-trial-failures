@@ -245,6 +245,30 @@ export default function BriefPage({ brief }: Props) {
                 </p>
               </div>
               <div className="robustCard">
+                <div className="robustTitle">What is in this class</div>
+                <p>
+                  {(brief as any).composition ? (
+                    <>
+                      {(brief as any).composition.distinct_assets} distinct experimental drugs across{" "}
+                      {n(brief.trials_in_segment)} trials
+                      {Object.keys((brief as any).composition.modalities || {}).length ? (
+                        <>
+                          {" "}
+                          ({Object.entries((brief as any).composition.modalities)
+                            .slice(0, 3)
+                            .map(([k, v]) => `${String(k).toLowerCase()} ${v}`)
+                            .join(", ")})
+                        </>
+                      ) : null}
+                      . A class groups drugs by what they act on, and a pathway label is not automatically one risk class — check
+                      that the grouping is one you would make before reading the rate as a property of the mechanism.
+                    </>
+                  ) : (
+                    "Composition not available for this segment."
+                  )}
+                </p>
+              </div>
+              <div className="robustCard">
                 <div className="robustTitle">Time, not maturity</div>
                 <p>
                   A rate over closed trials moves with how mature the cohort is: stops happen sooner than completions, so a young
@@ -256,9 +280,21 @@ export default function BriefPage({ brief }: Props) {
               </div>
             </div>
             <p className="fine">
-              This segment is one of many screened the same way. Read it as a screen worth checking against the underlying trials,
-              not as a tested hypothesis: picking the most striking of many segments is itself a selection effect, and no interval
-              here corrects for it.
+              {typeof (brief as any).q_value_by === "number" ? (
+                <>
+                  Screened alongside {(brief as any).family_size} other segments in {area}, this one{" "}
+                  <b>{(brief as any).survives_fdr_10pct ? "survives" : "does not survive"}</b> a 10% false-discovery correction
+                  (q={(brief as any).q_value_by.toPrecision(2)}, Benjamini–Yekutieli, valid under the overlap between segments).{" "}
+                  {(brief as any).survives_fdr_10pct
+                    ? "It is still a screen over registry records rather than a controlled comparison, but the size of the gap is not explained by having looked at many segments."
+                    : "That does not make it uninteresting — a small cohort cannot clear any correction — but the rate alone is not evidence of anything unusual, and it should be read as a lead to check rather than a finding."}
+                </>
+              ) : (
+                <>
+                  Picking the most striking of many segments is itself a selection effect, and no interval here corrects for it.
+                  Read this as a screen worth checking against the underlying trials.
+                </>
+              )}
             </p>
           </section>
 
@@ -649,7 +685,7 @@ export default function BriefPage({ brief }: Props) {
         }
         .robustGrid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
           margin-top: 14px;
         }

@@ -7,6 +7,7 @@ import Link from "next/link";
 import PrimaryNav from "@/components/PrimaryNav";
 import validation from "@/data/validation_v2.json";
 import cohortFlow from "@/data/cohort_flow.json";
+import reportingQuality from "@/data/reporting_quality.json";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/validation`;
@@ -44,6 +45,9 @@ export default function ValidationPage() {
     ["No material disagreement", "assertion_no_material_disagreement"],
   ].map(([name, key]) => ({ name, value: est[key as string], interval: ci[key as string], raw: counts[key as string] }));
 
+  const rq: any = reportingQuality;
+  const rqArea = rq.areas[0];
+  const rqClass: Record<string, any> = Object.fromEntries(rqArea.by_sponsor_class.map((g: any) => [g.group, g]));
   const flow: any = cohortFlow;
   const [flowArea, setFlowArea] = useState<string>(flow.areas[0].area);
   const shownFlow = flow.areas.find((a: any) => a.area === flowArea) || flow.areas[0];
@@ -156,6 +160,60 @@ export default function ValidationPage() {
               </>
             ) : null}
             <p className="fine">{flow.source}</p>
+          </section>
+
+          <section className="section">
+            <h2>What the metric measures about disclosure</h2>
+            <p className="sectionSub">
+              The rate rewards sponsors who write down why they stopped. A sponsor who files &ldquo;futility&rdquo; enters the
+              numerator; one who files &ldquo;business decision&rdquo;, or nothing, does not — even where the circumstances were
+              the same. That is not a claim about honesty. It is a claim about vocabulary, and it is large enough to measure.
+            </p>
+            <div className="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>{rqArea.area} terminations</th>
+                    <th className="num">Terminations</th>
+                    <th className="num">No readable cause</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rqArea.by_sponsor_class.map((g: any) => (
+                    <tr key={g.group}>
+                      <td>{label(g.group)}</td>
+                      <td className="num">{n(g.terminations)}</td>
+                      <td className="num strong">{pct(g.unreadable_share)}</td>
+                    </tr>
+                  ))}
+                  {rqArea.by_phase.map((g: any) => (
+                    <tr key={g.group}>
+                      <td className="muted">{g.group}</td>
+                      <td className="num muted">{n(g.terminations)}</td>
+                      <td className="num muted">{pct(g.unreadable_share)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {rqClass.INDUSTRY && rqClass.OTHER ? (
+              <p className="fine">
+                Industry sponsors are about {(rqClass.INDUSTRY.unreadable_share / rqClass.OTHER.unreadable_share).toFixed(1)}×
+                likelier than academic ones to terminate a trial without recording a cause we can read (
+                {pct(rqClass.INDUSTRY.unreadable_share)} against {pct(rqClass.OTHER.unreadable_share)}), and the pattern holds in
+                every disease area we cover. The consequence is direct: industry trials read{" "}
+                {pct(rqArea.consequence.industry.rate)} on the headline rate with a band up to{" "}
+                {pct(rqArea.consequence.industry.rate_if_all_unresolved_were_biological)}, academic trials{" "}
+                {pct(rqArea.consequence.non_industry.rate)} with a band up to{" "}
+                {pct(rqArea.consequence.non_industry.rate_if_all_unresolved_were_biological)}. Most of the gap between the two is
+                a gap in what gets written down.
+              </p>
+            ) : null}
+            <p className="fine">
+              Individual sponsors differ several-fold on the same measure, which is why this product publishes no sponsor league
+              table and why sponsor-level segments in the dataset carry an explicit warning. A low discontinuation rate beside a
+              high unreadable share is not evidence of a better drug.
+            </p>
           </section>
 
           <section className="section">

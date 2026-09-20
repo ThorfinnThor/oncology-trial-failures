@@ -25,8 +25,11 @@ export default function BriefsIndexPage() {
   const [area, setArea] = useState<string>("All");
   const shown = area === "All" ? all : all.filter((b) => b.area === area);
 
-  // The strongest three lead the page: a reader scanning it is looking for the outliers.
-  const featured = all.slice(0, 3);
+  // What leads the page is what survives a multiplicity correction, not what is largest.
+  // Ranking 52 overlapping segments by rate and showing the top of the list is the selection
+  // effect this whole page is trying not to commit.
+  const survivors = all.filter((b: any) => b.survives_fdr_10pct);
+  const featured = (survivors.length ? survivors : all.slice(0, 3)) as Brief[];
 
   return (
     <>
@@ -64,7 +67,13 @@ export default function BriefsIndexPage() {
           </section>
 
           <section className="section">
-            <h2>The clearest signals</h2>
+            <h2>What survives a multiplicity correction</h2>
+            <p className="lead sub">
+              {survivors.length} of {briefsIndex.brief_count} segments are still unusual once the correction for having screened
+              all of them is applied — a one-sided exact binomial test against a like-for-like baseline, with a
+              Benjamini–Yekutieli false-discovery rate valid under the heavy overlap between segments. The rest are published too,
+              and are worth reading as leads; they are not findings.
+            </p>
             <div className="featured">
               {featured.map((b) => (
                 <Link key={b.slug} href={`/briefs/${b.slug}`} className="featureCard">
@@ -74,6 +83,7 @@ export default function BriefsIndexPage() {
                   <div className="featureMeta">
                     {b.biological_stops} of {n(b.closed)} closed trials stopped early, from {b.stop_programmes} programmes, against{" "}
                     {pct(b.baseline_resolved_rate ?? b.baseline_rate)} across comparable {b.area.toLowerCase()} trials
+                    {typeof (b as any).q_value_by === "number" ? ` · q=${(b as any).q_value_by.toPrecision(2)}` : ""}
                   </div>
                 </Link>
               ))}
@@ -109,6 +119,7 @@ export default function BriefsIndexPage() {
                     <th className="num">95% CI</th>
                     <th className="num">Like-for-like baseline</th>
                     <th className="num">Programmes</th>
+                    <th className="num">q</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -129,6 +140,17 @@ export default function BriefsIndexPage() {
                       </td>
                       <td className="num muted">{pct(b.baseline_resolved_rate ?? b.baseline_rate)}</td>
                       <td className="num muted">{b.stop_programmes ?? "—"}</td>
+                      <td className="num muted">
+                        {typeof (b as any).q_value_by === "number" ? (
+                          (b as any).survives_fdr_10pct ? (
+                            <b className="pass">{(b as any).q_value_by.toPrecision(2)}</b>
+                          ) : (
+                            (b as any).q_value_by.toPrecision(2)
+                          )
+                        ) : (
+                          "—"
+                        )}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -141,6 +163,12 @@ export default function BriefsIndexPage() {
               resolves to a target, since a mechanism class can only contain those. Where the interval is wide, the segment is small
               — read the counts, not just the rate. <b>Programmes</b> is how many distinct sponsor–asset development programmes the
               stops came from: ten registry records can be one decision.
+            </p>
+            <p className="fine">
+              <b>q</b> is the false-discovery rate at which a segment would still be called unusual, computed over every segment
+              screened in its area rather than only those published here. Bold means it clears 10%. A q near 1 does not mean the
+              segment is uninteresting — small cohorts cannot clear any correction — but it does mean the rate alone is not
+              evidence of anything unusual.
             </p>
             <p className="fine">
               These are screens, not tests. Every segment with enough data is published here rather than only the striking ones, but
@@ -323,6 +351,14 @@ export default function BriefsIndexPage() {
         }
         .muted {
           color: var(--text-muted);
+        }
+        .pass {
+          color: var(--accent);
+          font-weight: 850;
+        }
+        .sub {
+          margin-top: 8px;
+          font-size: 14px;
         }
         .fine {
           margin: 14px 0 0;

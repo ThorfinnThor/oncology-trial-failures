@@ -158,6 +158,46 @@ for _t in (24, 48):
     check(f"analytic interval at {_t}m matches the bootstrap",
           abs(_a[0] - _b[0]) < _tol and abs(_a[1] - _b[1]) < _tol, True)
 
+# ---------------------------------------------------------------------------
+# Multiplicity: exact binomial tails and false-discovery control
+# ---------------------------------------------------------------------------
+from math import comb as _comb  # noqa: E402
+from fractions import Fraction as _Frac  # noqa: E402
+
+from scripts.universe.multiplicity import (  # noqa: E402
+    benjamini_hochberg, benjamini_yekutieli, binom_sf,
+)
+
+
+def _exact_sf(k, n, p):
+    """Brute force with exact rationals — the oracle for the beta-function version."""
+    q = _Frac(p).limit_denominator(10 ** 6)
+    return float(sum(_comb(n, i) * q ** i * (1 - q) ** (n - i) for i in range(k, n + 1)))
+
+
+for _k, _n, _p in [(11, 44, 0.05), (7, 10, 0.085), (4, 4, 0.085), (2, 30, 0.05), (97, 2063, 0.05)]:
+    _got, _want = binom_sf(_k, _n, _p), _exact_sf(_k, _n, _p)
+    check(f"exact binomial tail {_k}/{_n} vs {_p}", abs(_got - _want) / max(_want, 1e-300) < 1e-9, True)
+
+check("no successes is certain", binom_sf(0, 44, 0.05), 1.0)
+check("more successes than trials is impossible", binom_sf(45, 44, 0.05), 0.0)
+
+_ps = [0.001, 0.01, 0.03, 0.2, 0.5]
+_bh, _by = benjamini_hochberg(_ps), benjamini_yekutieli(_ps)
+check("BH never reports below the raw p", all(q >= p - 1e-12 for p, q in zip(_ps, _bh)), True)
+check("Yekutieli is never laxer than Hochberg", all(b >= h - 1e-12 for h, b in zip(_bh, _by)), True)
+check("q-values keep the p-value ordering", _bh == sorted(_bh), True)
+check("q-values stay in [0, 1]", all(0 <= q <= 1 for q in _by), True)
+check("a lone test is uncorrected", round(benjamini_hochberg([0.04])[0], 10), 0.04)
+
+# Nothing may be called unusual on the site that the correction does not support.
+_index = json.loads((Path(__file__).resolve().parents[2] / "web/data/briefs_index.json").read_text())
+for _b in _index["briefs"]:
+    if _b.get("q_value_by") is None:
+        continue
+    check(f"{_b['slug']}: the survivor flag matches its q",
+          _b["survives_fdr_10pct"], _b["q_value_by"] <= 0.10)
+
 if failures:
     print(f"{failures} universe test(s) failed")
     sys.exit(1)
