@@ -1,4 +1,4 @@
-"""Curated mechanism classes for benchmarking.
+"""Curated mechanism classes for discontinuation rates.
 
 A class is a set of HGNC gene symbols; a trial belongs to a class when any drug in an
 experimental arm targets one of those genes. Classes are deliberately coarse and are

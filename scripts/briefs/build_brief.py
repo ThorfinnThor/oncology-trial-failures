@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a benchmark-led signal brief for any mechanism class, gene set or sponsor.
+"""Generate a discontinuation-rate brief for any mechanism class, gene set or sponsor.
 
 The brief leads with the discontinuation rate and its comparison group, then lists the
 underlying stopped trials. Output: a self-contained HTML file plus a JSON fact sheet
@@ -26,7 +26,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.signals.external_sources import sec_issuer  # noqa: E402
 from scripts.signals.http_cache import SourceUnavailable  # noqa: E402
-from scripts.universe.benchmarks import fmt, load, select, summarize  # noqa: E402
+from scripts.universe.discontinuation_rates import fmt, load, select, summarize  # noqa: E402
 
 OUT_DIR = ROOT / "product/briefs"
 COHORTS = [(2015, 2017), (2018, 2020), (2021, 2024)]
@@ -184,7 +184,7 @@ def main(argv: list[str] | None = None) -> int:
         f'<tr><td>{e(c)}</td><td>{s["biological_stops"]}</td><td>{s["closed"]}</td><td>{pct(s["rate"])}</td>'
         f'<td>{pct(s["ci95"][0])}–{pct(s["ci95"][1])}</td></tr>' for c, s in cohorts)
 
-    doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>{e(name)} — discontinuation benchmark</title><style>
+    doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>{e(name)} — discontinuation rate</title><style>
 @page {{ size:A4; margin:14mm 13mm; }}
 :root {{ --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }}
 body {{ font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }}
@@ -220,7 +220,7 @@ table {{ page-break-inside:auto; }} tr {{ page-break-inside:avoid; }}
 .foot {{ margin-top:8px; font-size:7.2pt; color:var(--muted); border-top:1px solid var(--rule); padding-top:5px; }}
 </style></head><body>
 <div class="sheet">
-<div class="kicker">Clinical Trial Failures · Discontinuation benchmark · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
+<div class="kicker">Clinical Trial Failures · Discontinuation rate · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
 <h1>{e(name)}: {pct(segment['rate'])} of closed trials stopped for biological reasons</h1>
 <p class="dek">Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
 Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
@@ -254,7 +254,7 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 <div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only {pct(segment['closed_share'])} of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
 <div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped {e(args.area.lower())} trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
-<div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and benchmarks by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>
+<div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>
 </div>
 </body></html>"""
 

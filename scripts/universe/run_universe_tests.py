@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline tests for benchmark definitions and resolution helpers."""
+"""Offline tests for discontinuation-rate definitions and resolution helpers."""
 from __future__ import annotations
 
 import json
@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from scripts.universe.benchmarks import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
+from scripts.universe.discontinuation_rates import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
 from scripts.universe.chembl_index import norm  # noqa: E402
 from scripts.universe.mechanism_classes import CLASSES  # noqa: E402
 from scripts.universe.resolve import expand_regimen, modality  # noqa: E402
