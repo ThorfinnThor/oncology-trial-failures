@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-09-15T13:59:42Z",
+  "generated_at_utc": "2026-09-20T18:58:22Z",
   "dataset_version": "2026-09-14",
   "classifier_version": "2.7.0",
   "sample_size": 600,
@@ -65,6 +65,58 @@
       0.7845966875285845,
       0.8564953469039209
     ]
+  },
+  "interval_method": {
+    "method": "stratified bootstrap",
+    "draws": 2000,
+    "seed": 20260915,
+    "note": "Resampled within each predicted-outcome stratum and re-weighted each draw. These are NOT Wilson intervals: the estimates are population-weighted, so a binomial interval would not apply."
+  },
+  "stratum_weights": {
+    "BIOLOGICAL_FAILURE": 10.1333,
+    "NON_BIOLOGICAL": 40.02,
+    "CAUSE_NOT_STATED": 12.75,
+    "NON_FAILURE_TRANSITION": 16.38,
+    "MIXED_CAUSES": 3.675,
+    "UNKNOWN": 9.67
+  },
+  "sample_counts_unweighted": {
+    "assertion_outcome_precision": {
+      "k": 443,
+      "n": 537
+    },
+    "assertion_outcome_and_primary_precision": {
+      "k": 419,
+      "n": 537
+    },
+    "assertion_no_material_disagreement": {
+      "k": 463,
+      "n": 537
+    },
+    "biological_domain_precision": {
+      "k": 167,
+      "n": 176
+    },
+    "biological_domain_recall": {
+      "k": 167,
+      "n": 171
+    },
+    "biological_precision": {
+      "k": 148,
+      "n": 155
+    },
+    "biological_recall": {
+      "k": 148,
+      "n": 160
+    },
+    "biological_signal_recall_incl_mixed": {
+      "k": 167,
+      "n": 171
+    },
+    "outcome_accuracy_all_records": {
+      "k": 502,
+      "n": 641
+    }
   },
   "per_predicted_outcome": {
     "BIOLOGICAL_FAILURE": {

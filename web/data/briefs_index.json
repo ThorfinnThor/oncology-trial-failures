@@ -7,6 +7,7 @@
     "Oncology"
   ],
   "definition": "Share of closed trials (completed or terminated) in the segment that were terminated for an efficacy, safety or benefit-risk reason recorded in the registry, with a 95% Wilson interval.",
+  "cumulative_incidence_definition": "Aalen-Johansen probability that a trial has been stopped for a biological reason by the stated month from its start date, with completion and non-biological termination as competing events and ongoing trials censored at their last registry update. Unlike the rate, it does not move with cohort maturity.",
   "briefs": [
     {
       "slug": "neurology-tau",
@@ -34,13 +35,118 @@
         0.39677321997956516,
         0.892210712513788
       ],
-      "reference_label": "all neurology Phase 2,3 trials",
-      "reference_rate": 0.05886157826649418,
-      "reference_closed": 1546,
-      "reference_stops": 91,
+      "reference_label": "all neurology trials with a resolved drug target",
+      "reference_rate": 0.08469539375928678,
+      "reference_closed": 673,
+      "reference_stops": 57,
       "baseline_rate": 0.05886157826649418,
       "baseline_closed": 1546,
       "baseline_stops": 91,
+      "baseline_resolved_rate": 0.08469539375928678,
+      "baseline_resolved_closed": 673,
+      "stop_programmes": 4,
+      "stop_sponsors": 4,
+      "stop_assets": 4,
+      "largest_programme": "AbbVie",
+      "largest_programme_stops": 3,
+      "rate_leave_one_programme_out": 0.6666666666666666,
+      "unresolved_terminations": 0,
+      "rate_if_all_unresolved_were_biological": 0.7,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 10
+        },
+        {
+          "months": 24,
+          "cif": 0.1,
+          "ci95": [
+            0.014718080221633012,
+            0.5270034881668226
+          ],
+          "n_risk": 9
+        },
+        {
+          "months": 36,
+          "cif": 0.39999999999999997,
+          "ci95": [
+            0.1727761765757041,
+            0.7473374305655236
+          ],
+          "n_risk": 6
+        },
+        {
+          "months": 48,
+          "cif": 0.6,
+          "ci95": [
+            0.32979127981846135,
+            0.8773107528789971
+          ],
+          "n_risk": 3
+        },
+        {
+          "months": 60,
+          "cif": 0.6,
+          "ci95": [
+            0.3297912798184617,
+            0.8773107528789967
+          ],
+          "n_risk": 1
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.00598295136286497,
+          "ci95": [
+            0.0034782649482461014,
+            0.010281925178749929
+          ],
+          "n_risk": 1952
+        },
+        {
+          "months": 24,
+          "cif": 0.019263536005663273,
+          "ci95": [
+            0.014162677498584242,
+            0.026176989224404368
+          ],
+          "n_risk": 1360
+        },
+        {
+          "months": 36,
+          "cif": 0.031389402094264426,
+          "ci95": [
+            0.024537950190552604,
+            0.04011421042448471
+          ],
+          "n_risk": 842
+        },
+        {
+          "months": 48,
+          "cif": 0.043167296064743774,
+          "ci95": [
+            0.03481563182691794,
+            0.05346622081459007
+          ],
+          "n_risk": 510
+        },
+        {
+          "months": 60,
+          "cif": 0.046911658456284554,
+          "ci95": [
+            0.038057856660143385,
+            0.057762568123782665
+          ],
+          "n_risk": 276
+        }
+      ],
+      "median_followup_months": null,
       "cohorts": [
         {
           "cohort": "2018–2020",
@@ -112,7 +218,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:09Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z"
     },
     {
       "slug": "neurology-amyloid-alzheimer-s",
@@ -140,13 +246,118 @@
         0.24467347246538232,
         0.6116566235061137
       ],
-      "reference_label": "all neurology Phase 2,3 trials",
-      "reference_rate": 0.05886157826649418,
-      "reference_closed": 1546,
-      "reference_stops": 91,
+      "reference_label": "all neurology trials with a resolved drug target",
+      "reference_rate": 0.08469539375928678,
+      "reference_closed": 673,
+      "reference_stops": 57,
       "baseline_rate": 0.05886157826649418,
       "baseline_closed": 1546,
       "baseline_stops": 91,
+      "baseline_resolved_rate": 0.08469539375928678,
+      "baseline_resolved_closed": 673,
+      "stop_programmes": 6,
+      "stop_sponsors": 6,
+      "stop_assets": 6,
+      "largest_programme": "Biogen",
+      "largest_programme_stops": 3,
+      "rate_leave_one_programme_out": 0.3684210526315789,
+      "unresolved_terminations": 9,
+      "rate_if_all_unresolved_were_biological": 0.7916666666666666,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0625,
+          "ci95": [
+            0.01600714154776528,
+            0.22749897169844024
+          ],
+          "n_risk": 28
+        },
+        {
+          "months": 24,
+          "cif": 0.09486607142857142,
+          "ci95": [
+            0.03160131360360996,
+            0.2660970452057607
+          ],
+          "n_risk": 26
+        },
+        {
+          "months": 36,
+          "cif": 0.1622953869047619,
+          "ci95": [
+            0.07085631889870714,
+            0.3473565165302631
+          ],
+          "n_risk": 18
+        },
+        {
+          "months": 48,
+          "cif": 0.34331716460622713,
+          "ci95": [
+            0.20054340628064782,
+            0.5462475962812818
+          ],
+          "n_risk": 8
+        },
+        {
+          "months": 60,
+          "cif": 0.34331716460622713,
+          "ci95": [
+            0.20054340628064782,
+            0.5462475962812818
+          ],
+          "n_risk": 3
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.00598295136286497,
+          "ci95": [
+            0.0034782649482461014,
+            0.010281925178749929
+          ],
+          "n_risk": 1952
+        },
+        {
+          "months": 24,
+          "cif": 0.019263536005663273,
+          "ci95": [
+            0.014162677498584242,
+            0.026176989224404368
+          ],
+          "n_risk": 1360
+        },
+        {
+          "months": 36,
+          "cif": 0.031389402094264426,
+          "ci95": [
+            0.024537950190552604,
+            0.04011421042448471
+          ],
+          "n_risk": 842
+        },
+        {
+          "months": 48,
+          "cif": 0.043167296064743774,
+          "ci95": [
+            0.03481563182691794,
+            0.05346622081459007
+          ],
+          "n_risk": 510
+        },
+        {
+          "months": 60,
+          "cif": 0.046911658456284554,
+          "ci95": [
+            0.038057856660143385,
+            0.057762568123782665
+          ],
+          "n_risk": 276
+        }
+      ],
+      "median_followup_months": 70.6694,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -228,7 +439,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:09Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z"
     },
     {
       "slug": "oncology-tgf-pd-l-1",
@@ -263,6 +474,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 8,
+      "stop_sponsors": 6,
+      "stop_assets": 4,
+      "largest_programme": "Merck KGaA",
+      "largest_programme_stops": 3,
+      "rate_leave_one_programme_out": 0.2222222222222222,
+      "unresolved_terminations": 7,
+      "rate_if_all_unresolved_were_biological": 0.4090909090909091,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.06302966101694915,
+          "ci95": [
+            0.024129997359848,
+            0.15930324923758776
+          ],
+          "n_risk": 54
+        },
+        {
+          "months": 24,
+          "cif": 0.0983495148069245,
+          "ci95": [
+            0.045323453185899476,
+            0.206324056719699
+          ],
+          "n_risk": 45
+        },
+        {
+          "months": 36,
+          "cif": 0.0983495148069245,
+          "ci95": [
+            0.045323453185899476,
+            0.206324056719699
+          ],
+          "n_risk": 29
+        },
+        {
+          "months": 48,
+          "cif": 0.20773910786255842,
+          "ci95": [
+            0.11967002429839435,
+            0.34651760064398707
+          ],
+          "n_risk": 13
+        },
+        {
+          "months": 60,
+          "cif": 0.20773910786255842,
+          "ci95": [
+            0.11967002429839435,
+            0.34651760064398707
+          ],
+          "n_risk": 11
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 66.2998,
       "cohorts": [
         {
           "cohort": "2018–2020",
@@ -344,7 +660,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z"
     },
     {
       "slug": "oncology-tgf",
@@ -372,13 +688,118 @@
         0.11132633377760481,
         0.3134093733701362
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 8,
+      "stop_sponsors": 6,
+      "stop_assets": 4,
+      "largest_programme": "Merck KGaA",
+      "largest_programme_stops": 3,
+      "rate_leave_one_programme_out": 0.16326530612244897,
+      "unresolved_terminations": 8,
+      "rate_if_all_unresolved_were_biological": 0.3333333333333333,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.04259123202563194,
+          "ci95": [
+            0.016198594217581963,
+            0.10952422387725225
+          ],
+          "n_risk": 82
+        },
+        {
+          "months": 24,
+          "cif": 0.0670181940632249,
+          "ci95": [
+            0.03058928656949278,
+            0.14349573182972508
+          ],
+          "n_risk": 65
+        },
+        {
+          "months": 36,
+          "cif": 0.0670181940632249,
+          "ci95": [
+            0.03058928656949278,
+            0.14349573182972508
+          ],
+          "n_risk": 41
+        },
+        {
+          "months": 48,
+          "cif": 0.15042687231792348,
+          "ci95": [
+            0.08496702048305782,
+            0.2586591507312226
+          ],
+          "n_risk": 24
+        },
+        {
+          "months": 60,
+          "cif": 0.15042687231792348,
+          "ci95": [
+            0.08496702048305782,
+            0.2586591507312226
+          ],
+          "n_risk": 18
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 64.6571,
       "cohorts": [
         {
           "cohort": "2018–2020",
@@ -460,7 +881,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z"
     },
     {
       "slug": "oncology-ox40-4-1bb-gitr",
@@ -488,13 +909,118 @@
         0.06650359257960956,
         0.30920213138460484
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 5,
+      "stop_sponsors": 5,
+      "stop_assets": 5,
+      "largest_programme": "Pfizer",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.125,
+      "unresolved_terminations": 2,
+      "rate_if_all_unresolved_were_biological": 0.21212121212121213,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 69
+        },
+        {
+          "months": 24,
+          "cif": 0.015207373271889403,
+          "ci95": [
+            0.002156291825177181,
+            0.10307899309718249
+          ],
+          "n_risk": 54
+        },
+        {
+          "months": 36,
+          "cif": 0.04933285142013796,
+          "ci95": [
+            0.01614736523647131,
+            0.14548756941765284
+          ],
+          "n_risk": 46
+        },
+        {
+          "months": 48,
+          "cif": 0.06768483924659159,
+          "ci95": [
+            0.025877437503109446,
+            0.1708417158091321
+          ],
+          "n_risk": 33
+        },
+        {
+          "months": 60,
+          "cif": 0.08857073106548789,
+          "ci95": [
+            0.037602839365296625,
+            0.20100720656131188
+          ],
+          "n_risk": 20
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 54.078,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -586,7 +1112,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z"
     },
     {
       "slug": "oncology-bcma",
@@ -614,13 +1140,118 @@
         0.056989129307017855,
         0.31490173044877334
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 4,
+      "stop_sponsors": 3,
+      "stop_assets": 4,
+      "largest_programme": "Jacob Soumerai, MD",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.1111111111111111,
+      "unresolved_terminations": 3,
+      "rate_if_all_unresolved_were_biological": 0.25,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 116
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 87
+        },
+        {
+          "months": 36,
+          "cif": 0.024323994285626316,
+          "ci95": [
+            0.006096042373672561,
+            0.09440852794984966
+          ],
+          "n_risk": 65
+        },
+        {
+          "months": 48,
+          "cif": 0.05291648907271956,
+          "ci95": [
+            0.020076505579980863,
+            0.13562438385545217
+          ],
+          "n_risk": 42
+        },
+        {
+          "months": 60,
+          "cif": 0.05291648907271956,
+          "ci95": [
+            0.020076505579980863,
+            0.13562438385545217
+          ],
+          "n_risk": 26
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 45.4374,
       "cohorts": [
         {
           "cohort": "2018–2020",
@@ -691,7 +1322,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z"
     },
     {
       "slug": "oncology-her3",
@@ -719,13 +1350,118 @@
         0.05309569424218104,
         0.2968168394441695
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 2,
+      "stop_assets": 3,
+      "largest_programme": "Rain Oncology Inc",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.07407407407407407,
+      "unresolved_terminations": 3,
+      "rate_if_all_unresolved_were_biological": 0.23333333333333334,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 80
+        },
+        {
+          "months": 24,
+          "cif": 0.03733404765482184,
+          "ci95": [
+            0.01219531432373766,
+            0.11129076640271951
+          ],
+          "n_risk": 51
+        },
+        {
+          "months": 36,
+          "cif": 0.05526699860810096,
+          "ci95": [
+            0.02076401666698746,
+            0.14276606001703285
+          ],
+          "n_risk": 30
+        },
+        {
+          "months": 48,
+          "cif": 0.05526699860810096,
+          "ci95": [
+            0.02076401666698746,
+            0.14276606001703285
+          ],
+          "n_risk": 18
+        },
+        {
+          "months": 60,
+          "cif": 0.05526699860810096,
+          "ci95": [
+            0.02076401666698746,
+            0.14276606001703285
+          ],
+          "n_risk": 7
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 31.6386,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -806,7 +1542,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z"
     },
     {
       "slug": "immunology-autoimmune-btk",
@@ -834,13 +1570,118 @@
         0.04166741357068093,
         0.2995619218337349
       ],
-      "reference_label": "all immunology & autoimmune Phase 2,3 trials",
-      "reference_rate": 0.03355363497712252,
-      "reference_closed": 1967,
-      "reference_stops": 66,
+      "reference_label": "all immunology & autoimmune trials with a resolved drug target",
+      "reference_rate": 0.03500583430571762,
+      "reference_closed": 857,
+      "reference_stops": 30,
       "baseline_rate": 0.03355363497712252,
       "baseline_closed": 1967,
       "baseline_stops": 66,
+      "baseline_resolved_rate": 0.03500583430571762,
+      "baseline_resolved_closed": 857,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Roche",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.09523809523809523,
+      "unresolved_terminations": 0,
+      "rate_if_all_unresolved_were_biological": 0.12,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 29
+        },
+        {
+          "months": 24,
+          "cif": 0.10060096153846156,
+          "ci95": [
+            0.03361364450301629,
+            0.280209856485239
+          ],
+          "n_risk": 19
+        },
+        {
+          "months": 36,
+          "cif": 0.10060096153846156,
+          "ci95": [
+            0.03361364450301629,
+            0.280209856485239
+          ],
+          "n_risk": 10
+        },
+        {
+          "months": 48,
+          "cif": 0.10060096153846156,
+          "ci95": [
+            0.03361364450301629,
+            0.280209856485239
+          ],
+          "n_risk": 7
+        },
+        {
+          "months": 60,
+          "cif": 0.10060096153846156,
+          "ci95": [
+            0.03361364450301629,
+            0.280209856485239
+          ],
+          "n_risk": 2
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0033222434729269835,
+          "ci95": [
+            0.001729864885885446,
+            0.006375753062274669
+          ],
+          "n_risk": 2346
+        },
+        {
+          "months": 24,
+          "cif": 0.012012160064496676,
+          "ci95": [
+            0.008459950037699282,
+            0.017043020920507357
+          ],
+          "n_risk": 1495
+        },
+        {
+          "months": 36,
+          "cif": 0.019101765667097752,
+          "ci95": [
+            0.014372892940354154,
+            0.02536636147693294
+          ],
+          "n_risk": 861
+        },
+        {
+          "months": 48,
+          "cif": 0.025442764742619996,
+          "ci95": [
+            0.019723233858066624,
+            0.032792948870391525
+          ],
+          "n_risk": 493
+        },
+        {
+          "months": 60,
+          "cif": 0.026705865704036845,
+          "ci95": [
+            0.02077757550707271,
+            0.03429577209727108
+          ],
+          "n_risk": 303
+        }
+      ],
+      "median_followup_months": 53.9138,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -900,7 +1741,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:10Z"
+      "generated_at_utc": "2026-09-20T19:00:56Z"
     },
     {
       "slug": "oncology-cd47-sirp",
@@ -928,13 +1769,118 @@
         0.04166741357068093,
         0.2995619218337349
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 2,
+      "stop_sponsors": 2,
+      "stop_assets": 2,
+      "largest_programme": "Gilead Sciences",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.058823529411764705,
+      "unresolved_terminations": 9,
+      "rate_if_all_unresolved_were_biological": 0.48,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 45
+        },
+        {
+          "months": 24,
+          "cif": 0.021777777777777778,
+          "ci95": [
+            0.0030966643306605812,
+            0.14471148912556597
+          ],
+          "n_risk": 37
+        },
+        {
+          "months": 36,
+          "cif": 0.0694792939280744,
+          "ci95": [
+            0.022911645273324788,
+            0.20046623198762248
+          ],
+          "n_risk": 27
+        },
+        {
+          "months": 48,
+          "cif": 0.0694792939280744,
+          "ci95": [
+            0.022911645273324788,
+            0.20046623198762248
+          ],
+          "n_risk": 11
+        },
+        {
+          "months": 60,
+          "cif": 0.0694792939280744,
+          "ci95": [
+            0.022911645273324788,
+            0.20046623198762248
+          ],
+          "n_risk": 2
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 42.6448,
       "cohorts": [
         {
           "cohort": "2018–2020",
@@ -994,7 +1940,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z"
     },
     {
       "slug": "oncology-cd38",
@@ -1022,13 +1968,118 @@
         0.05821202176555296,
         0.20690256691240155
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 8,
+      "stop_sponsors": 5,
+      "stop_assets": 6,
+      "largest_programme": "Teva Branded Pharmaceutical Products R&D LLC",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.10294117647058823,
+      "unresolved_terminations": 2,
+      "rate_if_all_unresolved_were_biological": 0.14084507042253522,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.005556064352657447,
+          "ci95": [
+            0.0007844912026729878,
+            0.03878232215676669
+          ],
+          "n_risk": 175
+        },
+        {
+          "months": 24,
+          "cif": 0.01141918950926813,
+          "ci95": [
+            0.0028664031492559028,
+            0.04491105725576894
+          ],
+          "n_risk": 156
+        },
+        {
+          "months": 36,
+          "cif": 0.017549333982337496,
+          "ci95": [
+            0.005687501367068526,
+            0.053476151236650615
+          ],
+          "n_risk": 130
+        },
+        {
+          "months": 48,
+          "cif": 0.040055664475706784,
+          "ci95": [
+            0.018049719880980808,
+            0.08766594055898891
+          ],
+          "n_risk": 95
+        },
+        {
+          "months": 60,
+          "cif": 0.048198426254531274,
+          "ci95": [
+            0.02307711974883253,
+            0.09924104677094281
+          ],
+          "n_risk": 70
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 63.8029,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1120,7 +2171,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z"
     },
     {
       "slug": "oncology-androgen-receptor-axis",
@@ -1148,13 +2199,118 @@
         0.061790380266841645,
         0.16982425351603594
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 13,
+      "stop_sponsors": 13,
+      "stop_assets": 13,
+      "largest_programme": "SOLTI Breast Cancer Research Group",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.0967741935483871,
+      "unresolved_terminations": 6,
+      "rate_if_all_unresolved_were_biological": 0.152,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.003907720633322754,
+          "ci95": [
+            0.0005513616532071275,
+            0.02741376066885337
+          ],
+          "n_risk": 245
+        },
+        {
+          "months": 24,
+          "cif": 0.008056891443799962,
+          "ci95": [
+            0.002019656441109685,
+            0.031850743725580166
+          ],
+          "n_risk": 215
+        },
+        {
+          "months": 36,
+          "cif": 0.04491000462425464,
+          "ci95": [
+            0.024381046008563945,
+            0.0819826835409112
+          ],
+          "n_risk": 162
+        },
+        {
+          "months": 48,
+          "cif": 0.04986728332236471,
+          "ci95": [
+            0.027883050634412432,
+            0.08837878410062139
+          ],
+          "n_risk": 126
+        },
+        {
+          "months": 60,
+          "cif": 0.06208199280169265,
+          "ci95": [
+            0.03632320657718635,
+            0.1050843723160696
+          ],
+          "n_risk": 96
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 69.191,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1246,7 +2402,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z"
     },
     {
       "slug": "oncology-met-pd-l-1",
@@ -1281,6 +2437,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 2,
+      "stop_assets": 3,
+      "largest_programme": "Novartis",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.06451612903225806,
+      "unresolved_terminations": 3,
+      "rate_if_all_unresolved_were_biological": 0.1875,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 93
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 86
+        },
+        {
+          "months": 36,
+          "cif": 0.011006769639487716,
+          "ci95": [
+            0.0015577897797264262,
+            0.07556564824514644
+          ],
+          "n_risk": 75
+        },
+        {
+          "months": 48,
+          "cif": 0.0352722912394252,
+          "ci95": [
+            0.011494080220428193,
+            0.10554510318495225
+          ],
+          "n_risk": 56
+        },
+        {
+          "months": 60,
+          "cif": 0.0352722912394252,
+          "ci95": [
+            0.011494080220428193,
+            0.10554510318495225
+          ],
+          "n_risk": 40
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 67.2197,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1350,7 +2611,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z"
     },
     {
       "slug": "oncology-met",
@@ -1378,13 +2639,118 @@
         0.05152070313989317,
         0.15547440105614402
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 11,
+      "stop_sponsors": 10,
+      "stop_assets": 10,
+      "largest_programme": "University of Nebraska",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.08333333333333333,
+      "unresolved_terminations": 5,
+      "rate_if_all_unresolved_were_biological": 0.1322314049586777,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.003650416021550042,
+          "ci95": [
+            0.0005149997870831369,
+            0.025628784666662074
+          ],
+          "n_risk": 268
+        },
+        {
+          "months": 24,
+          "cif": 0.018811738831324355,
+          "ci95": [
+            0.007868322512973869,
+            0.0446292721159246
+          ],
+          "n_risk": 223
+        },
+        {
+          "months": 36,
+          "cif": 0.027056830176010082,
+          "ci95": [
+            0.012975290242038584,
+            0.055980864233043603
+          ],
+          "n_risk": 186
+        },
+        {
+          "months": 48,
+          "cif": 0.04512406494309672,
+          "ci95": [
+            0.025176224466828767,
+            0.08021333989253654
+          ],
+          "n_risk": 133
+        },
+        {
+          "months": 60,
+          "cif": 0.04512406494309672,
+          "ci95": [
+            0.025176224466828767,
+            0.08021333989253654
+          ],
+          "n_risk": 87
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 58.9733,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1476,7 +2842,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z"
     },
     {
       "slug": "oncology-jak-tyk2",
@@ -1504,13 +2870,118 @@
         0.033593579469713086,
         0.19931805195022648
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 4,
+      "stop_sponsors": 4,
+      "stop_assets": 3,
+      "largest_programme": "Washington University School of Medicine",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.06521739130434782,
+      "unresolved_terminations": 2,
+      "rate_if_all_unresolved_were_biological": 0.1276595744680851,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 79
+        },
+        {
+          "months": 24,
+          "cif": 0.012501953430223471,
+          "ci95": [
+            0.001770517350341838,
+            0.08544339320952343
+          ],
+          "n_risk": 64
+        },
+        {
+          "months": 36,
+          "cif": 0.026855426409886963,
+          "ci95": [
+            0.006758909027167026,
+            0.1035140460141486
+          ],
+          "n_risk": 51
+        },
+        {
+          "months": 48,
+          "cif": 0.0427214931628767,
+          "ci95": [
+            0.013895688187843147,
+            0.12735746992436403
+          ],
+          "n_risk": 36
+        },
+        {
+          "months": 60,
+          "cif": 0.0427214931628767,
+          "ci95": [
+            0.013895688187843147,
+            0.12735746992436403
+          ],
+          "n_risk": 29
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 78.7515,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1591,7 +3062,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z"
     },
     {
       "slug": "neurology-gaba-a",
@@ -1619,13 +3090,118 @@
         0.027960066396321384,
         0.2130099249850153
       ],
-      "reference_label": "all neurology Phase 2,3 trials",
-      "reference_rate": 0.05886157826649418,
-      "reference_closed": 1546,
-      "reference_stops": 91,
+      "reference_label": "all neurology trials with a resolved drug target",
+      "reference_rate": 0.08469539375928678,
+      "reference_closed": 673,
+      "reference_stops": 57,
       "baseline_rate": 0.05886157826649418,
       "baseline_closed": 1546,
       "baseline_stops": 91,
+      "baseline_resolved_rate": 0.08469539375928678,
+      "baseline_resolved_closed": 673,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Marinus Pharmaceuticals",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.0625,
+      "unresolved_terminations": 5,
+      "rate_if_all_unresolved_were_biological": 0.21621621621621623,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 40
+        },
+        {
+          "months": 24,
+          "cif": 0.023376623376623377,
+          "ci95": [
+            0.0033266765381444463,
+            0.15457193533622082
+          ],
+          "n_risk": 29
+        },
+        {
+          "months": 36,
+          "cif": 0.047815820543093274,
+          "ci95": [
+            0.012175151375362514,
+            0.17796833812518664
+          ],
+          "n_risk": 18
+        },
+        {
+          "months": 48,
+          "cif": 0.07921185735751851,
+          "ci95": [
+            0.026003064885919858,
+            0.22778199765282403
+          ],
+          "n_risk": 8
+        },
+        {
+          "months": 60,
+          "cif": 0.07921185735751851,
+          "ci95": [
+            0.026003064885919858,
+            0.22778199765282392
+          ],
+          "n_risk": 3
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.00598295136286497,
+          "ci95": [
+            0.0034782649482461014,
+            0.010281925178749929
+          ],
+          "n_risk": 1952
+        },
+        {
+          "months": 24,
+          "cif": 0.019263536005663273,
+          "ci95": [
+            0.014162677498584242,
+            0.026176989224404368
+          ],
+          "n_risk": 1360
+        },
+        {
+          "months": 36,
+          "cif": 0.031389402094264426,
+          "ci95": [
+            0.024537950190552604,
+            0.04011421042448471
+          ],
+          "n_risk": 842
+        },
+        {
+          "months": 48,
+          "cif": 0.043167296064743774,
+          "ci95": [
+            0.03481563182691794,
+            0.05346622081459007
+          ],
+          "n_risk": 510
+        },
+        {
+          "months": 60,
+          "cif": 0.046911658456284554,
+          "ci95": [
+            0.038057856660143385,
+            0.057762568123782665
+          ],
+          "n_risk": 276
+        }
+      ],
+      "median_followup_months": null,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1695,7 +3271,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:09Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z"
     },
     {
       "slug": "oncology-ido1",
@@ -1723,13 +3299,118 @@
         0.027960066396321384,
         0.2130099249850153
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Cliniques universitaires Saint-Luc- Université Catholique de Louvain",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.05555555555555555,
+      "unresolved_terminations": 6,
+      "rate_if_all_unresolved_were_biological": 0.24324324324324326,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 44
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 42
+        },
+        {
+          "months": 36,
+          "cif": 0.021276595744680847,
+          "ci95": [
+            0.003024632239851277,
+            0.14160022688884621
+          ],
+          "n_risk": 28
+        },
+        {
+          "months": 48,
+          "cif": 0.043878107707894944,
+          "ci95": [
+            0.011147558326824458,
+            0.16439270689807495
+          ],
+          "n_risk": 20
+        },
+        {
+          "months": 60,
+          "cif": 0.06864150342411213,
+          "ci95": [
+            0.022607639046169803,
+            0.19839355491629262
+          ],
+          "n_risk": 15
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 73.922,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1789,7 +3470,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:46Z"
     },
     {
       "slug": "oncology-parp-pd-l-1",
@@ -1824,6 +3505,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 5,
+      "stop_sponsors": 3,
+      "stop_assets": 4,
+      "largest_programme": "University of Chicago",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.06451612903225806,
+      "unresolved_terminations": 2,
+      "rate_if_all_unresolved_were_biological": 0.1111111111111111,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.005920378904249872,
+          "ci95": [
+            0.0008360639367952505,
+            0.04127942471833679
+          ],
+          "n_risk": 164
+        },
+        {
+          "months": 24,
+          "cif": 0.005920378904249872,
+          "ci95": [
+            0.0008360639367952505,
+            0.04127942471833679
+          ],
+          "n_risk": 143
+        },
+        {
+          "months": 36,
+          "cif": 0.026308821330164583,
+          "ci95": [
+            0.009935641578373344,
+            0.0687111656268572
+          ],
+          "n_risk": 125
+        },
+        {
+          "months": 48,
+          "cif": 0.033836139963657266,
+          "ci95": [
+            0.01418060279457456,
+            0.07961324952065618
+          ],
+          "n_risk": 101
+        },
+        {
+          "months": 60,
+          "cif": 0.033836139963657266,
+          "ci95": [
+            0.01418060279457456,
+            0.07961324952065618
+          ],
+          "n_risk": 74
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 64.7885,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -1915,7 +3701,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z"
     },
     {
       "slug": "neurology-dopaminergic",
@@ -1943,13 +3729,118 @@
         0.03031885429734589,
         0.1817381068212467
       ],
-      "reference_label": "all neurology Phase 2,3 trials",
-      "reference_rate": 0.05886157826649418,
-      "reference_closed": 1546,
-      "reference_stops": 91,
+      "reference_label": "all neurology trials with a resolved drug target",
+      "reference_rate": 0.08469539375928678,
+      "reference_closed": 673,
+      "reference_stops": 57,
       "baseline_rate": 0.05886157826649418,
       "baseline_closed": 1546,
       "baseline_stops": 91,
+      "baseline_resolved_rate": 0.08469539375928678,
+      "baseline_resolved_closed": 673,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Pfizer",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.04,
+      "unresolved_terminations": 2,
+      "rate_if_all_unresolved_were_biological": 0.11538461538461539,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.015881147540983603,
+          "ci95": [
+            0.0022523776518560412,
+            0.10743127060905544
+          ],
+          "n_risk": 53
+        },
+        {
+          "months": 24,
+          "cif": 0.04995777619588468,
+          "ci95": [
+            0.016374636311883184,
+            0.14707212274462556
+          ],
+          "n_risk": 36
+        },
+        {
+          "months": 36,
+          "cif": 0.06771418039920478,
+          "ci95": [
+            0.025936132013409496,
+            0.1706247245271454
+          ],
+          "n_risk": 20
+        },
+        {
+          "months": 48,
+          "cif": 0.06771418039920478,
+          "ci95": [
+            0.025936132013409496,
+            0.1706247245271454
+          ],
+          "n_risk": 11
+        },
+        {
+          "months": 60,
+          "cif": 0.06771418039920478,
+          "ci95": [
+            0.025936132013409496,
+            0.1706247245271454
+          ],
+          "n_risk": 4
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.00598295136286497,
+          "ci95": [
+            0.0034782649482461014,
+            0.010281925178749929
+          ],
+          "n_risk": 1952
+        },
+        {
+          "months": 24,
+          "cif": 0.019263536005663273,
+          "ci95": [
+            0.014162677498584242,
+            0.026176989224404368
+          ],
+          "n_risk": 1360
+        },
+        {
+          "months": 36,
+          "cif": 0.031389402094264426,
+          "ci95": [
+            0.024537950190552604,
+            0.04011421042448471
+          ],
+          "n_risk": 842
+        },
+        {
+          "months": 48,
+          "cif": 0.043167296064743774,
+          "ci95": [
+            0.03481563182691794,
+            0.05346622081459007
+          ],
+          "n_risk": 510
+        },
+        {
+          "months": 60,
+          "cif": 0.046911658456284554,
+          "ci95": [
+            0.038057856660143385,
+            0.057762568123782665
+          ],
+          "n_risk": 276
+        }
+      ],
+      "median_followup_months": 124.5503,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -2030,7 +3921,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:09Z"
+      "generated_at_utc": "2026-09-20T19:00:55Z"
     },
     {
       "slug": "oncology-egfr",
@@ -2058,13 +3949,118 @@
         0.048279228366164606,
         0.1112366527813764
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 19,
+      "stop_sponsors": 17,
+      "stop_assets": 19,
+      "largest_programme": "Rain Oncology Inc",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.06716417910447761,
+      "unresolved_terminations": 19,
+      "rate_if_all_unresolved_were_biological": 0.14391143911439114,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.004469237230564287,
+          "ci95": [
+            0.0014435391189348001,
+            0.013792936711025439
+          ],
+          "n_risk": 640
+        },
+        {
+          "months": 24,
+          "cif": 0.017519788819796264,
+          "ci95": [
+            0.009730533559205834,
+            0.03144452986184276
+          ],
+          "n_risk": 503
+        },
+        {
+          "months": 36,
+          "cif": 0.028998413187263598,
+          "ci95": [
+            0.018077172453739854,
+            0.04636010042460581
+          ],
+          "n_risk": 361
+        },
+        {
+          "months": 48,
+          "cif": 0.03416041967780705,
+          "ci95": [
+            0.02175596433491933,
+            0.053441663997739974
+          ],
+          "n_risk": 242
+        },
+        {
+          "months": 60,
+          "cif": 0.037150927615128795,
+          "ci95": [
+            0.023858923041626623,
+            0.05762627876410853
+          ],
+          "n_risk": 159
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 40.0493,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -2156,7 +4152,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z"
     },
     {
       "slug": "oncology-pi3k-akt-mtor",
@@ -2184,13 +4180,118 @@
         0.043174612835219436,
         0.12093305009779477
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 11,
+      "stop_sponsors": 10,
+      "stop_assets": 10,
+      "largest_programme": "Samsung Medical Center",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.06285714285714286,
+      "unresolved_terminations": 19,
+      "rate_if_all_unresolved_were_biological": 0.1797752808988764,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0032791294273419396,
+          "ci95": [
+            0.00046254473474560687,
+            0.02304811435375187
+          ],
+          "n_risk": 288
+        },
+        {
+          "months": 24,
+          "cif": 0.013916429400067445,
+          "ci95": [
+            0.005242412213685821,
+            0.03667535887969242
+          ],
+          "n_risk": 236
+        },
+        {
+          "months": 36,
+          "cif": 0.02136894285294443,
+          "ci95": [
+            0.009648403475542744,
+            0.04698538943938135
+          ],
+          "n_risk": 199
+        },
+        {
+          "months": 48,
+          "cif": 0.03369707494371907,
+          "ci95": [
+            0.01763575087816993,
+            0.0639022492880762
+          ],
+          "n_risk": 147
+        },
+        {
+          "months": 60,
+          "cif": 0.038369572055685135,
+          "ci95": [
+            0.020753157309881698,
+            0.07039250201678937
+          ],
+          "n_risk": 101
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 73.922,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -2282,7 +4383,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z"
     },
     {
       "slug": "oncology-cd3-t-cell-engagers",
@@ -2310,13 +4411,118 @@
         0.025372494807644003,
         0.15447732658187266
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 4,
+      "stop_sponsors": 3,
+      "stop_assets": 4,
+      "largest_programme": "Xenikos",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.04918032786885246,
+      "unresolved_terminations": 5,
+      "rate_if_all_unresolved_were_biological": 0.14516129032258066,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.003968253968253968,
+          "ci95": [
+            0.0005599164472247509,
+            0.027833326329961383
+          ],
+          "n_risk": 240
+        },
+        {
+          "months": 24,
+          "cif": 0.003968253968253968,
+          "ci95": [
+            0.0005599164472247509,
+            0.027833326329961383
+          ],
+          "n_risk": 193
+        },
+        {
+          "months": 36,
+          "cif": 0.008883414963377306,
+          "ci95": [
+            0.0022109923543915944,
+            0.03533268776914322
+          ],
+          "n_risk": 125
+        },
+        {
+          "months": 48,
+          "cif": 0.01661728974205834,
+          "ci95": [
+            0.005140094445022947,
+            0.05302978692597449
+          ],
+          "n_risk": 80
+        },
+        {
+          "months": 60,
+          "cif": 0.026610768087527492,
+          "ci95": [
+            0.009463662772678183,
+            0.07365004026243283
+          ],
+          "n_risk": 56
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 36.731,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -2397,7 +4603,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z"
     },
     {
       "slug": "oncology-hdac",
@@ -2425,13 +4631,118 @@
         0.024188663436562223,
         0.14782360821313795
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 4,
+      "stop_sponsors": 4,
+      "stop_assets": 3,
+      "largest_programme": "University of California, San Francisco",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.047619047619047616,
+      "unresolved_terminations": 4,
+      "rate_if_all_unresolved_were_biological": 0.12307692307692308,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 124
+        },
+        {
+          "months": 24,
+          "cif": 0.009141770459858927,
+          "ci95": [
+            0.0012928337950500746,
+            0.06311639731138907
+          ],
+          "n_risk": 94
+        },
+        {
+          "months": 36,
+          "cif": 0.018865396522811835,
+          "ci95": [
+            0.00474804063165013,
+            0.07338339600969046
+          ],
+          "n_risk": 72
+        },
+        {
+          "months": 48,
+          "cif": 0.02945187131816994,
+          "ci95": [
+            0.009571135671478714,
+            0.08873691855384702
+          ],
+          "n_risk": 51
+        },
+        {
+          "months": 60,
+          "cif": 0.04223949937572373,
+          "ci95": [
+            0.015915161848827575,
+            0.10961164023921766
+          ],
+          "n_risk": 35
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 42.8419,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -2512,7 +4823,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z"
     },
     {
       "slug": "oncology-parp",
@@ -2540,13 +4851,118 @@
         0.03379868421266013,
         0.09951575122549011
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 12,
+      "stop_sponsors": 9,
+      "stop_assets": 11,
+      "largest_programme": "pharmaand GmbH",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.05527638190954774,
+      "unresolved_terminations": 7,
+      "rate_if_all_unresolved_were_biological": 0.09268292682926829,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.00445620646934042,
+          "ci95": [
+            0.0011161621306043923,
+            0.01770219457665445
+          ],
+          "n_risk": 430
+        },
+        {
+          "months": 24,
+          "cif": 0.00929311273876406,
+          "ci95": [
+            0.0034945266001401576,
+            0.024594030946175183
+          ],
+          "n_risk": 374
+        },
+        {
+          "months": 36,
+          "cif": 0.024872222294696746,
+          "ci95": [
+            0.013440591234919697,
+            0.045798481325670326
+          ],
+          "n_risk": 315
+        },
+        {
+          "months": 48,
+          "cif": 0.027672385552201195,
+          "ci95": [
+            0.015394494242090162,
+            0.04949329363656374
+          ],
+          "n_risk": 252
+        },
+        {
+          "months": 60,
+          "cif": 0.031059635183638603,
+          "ci95": [
+            0.017686381545198193,
+            0.054261686710554646
+          ],
+          "n_risk": 173
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 66.3655,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -2638,7 +5054,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z"
     },
     {
       "slug": "oncology-flt3-kit",
@@ -2666,13 +5082,118 @@
         0.0344821601933716,
         0.09399344680722879
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 14,
+      "stop_sponsors": 14,
+      "stop_assets": 12,
+      "largest_programme": "Washington University School of Medicine",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.053497942386831275,
+      "unresolved_terminations": 13,
+      "rate_if_all_unresolved_were_biological": 0.11065573770491803,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 469
+        },
+        {
+          "months": 24,
+          "cif": 0.01114636323566857,
+          "ci95": [
+            0.004646212744014999,
+            0.026617955498459245
+          ],
+          "n_risk": 363
+        },
+        {
+          "months": 36,
+          "cif": 0.016166830179881273,
+          "ci95": [
+            0.007722511207132743,
+            0.03368666534878528
+          ],
+          "n_risk": 283
+        },
+        {
+          "months": 48,
+          "cif": 0.030666642293179794,
+          "ci95": [
+            0.01744630939324776,
+            0.05362784202539572
+          ],
+          "n_risk": 194
+        },
+        {
+          "months": 60,
+          "cif": 0.030666642293179794,
+          "ci95": [
+            0.01744630939324776,
+            0.05362784202539572
+          ],
+          "n_risk": 127
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 47.2115,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -2764,7 +5285,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z"
     },
     {
       "slug": "oncology-tigit-pd-l-1",
@@ -2799,6 +5320,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Roche",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.04878048780487805,
+      "unresolved_terminations": 9,
+      "rate_if_all_unresolved_were_biological": 0.21052631578947367,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 115
+        },
+        {
+          "months": 24,
+          "cif": 0.009019699442046532,
+          "ci95": [
+            0.0012754555754100894,
+            0.06229895525400175
+          ],
+          "n_risk": 99
+        },
+        {
+          "months": 36,
+          "cif": 0.009019699442046532,
+          "ci95": [
+            0.0012754555754100894,
+            0.06229895525400175
+          ],
+          "n_risk": 72
+        },
+        {
+          "months": 48,
+          "cif": 0.022494251374202953,
+          "ci95": [
+            0.005518209262304619,
+            0.08930007385640548
+          ],
+          "n_risk": 46
+        },
+        {
+          "months": 60,
+          "cif": 0.039542383389563396,
+          "ci95": [
+            0.012476831149047629,
+            0.12159410102206858
+          ],
+          "n_risk": 26
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 56.6407,
       "cohorts": [
         {
           "cohort": "2018–2020",
@@ -2858,7 +5484,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z"
     },
     {
       "slug": "oncology-tigit",
@@ -2886,13 +5512,118 @@
         0.017745812831795674,
         0.14139625335019185
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Roche",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.047619047619047616,
+      "unresolved_terminations": 9,
+      "rate_if_all_unresolved_were_biological": 0.20689655172413793,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 116
+        },
+        {
+          "months": 24,
+          "cif": 0.008939611545205721,
+          "ci95": [
+            0.0012640872198371733,
+            0.06176079926666922
+          ],
+          "n_risk": 100
+        },
+        {
+          "months": 36,
+          "cif": 0.008939611545205721,
+          "ci95": [
+            0.0012640872198371733,
+            0.06176079926666922
+          ],
+          "n_risk": 73
+        },
+        {
+          "months": 48,
+          "cif": 0.02222139928138203,
+          "ci95": [
+            0.00545461031800798,
+            0.08819391169466062
+          ],
+          "n_risk": 47
+        },
+        {
+          "months": 60,
+          "cif": 0.03900403107256502,
+          "ci95": [
+            0.012312901802976395,
+            0.11993472804067684
+          ],
+          "n_risk": 26
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 56.6407,
       "cohorts": [
         {
           "cohort": "2018–2020",
@@ -2952,7 +5683,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z"
     },
     {
       "slug": "immunology-autoimmune-jak-tyk2",
@@ -2980,13 +5711,118 @@
         0.01986372131473304,
         0.12307895482865383
       ],
-      "reference_label": "all immunology & autoimmune Phase 2,3 trials",
-      "reference_rate": 0.03355363497712252,
-      "reference_closed": 1967,
-      "reference_stops": 66,
+      "reference_label": "all immunology & autoimmune trials with a resolved drug target",
+      "reference_rate": 0.03500583430571762,
+      "reference_closed": 857,
+      "reference_stops": 30,
       "baseline_rate": 0.03355363497712252,
       "baseline_closed": 1967,
       "baseline_stops": 66,
+      "baseline_resolved_rate": 0.03500583430571762,
+      "baseline_resolved_closed": 857,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Eli Lilly",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.02702702702702703,
+      "unresolved_terminations": 5,
+      "rate_if_all_unresolved_were_biological": 0.11392405063291139,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 104
+        },
+        {
+          "months": 24,
+          "cif": 0.00944862925400602,
+          "ci95": [
+            0.0013363629207238104,
+            0.0651762905221841
+          ],
+          "n_risk": 79
+        },
+        {
+          "months": 36,
+          "cif": 0.020258273107947533,
+          "ci95": [
+            0.005088015278532088,
+            0.07883397752270171
+          ],
+          "n_risk": 47
+        },
+        {
+          "months": 48,
+          "cif": 0.03299342636028774,
+          "ci95": [
+            0.010666575295888658,
+            0.09964148135637263
+          ],
+          "n_risk": 30
+        },
+        {
+          "months": 60,
+          "cif": 0.03299342636028774,
+          "ci95": [
+            0.010666575295888658,
+            0.09964148135637263
+          ],
+          "n_risk": 22
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0033222434729269835,
+          "ci95": [
+            0.001729864885885446,
+            0.006375753062274669
+          ],
+          "n_risk": 2346
+        },
+        {
+          "months": 24,
+          "cif": 0.012012160064496676,
+          "ci95": [
+            0.008459950037699282,
+            0.017043020920507357
+          ],
+          "n_risk": 1495
+        },
+        {
+          "months": 36,
+          "cif": 0.019101765667097752,
+          "ci95": [
+            0.014372892940354154,
+            0.02536636147693294
+          ],
+          "n_risk": 861
+        },
+        {
+          "months": 48,
+          "cif": 0.025442764742619996,
+          "ci95": [
+            0.019723233858066624,
+            0.032792948870391525
+          ],
+          "n_risk": 493
+        },
+        {
+          "months": 60,
+          "cif": 0.026705865704036845,
+          "ci95": [
+            0.02077757550707271,
+            0.03429577209727108
+          ],
+          "n_risk": 303
+        }
+      ],
+      "median_followup_months": 77.9302,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3067,7 +5903,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:10Z"
+      "generated_at_utc": "2026-09-20T19:00:56Z"
     },
     {
       "slug": "oncology-bcl-2",
@@ -3095,13 +5931,118 @@
         0.021328195361982306,
         0.11069573407060934
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 5,
+      "stop_sponsors": 5,
+      "stop_assets": 5,
+      "largest_programme": "Roche",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.04,
+      "unresolved_terminations": 8,
+      "rate_if_all_unresolved_were_biological": 0.12871287128712872,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 268
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 226
+        },
+        {
+          "months": 36,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 183
+        },
+        {
+          "months": 48,
+          "cif": 0.0049213239149731745,
+          "ci95": [
+            0.0006947648172616061,
+            0.034413952599124054
+          ],
+          "n_risk": 140
+        },
+        {
+          "months": 60,
+          "cif": 0.022596960017474046,
+          "ci95": [
+            0.008518431656439174,
+            0.05923779065548074
+          ],
+          "n_risk": 104
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 57.9877,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3193,7 +6134,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z"
     },
     {
       "slug": "oncology-pd-l-1",
@@ -3221,13 +6162,118 @@
         0.03869608759512371,
         0.057025616477408995
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 89,
+      "stop_sponsors": 65,
+      "stop_assets": 62,
+      "largest_programme": "Roche",
+      "largest_programme_stops": 4,
+      "rate_leave_one_programme_out": 0.04579025110782865,
+      "unresolved_terminations": 122,
+      "rate_if_all_unresolved_were_biological": 0.10615608337372757,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0023441532215383414,
+          "ci95": [
+            0.0012618261571635259,
+            0.004352817367632933
+          ],
+          "n_risk": 4089
+        },
+        {
+          "months": 24,
+          "cif": 0.005688326687571114,
+          "ci95": [
+            0.0037812864579302996,
+            0.008553019372860349
+          ],
+          "n_risk": 3459
+        },
+        {
+          "months": 36,
+          "cif": 0.014983580671850853,
+          "ci95": [
+            0.011510383966549464,
+            0.019494415640953555
+          ],
+          "n_risk": 2664
+        },
+        {
+          "months": 48,
+          "cif": 0.02437397249986098,
+          "ci95": [
+            0.0196661784975809,
+            0.030191272950620185
+          ],
+          "n_risk": 1873
+        },
+        {
+          "months": 60,
+          "cif": 0.027534718656031097,
+          "ci95": [
+            0.022421282196413816,
+            0.033794026677551714
+          ],
+          "n_risk": 1283
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 53.6509,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3319,7 +6365,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:04Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z"
     },
     {
       "slug": "oncology-braf-mek-pd-l-1",
@@ -3354,6 +6400,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Roche",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.03278688524590164,
+      "unresolved_terminations": 4,
+      "rate_if_all_unresolved_were_biological": 0.109375,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 132
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 118
+        },
+        {
+          "months": 36,
+          "cif": 0.0164452945307261,
+          "ci95": [
+            0.00413851362712192,
+            0.06415231907188534
+          ],
+          "n_risk": 97
+        },
+        {
+          "months": 48,
+          "cif": 0.02508684873895136,
+          "ci95": [
+            0.00815695151395246,
+            0.07578724427088568
+          ],
+          "n_risk": 72
+        },
+        {
+          "months": 60,
+          "cif": 0.02508684873895136,
+          "ci95": [
+            0.00815695151395246,
+            0.07578724427088568
+          ],
+          "n_risk": 59
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 68.271,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3423,7 +6574,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z"
     },
     {
       "slug": "oncology-alk-ros1-ret",
@@ -3451,13 +6602,118 @@
         0.022335930569900464,
         0.0914196036761159
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 7,
+      "stop_sponsors": 7,
+      "stop_assets": 7,
+      "largest_programme": "UNICANCER",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.039473684210526314,
+      "unresolved_terminations": 6,
+      "rate_if_all_unresolved_were_biological": 0.08496732026143791,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 320
+        },
+        {
+          "months": 24,
+          "cif": 0.013242110862491344,
+          "ci95": [
+            0.004988320368670696,
+            0.03491114591952815
+          ],
+          "n_risk": 262
+        },
+        {
+          "months": 36,
+          "cif": 0.017032984300181297,
+          "ci95": [
+            0.007111706368730375,
+            0.04050982584242857
+          ],
+          "n_risk": 203
+        },
+        {
+          "months": 48,
+          "cif": 0.025298849854631753,
+          "ci95": [
+            0.012086999238394514,
+            0.052562720422736464
+          ],
+          "n_risk": 145
+        },
+        {
+          "months": 60,
+          "cif": 0.025298849854631753,
+          "ci95": [
+            0.012086999238394514,
+            0.052562720422736464
+          ],
+          "n_risk": 96
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 58.4148,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3549,7 +6805,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z"
     },
     {
       "slug": "oncology-braf-mek",
@@ -3577,13 +6833,118 @@
         0.02270827634074077,
         0.07943087712612443
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 9,
+      "stop_sponsors": 9,
+      "stop_assets": 9,
+      "largest_programme": "UNICANCER",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.03827751196172249,
+      "unresolved_terminations": 11,
+      "rate_if_all_unresolved_were_biological": 0.09523809523809523,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 389
+        },
+        {
+          "months": 24,
+          "cif": 0.00816990970482793,
+          "ci95": [
+            0.002640788163055907,
+            0.025128842977600985
+          ],
+          "n_risk": 329
+        },
+        {
+          "months": 36,
+          "cif": 0.01696671931177334,
+          "ci95": [
+            0.007651376909205032,
+            0.037407448693345335
+          ],
+          "n_risk": 255
+        },
+        {
+          "months": 48,
+          "cif": 0.026612528172430216,
+          "ci95": [
+            0.01390806322654281,
+            0.05062028492695425
+          ],
+          "n_risk": 182
+        },
+        {
+          "months": 60,
+          "cif": 0.026612528172430216,
+          "ci95": [
+            0.01390806322654281,
+            0.05062028492695425
+          ],
+          "n_risk": 132
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 67.4497,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3675,7 +7036,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z"
     },
     {
       "slug": "oncology-cdk4-6",
@@ -3703,13 +7064,118 @@
         0.01923362439471795,
         0.0879188955996544
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 6,
+      "stop_sponsors": 6,
+      "stop_assets": 5,
+      "largest_programme": "Washington University School of Medicine",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.03496503496503497,
+      "unresolved_terminations": 9,
+      "rate_if_all_unresolved_were_biological": 0.10416666666666667,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.003155038281007103,
+          "ci95": [
+            0.00044501704716415347,
+            0.02218429329833438
+          ],
+          "n_risk": 312
+        },
+        {
+          "months": 24,
+          "cif": 0.006330497521761826,
+          "ci95": [
+            0.0015869489672644121,
+            0.02507390586538283
+          ],
+          "n_risk": 278
+        },
+        {
+          "months": 36,
+          "cif": 0.013542466886733566,
+          "ci95": [
+            0.005091698482260432,
+            0.03576475598651685
+          ],
+          "n_risk": 227
+        },
+        {
+          "months": 48,
+          "cif": 0.01742032967350685,
+          "ci95": [
+            0.00726444128121051,
+            0.04147473052865114
+          ],
+          "n_risk": 174
+        },
+        {
+          "months": 60,
+          "cif": 0.01742032967350685,
+          "ci95": [
+            0.00726444128121051,
+            0.04147473052865114
+          ],
+          "n_risk": 125
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 71.5565,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3801,7 +7267,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z"
     },
     {
       "slug": "oncology-antifolate-nucleoside",
@@ -3829,13 +7295,118 @@
         0.02641007370346873,
         0.060602037716738
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 21,
+      "stop_sponsors": 21,
+      "stop_assets": 20,
+      "largest_programme": "Universität Duisburg-Essen",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.038314176245210725,
+      "unresolved_terminations": 44,
+      "rate_if_all_unresolved_were_biological": 0.124282982791587,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0008330563790602262,
+          "ci95": [
+            0.00011738505901914831,
+            0.00589913387086527
+          ],
+          "n_risk": 1160
+        },
+        {
+          "months": 24,
+          "cif": 0.006392489121561664,
+          "ci95": [
+            0.0030493415077219588,
+            0.013376227484001801
+          ],
+          "n_risk": 946
+        },
+        {
+          "months": 36,
+          "cif": 0.010816262824226628,
+          "ci95": [
+            0.005982322353950464,
+            0.01951767244504954
+          ],
+          "n_risk": 696
+        },
+        {
+          "months": 48,
+          "cif": 0.016083068847990552,
+          "ci95": [
+            0.009654265055474953,
+            0.026734662930241737
+          ],
+          "n_risk": 465
+        },
+        {
+          "months": 60,
+          "cif": 0.019248360287939203,
+          "ci95": [
+            0.011879539094135527,
+            0.031115500279069508
+          ],
+          "n_risk": 334
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 44.5503,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -3927,7 +7498,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:53Z"
     },
     {
       "slug": "oncology-antifolate-nucleoside-pd-l-1",
@@ -3962,6 +7533,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 7,
+      "stop_sponsors": 7,
+      "stop_assets": 6,
+      "largest_programme": "Tufts Medical Center",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.03428571428571429,
+      "unresolved_terminations": 19,
+      "rate_if_all_unresolved_were_biological": 0.14772727272727273,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 420
+        },
+        {
+          "months": 24,
+          "cif": 0.005169030458853689,
+          "ci95": [
+            0.0012926553272400998,
+            0.020549598997752883
+          ],
+          "n_risk": 341
+        },
+        {
+          "months": 36,
+          "cif": 0.011433146525421005,
+          "ci95": [
+            0.0042715406395367195,
+            0.030417023570849744
+          ],
+          "n_risk": 235
+        },
+        {
+          "months": 48,
+          "cif": 0.01878141037258855,
+          "ci95": [
+            0.00839646898086377,
+            0.04173749646546743
+          ],
+          "n_risk": 149
+        },
+        {
+          "months": 60,
+          "cif": 0.01878141037258855,
+          "ci95": [
+            0.00839646898086377,
+            0.04173749646546743
+          ],
+          "n_risk": 100
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 38.6366,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4053,7 +7729,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:53Z"
     },
     {
       "slug": "oncology-microtubule",
@@ -4081,13 +7757,118 @@
         0.027230375359716563,
         0.0575268712986608
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 26,
+      "stop_sponsors": 23,
+      "stop_assets": 25,
+      "largest_programme": "Wake Forest University Health Sciences",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.0382262996941896,
+      "unresolved_terminations": 46,
+      "rate_if_all_unresolved_were_biological": 0.1099236641221374,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0006752331140157194,
+          "ci95": [
+            9.513986776243932e-05,
+            0.004783840807712103
+          ],
+          "n_risk": 1374
+        },
+        {
+          "months": 24,
+          "cif": 0.00596152353518067,
+          "ci95": [
+            0.002984160895002752,
+            0.011891697581013827
+          ],
+          "n_risk": 1145
+        },
+        {
+          "months": 36,
+          "cif": 0.013952273947592192,
+          "ci95": [
+            0.008676600777491994,
+            0.022399296878701236
+          ],
+          "n_risk": 871
+        },
+        {
+          "months": 48,
+          "cif": 0.019106130919234642,
+          "ci95": [
+            0.012574409268632514,
+            0.028980582686454537
+          ],
+          "n_risk": 636
+        },
+        {
+          "months": 60,
+          "cif": 0.02165847720482044,
+          "ci95": [
+            0.014477957184472645,
+            0.03234136726056003
+          ],
+          "n_risk": 443
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 53.848,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4179,7 +7960,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z"
     },
     {
       "slug": "oncology-topoisomerase",
@@ -4207,13 +7988,118 @@
         0.02281616615703969,
         0.0652533034712468
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 13,
+      "stop_sponsors": 13,
+      "stop_assets": 13,
+      "largest_programme": "University of Nebraska",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.03592814371257485,
+      "unresolved_terminations": 21,
+      "rate_if_all_unresolved_were_biological": 0.10149253731343283,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0010741322710970406,
+          "ci95": [
+            0.00015137042298918324,
+            0.0076006828878100174
+          ],
+          "n_risk": 870
+        },
+        {
+          "months": 24,
+          "cif": 0.004652400125398597,
+          "ci95": [
+            0.0017466097039593453,
+            0.012362455352551427
+          ],
+          "n_risk": 703
+        },
+        {
+          "months": 36,
+          "cif": 0.0060948518617662435,
+          "ci95": [
+            0.0025298463079160838,
+            0.01464656910449913
+          ],
+          "n_risk": 541
+        },
+        {
+          "months": 48,
+          "cif": 0.011294329033698114,
+          "ci95": [
+            0.0055886649591790905,
+            0.0227580654151901
+          ],
+          "n_risk": 378
+        },
+        {
+          "months": 60,
+          "cif": 0.019720404444883932,
+          "ci95": [
+            0.011053148551103953,
+            0.03506248299022774
+          ],
+          "n_risk": 264
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 47.9343,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4305,7 +8191,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z"
     },
     {
       "slug": "oncology-btk",
@@ -4333,13 +8219,118 @@
         0.016411091437379455,
         0.08623972255474167
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 5,
+      "stop_sponsors": 5,
+      "stop_assets": 4,
+      "largest_programme": "Sunesis Pharmaceuticals",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.03076923076923077,
+      "unresolved_terminations": 7,
+      "rate_if_all_unresolved_were_biological": 0.0916030534351145,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.005925965060580445,
+          "ci95": [
+            0.0014853268268109066,
+            0.023485669022845324
+          ],
+          "n_risk": 317
+        },
+        {
+          "months": 24,
+          "cif": 0.005925965060580445,
+          "ci95": [
+            0.0014853268268109066,
+            0.023485669022845324
+          ],
+          "n_risk": 273
+        },
+        {
+          "months": 36,
+          "cif": 0.00949481270419028,
+          "ci95": [
+            0.0030573009463642498,
+            0.029286758000827695
+          ],
+          "n_risk": 227
+        },
+        {
+          "months": 48,
+          "cif": 0.013624826986246447,
+          "ci95": [
+            0.00508238163504926,
+            0.03626136323458917
+          ],
+          "n_risk": 185
+        },
+        {
+          "months": 60,
+          "cif": 0.018720502350046436,
+          "ci95": [
+            0.007673713939714943,
+            0.04530267113532371
+          ],
+          "n_risk": 129
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 61.5031,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4431,7 +8422,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:50Z"
     },
     {
       "slug": "oncology-ctla-4",
@@ -4459,13 +8450,118 @@
         0.020322516045756994,
         0.06362195409732958
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 11,
+      "stop_sponsors": 9,
+      "stop_assets": 6,
+      "largest_programme": "Weill Medical College of Cornell University",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.033003300330033,
+      "unresolved_terminations": 8,
+      "rate_if_all_unresolved_were_biological": 0.0625,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 592
+        },
+        {
+          "months": 24,
+          "cif": 0.007007340430276601,
+          "ci95": [
+            0.00263471761794265,
+            0.018568979108643635
+          ],
+          "n_risk": 514
+        },
+        {
+          "months": 36,
+          "cif": 0.01092987443827967,
+          "ci95": [
+            0.004915537419263205,
+            0.024212894207183977
+          ],
+          "n_risk": 404
+        },
+        {
+          "months": 48,
+          "cif": 0.01968489006965273,
+          "ci95": [
+            0.010599878814842145,
+            0.036411931943818976
+          ],
+          "n_risk": 318
+        },
+        {
+          "months": 60,
+          "cif": 0.01968489006965273,
+          "ci95": [
+            0.010599878814842145,
+            0.036411931943818976
+          ],
+          "n_risk": 230
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 67.384,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4557,7 +8653,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:04Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z"
     },
     {
       "slug": "oncology-fgfr",
@@ -4585,13 +8681,118 @@
         0.01656809995480029,
         0.07615873004445048
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 6,
+      "stop_sponsors": 6,
+      "stop_assets": 6,
+      "largest_programme": "University of Texas Southwestern Medical Center",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.030120481927710843,
+      "unresolved_terminations": 19,
+      "rate_if_all_unresolved_were_biological": 0.1497005988023952,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 254
+        },
+        {
+          "months": 24,
+          "cif": 0.00796168793444996,
+          "ci95": [
+            0.0019961194861619624,
+            0.03147267390268904
+          ],
+          "n_risk": 210
+        },
+        {
+          "months": 36,
+          "cif": 0.017001306963652166,
+          "ci95": [
+            0.006399114215586255,
+            0.044769269559270186
+          ],
+          "n_risk": 159
+        },
+        {
+          "months": 48,
+          "cif": 0.02191614104531937,
+          "ci95": [
+            0.009149288627710028,
+            0.05202390705087445
+          ],
+          "n_risk": 103
+        },
+        {
+          "months": 60,
+          "cif": 0.02715689004685765,
+          "ci95": [
+            0.012235699255693122,
+            0.0597157140705703
+          ],
+          "n_risk": 70
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 63.9014,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4683,7 +8884,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:49Z"
     },
     {
       "slug": "oncology-cd20",
@@ -4711,13 +8912,118 @@
         0.016370816649777457,
         0.07528304445773368
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 6,
+      "stop_sponsors": 4,
+      "stop_assets": 6,
+      "largest_programme": "M.D. Anderson Cancer Center",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.02976190476190476,
+      "unresolved_terminations": 13,
+      "rate_if_all_unresolved_were_biological": 0.11242603550295859,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0022624434389140274,
+          "ci95": [
+            0.00031899423424353035,
+            0.015951436123036955
+          ],
+          "n_risk": 416
+        },
+        {
+          "months": 24,
+          "cif": 0.007220868640495029,
+          "ci95": [
+            0.002331996003878567,
+            0.022244059912981506
+          ],
+          "n_risk": 341
+        },
+        {
+          "months": 36,
+          "cif": 0.007220868640495029,
+          "ci95": [
+            0.002331996003878567,
+            0.022244059912981506
+          ],
+          "n_risk": 271
+        },
+        {
+          "months": 48,
+          "cif": 0.010679545001607534,
+          "ci95": [
+            0.003961260544383505,
+            0.02862711514616534
+          ],
+          "n_risk": 213
+        },
+        {
+          "months": 60,
+          "cif": 0.014984191249474216,
+          "ci95": [
+            0.006081915608161292,
+            0.03667436193464324
+          ],
+          "n_risk": 149
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 58.2834,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4809,7 +9115,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z"
     },
     {
       "slug": "oncology-ctla-4-pd-l-1",
@@ -4844,6 +9150,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 10,
+      "stop_sponsors": 8,
+      "stop_assets": 5,
+      "largest_programme": "Weill Medical College of Cornell University",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.03180212014134275,
+      "unresolved_terminations": 7,
+      "rate_if_all_unresolved_were_biological": 0.05985915492957746,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 560
+        },
+        {
+          "months": 24,
+          "cif": 0.007430340213796709,
+          "ci95": [
+            0.0027940773641694783,
+            0.019683343487345017
+          ],
+          "n_risk": 487
+        },
+        {
+          "months": 36,
+          "cif": 0.011611088473798978,
+          "ci95": [
+            0.0052218556448712095,
+            0.025716202773059194
+          ],
+          "n_risk": 380
+        },
+        {
+          "months": 48,
+          "cif": 0.01872347699747728,
+          "ci95": [
+            0.009741631192194955,
+            0.03583543319448568
+          ],
+          "n_risk": 300
+        },
+        {
+          "months": 60,
+          "cif": 0.01872347699747728,
+          "ci95": [
+            0.009741631192194955,
+            0.03583543319448568
+          ],
+          "n_risk": 218
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 67.384,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -4935,7 +9346,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:04Z"
+      "generated_at_utc": "2026-09-20T19:00:45Z"
     },
     {
       "slug": "oncology-her2",
@@ -4963,13 +9374,118 @@
         0.017055324637357105,
         0.07047146086668134
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 6,
+      "stop_sponsors": 6,
+      "stop_assets": 5,
+      "largest_programme": "Rain Oncology Inc",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.025380710659898477,
+      "unresolved_terminations": 11,
+      "rate_if_all_unresolved_were_biological": 0.09,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 529
+        },
+        {
+          "months": 24,
+          "cif": 0.008291072599731185,
+          "ci95": [
+            0.003115788335895653,
+            0.021967211319959157
+          ],
+          "n_risk": 412
+        },
+        {
+          "months": 36,
+          "cif": 0.013145636374681035,
+          "ci95": [
+            0.005908495949834225,
+            0.02911655895317189
+          ],
+          "n_risk": 297
+        },
+        {
+          "months": 48,
+          "cif": 0.016054290774477637,
+          "ci95": [
+            0.007632743487950289,
+            0.03360901807505745
+          ],
+          "n_risk": 201
+        },
+        {
+          "months": 60,
+          "cif": 0.016054290774477637,
+          "ci95": [
+            0.007632743487950289,
+            0.03360901807505745
+          ],
+          "n_risk": 133
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 39.4251,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -5061,7 +9577,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:05Z"
+      "generated_at_utc": "2026-09-20T19:00:47Z"
     },
     {
       "slug": "oncology-vegf-vegfr",
@@ -5089,13 +9605,118 @@
         0.01991274264374253,
         0.04683333434041925
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 20,
+      "stop_sponsors": 18,
+      "stop_assets": 18,
+      "largest_programme": "Yale University",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.029141104294478526,
+      "unresolved_terminations": 38,
+      "rate_if_all_unresolved_were_biological": 0.0888208269525268,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 1313
+        },
+        {
+          "months": 24,
+          "cif": 0.004811925485976746,
+          "ci95": [
+            0.002163020988792397,
+            0.010687344329985526
+          ],
+          "n_risk": 1065
+        },
+        {
+          "months": 36,
+          "cif": 0.008513973213923276,
+          "ci95": [
+            0.004578588118902993,
+            0.01580493783383985
+          ],
+          "n_risk": 774
+        },
+        {
+          "months": 48,
+          "cif": 0.017224587757572598,
+          "ci95": [
+            0.010833671180201065,
+            0.027333143523538106
+          ],
+          "n_risk": 496
+        },
+        {
+          "months": 60,
+          "cif": 0.018475508066299065,
+          "ci95": [
+            0.011760088094136978,
+            0.028969058296997807
+          ],
+          "n_risk": 322
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 39.0637,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -5187,7 +9808,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z"
     },
     {
       "slug": "oncology-proteasome",
@@ -5215,13 +9836,118 @@
         0.010152296701083398,
         0.08371883842085293
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 3,
+      "largest_programme": "Vivolux AB",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.02,
+      "unresolved_terminations": 4,
+      "rate_if_all_unresolved_were_biological": 0.06930693069306931,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.004424778761061947,
+          "ci95": [
+            0.0006244542844132672,
+            0.03099228523477804
+          ],
+          "n_risk": 220
+        },
+        {
+          "months": 24,
+          "cif": 0.004424778761061947,
+          "ci95": [
+            0.0006244542844132672,
+            0.03099228523477804
+          ],
+          "n_risk": 197
+        },
+        {
+          "months": 36,
+          "cif": 0.009223591431140158,
+          "ci95": [
+            0.002311828111018044,
+            0.03641935561920018
+          ],
+          "n_risk": 170
+        },
+        {
+          "months": 48,
+          "cif": 0.009223591431140158,
+          "ci95": [
+            0.002311828111018044,
+            0.03641935561920018
+          ],
+          "n_risk": 142
+        },
+        {
+          "months": 60,
+          "cif": 0.014975459167355926,
+          "ci95": [
+            0.004818107474963695,
+            0.04604519173015775
+          ],
+          "n_risk": 103
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 74.6119,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -5291,7 +10017,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:51Z"
     },
     {
       "slug": "oncology-er-aromatase",
@@ -5319,13 +10045,118 @@
         0.00775884364242789,
         0.06469024411861142
       ],
-      "reference_label": "all oncology Phase 2,3 trials",
-      "reference_rate": 0.043344447294177996,
-      "reference_closed": 7798,
-      "reference_stops": 338,
+      "reference_label": "all oncology trials with a resolved drug target",
+      "reference_rate": 0.050026422406200456,
+      "reference_closed": 5677,
+      "reference_stops": 284,
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 2,
+      "largest_programme": "Washington University School of Medicine",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.015267175572519083,
+      "unresolved_terminations": 10,
+      "rate_if_all_unresolved_were_biological": 0.09848484848484848,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 310
+        },
+        {
+          "months": 24,
+          "cif": 0.0034078047845450504,
+          "ci95": [
+            0.00048072464289194983,
+            0.023943020207466414
+          ],
+          "n_risk": 254
+        },
+        {
+          "months": 36,
+          "cif": 0.0034078047845450504,
+          "ci95": [
+            0.00048072464289194983,
+            0.023943020207466414
+          ],
+          "n_risk": 194
+        },
+        {
+          "months": 48,
+          "cif": 0.007896116431639571,
+          "ci95": [
+            0.0019546464196318336,
+            0.031609569136176074
+          ],
+          "n_risk": 140
+        },
+        {
+          "months": 60,
+          "cif": 0.013182920764361152,
+          "ci95": [
+            0.004195963630587607,
+            0.04101784167384748
+          ],
+          "n_risk": 95
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 56.5092,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -5395,7 +10226,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:52Z"
     },
     {
       "slug": "oncology-vegf-vegfr-pd-l-1",
@@ -5430,6 +10261,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 5,
+      "stop_sponsors": 4,
+      "stop_assets": 5,
+      "largest_programme": "Yale University",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.014652014652014652,
+      "unresolved_terminations": 18,
+      "rate_if_all_unresolved_were_biological": 0.08394160583941605,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 660
+        },
+        {
+          "months": 24,
+          "cif": 0.001596659836836037,
+          "ci95": [
+            0.00022505770038871997,
+            0.011280150326799299
+          ],
+          "n_risk": 548
+        },
+        {
+          "months": 36,
+          "cif": 0.001596659836836037,
+          "ci95": [
+            0.00022505770038871997,
+            0.011280150326799299
+          ],
+          "n_risk": 398
+        },
+        {
+          "months": 48,
+          "cif": 0.010287052778275227,
+          "ci95": [
+            0.004270007417799593,
+            0.024677251413142587
+          ],
+          "n_risk": 252
+        },
+        {
+          "months": 60,
+          "cif": 0.010287052778275227,
+          "ci95": [
+            0.004270007417799593,
+            0.024677251413142587
+          ],
+          "n_risk": 163
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 36.9938,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -5521,7 +10457,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:06Z"
+      "generated_at_utc": "2026-09-20T19:00:48Z"
     },
     {
       "slug": "oncology-microtubule-pd-l-1",
@@ -5556,6 +10492,111 @@
       "baseline_rate": 0.043344447294177996,
       "baseline_closed": 7798,
       "baseline_stops": 338,
+      "baseline_resolved_rate": 0.050026422406200456,
+      "baseline_resolved_closed": 5677,
+      "stop_programmes": 3,
+      "stop_sponsors": 3,
+      "stop_assets": 2,
+      "largest_programme": "Tufts Medical Center",
+      "largest_programme_stops": 1,
+      "rate_leave_one_programme_out": 0.010050251256281407,
+      "unresolved_terminations": 18,
+      "rate_if_all_unresolved_were_biological": 0.105,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 470
+        },
+        {
+          "months": 24,
+          "cif": 0.0,
+          "ci95": [
+            0.0,
+            0.0
+          ],
+          "n_risk": 395
+        },
+        {
+          "months": 36,
+          "cif": 0.005642196407801044,
+          "ci95": [
+            0.0014141601802000192,
+            0.02236884023237129
+          ],
+          "n_risk": 299
+        },
+        {
+          "months": 48,
+          "cif": 0.005642196407801044,
+          "ci95": [
+            0.0014141601802000192,
+            0.02236884023237129
+          ],
+          "n_risk": 222
+        },
+        {
+          "months": 60,
+          "cif": 0.005642196407801044,
+          "ci95": [
+            0.0014141601802000192,
+            0.02236884023237129
+          ],
+          "n_risk": 149
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.002063775352217862,
+          "ci95": [
+            0.0014748968357541914,
+            0.0028874338003394007
+          ],
+          "n_risk": 15467
+        },
+        {
+          "months": 24,
+          "cif": 0.007507661180388635,
+          "ci95": [
+            0.006255584838208317,
+            0.009009206629453925
+          ],
+          "n_risk": 12452
+        },
+        {
+          "months": 36,
+          "cif": 0.014705114701597312,
+          "ci95": [
+            0.012839439821254572,
+            0.016839567018735457
+          ],
+          "n_risk": 9252
+        },
+        {
+          "months": 48,
+          "cif": 0.0205771092463017,
+          "ci95": [
+            0.01827399277172348,
+            0.023167052214030148
+          ],
+          "n_risk": 6494
+        },
+        {
+          "months": 60,
+          "cif": 0.024353784094301372,
+          "ci95": [
+            0.021765800233411015,
+            0.027245174174624243
+          ],
+          "n_risk": 4402
+        }
+      ],
+      "median_followup_months": 51.5154,
       "cohorts": [
         {
           "cohort": "2015–2017",
@@ -5625,7 +10666,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-19T21:43:07Z"
+      "generated_at_utc": "2026-09-20T19:00:53Z"
     }
   ]
 }

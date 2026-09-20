@@ -72,8 +72,8 @@ export default function BriefsIndexPage() {
                   <div className="featureName">{b.segment}</div>
                   <div className="featureRate">{pct(b.rate)}</div>
                   <div className="featureMeta">
-                    {b.biological_stops} of {n(b.closed)} closed trials stopped early, against {pct(b.baseline_rate)} across{" "}
-                    {b.area.toLowerCase()}
+                    {b.biological_stops} of {n(b.closed)} closed trials stopped early, from {b.stop_programmes} programmes, against{" "}
+                    {pct(b.baseline_resolved_rate ?? b.baseline_rate)} across comparable {b.area.toLowerCase()} trials
                   </div>
                 </Link>
               ))}
@@ -107,7 +107,8 @@ export default function BriefsIndexPage() {
                     <th className="num">Rate</th>
                     <th className="num">Stops / closed</th>
                     <th className="num">95% CI</th>
-                    <th className="num">Area baseline</th>
+                    <th className="num">Like-for-like baseline</th>
+                    <th className="num">Programmes</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -126,7 +127,8 @@ export default function BriefsIndexPage() {
                       <td className="num muted">
                         {pct(b.ci95[0])}–{pct(b.ci95[1])}
                       </td>
-                      <td className="num muted">{pct(b.baseline_rate)}</td>
+                      <td className="num muted">{pct(b.baseline_resolved_rate ?? b.baseline_rate)}</td>
+                      <td className="num muted">{b.stop_programmes ?? "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -135,8 +137,16 @@ export default function BriefsIndexPage() {
             <p className="fine">
               A rate is the share of <b>closed</b> trials (completed or terminated) that were terminated for an efficacy, safety or
               benefit–risk reason recorded in the registry, with a 95% Wilson interval. It is not a failure rate: trials that
-              completed and missed their endpoints are not counted. Where the interval is wide, the segment is small — read the
-              counts, not just the rate.
+              completed and missed their endpoints are not counted. The baseline shown is the like-for-like one — trials whose drug
+              resolves to a target, since a mechanism class can only contain those. Where the interval is wide, the segment is small
+              — read the counts, not just the rate. <b>Programmes</b> is how many distinct sponsor–asset development programmes the
+              stops came from: ten registry records can be one decision.
+            </p>
+            <p className="fine">
+              These are screens, not tests. Every segment with enough data is published here rather than only the striking ones, but
+              picking the top of a ranked list is itself a selection effect and no interval on this page corrects for it. A zero is
+              &ldquo;no qualifying termination observed in this cohort&rdquo; — not evidence that a mechanism is safe. Each brief
+              gives the trials behind its number so the screen can be checked rather than believed.
             </p>
           </section>
 
