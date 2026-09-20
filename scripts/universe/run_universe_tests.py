@@ -99,6 +99,65 @@ for _facts_path in sorted(_glob.glob(str(Path(__file__).resolve().parents[2] / "
     _cohort_stops = sum(c["biological_stops"] for c in _f["cohorts"])
     check(f"{_name}: cohort stops do not exceed segment stops", _cohort_stops <= _seg["biological_stops"], True)
 
+# ---------------------------------------------------------------------------
+# Cumulative incidence (competing risks)
+# ---------------------------------------------------------------------------
+from scripts.universe.cumulative_incidence import (  # noqa: E402
+    EVENT_BIO, EVENT_NONE, EVENT_OTHER, aalen_johansen, at, bootstrap_ci, curve, observation,
+)
+
+# Hand-computable example. Four trials: a biological stop at 1 month, a completion at 2, a
+# censoring at 3, a biological stop at 4.
+#   t=1  n=4  d1=1        CIF = 1.00 * 1/4          = 0.25   S = 0.75
+#   t=2  n=3        d2=1  CIF unchanged                       S = 0.50
+#   t=3  n=2  censored
+#   t=4  n=1  d1=1        CIF = 0.25 + 0.50 * 1/1   = 0.75
+_toy = [(1.0, EVENT_BIO), (2.0, EVENT_OTHER), (3.0, EVENT_NONE), (4.0, EVENT_BIO)]
+_pts = aalen_johansen(_toy)
+check("CIF after the first event", round(at(_pts, 1)["cif"], 6), 0.25)
+check("competing event does not raise the CIF", round(at(_pts, 2)["cif"], 6), 0.25)
+check("CIF before anything happens", round(at(_pts, 0.5)["cif"], 6), 0.0)
+check("CIF after the last event", round(at(_pts, 4)["cif"], 6), 0.75)
+
+# Treating the competing event as censoring (1 - Kaplan-Meier) would give 1.0 here: the
+# completed trial would be assumed to still be capable of terminating. That overstatement is
+# the whole reason this module uses Aalen-Johansen.
+check("Aalen-Johansen stays below 1 - KM", at(_pts, 4)["cif"] < 1.0, True)
+
+# The curve can only go up, and the competing risks together cannot exceed certainty.
+_mono = all(b["cif"] >= a["cif"] - 1e-12 for a, b in zip(_pts, _pts[1:]))
+check("CIF is non-decreasing", _mono, True)
+_other = aalen_johansen([(t, EVENT_BIO if c == EVENT_OTHER else EVENT_OTHER if c == EVENT_BIO else c) for t, c in _toy])
+check("the two cumulative incidences sum to at most 1", at(_pts, 99)["cif"] + at(_other, 99)["cif"] <= 1 + 1e-9, True)
+
+# A trial that never enrolled, or was never observed running, contributes no follow-up.
+check("withdrawn trials are excluded", observation({"start_date": "2018-01-01", "overall_status": "WITHDRAWN"}), None)
+check("a record last updated before its start date is excluded",
+      observation({"start_date": "2024-06-01", "overall_status": "UNKNOWN", "last_update_post_date": "2023-01-01"}), None)
+_term = observation({"start_date": "2018-01-01", "overall_status": "TERMINATED", "completion_date": "2019-01-01",
+                     "last_update_post_date": "2021-05-01", "_bio": True})
+check("a stop is dated at its completion date, not its last update", round(_term[0]), 12)
+check("a stop is the event of interest", _term[1], EVENT_BIO)
+
+# Against the real cohort: the two metrics must share a numerator, and the analytic interval
+# must agree with a bootstrap that makes no distributional assumption at all.
+_rows = load("Oncology")
+_onc = select(_rows, phases=["2", "3"], start=(2015, 2024))
+_c = curve(_onc)
+_naive = summarize(_onc)
+check("CIF keeps every biological stop the closed-trial rate counts", _c["events_biological"], _naive["biological_stops"])
+check("the risk set is larger than the closed set", _c["trials"] > _naive["closed"], True)
+check("every excluded trial has a stated reason", sum(_c["excluded"].values()), _c["excluded_total"])
+
+_seg = [o for o in (observation(r) for r in select(_rows, klass="PD-(L)1", phases=["2", "3"], start=(2015, 2024))) if o]
+for _t in (24, 48):
+    _a = at(aalen_johansen(_seg), _t)["ci95"]
+    _b = bootstrap_ci(_seg, _t, draws=200)
+    # Within a fifth of the analytic width: the two should agree closely at this sample size.
+    _tol = 0.2 * (_a[1] - _a[0])
+    check(f"analytic interval at {_t}m matches the bootstrap",
+          abs(_a[0] - _b[0]) < _tol and abs(_a[1] - _b[1]) < _tol, True)
+
 if failures:
     print(f"{failures} universe test(s) failed")
     sys.exit(1)
