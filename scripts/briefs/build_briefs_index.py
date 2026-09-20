@@ -96,6 +96,9 @@ def main() -> int:
             "survives_fdr_10pct": ((f.get("multiplicity") or {}).get("q_value_by") is not None
                                    and (f.get("multiplicity") or {}).get("q_value_by") <= 0.10),
             "composition": f.get("segment_composition"),
+            # Records are not experiments: lead with molecules.
+            "failure_signature": f.get("failure_signature"),
+            "stop_attribution": f.get("stop_attribution"),
             "median_followup_months": (f.get("segment_cumulative_incidence") or {}).get("median_followup_months"),
             "cohorts": [{k: c[k] for k in ("cohort", "biological_stops", "closed", "rate", "ci95")} for c in f["cohorts"]],
             "trial_count": len(trials),

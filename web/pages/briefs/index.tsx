@@ -79,10 +79,13 @@ export default function BriefsIndexPage() {
                 <Link key={b.slug} href={`/briefs/${b.slug}`} className="featureCard">
                   <div className="featureArea">{b.area}</div>
                   <div className="featureName">{b.segment}</div>
-                  <div className="featureRate">{pct(b.rate)}</div>
+                  <div className="featureRate">
+                    {(b as any).failure_signature ? (b as any).failure_signature.molecules : pct(b.rate)}
+                    {(b as any).failure_signature ? <span className="featureUnit"> molecules</span> : null}
+                  </div>
                   <div className="featureMeta">
-                    {b.biological_stops} of {n(b.closed)} closed trials stopped early, from {b.stop_programmes} programmes, against{" "}
-                    {pct(b.baseline_resolved_rate ?? b.baseline_rate)} across comparable {b.area.toLowerCase()} trials
+                    {(b as any).failure_signature ? (b as any).failure_signature.sentence : ""}{" "}
+                    {pct(b.rate)} of closed trials against {pct(b.baseline_resolved_rate ?? b.baseline_rate)}
                     {typeof (b as any).q_value_by === "number" ? ` · q=${(b as any).q_value_by.toPrecision(2)}` : ""}
                   </div>
                 </Link>
@@ -114,6 +117,7 @@ export default function BriefsIndexPage() {
                   <tr>
                     <th>Mechanism class</th>
                     <th>Area</th>
+                    <th className="num">Molecules</th>
                     <th className="num">Rate</th>
                     <th className="num">Stops / closed</th>
                     <th className="num">95% CI</th>
@@ -131,7 +135,8 @@ export default function BriefsIndexPage() {
                         </Link>
                       </td>
                       <td className="muted">{b.area}</td>
-                      <td className="num strong">{pct(b.rate)}</td>
+                      <td className="num strong">{(b as any).failure_signature?.molecules ?? "—"}</td>
+                      <td className="num">{pct(b.rate)}</td>
                       <td className="num muted">
                         {b.biological_stops} / {n(b.closed)}
                       </td>
@@ -163,6 +168,11 @@ export default function BriefsIndexPage() {
               resolves to a target, since a mechanism class can only contain those. Where the interval is wide, the segment is small
               — read the counts, not just the rate. <b>Programmes</b> is how many distinct sponsor–asset development programmes the
               stops came from: ten registry records can be one decision.
+            </p>
+            <p className="fine">
+              <b>Molecules</b> is how many distinct drugs are behind the stopped trials. It is the number to read first: a
+              sponsor who abandons a molecule closes every trial of it at once, so seven stopped trials can be four molecules —
+              or one. The rate counts registry records and cannot tell you which.
             </p>
             <p className="fine">
               <b>q</b> is the false-discovery rate at which a segment would still be called unusual, computed over every segment
@@ -267,6 +277,12 @@ export default function BriefsIndexPage() {
           margin-top: 6px;
           font-size: 15px;
           font-weight: 850;
+        }
+        .featureUnit {
+          font-size: 15px;
+          font-weight: 800;
+          letter-spacing: 0;
+          color: var(--text-muted);
         }
         .featureRate {
           margin-top: 6px;

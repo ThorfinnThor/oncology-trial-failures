@@ -176,6 +176,70 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Lanabecestat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "AstraZeneca"
+            ],
+            "trials": [
+              "NCT02783573",
+              "NCT02972658"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Atabecestat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Johnson & Johnson"
+            ],
+            "trials": [
+              "NCT02569398"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Elenbecestat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Eisai"
+            ],
+            "trials": [
+              "NCT02956486"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "4 stopped trials, but 3 molecules — all small molecules: Lanabecestat, Atabecestat and Elenbecestat.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 1,
+        "stops_unclear": 0,
+        "cascade_textual": 1,
+        "cascade_structural": 0
+      },
       "median_followup_months": null,
       "cohorts": [],
       "trial_count": 4,
@@ -226,7 +290,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:36Z",
+      "generated_at_utc": "2026-09-20T20:48:18Z",
       "open_access": false
     },
     {
@@ -403,6 +467,86 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 7,
+        "molecules": 4,
+        "molecules_unresolved": 0,
+        "sponsors": 4,
+        "shared_modality": "Antibody",
+        "modalities": [
+          "Antibody"
+        ],
+        "assets": [
+          {
+            "asset": "Tilavonemab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "AbbVie"
+            ],
+            "trials": [
+              "NCT02985879",
+              "NCT03391765",
+              "NCT03712787"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Gosuranemab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Biogen"
+            ],
+            "trials": [
+              "NCT03068468",
+              "NCT03352557"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Posdinemab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Johnson & Johnson"
+            ],
+            "trials": [
+              "NCT04619420"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Semorinemab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Roche"
+            ],
+            "trials": [
+              "NCT03289143"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "7 stopped trials, but 4 molecules — all monoclonal antibodies: Tilavonemab, Gosuranemab, Posdinemab and Semorinemab.",
+        "headline": "4 molecules stopped early, all monoclonal antibodies"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 4,
+        "stops_unclear": 1,
+        "cascade_textual": 4,
+        "cascade_structural": 0
+      },
       "median_followup_months": null,
       "cohorts": [
         {
@@ -475,7 +619,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:36Z",
+      "generated_at_utc": "2026-09-20T20:48:18Z",
       "open_access": false
     },
     {
@@ -619,6 +763,8 @@
       "family_size": null,
       "survives_fdr_10pct": false,
       "composition": null,
+      "failure_signature": null,
+      "stop_attribution": null,
       "median_followup_months": 70.6694,
       "cohorts": [
         {
@@ -908,6 +1054,72 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 6,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Antibody",
+        "modalities": [
+          "Antibody"
+        ],
+        "assets": [
+          {
+            "asset": "Aducanumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Biogen"
+            ],
+            "trials": [
+              "NCT02477800",
+              "NCT02484547",
+              "NCT03639987"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Crenezumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Roche"
+            ],
+            "trials": [
+              "NCT02670083",
+              "NCT03114657"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Solanezumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Eli Lilly"
+            ],
+            "trials": [
+              "NCT02760602"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "6 stopped trials, but 3 molecules — all monoclonal antibodies: Aducanumab, Crenezumab and Solanezumab.",
+        "headline": "3 molecules stopped early, all monoclonal antibodies"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 4,
+        "stops_from_programme_cascade": 1,
+        "stops_unclear": 1,
+        "cascade_textual": 1,
+        "cascade_structural": 0
+      },
       "median_followup_months": 70.6694,
       "cohorts": [
         {
@@ -990,7 +1202,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:36Z",
+      "generated_at_utc": "2026-09-20T20:48:18Z",
       "open_access": false
     },
     {
@@ -1140,8 +1352,8 @@
           "Small molecule": 5,
           "Unknown": 2,
           "Protein": 2,
-          "Oligosaccharide": 1,
           "Oncolytic virus": 1,
+          "Oligosaccharide": 1,
           "Vaccine": 1
         },
         "top_assets": [
@@ -1205,6 +1417,57 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 2,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Protein"
+        ],
+        "assets": [
+          {
+            "asset": "Isatuximab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT03367819",
+              "NCT03637764"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Modakafusp Alfa",
+            "resolved": true,
+            "modalities": [
+              "Protein"
+            ],
+            "sponsors": [
+              "Teva Branded Pharmaceutical Products R&D LLC"
+            ],
+            "trials": [
+              "NCT04157517"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials across 2 molecules: Isatuximab and Modakafusp Alfa.",
+        "headline": "2 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 0,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 83.6468,
       "cohorts": [
         {
@@ -1265,7 +1528,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:27Z",
+      "generated_at_utc": "2026-09-20T20:48:10Z",
       "open_access": false
     },
     {
@@ -1416,8 +1679,8 @@
           "Unknown": 19,
           "Antibody": 18,
           "Vaccine": 4,
-          "Bispecific antibody": 3,
           "ADC": 3,
+          "Bispecific antibody": 3,
           "Gene therapy": 1,
           "Oncolytic virus": 1,
           "Cell therapy": 1
@@ -1482,6 +1745,69 @@
             "components": 10
           }
         ]
+      },
+      "failure_signature": {
+        "stops": 11,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 6,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Protein"
+        ],
+        "assets": [
+          {
+            "asset": "Bintrafusp Alfa",
+            "resolved": true,
+            "modalities": [
+              "Protein"
+            ],
+            "sponsors": [
+              "AIO-Studien-gGmbH",
+              "Mayo Clinic",
+              "Merck KGaA",
+              "National Cancer Institute (NCI)",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03451773",
+              "NCT03840902",
+              "NCT04066491",
+              "NCT04327986",
+              "NCT04396535",
+              "NCT04428047",
+              "NCT04489940",
+              "NCT04501094",
+              "NCT04727541"
+            ],
+            "trial_count": 9
+          },
+          {
+            "asset": "Nisevokitug",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Novartis"
+            ],
+            "trials": [
+              "NCT04390763",
+              "NCT04952753"
+            ],
+            "trial_count": 2
+          }
+        ],
+        "sentence": "11 stopped trials across 2 molecules: Bintrafusp Alfa and Nisevokitug.",
+        "headline": "2 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 6,
+        "stops_from_programme_cascade": 5,
+        "stops_unclear": 0,
+        "cascade_textual": 5,
+        "cascade_structural": 0
       },
       "median_followup_months": 66.2998,
       "cohorts": [
@@ -1631,7 +1957,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:26Z",
+      "generated_at_utc": "2026-09-20T20:48:08Z",
       "open_access": true
     },
     {
@@ -1849,6 +2175,69 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 11,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 6,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Protein"
+        ],
+        "assets": [
+          {
+            "asset": "Bintrafusp Alfa",
+            "resolved": true,
+            "modalities": [
+              "Protein"
+            ],
+            "sponsors": [
+              "AIO-Studien-gGmbH",
+              "Mayo Clinic",
+              "Merck KGaA",
+              "National Cancer Institute (NCI)",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03451773",
+              "NCT03840902",
+              "NCT04066491",
+              "NCT04327986",
+              "NCT04396535",
+              "NCT04428047",
+              "NCT04489940",
+              "NCT04501094",
+              "NCT04727541"
+            ],
+            "trial_count": 9
+          },
+          {
+            "asset": "Nisevokitug",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Novartis"
+            ],
+            "trials": [
+              "NCT04390763",
+              "NCT04952753"
+            ],
+            "trial_count": 2
+          }
+        ],
+        "sentence": "11 stopped trials across 2 molecules: Bintrafusp Alfa and Nisevokitug.",
+        "headline": "2 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 6,
+        "stops_from_programme_cascade": 5,
+        "stops_unclear": 0,
+        "cascade_textual": 5,
+        "cascade_structural": 0
+      },
       "median_followup_months": 64.6571,
       "cohorts": [
         {
@@ -1931,7 +2320,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:25Z",
+      "generated_at_utc": "2026-09-20T20:48:08Z",
       "open_access": false
     },
     {
@@ -2148,6 +2537,71 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Bispecific antibody",
+          "Unknown"
+        ],
+        "assets": [
+          {
+            "asset": "Lipid Nanoparticle Encapsulated OX40L mRNA-2416",
+            "resolved": true,
+            "modalities": [
+              "Unknown"
+            ],
+            "sponsors": [
+              "ModernaTX, Inc."
+            ],
+            "trials": [
+              "NCT03323398"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tecaginlimab",
+            "resolved": true,
+            "modalities": [
+              "Bispecific antibody"
+            ],
+            "sponsors": [
+              "Genmab"
+            ],
+            "trials": [
+              "NCT05491317"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Utomilumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Pfizer"
+            ],
+            "trials": [
+              "NCT02951156"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials across 3 molecules: Lipid Nanoparticle Encapsulated OX40L mRNA-2416, Tecaginlimab and Utomilumab.",
+        "headline": "3 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 2,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 78.9487,
       "cohorts": [
         {
@@ -2208,7 +2662,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:26Z",
+      "generated_at_utc": "2026-09-20T20:48:09Z",
       "open_access": false
     },
     {
@@ -2427,6 +2881,99 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 5,
+        "molecules": 5,
+        "molecules_unresolved": 0,
+        "sponsors": 5,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Bispecific antibody",
+          "Unknown"
+        ],
+        "assets": [
+          {
+            "asset": "Adg-106",
+            "resolved": true,
+            "modalities": [
+              "Unknown"
+            ],
+            "sponsors": [
+              "Adagene (Suzhou) Limited"
+            ],
+            "trials": [
+              "NCT04775680"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Gsk-3174998",
+            "resolved": true,
+            "modalities": [
+              "Unknown"
+            ],
+            "sponsors": [
+              "GSK"
+            ],
+            "trials": [
+              "NCT06160609"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Lipid Nanoparticle Encapsulated OX40L mRNA-2416",
+            "resolved": true,
+            "modalities": [
+              "Unknown"
+            ],
+            "sponsors": [
+              "ModernaTX, Inc."
+            ],
+            "trials": [
+              "NCT03323398"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tecaginlimab",
+            "resolved": true,
+            "modalities": [
+              "Bispecific antibody"
+            ],
+            "sponsors": [
+              "Genmab"
+            ],
+            "trials": [
+              "NCT05491317"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Utomilumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Pfizer"
+            ],
+            "trials": [
+              "NCT02951156"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "5 stopped trials across 5 molecules: Adg-106, Gsk-3174998, Lipid Nanoparticle Encapsulated OX40L mRNA-2416, Tecaginlimab and 1 more.",
+        "headline": "5 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 4,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 54.078,
       "cohorts": [
         {
@@ -2519,7 +3066,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:26Z",
+      "generated_at_utc": "2026-09-20T20:48:09Z",
       "open_access": false
     },
     {
@@ -2735,6 +3282,59 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Cell therapy"
+        ],
+        "assets": [
+          {
+            "asset": "Belantamab Mafodotin",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "GSK",
+              "Jacob Soumerai, MD"
+            ],
+            "trials": [
+              "NCT04676360",
+              "NCT06160609",
+              "NCT06655818"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Autologous BCMA/TACI-targeted CAR T Cells AUTO2",
+            "resolved": true,
+            "modalities": [
+              "Cell therapy"
+            ],
+            "sponsors": [
+              "Autolus Limited"
+            ],
+            "trials": [
+              "NCT03287804"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "4 stopped trials across 2 molecules: Belantamab Mafodotin and Autologous BCMA/TACI-targeted CAR T Cells AUTO2.",
+        "headline": "2 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 0,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 4,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 45.4374,
       "cohorts": [
         {
@@ -2806,7 +3406,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:27Z",
+      "generated_at_utc": "2026-09-20T20:48:09Z",
       "open_access": false
     },
     {
@@ -3019,6 +3619,72 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 2,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Antibody",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Tarloxotinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Rain Oncology Inc"
+            ],
+            "trials": [
+              "NCT02449681",
+              "NCT02454842"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Patritumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Daiichi Sankyo"
+            ],
+            "trials": [
+              "NCT02633800"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Patritumab Deruxtecan",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "Daiichi Sankyo"
+            ],
+            "trials": [
+              "NCT04479436"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "4 stopped trials across 3 molecules: Tarloxotinib, Patritumab and Patritumab Deruxtecan.",
+        "headline": "3 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 2,
+        "stops_unclear": 1,
+        "cascade_textual": 0,
+        "cascade_structural": 2
+      },
       "median_followup_months": 31.6386,
       "cohorts": [
         {
@@ -3100,7 +3766,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:28Z",
+      "generated_at_utc": "2026-09-20T20:48:10Z",
       "open_access": false
     },
     {
@@ -3310,6 +3976,69 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Elsubrutinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "AbbVie"
+            ],
+            "trials": [
+              "NCT03823378"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Fenebrutinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Roche"
+            ],
+            "trials": [
+              "NCT03407482"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Poseltinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Eli Lilly"
+            ],
+            "trials": [
+              "NCT02628028"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 3 molecules — all small molecules: Elsubrutinib, Fenebrutinib and Poseltinib.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 2,
+        "stops_unclear": 0,
+        "cascade_textual": 2,
+        "cascade_structural": 0
+      },
       "median_followup_months": 53.9138,
       "cohorts": [
         {
@@ -3370,7 +4099,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:38Z",
+      "generated_at_utc": "2026-09-20T20:48:19Z",
       "open_access": false
     },
     {
@@ -3585,6 +4314,57 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 2,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Protein"
+        ],
+        "assets": [
+          {
+            "asset": "Magrolimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Gilead Sciences"
+            ],
+            "trials": [
+              "NCT04778397",
+              "NCT05079230"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Evorpacept",
+            "resolved": true,
+            "modalities": [
+              "Protein"
+            ],
+            "sponsors": [
+              "University of Colorado, Denver"
+            ],
+            "trials": [
+              "NCT05167409"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials across 2 molecules: Magrolimab and Evorpacept.",
+        "headline": "2 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 0,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 42.6448,
       "cohorts": [
         {
@@ -3645,7 +4425,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:25Z",
+      "generated_at_utc": "2026-09-20T20:48:08Z",
       "open_access": false
     },
     {
@@ -3798,8 +4578,8 @@
           "Unknown": 8,
           "Gene therapy": 4,
           "Cell therapy": 2,
-          "Oligosaccharide": 1,
           "Oncolytic virus": 1,
+          "Oligosaccharide": 1,
           "Bispecific antibody": 1,
           "Vaccine": 1
         },
@@ -3863,6 +4643,77 @@
             "components": 41
           }
         ]
+      },
+      "failure_signature": {
+        "stops": 8,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 5,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Protein"
+        ],
+        "assets": [
+          {
+            "asset": "Isatuximab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT02999633",
+              "NCT03367819",
+              "NCT03637764",
+              "NCT03860844"
+            ],
+            "trial_count": 4
+          },
+          {
+            "asset": "Daratumumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Fondazione Italiana Linfomi - ETS",
+              "Johnson & Johnson",
+              "M.D. Anderson Cancer Center"
+            ],
+            "trials": [
+              "NCT02413489",
+              "NCT03067571",
+              "NCT04251065"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Modakafusp Alfa",
+            "resolved": true,
+            "modalities": [
+              "Protein"
+            ],
+            "sponsors": [
+              "Teva Branded Pharmaceutical Products R&D LLC"
+            ],
+            "trials": [
+              "NCT04157517"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "8 stopped trials across 3 molecules: Isatuximab, Daratumumab and Modakafusp Alfa.",
+        "headline": "3 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 7,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 1,
+        "cascade_textual": 0,
+        "cascade_structural": 0
       },
       "median_followup_months": 63.8029,
       "cohorts": [
@@ -3956,7 +4807,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:27Z",
+      "generated_at_utc": "2026-09-20T20:48:10Z",
       "open_access": false
     },
     {
@@ -4172,6 +5023,141 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 13,
+        "molecules": 7,
+        "molecules_unresolved": 0,
+        "sponsors": 13,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Enzalutamide",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Bayer",
+              "Corcept Therapeutics",
+              "ESSA Pharmaceuticals",
+              "National Cancer Institute (NCI)",
+              "Pfizer",
+              "SOLTI Breast Cancer Research Group"
+            ],
+            "trials": [
+              "NCT03437941",
+              "NCT03531827",
+              "NCT04052204",
+              "NCT04142060",
+              "NCT04157088",
+              "NCT05075577"
+            ],
+            "trial_count": 6
+          },
+          {
+            "asset": "Abiraterone",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Epizyme, Inc.",
+              "Incyte",
+              "Jodi Layton, MD"
+            ],
+            "trials": [
+              "NCT02711137",
+              "NCT03770455",
+              "NCT04179864"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Abiraterone Acetate",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Institute of Cancer Research, United Kingdom",
+              "Mayo Clinic"
+            ],
+            "trials": [
+              "NCT04458311",
+              "NCT05689021"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Apalutamide",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Dana-Farber Cancer Institute"
+            ],
+            "trials": [
+              "NCT03093272"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Darolutamide",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Bayer"
+            ],
+            "trials": [
+              "NCT04157088"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Enobosarm",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "GTx"
+            ],
+            "trials": [
+              "NCT02368691"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Masofaniten",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "ESSA Pharmaceuticals"
+            ],
+            "trials": [
+              "NCT05075577"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "13 stopped trials, but 7 molecules — all small molecules: Enzalutamide, Abiraterone, Abiraterone Acetate, Apalutamide and 3 more.",
+        "headline": "7 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 10,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 69.191,
       "cohorts": [
         {
@@ -4264,7 +5250,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:33Z",
+      "generated_at_utc": "2026-09-20T20:48:14Z",
       "open_access": false
     },
     {
@@ -4477,6 +5463,56 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 2,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Capmatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Novartis"
+            ],
+            "trials": [
+              "NCT04139317",
+              "NCT04323436"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Ningetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
+            ],
+            "trials": [
+              "NCT03838848"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 2 molecules — all small molecules: Capmatinib and Ningetinib.",
+        "headline": "2 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 0,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 67.2197,
       "cohorts": [
         {
@@ -4547,7 +5583,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:29Z",
+      "generated_at_utc": "2026-09-20T20:48:11Z",
       "open_access": false
     },
     {
@@ -4761,6 +5797,146 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 11,
+        "molecules": 8,
+        "molecules_unresolved": 0,
+        "sponsors": 10,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Antibody",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Cabozantinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Patrick Joseph Loehrer Sr.",
+              "Radboud University Medical Center",
+              "University of Nebraska"
+            ],
+            "trials": [
+              "NCT03201250",
+              "NCT03213626",
+              "NCT03729297"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Capmatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Novartis"
+            ],
+            "trials": [
+              "NCT04139317",
+              "NCT04323436"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Amg-337",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "NantPharma, LLC"
+            ],
+            "trials": [
+              "NCT03132155"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Amivantamab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Johnson & Johnson"
+            ],
+            "trials": [
+              "NCT05653427"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "Genmab"
+            ],
+            "trials": [
+              "NCT06685068"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ningetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
+            ],
+            "trials": [
+              "NCT03838848"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ningetinib Tosylate",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sunshine Lake Pharma Co., Ltd."
+            ],
+            "trials": [
+              "NCT03876925"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tivantinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Istituto Oncologico Veneto IRCCS"
+            ],
+            "trials": [
+              "NCT02608411"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "11 stopped trials across 8 molecules: Cabozantinib, Capmatinib, Amg-337, Amivantamab and 4 more.",
+        "headline": "8 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 8,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 58.9733,
       "cohorts": [
         {
@@ -4853,7 +6029,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:29Z",
+      "generated_at_utc": "2026-09-20T20:48:11Z",
       "open_access": false
     },
     {
@@ -5067,6 +6243,59 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 4,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Pacritinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Medical College of Wisconsin",
+              "Washington University School of Medicine"
+            ],
+            "trials": [
+              "NCT02277093",
+              "NCT04635059"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Ruxolitinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Incyte",
+              "M.D. Anderson Cancer Center"
+            ],
+            "trials": [
+              "NCT02420717",
+              "NCT02711137"
+            ],
+            "trial_count": 2
+          }
+        ],
+        "sentence": "4 stopped trials, but 2 molecules — all small molecules: Pacritinib and Ruxolitinib.",
+        "headline": "2 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 2,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 78.7515,
       "cohorts": [
         {
@@ -5148,7 +6377,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:32Z",
+      "generated_at_utc": "2026-09-20T20:48:14Z",
       "open_access": false
     },
     {
@@ -5358,6 +6587,69 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Clorazepic Acid",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Assistance Publique - Hôpitaux de Paris"
+            ],
+            "trials": [
+              "NCT04726592"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Darigabat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "AbbVie"
+            ],
+            "trials": [
+              "NCT04686786"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ganaxolone",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Marinus Pharmaceuticals"
+            ],
+            "trials": [
+              "NCT02519439"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 3 molecules — all small molecules: Clorazepic Acid, Darigabat and Ganaxolone.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 0,
+        "stops_from_programme_cascade": 1,
+        "stops_unclear": 2,
+        "cascade_textual": 1,
+        "cascade_structural": 0
+      },
       "median_followup_months": null,
       "cohorts": [
         {
@@ -5428,7 +6720,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:36Z",
+      "generated_at_utc": "2026-09-20T20:48:18Z",
       "open_access": false
     },
     {
@@ -5642,6 +6934,58 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": null,
+        "modalities": [
+          "Protein",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Epacadostat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Aduro Biotech, Inc.",
+              "Chase Heaton, MD"
+            ],
+            "trials": [
+              "NCT02575807",
+              "NCT03823131"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Imsapepimut",
+            "resolved": true,
+            "modalities": [
+              "Protein"
+            ],
+            "sponsors": [
+              "Cliniques universitaires Saint-Luc- Université Catholique de Louvain"
+            ],
+            "trials": [
+              "NCT04445064"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials across 2 molecules: Epacadostat and Imsapepimut.",
+        "headline": "2 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 0,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 73.922,
       "cohorts": [
         {
@@ -5702,7 +7046,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:25Z",
+      "generated_at_utc": "2026-09-20T20:48:08Z",
       "open_access": false
     },
     {
@@ -5917,6 +7261,71 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 5,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Talazoparib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Pfizer"
+            ],
+            "trials": [
+              "NCT03637491",
+              "NCT03642132",
+              "NCT04052204"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Niraparib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "GSK"
+            ],
+            "trials": [
+              "NCT03955471"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Rucaparib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "University of Chicago"
+            ],
+            "trials": [
+              "NCT03572478"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "5 stopped trials, but 3 molecules — all small molecules: Talazoparib, Niraparib and Rucaparib.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 1,
+        "stops_unclear": 3,
+        "cascade_textual": 1,
+        "cascade_structural": 0
+      },
       "median_followup_months": 64.7885,
       "cohorts": [
         {
@@ -6009,7 +7418,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:31Z",
+      "generated_at_utc": "2026-09-20T20:48:13Z",
       "open_access": false
     },
     {
@@ -6220,6 +7629,70 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Tavapadon",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Pfizer"
+            ],
+            "trials": [
+              "NCT02687542",
+              "NCT02847650"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Loxapine",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "University of Witten/Herdecke"
+            ],
+            "trials": [
+              "NCT02820519"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Lumateperone",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Intra-Cellular Therapies, Inc."
+            ],
+            "trials": [
+              "NCT02817906"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "4 stopped trials, but 3 molecules — all small molecules: Tavapadon, Loxapine and Lumateperone.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 1,
+        "stops_unclear": 1,
+        "cascade_textual": 0,
+        "cascade_structural": 1
+      },
       "median_followup_months": 124.5503,
       "cohorts": [
         {
@@ -6301,7 +7774,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:36Z",
+      "generated_at_utc": "2026-09-20T20:48:18Z",
       "open_access": false
     },
     {
@@ -6519,6 +7992,228 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 20,
+        "molecules": 13,
+        "molecules_unresolved": 0,
+        "sponsors": 17,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Antibody",
+          "Gene therapy",
+          "Small molecule",
+          "Unknown"
+        ],
+        "assets": [
+          {
+            "asset": "Cetuximab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Eli Lilly",
+              "SOTIO Biotech AG",
+              "UNICANCER",
+              "University of Colorado, Denver",
+              "University of Utah"
+            ],
+            "trials": [
+              "NCT02822482",
+              "NCT04165031",
+              "NCT04853043",
+              "NCT05167409",
+              "NCT05619172"
+            ],
+            "trial_count": 5
+          },
+          {
+            "asset": "Erlotinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Astellas Pharma",
+              "Eli Lilly",
+              "Patrick Joseph Loehrer Sr."
+            ],
+            "trials": [
+              "NCT02495233",
+              "NCT03213626",
+              "NCT04165031"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Osimertinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "First Affiliated Hospital of Zhejiang University",
+              "The Netherlands Cancer Institute"
+            ],
+            "trials": [
+              "NCT03784599",
+              "NCT04438902"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Tarloxotinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Rain Oncology Inc"
+            ],
+            "trials": [
+              "NCT02449681",
+              "NCT02454842"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Afatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Universität Duisburg-Essen"
+            ],
+            "trials": [
+              "NCT02595840"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Amivantamab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Johnson & Johnson"
+            ],
+            "trials": [
+              "NCT05653427"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "Formation Biologics"
+            ],
+            "trials": [
+              "NCT03094169"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "Genmab"
+            ],
+            "trials": [
+              "NCT06685068"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Depatuxizumab Mafodotin",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "AbbVie"
+            ],
+            "trials": [
+              "NCT03419403"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+            ],
+            "trials": [
+              "NCT04784520"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Necitumumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Eli Lilly"
+            ],
+            "trials": [
+              "NCT02443337"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Pemlimogene Merolisbac",
+            "resolved": true,
+            "modalities": [
+              "Gene therapy"
+            ],
+            "sponsors": [
+              "Johnson & Johnson"
+            ],
+            "trials": [
+              "NCT03371381"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tak-186",
+            "resolved": true,
+            "modalities": [
+              "Unknown"
+            ],
+            "sponsors": [
+              "Takeda"
+            ],
+            "trials": [
+              "NCT04844073"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "20 stopped trials across 13 molecules: Cetuximab, Erlotinib, Osimertinib, Tarloxotinib and 9 more.",
+        "headline": "13 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 5,
+        "stops_from_programme_cascade": 2,
+        "stops_unclear": 13,
+        "cascade_textual": 0,
+        "cascade_structural": 2
+      },
       "median_followup_months": 40.0493,
       "cohorts": [
         {
@@ -6611,7 +8306,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:28Z",
+      "generated_at_utc": "2026-09-20T20:48:10Z",
       "open_access": false
     },
     {
@@ -6825,6 +8520,159 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 13,
+        "molecules": 9,
+        "molecules_unresolved": 0,
+        "sponsors": 10,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Copanlisib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Bayer",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT02626455",
+              "NCT02822482",
+              "NCT03458728"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Taselisib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Roche",
+              "Vanderbilt-Ingram Cancer Center"
+            ],
+            "trials": [
+              "NCT02340221",
+              "NCT02457910"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Vistusertib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Samsung Medical Center"
+            ],
+            "trials": [
+              "NCT03061708",
+              "NCT03082833"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Capivasertib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Samsung Medical Center"
+            ],
+            "trials": [
+              "NCT02449655"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Duvelisib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "National Heart, Lung, and Blood Institute (NHLBI)"
+            ],
+            "trials": [
+              "NCT04209621"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Gedatolisib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Institut Curie"
+            ],
+            "trials": [
+              "NCT02438761"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Idelalisib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Fondazione Italiana Linfomi - ETS"
+            ],
+            "trials": [
+              "NCT03890289"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Samotolisib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Eli Lilly"
+            ],
+            "trials": [
+              "NCT02443337"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Serabelisib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Takeda"
+            ],
+            "trials": [
+              "NCT02393209"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "13 stopped trials, but 9 molecules — all small molecules: Copanlisib, Taselisib, Vistusertib, Capivasertib and 5 more.",
+        "headline": "9 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 4,
+        "stops_unclear": 8,
+        "cascade_textual": 0,
+        "cascade_structural": 4
+      },
       "median_followup_months": 73.922,
       "cohorts": [
         {
@@ -6917,7 +8765,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:30Z",
+      "generated_at_utc": "2026-09-20T20:48:12Z",
       "open_access": false
     },
     {
@@ -7133,6 +8981,86 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 4,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Bispecific antibody",
+          "Cell therapy",
+          "Unknown"
+        ],
+        "assets": [
+          {
+            "asset": "Anti-CD3/CD7-Ricin Toxin A Immunotoxin",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "Xenikos"
+            ],
+            "trials": [
+              "NCT04934670"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "B7H3/CD3-targeting T-cell Engaging Molecule TAK-280",
+            "resolved": true,
+            "modalities": [
+              "Bispecific antibody"
+            ],
+            "sponsors": [
+              "Takeda"
+            ],
+            "trials": [
+              "NCT05220098"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tak-186",
+            "resolved": true,
+            "modalities": [
+              "Unknown"
+            ],
+            "sponsors": [
+              "Takeda"
+            ],
+            "trials": [
+              "NCT04844073"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Vadacabtagene Leraleucel",
+            "resolved": true,
+            "modalities": [
+              "Cell therapy"
+            ],
+            "sponsors": [
+              "Bristol Myers Squibb"
+            ],
+            "trials": [
+              "NCT02535364"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "4 stopped trials across 4 molecules: Anti-CD3/CD7-Ricin Toxin A Immunotoxin, B7H3/CD3-targeting T-cell Engaging Molecule TAK-280, Tak-186 and Vadacabtagene Leraleucel.",
+        "headline": "4 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 36.731,
       "cohorts": [
         {
@@ -7214,7 +9142,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:26Z",
+      "generated_at_utc": "2026-09-20T20:48:09Z",
       "open_access": false
     },
     {
@@ -7429,6 +9357,71 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 4,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Tucidinostat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Great Novel Therapeutics Biotech & Medicals Corporation",
+              "Sun Yat-sen University"
+            ],
+            "trials": [
+              "NCT04651127",
+              "NCT05770882"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Pracinostat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Helsinn Healthcare SA"
+            ],
+            "trials": [
+              "NCT03151408"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Vorinostat",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "University of California, San Francisco"
+            ],
+            "trials": [
+              "NCT02395627"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "4 stopped trials, but 3 molecules — all small molecules: Tucidinostat, Pracinostat and Vorinostat.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 2,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 42.8419,
       "cohorts": [
         {
@@ -7510,7 +9503,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:32Z",
+      "generated_at_utc": "2026-09-20T20:48:14Z",
       "open_access": false
     },
     {
@@ -7726,6 +9719,96 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 12,
+        "molecules": 4,
+        "molecules_unresolved": 0,
+        "sponsors": 9,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Talazoparib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Pfizer",
+              "Zenith Epigenetics"
+            ],
+            "trials": [
+              "NCT03637491",
+              "NCT03642132",
+              "NCT03901469",
+              "NCT04052204"
+            ],
+            "trial_count": 4
+          },
+          {
+            "asset": "Niraparib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "GSK",
+              "Mayo Clinic"
+            ],
+            "trials": [
+              "NCT03955471",
+              "NCT05689021",
+              "NCT06964165"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Rucaparib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Incyte",
+              "University of Chicago",
+              "pharmaand GmbH"
+            ],
+            "trials": [
+              "NCT02711137",
+              "NCT03397394",
+              "NCT03572478"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Olaparib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "National Cancer Institute (NCI)",
+              "Tango Therapeutics, Inc."
+            ],
+            "trials": [
+              "NCT05286827",
+              "NCT06065059"
+            ],
+            "trial_count": 2
+          }
+        ],
+        "sentence": "12 stopped trials, but 4 molecules — all small molecules: Talazoparib, Niraparib, Rucaparib and Olaparib.",
+        "headline": "4 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 6,
+        "stops_from_programme_cascade": 1,
+        "stops_unclear": 5,
+        "cascade_textual": 1,
+        "cascade_structural": 0
+      },
       "median_followup_months": 66.3655,
       "cohorts": [
         {
@@ -7818,7 +9901,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:31Z",
+      "generated_at_utc": "2026-09-20T20:48:13Z",
       "open_access": false
     },
     {
@@ -8033,6 +10116,187 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 14,
+        "molecules": 11,
+        "molecules_unresolved": 0,
+        "sponsors": 14,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Catequentinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "First Affiliated Hospital of Zhejiang University",
+              "Shandong Cancer Hospital and Institute"
+            ],
+            "trials": [
+              "NCT04438902",
+              "NCT04958993"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Pacritinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Medical College of Wisconsin",
+              "Washington University School of Medicine"
+            ],
+            "trials": [
+              "NCT02277093",
+              "NCT04635059"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Regorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Great Novel Therapeutics Biotech & Medicals Corporation",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03722108",
+              "NCT05770882"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Dasatinib Anhydrous",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "M.D. Anderson Cancer Center"
+            ],
+            "trials": [
+              "NCT02420717"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Gilteritinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Astellas Pharma"
+            ],
+            "trials": [
+              "NCT02495233"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Midostaurin",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Niguarda Hospital"
+            ],
+            "trials": [
+              "NCT03686345"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ningetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
+            ],
+            "trials": [
+              "NCT03838848"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ningetinib Tosylate",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sunshine Lake Pharma Co., Ltd."
+            ],
+            "trials": [
+              "NCT03876925"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Pan-variant KIT Inhibitor THE-630",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Theseus Pharmaceuticals"
+            ],
+            "trials": [
+              "NCT05160168"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Pexidartinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Daiichi Sankyo"
+            ],
+            "trials": [
+              "NCT02452424"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Sorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sun Yat-sen University"
+            ],
+            "trials": [
+              "NCT02867280"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "14 stopped trials, but 11 molecules — all small molecules: Catequentinib, Pacritinib, Regorafenib, Dasatinib Anhydrous and 7 more.",
+        "headline": "11 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 12,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 47.2115,
       "cohorts": [
         {
@@ -8125,7 +10389,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:33Z",
+      "generated_at_utc": "2026-09-20T20:48:15Z",
       "open_access": false
     },
     {
@@ -8339,6 +10603,69 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Antibody",
+        "modalities": [
+          "Antibody"
+        ],
+        "assets": [
+          {
+            "asset": "Ociperlimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "BeOne Medicines"
+            ],
+            "trials": [
+              "NCT04746924"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tiragolumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Roche"
+            ],
+            "trials": [
+              "NCT04308785"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Vibostolimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Merck & Co."
+            ],
+            "trials": [
+              "NCT05226598"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 3 molecules — all monoclonal antibodies: Ociperlimab, Tiragolumab and Vibostolimab.",
+        "headline": "3 molecules stopped early, all monoclonal antibodies"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 1,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 56.6407,
       "cohorts": [
         {
@@ -8399,7 +10726,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:25Z",
+      "generated_at_utc": "2026-09-20T20:48:08Z",
       "open_access": false
     },
     {
@@ -8613,6 +10940,69 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Antibody",
+        "modalities": [
+          "Antibody"
+        ],
+        "assets": [
+          {
+            "asset": "Ociperlimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "BeOne Medicines"
+            ],
+            "trials": [
+              "NCT04746924"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tiragolumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Roche"
+            ],
+            "trials": [
+              "NCT04308785"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Vibostolimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Merck & Co."
+            ],
+            "trials": [
+              "NCT05226598"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 3 molecules — all monoclonal antibodies: Ociperlimab, Tiragolumab and Vibostolimab.",
+        "headline": "3 molecules stopped early, all monoclonal antibodies"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 1,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 56.6407,
       "cohorts": [
         {
@@ -8673,7 +11063,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:24Z",
+      "generated_at_utc": "2026-09-20T20:48:07Z",
       "open_access": false
     },
     {
@@ -8885,6 +11275,70 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Baricitinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Eli Lilly"
+            ],
+            "trials": [
+              "NCT03616912",
+              "NCT03843125"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Cravacitinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Bristol Myers Squibb"
+            ],
+            "trials": [
+              "NCT03599622"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Upadacitinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "AbbVie"
+            ],
+            "trials": [
+              "NCT03823378"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "4 stopped trials, but 3 molecules — all small molecules: Baricitinib, Cravacitinib and Upadacitinib.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 1,
+        "stops_unclear": 1,
+        "cascade_textual": 1,
+        "cascade_structural": 0
+      },
       "median_followup_months": 77.9302,
       "cohorts": [
         {
@@ -8966,7 +11420,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:38Z",
+      "generated_at_utc": "2026-09-20T20:48:19Z",
       "open_access": false
     },
     {
@@ -9181,6 +11635,49 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 5,
+        "molecules": 1,
+        "molecules_unresolved": 0,
+        "sponsors": 5,
+        "shared_modality": null,
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Venetoclax",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Fondazione Italiana Linfomi - ETS",
+              "M.D. Anderson Cancer Center",
+              "Novartis",
+              "Ono Pharmaceutical Co., Ltd.",
+              "Roche"
+            ],
+            "trials": [
+              "NCT03176277",
+              "NCT03552692",
+              "NCT03634228",
+              "NCT04029688",
+              "NCT04150029"
+            ],
+            "trial_count": 5
+          }
+        ],
+        "sentence": "5 stopped trials, all of one molecule, Venetoclax (a small molecule).",
+        "headline": "one molecule stopped early across 5 trials"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 4,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 57.9877,
       "cohorts": [
         {
@@ -9273,7 +11770,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:32Z",
+      "generated_at_utc": "2026-09-20T20:48:13Z",
       "open_access": false
     },
     {
@@ -9493,6 +11990,357 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 97,
+        "molecules": 13,
+        "molecules_unresolved": 0,
+        "sponsors": 65,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Protein"
+        ],
+        "assets": [
+          {
+            "asset": "Pembrolizumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Aduro Biotech, Inc.",
+              "BerGenBio ASA",
+              "Chase Heaton, MD",
+              "Daiichi Sankyo",
+              "Dana-Farber Cancer Institute",
+              "Genmab",
+              "Hoosier Cancer Research Network",
+              "Jeffrey Clarke",
+              "Karyopharm Therapeutics Inc",
+              "M.D. Anderson Cancer Center",
+              "Medivir",
+              "Merck & Co.",
+              "Nasser Hanna, M.D.",
+              "Novartis",
+              "Oslo University Hospital",
+              "Pfizer",
+              "SOTIO Biotech AG",
+              "SignalChem Lifesciences Corporation",
+              "Takeda",
+              "Teva Branded Pharmaceutical Products R&D LLC",
+              "Tufts Medical Center",
+              "University of California, San Francisco",
+              "University of Chicago",
+              "University of Colorado, Denver",
+              "University of Washington",
+              "Yale University",
+              "Yonsei University"
+            ],
+            "trials": [
+              "NCT02395627",
+              "NCT02452424",
+              "NCT02499952",
+              "NCT02575807",
+              "NCT02587962",
+              "NCT02767934",
+              "NCT02880371",
+              "NCT03013127",
+              "NCT03051672",
+              "NCT03122548",
+              "NCT03175172",
+              "NCT03225547",
+              "NCT03396471",
+              "NCT03631199",
+              "NCT03823131",
+              "NCT04157517",
+              "NCT04171219",
+              "NCT04768881",
+              "NCT04856176",
+              "NCT04907227",
+              "NCT04955743",
+              "NCT05070247",
+              "NCT05167409",
+              "NCT05226598",
+              "NCT05256381",
+              "NCT05436990",
+              "NCT05469178",
+              "NCT05491317",
+              "NCT05617313",
+              "NCT05860296"
+            ],
+            "trial_count": 30
+          },
+          {
+            "asset": "Nivolumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Abramson Cancer Center at Penn Medicine",
+              "Barbara Ann Karmanos Cancer Institute",
+              "Calithera Biosciences, Inc",
+              "Dana-Farber Cancer Institute",
+              "H. Lee Moffitt Cancer Center and Research Institute",
+              "Herlev Hospital",
+              "M.D. Anderson Cancer Center",
+              "Massachusetts General Hospital",
+              "Mayo Clinic",
+              "National Cancer Centre, Singapore",
+              "National Cancer Institute (NCI)",
+              "Northwestern University",
+              "St. Petersburg State Pavlov Medical University",
+              "Transgene",
+              "University of Chicago",
+              "Yvonne Efebera"
+            ],
+            "trials": [
+              "NCT02720484",
+              "NCT02771626",
+              "NCT03071094",
+              "NCT03075553",
+              "NCT03100006",
+              "NCT03274258",
+              "NCT03333746",
+              "NCT03381118",
+              "NCT03425331",
+              "NCT03572478",
+              "NCT03663166",
+              "NCT03693846",
+              "NCT04057365",
+              "NCT04159896",
+              "NCT04166383",
+              "NCT04258150",
+              "NCT05116917"
+            ],
+            "trial_count": 17
+          },
+          {
+            "asset": "Atezolizumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Columbia University",
+              "European Organisation for Research and Treatment of Cancer - EORTC",
+              "Fundacion Espanola para la Curacion de la Leucemia Mieloide Cronica",
+              "Nasser Hanna",
+              "Oncology Institute of Southern Switzerland",
+              "Palleos Healthcare GmbH",
+              "Roche",
+              "Sanofi",
+              "The Netherlands Cancer Institute",
+              "University Hospital Southampton NHS Foundation Trust",
+              "Vall d'Hebron Institute of Oncology"
+            ],
+            "trials": [
+              "NCT02450331",
+              "NCT02541604",
+              "NCT02982694",
+              "NCT03147040",
+              "NCT03273153",
+              "NCT03357224",
+              "NCT03422523",
+              "NCT03498716",
+              "NCT03637764",
+              "NCT03713944",
+              "NCT04214418",
+              "NCT04308785",
+              "NCT04338269",
+              "NCT04549428",
+              "NCT04770272",
+              "NCT04793399"
+            ],
+            "trial_count": 16
+          },
+          {
+            "asset": "Avelumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Jodi Layton, MD",
+              "Nathan Bahary, MD",
+              "Pfizer",
+              "University Hospital, Bordeaux"
+            ],
+            "trials": [
+              "NCT02718417",
+              "NCT02951156",
+              "NCT02952586",
+              "NCT03324282",
+              "NCT03344172",
+              "NCT03637491",
+              "NCT03642132",
+              "NCT03770455",
+              "NCT04052204"
+            ],
+            "trial_count": 9
+          },
+          {
+            "asset": "Bintrafusp Alfa",
+            "resolved": true,
+            "modalities": [
+              "Protein"
+            ],
+            "sponsors": [
+              "AIO-Studien-gGmbH",
+              "Mayo Clinic",
+              "Merck KGaA",
+              "National Cancer Institute (NCI)",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03451773",
+              "NCT03840902",
+              "NCT04066491",
+              "NCT04327986",
+              "NCT04396535",
+              "NCT04428047",
+              "NCT04489940",
+              "NCT04501094",
+              "NCT04727541"
+            ],
+            "trial_count": 9
+          },
+          {
+            "asset": "Durvalumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "H. Lee Moffitt Cancer Center and Research Institute",
+              "Intergroupe Francophone de Cancerologie Thoracique",
+              "ModernaTX, Inc.",
+              "University of Washington"
+            ],
+            "trials": [
+              "NCT02901548",
+              "NCT03030131",
+              "NCT03323398",
+              "NCT03522584"
+            ],
+            "trial_count": 4
+          },
+          {
+            "asset": "Erfonrilimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+              "Weill Medical College of Cornell University"
+            ],
+            "trials": [
+              "NCT03838848",
+              "NCT04925947",
+              "NCT05001724"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Dostarlimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "GSK"
+            ],
+            "trials": [
+              "NCT03955471",
+              "NCT06655818"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Spartalizumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Novartis"
+            ],
+            "trials": [
+              "NCT04323436",
+              "NCT04390763"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Tislelizumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "BeOne Medicines",
+              "Novartis"
+            ],
+            "trials": [
+              "NCT04921358",
+              "NCT04952753"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Cemiplimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT03367819"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Sintilimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Zhejiang University"
+            ],
+            "trials": [
+              "NCT04653389"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Toripalimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Sun Yat-sen University"
+            ],
+            "trials": [
+              "NCT04651127"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "97 stopped trials across 13 molecules: Pembrolizumab, Nivolumab, Atezolizumab, Avelumab and 9 more.",
+        "headline": "13 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 39,
+        "stops_from_programme_cascade": 12,
+        "stops_unclear": 46,
+        "cascade_textual": 8,
+        "cascade_structural": 4
+      },
       "median_followup_months": 53.6509,
       "cohorts": [
         {
@@ -9585,7 +12433,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:24Z",
+      "generated_at_utc": "2026-09-20T20:48:07Z",
       "open_access": false
     },
     {
@@ -9799,6 +12647,57 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Cobimetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Columbia University",
+              "Roche"
+            ],
+            "trials": [
+              "NCT03273153",
+              "NCT04214418"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Binimetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Pfizer"
+            ],
+            "trials": [
+              "NCT03637491"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 2 molecules — all small molecules: Cobimetinib and Binimetinib.",
+        "headline": "2 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 2,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 68.271,
       "cohorts": [
         {
@@ -9869,7 +12768,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:30Z",
+      "generated_at_utc": "2026-09-20T20:48:12Z",
       "open_access": false
     },
     {
@@ -10082,6 +12981,113 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 7,
+        "molecules": 6,
+        "molecules_unresolved": 0,
+        "sponsors": 7,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Regorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Great Novel Therapeutics Biotech & Medicals Corporation",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03722108",
+              "NCT05770882"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Alectinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Dana-Farber Cancer Institute"
+            ],
+            "trials": [
+              "NCT03131206"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ceritinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "National Health Research Institutes, Taiwan"
+            ],
+            "trials": [
+              "NCT02374489"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+            ],
+            "trials": [
+              "NCT04784520"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Repotrectinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Bristol Myers Squibb"
+            ],
+            "trials": [
+              "NCT05071183"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Sorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sun Yat-sen University"
+            ],
+            "trials": [
+              "NCT02867280"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "7 stopped trials, but 6 molecules — all small molecules: Regorafenib, Alectinib, Ceritinib, EGFR/VEGFR/RET Inhibitor HA121-28 and 2 more.",
+        "headline": "6 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 5,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 58.4148,
       "cohorts": [
         {
@@ -10174,7 +13180,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:30Z",
+      "generated_at_utc": "2026-09-20T20:48:12Z",
       "open_access": false
     },
     {
@@ -10389,6 +13395,131 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 9,
+        "molecules": 7,
+        "molecules_unresolved": 0,
+        "sponsors": 9,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Cobimetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Columbia University",
+              "Roche"
+            ],
+            "trials": [
+              "NCT03273153",
+              "NCT04214418"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Regorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Great Novel Therapeutics Biotech & Medicals Corporation",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03722108",
+              "NCT05770882"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Trametinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Bristol Myers Squibb",
+              "Cancer Trials Ireland"
+            ],
+            "trials": [
+              "NCT05071183",
+              "NCT05518110"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Binimetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Pfizer"
+            ],
+            "trials": [
+              "NCT03637491"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Brimarafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "SpringWorks Therapeutics, Inc., a healthcare company of Merck KGaA, Darmstadt, Germany"
+            ],
+            "trials": [
+              "NCT05580770"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Mirdametinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "SpringWorks Therapeutics, Inc., a healthcare company of Merck KGaA, Darmstadt, Germany"
+            ],
+            "trials": [
+              "NCT05580770"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Sorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sun Yat-sen University"
+            ],
+            "trials": [
+              "NCT02867280"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "9 stopped trials, but 7 molecules — all small molecules: Cobimetinib, Regorafenib, Trametinib, Binimetinib and 3 more.",
+        "headline": "7 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 4,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 5,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 67.4497,
       "cohorts": [
         {
@@ -10481,7 +13612,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:30Z",
+      "generated_at_utc": "2026-09-20T20:48:12Z",
       "open_access": false
     },
     {
@@ -10695,6 +13826,87 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 6,
+        "molecules": 4,
+        "molecules_unresolved": 0,
+        "sponsors": 6,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Abemaciclib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Anita Turk",
+              "Eli Lilly"
+            ],
+            "trials": [
+              "NCT04165031",
+              "NCT04534283"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Palbociclib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "UNC Lineberger Comprehensive Cancer Center",
+              "Washington University School of Medicine"
+            ],
+            "trials": [
+              "NCT02334527",
+              "NCT02907918"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "CDK4/6 Inhibitor SPH4336",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Shanghai Pharma Biotherapeutics USA Inc."
+            ],
+            "trials": [
+              "NCT05580588"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ribociclib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sidney Kimmel Comprehensive Cancer Center at Thomas Jefferson University"
+            ],
+            "trials": [
+              "NCT02555189"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "6 stopped trials, but 4 molecules — all small molecules: Abemaciclib, Palbociclib, CDK4/6 Inhibitor SPH4336 and Ribociclib.",
+        "headline": "4 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 71.5565,
       "cohorts": [
         {
@@ -10787,7 +13999,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:31Z",
+      "generated_at_utc": "2026-09-20T20:48:12Z",
       "open_access": false
     },
     {
@@ -11006,6 +14218,157 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 21,
+        "molecules": 7,
+        "molecules_unresolved": 0,
+        "sponsors": 21,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Gemcitabine",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "AHS Cancer Control Alberta",
+              "Assistance Publique - Hôpitaux de Paris",
+              "EpicentRx, Inc.",
+              "Essentia Health",
+              "Incyte",
+              "Nathan Bahary, MD",
+              "National Cancer Institute (NCI)",
+              "Scripps Health",
+              "University College, London"
+            ],
+            "trials": [
+              "NCT02295722",
+              "NCT02452970",
+              "NCT02472080",
+              "NCT02626520",
+              "NCT02711137",
+              "NCT02722369",
+              "NCT02910882",
+              "NCT03344172",
+              "NCT03451773"
+            ],
+            "trial_count": 9
+          },
+          {
+            "asset": "Pemetrexed",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "BerGenBio ASA",
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+              "Nasser Hanna",
+              "Novartis",
+              "Tufts Medical Center",
+              "Universität Duisburg-Essen"
+            ],
+            "trials": [
+              "NCT02595840",
+              "NCT03631199",
+              "NCT03713944",
+              "NCT03838848",
+              "NCT04856176",
+              "NCT05469178"
+            ],
+            "trial_count": 6
+          },
+          {
+            "asset": "Fluorouracil",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Essentia Health",
+              "Ukrainian Society of Clinical Oncology",
+              "University of Nebraska"
+            ],
+            "trials": [
+              "NCT02626520",
+              "NCT04141995",
+              "NCT04937738"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Methotrexate",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "M.D. Anderson Cancer Center",
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT02420717",
+              "NCT03860844"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Capecitabine",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Istituto Romagnolo per lo Studio dei Tumori Dino Amadori IRST S.r.l. IRCCS"
+            ],
+            "trials": [
+              "NCT03387592"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Fludarabine Phosphate",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Roswell Park Cancer Institute"
+            ],
+            "trials": [
+              "NCT03333486"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Hydroxyurea",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT03860844"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "21 stopped trials, but 7 molecules — all small molecules: Gemcitabine, Pemetrexed, Fluorouracil, Methotrexate and 3 more.",
+        "headline": "7 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 9,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 12,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 44.5503,
       "cohorts": [
         {
@@ -11098,7 +14461,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:34Z",
+      "generated_at_utc": "2026-09-20T20:48:16Z",
       "open_access": false
     },
     {
@@ -11316,6 +14679,65 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 7,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 7,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Pemetrexed",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "BerGenBio ASA",
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+              "Nasser Hanna",
+              "Novartis",
+              "Tufts Medical Center"
+            ],
+            "trials": [
+              "NCT03631199",
+              "NCT03713944",
+              "NCT03838848",
+              "NCT04856176",
+              "NCT05469178"
+            ],
+            "trial_count": 5
+          },
+          {
+            "asset": "Gemcitabine",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Nathan Bahary, MD",
+              "National Cancer Institute (NCI)"
+            ],
+            "trials": [
+              "NCT03344172",
+              "NCT03451773"
+            ],
+            "trial_count": 2
+          }
+        ],
+        "sentence": "7 stopped trials, but 2 molecules — all small molecules: Pemetrexed and Gemcitabine.",
+        "headline": "2 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 4,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 38.6366,
       "cohorts": [
         {
@@ -11408,7 +14830,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:34Z",
+      "generated_at_utc": "2026-09-20T20:48:16Z",
       "open_access": false
     },
     {
@@ -11627,6 +15049,202 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 26,
+        "molecules": 10,
+        "molecules_unresolved": 0,
+        "sponsors": 23,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Small molecule",
+          "Unknown"
+        ],
+        "assets": [
+          {
+            "asset": "Paclitaxel",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Corcept Therapeutics",
+              "Essentia Health",
+              "Fox Chase Cancer Center",
+              "GSK",
+              "Incyte",
+              "Novartis",
+              "Samsung Medical Center",
+              "Tufts Medical Center"
+            ],
+            "trials": [
+              "NCT02449655",
+              "NCT02626520",
+              "NCT02711137",
+              "NCT03631199",
+              "NCT04329949",
+              "NCT04856176",
+              "NCT05420636",
+              "NCT06964165"
+            ],
+            "trial_count": 8
+          },
+          {
+            "asset": "Vincristine",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Fondazione Italiana Linfomi - ETS",
+              "Johnson & Johnson",
+              "M.D. Anderson Cancer Center",
+              "Sanofi",
+              "Wake Forest University Health Sciences"
+            ],
+            "trials": [
+              "NCT02337478",
+              "NCT02420717",
+              "NCT02670317",
+              "NCT02703272",
+              "NCT03860844"
+            ],
+            "trial_count": 5
+          },
+          {
+            "asset": "Belantamab Mafodotin",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "GSK",
+              "Jacob Soumerai, MD"
+            ],
+            "trials": [
+              "NCT04676360",
+              "NCT06160609",
+              "NCT06655818"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Docetaxel Anhydrous",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Dana-Farber Cancer Institute",
+              "Takeda",
+              "Ukrainian Society of Clinical Oncology"
+            ],
+            "trials": [
+              "NCT02393209",
+              "NCT03093272",
+              "NCT04937738"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Trastuzumab Emtansine",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "The Netherlands Cancer Institute",
+              "University of Miami"
+            ],
+            "trials": [
+              "NCT02658084",
+              "NCT03784599"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Vinorelbine",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Spanish Breast Cancer Research Group",
+              "University of Miami"
+            ],
+            "trials": [
+              "NCT02658084",
+              "NCT05583110"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Anti-Globo H/MMAE Antibody-drug Conjugate OBI 999",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "OBI Pharma, Inc"
+            ],
+            "trials": [
+              "NCT04084366"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Depatuxizumab Mafodotin",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "AbbVie"
+            ],
+            "trials": [
+              "NCT03419403"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Sar-566658",
+            "resolved": true,
+            "modalities": [
+              "Unknown"
+            ],
+            "sponsors": [
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT02984683"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Vinblastine",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Gustave Roussy, Cancer Campus, Grand Paris"
+            ],
+            "trials": [
+              "NCT01887522"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "26 stopped trials across 10 molecules: Paclitaxel, Vincristine, Belantamab Mafodotin, Docetaxel Anhydrous and 6 more.",
+        "headline": "10 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 11,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 15,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 53.848,
       "cohorts": [
         {
@@ -11719,7 +15337,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:34Z",
+      "generated_at_utc": "2026-09-20T20:48:15Z",
       "open_access": false
     },
     {
@@ -11938,6 +15556,176 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 13,
+        "molecules": 9,
+        "molecules_unresolved": 0,
+        "sponsors": 13,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Irinotecan",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Essentia Health",
+              "Memorial Sloan Kettering Cancer Center",
+              "Peking University",
+              "UNICANCER",
+              "University of Nebraska"
+            ],
+            "trials": [
+              "NCT02626520",
+              "NCT03168594",
+              "NCT03722108",
+              "NCT03879798",
+              "NCT04141995"
+            ],
+            "trial_count": 5
+          },
+          {
+            "asset": "Doxorubicin",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Fondazione Italiana Linfomi - ETS",
+              "Institut für Klinische Krebsforschung IKF GmbH at Krankenhaus Nordwest",
+              "M.D. Anderson Cancer Center",
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT02420717",
+              "NCT02670317",
+              "NCT03698227",
+              "NCT03860844"
+            ],
+            "trial_count": 4
+          },
+          {
+            "asset": "Etoposide",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Johnson & Johnson",
+              "Peking University",
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT02703272",
+              "NCT03168594",
+              "NCT03860844"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Idarubicin",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Johnson & Johnson",
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT02703272",
+              "NCT03860844"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Mitoxantrone",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Cornerstone Pharmaceuticals",
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT03504410",
+              "NCT03860844"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Daunorubicin",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sanofi"
+            ],
+            "trials": [
+              "NCT03860844"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Dexrazoxane",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Institut für Klinische Krebsforschung IKF GmbH at Krankenhaus Nordwest"
+            ],
+            "trials": [
+              "NCT03698227"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Patritumab Deruxtecan",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "Daiichi Sankyo"
+            ],
+            "trials": [
+              "NCT04479436"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Topotecan",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Roche"
+            ],
+            "trials": [
+              "NCT04029688"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "13 stopped trials across 9 molecules: Irinotecan, Doxorubicin, Etoposide, Idarubicin and 5 more.",
+        "headline": "9 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 5,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 8,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 47.9343,
       "cohorts": [
         {
@@ -12030,7 +15818,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:33Z",
+      "generated_at_utc": "2026-09-20T20:48:15Z",
       "open_access": false
     },
     {
@@ -12248,6 +16036,61 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 5,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 5,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Ibrutinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "AbbVie",
+              "Fondazione Italiana Linfomi - ETS",
+              "Johnson & Johnson",
+              "National Heart, Lung, and Blood Institute (NHLBI)"
+            ],
+            "trials": [
+              "NCT02351037",
+              "NCT02670317",
+              "NCT02703272",
+              "NCT04209621"
+            ],
+            "trial_count": 4
+          },
+          {
+            "asset": "Vecabrutinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sunesis Pharmaceuticals"
+            ],
+            "trials": [
+              "NCT03037645"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "5 stopped trials, but 2 molecules — all small molecules: Ibrutinib and Vecabrutinib.",
+        "headline": "2 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 61.5031,
       "cohorts": [
         {
@@ -12340,7 +16183,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:31Z",
+      "generated_at_utc": "2026-09-20T20:48:13Z",
       "open_access": false
     },
     {
@@ -12559,6 +16402,83 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 11,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 9,
+        "shared_modality": "Antibody",
+        "modalities": [
+          "Antibody"
+        ],
+        "assets": [
+          {
+            "asset": "Ipilimumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Abramson Cancer Center at Penn Medicine",
+              "Dana-Farber Cancer Institute",
+              "H. Lee Moffitt Cancer Center and Research Institute",
+              "Herlev Hospital",
+              "Idera Pharmaceuticals, Inc.",
+              "M.D. Anderson Cancer Center"
+            ],
+            "trials": [
+              "NCT03274258",
+              "NCT03425331",
+              "NCT03445533",
+              "NCT03663166",
+              "NCT03693846",
+              "NCT04258150",
+              "NCT05116917"
+            ],
+            "trial_count": 7
+          },
+          {
+            "asset": "Erfonrilimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+              "Weill Medical College of Cornell University"
+            ],
+            "trials": [
+              "NCT03838848",
+              "NCT04925947",
+              "NCT05001724"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Tremelimumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "University of Washington"
+            ],
+            "trials": [
+              "NCT03522584"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "11 stopped trials, but 3 molecules — all monoclonal antibodies: Ipilimumab, Erfonrilimab and Tremelimumab.",
+        "headline": "3 molecules stopped early, all monoclonal antibodies"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 9,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 67.384,
       "cohorts": [
         {
@@ -12651,7 +16571,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:24Z",
+      "generated_at_utc": "2026-09-20T20:48:07Z",
       "open_access": false
     },
     {
@@ -12865,6 +16785,99 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 6,
+        "molecules": 5,
+        "molecules_unresolved": 0,
+        "sponsors": 6,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Regorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Great Novel Therapeutics Biotech & Medicals Corporation",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03722108",
+              "NCT05770882"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Fgfr Inhibitor Debio 1347",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Debiopharm International SA"
+            ],
+            "trials": [
+              "NCT03834220"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Infigratinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "National Institute of Dental and Craniofacial Research (NIDCR)"
+            ],
+            "trials": [
+              "NCT03510455"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Nintedanib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "University of Texas Southwestern Medical Center"
+            ],
+            "trials": [
+              "NCT02902484"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Pemigatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Incyte"
+            ],
+            "trials": [
+              "NCT05267106"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "6 stopped trials, but 5 molecules — all small molecules: Regorafenib, Fgfr Inhibitor Debio 1347, Infigratinib, Nintedanib and 1 more.",
+        "headline": "5 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 63.9014,
       "cohorts": [
         {
@@ -12957,7 +16970,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:29Z",
+      "generated_at_utc": "2026-09-20T20:48:11Z",
       "open_access": false
     },
     {
@@ -13175,6 +17188,61 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 6,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 4,
+        "shared_modality": "Antibody",
+        "modalities": [
+          "Antibody"
+        ],
+        "assets": [
+          {
+            "asset": "Obinutuzumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Fondazione Italiana Linfomi - ETS"
+            ],
+            "trials": [
+              "NCT02495454",
+              "NCT02670317",
+              "NCT03890289"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Rituximab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "ADC Therapeutics S.A.",
+              "Johnson & Johnson",
+              "M.D. Anderson Cancer Center"
+            ],
+            "trials": [
+              "NCT02420717",
+              "NCT02703272",
+              "NCT05144009"
+            ],
+            "trial_count": 3
+          }
+        ],
+        "sentence": "6 stopped trials, but 2 molecules — all monoclonal antibodies: Obinutuzumab and Rituximab.",
+        "headline": "2 molecules stopped early, all monoclonal antibodies"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 58.2834,
       "cohorts": [
         {
@@ -13267,7 +17335,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:27Z",
+      "generated_at_utc": "2026-09-20T20:48:09Z",
       "open_access": false
     },
     {
@@ -13486,6 +17554,81 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 10,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 8,
+        "shared_modality": "Antibody",
+        "modalities": [
+          "Antibody"
+        ],
+        "assets": [
+          {
+            "asset": "Ipilimumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Abramson Cancer Center at Penn Medicine",
+              "Dana-Farber Cancer Institute",
+              "H. Lee Moffitt Cancer Center and Research Institute",
+              "Herlev Hospital",
+              "M.D. Anderson Cancer Center"
+            ],
+            "trials": [
+              "NCT03274258",
+              "NCT03425331",
+              "NCT03663166",
+              "NCT03693846",
+              "NCT04258150",
+              "NCT05116917"
+            ],
+            "trial_count": 6
+          },
+          {
+            "asset": "Erfonrilimab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+              "Weill Medical College of Cornell University"
+            ],
+            "trials": [
+              "NCT03838848",
+              "NCT04925947",
+              "NCT05001724"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Tremelimumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "University of Washington"
+            ],
+            "trials": [
+              "NCT03522584"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "10 stopped trials, but 3 molecules — all monoclonal antibodies: Ipilimumab, Erfonrilimab and Tremelimumab.",
+        "headline": "3 molecules stopped early, all monoclonal antibodies"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 8,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 67.384,
       "cohorts": [
         {
@@ -13578,7 +17721,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:24Z",
+      "generated_at_utc": "2026-09-20T20:48:07Z",
       "open_access": false
     },
     {
@@ -13797,6 +17940,104 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 7,
+        "molecules": 5,
+        "molecules_unresolved": 0,
+        "sponsors": 6,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Antibody",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Tarloxotinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Rain Oncology Inc"
+            ],
+            "trials": [
+              "NCT02449681",
+              "NCT02454842"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Trastuzumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Spanish Breast Cancer Research Group",
+              "Washington University School of Medicine"
+            ],
+            "trials": [
+              "NCT02907918",
+              "NCT05583110"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Trastuzumab Emtansine",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "The Netherlands Cancer Institute",
+              "University of Miami"
+            ],
+            "trials": [
+              "NCT02658084",
+              "NCT03784599"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Afatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Universität Duisburg-Essen"
+            ],
+            "trials": [
+              "NCT02595840"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tucatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Spanish Breast Cancer Research Group"
+            ],
+            "trials": [
+              "NCT05583110"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "7 stopped trials across 5 molecules: Tarloxotinib, Trastuzumab, Trastuzumab Emtansine, Afatinib and 1 more.",
+        "headline": "5 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 3,
+        "stops_from_programme_cascade": 2,
+        "stops_unclear": 2,
+        "cascade_textual": 0,
+        "cascade_structural": 2
+      },
       "median_followup_months": 39.4251,
       "cohorts": [
         {
@@ -13889,7 +18130,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:28Z",
+      "generated_at_utc": "2026-09-20T20:48:10Z",
       "open_access": false
     },
     {
@@ -14108,6 +18349,224 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 20,
+        "molecules": 13,
+        "molecules_unresolved": 0,
+        "sponsors": 18,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Cabozantinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Patrick Joseph Loehrer Sr.",
+              "Radboud University Medical Center",
+              "University of Nebraska"
+            ],
+            "trials": [
+              "NCT03201250",
+              "NCT03213626",
+              "NCT03729297"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Lenvatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Eisai",
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+              "Yale University"
+            ],
+            "trials": [
+              "NCT02657369",
+              "NCT04955743",
+              "NCT05001724"
+            ],
+            "trial_count": 3
+          },
+          {
+            "asset": "Bevacizumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Nasser Hanna",
+              "Vall d'Hebron Institute of Oncology"
+            ],
+            "trials": [
+              "NCT02982694",
+              "NCT03713944"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Catequentinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "First Affiliated Hospital of Zhejiang University",
+              "Shandong Cancer Hospital and Institute"
+            ],
+            "trials": [
+              "NCT04438902",
+              "NCT04958993"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Regorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Great Novel Therapeutics Biotech & Medicals Corporation",
+              "UNICANCER"
+            ],
+            "trials": [
+              "NCT03722108",
+              "NCT05770882"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Bevacizumab-IRDye 800CW",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "University Medical Center Groningen"
+            ],
+            "trials": [
+              "NCT02743975"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Midostaurin",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Niguarda Hospital"
+            ],
+            "trials": [
+              "NCT03686345"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ningetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
+            ],
+            "trials": [
+              "NCT03838848"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ningetinib Tosylate",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sunshine Lake Pharma Co., Ltd."
+            ],
+            "trials": [
+              "NCT03876925"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Nintedanib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "University of Texas Southwestern Medical Center"
+            ],
+            "trials": [
+              "NCT02902484"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ramucirumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Eli Lilly"
+            ],
+            "trials": [
+              "NCT04145700"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Rivoceranib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sun Yat-sen University"
+            ],
+            "trials": [
+              "NCT02874651"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Sorafenib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Sun Yat-sen University"
+            ],
+            "trials": [
+              "NCT02867280"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "20 stopped trials across 13 molecules: Cabozantinib, Lenvatinib, Bevacizumab, Catequentinib and 9 more.",
+        "headline": "13 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 5,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 15,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 39.0637,
       "cohorts": [
         {
@@ -14200,7 +18659,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:28Z",
+      "generated_at_utc": "2026-09-20T20:48:11Z",
       "open_access": false
     },
     {
@@ -14416,6 +18875,69 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Bortezomib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "SCRI Development Innovations, LLC"
+            ],
+            "trials": [
+              "NCT02254551"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Ixazomib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "University Hospital, Toulouse"
+            ],
+            "trials": [
+              "NCT02897830"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "USP14/UCHL5 Inhibitor VLX1570",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Vivolux AB"
+            ],
+            "trials": [
+              "NCT02372240"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 3 molecules — all small molecules: Bortezomib, Ixazomib and USP14/UCHL5 Inhibitor VLX1570.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 0,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 3,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 74.6119,
       "cohorts": [
         {
@@ -14486,7 +19008,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:33Z",
+      "generated_at_utc": "2026-09-20T20:48:14Z",
       "open_access": false
     },
     {
@@ -14637,9 +19159,9 @@
           "Antibody": 57,
           "Protein": 37,
           "ADC": 14,
+          "Oncolytic virus": 5,
           "Cell therapy": 5,
           "Vaccine": 5,
-          "Oncolytic virus": 5,
           "Bispecific antibody": 2
         },
         "top_assets": [
@@ -14702,6 +19224,71 @@
             "components": 69
           }
         ]
+      },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Letrozole",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "ARCAGY/ GINECO GROUP",
+              "Washington University School of Medicine"
+            ],
+            "trials": [
+              "NCT02585388",
+              "NCT02907918"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Anastrozole",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "ARCAGY/ GINECO GROUP"
+            ],
+            "trials": [
+              "NCT02585388"
+            ],
+            "trial_count": 1
+          },
+          {
+            "asset": "Tamoxifen",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "University of California, San Francisco"
+            ],
+            "trials": [
+              "NCT02395627"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials, but 3 molecules — all small molecules: Letrozole, Anastrozole and Tamoxifen.",
+        "headline": "3 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 1,
+        "cascade_textual": 0,
+        "cascade_structural": 0
       },
       "median_followup_months": 56.5092,
       "cohorts": [
@@ -14773,7 +19360,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:33Z",
+      "generated_at_utc": "2026-09-20T20:48:14Z",
       "open_access": false
     },
     {
@@ -14992,6 +19579,74 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 5,
+        "molecules": 3,
+        "molecules_unresolved": 0,
+        "sponsors": 4,
+        "shared_modality": null,
+        "modalities": [
+          "Antibody",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Bevacizumab",
+            "resolved": true,
+            "modalities": [
+              "Antibody"
+            ],
+            "sponsors": [
+              "Nasser Hanna",
+              "Vall d'Hebron Institute of Oncology"
+            ],
+            "trials": [
+              "NCT02982694",
+              "NCT03713944"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Lenvatinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd",
+              "Yale University"
+            ],
+            "trials": [
+              "NCT04955743",
+              "NCT05001724"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Ningetinib",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Jiangsu Alphamab Biopharmaceuticals Co., Ltd"
+            ],
+            "trials": [
+              "NCT03838848"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "5 stopped trials across 3 molecules: Bevacizumab, Lenvatinib and Ningetinib.",
+        "headline": "3 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 4,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 36.9938,
       "cohorts": [
         {
@@ -15084,7 +19739,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:29Z",
+      "generated_at_utc": "2026-09-20T20:48:11Z",
       "open_access": false
     },
     {
@@ -15303,6 +19958,58 @@
           }
         ]
       },
+      "failure_signature": {
+        "stops": 3,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 3,
+        "shared_modality": null,
+        "modalities": [
+          "ADC",
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Paclitaxel",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "sponsors": [
+              "Novartis",
+              "Tufts Medical Center"
+            ],
+            "trials": [
+              "NCT03631199",
+              "NCT04856176"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Belantamab Mafodotin",
+            "resolved": true,
+            "modalities": [
+              "ADC"
+            ],
+            "sponsors": [
+              "GSK"
+            ],
+            "trials": [
+              "NCT06655818"
+            ],
+            "trial_count": 1
+          }
+        ],
+        "sentence": "3 stopped trials across 2 molecules: Paclitaxel and Belantamab Mafodotin.",
+        "headline": "2 molecules stopped early"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 2,
+        "stops_from_programme_cascade": 0,
+        "stops_unclear": 1,
+        "cascade_textual": 0,
+        "cascade_structural": 0
+      },
       "median_followup_months": 51.5154,
       "cohorts": [
         {
@@ -15373,7 +20080,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T20:08:34Z",
+      "generated_at_utc": "2026-09-20T20:48:15Z",
       "open_access": false
     }
   ]

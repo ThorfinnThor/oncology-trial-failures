@@ -34,7 +34,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from scripts.signals.stop_attribution import attribute_all, summarise  # noqa: E402
+from scripts.signals.stop_attribution import attribute_all, signature, summarise  # noqa: E402
 from scripts.universe.cumulative_incidence import curve  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
 from scripts.universe.multiplicity import binom_sf  # noqa: E402
@@ -114,6 +114,7 @@ def build(args) -> dict:
 
     stops = sorted([r for r in cohort if r["_bio"]], key=lambda r: (r.get("stop_date_estimate") or ""), reverse=True)
     attribution = attribute_all(stops)
+    sig = signature(stops, area=args.area, klass=args.klass)
     attr_by_nct = {a["nct_id"]: a for a in attribution}
     attr_summary = summarise(attribution)
 
@@ -162,6 +163,7 @@ def build(args) -> dict:
             "comparator_stops": comparator["biological_stops"], "comparator_closed": comparator["closed"],
             "p_value_vs_comparator": p_value,
         },
+        "failure_signature": sig,
         "attribution": {
             **attr_summary,
             "method": "A stop counts as this trial's own when the registry text describes a finding in this trial. "
@@ -207,6 +209,14 @@ def interpretation(pkg: dict) -> list[str]:
     """Our reading, kept apart from the facts above and labelled as ours."""
     h, a, c = pkg["headline"], pkg["attribution"], pkg["concentration"]
     out = []
+    sig = pkg["failure_signature"]
+    if sig["molecules"] and sig["molecules"] < sig["stops"]:
+        out.append(sig["sentence"] + " A rate counts registry records; those records are "
+                   f"{sig['molecules']} development programmes, and the question for an asset under review is "
+                   "whether it shares the molecule, the target epitope, the population or the endpoint of the ones "
+                   "that failed.")
+    elif sig["molecules"]:
+        out.append(sig["sentence"])
     ratio = (h["rate"] / h["comparator_rate"]) if h["comparator_rate"] else 0
     out.append(f"{h['biological_stops']} of {h['closed']} closed trials in this cohort were terminated for a "
                f"biological reason: {pct(h['rate'])} against {pct(h['comparator_rate'])} for {h['comparator_label']}"
@@ -311,10 +321,12 @@ a {{ color:var(--acc); }}
 
 <div class="kicker">Evidence package · {e(pkg['area'])} Phase {e('/'.join(pkg['window']['phases']))} ·
  starts {pkg['window']['start_from']}–{pkg['window']['start_to']}</div>
-<h1>{e(pkg['cohort'])}</h1>
-<p class="sub">Every trial in the cohort, every number's inputs, and which stops were this trial's own verdict.</p>
+<h1>{e(pkg['cohort'])}: {e(pkg['failure_signature']['headline'])}</h1>
+<p class="sub">{e(pkg['failure_signature']['sentence'])}</p>
 
-<div class="stats">
+<div class="stats" style="grid-template-columns:repeat(5,1fr)">
+ <div class="stat"><b>{pkg['failure_signature']['molecules']}</b><span>distinct molecules behind
+  {h['biological_stops']} stopped trials</span></div>
  <div class="stat"><b>{pct(h['rate'])}</b><span>{h['biological_stops']} of {h['closed']} closed trials
   (95% CI {pct(h['ci95'][0])}–{pct(h['ci95'][1])})</span></div>
  <div class="stat"><b>{pct(h['comparator_rate'])}</b><span>{e(h['comparator_label'])}</span></div>

@@ -46,6 +46,8 @@ export default function BriefPage({ brief }: Props) {
   // random sample of the area, so the like-for-like comparator is the resolved baseline.
   const comparator: number = brief.baseline_resolved_rate ?? brief.baseline_rate;
   const ratio = comparator ? brief.rate / comparator : 0;
+  const sig = (brief as any).failure_signature;
+  const attr = (brief as any).stop_attribution;
   const cif = (brief.cumulative_incidence || []) as { months: number; cif: number; ci95: number[]; n_risk: number }[];
   const cif36 = cif.find((h) => h.months === 36);
   const baseCif36 = ((brief.baseline_cumulative_incidence || []) as typeof cif).find((h) => h.months === 36);
@@ -105,16 +107,32 @@ export default function BriefPage({ brief }: Props) {
           </nav>
 
           <h1>
-            {brief.segment}: {pct(brief.rate)} of closed trials stopped early for biological reasons
+            {brief.segment}
+            {sig ? `: ${sig.headline}` : `: ${pct(brief.rate)} of closed trials stopped early`}
           </h1>
+          {sig ? <p className="lead strongLead">{sig.sentence}</p> : null}
           <p className="lead">
-            Against {pct(comparator)} across {area} trials whose drug resolves to a target — the like-for-like comparison, since
-            a mechanism class can only contain those
-            {ratio >= 1.5 ? ` — ${ratio.toFixed(1)}× that rate` : ""}. Rates count trials that stopped early for efficacy, safety
-            or benefit–risk reasons; trials that completed and missed their endpoints are not counted.
+            {attr && attr.stops_from_programme_cascade ? (
+              <>
+                {attr.stops_from_own_data} of the stops were the trial&rsquo;s own verdict and{" "}
+                {attr.stops_from_programme_cascade} followed a decision taken elsewhere
+                {attr.stops_unclear ? `; ${attr.stops_unclear} cannot be established` : ""}.{" "}
+              </>
+            ) : null}
+            The cohort rate is {pct(brief.rate)} against {pct(comparator)} across {area} trials whose drug resolves to a target —
+            the like-for-like comparison, since a mechanism class can only contain those
+            {ratio >= 1.5 ? `, ${ratio.toFixed(1)}× that rate` : ""}. A rate counts registry records, and records are not
+            experiments: read it together with the molecule count above.
           </p>
 
           <div className="stats">
+            <div className="stat">
+              <b>{sig ? sig.molecules : "—"}</b>
+              <span>
+                distinct molecules behind {brief.biological_stops} stopped trials
+                {sig && sig.shared_modality ? `, all ${sig.shared_modality.toLowerCase()}s` : ""}
+              </span>
+            </div>
             <div className="stat">
               <b>{pct(brief.rate)}</b>
               <span>
@@ -200,6 +218,39 @@ export default function BriefPage({ brief }: Props) {
               ) : null}
             </p>
           </section>
+
+          {sig && sig.assets && sig.assets.length ? (
+            <section className="section">
+              <h2>The molecules behind the number</h2>
+              <p className="sectionSub">
+                {sig.stops} stopped trials are {sig.molecules}{" "}
+                {sig.molecules === 1 ? "development programme" : "development programmes"}. Whether this history applies to an
+                asset under review depends on whether it shares the molecule, the target, the population or the endpoint.
+              </p>
+              <div className="tableWrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Molecule</th>
+                      <th>Modality</th>
+                      <th>Sponsor</th>
+                      <th className="num">Stopped trials</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sig.assets.map((a: any) => (
+                      <tr key={a.asset + a.trials.join()}>
+                        <td className="strong">{a.asset}</td>
+                        <td className="muted">{a.modalities.join(", ") || "—"}</td>
+                        <td className="muted">{a.sponsors.join(", ")}</td>
+                        <td className="num">{a.trial_count}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          ) : null}
 
           <section className="section">
             <h2>How much of this rests on one decision?</h2>
@@ -682,6 +733,10 @@ export default function BriefPage({ brief }: Props) {
           border-radius: 4px;
           padding: 1px 4px;
           color: var(--text-muted);
+        }
+        .strongLead {
+          font-weight: 700;
+          color: var(--text);
         }
         .robustGrid {
           display: grid;

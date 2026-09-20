@@ -167,6 +167,58 @@ check("stops years apart are not one decision", summarise(attribute_all(_far))["
 check("different sponsors are never siblings",
       summarise(attribute_all([dict(_sib[0]), dict(_sib[1], _sponsor_group="Other")]))["stops_unclear"], 2)
 
+# Molecules, not registry records. Seven rows can be four drugs, and the count that survives
+# a sceptical reader is the one we lead with.
+from scripts.signals.stop_attribution import failed_assets, signature  # noqa: E402
+
+def _trial(nct, name, entity, modality, genes, sponsor="Acme"):
+    return {"nct_id": nct, "_sponsor_group": sponsor, "why_stopped": "Terminated for futility.",
+            "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [
+                {"name": name, "entity_id": entity, "modality": modality, "target_genes": genes}]}]}
+
+# One sponsor closing three trials of one drug is one molecule.
+_one = [_trial(f"NCT{i}", "TILAVONEMAB", "CHEMBL:1", "Antibody", ["MAPT"]) for i in range(3)]
+check("three trials of one drug are one molecule", signature(_one)["molecules"], 1)
+check("and the sentence says so", "all of one molecule" in signature(_one)["sentence"], True)
+
+# Different drugs are different molecules, and a shared modality is worth saying.
+_four = [_trial("NCT1", "TILAVONEMAB", "CHEMBL:1", "Antibody", ["MAPT"]),
+         _trial("NCT2", "GOSURANEMAB", "CHEMBL:2", "Antibody", ["MAPT"], "Biogen"),
+         _trial("NCT3", "SEMORINEMAB", "CHEMBL:3", "Antibody", ["MAPT"], "Roche")]
+_sig = signature(_four)
+check("distinct drugs are distinct molecules", _sig["molecules"], 3)
+check("a shared modality is reported", _sig["shared_modality"], "Antibody")
+check("it reads as a sentence", "all monoclonal antibodies" in _sig["sentence"], True)
+check("registry shouting is toned down", "Tilavonemab" in _sig["sentence"], True)
+
+# A mixed modality is not claimed.
+_mixed = _four + [_trial("NCT4", "SOMEMOL", "CHEMBL:4", "Small molecule", ["MAPT"], "Other")]
+check("a mixed modality is not claimed", signature(_mixed)["shared_modality"], None)
+check("and is not listed either", "all " not in signature(_mixed)["sentence"], True)
+
+# A combination partner is not a failure of the class under review.
+_combo = [{"nct_id": "NCT9", "_sponsor_group": "Merck", "why_stopped": "Terminated.",
+           "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [
+               {"name": "BINTRAFUSP ALFA", "entity_id": "CHEMBL:10", "modality": "Protein",
+                "target_genes": ["TGFB1", "CD274"]},
+               {"name": "GEMCITABINE", "entity_id": "CHEMBL:11", "modality": "Small molecule",
+                "target_genes": ["RRM1"]}]}]}]
+check("without a class, every experimental drug counts", signature(_combo)["molecules"], 2)
+check("with a class, only the drugs that qualify the trial count",
+      signature(_combo, area="Oncology", klass="TGF-β")["molecules"], 1)
+
+# An unresolved drug counts as its own molecule, and the sentence admits it.
+_unres = [{"nct_id": "NCT7", "_sponsor_group": "Acme", "why_stopped": "Terminated.",
+           "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [{"label": "XYZ-123"}]}]}]
+_u = signature(_unres)
+check("an unresolved drug still counts", _u["molecules"], 1)
+check("and is flagged as unresolved", _u["molecules_unresolved"], 1)
+check("with the caveat spelled out", "may be lower" in _u["sentence"], True)
+
+check("no stops, no claim", signature([])["molecules"], 0)
+check("assets carry the trials behind them",
+      sorted(failed_assets(_one)[0]["trials"]), ["NCT0", "NCT1", "NCT2"])
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

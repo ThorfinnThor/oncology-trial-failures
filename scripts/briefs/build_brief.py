@@ -28,6 +28,7 @@ from scripts.signals.external_sources import sec_issuer  # noqa: E402
 from scripts.signals.http_cache import SourceUnavailable  # noqa: E402
 from scripts.universe.discontinuation_rates import fmt, load, select, summarize  # noqa: E402
 from scripts.universe.cumulative_incidence import curve  # noqa: E402
+from scripts.signals.stop_attribution import attribute_all, signature, summarise  # noqa: E402
 
 OUT_DIR = ROOT / "product/briefs"
 COHORTS = [(2015, 2017), (2018, 2020), (2021, 2024)]
@@ -140,6 +141,11 @@ def main(argv: list[str] | None = None) -> int:
     for r in stops:
         r["_ticker"] = ticker(r)
     maxrate = max(x["rate"] or 0 for x in (segment, reference, baseline)) or 1
+    # How many molecules are behind the stops, and whether they share a modality. Seven records
+    # of four molecules is a different claim from seven independent failures, and the reader
+    # who will not be fooled by the first is the reader worth convincing.
+    sig = signature(stops, area=args.area, klass=args.klass)
+    attribution = summarise(attribute_all(stops))
     seg_curve = curve(segment_rows)
     base_curve = curve(base_rows)
     cif36 = next((h for h in seg_curve.get("cif", []) if h["months"] == 36), None)
@@ -193,6 +199,8 @@ def main(argv: list[str] | None = None) -> int:
         "reference_label": ref_label, "reference_stats": {k: v for k, v in reference.items() if k != "nct_biological_stops"},
         "baseline_stats": {k: v for k, v in baseline.items() if k != "nct_biological_stops"},
         "baseline_target_resolved_stats": {k: v for k, v in baseline_resolved.items() if k != "nct_biological_stops"},
+        "failure_signature": sig,
+        "stop_attribution": attribution,
         "segment_composition": composition,
         "multiplicity": {"q_value_by": args.q_value, "family_size": args.family_size,
                          "method": "Benjamini-Yekutieli over a one-sided exact binomial test against the "
@@ -254,6 +262,13 @@ def main(argv: list[str] | None = None) -> int:
                            f"{segment['largest_programme_stops']}")
     if lopo is not None:
         robust_bits.append(f"removing that programme's trials from both sides leaves {pct(lopo)}")
+    if attribution["stops_from_programme_cascade"]:
+        attribution_line = (f"{attribution['stops_from_own_data']} of the stops were the trial's own verdict and "
+                            f"{attribution['stops_from_programme_cascade']} followed a decision taken elsewhere"
+                            + (f"; {attribution['stops_unclear']} cannot be established."
+                               if attribution["stops_unclear"] else "."))
+    else:
+        attribution_line = ""
     robust = "; ".join(robust_bits) + "."
     if args.q_value is not None and args.family_size:
         verdict = ("survives" if args.q_value <= 0.10 else "does not survive")
@@ -310,8 +325,8 @@ table {{ page-break-inside:auto; }} tr {{ page-break-inside:avoid; }}
 </style></head><body>
 <div class="sheet">
 <div class="kicker">Clinical Trial Failures · Discontinuation rate · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
-<h1>{e(name)}: {pct(segment['rate'])} of closed trials stopped for biological reasons</h1>
-<p class="dek">Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
+<h1>{e(name)}: {e(sig['headline'])}</h1>
+<p class="dek"><b>{e(sig['sentence'])}</b> {attribution_line} Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
 Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
 <div class="stats">
  <div class="stat"><b>{pct(segment['rate'])}</b><span>{segment['biological_stops']} of {segment['closed']} closed trials (95% CI {pct(segment['ci95'][0])}–{pct(segment['ci95'][1])})</span></div>
