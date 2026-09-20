@@ -8,6 +8,7 @@ import PrimaryNav from "@/components/PrimaryNav";
 import validation from "@/data/validation_v2.json";
 import cohortFlow from "@/data/cohort_flow.json";
 import reportingQuality from "@/data/reporting_quality.json";
+import eventAscertainment from "@/data/event_ascertainment.json";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/validation`;
@@ -45,6 +46,7 @@ export default function ValidationPage() {
     ["No material disagreement", "assertion_no_material_disagreement"],
   ].map(([name, key]) => ({ name, value: est[key as string], interval: ci[key as string], raw: counts[key as string] }));
 
+  const ea: any = eventAscertainment;
   const rq: any = reportingQuality;
   const rqArea = rq.areas[0];
   const rqClass: Record<string, any> = Object.fromEntries(rqArea.by_sponsor_class.map((g: any) => [g.group, g]));
@@ -213,6 +215,48 @@ export default function ValidationPage() {
               Individual sponsors differ several-fold on the same measure, which is why this product publishes no sponsor league
               table and why sponsor-level segments in the dataset carry an explicit warning. A low discontinuation rate beside a
               high unreadable share is not evidence of a better drug.
+            </p>
+          </section>
+
+          <section className="section">
+            <h2>Did we look in the wrong place?</h2>
+            <p className="sectionSub">
+              The rate reads one registry field. A sponsor who recorded why they stopped somewhere else — most often at the end
+              of the study description — would look to us like a termination with no stated cause: counted in the denominator,
+              never in the numerator. If those hidden reasons were mostly biological, every rate here would be too low. So we
+              measured it rather than disclosing it as a limitation.
+            </p>
+            <div className="statRow">
+              <div className="statBox">
+                <b>{n(ea.descriptions_checked)}</b>
+                <span>terminations with no readable cause, every one checked against its study description</span>
+              </div>
+              <div className="statBox">
+                <b>{pct(ea.recovered_share)}</b>
+                <span>
+                  have a sentence reporting the trial being stopped ({n(ea.reason_recovered)} trials)
+                </span>
+              </div>
+              <div className="statBox">
+                <b>{n(ea.recovered_biological)}</b>
+                <span>of those name a biological cause — none of them in oncology</span>
+              </div>
+            </div>
+            <p className="fine">
+              Recovering a reason is harder than finding the word &ldquo;terminated&rdquo;: study descriptions are full of
+              stopping rules (&ldquo;the arm <i>will be</i> stopped if fewer than three of five respond&rdquo;) that describe a
+              plan rather than an event, and of negated ones (&ldquo;the programme was <i>not</i> discontinued for safety
+              reasons&rdquo;). Only sentences reporting this trial being stopped, in the past or present perfect, are counted;
+              the exclusions are unit-tested against real false positives found in review. Recovered sentences then run through
+              the same classifier rules as the registry field.
+            </p>
+            <p className="fine">
+              <b>What it means for the numbers:</b> adding every recovered biological cause moves the oncology headline by
+              nothing at all — none of them fall in that cohort — so the published rate stands as a statement about one registry
+              field, reproducible by anyone holding that field. It also means the ambiguity band each segment carries, which
+              assumes <i>every</i> unreadable termination might be biological, is very conservative: on this evidence the true
+              figure sits near the bottom of it. What this does not establish is that the sponsors who wrote nothing anywhere had
+              nothing biological to report.
             </p>
           </section>
 
@@ -573,6 +617,38 @@ export default function ValidationPage() {
         }
         .matrix .zero {
           color: rgba(15, 23, 42, 0.3);
+        }
+        .statRow {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+          margin-top: 14px;
+        }
+        .statBox {
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 16px 18px;
+        }
+        .statBox b {
+          display: block;
+          font-size: 30px;
+          font-weight: 900;
+          letter-spacing: -0.02em;
+          font-variant-numeric: tabular-nums;
+          line-height: 1.05;
+        }
+        .statBox span {
+          display: block;
+          margin-top: 6px;
+          font-size: 13px;
+          line-height: 1.5;
+          color: var(--text-muted);
+        }
+        @media (max-width: 900px) {
+          .statRow {
+            grid-template-columns: 1fr;
+          }
         }
         .filters {
           display: flex;

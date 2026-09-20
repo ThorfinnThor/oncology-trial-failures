@@ -78,6 +78,36 @@ check("a sponsor remap is not news about the trial", origin({"sponsor_group": {}
 check("both sides moving is flagged as mixed",
       origin({"overall_status": {}, "failure_outcome": {}}), "mixed")
 
+# Event ascertainment: the extractor must find reported stops and reject everything that only
+# looks like one. Each rejection below is a real false positive caught in review, not a guess.
+from scripts.signals.event_ascertainment import stop_sentences  # noqa: E402
+
+_reported = [
+    "The interim analysis for the POC study A9541004 demonstrated futility, and the study was stopped on the 6th of November 2013.",
+    "This study has been terminated in response to a reported serious adverse event (SAE).",
+    "On 26-Sep-2024, Novartis made the decision to terminate the study due to safety findings and DMC recommendation.",
+]
+for _s in _reported:
+    check(f"reported stop is found: {_s[:40]}…", len(stop_sentences(_s)), 1)
+
+_rejected = {
+    "a protocol stopping rule is not an event":
+        "The study will be stopped if the failures are 2 or more, otherwise 27 patients will be included.",
+    "a dose-escalation rule is not an event":
+        "If the dose panel is assessed as safe, the current dose arm will be stopped and subjects recruited to the next panel.",
+    "a treatment rule is not an event":
+        "Patients are treated until documentation of progressive disease, evidence of unacceptable toxicity or other decision to discontinue treatment.",
+    "a negated stop says the opposite":
+        "As the development program was not being discontinued for safety reasons or due to a lack of efficacy, BioCryst remained confident in the asset.",
+    "two sentences run together are not one statement":
+        "Study was terminated by Novartis Primary Objective for this study is to evaluate changes in chronic low grade non-hematological adverse events experienced by patients.",
+}
+for _label, _text in _rejected.items():
+    check(_label, stop_sentences(_text), [])
+
+check("no stop language at all yields nothing",
+      stop_sentences("This is a randomised, double-blind study of drug X in patients with advanced disease."), [])
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)
