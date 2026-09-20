@@ -20,7 +20,7 @@ from scripts.universe.mechanism_classes import COMBINATION_PARTNER, classes_of  
 MIN_CLOSED = 20
 MIN_STOPS = 3
 # A small segment is worth a brief when its interval clears the area baseline outright: tau
-# is 7 stops in 10 closed trials (39.7-89.2% against a 5.9% baseline) and the size rule alone
+# is 7 stops in 10 closed trials (39.7-89.2% against an 8.5% baseline) and the size rule alone
 # would drop the clearest finding in the data.
 SMALL_BUT_CERTAIN_STOPS = 5
 
@@ -35,7 +35,9 @@ def main() -> int:
     base = select(rows, phases=phases, start=start)
     window = ["--start", f"{start[0]}:{start[1]}", "--area", args.area]
     partner = COMBINATION_PARTNER.get(args.area)
-    baseline_rate = summarize(base)["rate"]
+    # Scored against the same like-for-like baseline the briefs use: trials whose drug resolved
+    # to a target, since a class segment can only ever contain those.
+    baseline_rate = summarize([r for r in base if r["_genes"]])["rate"]
 
     def worth_a_brief(s: dict) -> bool:
         if s["closed"] >= MIN_CLOSED and s["biological_stops"] >= MIN_STOPS:

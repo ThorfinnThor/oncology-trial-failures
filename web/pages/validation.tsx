@@ -32,14 +32,15 @@ export default function ValidationPage() {
   const perOutcome: Record<string, any> = v.per_predicted_outcome;
   const confusion: { predicted: string; reference: string; count: number }[] = v.confusion_pred_vs_ref;
 
+  const counts: Record<string, { k: number; n: number }> = v.sample_counts_unweighted || {};
   const headline = [
-    ["Biological failure — precision", est.biological_precision, ci.biological_precision],
-    ["Biological failure — recall", est.biological_recall, ci.biological_recall],
-    ["Biological domain — precision", est.biological_domain_precision, ci.biological_domain_precision],
-    ["Biological domain — recall", est.biological_domain_recall, ci.biological_domain_recall],
-    ["Stated cause — precision", est.assertion_outcome_precision, ci.assertion_outcome_precision],
-    ["No material disagreement", est.assertion_no_material_disagreement, ci.assertion_no_material_disagreement],
-  ] as const;
+    ["Biological failure — precision", "biological_precision"],
+    ["Biological failure — recall", "biological_recall"],
+    ["Biological domain — precision", "biological_domain_precision"],
+    ["Biological domain — recall", "biological_domain_recall"],
+    ["Stated cause — precision", "assertion_outcome_precision"],
+    ["No material disagreement", "assertion_no_material_disagreement"],
+  ].map(([name, key]) => ({ name, value: est[key as string], interval: ci[key as string], raw: counts[key as string] }));
 
   const cell = (predicted: string, reference: string) =>
     confusion.find((c) => c.predicted === predicted && c.reference === reference)?.count ?? 0;
@@ -83,26 +84,31 @@ export default function ValidationPage() {
           <section className="section">
             <h2>Headline estimates</h2>
             <p className="sectionSub">
-              Weighted back to the eligible population, so a class that was over-sampled does not distort the estimate. Intervals
-              are 95%.
+              The sample deliberately over-draws the rarer predicted outcomes, so every estimate is weighted back to the eligible
+              population before it is reported. Intervals are 95% from a stratified bootstrap
+              {v.interval_method ? ` (${n(v.interval_method.draws)} draws, resampled within each predicted-outcome stratum)` : ""} —
+              not Wilson intervals, which would not apply to a weighted estimate. The raw counts in the drawn sample are given
+              alongside, so the weighting can be checked rather than taken on trust.
             </p>
             <div className="tableWrap">
               <table>
                 <thead>
                   <tr>
                     <th>Measure</th>
-                    <th className="num">Estimate</th>
+                    <th className="num">Weighted estimate</th>
                     <th className="num">95% CI</th>
+                    <th className="num">In the sample</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {headline.map(([name, value, interval]) => (
-                    <tr key={name as string}>
-                      <td>{name as string}</td>
-                      <td className="num strong">{pct(value as number)}</td>
+                  {headline.map((row) => (
+                    <tr key={row.name as string}>
+                      <td>{row.name as string}</td>
+                      <td className="num strong">{pct(row.value as number)}</td>
                       <td className="num muted">
-                        {pct((interval as number[])[0])}–{pct((interval as number[])[1])}
+                        {pct((row.interval as number[])[0])}–{pct((row.interval as number[])[1])}
                       </td>
+                      <td className="num muted">{row.raw ? `${row.raw.k} / ${row.raw.n}` : "—"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -262,8 +268,16 @@ export default function ValidationPage() {
                 <div className="cardTitle">Bounds of the claim</div>
                 <ul className="list">
                   <li>
-                    The reference labels are LLM annotations against written guidelines, not clinician adjudication. They measure
-                    whether the text was read correctly, not whether the sponsor told the truth.
+                    These are precision and recall against a held-out, LLM-adjudicated reference set. They are not independently
+                    verified clinical accuracy, and calling the classifier &quot;95% accurate&quot; would collapse three different
+                    claims into one number.
+                  </li>
+                  <li>
+                    Three questions need answering and only the first is measured here. <b>Text interpretation:</b> did the
+                    classifier read the available wording correctly? Measured. <b>Event ascertainment:</b> did the pipeline find
+                    the explanation at all, including where a sponsor put it in the description field instead? Not measured.
+                    <b> Clinical attribution:</b> does the evidence support a biological cause, attributable to the experimental
+                    drug rather than a comparator or a programme-wide decision? Not measured.
                   </li>
                   <li>
                     No temporal hold-out: the sample is drawn from the same release the classifier was built against, so it does
@@ -280,8 +294,10 @@ export default function ValidationPage() {
                     {pct(est.biological_precision)} precision, {pct(est.biological_recall)} recall.
                   </li>
                   <li>
-                    Tuning examples are excluded by text hash, so the estimate is not inflated by texts the rules were written
-                    against.
+                    Tuning examples are excluded by exact text hash, so the estimate is not inflated by texts the rules were
+                    written against. That is a narrow guarantee: it does not exclude near-identical sponsor templates or other
+                    trials from the same programme, and it says nothing about whether an annotating model met this material
+                    during training.
                   </li>
                   <li>
                     Every trial behind every rate is listed with its NCT ID, so any number can be checked against the registry

@@ -180,6 +180,49 @@ def main() -> int:
         }
 
     point = estimate(strata)
+    # The same numerators and denominators without the population weights: raw counts in the
+    # drawn sample, so a reader can recompute every estimate by hand. They are NOT the
+    # population estimates - the sample deliberately over-draws the rarer predicted outcomes -
+    # but publishing them is the only way the weighting is checkable.
+    raw = defaultdict(float)
+    for items in strata.values():
+        for r in items:
+            m = r["m"]
+            if r["asserted"]:
+                raw["asserted"] += m
+                raw["asserted_outcome_ok"] += m * r["outcome_ok"]
+                raw["asserted_full_ok"] += m * r["full_ok"]
+                raw["asserted_compatible"] += m * r["compatible"]
+            if r["bio_pred"]:
+                raw["bio_pred"] += m
+                raw["bio_pred_ok"] += m * r["bio_ref"]
+            if r["bio_ref"]:
+                raw["bio_ref"] += m
+                raw["bio_ref_found"] += m * r["bio_pred"]
+            if r["bio_ref_any"]:
+                raw["bio_ref_any"] += m
+                raw["bio_ref_any_flagged"] += m * (r["pred_outcome"] in {BIO, "MIXED_CAUSES"})
+            if r["pred_bio"]:
+                raw["bio_domain_pred"] += m
+                raw["bio_domain_pred_ok"] += m * r["ref_bio_any_domain"]
+            if r["ref_bio_any_domain"]:
+                raw["bio_domain_ref"] += m
+                raw["bio_domain_ref_found"] += m * r["pred_bio"]
+            raw["all"] += m
+            raw["all_outcome_ok"] += m * r["outcome_ok"]
+    pairs = {
+        "assertion_outcome_precision": ("asserted_outcome_ok", "asserted"),
+        "assertion_outcome_and_primary_precision": ("asserted_full_ok", "asserted"),
+        "assertion_no_material_disagreement": ("asserted_compatible", "asserted"),
+        "biological_domain_precision": ("bio_domain_pred_ok", "bio_domain_pred"),
+        "biological_domain_recall": ("bio_domain_ref_found", "bio_domain_ref"),
+        "biological_precision": ("bio_pred_ok", "bio_pred"),
+        "biological_recall": ("bio_ref_found", "bio_ref"),
+        "biological_signal_recall_incl_mixed": ("bio_ref_any_flagged", "bio_ref_any"),
+        "outcome_accuracy_all_records": ("all_outcome_ok", "all"),
+    }
+    sample_counts = {k: {"k": round(raw[a]), "n": round(raw[b])} for k, (a, b) in pairs.items()}
+
     rng = random.Random(SEED)
     boots = defaultdict(list)
     for _ in range(BOOT):
@@ -214,6 +257,15 @@ def main() -> int:
         },
         "weighted_estimates": point,
         "weighted_estimates_ci95": ci,
+        "interval_method": {
+            "method": "stratified bootstrap",
+            "draws": BOOT,
+            "seed": SEED,
+            "note": "Resampled within each predicted-outcome stratum and re-weighted each draw. These are NOT Wilson "
+                    "intervals: the estimates are population-weighted, so a binomial interval would not apply.",
+        },
+        "stratum_weights": {k: round(v, 4) for k, v in weights.items()},
+        "sample_counts_unweighted": sample_counts,
         "per_predicted_outcome": per_stratum,
         "confusion_pred_vs_ref": [
             {"predicted": p, "reference": r, "count": c} for (p, r), c in sorted(confusion.items())
