@@ -216,7 +216,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <div className="statLabel">Held-out precision</div>
               <div className="statNote">
                 recall {pct(heldoutRecall)} on a blind-annotated sample.{" "}
-                <Link className="link" href="/methods#validation">
+                <Link className="link" href="/validation">
                   How we validate
                 </Link>
               </div>
@@ -562,7 +562,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <p>
                   Measured, not asserted: {pct(heldoutPrecision)} precision and {pct(heldoutRecall)} recall for biological failure on a
                   held-out sample of blind-annotated stop reasons.{" "}
-                  <Link className="link" href="/methods#validation">
+                  <Link className="link" href="/validation">
                     See the validation
                   </Link>
                   .

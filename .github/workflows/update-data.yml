@@ -155,6 +155,9 @@ jobs:
           pip install playwright
           playwright install --with-deps chromium
           python -u scripts/briefs/render_brief_pdfs.py --workers 4
+          # The website serves the PDFs behind the lead form on /briefs/<slug>.
+          mkdir -p web/public/briefs
+          cp product/briefs/*.pdf web/public/briefs/ 2>/dev/null || true
 
       # The public summary reads the benchmark pack and counts the briefs, so it is built after
       # those steps. Run inside the signals step it wrote a summary with no benchmark figures,
@@ -164,6 +167,8 @@ jobs:
         continue-on-error: true
         run: |
           python scripts/signals/build_public_sample.py
+          python scripts/briefs/build_briefs_index.py
+          python scripts/build_validation_public.py
 
       - name: Save enrichment cache
         if: always()
@@ -185,7 +190,7 @@ jobs:
       - name: Commit public product summary and sample
         if: steps.signals.outcome == 'success'
         run: |
-          git add -A web/data/product_summary.json web/public/samples
+          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/public/samples web/public/briefs
           git diff --cached --quiet && echo "No product summary changes" && exit 0
-          git commit -m "Update Oncology Failure Signals summary and sample"
+          git commit -m "Update product summary, sample and briefs"
           git push
