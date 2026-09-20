@@ -66,6 +66,18 @@ check("sample covers licensed columns", [c for c in LICENSED_COLUMNS if c not in
 check("sample adds ticker", "sponsor_ticker" in COLUMNS, True)
 check("sample header is first column", COLUMNS[0], "nct_id")
 
+# Change-report attribution: a licensee must be able to tell a trial moving from our pipeline moving.
+from scripts.signals.build_change_report import origin  # noqa: E402
+
+check("a status change is a registry event", origin({"overall_status": {}}), "registry_event")
+check("a stop reason change is a registry event", origin({"why_stopped": {}}), "registry_event")
+check("our classifier changing its mind is not news about the trial",
+      origin({"failure_primary_reason": {}}), "reclassification")
+check("an ontology update is not news about the trial", origin({"focus_target_genes": {}}), "remapping")
+check("a sponsor remap is not news about the trial", origin({"sponsor_group": {}}), "remapping")
+check("both sides moving is flagged as mixed",
+      origin({"overall_status": {}, "failure_outcome": {}}), "mixed")
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

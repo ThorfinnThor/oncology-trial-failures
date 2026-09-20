@@ -24,6 +24,38 @@ SNAPSHOT_META = ROOT / ".cache/signals/previous_release_meta.json"
 OUT_JSON = PRODUCT / "oncology_failure_signals_change_report_v1.json"
 OUT_MD = PRODUCT / "oncology_failure_signals_change_report_v1.md"
 
+# Which side a field belongs to. A registry field moving is news about the trial; one of our
+# own fields moving while the registry text stands still is news about our pipeline, and a
+# licensee who cannot tell the two apart will read an ontology update as competitive
+# intelligence. Every changed record is attributed to one of these.
+REGISTRY_FIELDS = {"overall_status", "why_stopped", "primary_completion_date"}
+CLASSIFIER_FIELDS = {"failure_outcome", "failure_primary_reason", "failure_secondary_reasons"}
+MAPPING_FIELDS = {"focus_assets", "focus_asset_ids", "focus_target_genes", "focus_mechanisms", "sponsor_group"}
+
+ORIGIN_LABELS = {
+    "registry_event": "The registry record changed: a status, a stop reason or a completion date. Real news about the trial.",
+    "reclassification": "The registry text is unchanged; our classifier read it differently. Caused by a pipeline change, "
+                        "not by anything the sponsor did.",
+    "remapping": "The registry text is unchanged; the drug, target or sponsor mapping changed. Caused by an ontology or "
+                 "index update, not by anything the sponsor did.",
+    "mixed": "Both a registry field and one of ours moved in the same week.",
+}
+
+
+def origin(diffs: dict) -> str:
+    """Attribute a changed record to what actually caused it to move."""
+    fields = set(diffs)
+    registry = bool(fields & REGISTRY_FIELDS)
+    ours = bool(fields & (CLASSIFIER_FIELDS | MAPPING_FIELDS))
+    if registry and ours:
+        return "mixed"
+    if registry:
+        return "registry_event"
+    if fields & CLASSIFIER_FIELDS:
+        return "reclassification"
+    return "remapping"
+
+
 # Fields whose change is material to a licensee's screen. Enrichment coverage can move
 # on any run, so only fields that change what a record *means* are tracked.
 TRACKED = ["overall_status", "why_stopped", "failure_outcome", "failure_primary_reason",
@@ -72,13 +104,22 @@ def main() -> int:
                      for f in TRACKED if norm(previous[nct].get(f)) != norm(current[nct].get(f))}
             if diffs:
                 changed.append({"nct_id": nct, "brief_title": current[nct].get("brief_title"),
-                                "sponsor_group": current[nct].get("sponsor_group"), "changes": diffs})
+                                "sponsor_group": current[nct].get("sponsor_group"),
+                                "origin": origin(diffs), "changes": diffs})
         has_previous = True
     else:
         previous, added, removed, changed, has_previous = {}, [], [], [], False
 
     reclassified = [c for c in changed if "failure_outcome" in c["changes"] or "failure_primary_reason" in c["changes"]]
     relinked = [c for c in changed if "focus_asset_ids" in c["changes"] or "focus_target_genes" in c["changes"]]
+    by_origin = {k: sum(1 for c in changed if c["origin"] == k) for k in ORIGIN_LABELS}
+    previous_meta = json.loads(SNAPSHOT_META.read_text()) if SNAPSHOT_META.exists() else {}
+    pipeline = {
+        "classifier_version_previous": previous_meta.get("classifier_version"),
+        "classifier_version_current": meta.get("classifier_version"),
+        "pipeline_changed": bool(previous_meta.get("classifier_version")
+                                 and previous_meta.get("classifier_version") != meta.get("classifier_version")),
+    }
     report = {
         "schema_version": 1,
         "product": meta.get("product"),
@@ -90,7 +131,10 @@ def main() -> int:
                       "'changed' had a tracked field move.",
         "counts": {"current_records": len(current), "previous_records": len(previous),
                    "added": len(added), "removed": len(removed), "changed": len(changed),
-                   "reclassified": len(reclassified), "relinked": len(relinked)},
+                   "reclassified": len(reclassified), "relinked": len(relinked),
+                   "by_origin": by_origin},
+        "change_origins": ORIGIN_LABELS,
+        "pipeline": pipeline,
         "added": added,
         "removed": removed,
         "changed": changed,
@@ -102,10 +146,21 @@ def main() -> int:
         lines += ["No previous release snapshot was available, so this release has no diff.", ""]
     else:
         c = report["counts"]
+        o = c["by_origin"]
         lines += [f"Against release {previous_version or 'unknown'}: "
-                  f"**{c['added']} added**, **{c['removed']} removed**, **{c['changed']} changed** "
-                  f"({c['reclassified']} reclassified, {c['relinked']} re-linked). "
-                  f"{c['current_records']} records in this release.", ""]
+                  f"**{c['added']} added**, **{c['removed']} removed**, **{c['changed']} changed**. "
+                  f"{c['current_records']} records in this release.", "",
+                  "Of the changed records, only the first row is news about a trial. The rest moved because "
+                  "our own classifier or mappings changed, with the registry text standing still.", "",
+                  "| What moved | Records | Meaning |", "| --- | ---: | --- |",
+                  f"| Registry event | {o['registry_event']} | {ORIGIN_LABELS['registry_event']} |",
+                  f"| Reclassification | {o['reclassification']} | {ORIGIN_LABELS['reclassification']} |",
+                  f"| Re-mapping | {o['remapping']} | {ORIGIN_LABELS['remapping']} |",
+                  f"| Both | {o['mixed']} | {ORIGIN_LABELS['mixed']} |", ""]
+        if pipeline["pipeline_changed"]:
+            lines += [f"> The classifier moved from {pipeline['classifier_version_previous']} to "
+                      f"{pipeline['classifier_version_current']} this release, so reclassifications below are expected "
+                      f"and are not sponsor activity.", ""]
         if added:
             lines += ["## Newly stopped trials", ""]
             lines += [f"- `{a['nct_id']}` — {a.get('sponsor_group') or 'unknown sponsor'}: "
