@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
-import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
+import { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
@@ -29,7 +29,9 @@ const n = (v: number) => v.toLocaleString("en-US");
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
 
 export default function PackagesIndexPage() {
-  const all = catalogue.packages as Pkg[];
+  // A cohort whose every trial is already in the free brief has no package worth selling; it is
+  // reachable from its own brief, and saying so there is honest. Listing it in a shop is not.
+  const all = (catalogue.packages as Pkg[]).filter((p) => trialsBeyondTheBrief(p) > 0);
   const areas = [...new Set(all.map((p) => p.area))].sort();
   const [area, setArea] = useState("All");
   // Size is the neutral default, but it puts the least interesting cohorts first: the biggest
@@ -81,7 +83,7 @@ export default function PackagesIndexPage() {
               elsewhere, and the probability of a stop over time against a like-for-like comparator.
             </p>
             <div className="strip">
-              <span>{catalogue.package_count} cohorts</span>
+              <span>{all.length} cohorts</span>
               <span>{PACKAGE_PRICE} each</span>
               <span>Delivered immediately</span>
               <span>Rebuilt weekly</span>
@@ -91,7 +93,7 @@ export default function PackagesIndexPage() {
           <section className="section">
             <div className="listHead">
               <h2>
-                All {catalogue.package_count} cohorts
+                All {all.length} cohorts
                 {area === "All" ? "" : ` · ${shown.length} in ${area}`}
               </h2>
               <div className="filters">

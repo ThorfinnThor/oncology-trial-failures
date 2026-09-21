@@ -26,6 +26,18 @@ export type PackageSummary = {
 };
 
 export const PACKAGE_PRICE = "€100";
+export const CUSTOM_COHORT_MAILTO =
+  "mailto:contact@clinicaltrialfailures.com?subject=" + encodeURIComponent("Evidence package for a custom cohort");
+
+/** Trials in the cohort that the brief does not cover: closed without a biological stop, or still running.
+ *
+ * This is the whole of what a package adds in trials, and in a couple of very small cohorts it is zero —
+ * every trial in the class stopped, so the free brief already lists all of them. Selling a package there
+ * would be selling the same four trials twice, so the number decides whether one is offered at all.
+ */
+export function trialsBeyondTheBrief(pkg: PackageSummary) {
+  return pkg.counts.closed - pkg.counts.stopped + pkg.counts.still_open;
+}
 
 const n = (v: number) => v.toLocaleString("en-US");
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
@@ -50,6 +62,7 @@ export default function BriefVsPackage({
   emphasis?: "brief" | "package";
 }) {
   const c = pkg.counts;
+  const adds = trialsBeyondTheBrief(pkg);
 
   return (
     <section className="bvp">
@@ -86,30 +99,64 @@ export default function BriefVsPackage({
           </div>
         </div>
 
-        <div className={`bvpCard${emphasis === "package" ? " bvpHere" : ""}`}>
+        <div className={`bvpCard${emphasis === "package" && adds > 0 ? " bvpHere" : ""}`}>
           <div className="bvpTag">
-            The evidence package <span className="bvpPrice">{PACKAGE_PRICE}</span>
+            The evidence package{" "}
+            <span className={`bvpPrice${adds > 0 ? "" : " bvpFree"}`}>{adds > 0 ? PACKAGE_PRICE : "Not sold here"}</span>
           </div>
-          <div className="bvpOne">
-            All {n(c.total_in_cohort)} trials the rate was computed from — not only the {c.stopped} that stopped.
-          </div>
-          <ul>
-            <li>
-              The {n(c.closed - c.stopped)} closed trials that did <i>not</i> stop early, and the {n(c.still_open)} still
-              running that will move this rate in both directions
-            </li>
-            <li>The rules that decide which trial is in the cohort and which is out, written out in full</li>
-            <li>
-              Which of the {c.stopped} stops were this trial&rsquo;s own result, and which were a decision taken elsewhere
-              in the programme
-            </li>
-            <li>The probability of a stop at 12 to 60 months, against the same curve for the comparator</li>
-            <li>
-              The {c.unreadable_terminations} terminations with no cause we can read, listed rather than quietly dropped
-            </li>
-          </ul>
+
+          {adds > 0 ? (
+            <>
+              <div className="bvpOne">
+                All {n(c.total_in_cohort)} trials the rate was computed from — not only the {c.stopped} that stopped.
+              </div>
+              <ul>
+                <li>
+                  The {n(c.closed - c.stopped)} closed trials that did <i>not</i> stop early
+                  {c.still_open > 0 ? `, and the ${n(c.still_open)} still running that will move this rate in both directions` : ""}
+                </li>
+                <li>The rules that decide which trial is in the cohort and which is out, written out in full</li>
+                <li>
+                  Which of the {c.stopped} stops were this trial&rsquo;s own result, and which were a decision taken
+                  elsewhere in the programme
+                </li>
+                <li>The probability of a stop at 12 to 60 months, against the same curve for the comparator</li>
+                {c.unreadable_terminations > 0 ? (
+                  <li>
+                    The {c.unreadable_terminations} terminations with no cause we can read, listed rather than quietly
+                    dropped
+                  </li>
+                ) : null}
+              </ul>
+            </>
+          ) : (
+            <>
+              <div className="bvpOne">
+                Not sold for this cohort: every trial in it is already in the brief.
+              </div>
+              <ul>
+                <li>
+                  All {n(c.total_in_cohort)} trials have closed and all {c.stopped} of them stopped early, so there is no
+                  remainder for a package to add — the free brief is the whole cohort
+                </li>
+                <li>
+                  Which means the {pct(pkg.headline.rate)} rests on {c.stopped} trials and should be read as a lead, not
+                  as a finding
+                </li>
+                <li>
+                  A package is worth buying where most of the cohort is <i>not</i> in the brief — or built around your
+                  own asset, sponsor or indication
+                </li>
+              </ul>
+            </>
+          )}
+
           <div className="bvpFoot">
-            {emphasis === "package" ? (
+            {adds === 0 ? (
+              <Link className="bvpGhost" href="/packages">
+                Cohorts where a package adds something
+              </Link>
+            ) : emphasis === "package" ? (
               <span className="bvpYouAreHere">You are reading it</span>
             ) : (
               <Link className="bvpCta" href={`/packages/${pkg.slug}`}>
@@ -121,10 +168,23 @@ export default function BriefVsPackage({
       </div>
 
       <p className="bvpWhy">
-        Why the difference matters: {pct(pkg.headline.rate)} on its own is not usable. Whether those {c.stopped} stops are{" "}
-        {c.stopped} independent verdicts on the mechanism or one sponsor closing a programme, and whether the{" "}
-        {n(c.still_open)} open trials are about to pull the rate back down, decides what the number is worth. The brief
-        cannot answer either question; the package is built to.
+        {adds > 0 ? (
+          <>
+            Why the difference matters: {pct(pkg.headline.rate)} on its own is not usable. Whether those {c.stopped} stops
+            are {c.stopped} independent verdicts on the mechanism or one sponsor closing a programme, and whether the{" "}
+            {n(c.still_open)} open trials are about to pull the rate back down, decides what the number is worth. The
+            brief cannot answer either question; the package is built to.
+          </>
+        ) : (
+          <>
+            A cohort this small cannot carry a rate on its own, and we would rather say so than sell the same{" "}
+            {c.stopped} trials twice.{" "}
+            <a className="bvpLink" href={CUSTOM_COHORT_MAILTO}>
+              Tell us what you are evaluating
+            </a>{" "}
+            and we will say whether the data can answer it before anything is built.
+          </>
+        )}
       </p>
 
       <style jsx>{`
@@ -235,6 +295,10 @@ export default function BriefVsPackage({
           background: #fff;
           color: inherit;
           border: 1px solid var(--border);
+        }
+        :global(.bvpLink) {
+          color: var(--accent);
+          font-weight: 700;
         }
         .bvpWhy {
           margin: 16px 0 0;

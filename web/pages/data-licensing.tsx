@@ -8,6 +8,7 @@ import { FormEvent, useState } from "react";
 import PrimaryNav from "@/components/PrimaryNav";
 import productSummary from "@/data/product_summary.json";
 import briefsIndex from "@/data/briefs_index.json";
+import { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import { readJsonServerAsset } from "@/lib/server-data";
 import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
@@ -19,6 +20,10 @@ import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
 // cannot do cheaply is assembling a defensible cohort for one asset and showing what is and
 // is not comparable. That is what the entry tier sells, and the subscription is the version
 // of it that keeps running.
+// Not every cohort has a package worth selling: in the smallest, every trial already appears in the
+// free brief. Those are counted out here rather than being advertised and then declined.
+const SELLABLE_PACKAGES = (catalogue.packages as any[]).filter((p) => trialsBeyondTheBrief(p) > 0).length;
+
 const PRICING = [
   {
     name: "Evidence package",
@@ -34,7 +39,7 @@ const PRICING = [
       "Unresolved and unreadable cases listed, not hidden",
       "Written interpretation, kept separate from the extracted facts",
     ],
-    cta: `See the ${catalogue.package_count} cohorts`,
+    cta: `See the ${SELLABLE_PACKAGES} cohorts`,
     href: "/packages",
   },
   {
@@ -392,7 +397,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   probability of a stop over time.
                 </p>
                 <div className="sellMeta">
-                  {catalogue.package_count} cohorts · delivered immediately · rebuilt weekly
+                  {SELLABLE_PACKAGES} cohorts · delivered immediately · rebuilt weekly
                 </div>
               </Link>
 

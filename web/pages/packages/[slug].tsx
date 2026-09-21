@@ -9,7 +9,7 @@ import Link from "next/link";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { FormEvent, useState } from "react";
 
-import BriefVsPackage from "@/components/BriefVsPackage";
+import BriefVsPackage, { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
@@ -48,6 +48,9 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
 
   const title = `${pkg.cohort} — evidence package`;
   const c = pkg.counts;
+  // Every trial in a couple of the smallest cohorts stopped, so the free brief already lists all of
+  // them and there is nothing left for a package to hand over. Those are not for sale.
+  const adds = trialsBeyondTheBrief(pkg);
 
   return (
     <>
@@ -80,11 +83,15 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
             </Link>{" "}
             · {pkg.area}
           </div>
-          <h1>{pkg.cohort}: the whole cohort, not just the stops</h1>
+          <h1>
+            {adds > 0
+              ? `${pkg.cohort}: the whole cohort, not just the stops`
+              : `${pkg.cohort}: the brief already is the whole cohort`}
+          </h1>
           <BriefVsPackage pkg={pkg} briefSlug={briefSlug} emphasis="package" />
 
           <section className="section">
-            <h2>What is in it, in detail</h2>
+            <h2>{adds > 0 ? "What is in it, in detail" : "What a package contains, where one is sold"}</h2>
             <div className="grid2">
               <div className="card">
                 <div className="cardTitle">The cohort, written out</div>
@@ -119,6 +126,7 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
             </div>
           </section>
 
+          {adds > 0 ? (
           <section className="section" id="get">
             <div className="box">
               {status === "done" ? (
@@ -193,6 +201,50 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
               )}
             </div>
           </section>
+          ) : (
+            <section className="section" id="get">
+              <div className="box">
+                <div>
+                  <h2>There is nothing here to sell you</h2>
+                  <p className="lead">
+                    All {n(c.total_in_cohort)} trials in this cohort have closed and all {c.stopped} of them stopped
+                    early. The free brief lists every one, so a package would be the same {c.stopped} trials with a
+                    price on them.
+                  </p>
+                  <ul className="list">
+                    <li>
+                      Read the brief — it is the whole cohort, and it says plainly that {c.stopped} trials cannot carry
+                      a rate
+                    </li>
+                    <li>
+                      For a cohort where most of the trials are <i>not</i> in the brief, see the{" "}
+                      <Link className="link" href="/packages">
+                        other cohorts
+                      </Link>
+                    </li>
+                    <li>
+                      For your own asset, sponsor or indication, tell us what you are evaluating and we will say whether
+                      the data can answer it before anything is built
+                    </li>
+                  </ul>
+                  <div className="noSaleActions">
+                    {briefSlug ? (
+                      <Link className="btnPrimary" href={`/briefs/${briefSlug}`}>
+                        Read the free brief
+                      </Link>
+                    ) : null}
+                    <a
+                      className="btnGhost"
+                      href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Evidence package for a custom cohort")}`}
+                    >
+                      Describe your cohort
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
         </div>
       </main>
 
@@ -280,6 +332,12 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
           margin: 8px 0 0;
           font-size: 13.5px;
           line-height: 1.55;
+        }
+        .noSaleActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 18px;
         }
         .box {
           display: grid;
