@@ -167,6 +167,162 @@ check("stops years apart are not one decision", summarise(attribute_all(_far))["
 check("different sponsors are never siblings",
       summarise(attribute_all([dict(_sib[0]), dict(_sib[1], _sponsor_group="Other")]))["stops_unclear"], 2)
 
+# Molecules, not registry records. Seven rows can be four drugs, and the count that survives
+# a sceptical reader is the one we lead with.
+from scripts.signals.stop_attribution import failed_assets, signature  # noqa: E402
+
+def _trial(nct, name, entity, modality, genes, sponsor="Acme"):
+    return {"nct_id": nct, "_sponsor_group": sponsor, "why_stopped": "Terminated for futility.",
+            "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [
+                {"name": name, "entity_id": entity, "modality": modality, "target_genes": genes}]}]}
+
+# One sponsor closing three trials of one drug is one molecule.
+_one = [_trial(f"NCT{i}", "TILAVONEMAB", "CHEMBL:1", "Antibody", ["MAPT"]) for i in range(3)]
+check("three trials of one drug are one molecule", signature(_one)["molecules"], 1)
+check("and the sentence says so", "all of one molecule" in signature(_one)["sentence"], True)
+
+# Different drugs are different molecules, and a shared modality is worth saying.
+_four = [_trial("NCT1", "TILAVONEMAB", "CHEMBL:1", "Antibody", ["MAPT"]),
+         _trial("NCT2", "GOSURANEMAB", "CHEMBL:2", "Antibody", ["MAPT"], "Biogen"),
+         _trial("NCT3", "SEMORINEMAB", "CHEMBL:3", "Antibody", ["MAPT"], "Roche")]
+_sig = signature(_four)
+check("distinct drugs are distinct molecules", _sig["molecules"], 3)
+check("a shared modality is reported", _sig["shared_modality"], "Antibody")
+check("it reads as a sentence", "all monoclonal antibodies" in _sig["sentence"], True)
+check("registry shouting is toned down", "Tilavonemab" in _sig["sentence"], True)
+
+# A mixed modality is not claimed.
+_mixed = _four + [_trial("NCT4", "SOMEMOL", "CHEMBL:4", "Small molecule", ["MAPT"], "Other")]
+check("a mixed modality is not claimed", signature(_mixed)["shared_modality"], None)
+check("and is not listed either", "all " not in signature(_mixed)["sentence"], True)
+
+# A combination partner is not a failure of the class under review.
+_combo = [{"nct_id": "NCT9", "_sponsor_group": "Merck", "why_stopped": "Terminated.",
+           "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [
+               {"name": "BINTRAFUSP ALFA", "entity_id": "CHEMBL:10", "modality": "Protein",
+                "target_genes": ["TGFB1", "CD274"]},
+               {"name": "GEMCITABINE", "entity_id": "CHEMBL:11", "modality": "Small molecule",
+                "target_genes": ["RRM1"]}]}]}]
+check("without a class, every experimental drug counts", signature(_combo)["molecules"], 2)
+check("with a class, only the drugs that qualify the trial count",
+      signature(_combo, area="Oncology", klass="TGF-β")["molecules"], 1)
+
+# An unresolved drug counts as its own molecule, and the sentence admits it.
+_unres = [{"nct_id": "NCT7", "_sponsor_group": "Acme", "why_stopped": "Terminated.",
+           "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [{"label": "XYZ-123"}]}]}]
+_u = signature(_unres)
+check("an unresolved drug still counts", _u["molecules"], 1)
+check("and is flagged as unresolved", _u["molecules_unresolved"], 1)
+check("with the caveat spelled out", "may be lower" in _u["sentence"], True)
+
+check("no stops, no claim", signature([])["molecules"], 0)
+check("assets carry the trials behind them",
+      sorted(failed_assets(_one)[0]["trials"]), ["NCT0", "NCT1", "NCT2"])
+
+# Comparing the customer's asset against the molecules that failed. The answer "this cohort is
+# not about you" has to come out as readily as the answer "it is", or the comparison is just
+# a way of agreeing with whoever paid for it.
+from scripts.signals.build_evidence_package import compare_asset  # noqa: E402
+
+_failed = [
+    {"asset": "Tilavonemab", "modalities": ["Antibody"], "target_genes": ["MAPT"],
+     "mechanisms": ["Microtubule-associated protein tau inhibitor"], "trial_count": 3, "trials": ["NCT1"]},
+    {"asset": "Verubecestat", "modalities": ["Small molecule"], "target_genes": ["BACE1"],
+     "mechanisms": ["Beta-secretase 1 inhibitor"], "trial_count": 1, "trials": ["NCT2"]},
+    {"asset": "Unresolvable", "modalities": [], "target_genes": [], "mechanisms": [],
+     "trial_count": 1, "trials": ["NCT3"]},
+]
+_anti_tau_ab = {"asset": "BEPRANEMAB", "modality": "Antibody", "target_genes": ["MAPT"], "mechanisms": []}
+_by_asset = {c["asset"]: c for c in compare_asset(_anti_tau_ab, _failed)}
+check("same target and modality is the closest match", _by_asset["Tilavonemab"]["verdict"], "closest")
+check("a different target is not", _by_asset["Verubecestat"]["verdict"], "distant")
+check("an unresolved molecule cannot be compared", _by_asset["Unresolvable"]["verdict"], "unknown")
+check("the shared target is named", _by_asset["Tilavonemab"]["shared_target_genes"], ["MAPT"])
+
+# Same target, different modality: related, not closest.
+_tau_small = {"asset": "SOMETHING", "modality": "Small molecule", "target_genes": ["MAPT"], "mechanisms": []}
+check("same target, different modality is related",
+      {c["asset"]: c for c in compare_asset(_tau_small, _failed)}["Tilavonemab"]["verdict"], "related")
+
+# Same modality, different target: weak. An anti-amyloid antibody is not an anti-tau antibody.
+_amyloid_ab = {"asset": "LECANEMAB", "modality": "Antibody", "target_genes": ["APP"], "mechanisms": []}
+check("same modality alone is weak",
+      {c["asset"]: c for c in compare_asset(_amyloid_ab, _failed)}["Tilavonemab"]["verdict"], "weak")
+
+# A shared mechanism string counts even when the gene symbols differ.
+_mech = {"asset": "OTHER", "modality": "Peptide", "target_genes": [],
+         "mechanisms": ["Microtubule-associated protein tau inhibitor"]}
+check("an overlapping mechanism counts",
+      {c["asset"]: c for c in compare_asset(_mech, _failed)}["Tilavonemab"]["verdict"], "related")
+
+# Closest matches sort to the top, because that is the row someone has to answer for.
+check("the closest match leads the table", compare_asset(_anti_tau_ab, _failed)[0]["asset"], "Tilavonemab")
+
+# The change report end to end, against a previous release built to contain known differences.
+# Attribution unit tests check the rule; this checks that the diff actually finds them, which
+# is the part that was shipped without ever having run against a release that differed.
+import gzip as _gzip  # noqa: E402
+import json as _json  # noqa: E402
+import importlib as _importlib  # noqa: E402
+import tempfile as _tempfile  # noqa: E402
+
+_cr = _importlib.import_module("scripts.signals.build_change_report")
+
+with _tempfile.TemporaryDirectory() as _tmp:
+    _tmp = Path(_tmp)
+    _base = {"nct_id": "NCT00000001", "brief_title": "A", "phases": "PHASE2", "sponsor_group": "Acme",
+             "overall_status": "TERMINATED", "why_stopped": "Lack of efficacy.",
+             "failure_outcome": "BIOLOGICAL_FAILURE", "failure_primary_reason": "EFFICACY_FUTILITY",
+             "failure_secondary_reasons": "", "focus_assets": "DRUG A", "focus_asset_ids": "CHEMBL:1",
+             "focus_target_genes": "AAA", "focus_mechanisms": "inhibitor",
+             "primary_completion_date": "2020-01-01", "classifier_version": "2.7.0"}
+
+    def _rec(nct, **over):
+        return {**_base, "nct_id": nct, **over}
+
+    _current = [_rec("NCT1"), _rec("NCT2"), _rec("NCT3"), _rec("NCT4"), _rec("NCT_NEW")]
+    _previous = [
+        _rec("NCT1", why_stopped="Text the sponsor has since replaced."),   # registry event
+        _rec("NCT2", failure_outcome="NON_BIOLOGICAL"),                      # our classifier moved
+        _rec("NCT3", focus_target_genes="OLDGENE"),                          # our mapping moved
+        _rec("NCT4"),                                                        # unchanged
+        _rec("NCT_GONE"),                                                    # left the dataset
+    ]
+
+    (_tmp / "current.jsonl").write_text("\n".join(_json.dumps(r) for r in _current) + "\n")
+    with _gzip.open(_tmp / "previous.jsonl.gz", "wt") as _fh:
+        _fh.write("\n".join(_json.dumps(r) for r in _previous) + "\n")
+    (_tmp / "meta.json").write_text(_json.dumps({"product": "Test", "dataset_version": "2026-09-14"}))
+    (_tmp / "prev_meta.json").write_text(_json.dumps({"dataset_version": "2026-09-07"}))
+
+    _saved = (_cr.CURRENT, _cr.META, _cr.SNAPSHOT, _cr.SNAPSHOT_META, _cr.OUT_JSON, _cr.OUT_MD)
+    _cr.CURRENT, _cr.META = _tmp / "current.jsonl", _tmp / "meta.json"
+    _cr.SNAPSHOT, _cr.SNAPSHOT_META = _tmp / "previous.jsonl.gz", _tmp / "prev_meta.json"
+    _cr.OUT_JSON, _cr.OUT_MD = _tmp / "report.json", _tmp / "report.md"
+    try:
+        _cr.main()
+        _report = _json.loads((_tmp / "report.json").read_text())
+    finally:
+        (_cr.CURRENT, _cr.META, _cr.SNAPSHOT, _cr.SNAPSHOT_META, _cr.OUT_JSON, _cr.OUT_MD) = _saved
+
+    _c = _report["counts"]
+    check("change report: a trial that entered the dataset is added", _c["added"], 1)
+    check("change report: a trial that left it is removed", _c["removed"], 1)
+    check("change report: three trials changed, one did not", _c["changed"], 3)
+    _origin = {c["nct_id"]: c["origin"] for c in _report["changed"]}
+    check("a new stop reason is a registry event", _origin.get("NCT1"), "registry_event")
+    check("our classifier moving is not", _origin.get("NCT2"), "reclassification")
+    check("nor is our mapping moving", _origin.get("NCT3"), "remapping")
+    check("an unchanged trial is not reported", "NCT4" in _origin, False)
+    check("the origins add up to the changed count",
+          sum(_c["by_origin"].values()), _c["changed"])
+
+    # The classifier version is read off the records, because the meta file does not carry it.
+    check("the current classifier version is recovered", _report["pipeline"]["classifier_version_current"], "2.7.0")
+    check("identical versions are not reported as a pipeline change",
+          _report["pipeline"]["pipeline_changed"], False)
+    check("the written report names the registry event", "NCT1" in (_tmp / "report.md").read_text(), True)
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

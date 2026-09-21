@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""The €1,500 deliverable: one cohort, assembled so a buyer can audit every number in it.
+"""The evidence package: one cohort, assembled so a buyer can audit every number in it.
 
-The licensing page promises an evidence package for a cohort the customer names. This builds
-it. Nothing here is a new statistic — the rate, the curve, the concentration and the ambiguity
+The licensing page sells an evidence package for a cohort the customer names. This builds it. Nothing here is a new statistic — the rate, the curve, the concentration and the ambiguity
 band all already exist — except the one thing a rate can never carry: which stops were the
 trial's own verdict and which followed a decision taken somewhere else.
 
@@ -34,12 +33,82 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from scripts.signals.stop_attribution import attribute_all, summarise  # noqa: E402
+from scripts.signals.stop_attribution import attribute_all, signature, summarise  # noqa: E402
 from scripts.universe.cumulative_incidence import curve  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
 from scripts.universe.multiplicity import binom_sf  # noqa: E402
 
+# What we compare, and what we deliberately do not. Modality, target and mechanism come out of
+# the same index that resolved the trials, so they are extracted facts. Population, line of
+# therapy, dose, biomarker selection and endpoint are what actually decide whether a historical
+# failure transfers, and none of them can be read off a drug record — so the report asks those
+# questions rather than answering them.
+NOT_COMPARED = ["patient population and disease stage", "line of therapy", "dose and exposure",
+                "biomarker selection", "primary endpoint and its timing"]
+
+
+def resolve_asset(name: str) -> dict | None:
+    """The customer's asset, from the same ChEMBL index that resolved the trials."""
+    from scripts.universe.chembl_index import load as load_index, norm
+
+    idx = load_index()
+    ids = idx["names"].get(norm(name))
+    if not ids:
+        return None
+    chembl_id = ids[0]
+    mol = idx["molecules"].get(chembl_id, {})
+    mechs = idx["mechanisms"].get(chembl_id, []) or []
+    genes = sorted({g for m in mechs
+                    for g in (idx["targets"].get(m.get("target_chembl_id"), {}) or {}).get("gene_symbols", [])})
+    return {
+        "query": name,
+        "asset": mol.get("pref_name") or name.upper(),
+        "chembl_id": chembl_id,
+        "modality": mol.get("molecule_type"),
+        "max_phase": mol.get("max_phase"),
+        "target_genes": genes,
+        "mechanisms": sorted({m.get("mechanism_of_action") for m in mechs if m.get("mechanism_of_action")}),
+    }
+
+
+def compare_asset(asset: dict, failed: list[dict]) -> list[dict]:
+    """One row per failed molecule: what it shares with the asset under review, and what it does not."""
+    out = []
+    a_genes, a_mechs = set(asset.get("target_genes") or []), set(asset.get("mechanisms") or [])
+    for f in failed:
+        f_genes, f_mechs = set(f.get("target_genes") or []), set(f.get("mechanisms") or [])
+        same_modality = bool(asset.get("modality")) and asset["modality"] in (f.get("modalities") or [])
+        shared_genes = sorted(a_genes & f_genes)
+        shared_mechs = sorted(a_mechs & f_mechs)
+        if shared_genes and same_modality:
+            verdict, why = "closest", "same target and same modality"
+        elif shared_genes:
+            verdict, why = "related", "same target, different modality"
+        elif shared_mechs:
+            verdict, why = "related", "different target, overlapping mechanism"
+        elif same_modality:
+            verdict, why = "weak", "same modality only — no target in common"
+        else:
+            verdict, why = "distant", "no target, mechanism or modality in common"
+        if not (f.get("target_genes") or f.get("mechanisms")):
+            verdict, why = "unknown", "this molecule's target could not be resolved, so no comparison is possible"
+        out.append({
+            "asset": f["asset"], "modalities": f.get("modalities") or [], "sponsors": f.get("sponsors") or [],
+            "trial_count": f.get("trial_count"), "trials": f.get("trials") or [],
+            "shared_target_genes": shared_genes, "shared_mechanisms": shared_mechs,
+            "same_modality": same_modality, "verdict": verdict, "why": why,
+        })
+    order = {"closest": 0, "related": 1, "weak": 2, "distant": 3, "unknown": 4}
+    return sorted(out, key=lambda r: (order[r["verdict"]], -(r["trial_count"] or 0)))
+
 OUT_DIR = ROOT / "product/evidence_packages"
+MODALITY_WORD = {"Antibody": "a monoclonal antibody", "Small molecule": "a small molecule",
+                 "Protein": "an engineered protein", "Peptide": "a peptide",
+                 "Oligonucleotide": "an oligonucleotide", "Cell therapy": "a cell therapy",
+                 "Gene therapy": "a gene therapy", "Vaccine": "a vaccine"}
+VERDICT_LABEL = {"closest": "Same target, same modality", "related": "Related",
+                 "weak": "Same modality only", "distant": "Different hypothesis",
+                 "unknown": "Cannot be compared"}
 ATTRIBUTION_LABEL = {
     "own_data": "This trial's own data",
     "programme_cascade": "A decision taken elsewhere",
@@ -114,6 +183,7 @@ def build(args) -> dict:
 
     stops = sorted([r for r in cohort if r["_bio"]], key=lambda r: (r.get("stop_date_estimate") or ""), reverse=True)
     attribution = attribute_all(stops)
+    sig = signature(stops, area=args.area, klass=args.klass)
     attr_by_nct = {a["nct_id"]: a for a in attribution}
     attr_summary = summarise(attribution)
 
@@ -162,6 +232,7 @@ def build(args) -> dict:
             "comparator_stops": comparator["biological_stops"], "comparator_closed": comparator["closed"],
             "p_value_vs_comparator": p_value,
         },
+        "failure_signature": sig,
         "attribution": {
             **attr_summary,
             "method": "A stop counts as this trial's own when the registry text describes a finding in this trial. "
@@ -207,6 +278,48 @@ def interpretation(pkg: dict) -> list[str]:
     """Our reading, kept apart from the facts above and labelled as ours."""
     h, a, c = pkg["headline"], pkg["attribution"], pkg["concentration"]
     out = []
+    review = pkg.get("asset_under_review")
+    comparison = pkg.get("asset_comparison") or []
+    if review and comparison:
+        close = [c for c in comparison if c["verdict"] == "closest"]
+        related = [c for c in comparison if c["verdict"] == "related"]
+        distant = [c for c in comparison if c["verdict"] in ("weak", "distant")]
+        head = f"{review['asset']} is {MODALITY_WORD.get(review.get('modality'), review.get('modality') or 'of unknown modality')}"
+        head += (f" against {', '.join(review['target_genes'][:4])}" if review.get("target_genes") else "")
+        if close:
+            head += (f". {len(close)} of the {len(comparison)} molecules that failed here share its target and its "
+                     f"modality ({', '.join(c['asset'] for c in close)}) — that history is the one to be able to "
+                     f"answer for.")
+        elif related:
+            head += (f". None of the {len(comparison)} molecules that failed here share both its target and its "
+                     f"modality; {len(related)} are related on one of the two.")
+        elif [c for c in comparison if c["verdict"] == "weak"]:
+            # Sharing a modality and nothing else is worth saying plainly: four antibodies
+            # failing against a different target is not evidence about this antibody's target.
+            head += (f". None of the {len(comparison)} molecules that failed here share its target. They share only "
+                     f"its modality, against a different target, so this cohort says little about the hypothesis "
+                     f"under review and a good deal about how hard the modality is in this disease.")
+        else:
+            head += (f". None of the {len(comparison)} molecules that failed here share its target or its modality, "
+                     f"so this cohort is weak evidence about it either way.")
+        if distant and (close or related):
+            head += f" {len(distant)} of them test a different hypothesis altogether."
+        out.append(head)
+        out.append("That comparison is structural: modality, target and mechanism, read off the same index that resolved "
+                   "the trials. It says nothing about " + ", ".join(pkg.get("asset_not_compared") or []) + ", and those "
+                   "are usually what decides whether a historical failure transfers. They are the questions to take into "
+                   "the meeting, not ones this report answers.")
+    elif review and not comparison:
+        out.append(f"We could not resolve \"{review.get('query')}\" to a known molecule, so no comparison against the "
+                   f"failed assets is included. Send a ChEMBL id, an INN or a research code and we will redo it.")
+    sig = pkg["failure_signature"]
+    if sig["molecules"] and sig["molecules"] < sig["stops"]:
+        out.append(sig["sentence"] + " A rate counts registry records; those records are "
+                   f"{sig['molecules']} development programmes, and the question for an asset under review is "
+                   "whether it shares the molecule, the target epitope, the population or the endpoint of the ones "
+                   "that failed.")
+    elif sig["molecules"]:
+        out.append(sig["sentence"])
     ratio = (h["rate"] / h["comparator_rate"]) if h["comparator_rate"] else 0
     out.append(f"{h['biological_stops']} of {h['closed']} closed trials in this cohort were terminated for a "
                f"biological reason: {pct(h['rate'])} against {pct(h['comparator_rate'])} for {h['comparator_label']}"
@@ -269,6 +382,37 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                 f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
                 f"<th>Date</th><th>Registry record</th></tr></thead><tbody>{body}</tbody></table>")
 
+    review = pkg.get("asset_under_review")
+    comparison = pkg.get("asset_comparison") or []
+    if comparison and review:
+        rows = "".join(
+            f"<tr><td class='strong'>{e(c['asset'])}</td>"
+            f"<td><span class='verdict v-{c['verdict']}'>{e(VERDICT_LABEL[c['verdict']])}</span></td>"
+            f"<td class='muted'>{e(c['why'])}"
+            + (f"<br>shared targets: {e(', '.join(c['shared_target_genes']))}" if c["shared_target_genes"] else "")
+            + f"</td><td class='muted'>{e(', '.join(c['modalities']) or '—')}</td>"
+              f"<td class='num'>{c['trial_count']}</td></tr>"
+            for c in comparison)
+        comparison_block = (
+            f"<h2>{e(review['asset'])} against the molecules that failed</h2>"
+            f"<p class='sub'>{e(review['asset'])}"
+            + (f" — {e(', '.join(review['target_genes'][:6]))}" if review.get("target_genes") else "")
+            + (f", {e(review['modality'])}" if review.get("modality") else "")
+            + (f", ChEMBL {e(review['chembl_id'])}" if review.get("chembl_id") else "") + ".</p>"
+            f"<table><thead><tr><th>Molecule that failed</th><th>Relation</th><th>On what</th>"
+            f"<th>Modality</th><th class='num'>Trials</th></tr></thead><tbody>{rows}</tbody></table>"
+            f"<div class='box'><b>What this comparison does not cover.</b> It is structural — modality, target and "
+            f"mechanism, read off the same index that resolved the trials. It says nothing about "
+            f"{e(', '.join(pkg.get('asset_not_compared') or []))}, and those are usually what decides whether a "
+            f"historical failure transfers. Treat the rows above as the shortlist of precedents to argue about, not as "
+            f"a verdict.</div>")
+    elif review:
+        comparison_block = (f"<h2>Asset under review</h2><p class='sub'>We could not resolve "
+                            f"&ldquo;{e(review.get('query'))}&rdquo; to a known molecule, so no comparison is included. "
+                            f"A ChEMBL id, an INN or a research code would let us build it.</p>")
+    else:
+        comparison_block = ""
+
     cif_rows = "".join(
         f"<tr><td>{m} months</td><td class='num'><b>{pct(cif[m]['cif'])}</b></td>"
         f"<td class='num muted'>{pct(cif[m]['ci95'][0])}–{pct(cif[m]['ci95'][1])}</td>"
@@ -306,15 +450,21 @@ a {{ color:var(--acc); }}
 .box {{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-top:10px; }}
 .box.ours {{ border-left:3px solid var(--acc); }}
 .box li {{ margin-bottom:6px; }}
+.verdict {{ font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.04em;
+  padding:2px 7px; border-radius:999px; white-space:nowrap; color:#fff; }}
+.v-closest {{ background:#9a3412; }} .v-related {{ background:#b45309; }}
+.v-weak {{ background:#6b7280; }} .v-distant {{ background:#166534; }} .v-unknown {{ background:#9ca3af; }}
 .foot {{ color:var(--ink2); font-size:11.5px; margin-top:30px; border-top:1px solid var(--line); padding-top:12px; }}
 </style></head><body><div class="sheet">
 
 <div class="kicker">Evidence package · {e(pkg['area'])} Phase {e('/'.join(pkg['window']['phases']))} ·
  starts {pkg['window']['start_from']}–{pkg['window']['start_to']}</div>
-<h1>{e(pkg['cohort'])}</h1>
-<p class="sub">Every trial in the cohort, every number's inputs, and which stops were this trial's own verdict.</p>
+<h1>{e(pkg['cohort'])}: {e(pkg['failure_signature']['headline'])}</h1>
+<p class="sub">{e(pkg['failure_signature']['sentence'])}</p>
 
-<div class="stats">
+<div class="stats" style="grid-template-columns:repeat(5,1fr)">
+ <div class="stat"><b>{pkg['failure_signature']['molecules']}</b><span>distinct molecules behind
+  {h['biological_stops']} stopped trials</span></div>
  <div class="stat"><b>{pct(h['rate'])}</b><span>{h['biological_stops']} of {h['closed']} closed trials
   (95% CI {pct(h['ci95'][0])}–{pct(h['ci95'][1])})</span></div>
  <div class="stat"><b>{pct(h['comparator_rate'])}</b><span>{e(h['comparator_label'])}</span></div>
@@ -338,6 +488,8 @@ non-biological termination as competing events and ongoing trials censored at th
 rate above, this does not move with how mature the cohort is.</p>
 <table><thead><tr><th>Since trial start</th><th class="num">This cohort</th><th class="num">95% CI</th>
 <th class="num">Comparator</th><th class="num">Still at risk</th></tr></thead><tbody>{cif_rows}</tbody></table>
+
+{comparison_block}
 
 {trial_block("biological_stop", "The stops, and what caused each one",
              "Attribution is shown under each registry reason. " + a["why_it_matters"])}
@@ -367,10 +519,16 @@ def main() -> int:
     ap.add_argument("--modality")
     ap.add_argument("--phases", default="2,3")
     ap.add_argument("--start", default="2015:2024")
+    ap.add_argument("--asset", help="the asset under review; compared against every molecule that failed")
     ap.add_argument("--out", help="output stem (default product/evidence_packages/<area>-<cohort>)")
     args = ap.parse_args()
 
     pkg = build(args)
+    if args.asset:
+        resolved = resolve_asset(args.asset)
+        pkg["asset_under_review"] = resolved or {"query": args.asset, "resolved": False}
+        pkg["asset_comparison"] = (compare_asset(resolved, pkg["failure_signature"]["assets"]) if resolved else [])
+        pkg["asset_not_compared"] = NOT_COMPARED
     notes = interpretation(pkg)
     pkg["interpretation"] = notes
 

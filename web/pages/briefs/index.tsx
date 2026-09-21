@@ -74,15 +74,24 @@ export default function BriefsIndexPage() {
               Benjamini–Yekutieli false-discovery rate valid under the heavy overlap between segments. The rest are published too,
               and are worth reading as leads; they are not findings.
             </p>
-            <div className="featured">
+            <div className="featured grid">
               {featured.map((b) => (
-                <Link key={b.slug} href={`/briefs/${b.slug}`} className="featureCard">
-                  <div className="featureArea">{b.area}</div>
-                  <div className="featureName">{b.segment}</div>
-                  <div className="featureRate">{pct(b.rate)}</div>
-                  <div className="featureMeta">
-                    {b.biological_stops} of {n(b.closed)} closed trials stopped early, from {b.stop_programmes} programmes, against{" "}
-                    {pct(b.baseline_resolved_rate ?? b.baseline_rate)} across comparable {b.area.toLowerCase()} trials
+                <Link key={b.slug} href={`/briefs/${b.slug}`} className="tile tileHero">
+                  <div className="tileTop">
+                    <span className="tileArea">{b.area}</span>
+                    <span className="badge">clears correction</span>
+                  </div>
+                  <div className="tileName">{b.segment}</div>
+                  <div className="tileLead">
+                    <b>{(b as any).failure_signature ? (b as any).failure_signature.molecules : "—"}</b>
+                    <span>molecules</span>
+                    {(b as any).failure_signature?.shared_modality ? (
+                      <em>· all {(b as any).failure_signature.shared_modality.toLowerCase()}s</em>
+                    ) : null}
+                  </div>
+                  <div className="tileMeta">
+                    {(b as any).failure_signature ? (b as any).failure_signature.sentence : ""}{" "}
+                    {pct(b.rate)} of closed trials against {pct(b.baseline_resolved_rate ?? b.baseline_rate)}
                     {typeof (b as any).q_value_by === "number" ? ` · q=${(b as any).q_value_by.toPrecision(2)}` : ""}
                   </div>
                 </Link>
@@ -92,7 +101,10 @@ export default function BriefsIndexPage() {
 
           <section className="section">
             <div className="listHead">
-              <h2>All briefs</h2>
+              <h2>
+                All {briefsIndex.brief_count} briefs
+                {area === "All" ? "" : ` · ${shown.length} in ${area}`}
+              </h2>
               <div className="filters">
                 {["All", ...areas].map((a) => (
                   <button
@@ -108,61 +120,63 @@ export default function BriefsIndexPage() {
               </div>
             </div>
 
-            <div className="tableWrap">
-              <table className="briefTable">
-                <thead>
-                  <tr>
-                    <th>Mechanism class</th>
-                    <th>Area</th>
-                    <th className="num">Rate</th>
-                    <th className="num">Stops / closed</th>
-                    <th className="num">95% CI</th>
-                    <th className="num">Like-for-like baseline</th>
-                    <th className="num">Programmes</th>
-                    <th className="num">q</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {shown.map((b) => (
-                    <tr key={b.slug}>
-                      <td>
-                        <Link className="link" href={`/briefs/${b.slug}`}>
-                          {b.segment}
-                        </Link>
-                      </td>
-                      <td className="muted">{b.area}</td>
-                      <td className="num strong">{pct(b.rate)}</td>
-                      <td className="num muted">
-                        {b.biological_stops} / {n(b.closed)}
-                      </td>
-                      <td className="num muted">
-                        {pct(b.ci95[0])}–{pct(b.ci95[1])}
-                      </td>
-                      <td className="num muted">{pct(b.baseline_resolved_rate ?? b.baseline_rate)}</td>
-                      <td className="num muted">{b.stop_programmes ?? "—"}</td>
-                      <td className="num muted">
-                        {typeof (b as any).q_value_by === "number" ? (
-                          (b as any).survives_fdr_10pct ? (
-                            <b className="pass">{(b as any).q_value_by.toPrecision(2)}</b>
-                          ) : (
-                            (b as any).q_value_by.toPrecision(2)
-                          )
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="grid">
+              {shown.map((b) => {
+                const sig = (b as any).failure_signature;
+                const q = (b as any).q_value_by;
+                return (
+                  <Link key={b.slug} href={`/briefs/${b.slug}`} className="tile">
+                    <div className="tileTop">
+                      <span className="tileArea">{b.area}</span>
+                      {(b as any).survives_fdr_10pct ? <span className="badge">clears correction</span> : null}
+                      {(b as any).open_access ? <span className="badge open">open, no form</span> : null}
+                    </div>
+                    <div className="tileName">{b.segment}</div>
+                    <div className="tileLead">
+                      <b>{sig ? sig.molecules : "—"}</b>
+                      <span>{sig && sig.molecules === 1 ? "molecule" : "molecules"}</span>
+                      {sig && sig.shared_modality ? (
+                        <em>· all {sig.shared_modality.toLowerCase()}s</em>
+                      ) : null}
+                    </div>
+                    <div className="tileMeta">
+                      {b.biological_stops} of {n(b.closed)} closed trials stopped early — {pct(b.rate)} against{" "}
+                      {pct(b.baseline_resolved_rate ?? b.baseline_rate)}
+                    </div>
+                    <div className="tileFoot">
+                      <span>{b.stop_programmes ?? "—"} programmes</span>
+                      <span>95% CI {pct(b.ci95[0])}–{pct(b.ci95[1])}</span>
+                      <span>{typeof q === "number" ? `q=${q.toPrecision(2)}` : "q —"}</span>
+                    </div>
+                    {b.has_pdf ? (
+                      <span
+                        className="tilePdf"
+                        role="link"
+                        tabIndex={0}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          window.open(`/briefs/${b.file_stem}.pdf`, "_blank", "noopener");
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            window.open(`/briefs/${b.file_stem}.pdf`, "_blank", "noopener");
+                          }
+                        }}
+                      >
+                        PDF ↗
+                      </span>
+                    ) : null}
+                  </Link>
+                );
+              })}
             </div>
             <p className="fine">
-              A rate is the share of <b>closed</b> trials (completed or terminated) that were terminated for an efficacy, safety or
-              benefit–risk reason recorded in the registry, with a 95% Wilson interval. It is not a failure rate: trials that
-              completed and missed their endpoints are not counted. The baseline shown is the like-for-like one — trials whose drug
-              resolves to a target, since a mechanism class can only contain those. Where the interval is wide, the segment is small
-              — read the counts, not just the rate. <b>Programmes</b> is how many distinct sponsor–asset development programmes the
-              stops came from: ten registry records can be one decision.
+              The big number on each tile is <b>how many distinct drugs</b> are behind the stopped trials — the number to read
+              first. A sponsor who abandons a molecule closes every trial of it at once, so seven stopped trials can be four
+              molecules, or one. The rate counts registry records and cannot tell you which.
             </p>
             <p className="fine">
               <b>q</b> is the false-discovery rate at which a segment would still be called unusual, computed over every segment
@@ -171,7 +185,8 @@ export default function BriefsIndexPage() {
               evidence of anything unusual.
             </p>
             <p className="fine">
-              These are screens, not tests. Every segment with enough data is published here rather than only the striking ones, but
+              Every brief is free to read and free to download — the gate is on the evidence package, which is the thing being
+              sold. These are screens, not tests. Every segment with enough data is published here rather than only the striking ones, but
               picking the top of a ranked list is itself a selection effect and no interval on this page corrects for it. A zero is
               &ldquo;no qualifying termination observed in this cohort&rdquo; — not evidence that a mechanism is safe. Each brief
               gives the trials behind its number so the screen can be checked rather than believed.
@@ -237,51 +252,6 @@ export default function BriefsIndexPage() {
           font-weight: 900;
           letter-spacing: -0.015em;
         }
-        .featured {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 14px;
-          margin-top: 14px;
-        }
-        .featureCard {
-          display: block;
-          text-decoration: none;
-          color: inherit;
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          box-shadow: var(--shadow-soft);
-          padding: 18px 20px;
-        }
-        .featureCard:hover {
-          border-color: rgba(79, 70, 229, 0.45);
-        }
-        .featureArea {
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--text-muted);
-        }
-        .featureName {
-          margin-top: 6px;
-          font-size: 15px;
-          font-weight: 850;
-        }
-        .featureRate {
-          margin-top: 6px;
-          font-size: 34px;
-          font-weight: 900;
-          letter-spacing: -0.025em;
-          font-variant-numeric: tabular-nums;
-          line-height: 1.05;
-        }
-        .featureMeta {
-          margin-top: 4px;
-          font-size: 13px;
-          line-height: 1.5;
-          color: var(--text-muted);
-        }
         .listHead {
           display: flex;
           align-items: baseline;
@@ -310,37 +280,122 @@ export default function BriefsIndexPage() {
           border-color: var(--accent);
           color: #fff;
         }
-        .tableWrap {
+        .featured {
           margin-top: 14px;
+        }
+        .tileHero {
+          padding: 18px 20px 16px;
+        }
+        .tileHero .tileLead b {
+          font-size: 36px;
+        }
+        .tileHero .tileName {
+          font-size: 16.5px;
+        }
+        .grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+          gap: 12px;
+          margin-top: 14px;
+        }
+        .tile {
+          display: block;
+          text-decoration: none;
+          color: inherit;
           background: var(--surface);
           border: 1px solid var(--border);
-          border-radius: 16px;
-          box-shadow: var(--shadow-soft);
-          overflow-x: auto;
+          border-radius: 14px;
+          padding: 14px 16px 12px;
+          transition: border-color 0.12s ease, transform 0.12s ease;
         }
-        .briefTable {
-          width: 100%;
-          border-collapse: collapse;
-          font-size: 14px;
+        .tile:hover {
+          border-color: rgba(79, 70, 229, 0.45);
+          transform: translateY(-1px);
         }
-        .briefTable th {
-          text-align: left;
-          font-size: 12px;
+        .tileTop {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          flex-wrap: wrap;
+          min-height: 18px;
+        }
+        .tileArea {
+          font-size: 10.5px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .badge {
+          font-size: 10px;
           font-weight: 800;
           letter-spacing: 0.04em;
           text-transform: uppercase;
+          color: #fff;
+          background: var(--accent);
+          border-radius: 999px;
+          padding: 2px 7px;
+        }
+        .badge.open {
+          background: #0f766e;
+        }
+        .tileName {
+          margin-top: 7px;
+          font-size: 15px;
+          font-weight: 850;
+          line-height: 1.25;
+        }
+        .tileLead {
+          margin-top: 8px;
+          display: flex;
+          align-items: baseline;
+          gap: 5px;
+          flex-wrap: wrap;
+        }
+        .tileLead b {
+          font-size: 27px;
+          font-weight: 900;
+          letter-spacing: -0.025em;
+          font-variant-numeric: tabular-nums;
+          line-height: 1;
+        }
+        .tileLead span {
+          font-size: 13px;
+          font-weight: 700;
           color: var(--text-muted);
-          padding: 12px 16px;
-          border-bottom: 1px solid var(--border);
-          white-space: nowrap;
         }
-        .briefTable td {
-          padding: 11px 16px;
-          border-bottom: 1px solid var(--surface-2);
-          white-space: nowrap;
+        .tileLead em {
+          font-style: normal;
+          font-size: 12.5px;
+          color: var(--text-muted);
         }
-        .briefTable tr:last-child td {
-          border-bottom: 0;
+        .tileMeta {
+          margin-top: 6px;
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: var(--text-muted);
+        }
+        .tilePdf {
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 11.5px;
+          font-weight: 800;
+          color: var(--accent);
+          cursor: pointer;
+        }
+        .tilePdf:hover {
+          text-decoration: underline;
+        }
+        .tileFoot {
+          margin-top: 10px;
+          padding-top: 8px;
+          border-top: 1px solid var(--surface-2);
+          display: flex;
+          justify-content: space-between;
+          gap: 8px;
+          font-size: 11.5px;
+          color: var(--text-muted);
+          font-variant-numeric: tabular-nums;
         }
         .num {
           text-align: right;

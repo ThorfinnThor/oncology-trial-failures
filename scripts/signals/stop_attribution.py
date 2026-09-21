@@ -174,3 +174,174 @@ def summarise(rows: list[dict]) -> dict:
         "cascade_textual": sum(1 for r in rows if r["attribution"] == CASCADE and r["basis"] == "textual"),
         "cascade_structural": sum(1 for r in rows if r["attribution"] == CASCADE and r["basis"] == "structural"),
     }
+
+
+# ---------------------------------------------------------------------------
+# What the stops actually are, once you stop counting registry rows
+# ---------------------------------------------------------------------------
+#
+# "Tau: 70% of closed trials stopped early" invites one question from anyone competent, and
+# the answer ends the conversation: seven records are not seven experiments. They are four
+# molecules. AbbVie did not independently discover three times that tilavonemab does not work
+# — it discovered that once and closed three studies.
+#
+# The molecule count is the number that survives that question, so it should be the number we
+# lead with. It also carries more information than the rate: four anti-tau antibodies from
+# four sponsors failing across two indications says something specific about a therapeutic
+# hypothesis. Four trials of one molecule does not.
+
+# Modality names as they read in a sentence. Unknown modalities fall back to the raw label,
+# which is ugly but never wrong.
+MODALITY_PLURAL = {
+    "Antibody": "monoclonal antibodies",
+    "Small molecule": "small molecules",
+    "Protein": "engineered proteins",
+    "Peptide": "peptides",
+    "Oligonucleotide": "oligonucleotides",
+    "Cell therapy": "cell therapies",
+    "Gene therapy": "gene therapies",
+    "Vaccine": "vaccines",
+    "Enzyme": "enzymes",
+}
+MODALITY_SINGULAR = {
+    "Antibody": "a monoclonal antibody",
+    "Small molecule": "a small molecule",
+    "Protein": "an engineered protein",
+    "Peptide": "a peptide",
+    "Oligonucleotide": "an oligonucleotide",
+    "Cell therapy": "a cell therapy",
+    "Gene therapy": "a gene therapy",
+    "Vaccine": "a vaccine",
+    "Enzyme": "an enzyme",
+}
+
+
+def _title(name: str) -> str:
+    """Registry drug names arrive shouting. Bintrafusp alfa, not BINTRAFUSP ALFA."""
+    if not name:
+        return name
+    return name.title() if name.isupper() else name
+
+
+def failed_assets(stops: list[dict], area: str | None = None, klass: str | None = None) -> list[dict]:
+    """One entry per distinct molecule behind the stops, not per registry record.
+
+    When a class is given, only the drugs that put a trial in that class count. Otherwise a
+    combination inflates the molecule count with its partners: the eleven TGF-beta + PD-(L)1
+    stops involve bintrafusp alfa and nisevokitug, plus whatever each was combined with, and
+    the partners are not what failed as TGF-beta agents.
+
+    A trial whose drug could not be resolved counts as its own molecule. That overstates how
+    many distinct molecules failed, which is the safe direction: it never makes the evidence
+    look more concentrated than it is.
+    """
+    from scripts.universe.mechanism_classes import classes_for  # local: avoids a cycle at import
+
+    groups: dict[str, dict] = {}
+    for r in stops:
+        picked = []
+        for i in r.get("interventions") or []:
+            if i.get("role") != "EXPERIMENTAL_ARM":
+                continue
+            for c in i.get("components") or []:
+                if not c.get("entity_id"):
+                    continue
+                if klass:
+                    genes = set(c.get("target_genes") or [])
+                    if klass not in classes_for(genes, area):
+                        continue
+                picked.append(c)
+        if not picked:
+            # Nothing resolved, or nothing in the class: the trial is its own molecule.
+            key = f"unresolved:{r.get('nct_id')}"
+            entry = groups.setdefault(key, {"asset": None, "modalities": set(), "sponsors": set(),
+                                            "trials": [], "resolved": False, "genes": set(), "mechanisms": set()})
+            entry["trials"].append(r.get("nct_id"))
+            entry["sponsors"].add(r.get("_sponsor_group") or r.get("lead_sponsor") or "unknown sponsor")
+            continue
+        for c in picked:
+            entry = groups.setdefault(c["entity_id"], {"asset": None, "modalities": set(), "sponsors": set(),
+                                                       "trials": [], "resolved": True, "genes": set(),
+                                                       "mechanisms": set()})
+            entry["genes"].update(c.get("target_genes") or [])
+            entry["mechanisms"].update(c.get("mechanisms") or [])
+            if not entry["asset"]:
+                entry["asset"] = _title(c.get("name") or c.get("label") or "")
+            if c.get("modality"):
+                entry["modalities"].add(c["modality"])
+            entry["sponsors"].add(r.get("_sponsor_group") or r.get("lead_sponsor") or "unknown sponsor")
+            if r.get("nct_id") not in entry["trials"]:
+                entry["trials"].append(r.get("nct_id"))
+
+    out = []
+    for entry in groups.values():
+        out.append({
+            "asset": entry["asset"] or "unidentified drug",
+            "resolved": entry["resolved"],
+            "modalities": sorted(entry["modalities"]),
+            "target_genes": sorted(entry["genes"]),
+            "mechanisms": sorted(entry["mechanisms"]),
+            "sponsors": sorted(entry["sponsors"]),
+            "trials": sorted(entry["trials"]),
+            "trial_count": len(entry["trials"]),
+        })
+    return sorted(out, key=lambda a: (-a["trial_count"], a["asset"]))
+
+
+def _join(items: list[str], limit: int = 4) -> str:
+    items = list(items)
+    if len(items) > limit:
+        return ", ".join(items[:limit]) + f" and {len(items) - limit} more"
+    if len(items) > 1:
+        return ", ".join(items[:-1]) + " and " + items[-1]
+    return items[0] if items else ""
+
+
+def signature(stops: list[dict], area: str | None = None, klass: str | None = None) -> dict:
+    """The one sentence to lead with, and the parts it is built from."""
+    assets = failed_assets(stops, area=area, klass=klass)
+    n_stops = len(stops)
+    n_assets = len(assets)
+    sponsors = sorted({s for a in assets for s in a["sponsors"]})
+    mods = sorted({m for a in assets for m in a["modalities"]})
+    unresolved = sum(1 for a in assets if not a["resolved"])
+    # Only claim a shared modality when every molecule we could identify shares it, and there
+    # is more than one of them — "all antibodies" about a single drug says nothing.
+    resolved_assets = [a for a in assets if a["resolved"]]
+    shared = (mods[0] if len(mods) == 1 and len(resolved_assets) > 1 and not unresolved else None)
+
+    names = _join([a["asset"] for a in assets if a["resolved"]])
+    if n_assets == 0:
+        sentence = "No stops in this cohort."
+    elif n_assets == 1:
+        a = assets[0]
+        mod = MODALITY_SINGULAR.get(a["modalities"][0], a["modalities"][0].lower()) if a["modalities"] else None
+        sentence = (f"{n_stops} stopped trials, all of one molecule"
+                    + (f", {a['asset']}" if a["resolved"] else "")
+                    + (f" ({mod})" if mod else "") + ".")
+    elif shared:
+        sentence = (f"{n_stops} stopped trials, but {n_assets} molecules — "
+                    f"all {MODALITY_PLURAL.get(shared, shared.lower() + 's')}: {names}.")
+    else:
+        # Modalities are only worth naming when they are shared. Listing a mix reads as noise
+        # and forces bad plurals out of labels like "ADC" and "Bispecific antibody".
+        sentence = (f"{n_stops} stopped trials across {n_assets} molecules"
+                    + (f": {names}." if names else "."))
+    if unresolved:
+        sentence += (f" {unresolved} of the stopped trials had no drug we could resolve and each counts as its own "
+                     f"molecule here, so the true number may be lower.")
+
+    return {
+        "stops": n_stops,
+        "molecules": n_assets,
+        "molecules_unresolved": unresolved,
+        "sponsors": len(sponsors),
+        "shared_modality": shared,
+        "modalities": mods,
+        "assets": assets,
+        "sentence": sentence,
+        "headline": (f"{n_assets} molecules stopped early"
+                     + (f", all {MODALITY_PLURAL.get(shared, shared.lower() + 's')}" if shared else "")
+                     if n_assets != 1 else
+                     f"one molecule stopped early across {n_stops} trials"),
+    }
