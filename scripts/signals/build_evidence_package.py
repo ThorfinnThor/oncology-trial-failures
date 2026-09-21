@@ -266,7 +266,12 @@ def build(args) -> dict:
                    + [trial_row(r, "still_open") for r in
                       sorted(open_trials, key=lambda r: (r.get("start_date") or ""), reverse=True)[:MAX_CONTEXT_ROWS]]),
         "counts": {"stopped": len(stops), "unreadable_terminations": len(unreadable),
-                   "still_open": len(open_trials), "total_in_cohort": len(cohort)},
+                   "still_open": len(open_trials), "total_in_cohort": len(cohort),
+                   # What the rate and the curve are computed over, and what the document lists
+                   # trial by trial, are not the same number: every stop is listed, the other two
+                   # groups are capped so one huge cohort cannot bloat the delivery.
+                   "listed_unreadable": len(unreadable[:MAX_CONTEXT_ROWS]),
+                   "listed_open": len(open_trials[:MAX_CONTEXT_ROWS])},
         "sources": ["ClinicalTrials.gov (NLM)", "ChEMBL (EMBL-EBI, CC BY-SA 3.0)", "NCI Thesaurus (NCI)",
                     "RxNorm/RxClass (NLM)", "SEC EDGAR"],
         "limits": [
@@ -504,12 +509,13 @@ rate above, this does not move with how mature the cohort is.</p>
 {trial_block("terminated_cause_not_readable", f"Terminated, cause not readable ({pkg['counts']['unreadable_terminations']} in the cohort)",
              "Listed rather than dropped. These sit in the denominator and never in the numerator; if every one were "
              "biological the rate would be " + pct(pkg["ambiguity"]["rate_if_all_unresolved_were_biological"])
-             + (f". Showing {MAX_CONTEXT_ROWS}; the full list is in the CSV."
+             + (f". Every one is counted in the rate above; the {MAX_CONTEXT_ROWS} most recent are listed here."
                 if pkg['counts']['unreadable_terminations'] > MAX_CONTEXT_ROWS else "."))}
 
 {trial_block("still_open", f"Still open ({pkg['counts']['still_open']} in the cohort)",
              "Not counted either way. Their outcomes will move this cohort's rate in both directions."
-             + (f" Showing the {MAX_CONTEXT_ROWS} most recently started; the full list is in the CSV."
+             + (f" All {pkg['counts']['still_open']} are in the time-to-event curve; the {MAX_CONTEXT_ROWS} most "
+                f"recently started are listed here."
                 if pkg['counts']['still_open'] > MAX_CONTEXT_ROWS else ""))}
 
 <h2>Limits</h2>

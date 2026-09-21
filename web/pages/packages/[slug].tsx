@@ -78,8 +78,8 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
       <main className="page">
         <div className="wrap">
           <div className="crumb">
-            <Link className="link" href="/briefs">
-              Briefs
+            <Link className="link" href="/packages">
+              Packages
             </Link>{" "}
             · {pkg.area}
           </div>

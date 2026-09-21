@@ -20,6 +20,8 @@ export type PackageSummary = {
     still_open: number;
     total_in_cohort: number;
     closed: number;
+    listed_unreadable: number;
+    listed_open: number;
   };
   window: { phases: string[]; start_from: number; start_to: number };
   headline: { rate: number; comparator_rate: number; comparator_label: string };
@@ -79,7 +81,11 @@ export default function BriefVsPackage({
       <div className="bvpGrid">
         <div className={`bvpCard${emphasis === "brief" ? " bvpHere" : ""}`}>
           <div className="bvpTag">
-            The brief <span className="bvpPrice bvpFree">Free</span>
+            <span className="bvpNameWrap">
+              The brief
+              {emphasis === "brief" ? <span className="bvpHereTag">This page</span> : null}
+            </span>
+            <span className="bvpPrice bvpFree">Free</span>
           </div>
           <div className="bvpOne">The {c.stopped} trials that stopped, and what the sponsor said about each.</div>
           <ul>
@@ -88,45 +94,53 @@ export default function BriefVsPackage({
             <li>The molecules behind the stops, and whether they share a modality</li>
             <li>Two pages. PDF or web page, no form</li>
           </ul>
-          <div className="bvpFoot">
-            {emphasis === "brief" ? (
-              <span className="bvpYouAreHere">You are reading it</span>
-            ) : briefSlug ? (
+          {emphasis !== "brief" && briefSlug ? (
+            <div className="bvpFoot">
               <Link className="bvpGhost" href={`/briefs/${briefSlug}`}>
                 Read the brief first
               </Link>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </div>
 
         <div className={`bvpCard${emphasis === "package" && adds > 0 ? " bvpHere" : ""}`}>
           <div className="bvpTag">
-            The evidence package{" "}
+            <span className="bvpNameWrap">
+              The evidence package
+              {emphasis === "package" && adds > 0 ? <span className="bvpHereTag">This page</span> : null}
+            </span>
             <span className={`bvpPrice${adds > 0 ? "" : " bvpFree"}`}>{adds > 0 ? PACKAGE_PRICE : "Not sold here"}</span>
           </div>
 
           {adds > 0 ? (
             <>
               <div className="bvpOne">
-                All {n(c.total_in_cohort)} trials the rate was computed from — not only the {c.stopped} that stopped.
+                The {n(c.closed)} closed trials the {pct(pkg.headline.rate)} was computed from — not only the{" "}
+                {c.stopped} that stopped.
               </div>
               <ul>
                 <li>
-                  The {n(c.closed - c.stopped)} closed trials that did <i>not</i> stop early
-                  {c.still_open > 0 ? `, and the ${n(c.still_open)} still running that will move this rate in both directions` : ""}
+                  The rate and the curve are computed over the whole cohort: all {n(c.closed)} closed trials
+                  {c.still_open > 0 ? `, with the ${n(c.still_open)} still running carried as censored rather than ignored` : ""}
                 </li>
                 <li>The rules that decide which trial is in the cohort and which is out, written out in full</li>
                 <li>
-                  Which of the {c.stopped} stops were this trial&rsquo;s own result, and which were a decision taken
-                  elsewhere in the programme
+                  All {c.stopped} stops listed one by one, each attributed to this trial&rsquo;s own result or to a
+                  decision taken elsewhere in the programme
                 </li>
-                <li>The probability of a stop at 12 to 60 months, against the same curve for the comparator</li>
-                {c.unreadable_terminations > 0 ? (
-                  <li>
-                    The {c.unreadable_terminations} terminations with no cause we can read, listed rather than quietly
-                    dropped
-                  </li>
-                ) : null}
+                <li>
+                  The {c.unreadable_terminations} terminations with no readable cause
+                  {c.unreadable_terminations > c.listed_unreadable
+                    ? `, counted in the denominator and never in the rate, with the ${c.listed_unreadable} most recent listed`
+                    : ", listed rather than quietly dropped"}
+                  , and what the rate would be if every one of them were biological
+                </li>
+                <li>
+                  The probability of a stop at 12 to 60 months against the same curve for the comparator
+                  {c.still_open > c.listed_open
+                    ? `, plus the ${c.listed_open} most recently started of the ${n(c.still_open)} open trials, named`
+                    : ""}
+                </li>
               </ul>
             </>
           ) : (
@@ -151,19 +165,19 @@ export default function BriefVsPackage({
             </>
           )}
 
-          <div className="bvpFoot">
-            {adds === 0 ? (
+          {adds === 0 ? (
+            <div className="bvpFoot">
               <Link className="bvpGhost" href="/packages">
                 Cohorts where a package adds something
               </Link>
-            ) : emphasis === "package" ? (
-              <span className="bvpYouAreHere">You are reading it</span>
-            ) : (
+            </div>
+          ) : emphasis !== "package" ? (
+            <div className="bvpFoot">
               <Link className="bvpCta" href={`/packages/${pkg.slug}`}>
                 See the package
               </Link>
-            )}
-          </div>
+            </div>
+          ) : null}
         </div>
       </div>
 
@@ -271,12 +285,22 @@ export default function BriefVsPackage({
           padding-top: 14px;
           border-top: 1px solid var(--border);
         }
-        .bvpYouAreHere {
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 0.06em;
+        .bvpNameWrap {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          min-width: 0;
+        }
+        .bvpHereTag {
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
-          color: var(--text-muted);
+          padding: 3px 7px;
+          border-radius: 6px;
+          background: rgba(79, 70, 229, 0.12);
+          color: var(--accent);
+          white-space: nowrap;
         }
         :global(.bvpCta),
         :global(.bvpGhost) {
