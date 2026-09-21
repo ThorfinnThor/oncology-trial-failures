@@ -174,7 +174,7 @@ export default function TopSeoPage({
                     {row.example.reason} signal in {row.example.phase}, sponsored by {row.example.sponsor}.
                   </p>
                   <p>{row.example.why || "No short stop-reason text is available in the compact dataset."}</p>
-                  <Link className="link" href={row.example.href}>
+                  <Link className="topLink" href={row.example.href}>
                     Open trial detail →
                   </Link>
                 </article>
@@ -337,7 +337,7 @@ export default function TopSeoPage({
           font-size: 17px;
           line-height: 1.28;
         }
-        .topSeoExamples .link {
+        .topSeoExamples :global(.topLink) {
           display: inline-flex;
           margin-top: auto;
           padding-top: 14px;

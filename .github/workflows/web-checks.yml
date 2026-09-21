@@ -24,5 +24,7 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+      # styled-jsx silently drops a rule put on a <Link>; nothing else catches it.
+      - run: npm run check:styles
       - run: npm test
       - run: npm run build:cloudflare

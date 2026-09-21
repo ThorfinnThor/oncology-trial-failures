@@ -141,8 +141,8 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                   require review.
                 </p>
                 <div className="heroActions">
-                  <Link className="btn btn-primary" href={exploreHref}>Explore this sponsor</Link>
-                  <Link className="btn" href="/methods">How classification works</Link>
+                  <Link className="sevBtn btn-primary" href={exploreHref}>Explore this sponsor</Link>
+                  <Link className="sevBtn" href="/methods">How classification works</Link>
                 </div>
               </div>
 
@@ -234,7 +234,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                 <h2>Leading disease areas</h2>
                 <dl className="rankedList compact">
                     {stats.topAreas.map((item) => (
-                      <div key={item.label}><dt><Link className="rankedLink" href={areaHubPath(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>
+                      <div key={item.label}><dt><Link className="sevRankedlink" href={areaHubPath(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>
                   ))}
                 </dl>
               </div>
@@ -243,7 +243,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                 <h2>Phase distribution</h2>
                 <dl className="rankedList compact">
                     {stats.topPhases.map((item) => (
-                      <div key={item.label}><dt><Link className="rankedLink" href={phaseHubPathFromLabel(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>
+                      <div key={item.label}><dt><Link className="sevRankedlink" href={phaseHubPathFromLabel(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>
                   ))}
                 </dl>
               </div>
@@ -255,7 +255,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                   <p className="facet-title">Source-level evidence</p>
                   <h2>Crawlable stopped-trial records</h2>
                 </div>
-                <Link className="btn" href={exploreHref}>View all in Explore</Link>
+                <Link className="sevBtn" href={exploreHref}>View all in Explore</Link>
               </div>
               <p className="muted recordsIntro">
                 Showing up to {items.length.toLocaleString()} recent records from this sponsor slice. Open any NCT
@@ -270,7 +270,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
                       <span>{item.phase}</span>
                       <span>{item.condition}</span>
                     </div>
-                    <Link className="trialTitle" href={item.href}>{item.title}</Link>
+                    <Link className="sevTrialtitle" href={item.href}>{item.title}</Link>
                     <p><strong>{item.bucket}</strong> · {item.why}</p>
                   </article>
                 ))}
@@ -315,8 +315,8 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
         .rankedList { display: grid; gap: 0; margin: 0; }
         .rankedList div { display: flex; justify-content: space-between; gap: 18px; border-top: 1px solid var(--border); padding: 11px 0; }
         .rankedList dt { font-weight: 720; }
-        .rankedLink { color: var(--accent); }
-        .rankedLink:hover { text-decoration: underline; }
+        :global(.sevRankedlink) { color: var(--accent); }
+        :global(.sevRankedlink):hover { text-decoration: underline; }
         .rankedList dd { margin: 0; font-weight: 900; font-variant-numeric: tabular-nums; }
         .rankedList.compact div { padding: 9px 0; }
         .recordsSection { margin-top: 14px; padding: 24px; }
@@ -326,7 +326,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
         .trialList { display: grid; gap: 10px; margin-top: 18px; }
         .trialCard { border-top: 1px solid var(--border); padding: 16px 0 6px; }
         .trialMeta { display: flex; flex-wrap: wrap; gap: 7px 14px; color: var(--text-muted); font-size: 12px; font-weight: 800; text-transform: uppercase; }
-        .trialTitle { display: inline-block; margin-top: 7px; color: var(--accent); font-size: 17px; font-weight: 850; line-height: 1.35; }
+        :global(.sevTrialtitle) { display: inline-block; margin-top: 7px; color: var(--accent); font-size: 17px; font-weight: 850; line-height: 1.35; }
         .trialCard p { margin: 7px 0 0; line-height: 1.55; }
         .sourceNote { margin: 14px 2px 0; font-size: 12px; line-height: 1.5; }
         @media (max-width: 900px) {
@@ -338,7 +338,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
           .heroSection { gap: 20px; padding: 19px; }
           .heroCopy h1 { font-size: 32px; }
           .heroDescription { font-size: 16px; }
-          .heroActions .btn { width: 100%; justify-content: center; }
+          .heroActions :global(.sevBtn) { width: 100%; justify-content: center; }
           .scopePanel dl div { grid-template-columns: 1fr; gap: 3px; }
           .scopePanel dd { max-width: none; text-align: left; }
           .metricGrid, .evidenceGrid, .contextGrid, .interpretationBand { grid-template-columns: 1fr; }
@@ -346,7 +346,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
           .interpretationBand { gap: 12px; margin: 22px 0; }
           .recordsSection { padding: 19px; }
           .sectionHeader { align-items: stretch; flex-direction: column; }
-          .sectionHeader .btn { justify-content: center; }
+          .sectionHeader :global(.sevBtn) { justify-content: center; }
         }
       `}</style>
     </>

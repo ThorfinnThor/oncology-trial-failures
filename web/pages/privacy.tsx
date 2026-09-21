@@ -29,7 +29,7 @@ export default function PrivacyPage() {
       <main className="privacy-page">
         <div className="privacy-shell">
           <header className="privacy-header">
-            <Link href="/" className="back-link">← Home</Link>
+            <Link href="/" className="pvBackLink">← Home</Link>
             <h1>Privacy Policy</h1>
             <p>
               Clinical Trial Failures is an informational website. You can browse the site without
@@ -289,7 +289,7 @@ export default function PrivacyPage() {
         .privacy-header {
           margin-bottom: 18px;
         }
-        .back-link {
+        :global(.pvBackLink) {
           display: inline-block;
           margin-bottom: 10px;
           text-decoration: none;

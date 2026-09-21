@@ -76,7 +76,7 @@ export default function BriefsIndexPage() {
             </p>
             <div className="featured grid">
               {featured.map((b) => (
-                <Link key={b.slug} href={`/briefs/${b.slug}`} className="tile tileHero">
+                <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard briefCardHero">
                   <div className="tileTop">
                     <span className="tileArea">{b.area}</span>
                     <span className="badge">clears correction</span>
@@ -125,7 +125,7 @@ export default function BriefsIndexPage() {
                 const sig = (b as any).failure_signature;
                 const q = (b as any).q_value_by;
                 return (
-                  <Link key={b.slug} href={`/briefs/${b.slug}`} className="tile">
+                  <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard">
                     <div className="tileTop">
                       <span className="tileArea">{b.area}</span>
                       {(b as any).survives_fdr_10pct ? <span className="badge">clears correction</span> : null}
@@ -283,13 +283,13 @@ export default function BriefsIndexPage() {
         .featured {
           margin-top: 14px;
         }
-        .tileHero {
+        :global(.briefCardHero) {
           padding: 18px 20px 16px;
         }
-        .tileHero .tileLead b {
+        :global(.briefCardHero) .tileLead b {
           font-size: 36px;
         }
-        .tileHero .tileName {
+        :global(.briefCardHero) .tileName {
           font-size: 16.5px;
         }
         .grid {
@@ -298,7 +298,7 @@ export default function BriefsIndexPage() {
           gap: 12px;
           margin-top: 14px;
         }
-        .tile {
+        :global(.briefCard) {
           display: block;
           text-decoration: none;
           color: inherit;
@@ -308,7 +308,7 @@ export default function BriefsIndexPage() {
           padding: 14px 16px 12px;
           transition: border-color 0.12s ease, transform 0.12s ease;
         }
-        .tile:hover {
+        :global(.briefCard):hover {
           border-color: rgba(79, 70, 229, 0.45);
           transform: translateY(-1px);
         }
@@ -450,7 +450,7 @@ export default function BriefsIndexPage() {
           gap: 10px;
           flex-wrap: wrap;
         }
-        .btnPrimary,
+        :global(.btnPrimary),
         .btnGhost {
           border-radius: 12px;
           padding: 10px 16px;
@@ -459,7 +459,7 @@ export default function BriefsIndexPage() {
           text-decoration: none;
           white-space: nowrap;
         }
-        .btnPrimary {
+        :global(.btnPrimary) {
           background: var(--accent);
           color: #fff;
         }

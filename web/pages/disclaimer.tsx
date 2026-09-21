@@ -29,7 +29,7 @@ export default function DisclaimerPage() {
       <main className="legal-page">
         <div className="legal-shell">
           <header className="legal-header">
-            <Link href="/" className="back-link">← Home</Link>
+            <Link href="/" className="dcBackLink">← Home</Link>
             <p className="eyebrow">IMPORTANT INFORMATION</p>
             <h1>Disclaimer and limitations</h1>
             <p>
@@ -223,7 +223,7 @@ export default function DisclaimerPage() {
         .legal-header {
           margin-bottom: 20px;
         }
-        .back-link {
+        :global(.dcBackLink) {
           display: inline-block;
           margin-bottom: 14px;
           text-decoration: none;

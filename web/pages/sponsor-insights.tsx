@@ -603,13 +603,13 @@ export default function SponsorInsightsPage() {
                 aria-label="Sponsor analysis links"
                 style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 }}
               >
-                <Link className="btn btn-primary" href="/sponsors">
+                <Link className="siBtn btn-primary" href="/sponsors">
                   Browse sponsor hubs
                 </Link>
-                <Link className="btn" href="/explore">
+                <Link className="siBtn" href="/explore">
                   Explore trial records
                 </Link>
-                <Link className="btn" href="/methods">
+                <Link className="siBtn" href="/methods">
                   How classification works
                 </Link>
               </nav>
@@ -756,7 +756,7 @@ export default function SponsorInsightsPage() {
                 </div>
 
                 <div className="sponsorBtns">
-                  <Link className="btn" href={sponsorQueryHref(selectedSponsor, focusBio)}>
+                  <Link className="siBtn" href={sponsorQueryHref(selectedSponsor, focusBio)}>
                     Open in Explore
                   </Link>
                 </div>
@@ -798,7 +798,7 @@ export default function SponsorInsightsPage() {
                   <div className="sCard sAreas" aria-label="Top disease areas">
                     <div className="sCardHeader compact">
                       <div className="sEyebrow">Top disease areas</div>
-                      <Link className="sLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                      <Link className="siSlink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
                         View all
                       </Link>
                     </div>
@@ -815,7 +815,7 @@ export default function SponsorInsightsPage() {
                           {sponsorProfile.topAreas.map((x) => (
                             <tr key={x.area}>
                               <td>
-                                <Link className="sRowLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { area: [x.area] })}>
+                                <Link className="siSrowlink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { area: [x.area] })}>
                                   <span className="pill pillNeutral">{x.area}</span>
                                 </Link>
                               </td>
@@ -835,7 +835,7 @@ export default function SponsorInsightsPage() {
                   <div className="sCard sBuckets" aria-label="Top buckets">
                     <div className="sCardHeader compact">
                       <div className="sEyebrow">Top buckets</div>
-                      <Link className="sLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                      <Link className="siSlink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
                         View all
                       </Link>
                     </div>
@@ -845,7 +845,7 @@ export default function SponsorInsightsPage() {
                         {sponsorProfile.topBuckets.map((x) => (
                           <tr key={x.bucket}>
                             <td>
-                              <Link className="sRowLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { bucket: [x.bucket] })}>
+                              <Link className="siSrowlink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { bucket: [x.bucket] })}>
                                 <span className={bucketPillClass(x.bucket)}>{x.bucket}</span>
                               </Link>
                             </td>
@@ -864,7 +864,7 @@ export default function SponsorInsightsPage() {
                   <div className="sCard sPhases" aria-label="Top phases">
                     <div className="sCardHeader compact">
                       <div className="sEyebrow">Top phases</div>
-                      <Link className="sLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
+                      <Link className="siSlink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio)}>
                         View all
                       </Link>
                     </div>
@@ -874,7 +874,7 @@ export default function SponsorInsightsPage() {
                         {sponsorProfile.topPhases.map((x) => (
                           <tr key={x.phase}>
                             <td>
-                              <Link className="sRowLink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { phase: [x.phase] })}>
+                              <Link className="siSrowlink" href={sponsorQueryHref(sponsorProfile.sponsor, focusBio, { phase: [x.phase] })}>
                                 <span className={phasePillClass(x.phase)}>{phaseLabel(x.phase)}</span>
                               </Link>
                             </td>
@@ -1017,7 +1017,7 @@ export default function SponsorInsightsPage() {
             grid-template-columns: 1fr 1fr;
             gap: 10px;
           }
-          .btnRow .btn {
+          .btnRow :global(.siBtn) {
             width: 100%;
             justify-content: center;
           }
@@ -1162,41 +1162,41 @@ export default function SponsorInsightsPage() {
         }
 
         /* Match bucket pill colors for the Fast drill-down buttons. */
-        :global(.btn.btnBucketEfficacy) {
+        :global(:global(.siBtn):global(.btnBucketEfficacy)) {
           background: rgba(79, 70, 229, 0.10) !important;
           border-color: rgba(79, 70, 229, 0.25) !important;
         }
-        :global(.btn.btnBucketSafety) {
+        :global(:global(.siBtn):global(.btnBucketSafety)) {
           background: rgba(220, 38, 38, 0.08) !important;
           border-color: rgba(220, 38, 38, 0.25) !important;
         }
-        :global(.btn.btnBucketOperational) {
+        :global(:global(.siBtn):global(.btnBucketOperational)) {
           background: rgba(234, 179, 8, 0.12) !important;
           border-color: rgba(234, 179, 8, 0.25) !important;
         }
-        :global(.btn.btnBucketRegulatory) {
+        :global(:global(.siBtn).btnBucketRegulatory) {
           background: rgba(2, 132, 199, 0.10) !important;
           border-color: rgba(2, 132, 199, 0.25) !important;
         }
 
-        :global(.btn.btnBucketEfficacy:hover),
-        :global(.btn.btnBucketSafety:hover),
-        :global(.btn.btnBucketOperational:hover),
-        :global(.btn.btnBucketRegulatory:hover) {
+        :global(:global(.siBtn):global(.btnBucketEfficacy):hover),
+        :global(:global(.siBtn):global(.btnBucketSafety):hover),
+        :global(:global(.siBtn):global(.btnBucketOperational):hover),
+        :global(:global(.siBtn).btnBucketRegulatory:hover) {
           filter: brightness(0.98);
         }
 
-        :global(.btn.btnBucketEfficacy:active),
-        :global(.btn.btnBucketSafety:active),
-        :global(.btn.btnBucketOperational:active),
-        :global(.btn.btnBucketRegulatory:active) {
+        :global(:global(.siBtn):global(.btnBucketEfficacy):active),
+        :global(:global(.siBtn):global(.btnBucketSafety):active),
+        :global(:global(.siBtn):global(.btnBucketOperational):active),
+        :global(:global(.siBtn).btnBucketRegulatory:active) {
           filter: brightness(0.95);
         }
         
-        :global(.btn.btnBucketEfficacy:focus-visible),
-        :global(.btn.btnBucketSafety:focus-visible),
-        :global(.btn.btnBucketOperational:focus-visible),
-        :global(.btn.btnBucketRegulatory:focus-visible) {
+        :global(:global(.siBtn):global(.btnBucketEfficacy):focus-visible),
+        :global(:global(.siBtn):global(.btnBucketSafety):focus-visible),
+        :global(:global(.siBtn):global(.btnBucketOperational):focus-visible),
+        :global(:global(.siBtn).btnBucketRegulatory:focus-visible) {
           outline: none;
           box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.08);
         }
@@ -1671,7 +1671,7 @@ export default function SponsorInsightsPage() {
           font-variant-numeric: tabular-nums;
         }
 
-        .sLink {
+        :global(.siSlink) {
           font-size: 12px;
           font-weight: 900;
           white-space: nowrap;
@@ -1708,7 +1708,7 @@ export default function SponsorInsightsPage() {
           background: rgba(79, 70, 229, 0.04);
         }
 
-        .sRowLink {
+        :global(.siSrowlink) {
           display: inline-flex;
           align-items: center;
           gap: 8px;
@@ -1980,8 +1980,8 @@ export default function SponsorInsightsPage() {
             display: grid;
             grid-template-columns: 1fr 1fr;
           }
-          :global(.sponsorBtns .btn),
-          :global(.sponsorBtns .btn-primary) {
+          :global(.sponsorBtns :global(.siBtn)),
+          :global(.sponsorBtns .siBtn-primary) {
             width: 100%;
             justify-content: center;
           }

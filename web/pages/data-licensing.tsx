@@ -821,7 +821,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           margin-top: 20px;
         }
         .btnPrimary,
-        .btnGhost {
+        :global(.btnGhost) {
           border-radius: 12px;
           padding: 11px 18px;
           font-size: 14px;
@@ -834,7 +834,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           border: 1px solid rgba(255, 255, 255, 0.18);
           font-weight: 800;
         }
-        .btnGhost {
+        :global(.btnGhost) {
           background: rgba(255, 255, 255, 0.08);
           color: #fff;
           border: 1px solid rgba(255, 255, 255, 0.22);
@@ -1018,7 +1018,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           gap: 12px;
           margin-top: 14px;
         }
-        .briefTile {
+        :global(.briefTile) {
           display: block;
           text-decoration: none;
           color: inherit;
@@ -1027,7 +1027,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           border-radius: 14px;
           padding: 14px 16px;
         }
-        .briefTile:hover {
+        :global(.briefTile):hover {
           border-color: rgba(79, 70, 229, 0.45);
         }
         .briefArea {

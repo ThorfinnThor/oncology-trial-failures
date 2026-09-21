@@ -602,13 +602,13 @@ export default function OverviewPage() {
                 ClinicalTrials.gov-derived dataset.
               </p>
               <nav aria-label="Overview links" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 }}>
-                <Link className="btn btn-primary" href="/explore">
+                <Link className="ovBtn btn-primary" href="/explore">
                   Explore the database
                 </Link>
-                <Link className="btn" href="/failures">
+                <Link className="ovBtn" href="/failures">
                   Browse failure hubs
                 </Link>
-                <Link className="btn" href="/methods">
+                <Link className="ovBtn" href="/methods">
                   How classification works
                 </Link>
               </nav>
@@ -754,16 +754,16 @@ export default function OverviewPage() {
                 Open Explore with pre-applied filters.
               </div>
               <div className="btnRow" style={{ marginTop: 12 }}>
-                <Link className="btn btnBucketEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
+                <Link className="ovBtn btnBucketEfficacy" href={exploreHref({ bucket: ["EFFICACY/FUTILITY"] })}>
                   Efficacy/Futility
                 </Link>
-                <Link className="btn btnBucketSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
+                <Link className="ovBtn btnBucketSafety" href={exploreHref({ bucket: ["SAFETY"] })}>
                   Safety
                 </Link>
-                <Link className="btn btnBucketOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
+                <Link className="ovBtn btnBucketOperational" href={exploreHref({ bucket: ["OPERATIONAL"] })}>
                   Operational
                 </Link>
-                <Link className="btn btnBucketRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
+                <Link className="ovBtn btnBucketRegulatory" href={exploreHref({ bucket: ["REGULATORY"] })}>
                   Regulatory
                 </Link>
               </div>
@@ -804,7 +804,7 @@ export default function OverviewPage() {
                             <td>
                               <div className="cellTop">
                                 <span className={bucketPillClass(b.bucket)}>{b.bucket}</span>
-                                <Link className="link exploreInline" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
+                                <Link className="ovLink ovExploreinline" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
                                   Explore
                                 </Link>
                               </div>
@@ -812,7 +812,7 @@ export default function OverviewPage() {
                                 {b.bio.toLocaleString()} likely scientific failures
                               </div>
                               <div className="cellSub">
-                                <Link className="link" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
+                                <Link className="ovLink" href={exploreHref({ bucket: [b.bucket], bio: focusBio ? true : undefined })}>
                                   Explore →
                                 </Link>
                               </div>
@@ -871,7 +871,7 @@ export default function OverviewPage() {
 
                                 return (
                                   <td key={`${p}_${b}`} className="matrixCell">
-                                    <Link className="cellLink" href={href}>
+                                    <Link className="ovCelllink" href={href}>
                                       <div className="cellNums">
                                         <span className="big">{total.toLocaleString()}</span>
                                         {!focusBio && <span className="muted tiny">{bio.toLocaleString()} bio</span>}
@@ -914,7 +914,7 @@ export default function OverviewPage() {
                             const href = exploreHref({ phase: [p], bucket: [b], bio: focusBio ? true : undefined });
 
                             return (
-                              <Link key={`${p}_${b}`} href={href} className="bucketCard">
+                              <Link key={`${p}_${b}`} href={href} className="ovBucketcard">
                                 <div className="bucketCardTop">
                                   <span className={bucketPillClass(b)}>{b}</span>
                                 </div>
@@ -965,7 +965,7 @@ export default function OverviewPage() {
                             <td>
                               <div className="cellTop">
                                 <span className="pill pillNeutral">{a.label}</span>
-                                <Link className="link exploreInline" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
+                                <Link className="ovLink ovExploreinline" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
                                   Explore
                                 </Link>
                               </div>
@@ -973,7 +973,7 @@ export default function OverviewPage() {
                                 {a.bio.toLocaleString()} likely scientific failures
                               </div>
                               <div className="cellSub">
-                                <Link className="link" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
+                                <Link className="ovLink" href={exploreHref({ area: [a.key], bio: focusBio ? true : undefined })}>
                                   Explore →
                                 </Link>
                               </div>
@@ -1020,7 +1020,7 @@ export default function OverviewPage() {
                             <td>
                               <div className="cellTop">
                                 <span className="pill pillNeutral">{c.label}</span>
-                                <Link className="link exploreInline" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
+                                <Link className="ovLink ovExploreinline" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
                                   Explore
                                 </Link>
                               </div>
@@ -1028,7 +1028,7 @@ export default function OverviewPage() {
                                 {c.bio.toLocaleString()} likely scientific failures
                               </div>
                               <div className="cellSub">
-                                <Link className="link" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
+                                <Link className="ovLink" href={conditionQueryHref(c.label, { bio: focusBio ? true : undefined })}>
                                   Explore →
                                 </Link>
                               </div>
@@ -1172,7 +1172,7 @@ export default function OverviewPage() {
             grid-template-columns: 1fr 1fr;
             gap: 10px;
           }
-          .btnRow .btn {
+          .btnRow :global(.ovBtn) {
             width: 100%;
             justify-content: center;
           }
@@ -1324,41 +1324,41 @@ export default function OverviewPage() {
         }
 
         /* Match bucket pill colors for the Fast drill-down buttons. */
-        :global(.btn.btnBucketEfficacy) {
+        :global(:global(.ovBtn):global(.btnBucketEfficacy)) {
           background: rgba(79, 70, 229, 0.10) !important;
           border-color: rgba(79, 70, 229, 0.25) !important;
         }
-        :global(.btn.btnBucketSafety) {
+        :global(:global(.ovBtn):global(.btnBucketSafety)) {
           background: rgba(220, 38, 38, 0.08) !important;
           border-color: rgba(220, 38, 38, 0.25) !important;
         }
-        :global(.btn.btnBucketOperational) {
+        :global(:global(.ovBtn):global(.btnBucketOperational)) {
           background: rgba(234, 179, 8, 0.12) !important;
           border-color: rgba(234, 179, 8, 0.25) !important;
         }
-        :global(.btn.btnBucketRegulatory) {
+        :global(:global(.ovBtn):global(.btnBucketRegulatory)) {
           background: rgba(2, 132, 199, 0.10) !important;
           border-color: rgba(2, 132, 199, 0.25) !important;
         }
 
-        :global(.btn.btnBucketEfficacy:hover),
-        :global(.btn.btnBucketSafety:hover),
-        :global(.btn.btnBucketOperational:hover),
-        :global(.btn.btnBucketRegulatory:hover) {
+        :global(:global(.ovBtn):global(.btnBucketEfficacy):hover),
+        :global(:global(.ovBtn):global(.btnBucketSafety):hover),
+        :global(:global(.ovBtn):global(.btnBucketOperational):hover),
+        :global(:global(.ovBtn):global(.btnBucketRegulatory):hover) {
           filter: brightness(0.98);
         }
 
-        :global(.btn.btnBucketEfficacy:active),
-        :global(.btn.btnBucketSafety:active),
-        :global(.btn.btnBucketOperational:active),
-        :global(.btn.btnBucketRegulatory:active) {
+        :global(:global(.ovBtn):global(.btnBucketEfficacy):active),
+        :global(:global(.ovBtn):global(.btnBucketSafety):active),
+        :global(:global(.ovBtn):global(.btnBucketOperational):active),
+        :global(:global(.ovBtn):global(.btnBucketRegulatory):active) {
           filter: brightness(0.95);
         }
         
-        :global(.btn.btnBucketEfficacy:focus-visible),
-        :global(.btn.btnBucketSafety:focus-visible),
-        :global(.btn.btnBucketOperational:focus-visible),
-        :global(.btn.btnBucketRegulatory:focus-visible) {
+        :global(:global(.ovBtn):global(.btnBucketEfficacy):focus-visible),
+        :global(:global(.ovBtn):global(.btnBucketSafety):focus-visible),
+        :global(:global(.ovBtn):global(.btnBucketOperational):focus-visible),
+        :global(:global(.ovBtn):global(.btnBucketRegulatory):focus-visible) {
           outline: none;
           box-shadow: 0 0 0 4px rgba(15, 23, 42, 0.08);
         }
@@ -1529,7 +1529,7 @@ export default function OverviewPage() {
           font-size: 12px;
         }
 
-        .exploreInline {
+        :global(.ovExploreinline) {
           margin-left: auto;
           font-size: 12px;
           font-weight: 800;
@@ -1542,23 +1542,23 @@ export default function OverviewPage() {
           .cellSub {
             display: none;
           }
-          .exploreInline {
+          :global(.ovExploreinline) {
             opacity: 0;
             pointer-events: none;
             transition: opacity 120ms ease;
           }
-          .tblMini tbody tr:hover .exploreInline,
-          .tblMini tbody tr:focus-within .exploreInline {
+          .tblMini tbody tr:hover :global(.ovExploreinline),
+          .tblMini tbody tr:focus-within :global(.ovExploreinline) {
             opacity: 1;
             pointer-events: auto;
           }
         }
 
-        .link {
+        :global(.ovLink) {
           color: rgba(79, 70, 229, 0.92);
           font-weight: 750;
         }
-        .link:hover {
+        :global(.ovLink):hover {
           text-decoration: underline;
         }
 
@@ -1592,13 +1592,13 @@ export default function OverviewPage() {
           min-width: 150px;
         }
 
-        .cellLink {
+        :global(.ovCelllink) {
           display: block;
           border-radius: 12px;
           padding: 8px;
           background: rgba(15, 23, 42, 0.02);
         }
-        .cellLink:hover {
+        :global(.ovCelllink):hover {
           background: rgba(79, 70, 229, 0.06);
         }
         .cellNums {
@@ -1649,7 +1649,7 @@ export default function OverviewPage() {
           overscroll-behavior-x: contain;
           padding-bottom: 4px;
         }
-        .bucketCard {
+        :global(.ovBucketcard) {
           flex: 0 0 auto;
           scroll-snap-align: start;
           width: 210px;
@@ -1659,7 +1659,7 @@ export default function OverviewPage() {
           padding: 12px;
           box-shadow: var(--shadow-soft);
         }
-        .bucketCard:active {
+        :global(.ovBucketcard):active {
           transform: scale(0.99);
         }
         .bucketCardTop {
@@ -2087,7 +2087,7 @@ export default function OverviewPage() {
             grid-template-columns: repeat(4, auto);
           }
           /* Mobile: keep "Explore →" on its own line; hide the inline link. */
-          .exploreInline {
+          :global(.ovExploreinline) {
             display: none;
           }
 
@@ -2115,12 +2115,12 @@ export default function OverviewPage() {
             display: grid;
             grid-template-columns: 1fr 1fr;
           }
-          :global(.sponsorBtns .btn),
-          :global(.sponsorBtns .btn-primary) {
+          :global(.sponsorBtns :global(.ovBtn)),
+          :global(.sponsorBtns .ovBtn-primary) {
             width: 100%;
             justify-content: center;
           }
-          .bucketCard {
+          :global(.ovBucketcard) {
             width: 200px;
             padding: 11px;
           }
