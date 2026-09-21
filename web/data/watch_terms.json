@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "source_trials": 987,
+  "groups": [
+    {
+      "key": "assets",
+      "label": "Molecules",
+      "terms": [
+        {
+          "term": "gemcitabine",
+          "trials": 20
+        },
+        {
+          "term": "carboplatin",
+          "trials": 20
+        },
+        {
+          "term": "docetaxel anhydrous",
+          "trials": 17
+        },
+        {
+          "term": "pembrolizumab",
+          "trials": 16
+        },
+        {
+          "term": "cyclophosphamide anhydrous",
+          "trials": 15
+        },
+        {
+          "term": "atezolizumab",
+          "trials": 15
+        },
+        {
+          "term": "paclitaxel",
+          "trials": 14
+        },
+        {
+          "term": "cisplatin",
+          "trials": 13
+        },
+        {
+          "term": "bevacizumab",
+          "trials": 13
+        },
+        {
+          "term": "vorinostat",
+          "trials": 13
+        },
+        {
+          "term": "cetuximab",
+          "trials": 13
+        },
+        {
+          "term": "nivolumab",
+          "trials": 12
+        },
+        {
+          "term": "bintrafusp alfa",
+          "trials": 12
+        },
+        {
+          "term": "capecitabine",
+          "trials": 11
+        }
+      ]
+    },
+    {
+      "key": "targets",
+      "label": "Targets",
+      "terms": [
+        {
+          "term": "TUBB",
+          "trials": 48
+        },
+        {
+          "term": "CD274",
+          "trials": 44
+        },
+        {
+          "term": "PDCD1",
+          "trials": 43
+        },
+        {
+          "term": "TYMS",
+          "trials": 30
+        },
+        {
+          "term": "EGFR",
+          "trials": 27
+        },
+        {
+          "term": "KIT",
+          "trials": 23
+        },
+        {
+          "term": "KDR",
+          "trials": 22
+        },
+        {
+          "term": "PIK3CD",
+          "trials": 22
+        },
+        {
+          "term": "FLT3",
+          "trials": 21
+        },
+        {
+          "term": "NR3C1",
+          "trials": 18
+        },
+        {
+          "term": "VEGFA",
+          "trials": 17
+        },
+        {
+          "term": "ERBB2",
+          "trials": 17
+        },
+        {
+          "term": "HDAC1",
+          "trials": 16
+        },
+        {
+          "term": "SEM1",
+          "trials": 15
+        }
+      ]
+    },
+    {
+      "key": "mechanisms",
+      "label": "Mechanisms",
+      "terms": [
+        {
+          "term": "DNA inhibitor",
+          "trials": 76
+        },
+        {
+          "term": "Nucleic Acid Synthesis Inhibitors",
+          "trials": 34
+        },
+        {
+          "term": "RNA inhibitor",
+          "trials": 32
+        },
+        {
+          "term": "Programmed cell death protein 1 inhibitor",
+          "trials": 31
+        },
+        {
+          "term": "Thymidylate synthase inhibitor",
+          "trials": 30
+        },
+        {
+          "term": "Tubulin inhibitor",
+          "trials": 29
+        },
+        {
+          "term": "Programmed cell death 1 ligand 1 inhibitor",
+          "trials": 25
+        },
+        {
+          "term": "Stem cell growth factor receptor inhibitor",
+          "trials": 23
+        },
+        {
+          "term": "Epidermal growth factor receptor erbB1 inhibitor",
+          "trials": 21
+        },
+        {
+          "term": "Tyrosine-protein kinase receptor FLT3 inhibitor",
+          "trials": 21
+        },
+        {
+          "term": "Tubulin stabiliser",
+          "trials": 19
+        },
+        {
+          "term": "Alkylating Activity",
+          "trials": 18
+        },
+        {
+          "term": "Vascular endothelial growth factor A inhibitor",
+          "trials": 17
+        },
+        {
+          "term": "Glucocorticoid receptor agonist",
+          "trials": 17
+        }
+      ]
+    },
+    {
+      "key": "sponsors",
+      "label": "Sponsors",
+      "terms": [
+        {
+          "term": "National Cancer Institute (NCI)",
+          "trials": 39
+        },
+        {
+          "term": "M.D. Anderson Cancer Center",
+          "trials": 29
+        },
+        {
+          "term": "Novartis",
+          "trials": 27
+        },
+        {
+          "term": "Roche",
+          "trials": 23
+        },
+        {
+          "term": "Pfizer",
+          "trials": 19
+        },
+        {
+          "term": "Eli Lilly",
+          "trials": 19
+        },
+        {
+          "term": "GSK",
+          "trials": 18
+        },
+        {
+          "term": "Dana-Farber Cancer Institute",
+          "trials": 16
+        },
+        {
+          "term": "Gilead Sciences",
+          "trials": 16
+        },
+        {
+          "term": "Bristol Myers Squibb",
+          "trials": 14
+        },
+        {
+          "term": "Washington University School of Medicine",
+          "trials": 14
+        },
+        {
+          "term": "Sanofi",
+          "trials": 12
+        },
+        {
+          "term": "Merck KGaA",
+          "trials": 12
+        },
+        {
+          "term": "Takeda",
+          "trials": 9
+        }
+      ]
+    }
+  ]
+}

@@ -103,8 +103,14 @@ def main() -> int:
             diffs = {f: {"from": norm(previous[nct].get(f)), "to": norm(current[nct].get(f))}
                      for f in TRACKED if norm(previous[nct].get(f)) != norm(current[nct].get(f))}
             if diffs:
+                # The identity fields travel with the change, not just the diff. A watchlist on
+                # a molecule or a target has nothing to match against otherwise: knowing that
+                # NCT0123 changed its stop reason is useless if you cannot tell whose trial it is.
                 changed.append({"nct_id": nct, "brief_title": current[nct].get("brief_title"),
                                 "sponsor_group": current[nct].get("sponsor_group"),
+                                "focus_assets": current[nct].get("focus_assets"),
+                                "focus_target_genes": current[nct].get("focus_target_genes"),
+                                "focus_mechanisms": current[nct].get("focus_mechanisms"),
                                 "origin": origin(diffs), "changes": diffs})
         has_previous = True
     else:

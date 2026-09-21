@@ -200,13 +200,17 @@ export default function BriefsIndexPage() {
             <div>
               <div className="ctaTitle">Every mechanism, sponsor and indication — updated weekly</div>
               <p className="muted">
-                The briefs are generated from the licensed dataset: stopped trials linked to drugs, targets and sponsors, plus the
-                full trial universe that gives every rate its denominator.
+                A brief covers the trials that stopped. The evidence package for the same cohort adds every other trial the
+                rate was computed from, the rules that define it, and the time-to-event curve — delivered immediately, because
+                it is built with the weekly release.
               </p>
             </div>
             <div className="ctaActions">
-              <Link className="btnPrimary" href="/data-licensing">
-                Data &amp; licensing
+              <Link className="btnPrimary" href="/data-licensing#evidence-package">
+                Evidence packages
+              </Link>
+              <Link className="btnGhost" href="/watchlist">
+                Watch a molecule or sponsor
               </Link>
               <a className="btnGhost" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Discontinuation briefs")}`}>
                 Ask a question
@@ -454,7 +458,7 @@ export default function BriefsIndexPage() {
           flex-wrap: wrap;
         }
         :global(.btnPrimary),
-        .btnGhost {
+        :global(.btnGhost) {
           border-radius: 12px;
           padding: 10px 16px;
           font-size: 13.5px;
@@ -466,7 +470,7 @@ export default function BriefsIndexPage() {
           background: var(--accent);
           color: #fff;
         }
-        .btnGhost {
+        :global(.btnGhost) {
           background: var(--surface);
           color: var(--text);
           border: 1px solid var(--border);

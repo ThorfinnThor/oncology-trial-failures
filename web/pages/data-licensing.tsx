@@ -8,6 +8,7 @@ import { FormEvent, useState } from "react";
 import PrimaryNav from "@/components/PrimaryNav";
 import productSummary from "@/data/product_summary.json";
 import briefsIndex from "@/data/briefs_index.json";
+import catalogue from "@/data/evidence_catalogue.json";
 import { readJsonServerAsset } from "@/lib/server-data";
 import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
 
@@ -33,7 +34,7 @@ const PRICING = [
       "Unresolved and unreadable cases listed, not hidden",
       "Written interpretation, kept separate from the extracted facts",
     ],
-    cta: "Scope a package",
+    cta: "See the packages",
     href: "#evidence-package",
   },
   {
@@ -148,28 +149,11 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
   }
 
   const s: any = productSummary;
-  const [pkgStatus, setPkgStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
-  const [pkgMessage, setPkgMessage] = useState("");
 
-  async function submitPackage(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setPkgStatus("sending");
-    const form = new FormData(event.currentTarget);
-    try {
-      const response = await fetch("/api/package-request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(form.entries())),
-      });
-      const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.error || "Request failed");
-      setPkgMessage(data.message || "Thanks — we'll be in touch.");
-      setPkgStatus("done");
-    } catch (error: any) {
-      setPkgMessage(error?.message || "Request failed. Please email us instead.");
-      setPkgStatus("error");
-    }
-  }
+  // The largest cohorts lead: a package is worth most where the brief leaves most out.
+  const biggestPackages = [...(catalogue.packages as any[])]
+    .sort((a, b) => b.counts.total_in_cohort - a.counts.total_in_cohort)
+    .slice(0, 6);
 
   // The strongest briefs lead the teaser: the ones that clear a multiplicity correction.
   const featuredBriefs = (briefsIndex.briefs as any[]).filter((b) => b.survives_fdr_10pct).slice(0, 4);
@@ -414,66 +398,38 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </div>
           </section>
 
-          {/* ---------------- evidence package request ---------------- */}
           <section className="section" id="evidence-package">
-            <div className="pkgBox">
-              <div>
-                <h2>Ask for an evidence package</h2>
-                <p className="sectionSub">
-                  Name the mechanism, target or asset you are evaluating. You get the cohort with its rules written out, every
-                  trial in it with the registry stop reason, which stops were that trial&rsquo;s own verdict and which followed a
-                  decision taken elsewhere, the rate and time-to-event curve against a like-for-like comparator, and the cases we
-                  could not resolve — listed, not hidden. €100 for one cohort.
-                </p>
-                <ul className="list">
-                  <li>We reply with the cohort as we would define it before anything is built or paid</li>
-                  <li>If the data cannot answer your question, we say so and there is no package</li>
-                  <li>Automated analysis — no clinician has reviewed these records, and we do not price as though one has</li>
-                </ul>
-              </div>
-              {pkgStatus === "done" ? (
-                <div className="formDone">{pkgMessage}</div>
-              ) : (
-                <form className="form" onSubmit={submitPackage}>
-                  <div className="field">
-                    <label htmlFor="pkg-cohort">Mechanism, target or asset</label>
-                    <input id="pkg-cohort" className="input" name="cohort" type="text" required
-                           placeholder="e.g. anti-tau antibodies, or BACE1" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="pkg-asset">The asset you are evaluating <span className="opt">optional</span></label>
-                    <input id="pkg-asset" className="input" name="asset" type="text"
-                           placeholder="Name or code — we compare it against every molecule that failed" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="pkg-context">What you need to decide <span className="opt">optional</span></label>
-                    <textarea id="pkg-context" className="input" name="context" rows={3}
-                              placeholder="A licensing decision, a trial design, a diligence meeting next week…" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="pkg-email">Work email</label>
-                    <input id="pkg-email" className="input" name="email" type="email" required autoComplete="email" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="pkg-company">Company or institution</label>
-                    <input id="pkg-company" className="input" name="company" type="text" required
-                           autoComplete="organization" />
-                  </div>
-                  <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden="true"
-                         style={{ position: "absolute", left: "-9999px" }} />
-                  <label className="consent">
-                    <input name="marketing" type="checkbox" />
-                    <span>
-                      Optional: email me about the dataset too. Leave it unticked and we only reply about this request.
-                    </span>
-                  </label>
-                  <button className="submit" type="submit" disabled={pkgStatus === "sending"}>
-                    {pkgStatus === "sending" ? "Sending…" : "Ask for a package"}
-                  </button>
-                  {pkgStatus === "error" ? <div className="formError">{pkgMessage}</div> : null}
-                </form>
-              )}
+            <div className="sectionHead">
+              <h2>Evidence packages</h2>
+              <Link className="btnGhost" href="/briefs">
+                Browse the briefs
+              </Link>
             </div>
+            <p className="sectionSub">
+              One per mechanism class, {catalogue.package_count} of them, each covering the same cohort as its brief. The brief
+              shows the trials that stopped; the package adds the rest — every trial the rate was computed from, the rules that
+              decide membership, which stops were the trial&rsquo;s own verdict, and the time-to-event curve. Delivered the
+              moment you ask, because it is already built.
+            </p>
+            <div className="pkgGrid">
+              {biggestPackages.map((p: any) => (
+                <Link key={p.slug} href={`/packages/${p.slug}`} className="pkgTile">
+                  <div className="pkgArea">{p.area}</div>
+                  <div className="pkgName">{p.cohort}</div>
+                  <div className="pkgMeta">
+                    {n(p.counts.total_in_cohort)} trials · {p.counts.stopped} stopped · {n(p.counts.still_open)} still running
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <p className="fine">
+              Every brief links to its own package. Need a cohort that is not a mechanism class — one asset, one sponsor, one
+              indication?{" "}
+              <a className="link" href={mailto("Evidence package for a custom cohort")}>
+                Tell us what you are evaluating
+              </a>{" "}
+              and we will say whether the data can answer it before anything is built.
+            </p>
           </section>
 
           {/* ---------------- rate proof ---------------- */}
@@ -1058,6 +1014,43 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           letter-spacing: 0;
         }
         .briefMeta {
+          margin-top: 6px;
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: var(--text-muted);
+        }
+        .pkgGrid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+          gap: 12px;
+          margin-top: 14px;
+        }
+        :global(.pkgTile) {
+          display: block;
+          text-decoration: none;
+          color: inherit;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 14px;
+          padding: 14px 16px;
+        }
+        :global(.pkgTile):hover {
+          border-color: rgba(79, 70, 229, 0.45);
+        }
+        .pkgArea {
+          font-size: 10.5px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .pkgName {
+          margin-top: 6px;
+          font-size: 15px;
+          font-weight: 850;
+          line-height: 1.25;
+        }
+        .pkgMeta {
           margin-top: 6px;
           font-size: 12.5px;
           line-height: 1.5;

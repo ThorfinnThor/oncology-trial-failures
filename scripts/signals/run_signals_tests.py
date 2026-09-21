@@ -323,6 +323,67 @@ with _tempfile.TemporaryDirectory() as _tmp:
           _report["pipeline"]["pipeline_changed"], False)
     check("the written report names the registry event", "NCT1" in (_tmp / "report.md").read_text(), True)
 
+# ---------------------------------------------------------------------------
+# Watchlists. The failure mode here is silent in both directions: a term that never
+# matches looks like a quiet market, and a classifier update sent as news teaches the
+# subscriber to ignore the next mail. Both are checked.
+# ---------------------------------------------------------------------------
+from scripts.signals import send_watchlists as _wl  # noqa: E402
+from scripts.signals.build_watch_terms import distinct as _distinct  # noqa: E402
+
+check("punctuation is not part of a term", _wl.norm("PD-(L)1"), _wl.norm("pd l 1"))
+check("an empty term normalises to nothing", _wl.norm("  -- "), "")
+
+_events = [
+    {"kind": "changed", "nct_id": "NCT00005047", "brief_title": "Chemotherapy in advanced disease",
+     "sponsor_group": "SWOG Cancer Research Network", "focus_assets": ["cisplatin", "methotrexate"],
+     "focus_target_genes": ["DHFR"], "focus_mechanisms": ["Dihydrofolate reductase inhibitor"],
+     "changes": {"overall_status": {"from": "ACTIVE_NOT_RECRUITING", "to": "TERMINATED"}}},
+    {"kind": "added", "nct_id": "NCT99999999", "brief_title": "A KRAS G12C inhibitor",
+     "sponsor_group": "Amgen", "focus_assets": ["sotorasib"], "focus_target_genes": ["KRAS"],
+     "focus_mechanisms": ["KRAS inhibitor"], "changes": {}},
+]
+
+check("a target matches", len(_wl.match(_events, ["DHFR"])), 1)
+check("a molecule matches", len(_wl.match(_events, ["cisplatin"])), 1)
+check("a sponsor matches", len(_wl.match(_events, ["SWOG Cancer Research Network"])), 1)
+check("a term nobody in the list carries matches nothing", _wl.match(_events, ["nivolumab"]), [])
+check("one event is reported once however many terms hit it",
+      len(_wl.match(_events, ["cisplatin", "DHFR", "SWOG"])), 1)
+check("both events can match", len(_wl.match(_events, ["cisplatin", "KRAS"])), 2)
+check("a new status is matchable text", len(_wl.match(_events, ["TERMINATED"])), 1)
+
+# Only a sponsor's own edit is news about a trial.
+_report = {"added": [{"nct_id": "NCT1"}],
+           "changed": [{"nct_id": "NCT2", "origin": "registry_event"},
+                       {"nct_id": "NCT3", "origin": "reclassification"},
+                       {"nct_id": "NCT4", "origin": "remapping"},
+                       {"nct_id": "NCT5", "origin": "mixed"}]}
+_news = {e["nct_id"] for e in _wl.registry_events(_report)}
+check("a registry event is news", "NCT2" in _news, True)
+check("a trial entering the dataset is news", "NCT1" in _news, True)
+check("our classifier moving is not news", "NCT3" in _news, False)
+check("our mappings moving are not news", "NCT4" in _news, False)
+check("a change that is partly a registry event is news", "NCT5" in _news, True)
+
+_subject, _body = _wl.render({"_key": "abc123", "email": "a@b.co", "terms": ["DHFR"]},
+                             _wl.match(_events, ["DHFR"]), "2026-09-21")
+check("the subject counts the trials, not the terms", _subject.startswith("1 registry change "), True)
+check("every mail can be stopped from the mail itself", "/watchlist/stop?k=abc123" in _body, True)
+check("the stop link is the page, never the raw API", "/api/watch?stop=" in _body, False)
+check("a term is escaped, not injected", "<script>" not in _wl.render(
+    {"_key": "k", "email": "a@b.co", "terms": ["<script>x</script>"]},
+    _wl.match(_events, ["DHFR"]), "v")[1], True)
+
+# Suggested terms: nine tubulin genes on the same trials are one term, not nine.
+_tub = {f"TUBB{i}": set(f"NCT{j}" for j in range(40)) for i in range(1, 9)}
+_tub["TUBB"] = set(f"NCT{j}" for j in range(41))
+_tub["EGFR"] = {"NCT90", "NCT91"}
+_kept = _distinct(_tub)
+check("a paralogue family collapses to one chip", len(_kept & set(f"TUBB{i}" for i in range(1, 9))), 0)
+check("the largest member of the family is the one kept", "TUBB" in _kept, True)
+check("an unrelated target survives", "EGFR" in _kept, True)
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

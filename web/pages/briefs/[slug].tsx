@@ -51,6 +51,18 @@ export default function BriefPage({ brief }: Props) {
   const cif36 = cif.find((h) => h.months === 36);
   const baseCif36 = ((brief.baseline_cumulative_incidence || []) as typeof cif).find((h) => h.months === 36);
 
+  const watchTerms =
+    brief.area === "Oncology"
+      ? [
+          ...new Set(
+            ((brief as any).failure_signature?.assets || []).flatMap((a: any) => [
+              ...(a.resolved && a.asset ? [String(a.asset)] : []),
+              ...(a.target_genes || []),
+            ]),
+          ),
+        ].slice(0, 12) as string[]
+      : [];
+
   return (
     <>
       <Head>
@@ -462,6 +474,34 @@ export default function BriefPage({ brief }: Props) {
             </div>
           </section>
 
+          {watchTerms.length ? (
+            <section className="section" id="watch">
+              <div className="watchBox">
+                <div>
+                  <h2>Hear about the next one</h2>
+                  <p className="sectionSub">
+                    This brief is a snapshot. The registry keeps moving: a sponsor changes a status, posts a stop reason, or
+                    pushes a completion date. Put the molecules and targets behind these stops on a watchlist and you get one
+                    mail in the week any of them moves — and nothing in the weeks they do not.
+                  </p>
+                  <div className="watchTerms">
+                    {watchTerms.map((term) => (
+                      <span key={term} className="watchTerm">
+                        {term}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="pdfActions">
+                  <Link className="btnPrimary" href={`/watchlist?terms=${encodeURIComponent(watchTerms.join(","))}`}>
+                    Watch these
+                  </Link>
+                  <span className="watchFine">Free, no account, one click to stop.</span>
+                </div>
+              </div>
+            </section>
+          ) : null}
+
         </div>
       </main>
 
@@ -679,7 +719,7 @@ export default function BriefPage({ brief }: Props) {
           gap: 10px;
           align-self: center;
         }
-        .btnPrimary,
+        :global(.btnPrimary),
         :global(.btnGhost) {
           border-radius: 12px;
           padding: 11px 18px;
@@ -689,7 +729,7 @@ export default function BriefPage({ brief }: Props) {
           text-align: center;
           white-space: nowrap;
         }
-        .btnPrimary {
+        :global(.btnPrimary) {
           background: var(--accent);
           color: #fff;
         }
@@ -697,6 +737,41 @@ export default function BriefPage({ brief }: Props) {
           background: var(--surface);
           color: var(--text);
           border: 1px solid var(--border);
+        }
+        .watchBox {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(220px, 0.42fr);
+          gap: 24px;
+          align-items: center;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 16px;
+          padding: 22px 24px;
+        }
+        .watchTerms {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          margin-top: 14px;
+        }
+        .watchTerm {
+          font-size: 12px;
+          font-weight: 700;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          padding: 4px 10px;
+          color: var(--text-muted);
+          background: #fff;
+        }
+        .watchFine {
+          font-size: 12px;
+          color: var(--text-muted);
+          text-align: center;
+        }
+        @media (max-width: 860px) {
+          .watchBox {
+            grid-template-columns: minmax(0, 1fr);
+          }
         }
         .pdfBox {
           margin-top: 14px;
