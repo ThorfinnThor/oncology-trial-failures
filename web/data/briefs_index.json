@@ -307,8 +307,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02783573"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:11:00Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:15Z",
       "open_access": false
     },
     {
@@ -660,8 +660,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03391765"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:11:00Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:15Z",
       "open_access": false
     },
     {
@@ -1033,8 +1033,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02670083"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:11:00Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:15Z",
       "open_access": false
     },
     {
@@ -1369,8 +1369,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03367819"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:51Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:51Z",
       "open_access": false
     },
     {
@@ -1521,8 +1521,8 @@
           "Unknown": 19,
           "Antibody": 18,
           "Vaccine": 4,
-          "ADC": 3,
           "Bispecific antibody": 3,
+          "ADC": 3,
           "Gene therapy": 1,
           "Oncolytic virus": 1,
           "Cell therapy": 1
@@ -1812,8 +1812,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03451773"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:50Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:47Z",
       "open_access": true
     },
     {
@@ -2189,8 +2189,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04489940"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:49Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:47Z",
       "open_access": false
     },
     {
@@ -2547,8 +2547,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02951156"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:50Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:49Z",
       "open_access": false
     },
     {
@@ -2977,8 +2977,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02951156"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:50Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:48Z",
       "open_access": false
     },
     {
@@ -3344,8 +3344,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03287804"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:51Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:50Z",
       "open_access": false
     },
     {
@@ -3727,8 +3727,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02449681"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:52Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:52Z",
       "open_access": false
     },
     {
@@ -4078,8 +4078,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02628028"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:11:01Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:22Z",
       "open_access": false
     },
     {
@@ -4416,8 +4416,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04778397"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:49Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:46Z",
       "open_access": false
     },
     {
@@ -4814,8 +4814,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04251065"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:51Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:51Z",
       "open_access": false
     },
     {
@@ -5303,8 +5303,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04142060"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:56Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:02Z",
       "open_access": false
     },
     {
@@ -5656,8 +5656,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04139317"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:53Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:55Z",
       "open_access": false
     },
     {
@@ -6161,8 +6161,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04139317"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:53Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:54Z",
       "open_access": false
     },
     {
@@ -6533,8 +6533,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02277093"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:56Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:01Z",
       "open_access": false
     },
     {
@@ -6939,8 +6939,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02519439"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:11:00Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:15Z",
       "open_access": false
     },
     {
@@ -7275,8 +7275,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02575807"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:49Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:46Z",
       "open_access": false
     },
     {
@@ -7671,8 +7671,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03572478"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:55Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:59Z",
       "open_access": false
     },
     {
@@ -8057,8 +8057,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02820519"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:11:00Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:15Z",
       "open_access": false
     },
     {
@@ -8686,8 +8686,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04853043"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:52Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:53Z",
       "open_access": false
     },
     {
@@ -9230,8 +9230,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04209621"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:54Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:58Z",
       "open_access": false
     },
     {
@@ -9626,8 +9626,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02535364"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:50Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:49Z",
       "open_access": false
     },
     {
@@ -10007,8 +10007,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02395627"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:56Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:01Z",
       "open_access": false
     },
     {
@@ -10437,8 +10437,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03901469"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:55Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:59Z",
       "open_access": false
     },
     {
@@ -11098,8 +11098,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04438902"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:57Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:03Z",
       "open_access": false
     },
     {
@@ -11453,8 +11453,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04308785"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:49Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:45Z",
       "open_access": false
     },
     {
@@ -11808,8 +11808,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04308785"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:49Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:45Z",
       "open_access": false
     },
     {
@@ -12191,8 +12191,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03823378"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:11:01Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:22Z",
       "open_access": false
     },
     {
@@ -12547,8 +12547,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03552692"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:55Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:00Z",
       "open_access": false
     },
     {
@@ -13294,8 +13294,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT05617313"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:48Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:43Z",
       "open_access": false
     },
     {
@@ -13645,8 +13645,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03273153"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:54Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:57Z",
       "open_access": false
     },
     {
@@ -14155,8 +14155,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02867280"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:53Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:56Z",
       "open_access": false
     },
     {
@@ -14681,8 +14681,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03722108"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:54Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:57Z",
       "open_access": false
     },
     {
@@ -15098,8 +15098,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02907918"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:54Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:58Z",
       "open_access": false
     },
     {
@@ -15641,8 +15641,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT04937738"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:58Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:06Z",
       "open_access": false
     },
     {
@@ -16041,8 +16041,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03631199"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:58Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:06Z",
       "open_access": false
     },
     {
@@ -16741,8 +16741,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT06655818"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:57Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:04Z",
       "open_access": false
     },
     {
@@ -17286,8 +17286,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03722108"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:57Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:04Z",
       "open_access": false
     },
     {
@@ -17440,8 +17440,8 @@
           "Gene therapy": 7,
           "Cell therapy": 6,
           "Protein": 2,
-          "Vaccine": 1,
           "Vaccine component": 1,
+          "Vaccine": 1,
           "Oligonucleotide": 1
         },
         "top_assets": [
@@ -17663,8 +17663,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02670317"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:55Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:00Z",
       "open_access": false
     },
     {
@@ -18071,8 +18071,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:48Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:44Z",
       "open_access": false
     },
     {
@@ -18552,8 +18552,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03834220"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:53Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:56Z",
       "open_access": false
     },
     {
@@ -18929,8 +18929,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02495454"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:51Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:50Z",
       "open_access": false
     },
     {
@@ -19335,8 +19335,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03838848"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:48Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:44Z",
       "open_access": false
     },
     {
@@ -19797,8 +19797,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02595840"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:52Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:52Z",
       "open_access": false
     },
     {
@@ -20494,8 +20494,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT05001724"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:52Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:53Z",
       "open_access": false
     },
     {
@@ -20933,8 +20933,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02254551"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:56Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:02Z",
       "open_access": false
     },
     {
@@ -21303,8 +21303,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02585388"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:56Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:03Z",
       "open_access": false
     },
     {
@@ -21710,8 +21710,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT02982694"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:53Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:07:54Z",
       "open_access": false
     },
     {
@@ -22093,8 +22093,8 @@
           "registry_url": "https://clinicaltrials.gov/study/NCT03631199"
         }
       ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-21T08:10:57Z",
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-21T09:08:05Z",
       "open_access": false
     }
   ]

@@ -1,0 +1,77 @@
+<!doctype html><html><head><meta charset="utf-8"><title>HER2 — discontinuation rate</title><style>
+@page { size:A4; margin:14mm 13mm; }
+:root { --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }
+body { font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }
+/* On screen the brief keeps its A4 measure instead of stretching across the window. */
+@media screen {
+  body { background:#eceae5; padding:24px 16px; font-size:10.5pt; }
+  .sheet { max-width:210mm; margin:0 auto; background:#fff; padding:16mm 14mm; box-shadow:0 2px 24px rgba(0,0,0,.10); border-radius:2px; }
+}
+@media print { .sheet { max-width:none; margin:0; padding:0; box-shadow:none; } }
+.kicker { font-size:7.6pt; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:700; }
+h1 { font-size:18pt; line-height:1.15; margin:4px 0 6px; letter-spacing:-.01em; }
+.dek { color:var(--ink2); font-size:9.6pt; margin:0 0 10px; }
+.robust { color:var(--ink2); font-size:8.4pt; line-height:1.45; margin:8px 0 0; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:8px 0 12px; }
+.stat { border-top:2px solid var(--ink); padding-top:5px; } .stat b { display:block; font-size:17pt; font-variant-numeric:tabular-nums; }
+.stat span { color:var(--ink2); font-size:7.8pt; }
+h2 { font-size:10.5pt; margin:12px 0 6px; padding-bottom:3px; border-bottom:1px solid var(--rule); }
+.cols { display:grid; grid-template-columns:1.1fr 1fr; gap:16px; }
+.barrow { margin:7px 0; } .blabel { font-size:8.4pt; } .bnote { font-size:7.4pt; color:var(--muted); }
+.track { display:flex; align-items:center; gap:6px; height:14px; }
+.seg { height:14px; background:var(--bar); border-radius:0 3px 3px 0; }
+.val { font-size:8.4pt; font-variant-numeric:tabular-nums; }
+table { width:100%; border-collapse:collapse; font-size:7.6pt; }
+th { text-align:left; color:var(--muted); font-weight:600; border-bottom:1px solid var(--ink); padding:3px 4px; }
+td { border-bottom:1px solid var(--rule); padding:2.5px 4px; vertical-align:top; }
+.mono { font-family:"SFMono-Regular",Menlo,Consolas,monospace; font-size:7.4pt; white-space:nowrap; }
+.reason { font-size:7.2pt; line-height:1.28; width:40%; overflow-wrap:anywhere; } .muted { color:var(--muted); }
+table.stops td:nth-child(4) { width:16%; } table.stops td:nth-child(3) { width:13%; }
+table { page-break-inside:auto; } tr { page-break-inside:avoid; }
+.tk { font-size:7pt; border:1px solid var(--rule); border-radius:3px; padding:0 3px; color:var(--ink2); }
+.box { background:#f4f3ef; padding:8px 10px; border-radius:4px; font-size:7.8pt; color:var(--ink2); }
+.box b { color:var(--ink); }
+.cta { border:1.5px solid var(--ink); padding:8px 10px; border-radius:4px; margin-top:10px; font-size:8.4pt; }
+.foot { margin-top:8px; font-size:7.2pt; color:var(--muted); border-top:1px solid var(--rule); padding-top:5px; }
+</style></head><body>
+<div class="sheet">
+<div class="kicker">Clinical Trial Failures · Discontinuation rate · Oncology Phase 2,3 · starts 2015–2024</div>
+<h1>HER2: 5 molecules stopped early</h1>
+<p class="dek"><b>7 stopped trials across 5 molecules: Tarloxotinib, Trastuzumab, Trastuzumab Emtansine, Afatinib and 1 more.</b> 3 of the stops were the trial's own verdict and 2 followed a decision taken elsewhere; 2 cannot be established. Against 5.0% for all oncology trials with a resolved drug target and 4.3% across all oncology Phase 2,3 trials in the same window.
+Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
+<div class="stats">
+ <div class="stat"><b>3.5%</b><span>7 of 200 closed trials (95% CI 1.7%–7.0%)</span></div>
+ <div class="stat"><b>5 / 2 / 0</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to 7)</span></div>
+ <div class="stat"><b>26.1%</b><span>of 766 trials have closed · 566 still open or unresolved</span></div>
+ <div class="stat"><b>1.3%</b><span>stopped for a biological reason within 3 years of starting (95% CI 0.6%–2.9%; 297 still at risk; 1.5% area-wide)</span></div>
+</div>
+<div class="cols">
+<div>
+<h2>How this compares</h2>
+<div class="barrow"><div class="blabel">HER2</div><div class="track"><span class="seg" style="width:70.0%"></span><span class="val">3.5%</span></div><div class="bnote">7/200 closed</div></div>
+<div class="barrow"><div class="blabel">all oncology trials with a resolved drug target</div><div class="track"><span class="seg" style="width:100.0%"></span><span class="val">5.0%</span></div><div class="bnote">284/5677 closed</div></div>
+<div class="barrow"><div class="blabel">All oncology Phase 2,3</div><div class="track"><span class="seg" style="width:86.6%"></span><span class="val">4.3%</span></div><div class="bnote">338/7798 closed</div></div>
+<p class="robust"><b>What is in this class:</b> 345 distinct experimental drugs across 766 trials (small molecule 477, antibody 382, adc 271, unknown 125). Most tested: TRASTUZUMAB (220), PYROTINIB (114), PERTUZUMAB (96), DISITAMAB VEDOTIN (81), PACLITAXEL (70). A class groups drugs by what they act on; check that the grouping is one you would make before reading the rate as a property of the mechanism.</p>
+<p class="robust"><b>How much does this rest on one decision?</b> The 7 stops came from 6 sponsor-asset programmes across 6 sponsors; the largest (Rain Oncology Inc) contributed 2; removing that programme's trials from both sides leaves 2.5%. Screened alongside 83 other segments in this area, it does not survive a 10% false-discovery correction (q=1, Benjamini-Yekutieli). A further 11 closed trials here were terminated with no cause recorded in the registry; if every one of them were biological the rate would be 9.0%. Read it as a screen worth checking against the
+underlying trials.</p>
+<p style="font-size:7.4pt;color:var(--muted);margin-top:6px">Bars show the share of closed trials stopped for biological reasons. Confidence intervals overlap where sample sizes are small — read the counts, not just the bars.</p>
+</div>
+<div>
+<h2>By start cohort</h2>
+<table><thead><tr><th>Trials started</th><th>Stops</th><th>Closed</th><th>Rate</th><th>95% CI</th></tr></thead><tbody><tr><td>2015–2017</td><td>5</td><td>88</td><td>5.7%</td><td>2.5%–12.6%</td></tr><tr><td>2018–2020</td><td>1</td><td>72</td><td>1.4%</td><td>0.2%–7.5%</td></tr><tr><td>2021–2024</td><td>1</td><td>40</td><td>2.5%</td><td>0.4%–12.9%</td></tr></tbody></table>
+<h2 style="margin-top:10px">Where the stops sit</h2>
+<p style="font-size:8pt">Efficacy / futility: 5, Safety: 2.<br>
+Sponsors with most stops: Rain Oncology Inc (2), Spanish Breast Cancer Research Group (1), The Netherlands Cancer Institute (1), Washington University School of Medicine (1), University of Miami (1), Universität Duisburg-Essen (1).</p>
+</div>
+</div>
+<h2>The stopped trials</h2>
+<table class="stops"><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th><th>Stopped</th><th>Type</th><th>Registry stop reason</th></tr></thead><tbody><tr><td class="mono">NCT05583110</td><td>2</td><td>Spanish Breast Cancer Research Group</td><td>TUCATINIB, TRASTUZUMAB, VINORELBINE</td><td>2025-05</td><td>Safety</td><td class="reason">The study was closed early due to safety concerns and an unfavorable benefit-risk balance. Unexpected high neutropenia rates required a costly sub-study, which was not feasible, forcing the sponsor to terminate the trial prematurely.</td></tr><tr><td class="mono">NCT03784599</td><td>2</td><td>The Netherlands Cancer Institute</td><td>TRASTUZUMAB EMTANSINE, OSIMERTINIB</td><td>2021-05</td><td>Efficacy</td><td class="reason">insufficient effectiveness</td></tr><tr><td class="mono">NCT02907918</td><td>2</td><td>Washington University School of Medicine</td><td>PALBOCICLIB, LETROZOLE, TRASTUZUMAB, GOSERELIN</td><td>2020-08</td><td>Efficacy</td><td class="reason">Futility</td></tr><tr><td class="mono">NCT02658084</td><td>2</td><td>University of Miami</td><td>VINORELBINE, TRASTUZUMAB EMTANSINE</td><td>2018-10</td><td>Safety</td><td class="reason">Terminated due to low accrual and toxicity concerns.</td></tr><tr><td class="mono">NCT02595840</td><td>2</td><td>Universität Duisburg-Essen</td><td>AFATINIB, PEMETREXED</td><td>2017-11</td><td>Efficacy</td><td class="reason">Futility</td></tr><tr><td class="mono">NCT02454842</td><td>2</td><td>Rain Oncology Inc</td><td>TARLOXOTINIB</td><td>2017-01</td><td>Efficacy</td><td class="reason">Lack of efficacy</td></tr></tbody></table>
+<p style="font-size:7.4pt;color:var(--muted)">The 6 most recent of 7 stopped trials. Every molecule behind all 7 is named above; the complete trial list, the trials still running and the terminations with no readable cause ship with the dataset and the evidence package.</p>
+<div class="cols" style="margin-top:10px">
+<div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase 2,3 oncology trials started 2015–2024 that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; 76% of industry oncology trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
+<div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only 26.1% of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
+</div>
+<div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped oncology trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
+<div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started 2015–2024.</div>
+</div>
+</body></html>

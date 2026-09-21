@@ -157,17 +157,17 @@
   }
  ],
  "signals_reconciliation": {
-  "dataset_rows": 987,
+  "dataset_rows": 985,
   "note": "The two products count different things and both counts are correct.",
   "steps": [
    {
     "step": "Oncology trials in the stopped-trial dataset",
-    "trials": 987,
+    "trials": 985,
     "note": "Every phase, every start year — the dataset is a catalogue of stopped trials."
    },
    {
     "step": "…restricted to Phase 2 or 3 registered since 2010",
-    "trials": 531,
+    "trials": 530,
     "note": "Phase 1 and Phase 4 trials, and trials predating the universe, drop out: a rate needs a denominator and the universe only carries Phase 2/3 since 2010."
    },
    {

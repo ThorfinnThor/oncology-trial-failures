@@ -3,10 +3,10 @@
  "question": "Event ascertainment: when the registry's stop-reason field states no cause, is the cause recorded elsewhere in the record — and if so, is it biological?",
  "method": "Every terminated trial whose stop-reason field states no readable cause, checked against its brief summary and detailed description. A sentence counts only if it reports this trial being stopped in the past or present perfect; conditional sentences are protocol stopping rules, not events, and are excluded. Recovered sentences run through the same Classification V2 rules as the registry field.",
  "does_not_change_published_rates": "The published rate is a statement about one registry field, computed the same way every week and reproducible by anyone holding that field. This is a sensitivity analysis beside it, not a correction to it.",
- "terminations_with_no_readable_cause": 2253,
- "descriptions_checked": 2253,
+ "terminations_with_no_readable_cause": 2254,
+ "descriptions_checked": 2254,
  "reason_recovered": 67,
- "recovered_share": 0.029738126941855306,
+ "recovered_share": 0.029724933451641525,
  "recovered_biological": 4,
  "recovered_by_outcome": {
   "UNKNOWN": 46,
