@@ -16,7 +16,7 @@ export type PrimaryNavItem =
   | "asset-check"
   | "briefs"
   | "packages"
-  | "watchlist"
+  | "newsletter"
   | "data";
 
 type PrimaryNavProps = {
@@ -90,8 +90,8 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
         <Link className="navlink" href="/packages" aria-current={current(active, "packages")} onClick={closeMobileNav}>
           Packages
         </Link>
-        <Link className="navlink" href="/watchlist" aria-current={current(active, "watchlist")} onClick={closeMobileNav}>
-          Watchlist
+        <Link className="navlink" href="/newsletter" aria-current={current(active, "newsletter")} onClick={closeMobileNav}>
+          Newsletter
         </Link>
         <Link className="navlink" href="/data-licensing" aria-current={current(active, "data")} onClick={closeMobileNav}>
           Pricing

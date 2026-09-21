@@ -481,8 +481,8 @@ export default function BriefPage({ brief }: Props) {
                   </div>
                 </div>
                 <div className="pdfActions">
-                  <Link className="btnPrimary" href={`/watchlist?terms=${encodeURIComponent(watchTerms.join(","))}`}>
-                    Watch these
+                  <Link className="btnPrimary" href="/newsletter">
+                    Get the fortnightly mail
                   </Link>
                   <span className="watchFine">Free, no account, one click to stop.</span>
                 </div>

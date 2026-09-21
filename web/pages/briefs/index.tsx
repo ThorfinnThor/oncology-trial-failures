@@ -209,8 +209,8 @@ export default function BriefsIndexPage() {
               <Link className="btnPrimary" href="/data-licensing#evidence-package">
                 Evidence packages
               </Link>
-              <Link className="btnGhost" href="/watchlist">
-                Watch a molecule or sponsor
+              <Link className="btnGhost" href="/newsletter">
+                Get the fortnightly mail
               </Link>
               <a className="btnGhost" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Discontinuation briefs")}`}>
                 Ask a question

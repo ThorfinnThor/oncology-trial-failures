@@ -401,15 +401,16 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 </div>
               </Link>
 
-              <Link href="/watchlist" className="sellCard">
+              <Link href="/newsletter" className="sellCard">
                 <div className="sellTop">
-                  <span className="sellName">Watchlist</span>
+                  <span className="sellName">Newsletter</span>
                   <span className="sellPrice sellFree">Free</span>
                 </div>
                 <p className="sellOne">
-                  One email in the week a sponsor changes a trial you follow. Nothing in the weeks they do not.
+                  One short mail every second week: the trials that entered the dataset and the records sponsors
+                  changed.
                 </p>
-                <div className="sellMeta">Molecules, targets, mechanisms or sponsors · one click to stop</div>
+                <div className="sellMeta">Fortnightly · one click to stop</div>
               </Link>
             </div>
             <p className="fine">
