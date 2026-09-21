@@ -1,0 +1,669 @@
+{
+ "schema_version": 1,
+ "package_count": 51,
+ "packages": [
+  {
+   "slug": "immunology-autoimmune-btk",
+   "cohort": "BTK",
+   "area": "Immunology & Autoimmune",
+   "brief_stem": "brief_immunology-autoimmune_btk_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 0,
+    "still_open": 14,
+    "total_in_cohort": 40
+   },
+   "generated_at_utc": "2026-09-21T13:49:37Z"
+  },
+  {
+   "slug": "immunology-autoimmune-jak-tyk2",
+   "cohort": "JAK / TYK2",
+   "area": "Immunology & Autoimmune",
+   "brief_stem": "brief_immunology-autoimmune_jak-tyk2_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 5,
+    "still_open": 42,
+    "total_in_cohort": 127
+   },
+   "generated_at_utc": "2026-09-21T13:49:37Z"
+  },
+  {
+   "slug": "neurology-amyloid-directed",
+   "cohort": "Amyloid-β directed",
+   "area": "Neurology",
+   "brief_stem": "brief_neurology_amyloid-directed_2015-2024",
+   "counts": {
+    "stopped": 6,
+    "unreadable_terminations": 9,
+    "still_open": 8,
+    "total_in_cohort": 28
+   },
+   "generated_at_utc": "2026-09-21T13:49:39Z"
+  },
+  {
+   "slug": "neurology-bace-secretase",
+   "cohort": "BACE / γ-secretase",
+   "area": "Neurology",
+   "brief_stem": "brief_neurology_bace-secretase_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 0,
+    "still_open": 0,
+    "total_in_cohort": 4
+   },
+   "generated_at_utc": "2026-09-21T13:49:39Z"
+  },
+  {
+   "slug": "neurology-dopaminergic",
+   "cohort": "Dopaminergic",
+   "area": "Neurology",
+   "brief_stem": "brief_neurology_dopaminergic_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 2,
+    "still_open": 17,
+    "total_in_cohort": 72
+   },
+   "generated_at_utc": "2026-09-21T13:49:39Z"
+  },
+  {
+   "slug": "neurology-gaba-a",
+   "cohort": "GABA-A",
+   "area": "Neurology",
+   "brief_stem": "brief_neurology_gaba-a_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 5,
+    "still_open": 8,
+    "total_in_cohort": 49
+   },
+   "generated_at_utc": "2026-09-21T13:49:39Z"
+  },
+  {
+   "slug": "neurology-tau",
+   "cohort": "Tau",
+   "area": "Neurology",
+   "brief_stem": "brief_neurology_tau_2015-2024",
+   "counts": {
+    "stopped": 7,
+    "unreadable_terminations": 0,
+    "still_open": 0,
+    "total_in_cohort": 10
+   },
+   "generated_at_utc": "2026-09-21T13:49:39Z"
+  },
+  {
+   "slug": "oncology-alk-ros1-ret",
+   "cohort": "ALK / ROS1 / RET",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_alk-ros1-ret_2015-2024",
+   "counts": {
+    "stopped": 7,
+    "unreadable_terminations": 6,
+    "still_open": 241,
+    "total_in_cohort": 414
+   },
+   "generated_at_utc": "2026-09-21T13:49:41Z"
+  },
+  {
+   "slug": "oncology-androgen-receptor-axis",
+   "cohort": "Androgen receptor axis",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_androgen-receptor-axis_2015-2024",
+   "counts": {
+    "stopped": 13,
+    "unreadable_terminations": 6,
+    "still_open": 163,
+    "total_in_cohort": 295
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-antifolate-nucleoside",
+   "cohort": "Antifolate / nucleoside",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_antifolate-nucleoside_2015-2024",
+   "counts": {
+    "stopped": 21,
+    "unreadable_terminations": 44,
+    "still_open": 1078,
+    "total_in_cohort": 1683
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-antifolate-nucleoside-pd-l-1",
+   "cohort": "Antifolate / nucleoside + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_antifolate-nucleoside-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 7,
+    "unreadable_terminations": 19,
+    "still_open": 411,
+    "total_in_cohort": 610
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-bcl-2",
+   "cohort": "BCL-2",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_bcl-2_2015-2024",
+   "counts": {
+    "stopped": 5,
+    "unreadable_terminations": 8,
+    "still_open": 224,
+    "total_in_cohort": 341
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-bcma",
+   "cohort": "BCMA",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_bcma_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 3,
+    "still_open": 104,
+    "total_in_cohort": 134
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-braf-mek",
+   "cohort": "BRAF / MEK",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_braf-mek_2015-2024",
+   "counts": {
+    "stopped": 9,
+    "unreadable_terminations": 11,
+    "still_open": 249,
+    "total_in_cohort": 480
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-braf-mek-pd-l-1",
+   "cohort": "BRAF / MEK + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_braf-mek-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 4,
+    "still_open": 92,
+    "total_in_cohort": 161
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-btk",
+   "cohort": "BTK",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_btk_2015-2024",
+   "counts": {
+    "stopped": 5,
+    "unreadable_terminations": 7,
+    "still_open": 258,
+    "total_in_cohort": 401
+   },
+   "generated_at_utc": "2026-09-21T13:49:42Z"
+  },
+  {
+   "slug": "oncology-cd20",
+   "cohort": "CD20",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_cd20_2015-2024",
+   "counts": {
+    "stopped": 6,
+    "unreadable_terminations": 13,
+    "still_open": 317,
+    "total_in_cohort": 504
+   },
+   "generated_at_utc": "2026-09-21T13:49:43Z"
+  },
+  {
+   "slug": "oncology-cd3-t-cell-engagers",
+   "cohort": "CD3 T-cell engagers",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_cd3-t-cell-engagers_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 5,
+    "still_open": 216,
+    "total_in_cohort": 283
+   },
+   "generated_at_utc": "2026-09-21T13:49:43Z"
+  },
+  {
+   "slug": "oncology-cd38",
+   "cohort": "CD38",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_cd38_2015-2024",
+   "counts": {
+    "stopped": 8,
+    "unreadable_terminations": 2,
+    "still_open": 128,
+    "total_in_cohort": 209
+   },
+   "generated_at_utc": "2026-09-21T13:49:43Z"
+  },
+  {
+   "slug": "oncology-cd38-pd-l-1",
+   "cohort": "CD38 + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_cd38-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 1,
+    "still_open": 4,
+    "total_in_cohort": 17
+   },
+   "generated_at_utc": "2026-09-21T13:49:43Z"
+  },
+  {
+   "slug": "oncology-cd47-sirp",
+   "cohort": "CD47 / SIRPα",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_cd47-sirp_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 9,
+    "still_open": 34,
+    "total_in_cohort": 62
+   },
+   "generated_at_utc": "2026-09-21T13:49:43Z"
+  },
+  {
+   "slug": "oncology-cdk4-6",
+   "cohort": "CDK4/6",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_cdk4-6_2015-2024",
+   "counts": {
+    "stopped": 6,
+    "unreadable_terminations": 9,
+    "still_open": 212,
+    "total_in_cohort": 369
+   },
+   "generated_at_utc": "2026-09-21T13:49:43Z"
+  },
+  {
+   "slug": "oncology-ctla-4",
+   "cohort": "CTLA-4",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_ctla-4_2015-2024",
+   "counts": {
+    "stopped": 11,
+    "unreadable_terminations": 8,
+    "still_open": 426,
+    "total_in_cohort": 760
+   },
+   "generated_at_utc": "2026-09-21T13:49:44Z"
+  },
+  {
+   "slug": "oncology-ctla-4-pd-l-1",
+   "cohort": "CTLA-4 + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_ctla-4-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 10,
+    "unreadable_terminations": 7,
+    "still_open": 410,
+    "total_in_cohort": 718
+   },
+   "generated_at_utc": "2026-09-21T13:49:43Z"
+  },
+  {
+   "slug": "oncology-egfr",
+   "cohort": "EGFR",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_egfr_2015-2024",
+   "counts": {
+    "stopped": 20,
+    "unreadable_terminations": 19,
+    "still_open": 659,
+    "total_in_cohort": 971
+   },
+   "generated_at_utc": "2026-09-21T13:49:44Z"
+  },
+  {
+   "slug": "oncology-er-aromatase",
+   "cohort": "ER / aromatase",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_er-aromatase_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 10,
+    "still_open": 233,
+    "total_in_cohort": 377
+   },
+   "generated_at_utc": "2026-09-21T13:49:44Z"
+  },
+  {
+   "slug": "oncology-fgfr",
+   "cohort": "FGFR",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_fgfr_2015-2024",
+   "counts": {
+    "stopped": 6,
+    "unreadable_terminations": 19,
+    "still_open": 166,
+    "total_in_cohort": 351
+   },
+   "generated_at_utc": "2026-09-21T13:49:44Z"
+  },
+  {
+   "slug": "oncology-flt3-kit",
+   "cohort": "FLT3 / KIT",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_flt3-kit_2015-2024",
+   "counts": {
+    "stopped": 14,
+    "unreadable_terminations": 13,
+    "still_open": 469,
+    "total_in_cohort": 744
+   },
+   "generated_at_utc": "2026-09-21T13:49:44Z"
+  },
+  {
+   "slug": "oncology-hdac",
+   "cohort": "HDAC",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_hdac_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 4,
+    "still_open": 140,
+    "total_in_cohort": 216
+   },
+   "generated_at_utc": "2026-09-21T13:49:44Z"
+  },
+  {
+   "slug": "oncology-her2",
+   "cohort": "HER2",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_her2_2015-2024",
+   "counts": {
+    "stopped": 7,
+    "unreadable_terminations": 11,
+    "still_open": 540,
+    "total_in_cohort": 766
+   },
+   "generated_at_utc": "2026-09-21T13:49:44Z"
+  },
+  {
+   "slug": "oncology-her3",
+   "cohort": "HER3",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_her3_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 3,
+    "still_open": 59,
+    "total_in_cohort": 91
+   },
+   "generated_at_utc": "2026-09-21T13:49:45Z"
+  },
+  {
+   "slug": "oncology-ido1",
+   "cohort": "IDO1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_ido1_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 6,
+    "still_open": 11,
+    "total_in_cohort": 61
+   },
+   "generated_at_utc": "2026-09-21T13:49:45Z"
+  },
+  {
+   "slug": "oncology-jak-tyk2",
+   "cohort": "JAK / TYK2",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_jak-tyk2_2015-2024",
+   "counts": {
+    "stopped": 4,
+    "unreadable_terminations": 2,
+    "still_open": 47,
+    "total_in_cohort": 100
+   },
+   "generated_at_utc": "2026-09-21T13:49:45Z"
+  },
+  {
+   "slug": "oncology-met",
+   "cohort": "MET",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_met_2015-2024",
+   "counts": {
+    "stopped": 11,
+    "unreadable_terminations": 5,
+    "still_open": 187,
+    "total_in_cohort": 319
+   },
+   "generated_at_utc": "2026-09-21T13:49:45Z"
+  },
+  {
+   "slug": "oncology-met-pd-l-1",
+   "cohort": "MET + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_met-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 3,
+    "still_open": 68,
+    "total_in_cohort": 104
+   },
+   "generated_at_utc": "2026-09-21T13:49:45Z"
+  },
+  {
+   "slug": "oncology-microtubule",
+   "cohort": "Microtubule",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_microtubule_2015-2024",
+   "counts": {
+    "stopped": 26,
+    "unreadable_terminations": 46,
+    "still_open": 1176,
+    "total_in_cohort": 1905
+   },
+   "generated_at_utc": "2026-09-21T13:49:45Z"
+  },
+  {
+   "slug": "oncology-microtubule-pd-l-1",
+   "cohort": "Microtubule + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_microtubule-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 18,
+    "still_open": 455,
+    "total_in_cohort": 676
+   },
+   "generated_at_utc": "2026-09-21T13:49:45Z"
+  },
+  {
+   "slug": "oncology-ox40-4-1bb-gitr",
+   "cohort": "OX40 / 4-1BB / GITR",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_ox40-4-1bb-gitr_2015-2024",
+   "counts": {
+    "stopped": 5,
+    "unreadable_terminations": 2,
+    "still_open": 48,
+    "total_in_cohort": 86
+   },
+   "generated_at_utc": "2026-09-21T13:49:46Z"
+  },
+  {
+   "slug": "oncology-ox40-4-1bb-gitr-pd-l-1",
+   "cohort": "OX40 / 4-1BB / GITR + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_ox40-4-1bb-gitr-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 1,
+    "still_open": 25,
+    "total_in_cohort": 46
+   },
+   "generated_at_utc": "2026-09-21T13:49:46Z"
+  },
+  {
+   "slug": "oncology-parp",
+   "cohort": "PARP",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_parp_2015-2024",
+   "counts": {
+    "stopped": 12,
+    "unreadable_terminations": 7,
+    "still_open": 314,
+    "total_in_cohort": 541
+   },
+   "generated_at_utc": "2026-09-21T13:49:46Z"
+  },
+  {
+   "slug": "oncology-parp-pd-l-1",
+   "cohort": "PARP + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_parp-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 5,
+    "unreadable_terminations": 2,
+    "still_open": 128,
+    "total_in_cohort": 195
+   },
+   "generated_at_utc": "2026-09-21T13:49:46Z"
+  },
+  {
+   "slug": "oncology-pd-l-1",
+   "cohort": "PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 97,
+    "unreadable_terminations": 122,
+    "still_open": 3376,
+    "total_in_cohort": 5680
+   },
+   "generated_at_utc": "2026-09-21T13:49:46Z"
+  },
+  {
+   "slug": "oncology-pi3k-akt-mtor",
+   "cohort": "PI3K / AKT / mTOR",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_pi3k-akt-mtor_2015-2024",
+   "counts": {
+    "stopped": 13,
+    "unreadable_terminations": 19,
+    "still_open": 152,
+    "total_in_cohort": 352
+   },
+   "generated_at_utc": "2026-09-21T13:49:46Z"
+  },
+  {
+   "slug": "oncology-proteasome",
+   "cohort": "Proteasome",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_proteasome_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 4,
+    "still_open": 137,
+    "total_in_cohort": 249
+   },
+   "generated_at_utc": "2026-09-21T13:49:46Z"
+  },
+  {
+   "slug": "oncology-tgf",
+   "cohort": "TGF-β",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_tgf_2015-2024",
+   "counts": {
+    "stopped": 11,
+    "unreadable_terminations": 8,
+    "still_open": 53,
+    "total_in_cohort": 117
+   },
+   "generated_at_utc": "2026-09-21T13:49:47Z"
+  },
+  {
+   "slug": "oncology-tgf-pd-l-1",
+   "cohort": "TGF-β + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_tgf-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 11,
+    "unreadable_terminations": 7,
+    "still_open": 34,
+    "total_in_cohort": 83
+   },
+   "generated_at_utc": "2026-09-21T13:49:47Z"
+  },
+  {
+   "slug": "oncology-tigit",
+   "cohort": "TIGIT",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_tigit_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 9,
+    "still_open": 67,
+    "total_in_cohort": 128
+   },
+   "generated_at_utc": "2026-09-21T13:49:47Z"
+  },
+  {
+   "slug": "oncology-tigit-pd-l-1",
+   "cohort": "TIGIT + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_tigit-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 3,
+    "unreadable_terminations": 9,
+    "still_open": 66,
+    "total_in_cohort": 126
+   },
+   "generated_at_utc": "2026-09-21T13:49:47Z"
+  },
+  {
+   "slug": "oncology-topoisomerase",
+   "cohort": "Topoisomerase",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_topoisomerase_2015-2024",
+   "counts": {
+    "stopped": 13,
+    "unreadable_terminations": 21,
+    "still_open": 770,
+    "total_in_cohort": 1134
+   },
+   "generated_at_utc": "2026-09-21T13:49:47Z"
+  },
+  {
+   "slug": "oncology-vegf-vegfr",
+   "cohort": "VEGF / VEGFR",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_vegf-vegfr_2015-2024",
+   "counts": {
+    "stopped": 20,
+    "unreadable_terminations": 38,
+    "still_open": 1433,
+    "total_in_cohort": 2172
+   },
+   "generated_at_utc": "2026-09-21T13:49:47Z"
+  },
+  {
+   "slug": "oncology-vegf-vegfr-pd-l-1",
+   "cohort": "VEGF / VEGFR + PD-(L)1",
+   "area": "Oncology",
+   "brief_stem": "brief_oncology_vegf-vegfr-pd-l-1_2015-2024",
+   "counts": {
+    "stopped": 5,
+    "unreadable_terminations": 18,
+    "still_open": 765,
+    "total_in_cohort": 1080
+   },
+   "generated_at_utc": "2026-09-21T13:49:47Z"
+  }
+ ]
+}

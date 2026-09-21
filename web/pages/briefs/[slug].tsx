@@ -6,6 +6,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import briefsIndex from "@/data/briefs_index.json";
+import catalogue from "@/data/evidence_catalogue.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
 
 type Brief = (typeof briefsIndex.briefs)[number];
@@ -42,6 +43,8 @@ export default function BriefPage({ brief }: Props) {
   // random sample of the area, so the like-for-like comparator is the resolved baseline.
   const comparator: number = brief.baseline_resolved_rate ?? brief.baseline_rate;
   const ratio = comparator ? brief.rate / comparator : 0;
+  // The package that extends this brief: same cohort, the rest of the trials.
+  const pkg = (catalogue.packages as any[]).find((p) => p.brief_stem === brief.file_stem);
   const sig = (brief as any).failure_signature;
   const attr = (brief as any).stop_attribution;
   const cif = (brief.cumulative_incidence || []) as { months: number; cif: number; ci95: number[]; n_risk: number }[];
@@ -414,6 +417,17 @@ export default function BriefPage({ brief }: Props) {
                 </p>
                 <ul className="list">
                   <li>Rebuilt weekly from ClinicalTrials.gov</li>
+                  {pkg ? (
+                    <li>
+                      This brief covers the {brief.biological_stops} stops. The{" "}
+                      {n(pkg.counts.total_in_cohort - brief.biological_stops)} other trials in the cohort, the rules that
+                      define it and the time-to-event curve are in{" "}
+                      <Link className="link" href={`/packages/${pkg.slug}`}>
+                        the evidence package
+                      </Link>
+                      .
+                    </li>
+                  ) : null}
                   <li>Formatted to forward to a colleague</li>
                   <li>
                     Every number traces to{" "}
@@ -432,12 +446,18 @@ export default function BriefPage({ brief }: Props) {
                 <a className="btnGhost" href={`/briefs/${brief.file_stem}.html`} target="_blank" rel="noopener noreferrer">
                   Open as a web page
                 </a>
-                <a
-                  className="btnGhost"
-                  href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}
-                >
-                  Ask for this on your own asset
-                </a>
+                {pkg ? (
+                  <Link className="btnGhost" href={`/packages/${pkg.slug}`}>
+                    The whole cohort ({n(pkg.counts.total_in_cohort)} trials)
+                  </Link>
+                ) : (
+                  <a
+                    className="btnGhost"
+                    href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}
+                  >
+                    Ask for this on your own asset
+                  </a>
+                )}
               </div>
             </div>
           </section>
@@ -660,7 +680,7 @@ export default function BriefPage({ brief }: Props) {
           align-self: center;
         }
         .btnPrimary,
-        .btnGhost {
+        :global(.btnGhost) {
           border-radius: 12px;
           padding: 11px 18px;
           font-size: 13.5px;
@@ -673,7 +693,7 @@ export default function BriefPage({ brief }: Props) {
           background: var(--accent);
           color: #fff;
         }
-        .btnGhost {
+        :global(.btnGhost) {
           background: var(--surface);
           color: var(--text);
           border: 1px solid var(--border);

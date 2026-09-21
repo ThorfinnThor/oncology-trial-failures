@@ -16,7 +16,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "check:styles": "python3 ../scripts/web/check_styled_jsx.py"
+    "check:styles": "python3 ../scripts/web/check_styled_jsx.py",
+    "check:private": "python3 ../scripts/web/check_private_data.py"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.11.2",

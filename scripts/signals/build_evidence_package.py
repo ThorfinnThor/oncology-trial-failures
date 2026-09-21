@@ -109,6 +109,12 @@ MODALITY_WORD = {"Antibody": "a monoclonal antibody", "Small molecule": "a small
 VERDICT_LABEL = {"closest": "Same target, same modality", "related": "Related",
                  "weak": "Same modality only", "distant": "Different hypothesis",
                  "unknown": "Cannot be compared"}
+# The stopped trials are the evidence and are always listed in full. The trials still running
+# and the unreadable terminations are context: PD-(L)1 has 3,376 open trials, and a table of
+# them is a data dump rather than a report. They are counted in full, listed in part, and the
+# complete cohort ships as the CSV beside this document.
+MAX_CONTEXT_ROWS = 25
+
 ATTRIBUTION_LABEL = {
     "own_data": "This trial's own data",
     "programme_cascade": "A decision taken elsewhere",
@@ -256,8 +262,9 @@ def build(args) -> dict:
         "time_to_event": curve(cohort),
         "comparator_time_to_event": curve(resolved if (args.klass or genes) else base_rows),
         "trials": ([trial_row(r, "biological_stop") for r in stops]
-                   + [trial_row(r, "terminated_cause_not_readable") for r in unreadable]
-                   + [trial_row(r, "still_open") for r in open_trials]),
+                   + [trial_row(r, "terminated_cause_not_readable") for r in unreadable[:MAX_CONTEXT_ROWS]]
+                   + [trial_row(r, "still_open") for r in
+                      sorted(open_trials, key=lambda r: (r.get("start_date") or ""), reverse=True)[:MAX_CONTEXT_ROWS]]),
         "counts": {"stopped": len(stops), "unreadable_terminations": len(unreadable),
                    "still_open": len(open_trials), "total_in_cohort": len(cohort)},
         "sources": ["ClinicalTrials.gov (NLM)", "ChEMBL (EMBL-EBI, CC BY-SA 3.0)", "NCI Thesaurus (NCI)",
@@ -494,12 +501,16 @@ rate above, this does not move with how mature the cohort is.</p>
 {trial_block("biological_stop", "The stops, and what caused each one",
              "Attribution is shown under each registry reason. " + a["why_it_matters"])}
 
-{trial_block("terminated_cause_not_readable", "Terminated, cause not readable",
+{trial_block("terminated_cause_not_readable", f"Terminated, cause not readable ({pkg['counts']['unreadable_terminations']} in the cohort)",
              "Listed rather than dropped. These sit in the denominator and never in the numerator; if every one were "
-             "biological the rate would be " + pct(pkg["ambiguity"]["rate_if_all_unresolved_were_biological"]) + ".")}
+             "biological the rate would be " + pct(pkg["ambiguity"]["rate_if_all_unresolved_were_biological"])
+             + (f". Showing {MAX_CONTEXT_ROWS}; the full list is in the CSV."
+                if pkg['counts']['unreadable_terminations'] > MAX_CONTEXT_ROWS else "."))}
 
-{trial_block("still_open", "Still open",
-             "Not counted either way. Their outcomes will move this cohort's rate in both directions.")}
+{trial_block("still_open", f"Still open ({pkg['counts']['still_open']} in the cohort)",
+             "Not counted either way. Their outcomes will move this cohort's rate in both directions."
+             + (f" Showing the {MAX_CONTEXT_ROWS} most recently started; the full list is in the CSV."
+                if pkg['counts']['still_open'] > MAX_CONTEXT_ROWS else ""))}
 
 <h2>Limits</h2>
 <div class="box"><ul>{''.join(f'<li>{e(x)}</li>' for x in pkg['limits'])}</ul></div>

@@ -26,5 +26,7 @@ jobs:
       - run: npm run typecheck
       # styled-jsx silently drops a rule put on a <Link>; nothing else catches it.
       - run: npm run check:styles
+      # A page importing the paid packages would give them away with no visible symptom.
+      - run: npm run check:private
       - run: npm test
       - run: npm run build:cloudflare
