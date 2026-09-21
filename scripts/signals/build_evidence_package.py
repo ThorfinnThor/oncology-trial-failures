@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""The €1,500 deliverable: one cohort, assembled so a buyer can audit every number in it.
+"""The evidence package: one cohort, assembled so a buyer can audit every number in it.
 
-The licensing page promises an evidence package for a cohort the customer names. This builds
-it. Nothing here is a new statistic — the rate, the curve, the concentration and the ambiguity
+The licensing page sells an evidence package for a cohort the customer names. This builds it. Nothing here is a new statistic — the rate, the curve, the concentration and the ambiguity
 band all already exist — except the one thing a rate can never carry: which stops were the
 trial's own verdict and which followed a decision taken somewhere else.
 

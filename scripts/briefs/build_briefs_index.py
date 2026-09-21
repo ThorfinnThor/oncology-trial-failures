@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -35,9 +36,33 @@ def slugify(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
 
 
+MANIFEST = BRIEFS / "manifest.json"
+
+
+def current_facts() -> list[Path]:
+    """The briefs this build produced, from the catalogue's manifest.
+
+    Falling back to the directory listing would quietly resurrect a class that was renamed or
+    split, which is how the site came to show two contradictory amyloid entries.
+    """
+    if not MANIFEST.exists():
+        print("WARNING: no brief manifest; falling back to the directory listing", file=sys.stderr)
+        return sorted(BRIEFS.glob("brief_*.facts.json"))
+    manifest = json.loads(MANIFEST.read_text())
+    out, missing = [], []
+    for stems in manifest.values():
+        for stem in stems:
+            path = BRIEFS / f"{stem}.facts.json"
+            (out if path.exists() else missing).append(path)
+    if missing:
+        print(f"WARNING: {len(missing)} briefs in the manifest have no facts file: "
+              f"{', '.join(p.name for p in missing[:5])}", file=sys.stderr)
+    return sorted(out)
+
+
 def main() -> int:
     entries = []
-    for facts_path in sorted(BRIEFS.glob("brief_*.facts.json")):
+    for facts_path in current_facts():
         f = json.loads(facts_path.read_text())
         seg, win = f["segment_stats"], f["window"]
         stem = facts_path.name.replace(".facts.json", "")

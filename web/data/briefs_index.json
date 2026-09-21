@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "brief_count": 52,
+  "brief_count": 51,
   "open_access_slug": "oncology-tgf-pd-l-1",
   "areas": [
     "Immunology & Autoimmune",
@@ -308,7 +308,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:20Z",
+      "generated_at_utc": "2026-09-21T08:11:00Z",
       "open_access": false
     },
     {
@@ -661,235 +661,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:20Z",
-      "open_access": false
-    },
-    {
-      "slug": "neurology-amyloid-alzheimer-s",
-      "file_stem": "brief_neurology_amyloid-alzheimer-s_2015-2024",
-      "segment": "Amyloid (Alzheimer's)",
-      "area": "Neurology",
-      "phases": [
-        "2",
-        "3"
-      ],
-      "start_from": 2015,
-      "start_to": 2024,
-      "rate": 0.4166666666666667,
-      "closed": 24,
-      "trials_in_segment": 32,
-      "biological_stops": 10,
-      "efficacy_stops": 9,
-      "safety_stops": 1,
-      "stops_efficacy_only": 8,
-      "stops_safety_only": 0,
-      "stops_efficacy_and_safety": 1,
-      "stops_benefit_risk_only": 1,
-      "closed_share": 0.75,
-      "ci95": [
-        0.24467347246538232,
-        0.6116566235061137
-      ],
-      "reference_label": "all neurology trials with a resolved drug target",
-      "reference_rate": 0.08469539375928678,
-      "reference_closed": 673,
-      "reference_stops": 57,
-      "baseline_rate": 0.05886157826649418,
-      "baseline_closed": 1546,
-      "baseline_stops": 91,
-      "baseline_resolved_rate": 0.08469539375928678,
-      "baseline_resolved_closed": 673,
-      "stop_programmes": 6,
-      "stop_sponsors": 6,
-      "stop_assets": 6,
-      "largest_programme": "Biogen",
-      "largest_programme_stops": 3,
-      "rate_leave_one_programme_out": 0.3684210526315789,
-      "unresolved_terminations": 9,
-      "rate_if_all_unresolved_were_biological": 0.7916666666666666,
-      "cumulative_incidence": [
-        {
-          "months": 12,
-          "cif": 0.0625,
-          "ci95": [
-            0.01600714154776528,
-            0.22749897169844024
-          ],
-          "n_risk": 28
-        },
-        {
-          "months": 24,
-          "cif": 0.09486607142857142,
-          "ci95": [
-            0.03160131360360996,
-            0.2660970452057607
-          ],
-          "n_risk": 26
-        },
-        {
-          "months": 36,
-          "cif": 0.1622953869047619,
-          "ci95": [
-            0.07085631889870714,
-            0.3473565165302631
-          ],
-          "n_risk": 18
-        },
-        {
-          "months": 48,
-          "cif": 0.34331716460622713,
-          "ci95": [
-            0.20054340628064782,
-            0.5462475962812818
-          ],
-          "n_risk": 8
-        },
-        {
-          "months": 60,
-          "cif": 0.34331716460622713,
-          "ci95": [
-            0.20054340628064782,
-            0.5462475962812818
-          ],
-          "n_risk": 3
-        }
-      ],
-      "baseline_cumulative_incidence": [
-        {
-          "months": 12,
-          "cif": 0.00598295136286497,
-          "ci95": [
-            0.0034782649482461014,
-            0.010281925178749929
-          ],
-          "n_risk": 1952
-        },
-        {
-          "months": 24,
-          "cif": 0.019263536005663273,
-          "ci95": [
-            0.014162677498584242,
-            0.026176989224404368
-          ],
-          "n_risk": 1360
-        },
-        {
-          "months": 36,
-          "cif": 0.031389402094264426,
-          "ci95": [
-            0.024537950190552604,
-            0.04011421042448471
-          ],
-          "n_risk": 842
-        },
-        {
-          "months": 48,
-          "cif": 0.043167296064743774,
-          "ci95": [
-            0.03481563182691794,
-            0.05346622081459007
-          ],
-          "n_risk": 510
-        },
-        {
-          "months": 60,
-          "cif": 0.046911658456284554,
-          "ci95": [
-            0.038057856660143385,
-            0.057762568123782665
-          ],
-          "n_risk": 276
-        }
-      ],
-      "q_value_by": null,
-      "family_size": null,
-      "survives_fdr_10pct": false,
-      "composition": null,
-      "failure_signature": null,
-      "stop_attribution": null,
-      "median_followup_months": 70.6694,
-      "cohorts": [
-        {
-          "cohort": "2015–2017",
-          "biological_stops": 9,
-          "closed": 10,
-          "rate": 0.9,
-          "ci95": [
-            0.5958436145024278,
-            0.9821242504842788
-          ]
-        },
-        {
-          "cohort": "2018–2020",
-          "biological_stops": 1,
-          "closed": 10,
-          "rate": 0.1,
-          "ci95": [
-            0.01787574951572113,
-            0.4041563854975721
-          ]
-        }
-      ],
-      "trial_count": 10,
-      "trials_preview": [
-        {
-          "nct_id": "NCT02956486",
-          "phase": "3",
-          "sponsor_group": "Eisai",
-          "sponsor_ticker": "",
-          "drugs": "ELENBECESTAT",
-          "stopped": "2020-01",
-          "type": "Efficacy + safety",
-          "why_stopped": "Due to an unfavorable risk-benefit ratio including no evidence of potential efficacy, and the adverse event profile of E2609 being worse than placebo.",
-          "registry_url": "https://clinicaltrials.gov/study/NCT02956486"
-        },
-        {
-          "nct_id": "NCT02477800",
-          "phase": "3",
-          "sponsor_group": "Biogen",
-          "sponsor_ticker": "BIIB",
-          "drugs": "ADUCANUMAB",
-          "stopped": "2019-08",
-          "type": "Efficacy",
-          "why_stopped": "Study was discontinued based on futility analysis done and not based on safety concerns. Follow-up visits and closing out study activities are completed",
-          "registry_url": "https://clinicaltrials.gov/study/NCT02477800"
-        },
-        {
-          "nct_id": "NCT02484547",
-          "phase": "3",
-          "sponsor_group": "Biogen",
-          "sponsor_ticker": "BIIB",
-          "drugs": "ADUCANUMAB",
-          "stopped": "2019-08",
-          "type": "Efficacy",
-          "why_stopped": "Study was discontinued based on futility analysis done and not based on safety concerns. Follow-up visits and closing out study activities are completed",
-          "registry_url": "https://clinicaltrials.gov/study/NCT02484547"
-        },
-        {
-          "nct_id": "NCT03639987",
-          "phase": "2",
-          "sponsor_group": "Biogen",
-          "sponsor_ticker": "BIIB",
-          "drugs": "ADUCANUMAB",
-          "stopped": "2019-07",
-          "type": "Efficacy",
-          "why_stopped": "Study was discontinued based on futility analysis conducted on Phase 3 trials (NCT02477800 and NCT02484547) and not based on safety concerns.",
-          "registry_url": "https://clinicaltrials.gov/study/NCT03639987"
-        },
-        {
-          "nct_id": "NCT03114657",
-          "phase": "3",
-          "sponsor_group": "Roche",
-          "sponsor_ticker": "",
-          "drugs": "CRENEZUMAB",
-          "stopped": "2019-06",
-          "type": "Efficacy",
-          "why_stopped": "This study was discontinued due to an interim analysis in the BN29552 study, which indicated that Crenezumab was unlikely to meet its primary endpoint.",
-          "registry_url": "https://clinicaltrials.gov/study/NCT03114657"
-        }
-      ],
-      "has_pdf": false,
-      "generated_at_utc": "2026-09-20T19:00:55Z",
+      "generated_at_utc": "2026-09-21T08:11:00Z",
       "open_access": false
     },
     {
@@ -1262,7 +1034,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:20Z",
+      "generated_at_utc": "2026-09-21T08:11:00Z",
       "open_access": false
     },
     {
@@ -1598,7 +1370,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:13Z",
+      "generated_at_utc": "2026-09-21T08:10:51Z",
       "open_access": false
     },
     {
@@ -2041,7 +1813,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:11Z",
+      "generated_at_utc": "2026-09-21T08:10:50Z",
       "open_access": true
     },
     {
@@ -2418,7 +2190,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:11Z",
+      "generated_at_utc": "2026-09-21T08:10:49Z",
       "open_access": false
     },
     {
@@ -2776,7 +2548,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:12Z",
+      "generated_at_utc": "2026-09-21T08:10:50Z",
       "open_access": false
     },
     {
@@ -3206,7 +2978,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:11Z",
+      "generated_at_utc": "2026-09-21T08:10:50Z",
       "open_access": false
     },
     {
@@ -3573,7 +3345,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:12Z",
+      "generated_at_utc": "2026-09-21T08:10:51Z",
       "open_access": false
     },
     {
@@ -3956,7 +3728,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:13Z",
+      "generated_at_utc": "2026-09-21T08:10:52Z",
       "open_access": false
     },
     {
@@ -4307,7 +4079,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:22Z",
+      "generated_at_utc": "2026-09-21T08:11:01Z",
       "open_access": false
     },
     {
@@ -4645,7 +4417,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:11Z",
+      "generated_at_utc": "2026-09-21T08:10:49Z",
       "open_access": false
     },
     {
@@ -5043,7 +4815,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:12Z",
+      "generated_at_utc": "2026-09-21T08:10:51Z",
       "open_access": false
     },
     {
@@ -5532,7 +5304,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:17Z",
+      "generated_at_utc": "2026-09-21T08:10:56Z",
       "open_access": false
     },
     {
@@ -5885,7 +5657,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:14Z",
+      "generated_at_utc": "2026-09-21T08:10:53Z",
       "open_access": false
     },
     {
@@ -6390,7 +6162,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:14Z",
+      "generated_at_utc": "2026-09-21T08:10:53Z",
       "open_access": false
     },
     {
@@ -6762,7 +6534,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:16Z",
+      "generated_at_utc": "2026-09-21T08:10:56Z",
       "open_access": false
     },
     {
@@ -7168,7 +6940,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:20Z",
+      "generated_at_utc": "2026-09-21T08:11:00Z",
       "open_access": false
     },
     {
@@ -7504,7 +7276,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:11Z",
+      "generated_at_utc": "2026-09-21T08:10:49Z",
       "open_access": false
     },
     {
@@ -7900,7 +7672,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:16Z",
+      "generated_at_utc": "2026-09-21T08:10:55Z",
       "open_access": false
     },
     {
@@ -8286,7 +8058,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:20Z",
+      "generated_at_utc": "2026-09-21T08:11:00Z",
       "open_access": false
     },
     {
@@ -8915,7 +8687,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:13Z",
+      "generated_at_utc": "2026-09-21T08:10:52Z",
       "open_access": false
     },
     {
@@ -9459,7 +9231,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:15Z",
+      "generated_at_utc": "2026-09-21T08:10:54Z",
       "open_access": false
     },
     {
@@ -9855,7 +9627,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:12Z",
+      "generated_at_utc": "2026-09-21T08:10:50Z",
       "open_access": false
     },
     {
@@ -10236,7 +10008,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:16Z",
+      "generated_at_utc": "2026-09-21T08:10:56Z",
       "open_access": false
     },
     {
@@ -10666,7 +10438,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:15Z",
+      "generated_at_utc": "2026-09-21T08:10:55Z",
       "open_access": false
     },
     {
@@ -11327,7 +11099,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:17Z",
+      "generated_at_utc": "2026-09-21T08:10:57Z",
       "open_access": false
     },
     {
@@ -11682,7 +11454,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:10Z",
+      "generated_at_utc": "2026-09-21T08:10:49Z",
       "open_access": false
     },
     {
@@ -12037,7 +11809,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:10Z",
+      "generated_at_utc": "2026-09-21T08:10:49Z",
       "open_access": false
     },
     {
@@ -12420,7 +12192,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:22Z",
+      "generated_at_utc": "2026-09-21T08:11:01Z",
       "open_access": false
     },
     {
@@ -12776,7 +12548,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:16Z",
+      "generated_at_utc": "2026-09-21T08:10:55Z",
       "open_access": false
     },
     {
@@ -13523,7 +13295,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:09Z",
+      "generated_at_utc": "2026-09-21T08:10:48Z",
       "open_access": false
     },
     {
@@ -13874,7 +13646,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:15Z",
+      "generated_at_utc": "2026-09-21T08:10:54Z",
       "open_access": false
     },
     {
@@ -14384,7 +14156,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:14Z",
+      "generated_at_utc": "2026-09-21T08:10:53Z",
       "open_access": false
     },
     {
@@ -14910,7 +14682,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:15Z",
+      "generated_at_utc": "2026-09-21T08:10:54Z",
       "open_access": false
     },
     {
@@ -15327,7 +15099,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:15Z",
+      "generated_at_utc": "2026-09-21T08:10:54Z",
       "open_access": false
     },
     {
@@ -15870,7 +15642,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:18Z",
+      "generated_at_utc": "2026-09-21T08:10:58Z",
       "open_access": false
     },
     {
@@ -16270,7 +16042,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:19Z",
+      "generated_at_utc": "2026-09-21T08:10:58Z",
       "open_access": false
     },
     {
@@ -16970,7 +16742,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:18Z",
+      "generated_at_utc": "2026-09-21T08:10:57Z",
       "open_access": false
     },
     {
@@ -17515,7 +17287,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:18Z",
+      "generated_at_utc": "2026-09-21T08:10:57Z",
       "open_access": false
     },
     {
@@ -17668,8 +17440,8 @@
           "Gene therapy": 7,
           "Cell therapy": 6,
           "Protein": 2,
-          "Vaccine component": 1,
           "Vaccine": 1,
+          "Vaccine component": 1,
           "Oligonucleotide": 1
         },
         "top_assets": [
@@ -17892,7 +17664,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:16Z",
+      "generated_at_utc": "2026-09-21T08:10:55Z",
       "open_access": false
     },
     {
@@ -18300,7 +18072,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:10Z",
+      "generated_at_utc": "2026-09-21T08:10:48Z",
       "open_access": false
     },
     {
@@ -18781,7 +18553,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:14Z",
+      "generated_at_utc": "2026-09-21T08:10:53Z",
       "open_access": false
     },
     {
@@ -19158,7 +18930,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:12Z",
+      "generated_at_utc": "2026-09-21T08:10:51Z",
       "open_access": false
     },
     {
@@ -19564,7 +19336,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:10Z",
+      "generated_at_utc": "2026-09-21T08:10:48Z",
       "open_access": false
     },
     {
@@ -20026,7 +19798,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:13Z",
+      "generated_at_utc": "2026-09-21T08:10:52Z",
       "open_access": false
     },
     {
@@ -20723,7 +20495,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:13Z",
+      "generated_at_utc": "2026-09-21T08:10:52Z",
       "open_access": false
     },
     {
@@ -21162,7 +20934,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:17Z",
+      "generated_at_utc": "2026-09-21T08:10:56Z",
       "open_access": false
     },
     {
@@ -21313,9 +21085,9 @@
           "Antibody": 57,
           "Protein": 37,
           "ADC": 14,
-          "Cell therapy": 5,
-          "Oncolytic virus": 5,
           "Vaccine": 5,
+          "Oncolytic virus": 5,
+          "Cell therapy": 5,
           "Bispecific antibody": 2
         },
         "top_assets": [
@@ -21532,7 +21304,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:17Z",
+      "generated_at_utc": "2026-09-21T08:10:56Z",
       "open_access": false
     },
     {
@@ -21683,8 +21455,8 @@
           "Unknown": 191,
           "Protein": 52,
           "ADC": 27,
-          "Cell therapy": 18,
           "Vaccine": 18,
+          "Cell therapy": 18,
           "Bispecific antibody": 18,
           "Oncolytic virus": 15,
           "Oligonucleotide": 1,
@@ -21939,7 +21711,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:14Z",
+      "generated_at_utc": "2026-09-21T08:10:53Z",
       "open_access": false
     },
     {
@@ -22322,7 +22094,7 @@
         }
       ],
       "has_pdf": false,
-      "generated_at_utc": "2026-09-20T21:04:18Z",
+      "generated_at_utc": "2026-09-21T08:10:57Z",
       "open_access": false
     }
   ]

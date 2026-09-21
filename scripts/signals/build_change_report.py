@@ -62,7 +62,7 @@ TRACKED = ["overall_status", "why_stopped", "failure_outcome", "failure_primary_
            "failure_secondary_reasons", "focus_assets", "focus_asset_ids", "focus_target_genes",
            "focus_mechanisms", "sponsor_group", "primary_completion_date"]
 KEEP = ["nct_id", "brief_title", "phases", "sponsor_group", "focus_assets", "overall_status",
-        "why_stopped", "failure_outcome", "failure_primary_reason"] + TRACKED
+        "why_stopped", "failure_outcome", "failure_primary_reason", "classifier_version"] + TRACKED
 
 
 def norm(value):
@@ -114,11 +114,24 @@ def main() -> int:
     relinked = [c for c in changed if "focus_asset_ids" in c["changes"] or "focus_target_genes" in c["changes"]]
     by_origin = {k: sum(1 for c in changed if c["origin"] == k) for k in ORIGIN_LABELS}
     previous_meta = json.loads(SNAPSHOT_META.read_text()) if SNAPSHOT_META.exists() else {}
+
+    def classifier_version(records: dict, meta_: dict) -> str | None:
+        """The release's classifier version. The meta file does not carry it, so it comes from
+        the records themselves, which each state the version that labelled them."""
+        if meta_.get("classifier_version"):
+            return meta_["classifier_version"]
+        seen = {r.get("classifier_version") for r in records.values() if r.get("classifier_version")}
+        return sorted(seen)[-1] if seen else None
+
+    prev_version = classifier_version(previous, previous_meta)
+    curr_version = classifier_version(current, meta)
     pipeline = {
-        "classifier_version_previous": previous_meta.get("classifier_version"),
-        "classifier_version_current": meta.get("classifier_version"),
-        "pipeline_changed": bool(previous_meta.get("classifier_version")
-                                 and previous_meta.get("classifier_version") != meta.get("classifier_version")),
+        "classifier_version_previous": prev_version,
+        "classifier_version_current": curr_version,
+        # Only a version we can actually read on both sides counts as a change. An unknown
+        # version is not evidence of one, and claiming it would tell a licensee to discount
+        # real registry events as pipeline noise.
+        "pipeline_changed": bool(prev_version and curr_version and prev_version != curr_version),
     }
     report = {
         "schema_version": 1,
@@ -168,12 +181,33 @@ def main() -> int:
             if len(added) > 50:
                 lines += [f"- …and {len(added) - 50} more (see the JSON report)"]
             lines += [""]
-        if reclassified:
-            lines += ["## Reclassified", ""]
-            for c_ in reclassified[:50]:
-                moves = "; ".join(f"{f}: {d['from']} → {d['to']}" for f, d in c_["changes"].items()
-                                  if f in ("failure_outcome", "failure_primary_reason"))
-                lines += [f"- `{c_['nct_id']}` — {moves}"]
+        registry_events = [c_ for c_ in changed if c_["origin"] in ("registry_event", "mixed")]
+        if registry_events:
+            lines += ["## Registry events", "",
+                      "Sponsors changed these records: a status, a stop reason or a completion date. This is the "
+                      "section that is news about a trial.", ""]
+            for c_ in registry_events[:80]:
+                for field, d in c_["changes"].items():
+                    if field not in REGISTRY_FIELDS:
+                        continue
+                    before = (str(d["from"]) or "—")[:160] or "—"
+                    after = (str(d["to"]) or "—")[:160] or "—"
+                    lines += [f"- `{c_['nct_id']}` — {c_.get('sponsor_group') or 'unknown sponsor'}, "
+                              f"**{field}**: {before} → {after}"]
+            if len(registry_events) > 80:
+                lines += [f"- …and {len(registry_events) - 80} more (see the JSON report)"]
+            lines += [""]
+
+        our_changes = [c_ for c_ in changed if c_["origin"] in ("reclassification", "remapping")]
+        if our_changes:
+            lines += ["## Changes on our side", "",
+                      "The registry text did not move; our classifier or our mappings did. Nothing here is sponsor "
+                      "activity, and it should not be read as competitive intelligence.", ""]
+            for c_ in our_changes[:60]:
+                moves = "; ".join(f"{f}: {d['from']} → {d['to']}" for f, d in c_["changes"].items())
+                lines += [f"- `{c_['nct_id']}` ({c_['origin'].replace('_', ' ')}) — {moves[:220]}"]
+            if len(our_changes) > 60:
+                lines += [f"- …and {len(our_changes) - 60} more (see the JSON report)"]
             lines += [""]
         if removed:
             lines += ["## Left the dataset", ""]

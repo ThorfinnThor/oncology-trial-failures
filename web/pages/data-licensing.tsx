@@ -22,7 +22,7 @@ const PRICING = [
   {
     name: "Evidence package",
     prefix: "",
-    price: "€1,500",
+    price: "€100",
     unit: "one cohort",
     for: "One asset, target or mechanism you are evaluating now — diligence, a licensing decision, a trial design.",
     includes: [
@@ -39,11 +39,11 @@ const PRICING = [
   {
     name: "Annual licence",
     prefix: "",
-    price: "€4,900",
+    price: "€1,000",
     unit: "per year",
     for: "A team that returns to the same questions: competitive intelligence, portfolio review, investment research.",
     includes: [
-      "Four evidence packages a year, cohorts of your choosing",
+      "Twelve evidence packages a year, cohorts of your choosing",
       "Watchlists on named assets, targets and sponsors",
       "Weekly alerts, split into registry events and our own pipeline changes",
       "The full dataset, rate tables and every mechanism brief, updated weekly",
@@ -56,7 +56,7 @@ const PRICING = [
   {
     name: "Enterprise & AI",
     prefix: "from ",
-    price: "€15,000",
+    price: "€3,000",
     unit: "per year",
     for: "Several teams, delivery into your own systems, or redistribution inside a product you sell.",
     includes: [
@@ -423,7 +423,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   Name the mechanism, target or asset you are evaluating. You get the cohort with its rules written out, every
                   trial in it with the registry stop reason, which stops were that trial&rsquo;s own verdict and which followed a
                   decision taken elsewhere, the rate and time-to-event curve against a like-for-like comparator, and the cases we
-                  could not resolve — listed, not hidden. €1,500 for one cohort.
+                  could not resolve — listed, not hidden. €100 for one cohort.
                 </p>
                 <ul className="list">
                   <li>We reply with the cohort as we would define it before anything is built or paid</li>

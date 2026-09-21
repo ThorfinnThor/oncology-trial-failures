@@ -258,6 +258,71 @@ check("an overlapping mechanism counts",
 # Closest matches sort to the top, because that is the row someone has to answer for.
 check("the closest match leads the table", compare_asset(_anti_tau_ab, _failed)[0]["asset"], "Tilavonemab")
 
+# The change report end to end, against a previous release built to contain known differences.
+# Attribution unit tests check the rule; this checks that the diff actually finds them, which
+# is the part that was shipped without ever having run against a release that differed.
+import gzip as _gzip  # noqa: E402
+import json as _json  # noqa: E402
+import importlib as _importlib  # noqa: E402
+import tempfile as _tempfile  # noqa: E402
+
+_cr = _importlib.import_module("scripts.signals.build_change_report")
+
+with _tempfile.TemporaryDirectory() as _tmp:
+    _tmp = Path(_tmp)
+    _base = {"nct_id": "NCT00000001", "brief_title": "A", "phases": "PHASE2", "sponsor_group": "Acme",
+             "overall_status": "TERMINATED", "why_stopped": "Lack of efficacy.",
+             "failure_outcome": "BIOLOGICAL_FAILURE", "failure_primary_reason": "EFFICACY_FUTILITY",
+             "failure_secondary_reasons": "", "focus_assets": "DRUG A", "focus_asset_ids": "CHEMBL:1",
+             "focus_target_genes": "AAA", "focus_mechanisms": "inhibitor",
+             "primary_completion_date": "2020-01-01", "classifier_version": "2.7.0"}
+
+    def _rec(nct, **over):
+        return {**_base, "nct_id": nct, **over}
+
+    _current = [_rec("NCT1"), _rec("NCT2"), _rec("NCT3"), _rec("NCT4"), _rec("NCT_NEW")]
+    _previous = [
+        _rec("NCT1", why_stopped="Text the sponsor has since replaced."),   # registry event
+        _rec("NCT2", failure_outcome="NON_BIOLOGICAL"),                      # our classifier moved
+        _rec("NCT3", focus_target_genes="OLDGENE"),                          # our mapping moved
+        _rec("NCT4"),                                                        # unchanged
+        _rec("NCT_GONE"),                                                    # left the dataset
+    ]
+
+    (_tmp / "current.jsonl").write_text("\n".join(_json.dumps(r) for r in _current) + "\n")
+    with _gzip.open(_tmp / "previous.jsonl.gz", "wt") as _fh:
+        _fh.write("\n".join(_json.dumps(r) for r in _previous) + "\n")
+    (_tmp / "meta.json").write_text(_json.dumps({"product": "Test", "dataset_version": "2026-09-14"}))
+    (_tmp / "prev_meta.json").write_text(_json.dumps({"dataset_version": "2026-09-07"}))
+
+    _saved = (_cr.CURRENT, _cr.META, _cr.SNAPSHOT, _cr.SNAPSHOT_META, _cr.OUT_JSON, _cr.OUT_MD)
+    _cr.CURRENT, _cr.META = _tmp / "current.jsonl", _tmp / "meta.json"
+    _cr.SNAPSHOT, _cr.SNAPSHOT_META = _tmp / "previous.jsonl.gz", _tmp / "prev_meta.json"
+    _cr.OUT_JSON, _cr.OUT_MD = _tmp / "report.json", _tmp / "report.md"
+    try:
+        _cr.main()
+        _report = _json.loads((_tmp / "report.json").read_text())
+    finally:
+        (_cr.CURRENT, _cr.META, _cr.SNAPSHOT, _cr.SNAPSHOT_META, _cr.OUT_JSON, _cr.OUT_MD) = _saved
+
+    _c = _report["counts"]
+    check("change report: a trial that entered the dataset is added", _c["added"], 1)
+    check("change report: a trial that left it is removed", _c["removed"], 1)
+    check("change report: three trials changed, one did not", _c["changed"], 3)
+    _origin = {c["nct_id"]: c["origin"] for c in _report["changed"]}
+    check("a new stop reason is a registry event", _origin.get("NCT1"), "registry_event")
+    check("our classifier moving is not", _origin.get("NCT2"), "reclassification")
+    check("nor is our mapping moving", _origin.get("NCT3"), "remapping")
+    check("an unchanged trial is not reported", "NCT4" in _origin, False)
+    check("the origins add up to the changed count",
+          sum(_c["by_origin"].values()), _c["changed"])
+
+    # The classifier version is read off the records, because the meta file does not carry it.
+    check("the current classifier version is recovered", _report["pipeline"]["classifier_version_current"], "2.7.0")
+    check("identical versions are not reported as a pipeline change",
+          _report["pipeline"]["pipeline_changed"], False)
+    check("the written report names the registry event", "NCT1" in (_tmp / "report.md").read_text(), True)
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

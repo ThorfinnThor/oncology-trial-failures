@@ -74,16 +74,22 @@ export default function BriefsIndexPage() {
               Benjamini–Yekutieli false-discovery rate valid under the heavy overlap between segments. The rest are published too,
               and are worth reading as leads; they are not findings.
             </p>
-            <div className="featured">
+            <div className="featured grid">
               {featured.map((b) => (
-                <Link key={b.slug} href={`/briefs/${b.slug}`} className="featureCard">
-                  <div className="featureArea">{b.area}</div>
-                  <div className="featureName">{b.segment}</div>
-                  <div className="featureRate">
-                    {(b as any).failure_signature ? (b as any).failure_signature.molecules : pct(b.rate)}
-                    {(b as any).failure_signature ? <span className="featureUnit"> molecules</span> : null}
+                <Link key={b.slug} href={`/briefs/${b.slug}`} className="tile tileHero">
+                  <div className="tileTop">
+                    <span className="tileArea">{b.area}</span>
+                    <span className="badge">clears correction</span>
                   </div>
-                  <div className="featureMeta">
+                  <div className="tileName">{b.segment}</div>
+                  <div className="tileLead">
+                    <b>{(b as any).failure_signature ? (b as any).failure_signature.molecules : "—"}</b>
+                    <span>molecules</span>
+                    {(b as any).failure_signature?.shared_modality ? (
+                      <em>· all {(b as any).failure_signature.shared_modality.toLowerCase()}s</em>
+                    ) : null}
+                  </div>
+                  <div className="tileMeta">
                     {(b as any).failure_signature ? (b as any).failure_signature.sentence : ""}{" "}
                     {pct(b.rate)} of closed trials against {pct(b.baseline_resolved_rate ?? b.baseline_rate)}
                     {typeof (b as any).q_value_by === "number" ? ` · q=${(b as any).q_value_by.toPrecision(2)}` : ""}
@@ -142,6 +148,27 @@ export default function BriefsIndexPage() {
                       <span>95% CI {pct(b.ci95[0])}–{pct(b.ci95[1])}</span>
                       <span>{typeof q === "number" ? `q=${q.toPrecision(2)}` : "q —"}</span>
                     </div>
+                    {b.has_pdf ? (
+                      <span
+                        className="tilePdf"
+                        role="link"
+                        tabIndex={0}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
+                          window.open(`/briefs/${b.file_stem}.pdf`, "_blank", "noopener");
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            window.open(`/briefs/${b.file_stem}.pdf`, "_blank", "noopener");
+                          }
+                        }}
+                      >
+                        PDF ↗
+                      </span>
+                    ) : null}
                   </Link>
                 );
               })}
@@ -158,7 +185,8 @@ export default function BriefsIndexPage() {
               evidence of anything unusual.
             </p>
             <p className="fine">
-              These are screens, not tests. Every segment with enough data is published here rather than only the striking ones, but
+              Every brief is free to read and free to download — the gate is on the evidence package, which is the thing being
+              sold. These are screens, not tests. Every segment with enough data is published here rather than only the striking ones, but
               picking the top of a ranked list is itself a selection effect and no interval on this page corrects for it. A zero is
               &ldquo;no qualifying termination observed in this cohort&rdquo; — not evidence that a mechanism is safe. Each brief
               gives the trials behind its number so the screen can be checked rather than believed.
@@ -224,57 +252,6 @@ export default function BriefsIndexPage() {
           font-weight: 900;
           letter-spacing: -0.015em;
         }
-        .featured {
-          display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 14px;
-          margin-top: 14px;
-        }
-        .featureCard {
-          display: block;
-          text-decoration: none;
-          color: inherit;
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 16px;
-          box-shadow: var(--shadow-soft);
-          padding: 18px 20px;
-        }
-        .featureCard:hover {
-          border-color: rgba(79, 70, 229, 0.45);
-        }
-        .featureArea {
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--text-muted);
-        }
-        .featureName {
-          margin-top: 6px;
-          font-size: 15px;
-          font-weight: 850;
-        }
-        .featureUnit {
-          font-size: 15px;
-          font-weight: 800;
-          letter-spacing: 0;
-          color: var(--text-muted);
-        }
-        .featureRate {
-          margin-top: 6px;
-          font-size: 34px;
-          font-weight: 900;
-          letter-spacing: -0.025em;
-          font-variant-numeric: tabular-nums;
-          line-height: 1.05;
-        }
-        .featureMeta {
-          margin-top: 4px;
-          font-size: 13px;
-          line-height: 1.5;
-          color: var(--text-muted);
-        }
         .listHead {
           display: flex;
           align-items: baseline;
@@ -302,6 +279,18 @@ export default function BriefsIndexPage() {
           background: var(--accent);
           border-color: var(--accent);
           color: #fff;
+        }
+        .featured {
+          margin-top: 14px;
+        }
+        .tileHero {
+          padding: 18px 20px 16px;
+        }
+        .tileHero .tileLead b {
+          font-size: 36px;
+        }
+        .tileHero .tileName {
+          font-size: 16.5px;
         }
         .grid {
           display: grid;
@@ -385,6 +374,17 @@ export default function BriefsIndexPage() {
           font-size: 12.5px;
           line-height: 1.5;
           color: var(--text-muted);
+        }
+        .tilePdf {
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 11.5px;
+          font-weight: 800;
+          color: var(--accent);
+          cursor: pointer;
+        }
+        .tilePdf:hover {
+          text-decoration: underline;
         }
         .tileFoot {
           margin-top: 10px;

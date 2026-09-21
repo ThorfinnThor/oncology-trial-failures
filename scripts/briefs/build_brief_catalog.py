@@ -7,6 +7,8 @@ combination has enough closed trials). Briefs are written to product/briefs/ as 
 from __future__ import annotations
 
 import argparse
+import re
+import json
 import sys
 from pathlib import Path
 
@@ -17,6 +19,39 @@ from scripts.briefs.build_brief import main as build_one  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
 from scripts.universe.mechanism_classes import COMBINATION_PARTNER, classes_of  # noqa: E402
 from scripts.universe.multiplicity import benjamini_yekutieli, binom_sf  # noqa: E402
+
+MANIFEST = ROOT / "product/briefs/manifest.json"
+
+
+def record_manifest(area: str, stems: list[str]) -> None:
+    """What this area's catalogue contains now, replacing whatever it contained before.
+
+    A class that is renamed, split or dropped leaves its brief behind on disk. The index reads
+    the manifest rather than the directory, so a stale file cannot reappear on the site. We
+    also try to delete it, because a tidy release directory is worth having — but the build
+    must not depend on being allowed to.
+    """
+    manifest = {}
+    if MANIFEST.exists():
+        try:
+            manifest = json.loads(MANIFEST.read_text())
+        except json.JSONDecodeError:
+            manifest = {}
+    manifest[area] = sorted(stems)
+    MANIFEST.parent.mkdir(parents=True, exist_ok=True)
+    MANIFEST.write_text(json.dumps(manifest, indent=1, ensure_ascii=False, sort_keys=True) + "\n")
+
+    keep = {stem for stems_ in manifest.values() for stem in stems_}
+    area_prefix = f"brief_{re.sub(r'[^a-z0-9]+', '-', area.lower()).strip('-')}_"
+    for path in sorted(MANIFEST.parent.glob("brief_*")):
+        stem = path.name.split(".")[0]
+        if not stem.startswith(area_prefix) or stem in keep:
+            continue
+        try:
+            path.unlink()
+            print(f"  removed stale {path.name}")
+        except OSError:
+            print(f"  stale, left on disk (not deletable here): {path.name}")
 
 MIN_CLOSED = 20
 MIN_STOPS = 3
@@ -77,6 +112,10 @@ def main() -> int:
         code = build_one(job_args)
         if code:
             print(f"skipped {label} (exit {code})", file=sys.stderr)
+    slug = lambda v: re.sub(r"[^a-z0-9]+", "-", (v or "").lower()).strip("-")
+    area_slug = slug(args.area)
+    window_slug = f"{start[0]}-{start[1]}"
+    record_manifest(args.area, [f"brief_{area_slug}_{slug(label)}_{window_slug}" for label, _ in jobs])
     print(f"built {len(jobs)} briefs: {', '.join(n for n, _ in jobs)}")
     return 0
 

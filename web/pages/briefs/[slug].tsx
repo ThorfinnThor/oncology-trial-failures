@@ -3,7 +3,6 @@
 import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticPaths, GetStaticProps } from "next";
-import { FormEvent, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import briefsIndex from "@/data/briefs_index.json";
@@ -28,9 +27,6 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 export default function BriefPage({ brief }: Props) {
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
-  const [message, setMessage] = useState("");
-  const [pdfUrl, setPdfUrl] = useState("");
 
   const area = brief.area.toLowerCase();
   const phases = brief.phases.join("/");
@@ -51,27 +47,6 @@ export default function BriefPage({ brief }: Props) {
   const cif = (brief.cumulative_incidence || []) as { months: number; cif: number; ci95: number[]; n_risk: number }[];
   const cif36 = cif.find((h) => h.months === 36);
   const baseCif36 = ((brief.baseline_cumulative_incidence || []) as typeof cif).find((h) => h.months === 36);
-
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    setStatus("sending");
-    setMessage("");
-    try {
-      const res = await fetch("/api/brief-request", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...Object.fromEntries(form.entries()), slug: brief.slug }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.ok) throw new Error(data.error || "Request failed");
-      setPdfUrl(data.pdfUrl || "");
-      setStatus("done");
-    } catch (error: any) {
-      setStatus("error");
-      setMessage(error?.message || "Request failed. Please email us instead.");
-    }
-  }
 
   return (
     <>
@@ -429,141 +404,44 @@ export default function BriefPage({ brief }: Props) {
             ) : null}
           </section>
 
-          {brief.open_access ? (
-            <section className="section" id="pdf">
-              <div className="pdfBox">
-                <div>
-                  <h2>This one is open — no form</h2>
-                  <p className="sectionSub">
-                    One brief is published in full so the method can be judged before anything is bought: every trial above rather
-                    than a sample, the denominator built step by step on the methods page, the programme concentration, the
-                    unreadable terminations, and the PDF itself. If the cohort construction does not survive your scrutiny here, it
-                    will not survive it anywhere else on this site either.
-                  </p>
-                  <ul className="list">
-                    <li>All {brief.trial_count} stopped trials listed above, with registry links</li>
-                    <li>
-                      <Link className="link" href="/validation">
-                        The full path from the registry to this denominator
-                      </Link>
-                    </li>
-                    <li>No email, no gate</li>
-                  </ul>
-                </div>
-                <div className="pdfActions">
-                  {brief.has_pdf ? (
-                    <a className="btnPrimary" href={`/briefs/${brief.file_stem}.pdf`} target="_blank" rel="noopener noreferrer">
-                      Download the PDF
-                    </a>
-                  ) : null}
-                  <a className="btnGhost" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}>
-                    Ask for this on your own asset
-                  </a>
-                </div>
-              </div>
-            </section>
-          ) : brief.has_pdf ? (
           <section className="section" id="pdf">
             <div className="pdfBox">
               <div>
-                <h2>Get the two-page PDF</h2>
+                <h2>Take it with you</h2>
                 <p className="sectionSub">
-                  The complete brief: every stopped trial with its registry reason, the cohort trend, the sponsors, and the method
-                  behind the number. One email, no call.
+                  The same brief as a two-page document: every molecule behind the stops, the comparison, the trials and the
+                  method. No form — if the work does not stand up to reading, an email address is worth nothing anyway.
                 </p>
                 <ul className="list">
-                  <li>All {brief.trial_count} stopped trials in this segment</li>
-                  <li>Formatted to forward to a colleague</li>
                   <li>Rebuilt weekly from ClinicalTrials.gov</li>
+                  <li>Formatted to forward to a colleague</li>
+                  <li>
+                    Every number traces to{" "}
+                    <Link className="link" href="/validation">
+                      the cohort it was built from
+                    </Link>
+                  </li>
                 </ul>
               </div>
-
-              {status === "done" ? (
-                <div className="formCard">
-                  <div className="formTitle">Your brief is ready</div>
-                  <a className="submit asLink" href={pdfUrl} download>
+              <div className="pdfActions">
+                {brief.has_pdf ? (
+                  <a className="btnPrimary" href={`/briefs/${brief.file_stem}.pdf`} target="_blank" rel="noopener noreferrer">
                     Download the PDF
                   </a>
-                  <p className="formFoot">
-                    For the dataset behind it,{" "}
-                    <Link className="link" href="/data-licensing">
-                      see licensing
-                    </Link>
-                    .
-                  </p>
-                </div>
-              ) : (
-                <form className="formCard" onSubmit={onSubmit}>
-                  <div className="formTitle">Send me the brief</div>
-                  <div className="field">
-                    <label htmlFor="b-email">Work email</label>
-                    <input id="b-email" className="input" name="email" type="email" required autoComplete="email" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="b-company">Company or institution</label>
-                    <input id="b-company" className="input" name="company" type="text" required autoComplete="organization" />
-                  </div>
-                  <input
-                    name="website"
-                    type="text"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden="true"
-                    style={{ position: "absolute", left: "-9999px" }}
-                  />
-                  <label className="consent">
-                    <input name="marketing" type="checkbox" />
-                    <span>
-                      Optional: email me when there is something new on this mechanism. Leave it unticked and you still get the
-                      PDF — we will only reply about this request. See our{" "}
-                      <Link className="link" href="/privacy">
-                        privacy notice
-                      </Link>
-                      .
-                    </span>
-                  </label>
-                  <button className="submit" type="submit" disabled={status === "sending"}>
-                    {status === "sending" ? "Sending…" : "Get the PDF"}
-                  </button>
-                  {status === "error" ? <div className="formError">{message}</div> : null}
-                </form>
-              )}
+                ) : null}
+                <a className="btnGhost" href={`/briefs/${brief.file_stem}.html`} target="_blank" rel="noopener noreferrer">
+                  Open as a web page
+                </a>
+                <a
+                  className="btnGhost"
+                  href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}
+                >
+                  Ask for this on your own asset
+                </a>
+              </div>
             </div>
           </section>
-          ) : null}
 
-          <div className="legal">
-            <div>
-              <h3>Method</h3>
-              <p>
-                Denominator: ClinicalTrials.gov interventional Phase {phases} {area} trials started {brief.start_from}–
-                {brief.start_to} that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason
-                is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%,
-                recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus, and a trial without a resolved target cannot
-                enter a mechanism class. Intervals are Wilson 95%.{" "}
-                <Link className="link" href="/validation">
-                  How we validate
-                </Link>
-                .
-              </p>
-            </div>
-            <div>
-              <h3>Limits</h3>
-              <p>
-                Not a failure rate: trials that completed with negative results are not counted, and programmes discontinued after a
-                completed trial do not appear. Stop reasons are sponsor-reported and optional, so a sponsor that files nothing looks
-                clean here. Rates are proportions over closed trials, not time-to-event estimates, and they are descriptive: the
-                segment and its comparison group differ in tumour type, line of therapy, trial size, sponsor and calendar year, so a
-                gap is a reason to look, not evidence that the mechanism caused it. Where a trial was stopped for more than one
-                reason the table says so rather than picking one. Recent cohorts have fewer closed trials, so their
-                rates are less stable. Research signals, not clinical or investment advice. Questions:{" "}
-                <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(brief.segment + " brief")}`}>
-                  {LICENSING_EMAIL}
-                </a>
-                .
-              </p>
-            </div>
-          </div>
         </div>
       </main>
 

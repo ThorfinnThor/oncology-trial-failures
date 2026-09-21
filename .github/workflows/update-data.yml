@@ -158,6 +158,8 @@ jobs:
           # The website serves the PDFs behind the lead form on /briefs/<slug>.
           mkdir -p web/public/briefs
           cp product/briefs/*.pdf web/public/briefs/ 2>/dev/null || true
+          # The web version is published too: a brief is marketing, not a gated asset.
+          cp product/briefs/brief_*.html web/public/briefs/ 2>/dev/null || true
 
       # The public summary reads the rate pack and counts the briefs, so it is built after
       # those steps. Run inside the signals step it wrote a summary with no rate figures,
