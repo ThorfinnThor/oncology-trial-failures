@@ -114,7 +114,11 @@ def main() -> int:
             "area": built["area"],
             "brief_stem": stem,
             "generated_at_utc": built["generated_at_utc"],
-            "counts": built["counts"],
+            "counts": {**built["counts"], "closed": built["headline"]["closed"]},
+            "window": built["window"],
+            "headline": {"rate": built["headline"]["rate"],
+                         "comparator_rate": built["headline"]["comparator_rate"],
+                         "comparator_label": built["headline"]["comparator_label"]},
             "html": html,
         }
 
@@ -130,7 +134,8 @@ def main() -> int:
 
     public = sorted(
         ({"slug": slug, "cohort": p["cohort"], "area": p["area"], "brief_stem": p["brief_stem"],
-          "counts": p["counts"], "generated_at_utc": p["generated_at_utc"]} for slug, p in bundle.items()),
+          "counts": p["counts"], "window": p["window"], "headline": p["headline"],
+          "generated_at_utc": p["generated_at_utc"]} for slug, p in bundle.items()),
         key=lambda p: (p["area"], p["cohort"]))
     PUBLIC.write_text(json.dumps({"schema_version": 1, "package_count": len(public), "packages": public},
                                  indent=1, ensure_ascii=False) + "\n", encoding="utf-8")

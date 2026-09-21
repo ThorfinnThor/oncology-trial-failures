@@ -34,8 +34,8 @@ const PRICING = [
       "Unresolved and unreadable cases listed, not hidden",
       "Written interpretation, kept separate from the extracted facts",
     ],
-    cta: "See the packages",
-    href: "#evidence-package",
+    cta: `See the ${catalogue.package_count} cohorts`,
+    href: "/packages",
   },
   {
     name: "Annual licence",
@@ -149,14 +149,6 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
   }
 
   const s: any = productSummary;
-
-  // The largest cohorts lead: a package is worth most where the brief leaves most out.
-  const biggestPackages = [...(catalogue.packages as any[])]
-    .sort((a, b) => b.counts.total_in_cohort - a.counts.total_in_cohort)
-    .slice(0, 6);
-
-  // The strongest briefs lead the teaser: the ones that clear a multiplicity correction.
-  const featuredBriefs = (briefsIndex.briefs as any[]).filter((b) => b.survives_fdr_10pct).slice(0, 4);
 
   const rates = s.discontinuation_rates;
   const featured = s.featured_segment;
@@ -368,63 +360,57 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </div>
           </section>
 
-          <section className="section">
-            <div className="sectionHead">
-              <h2>{briefsIndex.brief_count} mechanism briefs, free to read</h2>
-              <Link className="btnGhost" href="/briefs">
-                Browse all {briefsIndex.brief_count}
-              </Link>
-            </div>
-            <p className="sectionSub">
-              One per mechanism class, rebuilt weekly. Each leads with how many distinct molecules are behind the stopped
-              trials, because a sponsor abandoning one drug closes every trial of it at once. These four are the ones still
-              unusual after correcting for having screened every class.
-            </p>
-            <div className="briefGrid">
-              {featuredBriefs.map((b) => (
-                <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefTile">
-                  <div className="briefArea">{b.area}</div>
-                  <div className="briefName">{b.segment}</div>
-                  <div className="briefBig">
-                    {b.failure_signature ? b.failure_signature.molecules : "—"}
-                    <span> molecules</span>
-                  </div>
-                  <div className="briefMeta">
-                    {b.biological_stops} of {b.closed} closed trials stopped early
-                    {b.failure_signature?.shared_modality ? `, all ${b.failure_signature.shared_modality.toLowerCase()}s` : ""}
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
-
+          {/* ---------------- what we sell ---------------- */}
           <section className="section" id="evidence-package">
-            <div className="sectionHead">
-              <h2>Evidence packages</h2>
-              <Link className="btnGhost" href="/briefs">
-                Browse the briefs
-              </Link>
-            </div>
+            <h2>Three things, and what each one is</h2>
             <p className="sectionSub">
-              One per mechanism class, {catalogue.package_count} of them, each covering the same cohort as its brief. The brief
-              shows the trials that stopped; the package adds the rest — every trial the rate was computed from, the rules that
-              decide membership, which stops were the trial&rsquo;s own verdict, and the time-to-event curve. Delivered the
-              moment you ask, because it is already built.
+              Two of them are free. They are separate documents about the same cohorts, not tiers of one product, and each
+              has its own page — this page is only the prices and the terms.
             </p>
-            <div className="pkgGrid">
-              {biggestPackages.map((p: any) => (
-                <Link key={p.slug} href={`/packages/${p.slug}`} className="pkgTile">
-                  <div className="pkgArea">{p.area}</div>
-                  <div className="pkgName">{p.cohort}</div>
-                  <div className="pkgMeta">
-                    {n(p.counts.total_in_cohort)} trials · {p.counts.stopped} stopped · {n(p.counts.still_open)} still running
-                  </div>
-                </Link>
-              ))}
+            <div className="sellGrid">
+              <Link href="/briefs" className="sellCard">
+                <div className="sellTop">
+                  <span className="sellName">Brief</span>
+                  <span className="sellPrice sellFree">Free</span>
+                </div>
+                <p className="sellOne">
+                  The trials in one mechanism class that stopped early, and what the sponsor said about each.
+                </p>
+                <div className="sellMeta">
+                  {briefsIndex.brief_count} classes · two pages · PDF or web page, no form
+                </div>
+              </Link>
+
+              <Link href="/packages" className="sellCard sellLead">
+                <div className="sellTop">
+                  <span className="sellName">Evidence package</span>
+                  <span className="sellPrice">€100</span>
+                </div>
+                <p className="sellOne">
+                  Every trial the rate was computed from — the ones that closed without stopping and the ones still
+                  running — with the rules that define the cohort, which stops were the trial&rsquo;s own result, and the
+                  probability of a stop over time.
+                </p>
+                <div className="sellMeta">
+                  {catalogue.package_count} cohorts · delivered immediately · rebuilt weekly
+                </div>
+              </Link>
+
+              <Link href="/watchlist" className="sellCard">
+                <div className="sellTop">
+                  <span className="sellName">Watchlist</span>
+                  <span className="sellPrice sellFree">Free</span>
+                </div>
+                <p className="sellOne">
+                  One email in the week a sponsor changes a trial you follow. Nothing in the weeks they do not.
+                </p>
+                <div className="sellMeta">Molecules, targets, mechanisms or sponsors · one click to stop</div>
+              </Link>
             </div>
             <p className="fine">
-              Every brief links to its own package. Need a cohort that is not a mechanism class — one asset, one sponsor, one
-              indication?{" "}
+              The annual licence below is the version of the package that keeps running: twelve cohorts a year, the full
+              dataset, and the weekly change report as a file rather than a mail. Need a cohort that is not a mechanism
+              class — one asset, one sponsor, one indication?{" "}
               <a className="link" href={mailto("Evidence package for a custom cohort")}>
                 Tell us what you are evaluating
               </a>{" "}
@@ -968,93 +954,78 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           gap: 16px;
           flex-wrap: wrap;
         }
-        .briefGrid {
-          display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-          gap: 12px;
-          margin-top: 14px;
-        }
-        :global(.briefTile) {
-          display: block;
-          text-decoration: none;
-          color: inherit;
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 14px;
-          padding: 14px 16px;
-        }
-        :global(.briefTile):hover {
-          border-color: rgba(79, 70, 229, 0.45);
-        }
-        .briefArea {
-          font-size: 10.5px;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--text-muted);
-        }
-        .briefName {
-          margin-top: 6px;
-          font-size: 14.5px;
-          font-weight: 850;
-          line-height: 1.25;
-        }
-        .briefBig {
-          margin-top: 8px;
-          font-size: 27px;
-          font-weight: 900;
-          letter-spacing: -0.025em;
-          font-variant-numeric: tabular-nums;
-          line-height: 1;
-        }
         .briefBig span {
           font-size: 13px;
           font-weight: 700;
           color: var(--text-muted);
           letter-spacing: 0;
         }
-        .briefMeta {
-          margin-top: 6px;
-          font-size: 12.5px;
-          line-height: 1.5;
-          color: var(--text-muted);
-        }
-        .pkgGrid {
+        .sellGrid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-          gap: 12px;
-          margin-top: 14px;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 14px;
+          margin-top: 18px;
+          align-items: stretch;
         }
-        :global(.pkgTile) {
-          display: block;
+        :global(.sellCard) {
+          display: flex;
+          flex-direction: column;
           text-decoration: none;
           color: inherit;
           background: var(--surface);
           border: 1px solid var(--border);
-          border-radius: 14px;
-          padding: 14px 16px;
+          border-radius: 16px;
+          padding: 18px 20px;
         }
-        :global(.pkgTile):hover {
+        :global(.sellCard:hover) {
           border-color: rgba(79, 70, 229, 0.45);
         }
-        .pkgArea {
-          font-size: 10.5px;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--text-muted);
+        :global(.sellLead) {
+          background: rgba(79, 70, 229, 0.04);
+          border-color: rgba(79, 70, 229, 0.28);
         }
-        .pkgName {
-          margin-top: 6px;
-          font-size: 15px;
+        .sellTop {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .sellName {
+          font-size: 15.5px;
           font-weight: 850;
-          line-height: 1.25;
         }
-        .pkgMeta {
-          margin-top: 6px;
-          font-size: 12.5px;
-          line-height: 1.5;
+        .sellPrice {
+          font-size: 12px;
+          font-weight: 900;
+          padding: 3px 9px;
+          border-radius: 999px;
+          background: var(--accent);
+          color: #fff;
+          white-space: nowrap;
+        }
+        .sellFree {
+          background: rgba(15, 23, 42, 0.08);
           color: var(--text-muted);
+        }
+        .sellOne {
+          margin: 10px 0 0;
+          font-size: 13.5px;
+          line-height: 1.55;
+          color: var(--text-muted);
+          flex: 1;
+        }
+        .sellMeta {
+          margin-top: 14px;
+          padding-top: 12px;
+          border-top: 1px solid var(--border);
+          font-size: 12px;
+          line-height: 1.45;
+          color: var(--text-muted);
+        }
+        @media (max-width: 900px) {
+          .sellGrid {
+            grid-template-columns: minmax(0, 1fr);
+          }
         }
         .pkgBox {
           display: grid;

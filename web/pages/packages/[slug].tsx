@@ -9,6 +9,7 @@ import Link from "next/link";
 import type { GetStaticPaths, GetStaticProps } from "next";
 import { FormEvent, useState } from "react";
 
+import BriefVsPackage from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
@@ -80,33 +81,10 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
             · {pkg.area}
           </div>
           <h1>{pkg.cohort}: the whole cohort, not just the stops</h1>
-          <p className="lead">
-            The brief shows the {c.stopped} trials that stopped and what caused each one. This is the other{" "}
-            {n(c.total_in_cohort - c.stopped)} — every trial the rate was computed from, the rules that decide membership,
-            and the analysis the brief has no room for.
-          </p>
-
-          <div className="stats">
-            <div className="stat">
-              <b>{n(c.total_in_cohort)}</b>
-              <span>trials in the cohort</span>
-            </div>
-            <div className="stat">
-              <b>{c.stopped}</b>
-              <span>stopped early, each with its registry reason and attribution</span>
-            </div>
-            <div className="stat">
-              <b>{n(c.still_open)}</b>
-              <span>still running — they will move this rate in both directions</span>
-            </div>
-            <div className="stat">
-              <b>{c.unreadable_terminations}</b>
-              <span>terminated with no cause we can read, listed rather than dropped</span>
-            </div>
-          </div>
+          <BriefVsPackage pkg={pkg} briefSlug={briefSlug} emphasis="package" />
 
           <section className="section">
-            <h2>What is in it</h2>
+            <h2>What is in it, in detail</h2>
             <div className="grid2">
               <div className="card">
                 <div className="cardTitle">The cohort, written out</div>
@@ -139,15 +117,6 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                 </p>
               </div>
             </div>
-            {briefSlug ? (
-              <p className="fine">
-                Read{" "}
-                <Link className="link" href={`/briefs/${briefSlug}`}>
-                  the free brief for {pkg.cohort}
-                </Link>{" "}
-                first. If its method does not convince you, this will not either.
-              </p>
-            ) : null}
           </section>
 
           <section className="section" id="get">

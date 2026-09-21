@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticPaths, GetStaticProps } from "next";
 
+import BriefVsPackage from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
 import briefsIndex from "@/data/briefs_index.json";
 import catalogue from "@/data/evidence_catalogue.json";
@@ -429,17 +430,6 @@ export default function BriefPage({ brief }: Props) {
                 </p>
                 <ul className="list">
                   <li>Rebuilt weekly from ClinicalTrials.gov</li>
-                  {pkg ? (
-                    <li>
-                      This brief covers the {brief.biological_stops} stops. The{" "}
-                      {n(pkg.counts.total_in_cohort - brief.biological_stops)} other trials in the cohort, the rules that
-                      define it and the time-to-event curve are in{" "}
-                      <Link className="link" href={`/packages/${pkg.slug}`}>
-                        the evidence package
-                      </Link>
-                      .
-                    </li>
-                  ) : null}
                   <li>Formatted to forward to a colleague</li>
                   <li>
                     Every number traces to{" "}
@@ -458,11 +448,7 @@ export default function BriefPage({ brief }: Props) {
                 <a className="btnGhost" href={`/briefs/${brief.file_stem}.html`} target="_blank" rel="noopener noreferrer">
                   Open as a web page
                 </a>
-                {pkg ? (
-                  <Link className="btnGhost" href={`/packages/${pkg.slug}`}>
-                    The whole cohort ({n(pkg.counts.total_in_cohort)} trials)
-                  </Link>
-                ) : (
+                {pkg ? null : (
                   <a
                     className="btnGhost"
                     href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}
@@ -473,6 +459,8 @@ export default function BriefPage({ brief }: Props) {
               </div>
             </div>
           </section>
+
+          {pkg ? <BriefVsPackage pkg={pkg} briefSlug={null} emphasis="brief" /> : null}
 
           {watchTerms.length ? (
             <section className="section" id="watch">
