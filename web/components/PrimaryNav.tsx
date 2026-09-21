@@ -24,7 +24,8 @@ type PrimaryNavProps = {
 
 // What the site gives away, behind one control. These pages are worth having and worth finding;
 // they are not worth eight slots in a bar that also has to carry the four things a visitor can
-// actually act on.
+// actually act on. They lead the bar: most people arrive on a reference page from a search and
+// are looking for more of the same, not for a price list.
 const DATA_LINKS = [
   { href: "/explore", label: "Explore the trials" },
   { href: "/overview", label: "Overview" },
@@ -71,6 +72,14 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
         {mobileOpen ? "Close" : "Menu"}
       </button>
       <nav className="nav primaryNav" id="primary-navigation" aria-label="Primary">
+        <NavMenu
+          label="Data"
+          id="trial-data-pages"
+          links={DATA_LINKS}
+          active={!!active && DATA_ITEMS.includes(active)}
+          onNavigate={closeMobileNav}
+        />
+        <GuidesMenu active={active === "guides"} />
         <Link className="navlink" href="/briefs" aria-current={current(active, "briefs")} onClick={closeMobileNav}>
           Briefs
         </Link>
@@ -83,14 +92,6 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
         <Link className="navlink" href="/data-licensing" aria-current={current(active, "data")} onClick={closeMobileNav}>
           Pricing
         </Link>
-        <NavMenu
-          label="Data"
-          id="trial-data-pages"
-          links={DATA_LINKS}
-          active={!!active && DATA_ITEMS.includes(active)}
-          onNavigate={closeMobileNav}
-        />
-        <GuidesMenu active={active === "guides"} />
       </nav>
     </div>
   );
