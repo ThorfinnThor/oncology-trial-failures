@@ -128,7 +128,6 @@ export default function BriefsIndexPage() {
                   <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard">
                     <div className="tileTop">
                       <span className="tileArea">{b.area}</span>
-                      {(b as any).survives_fdr_10pct ? <span className="badge" title="Still unusual after correcting for every segment screened in this area (Benjamini–Yekutieli q ≤ 0.10), so the gap is not explained by having looked at many segments.">not a screening artefact</span> : null}
                     </div>
                     <div className="tileName">{b.segment}</div>
                     <div className="tileLead">
@@ -172,6 +171,11 @@ export default function BriefsIndexPage() {
                 );
               })}
             </div>
+            <p className="fine">
+              A brief without a mark above is not a weaker brief. Most segments simply have too few closed trials for any
+              correction to clear, and a rate close to its comparator is a finding rather than a shortcoming — the numbers are
+              built the same way throughout.
+            </p>
             <p className="fine">
               The big number on each tile is <b>how many distinct drugs</b> are behind the stopped trials — the number to read
               first. A sponsor who abandons a molecule closes every trial of it at once, so seven stopped trials can be four
