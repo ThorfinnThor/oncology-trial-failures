@@ -22,6 +22,7 @@ export type PackageSummary = {
     closed: number;
     listed_unreadable: number;
     listed_open: number;
+    brief_lists_stops: number;
   };
   window: { phases: string[]; start_from: number; start_to: number };
   headline: { rate: number; comparator_rate: number; comparator_label: string };
@@ -87,13 +88,20 @@ export default function BriefVsPackage({
             </span>
             <span className="bvpPrice bvpFree">Free</span>
           </div>
-          <div className="bvpOne">The {c.stopped} trials that stopped, and what the sponsor said about each.</div>
+          <div className="bvpOne">
+            The finding, and the {Math.min(c.brief_lists_stops, c.stopped)} most recent of the {c.stopped} stopped
+            trials.
+          </div>
           <ul>
-            <li>The headline rate and what it is measured against</li>
-            <li>Every stopped trial with its registry reason and a link to the record</li>
-            <li>The molecules behind the stops, and whether they share a modality</li>
+            <li>The rate, the comparison, and whether it survives a correction for having screened every class</li>
+            <li>
+              How many distinct molecules are behind the stops, how concentrated they are in one sponsor, and what the
+              rate becomes without the largest programme
+            </li>
+            <li>The worst case if every unreadable termination were biological</li>
             <li>Two pages. PDF or web page, no form</li>
           </ul>
+
           {emphasis !== "brief" && briefSlug ? (
             <div className="bvpFoot">
               <Link className="bvpGhost" href={`/briefs/${briefSlug}`}>
@@ -115,31 +123,31 @@ export default function BriefVsPackage({
           {adds > 0 ? (
             <>
               <div className="bvpOne">
-                The {n(c.closed)} closed trials the {pct(pkg.headline.rate)} was computed from — not only the{" "}
-                {c.stopped} that stopped.
+                The same cohort, itemised: every trial named instead of counted.
               </div>
               <ul>
                 <li>
-                  The rate and the curve are computed over the whole cohort: all {n(c.closed)} closed trials
-                  {c.still_open > 0 ? `, with the ${n(c.still_open)} still running carried as censored rather than ignored` : ""}
-                </li>
-                <li>The rules that decide which trial is in the cohort and which is out, written out in full</li>
-                <li>
-                  All {c.stopped} stops listed one by one, each attributed to this trial&rsquo;s own result or to a
-                  decision taken elsewhere in the programme
+                  All {c.stopped} stopped trials, not the {Math.min(c.brief_lists_stops, c.stopped)} the brief has room
+                  for — and each one attributed to its own result or to a decision taken elsewhere, with the words that
+                  produced the verdict
                 </li>
                 <li>
-                  The {c.unreadable_terminations} terminations with no readable cause
-                  {c.unreadable_terminations > c.listed_unreadable
-                    ? `, counted in the denominator and never in the rate, with the ${c.listed_unreadable} most recent listed`
-                    : ", listed rather than quietly dropped"}
-                  , and what the rate would be if every one of them were biological
+                  The {c.unreadable_terminations} terminations with no readable cause{" "}
+                  {c.unreadable_terminations > c.listed_unreadable ? `(${c.listed_unreadable} most recent) ` : ""}
+                  with their registry records — the brief gives only the count and the worst case
                 </li>
                 <li>
-                  The probability of a stop at 12 to 60 months against the same curve for the comparator
-                  {c.still_open > c.listed_open
-                    ? `, plus the ${c.listed_open} most recently started of the ${n(c.still_open)} open trials, named`
-                    : ""}
+                  {c.still_open > 0
+                    ? `${n(Math.min(c.listed_open, c.still_open))} of the ${n(c.still_open)} trials still running, named, so you can see what is about to move the rate`
+                    : "Every trial in the cohort accounted for"}
+                </li>
+                <li>
+                  The probability of a stop at 12, 24, 36, 48 and 60 months with intervals and the comparator&rsquo;s own
+                  curve beside it — the brief gives a single point
+                </li>
+                <li>
+                  Every rule that defines the cohort, with the reason for each, and the limits in full rather than in a
+                  box
                 </li>
               </ul>
             </>
@@ -184,10 +192,9 @@ export default function BriefVsPackage({
       <p className="bvpWhy">
         {adds > 0 ? (
           <>
-            Why the difference matters: {pct(pkg.headline.rate)} on its own is not usable. Whether those {c.stopped} stops
-            are {c.stopped} independent verdicts on the mechanism or one sponsor closing a programme, and whether the{" "}
-            {n(c.still_open)} open trials are about to pull the rate back down, decides what the number is worth. The
-            brief cannot answer either question; the package is built to.
+            The brief is the finding and is meant to be read in five minutes. The package is the file underneath it: the
+            same {pct(pkg.headline.rate)}, with every trial named, so the number can be checked rather than believed —
+            which is what anyone has to do before it goes into a diligence memo.
           </>
         ) : (
           <>

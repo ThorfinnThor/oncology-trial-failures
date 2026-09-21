@@ -114,6 +114,8 @@ VERDICT_LABEL = {"closest": "Same target, same modality", "related": "Related",
 # them is a data dump rather than a report. They are counted in full, listed in part, and the
 # complete cohort ships as the CSV beside this document.
 MAX_CONTEXT_ROWS = 25
+# The brief's own cap on the stop table (scripts/briefs/build_brief.py MAX_ROWS).
+BRIEF_MAX_ROWS = 6
 
 ATTRIBUTION_LABEL = {
     "own_data": "This trial's own data",
@@ -271,7 +273,10 @@ def build(args) -> dict:
                    # trial by trial, are not the same number: every stop is listed, the other two
                    # groups are capped so one huge cohort cannot bloat the delivery.
                    "listed_unreadable": len(unreadable[:MAX_CONTEXT_ROWS]),
-                   "listed_open": len(open_trials[:MAX_CONTEXT_ROWS])},
+                   "listed_open": len(open_trials[:MAX_CONTEXT_ROWS]),
+                   # What the free brief shows of the same cohort. The difference between the two
+                   # documents is worth stating as a number, and a number nobody computes drifts.
+                   "brief_lists_stops": min(len(stops), BRIEF_MAX_ROWS)},
         "sources": ["ClinicalTrials.gov (NLM)", "ChEMBL (EMBL-EBI, CC BY-SA 3.0)", "NCI Thesaurus (NCI)",
                     "RxNorm/RxClass (NLM)", "SEC EDGAR"],
         "limits": [
