@@ -79,7 +79,7 @@ export default function BriefsIndexPage() {
                 <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard briefCardHero">
                   <div className="tileTop">
                     <span className="tileArea">{b.area}</span>
-                    <span className="badge">clears correction</span>
+                    <span className="badge" title="Still unusual after correcting for every segment screened in this area (Benjamini–Yekutieli q ≤ 0.10), so the gap is not explained by having looked at many segments.">not a screening artefact</span>
                   </div>
                   <div className="tileName">{b.segment}</div>
                   <div className="tileLead">
@@ -128,8 +128,7 @@ export default function BriefsIndexPage() {
                   <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard">
                     <div className="tileTop">
                       <span className="tileArea">{b.area}</span>
-                      {(b as any).survives_fdr_10pct ? <span className="badge">clears correction</span> : null}
-                      {(b as any).open_access ? <span className="badge open">open, no form</span> : null}
+                      {(b as any).survives_fdr_10pct ? <span className="badge" title="Still unusual after correcting for every segment screened in this area (Benjamini–Yekutieli q ≤ 0.10), so the gap is not explained by having looked at many segments.">not a screening artefact</span> : null}
                     </div>
                     <div className="tileName">{b.segment}</div>
                     <div className="tileLead">
@@ -234,14 +233,14 @@ export default function BriefsIndexPage() {
           line-height: 1.12;
           font-weight: 900;
           letter-spacing: -0.02em;
-          max-width: 22ch;
+          max-width: 34ch;
         }
         .lead {
           margin: 12px 0 0;
           font-size: 15px;
           line-height: 1.55;
           color: var(--text-muted);
-          max-width: 78ch;
+          max-width: 92ch;
         }
         .section {
           margin-top: 34px;
@@ -420,7 +419,7 @@ export default function BriefsIndexPage() {
           font-size: 12.5px;
           line-height: 1.55;
           color: var(--text-muted);
-          max-width: 96ch;
+          max-width: 100ch;
         }
         .cta {
           margin-top: 36px;

@@ -321,6 +321,11 @@ td {{ border-bottom:1px solid var(--rule); padding:2.5px 4px; vertical-align:top
 .reason {{ font-size:7.2pt; line-height:1.28; width:40%; overflow-wrap:anywhere; }} .muted {{ color:var(--muted); }}
 table.stops td:nth-child(4) {{ width:16%; }} table.stops td:nth-child(3) {{ width:13%; }}
 table {{ page-break-inside:auto; }} tr {{ page-break-inside:avoid; }}
+/* A method box split down the middle of a sentence reads as a broken document. Keep each
+   block whole and let it move to the next page instead. */
+.box, .cta, .stats, .barrow, .robust {{ page-break-inside:avoid; break-inside:avoid; }}
+.cols {{ page-break-inside:avoid; break-inside:avoid; }}
+h2 {{ page-break-after:avoid; break-after:avoid; }}
 .tk {{ font-size:7pt; border:1px solid var(--rule); border-radius:3px; padding:0 3px; color:var(--ink2); }}
 .box {{ background:#f4f3ef; padding:8px 10px; border-radius:4px; font-size:7.8pt; color:var(--ink2); }}
 .box b {{ color:var(--ink); }}
