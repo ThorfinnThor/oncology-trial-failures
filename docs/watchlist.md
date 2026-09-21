@@ -1,4 +1,7 @@
-# Watchlists
+# Watchlists (shelved)
+
+> Not on the site. The pages live in `web/shelved/`; see `docs/newsletter.md` for what replaced
+> them and `web/shelved/README.md` for how to put them back.
 
 A watchlist is a standing question — a molecule, a target, a mechanism, a sponsor — answered
 every week the registry moves and never otherwise. It is the free end of the product and the

@@ -13,6 +13,13 @@ from scripts.signals.sponsors import resolve_sponsor  # noqa: E402
 failures = 0
 
 
+def _dt_now() -> str:
+    from datetime import datetime, timezone
+
+    return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+
 def check(label, got, expected):
     global failures
     if got != expected:
@@ -383,6 +390,48 @@ _kept = _distinct(_tub)
 check("a paralogue family collapses to one chip", len(_kept & set(f"TUBB{i}" for i in range(1, 9))), 0)
 check("the largest member of the family is the one kept", "TUBB" in _kept, True)
 check("an unrelated target survives", "EGFR" in _kept, True)
+
+# ---------------------------------------------------------------------------
+# The fortnightly newsletter. Two failure modes worth a test: a week's changes
+# quietly dropped because the mail only carries the latest report, and a mail
+# that goes out weekly or not at all because the cadence was assumed rather
+# than measured.
+# ---------------------------------------------------------------------------
+from scripts.signals import newsletter as _nl  # noqa: E402
+
+_r1 = {"dataset_version": "2026-09-07", "previous_dataset_version": "2026-08-31",
+       "added": [{"nct_id": "NCT1", "brief_title": "One"}],
+       "changed": [{"nct_id": "NCT2", "origin": "registry_event", "changes": {"overall_status": {"from": "A", "to": "B"}}},
+                   {"nct_id": "NCT3", "origin": "reclassification", "changes": {}}]}
+_r2 = {"dataset_version": "2026-09-14", "previous_dataset_version": "2026-09-07",
+       "added": [{"nct_id": "NCT4", "brief_title": "Four"}],
+       "changed": [{"nct_id": "NCT1", "origin": "registry_event", "changes": {"why_stopped": {"from": "", "to": "x"}}},
+                   {"nct_id": "NCT5", "origin": "mixed", "changes": {"overall_status": {"from": "A", "to": "C"}}}]}
+
+_p = _nl.merge(_nl.merge({}, _r1), _r2)
+check("a fortnight keeps both weeks' new trials", sorted(_p["added"]), ["NCT1", "NCT4"])
+check("our own reclassifications never enter the mail", "NCT3" in _p["changed"], False)
+check("a partly-registry change does", "NCT5" in _p["changed"], True)
+check("a trial that entered is not also reported as changed", "NCT1" in _p["changed"], False)
+check("every release in the window is recorded", _p["releases"], ["2026-09-07", "2026-09-14"])
+
+check("a list that has never been mailed is due", _nl.due({}, False), True)
+check("a list mailed yesterday is not", _nl.due({"last_sent_at": _dt_now()}, False), False)
+check("--force overrides the wait", _nl.due({"last_sent_at": _dt_now()}, True), True)
+check("an unparseable timestamp does not block the mail forever",
+      _nl.due({"last_sent_at": "not a date"}, False), True)
+
+_subject, _body = _nl.render(_p, {"trial_count": 985, "brief_count": 51}, "https://example.test/stop?k=KEY")
+check("the subject counts both kinds", _subject.startswith("2 new stopped trials, 2 records changed"), True)
+check("one of a thing is not pluralised",
+      _nl.render({"added": {"A": {"nct_id": "A"}}, "changed": {}, "releases": ["v"]}, {}, "u")[0]
+      .startswith("1 new stopped trial, 0 records changed"), True)
+check("a quiet fortnight says so rather than padding",
+      "Nothing moved" in _nl.render({"added": {}, "changed": {}, "releases": ["v"]}, {}, "u")[0], True)
+check("every mail can be stopped from the mail", "stop?k=KEY" in _body, True)
+check("a registry title cannot smuggle markup",
+      "<script>" not in _nl.render({"added": {"A": {"nct_id": "A", "brief_title": "<script>x</script>"}},
+                                    "changed": {}, "releases": ["v"]}, {}, "u")[1], True)
 
 if failures:
     print(f"{failures} signal test(s) failed")

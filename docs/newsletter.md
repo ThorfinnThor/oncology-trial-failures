@@ -1,0 +1,69 @@
+# Newsletter
+
+One list, one mail every second week: the trials that entered the dataset and the records a
+sponsor changed. It replaced a per-subscriber watchlist (`web/shelved/`, `docs/watchlist.md`),
+because a mail written once by the workflow and sent to everyone is a thing that keeps happening,
+and that is the only property that matters for something published on a schedule.
+
+## Why there is a pending list
+
+The data is rebuilt weekly; the mail goes out fortnightly. A change report covers exactly one
+release, so a mail that only ever carried the latest one would drop half of what happened. Each
+run folds its report into `newsletter:pending` in KV, keyed by trial, and the key is cleared only
+after a send actually succeeded — a failed send is told next time rather than lost.
+
+Cadence is measured, not assumed: a mail goes out when at least twelve days have passed since the
+last one. "Every other run" breaks the first time a run is skipped or re-run.
+
+## What is in it, and what is not
+
+| in | out |
+| --- | --- |
+| trials that entered the dataset, with the sponsor's stop reason | our own reclassifications |
+| records a sponsor edited (`registry_event`, `mixed`) | our own mapping changes (`remapping`) |
+| a line saying nothing moved, when nothing moved | padding on a quiet fortnight |
+
+A subscriber sent an ontology update as though a sponsor had done something learns to ignore the
+next mail. That is the one failure here that cannot be undone, so the split is enforced in
+`merge()` and checked by a test.
+
+## Pieces
+
+| file | does |
+| --- | --- |
+| `web/pages/newsletter/index.tsx` | the signup page |
+| `web/pages/newsletter/stop.tsx` | the end of the link in every mail; one button, nothing on load |
+| `web/pages/api/newsletter.ts` | POST subscribes, GET `?stop=<key>` removes |
+| `scripts/signals/newsletter.py` | accumulates, composes, sends, at the end of the weekly workflow |
+
+## Running it without a sending account
+
+With no `BREVO_API_KEY` — or no subscribers — nothing is sent and the mail that would have gone
+out is written to `product/newsletter/next.html`. The workflow uploads that as an artifact.
+
+```
+python scripts/signals/newsletter.py --dry-run   # never sends, never clears
+python scripts/signals/newsletter.py --force     # ignores the twelve-day wait
+```
+
+## Secrets
+
+Two, both in GitHub → Settings → Secrets and variables → Actions:
+
+| secret | what for |
+| --- | --- |
+| `CF_API_TOKEN` | the subscriber list and the pending changes. Needs **Workers KV Storage: Read and Write** — write, because what is waiting to be mailed is kept in KV between runs. |
+| `BREVO_API_KEY` | sending. Until it exists, nothing is sent and the mail becomes an artifact. |
+
+Neither the account id nor the namespace id needs a secret: the namespace is read from
+`web/wrangler.jsonc` and the account is resolved from the token.
+
+`MAIL_FROM` and `MAIL_FROM_NAME` are optional overrides; the default sender is
+`contact@clinicaltrialfailures.com`, which has to be a domain verified with the sending service
+or the mail lands in spam.
+
+## Checking who is subscribed
+
+```
+npx wrangler kv key list --namespace-id 0601b1ee829841bf90a3ce764b4d958d --prefix news:
+```

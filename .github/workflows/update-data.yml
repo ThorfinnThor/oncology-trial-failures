@@ -211,28 +211,31 @@ jobs:
           git push
 
       # ---------------------------------------------------------------------------
-      # Watchlists. Last, because it tells people about a release that is already
-      # published: a mail pointing at a page that does not exist yet is worse than a
-      # late mail. Without BREVO_API_KEY nothing is sent and the mails are uploaded
-      # as an artifact instead, so the content can be read before anyone signs up to
-      # a sending service.
+      # The fortnightly newsletter. Last, because it tells people about a release
+      # that is already published: a mail pointing at a page that does not exist
+      # yet is worse than a late mail. Every run folds this release's changes into
+      # what is waiting; a mail goes out only when twelve days have passed since
+      # the last one. Without BREVO_API_KEY nothing is sent and the mail is
+      # uploaded as an artifact instead, so the content can be read before anyone
+      # signs up to a sending service.
       # ---------------------------------------------------------------------------
-      - name: Email the watchlists
+      - name: Newsletter
         if: steps.signals.outcome == 'success'
         continue-on-error: true
         env:
           # Two secrets and no more: the KV namespace is read from web/wrangler.jsonc and the
-          # account from the token itself.
+          # account from the token itself. The token needs Workers KV read and write, because
+          # what is waiting to be mailed is kept there between runs.
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
         run: |
-          python scripts/signals/send_watchlists.py
+          python scripts/signals/newsletter.py
 
-      - name: Upload the watchlist mails for review
+      - name: Upload the newsletter for review
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: watchlist-mail-${{ github.run_id }}
-          path: product/watchlist_mail/
+          name: newsletter-${{ github.run_id }}
+          path: product/newsletter/
           if-no-files-found: ignore
           retention-days: 30
