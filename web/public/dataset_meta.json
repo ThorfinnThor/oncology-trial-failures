@@ -1,6 +1,6 @@
 {
   "version": "2026-09-18",
-  "generated_at_utc": "2026-09-19T17:18:48Z",
+  "generated_at_utc": "2026-09-21T09:05:53Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23787,
@@ -98,7 +98,7 @@
     },
     "heldout_validation": {
       "method": "Held-out stratified sample; blind LLM double annotation with LLM adjudication",
-      "generated_at_utc": "2026-09-15T13:59:42Z",
+      "generated_at_utc": "2026-09-20T18:58:22Z",
       "classifier_version": "2.7.0",
       "sample_size": 600,
       "eligible_records": 13729,
