@@ -10,7 +10,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import { LICENSING_EMAIL } from "@/lib/licensing";
@@ -41,18 +41,31 @@ type Library = {
 
 export default function AccessPage() {
   const router = useRouter();
-  const token = typeof router.query.token === "string" ? router.query.token : "";
   const [state, setState] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [library, setLibrary] = useState<Library | null>(null);
   const [message, setMessage] = useState("");
+  const loadedFor = useRef("");
 
+  // The token is read from the address bar as well as from the router. Waiting only on
+  // router.isReady is how this page ends up showing a paying customer a spinner that never
+  // resolves: the flag depends on the router having hydrated its query, and anything that stops
+  // that — a stale manifest, a cached shell — turns the whole of what they bought into a blank
+  // screen with no way to tell that the link itself was fine.
   useEffect(() => {
-    if (!router.isReady) return;
+    const fromRouter = typeof router.query.token === "string" ? router.query.token : "";
+    const fromUrl =
+      typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("token") || "";
+    const token = fromRouter || fromUrl;
+
     if (!token) {
+      if (!router.isReady) return; // the router may still be filling in the query
       setState("error");
       setMessage("This page needs the link from your order. Open the link we sent you, or write to us and we will send it again.");
       return;
     }
+    if (loadedFor.current === token) return;
+    loadedFor.current = token;
+
     setState("loading");
     fetch(`/api/library?token=${encodeURIComponent(token)}`)
       .then((response) => response.json())
@@ -65,7 +78,7 @@ export default function AccessPage() {
         setMessage(error.message || "That link is not valid.");
         setState("error");
       });
-  }, [router.isReady, token]);
+  }, [router.isReady, router.query.token]);
 
   const total = library ? library.packages.reduce((sum, p) => sum + p.counts.total_in_cohort, 0) : 0;
 

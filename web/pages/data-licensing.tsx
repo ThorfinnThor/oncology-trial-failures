@@ -369,8 +369,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           <section className="section" id="evidence-package">
             <h2>Three things, and what each one is</h2>
             <p className="sectionSub">
-              Two of them are free. They are separate documents about the same cohorts, not tiers of one product, and each
-              has its own page — this page is only the prices and the terms.
+              Two of them are free. They are separate things, not tiers of one product, and each has its own page —
+              this page is only the prices and the terms.
             </p>
             <div className="sellGrid">
               <Link href="/briefs" className="sellCard">
@@ -392,13 +392,11 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <span className="sellPrice">€99</span>
                 </div>
                 <p className="sellOne">
-                  Every trial the rate was computed from — the ones that closed without stopping and the ones still
-                  running — with the rules that define the cohort, which stops were the trial&rsquo;s own result, and the
-                  probability of a stop over time.
+                  Name the molecule you are evaluating and get every cohort where something that failed acts on the
+                  same target — each in full, each opening with your molecule already compared against the molecules
+                  that failed there.
                 </p>
-                <div className="sellMeta">
-                  {SELLABLE_PACKAGES} cohorts · delivered immediately · rebuilt weekly
-                </div>
+                <div className="sellMeta">One molecule · delivered immediately · one link, current for a year</div>
               </Link>
 
               <Link href="/newsletter" className="sellCard">
