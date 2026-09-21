@@ -66,6 +66,9 @@ export default function AssetCheckPage() {
   const [message, setMessage] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [value, setValue] = useState("");
+  const [order, setOrder] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [orderMessage, setOrderMessage] = useState("");
+  const [accessUrl, setAccessUrl] = useState("");
 
   async function check(asset: string) {
     if (!asset.trim()) return;
@@ -85,7 +88,31 @@ export default function AssetCheckPage() {
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setOrder("idle");
+    setAccessUrl("");
     void check(value);
+  }
+
+  async function placeOrder(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setOrder("sending");
+    setOrderMessage("");
+    try {
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...Object.fromEntries(form.entries()), asset: resolved?.asset.name || value }),
+      });
+      const data = await response.json();
+      if (!data.ok) throw new Error(data.error || "Could not complete the order.");
+      setAccessUrl(data.url || "");
+      setOrderMessage(data.message || "");
+      setOrder("done");
+    } catch (error: any) {
+      setOrder("error");
+      setOrderMessage(error?.message || "Could not complete the order. Please try again.");
+    }
   }
 
   const resolved = result && result.resolved ? result : null;
@@ -95,6 +122,9 @@ export default function AssetCheckPage() {
   // are counted in one line instead of each being given the weight of a card.
   const strong = matches.filter((m) => m.best === "closest" || m.best === "related");
   const modalityOnly = matches.filter((m) => m.best === "weak");
+  // What €99 covers: a shared target, not a shared pathway. The price says so on the pricing page,
+  // and a promise that is wider in the code than on the page is one nobody can check.
+  const withTarget = matches.filter((m) => m.same_target_and_modality + m.same_target > 0);
 
   return (
     <>
@@ -297,6 +327,67 @@ export default function AssetCheckPage() {
                         All {catalogue.package_count} cohorts
                       </Link>
                     </p>
+                  ) : null}
+
+                  {withTarget.length ? (
+                  <div className="buy">
+                    {order === "done" ? (
+                      <div>
+                        <div className="buyTitle">Ready</div>
+                        <p className="buySub">{orderMessage}</p>
+                        <Link className="buyCta" href={accessUrl}>
+                          Open your access
+                        </Link>
+                      </div>
+                    ) : (
+                      <>
+                        <div>
+                          <div className="buyTitle">
+                            Get the {withTarget.length} {withTarget.length === 1 ? "package" : "packages"} that share
+                            its target — {PACKAGE_PRICE}
+                          </div>
+                          <p className="buySub">
+                            Every cohort above where a molecule that failed acts on the same target, each in full: all
+                            trials, the cohort rules, the attribution, the time-to-event curve — and each one opening
+                            with {resolved.asset.name} already compared against the molecules that failed there. One
+                            link, current for a year.
+                          </p>
+                        </div>
+                        <form className="buyForm" onSubmit={placeOrder}>
+                          <input
+                            className="input"
+                            name="email"
+                            type="email"
+                            required
+                            placeholder="Work email"
+                            aria-label="Work email"
+                            autoComplete="email"
+                          />
+                          <input
+                            className="input"
+                            name="company"
+                            type="text"
+                            required
+                            placeholder="Company or institution"
+                            aria-label="Company or institution"
+                            autoComplete="organization"
+                          />
+                          <input
+                            name="website"
+                            type="text"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            style={{ position: "absolute", left: "-9999px" }}
+                          />
+                          <button className="submit" type="submit" disabled={order === "sending"}>
+                            {order === "sending" ? "Preparing…" : "Get them"}
+                          </button>
+                          {order === "error" ? <div className="buyError">{orderMessage}</div> : null}
+                        </form>
+                      </>
+                    )}
+                  </div>
                   ) : null}
 
                   <p className="fine">
@@ -616,6 +707,53 @@ export default function AssetCheckPage() {
           font-weight: 800;
           color: var(--accent);
           text-decoration: none;
+        }
+        .buy {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) minmax(260px, 0.72fr);
+          gap: 22px;
+          align-items: center;
+          margin-top: 18px;
+          padding: 20px 22px;
+          border-radius: 16px;
+          border: 1px solid rgba(79, 70, 229, 0.3);
+          background: rgba(79, 70, 229, 0.04);
+        }
+        .buyTitle {
+          font-size: 16px;
+          font-weight: 900;
+          line-height: 1.3;
+        }
+        .buySub {
+          margin: 8px 0 0;
+          font-size: 13px;
+          line-height: 1.6;
+          color: var(--text-muted);
+        }
+        .buyForm {
+          display: grid;
+          gap: 9px;
+        }
+        .buyError {
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: #b91c1c;
+        }
+        :global(.buyCta) {
+          display: inline-block;
+          margin-top: 12px;
+          background: var(--accent);
+          color: #fff;
+          border-radius: 12px;
+          padding: 11px 18px;
+          font-size: 14px;
+          font-weight: 800;
+          text-decoration: none;
+        }
+        @media (max-width: 860px) {
+          .buy {
+            grid-template-columns: minmax(0, 1fr);
+          }
         }
         .alsoRan {
           margin: 14px 0 0;

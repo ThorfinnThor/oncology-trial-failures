@@ -13,6 +13,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { grantCovers, type Grant } from "@/lib/server/grants";
 import bundle from "@/data/private/evidence_packages.json";
 import {
   compareAsset,
@@ -68,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(503).send("Delivery is not configured. Please contact us and we will send it.");
   }
 
-  let grant: { slug?: string; email?: string; issued_at?: string; asset?: string } | null = null;
+  let grant: (Grant & { email?: string }) | null = null;
   try {
     const raw = await store.get(`grant:${token}`);
     grant = raw ? JSON.parse(raw) : null;

@@ -24,7 +24,6 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
-  const [again, setAgain] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -134,30 +133,12 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                 <div>
                   <h2>Ready</h2>
                   <p className="lead">{message}</p>
-                  <a className="btnPrimary" href={url} target="_blank" rel="noopener noreferrer">
-                    Open the package
-                  </a>
-                  <div className="againRow">
-                    <input
-                      className="input"
-                      value={again}
-                      onChange={(event) => setAgain(event.target.value)}
-                      placeholder="Compare another molecule"
-                      aria-label="Compare another molecule"
-                    />
-                    <a
-                      className="btnGhost"
-                      href={again.trim() ? `${url}&asset=${encodeURIComponent(again.trim())}` : url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Open with this asset
-                    </a>
-                  </div>
+                  <Link className="btnPrimary" href={url}>
+                    Open your access
+                  </Link>
                   <p className="fine">
-                    Keep the link — it works from any device and stays valid for a year, and you can put any molecule
-                    after <code>&amp;asset=</code> to rebuild the comparison for it. To print it as a PDF, use your
-                    browser&rsquo;s print dialogue.
+                    Keep that link. It opens everything this order covers, it does not expire for a year, and it always
+                    shows the current release — there is nothing to download and keep up to date.
                   </p>
                 </div>
               ) : (
