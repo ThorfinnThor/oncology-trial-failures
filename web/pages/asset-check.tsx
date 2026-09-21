@@ -23,7 +23,7 @@ const TITLE = "Asset check — has a molecule like yours already been stopped?";
 const DESCRIPTION =
   "Name a molecule. We say how many drugs that share its target, its pathway or its modality were stopped early in trials, in which mechanism classes, and how that compares with the disease area. Free.";
 
-const EXAMPLES = ["osimertinib", "pembrolizumab", "sotorasib", "bintrafusp alfa", "lecanemab"];
+const EXAMPLES = ["osimertinib", "PD-L1", "HER2 ADC", "KRAS", "lecanemab", "BCMA CAR-T"];
 
 type Match = {
   slug: string;
@@ -42,8 +42,13 @@ type Match = {
 };
 
 type Result =
-  | { ok: true; resolved: true; asset: { name: string; chembl_id: string; modality: string; target_genes: string[] }; matches: Match[] }
-  | { ok: true; resolved: false; query: string; message: string };
+  | {
+      ok: true;
+      resolved: true;
+      asset: { kind: "molecule" | "target"; name: string; note: string; chembl_id: string; modality: string; target_genes: string[] };
+      matches: Match[];
+    }
+  | { ok: true; resolved: false; query: string; message: string; suggestions: { label: string; kind: string }[] };
 
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
 const n = (v: number) => v.toLocaleString("en-US");
@@ -118,13 +123,13 @@ export default function AssetCheckPage() {
         <div className="wrap">
           <section className="hero">
             <div className="eyebrow">Asset check · free</div>
-            <h1>Has a molecule like yours already been stopped?</h1>
+            <h1>Has something like yours already been stopped?</h1>
             <p className="heroLead">
-              Name the molecule you are evaluating. We resolve what it acts on and compare it against every drug behind
-              a trial that was stopped early for an efficacy, safety or benefit–risk reason — across{" "}
-              {catalogue.package_count} mechanism classes in oncology, neurology and immunology. You get the counts and
-              the rates now, free. The names of those molecules and the trials behind them are what a package costs{" "}
-              {PACKAGE_PRICE}.
+              Name a molecule, a target, a gene or a mechanism — <b>osimertinib</b>, <b>PD-L1</b>, <b>ERBB2</b>,{" "}
+              <b>HER2 ADC</b>. We resolve what it acts on and compare it against every drug behind a trial that was
+              stopped early for an efficacy, safety or benefit–risk reason, across {catalogue.package_count} mechanism
+              classes in oncology, neurology and immunology. You get the counts and the rates now, free. The names of
+              those molecules and the trials behind them are what a package costs {PACKAGE_PRICE}.
             </p>
 
             <form className="ask" onSubmit={onSubmit}>
@@ -132,8 +137,8 @@ export default function AssetCheckPage() {
                 className="input big"
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
-                placeholder="Molecule name, INN or research code"
-                aria-label="Molecule name"
+                placeholder="Molecule, target, gene or mechanism class"
+                aria-label="Molecule, target or mechanism"
                 autoComplete="off"
               />
               <button className="submit" type="submit" disabled={status === "checking"}>
@@ -162,8 +167,26 @@ export default function AssetCheckPage() {
           {result && !result.resolved ? (
             <section className="section">
               <div className="card note">
-                <h2>Not in the index</h2>
+                <h2>{result.suggestions?.length ? "Did you mean" : "Not in the index"}</h2>
                 <p>{result.message}</p>
+                {result.suggestions?.length ? (
+                  <div className="suggestions">
+                    {result.suggestions.map((s) => (
+                      <button
+                        key={`${s.kind}:${s.label}`}
+                        type="button"
+                        className="chip"
+                        onClick={() => {
+                          setValue(s.label);
+                          void check(s.label);
+                        }}
+                      >
+                        {s.label}
+                        <span className="chipKind">{s.kind}</span>
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
                 <p className="fine">
                   <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Asset check: ${result.query}`)}`}>
                     Send us the target and modality
@@ -180,8 +203,8 @@ export default function AssetCheckPage() {
               <div className="assetLine">
                 <b>{resolved.asset.name}</b>
                 <span>
-                  {resolved.asset.target_genes.length ? resolved.asset.target_genes.slice(0, 6).join(", ") : "target not resolved"}
-                  {resolved.asset.modality ? ` · ${resolved.asset.modality}` : ""} · ChEMBL {resolved.asset.chembl_id}
+                  {resolved.asset.note}
+                  {resolved.asset.chembl_id ? ` · ChEMBL ${resolved.asset.chembl_id}` : ""}
                 </span>
               </div>
 
@@ -291,10 +314,11 @@ export default function AssetCheckPage() {
             <section className="section">
               <div className="how">
                 <div className="step">
-                  <h3>What is compared</h3>
+                  <h3>What you can type</h3>
                   <p>
-                    Target genes, mechanism of action and modality, resolved from ChEMBL&rsquo;s clinical-stage index —
-                    the same resolution used to link every trial in the dataset.
+                    A molecule by name, INN, brand or research code; a gene symbol; the short name a target goes by; a
+                    mechanism class; or a target with a modality, like <code>EGFR antibody</code>. If nothing matches we
+                    offer what would have.
                   </p>
                 </div>
                 <div className="step">
@@ -401,6 +425,20 @@ export default function AssetCheckPage() {
         }
         .chip:hover {
           border-color: rgba(79, 70, 229, 0.45);
+        }
+        .chipKind {
+          margin-left: 6px;
+          font-size: 10px;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          opacity: 0.55;
+        }
+        .suggestions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          margin-top: 12px;
         }
         .err {
           margin-top: 12px;

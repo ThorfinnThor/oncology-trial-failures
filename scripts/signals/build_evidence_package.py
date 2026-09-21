@@ -94,6 +94,10 @@ def compare_asset(asset: dict, failed: list[dict], area: str | None = "Oncology"
         shared_classes = sorted(a_classes & set(classes_for(f_genes, area)))
         if shared_genes and same_modality:
             verdict, why = "closest", "same target and same modality"
+        elif shared_genes and not asset.get("modality"):
+            # A target was asked about, not a molecule. Sharing the target is the whole of what was
+            # asked, so "different modality" would answer a question nobody put.
+            verdict, why = "closest", "same target"
         elif shared_genes:
             verdict, why = "related", "same target, different modality"
         elif shared_classes:

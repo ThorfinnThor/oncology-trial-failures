@@ -1,0 +1,18 @@
+{
+  "note": "What a visitor plausibly types. Every entry must resolve, or the asset check is a dead end for that kind of query.",
+  "molecules": [
+    "pembrolizumab", "nivolumab", "osimertinib", "sotorasib", "adagrasib", "amivantamab",
+    "trastuzumab deruxtecan", "enfortumab vedotin", "lecanemab", "donanemab", "aducanumab",
+    "bintrafusp alfa", "cetuximab", "atezolizumab", "durvalumab", "bevacizumab"
+  ],
+  "codes_and_brands": ["MK-3475", "Keytruda", "AZD9291", "BMS-936558", "Tagrisso", "Opdivo"],
+  "genes": ["EGFR", "KRAS", "ERBB2", "CD19", "MAPT", "APP", "BTK", "JAK1", "MET", "ALK"],
+  "short_names": [
+    "PD-1", "PD-L1", "HER2", "HER3", "TROP2", "BCMA", "CD20", "VEGFR", "PARP", "CDK4/6",
+    "amyloid", "tau", "BACE", "TNF", "IL-17", "TYK2", "mTOR", "PI3K", "MEK", "CTLA-4"
+  ],
+  "protein_names": ["epidermal growth factor receptor", "programmed cell death protein 1"],
+  "classes": ["PD-(L)1", "Amyloid-β directed", "BACE / γ-secretase", "Microtubule", "Topoisomerase"],
+  "with_modality": ["EGFR antibody", "BCMA CAR-T", "HER2 ADC", "KRAS small molecule", "CD19 bispecific"],
+  "should_not_resolve": ["XYZ-123", "ABC-999", "zzzzzz", "our lead compound"]
+}

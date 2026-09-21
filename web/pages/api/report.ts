@@ -18,7 +18,7 @@ import {
   compareAsset,
   renderComparison,
   renderUnresolved,
-  resolveAsset,
+  resolveSubject,
   type FailedAsset,
 } from "@/lib/server/assetComparison";
 
@@ -89,7 +89,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   let section = "";
   let resolution: "none" | "resolved" | "unresolved" = "none";
   if (asset) {
-    const resolved = resolveAsset(asset);
+    const resolved = resolveSubject(asset);
     if (resolved) {
       section = renderComparison(resolved, compareAsset(resolved, pkg.failed_assets || [], pkg.area));
       resolution = "resolved";

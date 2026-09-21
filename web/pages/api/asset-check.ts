@@ -17,7 +17,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import bundle from "@/data/private/evidence_packages.json";
 import {
   rankMatches,
-  resolveAsset,
+  resolveSubject,
+  suggest,
   summariseCohort,
   type CohortMatch,
   type FailedAsset,
@@ -47,17 +48,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const query = clean(req.method === "GET" ? req.query.asset : body.asset, 200);
   if (!query) return res.status(400).json({ ok: false, error: "Name a molecule to check." });
 
-  const asset = resolveAsset(query);
+  const asset = resolveSubject(query);
   if (!asset) {
-    console.log(JSON.stringify({ event: "asset_check", query, resolved: false }));
+    const suggestions = suggest(query);
+    console.log(JSON.stringify({ event: "asset_check", query, resolved: false, suggestions: suggestions.length }));
     return res.status(200).json({
       ok: true,
       resolved: false,
       query,
-      message:
-        "We could not find that molecule in ChEMBL's clinical-stage index. A preclinical or unnamed asset will not "
-        + "be in it. Try an INN, a research code or a ChEMBL id — or tell us the target and modality and we will "
-        + "check it by hand.",
+      suggestions,
+      message: suggestions.length
+        ? "We could not match that exactly. Did you mean one of these?"
+        : "We could not match that to a molecule, a gene, a target or a mechanism class. A preclinical or unnamed "
+          + "asset will not be in ChEMBL — tell us the target and the modality instead and we will check it by hand.",
     });
   }
 
@@ -75,7 +78,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ok: true,
     resolved: true,
     asset: {
-      name: asset.asset,
+      kind: asset.kind,
+      name: asset.label,
+      note: asset.note,
       chembl_id: asset.chembl_id,
       modality: asset.modality,
       target_genes: asset.target_genes,

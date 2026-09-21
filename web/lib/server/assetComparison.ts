@@ -49,10 +49,12 @@ export type ComparisonRow = {
 };
 
 type Molecule = { name: string; modality: string; genes: string[]; mechanisms: string[] };
+type Target = { label: string; genes: string[]; kind: "gene" | "target" | "class" | "alias" };
 type Index = {
   names: Record<string, string>;
   molecules: Record<string, Molecule>;
   classes: Record<string, Record<string, string[]>>;
+  targets: Record<string, Target>;
 };
 
 const IDX = index as unknown as Index;
@@ -91,6 +93,123 @@ export function norm(term: string): string {
   return (term || "").toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+// A modality can be said alongside a target — "EGFR antibody", "BCMA CAR-T" — and it changes the
+// answer, so it is read off the query rather than thrown away. The vocabulary is the cohorts',
+// because that is what the comparison compares against.
+const MODALITY_WORDS: [RegExp, string][] = [
+  [/\b(adc|antibody[- ]drug conjugates?)\b/i, "ADC"],
+  [/\b(bispecific|bispecific antibody|t[- ]cell engager|tce)\b/i, "Bispecific antibody"],
+  [/\b(car[- ]?t|cell therapy|cell therapies)\b/i, "Cell therapy"],
+  [/\b(gene therapy)\b/i, "Gene therapy"],
+  [/\b(vaccines?)\b/i, "Vaccine"],
+  [/\b(oligonucleotides?|antisense|sirna)\b/i, "Oligonucleotide"],
+  [/\b(antibod(?:y|ies)|mab)\b/i, "Antibody"],
+  [/\b(small molecules?|inhibitors?)\b/i, "Small molecule"],
+  [/\b(proteins?|fusion proteins?)\b/i, "Protein"],
+];
+
+export type Subject = {
+  kind: "molecule" | "target";
+  query: string;
+  label: string;
+  chembl_id: string;
+  modality: string;
+  target_genes: string[];
+  mechanisms: string[];
+  /** How the query was understood, shown back so nobody has to guess. */
+  note: string;
+};
+
+/** Split a trailing or leading modality word off the query. */
+function splitModality(query: string): { rest: string; modality: string } {
+  for (const [pattern, modality] of MODALITY_WORDS) {
+    if (pattern.test(query)) {
+      const rest = query.replace(pattern, " ").replace(/\s+/g, " ").trim();
+      if (rest) return { rest, modality };
+    }
+  }
+  return { rest: query, modality: "" };
+}
+
+/** A molecule, a gene, a target, a class or an alias — whatever the person actually typed. */
+export function resolveSubject(query: string): Subject | null {
+  const raw = (query || "").trim();
+  if (!raw) return null;
+
+  const molecule = resolveAsset(raw);
+  if (molecule) {
+    return {
+      kind: "molecule",
+      query: raw,
+      label: molecule.asset,
+      chembl_id: molecule.chembl_id,
+      modality: molecule.modality,
+      target_genes: molecule.target_genes,
+      mechanisms: molecule.mechanisms,
+      note: molecule.target_genes.length
+        ? `${molecule.modality || "Molecule"} against ${molecule.target_genes.slice(0, 6).join(", ")}`
+        : "Molecule with no target resolved in ChEMBL",
+    };
+  }
+
+  // Not a molecule, so read it as a target — with a modality if one was said alongside it.
+  const { rest, modality } = splitModality(raw);
+  for (const candidate of [rest, raw]) {
+    const target = IDX.targets[norm(candidate)];
+    if (!target) continue;
+    const KIND_NOTE: Record<Target["kind"], string> = {
+      gene: "Gene symbol",
+      target: "Protein name",
+      class: "Mechanism class",
+      alias: "Common name",
+    };
+    return {
+      kind: "target",
+      query: raw,
+      label: target.label,
+      chembl_id: "",
+      modality,
+      target_genes: target.genes,
+      mechanisms: [],
+      note: `${KIND_NOTE[target.kind]} · ${target.genes.slice(0, 8).join(", ")}`
+        + (modality ? ` · ${modality}` : ""),
+    };
+  }
+  return null;
+}
+
+/** When nothing resolves, offer what would have. A dead end is what makes a tool feel broken. */
+export function suggest(query: string, limit = 8): { label: string; kind: string }[] {
+  const key = norm(query);
+  if (key.length < 2) return [];
+  const starts: { label: string; kind: string }[] = [];
+  const contains: { label: string; kind: string }[] = [];
+  const seen = new Set<string>();
+
+  const push = (label: string, kind: string, at: number) => {
+    const dedupe = norm(label);
+    if (!label || seen.has(dedupe)) return;
+    seen.add(dedupe);
+    (at === 0 ? starts : contains).push({ label, kind });
+  };
+
+  for (const [term, target] of Object.entries(IDX.targets)) {
+    const at = term.indexOf(key);
+    if (at >= 0) push(target.label, target.kind === "class" ? "mechanism class" : "target", at);
+    if (starts.length >= limit) break;
+  }
+  if (starts.length + contains.length < limit * 2) {
+    for (const [term, chemblId] of Object.entries(IDX.names)) {
+      const at = term.indexOf(key);
+      if (at < 0) continue;
+      const molecule = IDX.molecules[chemblId];
+      if (molecule) push(molecule.name, "molecule", at);
+      if (starts.length + contains.length >= limit * 2) break;
+    }
+  }
+  return [...starts, ...contains].slice(0, limit);
+}
+
 export function resolveAsset(query: string): ResolvedAsset | null {
   const key = norm(query);
   if (!key) return null;
@@ -126,7 +245,8 @@ export function classesFor(genes: string[], area: string): string[] {
 
 const ORDER: Record<Verdict, number> = { closest: 0, related: 1, weak: 2, distant: 3, unknown: 4 };
 
-export function compareAsset(asset: ResolvedAsset, failed: FailedAsset[], area: string): ComparisonRow[] {
+export function compareAsset(asset: ResolvedAsset | Subject, failed: FailedAsset[], area: string): ComparisonRow[] {
+  // Both shapes carry target_genes, mechanisms and modality; nothing below needs more.
   const aGenes = new Set(asset.target_genes || []);
   const aMechs = new Set(asset.mechanisms || []);
   const aClasses = new Set(classesFor(asset.target_genes || [], area));
@@ -144,6 +264,12 @@ export function compareAsset(asset: ResolvedAsset, failed: FailedAsset[], area: 
     if (sharedGenes.length && sameModality) {
       verdict = "closest";
       why = "same target and same modality";
+    } else if (sharedGenes.length && !asset.modality) {
+      // No modality was stated — a target was asked about, not a molecule. Sharing the target is
+      // the whole of what was asked, so calling it "different modality" would answer a question
+      // nobody put.
+      verdict = "closest";
+      why = "same target";
     } else if (sharedGenes.length) {
       verdict = "related";
       why = "same target, different modality";
@@ -190,13 +316,17 @@ function e(value: unknown): string {
 }
 
 /** The sentence that says what the table means, before the table says it. */
-export function comparisonLead(asset: ResolvedAsset, rows: ComparisonRow[]): string {
+export function comparisonLead(subject: Subject, rows: ComparisonRow[]): string {
   const closest = rows.filter((r) => r.verdict === "closest");
   const related = rows.filter((r) => r.verdict === "related");
   const weak = rows.filter((r) => r.verdict === "weak");
-  const modality = MODALITY_WORD[asset.modality] || asset.modality || "of unknown modality";
-  const targets = asset.target_genes.length ? ` against ${asset.target_genes.slice(0, 4).join(", ")}` : "";
-  const head = `${asset.asset} is ${modality}${targets}`;
+
+  // A molecule is described; a target is simply named, because "EGFR is of unknown modality
+  // against EGFR" is what happens when one sentence is made to serve both.
+  const head = subject.kind === "molecule"
+    ? `${subject.label} is ${MODALITY_WORD[subject.modality] || subject.modality || "of unknown modality"}`
+      + (subject.target_genes.length ? ` against ${subject.target_genes.slice(0, 4).join(", ")}` : "")
+    : `${subject.label}${subject.modality ? `, ${MODALITY_WORD[subject.modality] || subject.modality}` : ""}`;
 
   if (closest.length) {
     return `${head}. ${closest.length} of the ${rows.length} molecules that failed here share its target and its `
@@ -216,7 +346,7 @@ export function comparisonLead(asset: ResolvedAsset, rows: ComparisonRow[]): str
 }
 
 /** The section spliced into the delivered document. */
-export function renderComparison(asset: ResolvedAsset, rows: ComparisonRow[]): string {
+export function renderComparison(subject: Subject, rows: ComparisonRow[]): string {
   const body = rows
     .map(
       (r) =>
@@ -234,12 +364,11 @@ export function renderComparison(asset: ResolvedAsset, rows: ComparisonRow[]): s
     .join("");
 
   return (
-    `<h2>${e(asset.asset)} against the molecules that failed</h2>`
-    + `<p class='sub'>${e(asset.asset)}`
-    + (asset.target_genes.length ? ` — ${e(asset.target_genes.slice(0, 6).join(", "))}` : "")
-    + (asset.modality ? `, ${e(asset.modality)}` : "")
-    + `, ChEMBL ${e(asset.chembl_id)}.</p>`
-    + `<p class='sub'>${e(comparisonLead(asset, rows))}</p>`
+    `<h2>${e(subject.label)} against the molecules that failed</h2>`
+    + `<p class='sub'>${e(subject.note)}`
+    + (subject.chembl_id ? ` · ChEMBL ${e(subject.chembl_id)}` : "")
+    + `.</p>`
+    + `<p class='sub'>${e(comparisonLead(subject, rows))}</p>`
     + `<table><thead><tr><th>Molecule that failed</th><th>Relation</th><th>On what</th>`
     + `<th>Modality</th><th class='num'>Trials</th></tr></thead><tbody>${body}</tbody></table>`
     + `<div class='box'><b>What this comparison does not cover.</b> It is structural — modality, target and `
@@ -287,7 +416,7 @@ export type CohortMatch = {
 const RELEVANT: Verdict[] = ["closest", "related", "weak"];
 
 export function summariseCohort(
-  asset: ResolvedAsset,
+  subject: Subject,
   pkg: {
     slug: string;
     cohort: string;
@@ -297,7 +426,7 @@ export function summariseCohort(
     failed_assets?: FailedAsset[];
   },
 ): CohortMatch | null {
-  const rows = compareAsset(asset, pkg.failed_assets || [], pkg.area);
+  const rows = compareAsset(subject, pkg.failed_assets || [], pkg.area);
   if (!rows.length) return null;
   const best = rows[0].verdict;
   if (!RELEVANT.includes(best)) return null;

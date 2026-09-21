@@ -21,6 +21,8 @@ import {
   renderComparison,
   renderUnresolved,
   resolveAsset,
+  resolveSubject,
+  suggest,
   summariseCohort,
   type FailedAsset,
 } from "../lib/server/assetComparison";
@@ -118,7 +120,7 @@ test("the delivered document really gets the section, and never keeps the empty 
   assert.ok(pkg.html.includes(SLOT), "the prebuilt document should leave the slot empty");
   assert.ok(pkg.failed_assets && pkg.failed_assets.length > 0, "the bundle should carry the failed molecules");
 
-  const asset = resolveAsset("osimertinib");
+  const asset = resolveSubject("osimertinib");
   assert.ok(asset);
   const rows = compareAsset(asset, pkg.failed_assets!, pkg.area);
   assert.ok(rows.some((r) => r.verdict === "closest"), "an EGFR inhibitor should match EGFR failures");
@@ -150,7 +152,7 @@ test("the free check reports counts, never the names it is selling", async () =>
   const bundle = (await import("../data/private/evidence_packages.json")).default as unknown as {
     packages: Record<string, any>;
   };
-  const asset = resolveAsset("osimertinib");
+  const asset = resolveSubject("osimertinib");
   assert.ok(asset);
 
   const matches = Object.entries(bundle.packages)
@@ -173,7 +175,7 @@ test("the free check reports counts, never the names it is selling", async () =>
 });
 
 test("a cohort with nothing in common is left out rather than shown as a non-answer", () => {
-  const asset = resolveAsset("osimertinib");
+  const asset = resolveSubject("osimertinib");
   assert.ok(asset);
   const unrelated = {
     slug: "made-up",
@@ -195,4 +197,62 @@ test("matches are ranked by how close they are, not by how big the cohort is", (
     { best: "related", same_target_and_modality: 0, same_target: 4, stopped: 50 },
   ] as any[];
   assert.deepEqual(rankMatches(rows).map((r) => r.best), ["closest", "related", "weak"]);
+});
+
+test("the asset check answers the kinds of query people actually type", () => {
+  // Written down because the first version resolved molecules and nothing else: every gene, every
+  // short name and every class came back "not found", which reads as a broken tool rather than as
+  // a gap in an ontology. This file is the floor.
+  const cases = JSON.parse(readFileSync(path.join(here, "fixtures/asset_queries.json"), "utf8"));
+  const failures: string[] = [];
+
+  for (const group of ["molecules", "codes_and_brands", "genes", "short_names", "protein_names", "classes", "with_modality"]) {
+    for (const query of cases[group] as string[]) {
+      const subject = resolveSubject(query);
+      if (!subject) failures.push(`${group}: ${query}`);
+      else if (!subject.target_genes.length && group !== "molecules") failures.push(`${group}: ${query} (no genes)`);
+    }
+  }
+  assert.deepEqual(failures, [], `queries that should resolve but did not:\n${failures.join("\n")}`);
+
+  for (const query of cases.should_not_resolve as string[]) {
+    assert.equal(resolveSubject(query), null, `${query} should not resolve`);
+  }
+});
+
+test("a modality said alongside a target is read, not thrown away", () => {
+  const plain = resolveSubject("EGFR");
+  const antibody = resolveSubject("EGFR antibody");
+  assert.ok(plain && antibody);
+  assert.deepEqual(plain.target_genes, antibody.target_genes);
+  assert.equal(plain.modality, "");
+  assert.equal(antibody.modality, "Antibody");
+  assert.equal(resolveSubject("BCMA CAR-T")?.modality, "Cell therapy");
+  assert.equal(resolveSubject("HER2 ADC")?.modality, "ADC");
+});
+
+test("a target with no modality is not told its modality differs", () => {
+  const subject = resolveSubject("EGFR");
+  assert.ok(subject);
+  const failed: FailedAsset = {
+    asset: "Erlotinib", modalities: ["Small molecule"], target_genes: ["EGFR"], mechanisms: [], trial_count: 3,
+  };
+  const [row] = compareAsset(subject, [failed], "Oncology");
+  assert.equal(row.verdict, "closest");
+  assert.equal(row.why, "same target");
+});
+
+test("a query that resolves to nothing is met with suggestions, not a dead end", () => {
+  assert.ok(suggest("pembro").some((s) => /pembrolizumab/i.test(s.label)), "a prefix should suggest the molecule");
+  assert.ok(suggest("amyloid").length > 0);
+  assert.ok(suggest("egf").some((s) => /EGFR/i.test(s.label)));
+  assert.equal(suggest("z").length, 0, "one character is not a query");
+});
+
+test("the ChEMBL modality vocabulary is translated into the cohorts'", () => {
+  // ChEMBL says "Antibody drug conjugate", "Cell" and "Gene"; the cohorts say "ADC", "Cell
+  // therapy" and "Gene therapy". Comparing the two directly meant an ADC under review never
+  // matched an ADC that failed.
+  assert.equal(resolveSubject("trastuzumab deruxtecan")?.modality, "ADC");
+  assert.equal(resolveSubject("tisagenlecleucel")?.modality, "Cell therapy");
 });
