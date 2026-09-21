@@ -13,6 +13,7 @@ export type PrimaryNavItem =
   | "outliers"
   | "top-entities"
   | "methods"
+  | "asset-check"
   | "briefs"
   | "packages"
   | "watchlist"
@@ -80,6 +81,9 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
           onNavigate={closeMobileNav}
         />
         <GuidesMenu active={active === "guides"} />
+        <Link className="navlink" href="/asset-check" aria-current={current(active, "asset-check")} onClick={closeMobileNav}>
+          Asset check
+        </Link>
         <Link className="navlink" href="/briefs" aria-current={current(active, "briefs")} onClick={closeMobileNav}>
           Briefs
         </Link>

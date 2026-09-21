@@ -259,3 +259,72 @@ export function renderUnresolved(query: string): string {
     + `section for you.</p>`
   );
 }
+
+/** What one cohort has to say about one molecule, in counts rather than names.
+ *
+ * This is what the free check returns. Naming the molecules that failed is what the package is
+ * for; saying how many of them share your target, and how often trials of that class stopped, is
+ * the part that has to be free, because otherwise nobody can tell whether the answer is worth
+ * paying for.
+ */
+export type CohortMatch = {
+  slug: string;
+  cohort: string;
+  area: string;
+  rate: number;
+  comparator_rate: number;
+  closed: number;
+  stopped: number;
+  molecules: number;
+  same_target_and_modality: number;
+  same_target: number;
+  same_pathway: number;
+  same_modality_only: number;
+  /** The closest relation found in this cohort; cohorts with nothing in common are left out. */
+  best: Verdict;
+};
+
+const RELEVANT: Verdict[] = ["closest", "related", "weak"];
+
+export function summariseCohort(
+  asset: ResolvedAsset,
+  pkg: {
+    slug: string;
+    cohort: string;
+    area: string;
+    counts: { closed: number; stopped: number };
+    headline: { rate: number; comparator_rate: number };
+    failed_assets?: FailedAsset[];
+  },
+): CohortMatch | null {
+  const rows = compareAsset(asset, pkg.failed_assets || [], pkg.area);
+  if (!rows.length) return null;
+  const best = rows[0].verdict;
+  if (!RELEVANT.includes(best)) return null;
+  return {
+    slug: pkg.slug,
+    cohort: pkg.cohort,
+    area: pkg.area,
+    rate: pkg.headline.rate,
+    comparator_rate: pkg.headline.comparator_rate,
+    closed: pkg.counts.closed,
+    stopped: pkg.counts.stopped,
+    molecules: rows.length,
+    same_target_and_modality: rows.filter((r) => r.verdict === "closest").length,
+    same_target: rows.filter((r) => r.shared_target_genes.length && r.verdict !== "closest").length,
+    same_pathway: rows.filter((r) => !r.shared_target_genes.length && r.shared_classes.length).length,
+    same_modality_only: rows.filter((r) => r.verdict === "weak").length,
+    best,
+  };
+}
+
+/** Closest relation first, then the cohorts where more of the failures look like this molecule. */
+export function rankMatches(matches: CohortMatch[]): CohortMatch[] {
+  return matches.slice().sort(
+    (a, b) =>
+      ORDER[a.best] - ORDER[b.best]
+      || b.same_target_and_modality - a.same_target_and_modality
+      || b.same_target - a.same_target
+      || b.stopped - a.stopped,
+  );
+}

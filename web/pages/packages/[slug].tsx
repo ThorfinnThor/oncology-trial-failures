@@ -173,7 +173,10 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                       <li>Every figure traces to a trial, and every trial to its registry record</li>
                       <li>
                         Name the asset you are evaluating and the package opens with it compared against every molecule
-                        that failed here — same target, same pathway, same modality, or none of the three
+                        that failed here — same target, same pathway, same modality, or none of the three.{" "}
+                        <Link className="link" href="/asset-check">
+                          Not sure this is the right cohort? Check your molecule free first
+                        </Link>
                       </li>
                     </ul>
                   </div>

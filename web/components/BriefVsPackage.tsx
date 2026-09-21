@@ -130,7 +130,10 @@ export default function BriefVsPackage({
                 <li>
                   <b>Name the asset you are evaluating</b> and every molecule that failed in this cohort is placed
                   against it: same target and modality, same pathway, same modality only, or nothing in common — with
-                  the trials behind each
+                  the trials behind each.{" "}
+                  <Link className="bvpInline" href="/asset-check">
+                    Check your molecule first, free
+                  </Link>
                 </li>
                 <li>
                   All {c.stopped} stopped trials, not the {Math.min(c.brief_lists_stops, c.stopped)} the brief has room
@@ -332,6 +335,11 @@ export default function BriefVsPackage({
           background: #fff;
           color: inherit;
           border: 1px solid var(--border);
+        }
+        :global(.bvpInline) {
+          color: var(--accent);
+          font-weight: 700;
+          text-decoration: none;
         }
         :global(.bvpLink) {
           color: var(--accent);

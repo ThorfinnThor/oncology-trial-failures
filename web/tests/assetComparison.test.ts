@@ -17,9 +17,11 @@ import test from "node:test";
 import {
   classesFor,
   compareAsset,
+  rankMatches,
   renderComparison,
   renderUnresolved,
   resolveAsset,
+  summariseCohort,
   type FailedAsset,
 } from "../lib/server/assetComparison";
 
@@ -142,4 +144,55 @@ test("a molecule name cannot smuggle markup into the delivered document", () => 
   const injected = renderUnresolved('<img src=x onerror="alert(1)">');
   assert.ok(!injected.includes("<img"), "the name must be escaped");
   assert.ok(injected.includes("&lt;img"));
+});
+
+test("the free check reports counts, never the names it is selling", async () => {
+  const bundle = (await import("../data/private/evidence_packages.json")).default as unknown as {
+    packages: Record<string, any>;
+  };
+  const asset = resolveAsset("osimertinib");
+  assert.ok(asset);
+
+  const matches = Object.entries(bundle.packages)
+    .map(([slug, pkg]) => summariseCohort(asset, { slug, ...pkg }))
+    .filter((m): m is NonNullable<typeof m> => m !== null);
+
+  assert.ok(matches.length > 0, "an EGFR inhibitor should match at least one cohort");
+  const egfr = matches.find((m) => m.slug === "oncology-egfr");
+  assert.ok(egfr, "the EGFR cohort should be among them");
+  assert.equal(egfr.best, "closest");
+  assert.ok(egfr.same_target_and_modality >= 1);
+  assert.ok(egfr.molecules >= egfr.same_target_and_modality + egfr.same_target);
+
+  // The whole point of the split: the payload must not carry what the package is paid for.
+  const serialised = JSON.stringify(matches);
+  for (const name of ["Erlotinib", "Cetuximab", "Afatinib", "Necitumumab"]) {
+    assert.ok(!serialised.includes(name), `the free check must not name ${name}`);
+  }
+  assert.ok(!serialised.includes("NCT"), "the free check must not carry trial ids");
+});
+
+test("a cohort with nothing in common is left out rather than shown as a non-answer", () => {
+  const asset = resolveAsset("osimertinib");
+  assert.ok(asset);
+  const unrelated = {
+    slug: "made-up",
+    cohort: "Made up",
+    area: "Oncology",
+    counts: { closed: 10, stopped: 2 },
+    headline: { rate: 0.2, comparator_rate: 0.05 },
+    failed_assets: [
+      { asset: "Something else", modalities: ["Antibody"], target_genes: ["CD19"], mechanisms: [], trial_count: 2 },
+    ],
+  };
+  assert.equal(summariseCohort(asset, unrelated), null);
+});
+
+test("matches are ranked by how close they are, not by how big the cohort is", () => {
+  const rows = [
+    { best: "weak", same_target_and_modality: 0, same_target: 0, stopped: 99 },
+    { best: "closest", same_target_and_modality: 1, same_target: 0, stopped: 2 },
+    { best: "related", same_target_and_modality: 0, same_target: 4, stopped: 50 },
+  ] as any[];
+  assert.deepEqual(rankMatches(rows).map((r) => r.best), ["closest", "related", "weak"]);
 });

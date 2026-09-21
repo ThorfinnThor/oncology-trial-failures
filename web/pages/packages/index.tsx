@@ -82,6 +82,13 @@ export default function PackagesIndexPage() {
               belongs in the cohort, which stops were the trial&rsquo;s own result rather than a programme decision made
               elsewhere, and the probability of a stop over time against a like-for-like comparator.
             </p>
+            <p className="lead">
+              Not sure which of them is yours?{" "}
+              <Link className="link" href="/asset-check">
+                Name your molecule and we will say which cohorts contain drugs like it
+              </Link>{" "}
+              — free, before you buy anything.
+            </p>
             <div className="strip">
               <span>{all.length} cohorts</span>
               <span>{PACKAGE_PRICE} each</span>
