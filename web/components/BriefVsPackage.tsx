@@ -28,7 +28,9 @@ export type PackageSummary = {
   headline: { rate: number; comparator_rate: number; comparator_label: string };
 };
 
-export const PACKAGE_PRICE = "€100";
+export const PACKAGE_PRICE = "€99";
+export const ACCESS_PRICE = "€999";
+export const ACCESS_UNIT = "per year";
 export const CUSTOM_COHORT_MAILTO =
   "mailto:contact@clinicaltrialfailures.com?subject=" + encodeURIComponent("Evidence package for a custom cohort");
 

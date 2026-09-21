@@ -26,53 +26,53 @@ const SELLABLE_PACKAGES = (catalogue.packages as any[]).filter((p) => trialsBeyo
 
 const PRICING = [
   {
+    name: "Brief",
+    prefix: "",
+    price: "Free",
+    unit: "",
+    for: "Anyone working out whether a mechanism class has a discontinuation problem worth looking into.",
+    includes: [
+      `All ${briefsIndex.brief_count} mechanism classes, two pages each`,
+      "The rate, what it is measured against, and whether it survives a multiplicity correction",
+      "The molecules behind the stops, and how concentrated they are in one sponsor",
+      "PDF or web page. No form, no address",
+    ],
+    cta: "Read the briefs",
+    href: "/briefs",
+  },
+  {
     name: "Evidence package",
     prefix: "",
-    price: "€100",
-    unit: "one cohort",
-    for: "One asset, target or mechanism you are evaluating now — diligence, a licensing decision, a trial design.",
+    price: "€99",
+    unit: "one molecule",
+    for: "A molecule on the table now — diligence, an in-licensing decision, a trial you are designing.",
     includes: [
-      "A cohort you define, with the inclusion and exclusion rules written out",
-      "Every trial in it, with its registry stop reason and a link to the record",
-      "Stops attributable to that trial's own data, separated from programme-wide decisions",
-      "Discontinuation rate and time-to-event curve against a like-for-like comparator",
-      "Unresolved and unreadable cases listed, not hidden",
-      "Written interpretation, kept separate from the extracted facts",
+      "Every cohort where a drug that failed shares your molecule's target",
+      "Each one in full: all trials, the cohort rules, the time-to-event curve",
+      "Your molecule placed against every molecule that failed — same target, same pathway, same modality",
+      "Which stops were that trial's own result and which were a programme decision",
+      "A link that keeps working, and keeps up to date, for a year",
     ],
-    cta: `See the ${SELLABLE_PACKAGES} cohorts`,
-    href: "/packages",
+    cta: "Check your molecule",
+    href: "/asset-check",
+    highlight: true,
+    badge: "Most buyers",
   },
   {
-    name: "Annual licence",
+    name: "Full access",
     prefix: "",
-    price: "€1,000",
+    price: "€999",
     unit: "per year",
-    for: "A team that returns to the same questions: competitive intelligence, portfolio review, investment research.",
+    for: "A team that comes back: competitive intelligence, portfolio review, investment research.",
     includes: [
-      "Twelve evidence packages a year, cohorts of your choosing",
-      "Watchlists on named assets, targets and sponsors",
-      "Weekly alerts, split into registry events and our own pipeline changes",
-      "The full dataset, rate tables and every mechanism brief, updated weekly",
+      `Every package, every brief and every rate table — ${SELLABLE_PACKAGES} cohorts, not one`,
+      "The comparison tool for any molecule, as often as you like",
+      "The full dataset and the fortnightly change report as files",
+      "Rebuilt weekly; the same link shows the latest release",
       "Corrections tracked and dated · email support",
     ],
-    cta: "Start a licence",
-    highlight: true,
-    badge: "Most teams",
-  },
-  {
-    name: "Enterprise & AI",
-    prefix: "from ",
-    price: "€3,000",
-    unit: "per year",
-    for: "Several teams, delivery into your own systems, or redistribution inside a product you sell.",
-    includes: [
-      "Everything in the annual licence, across every disease area we cover",
-      "Delivery into your S3 or file drop, and API access",
-      "Redistribution inside your product, and model training and evaluation rights",
-      "Cohort rules built to your definitions and held stable across releases",
-      "Named contact and an agreed correction turnaround",
-    ],
-    cta: "Talk to us",
+    cta: "Get access",
+    href: `mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Full access")}`,
   },
 ];
 
@@ -389,7 +389,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <Link href="/packages" className="sellCard sellLead">
                 <div className="sellTop">
                   <span className="sellName">Evidence package</span>
-                  <span className="sellPrice">€100</span>
+                  <span className="sellPrice">€99</span>
                 </div>
                 <p className="sellOne">
                   Every trial the rate was computed from — the ones that closed without stopping and the ones still
@@ -414,9 +414,9 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               </Link>
             </div>
             <p className="fine">
-              The annual licence below is the version of the package that keeps running: twelve cohorts a year, the full
-              dataset, and the weekly change report as a file rather than a mail. Need a cohort that is not a mechanism
-              class — one asset, one sponsor, one indication?{" "}
+              Full access below is the version that keeps running: every cohort rather than the ones your molecule
+              touches, the dataset and the change report as files, and the comparison tool for any molecule. Need a
+              cohort that is not a mechanism class — one sponsor, one indication?{" "}
               <a className="link" href={mailto("Evidence package for a custom cohort")}>
                 Tell us what you are evaluating
               </a>{" "}
@@ -472,7 +472,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           <section className="section" id="pricing">
             <h2>Pricing</h2>
             <p className="sectionSub">
-              List prices for a twelve-month term, excluding VAT. Academic and single-analyst rates on request.
+              Prices exclude VAT. Full access runs for twelve months; a package&rsquo;s link stays live and current for the
+              same year. Academic and single-analyst rates on request.
             </p>
             <div className="tiers">
               {PRICING.map((tier) => (
@@ -496,12 +497,18 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                     ))}
                   </ul>
                   <div className="tierCta">
-                    <a
-                      className={tier.highlight ? "solid" : "outline"}
-                      href={(tier as any).href ?? mailto(`${tier.name} — Oncology Failure Signals`)}
-                    >
-                      {tier.cta}
-                    </a>
+                    {((tier as any).href ?? "").startsWith("/") ? (
+                      <Link className={tier.highlight ? "solid" : "outline"} href={(tier as any).href}>
+                        {tier.cta}
+                      </Link>
+                    ) : (
+                      <a
+                        className={tier.highlight ? "solid" : "outline"}
+                        href={(tier as any).href ?? mailto(`${tier.name} — Oncology Failure Signals`)}
+                      >
+                        {tier.cta}
+                      </a>
+                    )}
                   </div>
                 </div>
               ))}
@@ -674,7 +681,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <div className="faq">
                 <h3>Can we train models on it?</h3>
                 <p>
-                  Model training, evaluation and redistribution inside a product are covered by the enterprise licence. The other tiers
+                  Model training, evaluation and redistribution inside a product you sell need a separate licence — ask, and we
+                  will quote it. The tiers on this page
                   are for internal use by one team.
                 </p>
               </div>
@@ -1236,7 +1244,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           margin-top: auto;
           padding-top: 18px;
         }
-        .tierCta a {
+        .tierCta :global(a) {
           display: block;
           text-align: center;
           text-decoration: none;
@@ -1245,11 +1253,11 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           font-weight: 800;
           font-size: 13.5px;
         }
-        .tierCta .solid {
+        .tierCta :global(.solid) {
           background: var(--accent);
           color: #fff;
         }
-        .tierCta .outline {
+        .tierCta :global(.outline) {
           background: var(--surface);
           color: var(--text);
           border: 1px solid var(--border);
