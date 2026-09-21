@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-21T09:05:53Z",
+  "generated_at_utc": "2026-09-21T13:02:26Z",
   "prior": {
     "a": 1.0,
     "b": 1.0
@@ -30,110 +30,110 @@
     "all": {
       "all": {
         "EFFICACY/FUTILITY": {
-          "n": 23787,
+          "n": 23795,
           "k": 1597,
-          "rate": 0.06713751208643377
+          "rate": 0.06711494011346922
         },
         "SAFETY": {
-          "n": 23787,
+          "n": 23795,
           "k": 615,
-          "rate": 0.02585445831756842
+          "rate": 0.0258457659172095
         },
         "OPERATIONAL": {
-          "n": 23787,
-          "k": 13766,
-          "rate": 0.5787194686173119
+          "n": 23795,
+          "k": 13771,
+          "rate": 0.5787350283673041
         },
         "REGULATORY": {
-          "n": 23787,
+          "n": 23795,
           "k": 510,
-          "rate": 0.02144028250725186
+          "rate": 0.0214330741752469
         },
         "OTHER/UNKNOWN": {
-          "n": 23787,
-          "k": 7299,
-          "rate": 0.306848278471434
+          "n": 23795,
+          "k": 7302,
+          "rate": 0.30687119142677033
         }
       },
       "phase1": {
         "EFFICACY/FUTILITY": {
-          "n": 7340,
+          "n": 7345,
           "k": 362,
-          "rate": 0.049318801089918256
+          "rate": 0.04928522804628999
         },
         "SAFETY": {
-          "n": 7340,
+          "n": 7345,
           "k": 255,
-          "rate": 0.03474114441416894
+          "rate": 0.03471749489448604
         },
         "OPERATIONAL": {
-          "n": 7340,
-          "k": 4025,
-          "rate": 0.5483651226158038
+          "n": 7345,
+          "k": 4027,
+          "rate": 0.5482641252552757
         },
         "REGULATORY": {
-          "n": 7340,
+          "n": 7345,
           "k": 138,
-          "rate": 0.01880108991825613
+          "rate": 0.018788291354663037
         },
         "OTHER/UNKNOWN": {
-          "n": 7340,
-          "k": 2560,
-          "rate": 0.34877384196185285
+          "n": 7345,
+          "k": 2563,
+          "rate": 0.34894486044928524
         }
       },
       "phase2": {
         "EFFICACY/FUTILITY": {
-          "n": 10833,
+          "n": 10836,
           "k": 867,
-          "rate": 0.08003323179174744
+          "rate": 0.08001107419712071
         },
         "SAFETY": {
-          "n": 10833,
+          "n": 10836,
           "k": 295,
-          "rate": 0.027231607126373118
+          "rate": 0.02722406792174234
         },
         "OPERATIONAL": {
-          "n": 10833,
-          "k": 6165,
-          "rate": 0.5690944336748823
+          "n": 10836,
+          "k": 6167,
+          "rate": 0.5691214470284238
         },
         "REGULATORY": {
-          "n": 10833,
+          "n": 10836,
           "k": 205,
-          "rate": 0.018923659189513522
+          "rate": 0.01891842008121078
         },
         "OTHER/UNKNOWN": {
-          "n": 10833,
-          "k": 3301,
-          "rate": 0.3047170682174836
+          "n": 10836,
+          "k": 3302,
+          "rate": 0.3047249907715024
         }
       },
       "phase3": {
         "EFFICACY/FUTILITY": {
-          "n": 3998,
+          "n": 4000,
           "k": 450,
-          "rate": 0.11255627813906953
+          "rate": 0.1125
         },
         "SAFETY": {
-          "n": 3998,
+          "n": 4000,
           "k": 75,
-          "rate": 0.018759379689844924
+          "rate": 0.01875
         },
         "OPERATIONAL": {
-          "n": 3998,
-          "k": 1986,
-          "rate": 0.49674837418709356
+          "n": 4000,
+          "k": 1987,
+          "rate": 0.49675
         },
         "REGULATORY": {
-          "n": 3998,
+          "n": 4000,
           "k": 118,
-          "rate": 0.029514757378689346
+          "rate": 0.0295
         },
         "OTHER/UNKNOWN": {
-          "n": 3998,
-          "k": 1369,
-          "rate": 0.3424212106053027
+          "n": 4000,
+          "k": 1370,
+          "rate": 0.3425
         }
       },
       "phase4": {
@@ -425,11 +425,11 @@
           },
           {
             "group": "Massachusetts General Hospital",
-            "n": 167,
+            "n": 168,
             "k": [
               8,
               3,
-              134,
+              135,
               3,
               19
             ]
@@ -1458,6 +1458,17 @@
             ]
           },
           {
+            "group": "Fox Chase Cancer Center",
+            "n": 36,
+            "k": [
+              3,
+              2,
+              23,
+              2,
+              6
+            ]
+          },
+          {
             "group": "Ipsen",
             "n": 36,
             "k": [
@@ -1510,17 +1521,6 @@
               13,
               0,
               14
-            ]
-          },
-          {
-            "group": "Fox Chase Cancer Center",
-            "n": 35,
-            "k": [
-              3,
-              2,
-              22,
-              2,
-              6
             ]
           },
           {
@@ -2107,17 +2107,6 @@
             ]
           },
           {
-            "group": "Hackensack Meridian Health",
-            "n": 23,
-            "k": [
-              0,
-              1,
-              19,
-              1,
-              2
-            ]
-          },
-          {
             "group": "London Health Sciences Centre Research Institute OR Lawson Research Institute of St. Joseph's",
             "n": 23,
             "k": [
@@ -2206,6 +2195,28 @@
             ]
           },
           {
+            "group": "Genmab",
+            "n": 22,
+            "k": [
+              2,
+              2,
+              13,
+              0,
+              5
+            ]
+          },
+          {
+            "group": "Hackensack Meridian Health",
+            "n": 22,
+            "k": [
+              0,
+              1,
+              19,
+              1,
+              1
+            ]
+          },
+          {
             "group": "Hadassah Medical Organization",
             "n": 22,
             "k": [
@@ -2291,17 +2302,6 @@
               18,
               1,
               0
-            ]
-          },
-          {
-            "group": "Genmab",
-            "n": 21,
-            "k": [
-              2,
-              2,
-              12,
-              0,
-              5
             ]
           },
           {
@@ -3262,6 +3262,17 @@
             ]
           },
           {
+            "group": "Peking Union Medical College Hospital",
+            "n": 14,
+            "k": [
+              2,
+              1,
+              3,
+              1,
+              7
+            ]
+          },
+          {
             "group": "Queen's University",
             "n": 14,
             "k": [
@@ -3292,6 +3303,17 @@
               6,
               0,
               5
+            ]
+          },
+          {
+            "group": "University Hospital, Toulouse",
+            "n": 14,
+            "k": [
+              1,
+              0,
+              7,
+              0,
+              6
             ]
           },
           {
@@ -3416,17 +3438,6 @@
             ]
           },
           {
-            "group": "Peking Union Medical College Hospital",
-            "n": 13,
-            "k": [
-              2,
-              1,
-              3,
-              1,
-              6
-            ]
-          },
-          {
             "group": "Rambam Health Care Campus",
             "n": 13,
             "k": [
@@ -3534,17 +3545,6 @@
               8,
               1,
               4
-            ]
-          },
-          {
-            "group": "University Hospital, Toulouse",
-            "n": 13,
-            "k": [
-              1,
-              0,
-              7,
-              0,
-              5
             ]
           },
           {
@@ -10434,7 +10434,7 @@
             ]
           },
           {
-            "group": "RAPT Therapeutics, Inc.",
+            "group": "RAPT Therapeutics, Inc., a member of the GSK plc group of companies",
             "n": 4,
             "k": [
               0,
@@ -12887,6 +12887,17 @@
             ]
           },
           {
+            "group": "Institut Claudius Regaud",
+            "n": 3,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Instituto Grifols, S.A.",
             "n": 3,
             "k": [
@@ -15326,6 +15337,17 @@
               0,
               0,
               2
+            ]
+          },
+          {
+            "group": "AO GENERIUM",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              1
             ]
           },
           {
@@ -19400,17 +19422,6 @@
           },
           {
             "group": "Inovio Pharmaceuticals",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              1
-            ]
-          },
-          {
-            "group": "Institut Claudius Regaud",
             "n": 2,
             "k": [
               0,
@@ -25499,17 +25510,6 @@
               1,
               0,
               0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "AO GENERIUM",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
               0,
               0
             ]
@@ -44193,6 +44193,17 @@
             ]
           },
           {
+            "group": "M2RLAB SL",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "MANA RBM",
             "n": 1,
             "k": [
@@ -56293,6 +56304,17 @@
             ]
           },
           {
+            "group": "Todd C. Lee MD MPH FIDSA",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Todd Doyle",
             "n": 1,
             "k": [
@@ -60167,6 +60189,17 @@
             ]
           },
           {
+            "group": "Massachusetts General Hospital",
+            "n": 37,
+            "k": [
+              3,
+              2,
+              23,
+              1,
+              8
+            ]
+          },
+          {
             "group": "Stanford University",
             "n": 37,
             "k": [
@@ -60175,17 +60208,6 @@
               26,
               0,
               11
-            ]
-          },
-          {
-            "group": "Massachusetts General Hospital",
-            "n": 36,
-            "k": [
-              3,
-              2,
-              22,
-              1,
-              8
             ]
           },
           {
@@ -60849,6 +60871,17 @@
             ]
           },
           {
+            "group": "Fox Chase Cancer Center",
+            "n": 13,
+            "k": [
+              0,
+              0,
+              10,
+              1,
+              2
+            ]
+          },
+          {
             "group": "Institute of Hematology & Blood Diseases Hospital, China",
             "n": 13,
             "k": [
@@ -60889,17 +60922,6 @@
               0,
               10,
               0,
-              2
-            ]
-          },
-          {
-            "group": "Fox Chase Cancer Center",
-            "n": 12,
-            "k": [
-              0,
-              0,
-              9,
-              1,
               2
             ]
           },
@@ -64391,6 +64413,17 @@
             ]
           },
           {
+            "group": "Institut Claudius Regaud",
+            "n": 3,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              2
+            ]
+          },
+          {
             "group": "Institut Curie",
             "n": 3,
             "k": [
@@ -64782,6 +64815,17 @@
               0,
               0,
               1,
+              0,
+              2
+            ]
+          },
+          {
+            "group": "Peking Union Medical College Hospital",
+            "n": 3,
+            "k": [
+              0,
+              1,
+              0,
               0,
               2
             ]
@@ -67009,17 +67053,6 @@
             ]
           },
           {
-            "group": "Institut Claudius Regaud",
-            "n": 2,
-            "k": [
-              0,
-              0,
-              1,
-              0,
-              1
-            ]
-          },
-          {
             "group": "Institute of Cancer Research, United Kingdom",
             "n": 2,
             "k": [
@@ -67941,17 +67974,6 @@
               2,
               0,
               0
-            ]
-          },
-          {
-            "group": "Peking Union Medical College Hospital",
-            "n": 2,
-            "k": [
-              0,
-              1,
-              0,
-              0,
-              1
             ]
           },
           {
@@ -69360,6 +69382,17 @@
               1,
               0,
               0
+            ]
+          },
+          {
+            "group": "AO GENERIUM",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              0,
+              0,
+              1
             ]
           },
           {
@@ -80363,7 +80396,7 @@
             ]
           },
           {
-            "group": "RAPT Therapeutics, Inc.",
+            "group": "RAPT Therapeutics, Inc., a member of the GSK plc group of companies",
             "n": 1,
             "k": [
               0,
@@ -85843,6 +85876,17 @@
             ]
           },
           {
+            "group": "Genmab",
+            "n": 21,
+            "k": [
+              1,
+              2,
+              13,
+              0,
+              5
+            ]
+          },
+          {
             "group": "Ipsen",
             "n": 21,
             "k": [
@@ -85862,17 +85906,6 @@
               10,
               2,
               3
-            ]
-          },
-          {
-            "group": "Genmab",
-            "n": 20,
-            "k": [
-              1,
-              2,
-              12,
-              0,
-              5
             ]
           },
           {
@@ -86349,17 +86382,6 @@
             ]
           },
           {
-            "group": "Hackensack Meridian Health",
-            "n": 13,
-            "k": [
-              0,
-              1,
-              10,
-              1,
-              1
-            ]
-          },
-          {
             "group": "Mario Negri Institute for Pharmacological Research",
             "n": 13,
             "k": [
@@ -86467,6 +86489,17 @@
               3,
               0,
               4
+            ]
+          },
+          {
+            "group": "Hackensack Meridian Health",
+            "n": 12,
+            "k": [
+              0,
+              1,
+              10,
+              1,
+              0
             ]
           },
           {
@@ -88164,6 +88197,17 @@
             ]
           },
           {
+            "group": "University Hospital, Toulouse",
+            "n": 6,
+            "k": [
+              1,
+              0,
+              4,
+              0,
+              1
+            ]
+          },
+          {
             "group": "University of Calgary",
             "n": 6,
             "k": [
@@ -88843,17 +88887,6 @@
               1,
               0,
               4
-            ]
-          },
-          {
-            "group": "University Hospital, Toulouse",
-            "n": 5,
-            "k": [
-              1,
-              0,
-              4,
-              0,
-              0
             ]
           },
           {
@@ -91926,7 +91959,7 @@
             ]
           },
           {
-            "group": "RAPT Therapeutics, Inc.",
+            "group": "RAPT Therapeutics, Inc., a member of the GSK plc group of companies",
             "n": 3,
             "k": [
               0,
@@ -92592,6 +92625,17 @@
               1,
               0,
               0,
+              0,
+              1
+            ]
+          },
+          {
+            "group": "AO GENERIUM",
+            "n": 2,
+            "k": [
+              0,
+              0,
+              1,
               0,
               1
             ]
@@ -98697,17 +98741,6 @@
               1,
               0,
               0,
-              0,
-              0
-            ]
-          },
-          {
-            "group": "AO GENERIUM",
-            "n": 1,
-            "k": [
-              0,
-              0,
-              1,
               0,
               0
             ]
@@ -110516,6 +110549,17 @@
             ]
           },
           {
+            "group": "M2RLAB SL",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "MC2 Therapeutics",
             "n": 1,
             "k": [
@@ -121518,6 +121562,17 @@
             ]
           },
           {
+            "group": "University Hospital, Toulouse",
+            "n": 5,
+            "k": [
+              0,
+              0,
+              2,
+              0,
+              3
+            ]
+          },
+          {
             "group": "University Hospitals Cleveland Medical Center",
             "n": 5,
             "k": [
@@ -122206,17 +122261,6 @@
               1,
               0,
               1,
-              0,
-              2
-            ]
-          },
-          {
-            "group": "University Hospital, Toulouse",
-            "n": 4,
-            "k": [
-              0,
-              0,
-              2,
               0,
               2
             ]
@@ -136467,6 +136511,17 @@
             ]
           },
           {
+            "group": "Todd C. Lee MD MPH FIDSA",
+            "n": 1,
+            "k": [
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
             "group": "Torrent Pharmaceuticals Limited",
             "n": 1,
             "k": [
@@ -149696,24 +149751,24 @@
         "all": [
           {
             "group": "Oncology",
-            "n": 8487,
+            "n": 8491,
             "k": [
               532,
               232,
-              4945,
+              4948,
               111,
-              2667
+              2668
             ]
           },
           {
             "group": "Other",
-            "n": 5135,
+            "n": 5137,
             "k": [
               301,
               124,
-              3061,
+              3062,
               149,
-              1500
+              1501
             ]
           },
           {
@@ -149762,13 +149817,13 @@
           },
           {
             "group": "Endocrine & Metabolic",
-            "n": 826,
+            "n": 827,
             "k": [
               48,
               31,
               463,
               32,
-              252
+              253
             ]
           },
           {
@@ -149806,11 +149861,11 @@
           },
           {
             "group": "Renal & Urology",
-            "n": 525,
+            "n": 526,
             "k": [
               30,
               13,
-              324,
+              325,
               12,
               146
             ]
@@ -149863,13 +149918,13 @@
         "phase1": [
           {
             "group": "Oncology",
-            "n": 3929,
+            "n": 3933,
             "k": [
               203,
               132,
-              2201,
+              2203,
               44,
-              1349
+              1351
             ]
           },
           {
@@ -149940,13 +149995,13 @@
           },
           {
             "group": "Endocrine & Metabolic",
-            "n": 174,
+            "n": 175,
             "k": [
               12,
               6,
               88,
               5,
-              63
+              64
             ]
           },
           {
@@ -150030,24 +150085,24 @@
         "phase2": [
           {
             "group": "Oncology",
-            "n": 4871,
+            "n": 4872,
             "k": [
               338,
               134,
-              2884,
+              2885,
               66,
               1449
             ]
           },
           {
             "group": "Other",
-            "n": 1796,
+            "n": 1797,
             "k": [
               149,
               45,
               1036,
               56,
-              510
+              511
             ]
           },
           {
@@ -150140,11 +150195,11 @@
           },
           {
             "group": "Renal & Urology",
-            "n": 188,
+            "n": 189,
             "k": [
               13,
               6,
-              101,
+              102,
               3,
               65
             ]
@@ -150197,13 +150252,13 @@
         "phase3": [
           {
             "group": "Other",
-            "n": 926,
+            "n": 928,
             "k": [
               91,
               11,
-              498,
+              499,
               26,
-              300
+              301
             ]
           },
           {

@@ -1,23 +1,23 @@
 {
-  "version": "2026-09-18",
-  "generated_at_utc": "2026-09-21T09:05:53Z",
+  "version": "2026-09-21",
+  "generated_at_utc": "2026-09-21T13:02:26Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 23787,
-    "max_last_update_post_date": "2026-09-18"
+    "record_count": 23795,
+    "max_last_update_post_date": "2026-09-21"
   },
   "biological_failure": {
     "record_count": 2380,
-    "max_last_update_post_date": "2026-09-18"
+    "max_last_update_post_date": "2026-09-21"
   },
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 8487
+      "count": 8491
     },
     {
       "area": "Other",
-      "count": 5135
+      "count": 5137
     },
     {
       "area": "Infectious Disease",
@@ -37,7 +37,7 @@
     },
     {
       "area": "Endocrine & Metabolic",
-      "count": 826
+      "count": 827
     },
     {
       "area": "Immunology & Autoimmune",
@@ -55,22 +55,22 @@
   "classification_v2": {
     "version": "2.7.0",
     "outcomes": {
-      "NON_BIOLOGICAL": 14276,
-      "UNKNOWN": 3586,
+      "NON_BIOLOGICAL": 14281,
+      "UNKNOWN": 3588,
       "BIOLOGICAL_FAILURE": 2380,
-      "CAUSE_NOT_STATED": 2021,
+      "CAUSE_NOT_STATED": 2022,
       "NON_FAILURE_TRANSITION": 1287,
       "MIXED_CAUSES": 237
     },
     "primary_reasons": {
-      "RECRUITMENT": 6600,
-      "UNSPECIFIED": 3586,
-      "BUSINESS_STRATEGY": 2242,
+      "RECRUITMENT": 6602,
+      "UNSPECIFIED": 3588,
+      "BUSINESS_STRATEGY": 2243,
       "FUNDING": 1759,
       "DECISION_WITHOUT_STATED_CAUSE": 1621,
       "EFFICACY_FUTILITY": 1597,
-      "STAFFING_RESOURCES": 809,
-      "PROTOCOL_FEASIBILITY": 648,
+      "STAFFING_RESOURCES": 810,
+      "PROTOCOL_FEASIBILITY": 649,
       "SUPPLY_MANUFACTURING": 617,
       "SAFETY": 615,
       "REGULATORY": 510,
@@ -78,13 +78,13 @@
       "EXTERNAL_DISRUPTION": 489,
       "OPERATIONAL_OTHER": 419,
       "REPLACEMENT_TRANSITION": 415,
-      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 400,
+      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 401,
       "PLANNED_MILESTONE": 364,
       "MULTIPLE": 237,
       "SUPPORT_WITHDRAWAL": 183,
       "BIOLOGICAL_UNSPECIFIED": 168
     },
-    "needs_review": 3586,
+    "needs_review": 3588,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,
