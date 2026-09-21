@@ -14,6 +14,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import bundle from "@/data/private/evidence_packages.json";
+import {
+  compareAsset,
+  renderComparison,
+  renderUnresolved,
+  resolveAsset,
+  type FailedAsset,
+} from "@/lib/server/assetComparison";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -23,7 +30,18 @@ type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: { LEADS?: KvBinding } } | undefined;
 };
 
-type Pkg = { cohort: string; area: string; html: string; generated_at_utc: string; counts: Record<string, number> };
+type Pkg = {
+  cohort: string;
+  area: string;
+  html: string;
+  generated_at_utc: string;
+  counts: Record<string, number>;
+  failed_assets?: FailedAsset[];
+};
+
+// The prebuilt document leaves this slot empty; the comparison against the buyer's own molecule
+// is the one section that cannot exist before there is a buyer.
+const SLOT = "<!--ASSET_COMPARISON-->";
 const PACKAGES = (bundle as { packages: Record<string, Pkg> }).packages;
 
 function kv(): KvBinding | undefined {
@@ -50,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(503).send("Delivery is not configured. Please contact us and we will send it.");
   }
 
-  let grant: { slug?: string; email?: string; issued_at?: string } | null = null;
+  let grant: { slug?: string; email?: string; issued_at?: string; asset?: string } | null = null;
   try {
     const raw = await store.get(`grant:${token}`);
     grant = raw ? JSON.parse(raw) : null;
@@ -65,11 +83,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(403).send("That token is not valid for this package.");
   }
 
-  console.log(JSON.stringify({ event: "report_delivered", slug, email: grant.email, at: new Date().toISOString() }));
+  // The asset under review comes from the order, unless this request names another one — a buyer
+  // evaluating a second molecule should not have to order the cohort twice.
+  const asset = clean(req.query.asset, 200) || clean(grant.asset, 200);
+  let section = "";
+  let resolution: "none" | "resolved" | "unresolved" = "none";
+  if (asset) {
+    const resolved = resolveAsset(asset);
+    if (resolved) {
+      section = renderComparison(resolved, compareAsset(resolved, pkg.failed_assets || [], pkg.area));
+      resolution = "resolved";
+    } else {
+      section = renderUnresolved(asset);
+      resolution = "unresolved";
+    }
+  }
+
+  console.log(JSON.stringify({
+    event: "report_delivered", slug, email: grant.email, asset_resolution: resolution,
+    at: new Date().toISOString(),
+  }));
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   // A paid document should not sit in a shared cache.
   res.setHeader("Cache-Control", "private, no-store");
   res.setHeader("Content-Disposition", `inline; filename="${slug}.html"`);
-  return res.status(200).send(pkg.html);
+  return res.status(200).send(pkg.html.replace(SLOT, section));
 }

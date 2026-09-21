@@ -71,19 +71,35 @@ def resolve_asset(name: str) -> dict | None:
     }
 
 
-def compare_asset(asset: dict, failed: list[dict]) -> list[dict]:
-    """One row per failed molecule: what it shares with the asset under review, and what it does not."""
+def compare_asset(asset: dict, failed: list[dict], area: str | None = "Oncology") -> list[dict]:
+    """One row per failed molecule: what it shares with the asset under review, and what it does not.
+
+    Ported to TypeScript in web/lib/server/assetComparison.ts, which is what runs at delivery.
+    web/tests/assetComparison.test.ts checks the two against fixtures generated from this
+    function; change one and the test fails until the other follows.
+    """
+    from scripts.universe.mechanism_classes import classes_for
+
     out = []
     a_genes, a_mechs = set(asset.get("target_genes") or []), set(asset.get("mechanisms") or [])
+    a_classes = set(classes_for(a_genes, area))
     for f in failed:
         f_genes, f_mechs = set(f.get("target_genes") or []), set(f.get("mechanisms") or [])
         same_modality = bool(asset.get("modality")) and asset["modality"] in (f.get("modalities") or [])
         shared_genes = sorted(a_genes & f_genes)
         shared_mechs = sorted(a_mechs & f_mechs)
+        # Two genes on the same axis are one hypothesis: PD-1 and PD-L1, VEGF and its receptor.
+        # Reading the symbols literally would call pembrolizumab a different hypothesis from a
+        # PD-L1 antibody, which is wrong in the only sense that matters to the buyer.
+        shared_classes = sorted(a_classes & set(classes_for(f_genes, area)))
         if shared_genes and same_modality:
             verdict, why = "closest", "same target and same modality"
         elif shared_genes:
             verdict, why = "related", "same target, different modality"
+        elif shared_classes:
+            verdict = "related"
+            why = (f"same pathway ({shared_classes[0]}), different target"
+                   + (", same modality" if same_modality else ""))
         elif shared_mechs:
             verdict, why = "related", "different target, overlapping mechanism"
         elif same_modality:
@@ -96,6 +112,7 @@ def compare_asset(asset: dict, failed: list[dict]) -> list[dict]:
             "asset": f["asset"], "modalities": f.get("modalities") or [], "sponsors": f.get("sponsors") or [],
             "trial_count": f.get("trial_count"), "trials": f.get("trials") or [],
             "shared_target_genes": shared_genes, "shared_mechanisms": shared_mechs,
+            "shared_classes": shared_classes,
             "same_modality": same_modality, "verdict": verdict, "why": why,
         })
     order = {"closest": 0, "related": 1, "weak": 2, "distant": 3, "unknown": 4}
@@ -428,7 +445,9 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                             f"&ldquo;{e(review.get('query'))}&rdquo; to a known molecule, so no comparison is included. "
                             f"A ChEMBL id, an INN or a research code would let us build it.</p>")
     else:
-        comparison_block = ""
+        # The slot the delivery route splices the buyer's comparison into. Built here rather than
+        # appended there so the section lands in the right place in the document, not at the end.
+        comparison_block = "<!--ASSET_COMPARISON-->"
 
     cif_rows = "".join(
         f"<tr><td>{m} months</td><td class='num'><b>{pct(cif[m]['cif'])}</b></td>"
@@ -549,7 +568,8 @@ def main() -> int:
     if args.asset:
         resolved = resolve_asset(args.asset)
         pkg["asset_under_review"] = resolved or {"query": args.asset, "resolved": False}
-        pkg["asset_comparison"] = (compare_asset(resolved, pkg["failure_signature"]["assets"]) if resolved else [])
+        pkg["asset_comparison"] = (compare_asset(resolved, pkg["failure_signature"]["assets"], args.area)
+                                   if resolved else [])
         pkg["asset_not_compared"] = NOT_COMPARED
     notes = interpretation(pkg)
     pkg["interpretation"] = notes

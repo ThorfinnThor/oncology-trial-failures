@@ -123,9 +123,15 @@ export default function BriefVsPackage({
           {adds > 0 ? (
             <>
               <div className="bvpOne">
-                The same cohort, itemised: every trial named instead of counted.
+                Your molecule against the ones that failed here — and the same cohort itemised, every trial named
+                instead of counted.
               </div>
               <ul>
+                <li>
+                  <b>Name the asset you are evaluating</b> and every molecule that failed in this cohort is placed
+                  against it: same target and modality, same pathway, same modality only, or nothing in common — with
+                  the trials behind each
+                </li>
                 <li>
                   All {c.stopped} stopped trials, not the {Math.min(c.brief_lists_stops, c.stopped)} the brief has room
                   for — and each one attributed to its own result or to a decision taken elsewhere, with the words that

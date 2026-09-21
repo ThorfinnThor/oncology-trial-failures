@@ -1,0 +1,5119 @@
+[
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "bintrafusp alfa",
+  "resolved": {
+   "asset": "BINTRAFUSP ALFA",
+   "chembl_id": "CHEMBL4298024",
+   "modality": "Protein",
+   "target_genes": [
+    "CD274",
+    "TGFB1",
+    "TGFB2",
+    "TGFB3"
+   ],
+   "mechanisms": [
+    "Programmed cell death 1 ligand 1 binding agent",
+    "Transforming growth factor beta binding agent"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "shared_mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "shared_classes": [
+     "PD-(L)1",
+     "TGF-β"
+    ],
+    "same_modality": true,
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "TGFB1"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "TGF-β"
+    ],
+    "same_modality": false,
+    "trial_count": 2
+   }
+  ]
+ },
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "osimertinib",
+  "resolved": {
+   "asset": "OSIMERTINIB",
+   "chembl_id": "CHEMBL3353410",
+   "modality": "Small molecule",
+   "target_genes": [
+    "EGFR"
+   ],
+   "mechanisms": [
+    "Epidermal growth factor receptor erbB1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   }
+  ]
+ },
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "pembrolizumab",
+  "resolved": {
+   "asset": "PEMBROLIZUMAB",
+   "chembl_id": "CHEMBL3137343",
+   "modality": "Antibody",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "mechanisms": [
+    "Programmed cell death protein 1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "verdict": "related",
+    "why": "same pathway (PD-(L)1), different target",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "PD-(L)1"
+    ],
+    "same_modality": false,
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   }
+  ]
+ },
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "atezolizumab",
+  "resolved": {
+   "asset": "ATEZOLIZUMAB",
+   "chembl_id": "CHEMBL3707227",
+   "modality": "Antibody",
+   "target_genes": [
+    "CD274"
+   ],
+   "mechanisms": [
+    "Programmed cell death 1 ligand 1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "CD274"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "PD-(L)1"
+    ],
+    "same_modality": false,
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   }
+  ]
+ },
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "sotorasib",
+  "resolved": {
+   "asset": "SOTORASIB",
+   "chembl_id": "CHEMBL4535757",
+   "modality": "Small molecule",
+   "target_genes": [
+    "KRAS"
+   ],
+   "mechanisms": [
+    "GTPase KRas inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   }
+  ]
+ },
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "aspirin",
+  "resolved": {
+   "asset": "ASPIRIN",
+   "chembl_id": "CHEMBL25",
+   "modality": "Small molecule",
+   "target_genes": [
+    "PTGS1",
+    "PTGS2"
+   ],
+   "mechanisms": [
+    "Cyclooxygenase inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   }
+  ]
+ },
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "lecanemab",
+  "resolved": {
+   "asset": "LECANEMAB",
+   "chembl_id": "CHEMBL3833321",
+   "modality": "Antibody",
+   "target_genes": [
+    "APP"
+   ],
+   "mechanisms": [
+    "Amyloid-beta A4 protein inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Nisevokitug",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Bintrafusp Alfa",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 9
+   }
+  ]
+ },
+ {
+  "slug": "oncology-tgf-pd-l-1",
+  "area": "Oncology",
+  "query": "not-a-molecule-xyz",
+  "resolved": null,
+  "failed": [
+   {
+    "asset": "Bintrafusp Alfa",
+    "resolved": true,
+    "modalities": [
+     "Protein"
+    ],
+    "target_genes": [
+     "CD274",
+     "TGFB1",
+     "TGFB2",
+     "TGFB3"
+    ],
+    "mechanisms": [
+     "Programmed cell death 1 ligand 1 binding agent",
+     "Transforming growth factor beta binding agent"
+    ],
+    "sponsors": [
+     "AIO-Studien-gGmbH",
+     "Mayo Clinic",
+     "Merck KGaA",
+     "National Cancer Institute (NCI)",
+     "UNICANCER"
+    ],
+    "trials": [
+     "NCT03451773",
+     "NCT03840902",
+     "NCT04066491",
+     "NCT04327986",
+     "NCT04396535",
+     "NCT04428047",
+     "NCT04489940",
+     "NCT04501094",
+     "NCT04727541"
+    ],
+    "trial_count": 9
+   },
+   {
+    "asset": "Nisevokitug",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "TGFB1"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Novartis"
+    ],
+    "trials": [
+     "NCT04390763",
+     "NCT04952753"
+    ],
+    "trial_count": 2
+   }
+  ],
+  "rows": []
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "bintrafusp alfa",
+  "resolved": {
+   "asset": "BINTRAFUSP ALFA",
+   "chembl_id": "CHEMBL4298024",
+   "modality": "Protein",
+   "target_genes": [
+    "CD274",
+    "TGFB1",
+    "TGFB2",
+    "TGFB3"
+   ],
+   "mechanisms": [
+    "Programmed cell death 1 ligand 1 binding agent",
+    "Transforming growth factor beta binding agent"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Cetuximab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "osimertinib",
+  "resolved": {
+   "asset": "OSIMERTINIB",
+   "chembl_id": "CHEMBL3353410",
+   "modality": "Small molecule",
+   "target_genes": [
+    "EGFR"
+   ],
+   "mechanisms": [
+    "Epidermal growth factor receptor erbB1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Erlotinib",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": true,
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Cetuximab",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 5
+   },
+   {
+    "asset": "Amivantamab",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "verdict": "related",
+    "why": "same target, different modality",
+    "shared_target_genes": [
+     "EGFR"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "EGFR"
+    ],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "pembrolizumab",
+  "resolved": {
+   "asset": "PEMBROLIZUMAB",
+   "chembl_id": "CHEMBL3137343",
+   "modality": "Antibody",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "mechanisms": [
+    "Programmed cell death protein 1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Cetuximab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 5
+   },
+   {
+    "asset": "Amivantamab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Erlotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "atezolizumab",
+  "resolved": {
+   "asset": "ATEZOLIZUMAB",
+   "chembl_id": "CHEMBL3707227",
+   "modality": "Antibody",
+   "target_genes": [
+    "CD274"
+   ],
+   "mechanisms": [
+    "Programmed cell death 1 ligand 1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Cetuximab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 5
+   },
+   {
+    "asset": "Amivantamab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Erlotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "sotorasib",
+  "resolved": {
+   "asset": "SOTORASIB",
+   "chembl_id": "CHEMBL4535757",
+   "modality": "Small molecule",
+   "target_genes": [
+    "KRAS"
+   ],
+   "mechanisms": [
+    "GTPase KRas inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Erlotinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Cetuximab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 5
+   },
+   {
+    "asset": "Amivantamab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "aspirin",
+  "resolved": {
+   "asset": "ASPIRIN",
+   "chembl_id": "CHEMBL25",
+   "modality": "Small molecule",
+   "target_genes": [
+    "PTGS1",
+    "PTGS2"
+   ],
+   "mechanisms": [
+    "Cyclooxygenase inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Erlotinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Cetuximab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 5
+   },
+   {
+    "asset": "Amivantamab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "lecanemab",
+  "resolved": {
+   "asset": "LECANEMAB",
+   "chembl_id": "CHEMBL3833321",
+   "modality": "Antibody",
+   "target_genes": [
+    "APP"
+   ],
+   "mechanisms": [
+    "Amyloid-beta A4 protein inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Cetuximab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 5
+   },
+   {
+    "asset": "Amivantamab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   },
+   {
+    "asset": "Erlotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "oncology-egfr",
+  "area": "Oncology",
+  "query": "not-a-molecule-xyz",
+  "resolved": null,
+  "failed": [
+   {
+    "asset": "Cetuximab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly",
+     "SOTIO Biotech AG",
+     "UNICANCER",
+     "University of Colorado, Denver",
+     "University of Utah"
+    ],
+    "trials": [
+     "NCT02822482",
+     "NCT04165031",
+     "NCT04853043",
+     "NCT05167409",
+     "NCT05619172"
+    ],
+    "trial_count": 5
+   },
+   {
+    "asset": "Erlotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Astellas Pharma",
+     "Eli Lilly",
+     "Patrick Joseph Loehrer Sr."
+    ],
+    "trials": [
+     "NCT02495233",
+     "NCT03213626",
+     "NCT04165031"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Osimertinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "First Affiliated Hospital of Zhejiang University",
+     "The Netherlands Cancer Institute"
+    ],
+    "trials": [
+     "NCT03784599",
+     "NCT04438902"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Tarloxotinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB3",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Rain Oncology Inc"
+    ],
+    "trials": [
+     "NCT02449681",
+     "NCT02454842"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Afatinib",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "ERBB2",
+     "ERBB4"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-2 inhibitor",
+     "Receptor protein-tyrosine kinase erbB-4 inhibitor"
+    ],
+    "sponsors": [
+     "Universität Duisburg-Essen"
+    ],
+    "trials": [
+     "NCT02595840"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Amivantamab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor",
+     "Hepatocyte growth factor receptor inhibitor"
+    ],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT05653427"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/DM1 Antibody-drug Conjugate AVID100",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Formation Biologics"
+    ],
+    "trials": [
+     "NCT03094169"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Anti-EGFR/c-Met Antibody-drug Conjugate GEN1286",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Genmab"
+    ],
+    "trials": [
+     "NCT06685068"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Depatuxizumab Mafodotin",
+    "resolved": true,
+    "modalities": [
+     "ADC"
+    ],
+    "target_genes": [
+     "EGFR",
+     "TUBA1A",
+     "TUBA1B",
+     "TUBA1C",
+     "TUBA3C",
+     "TUBA3E",
+     "TUBA4A",
+     "TUBB",
+     "TUBB1",
+     "TUBB2A",
+     "TUBB2B",
+     "TUBB3",
+     "TUBB4A",
+     "TUBB4B",
+     "TUBB6",
+     "TUBB8"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 binding agent",
+     "Tubulin inhibitor"
+    ],
+    "sponsors": [
+     "AbbVie"
+    ],
+    "trials": [
+     "NCT03419403"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "EGFR/VEGFR/RET Inhibitor HA121-28",
+    "resolved": true,
+    "modalities": [
+     "Small molecule"
+    ],
+    "target_genes": [
+     "EGFR",
+     "RET"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "CSPC ZhongQi Pharmaceutical Technology Co., Ltd."
+    ],
+    "trials": [
+     "NCT04784520"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Necitumumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "EGFR"
+    ],
+    "mechanisms": [
+     "Epidermal growth factor receptor erbB1 inhibitor"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02443337"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Pemlimogene Merolisbac",
+    "resolved": true,
+    "modalities": [
+     "Gene therapy"
+    ],
+    "target_genes": [
+     "EGFR",
+     "MSLN"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Johnson & Johnson"
+    ],
+    "trials": [
+     "NCT03371381"
+    ],
+    "trial_count": 1
+   },
+   {
+    "asset": "Tak-186",
+    "resolved": true,
+    "modalities": [
+     "Unknown"
+    ],
+    "target_genes": [
+     "CD3E",
+     "EGFR"
+    ],
+    "mechanisms": [],
+    "sponsors": [
+     "Takeda"
+    ],
+    "trials": [
+     "NCT04844073"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": []
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "bintrafusp alfa",
+  "resolved": {
+   "asset": "BINTRAFUSP ALFA",
+   "chembl_id": "CHEMBL4298024",
+   "modality": "Protein",
+   "target_genes": [
+    "CD274",
+    "TGFB1",
+    "TGFB2",
+    "TGFB3"
+   ],
+   "mechanisms": [
+    "Programmed cell death 1 ligand 1 binding agent",
+    "Transforming growth factor beta binding agent"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Aducanumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "osimertinib",
+  "resolved": {
+   "asset": "OSIMERTINIB",
+   "chembl_id": "CHEMBL3353410",
+   "modality": "Small molecule",
+   "target_genes": [
+    "EGFR"
+   ],
+   "mechanisms": [
+    "Epidermal growth factor receptor erbB1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Aducanumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "pembrolizumab",
+  "resolved": {
+   "asset": "PEMBROLIZUMAB",
+   "chembl_id": "CHEMBL3137343",
+   "modality": "Antibody",
+   "target_genes": [
+    "PDCD1"
+   ],
+   "mechanisms": [
+    "Programmed cell death protein 1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Aducanumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "atezolizumab",
+  "resolved": {
+   "asset": "ATEZOLIZUMAB",
+   "chembl_id": "CHEMBL3707227",
+   "modality": "Antibody",
+   "target_genes": [
+    "CD274"
+   ],
+   "mechanisms": [
+    "Programmed cell death 1 ligand 1 inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Aducanumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "verdict": "weak",
+    "why": "same modality only — no target in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": true,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "sotorasib",
+  "resolved": {
+   "asset": "SOTORASIB",
+   "chembl_id": "CHEMBL4535757",
+   "modality": "Small molecule",
+   "target_genes": [
+    "KRAS"
+   ],
+   "mechanisms": [
+    "GTPase KRas inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Aducanumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "aspirin",
+  "resolved": {
+   "asset": "ASPIRIN",
+   "chembl_id": "CHEMBL25",
+   "modality": "Small molecule",
+   "target_genes": [
+    "PTGS1",
+    "PTGS2"
+   ],
+   "mechanisms": [
+    "Cyclooxygenase inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Aducanumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "verdict": "distant",
+    "why": "no target, mechanism or modality in common",
+    "shared_target_genes": [],
+    "shared_mechanisms": [],
+    "shared_classes": [],
+    "same_modality": false,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "lecanemab",
+  "resolved": {
+   "asset": "LECANEMAB",
+   "chembl_id": "CHEMBL3833321",
+   "modality": "Antibody",
+   "target_genes": [
+    "APP"
+   ],
+   "mechanisms": [
+    "Amyloid-beta A4 protein inhibitor"
+   ]
+  },
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": [
+   {
+    "asset": "Aducanumab",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "APP"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "Amyloid-β directed"
+    ],
+    "same_modality": true,
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "APP"
+    ],
+    "shared_mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "shared_classes": [
+     "Amyloid-β directed"
+    ],
+    "same_modality": true,
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "verdict": "closest",
+    "why": "same target and same modality",
+    "shared_target_genes": [
+     "APP"
+    ],
+    "shared_mechanisms": [],
+    "shared_classes": [
+     "Amyloid-β directed"
+    ],
+    "same_modality": true,
+    "trial_count": 1
+   }
+  ]
+ },
+ {
+  "slug": "neurology-amyloid-directed",
+  "area": "Neurology",
+  "query": "not-a-molecule-xyz",
+  "resolved": null,
+  "failed": [
+   {
+    "asset": "Aducanumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Biogen"
+    ],
+    "trials": [
+     "NCT02477800",
+     "NCT02484547",
+     "NCT03639987"
+    ],
+    "trial_count": 3
+   },
+   {
+    "asset": "Crenezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein inhibitor"
+    ],
+    "sponsors": [
+     "Roche"
+    ],
+    "trials": [
+     "NCT02670083",
+     "NCT03114657"
+    ],
+    "trial_count": 2
+   },
+   {
+    "asset": "Solanezumab",
+    "resolved": true,
+    "modalities": [
+     "Antibody"
+    ],
+    "target_genes": [
+     "APP"
+    ],
+    "mechanisms": [
+     "Amyloid-beta A4 protein binding agent"
+    ],
+    "sponsors": [
+     "Eli Lilly"
+    ],
+    "trials": [
+     "NCT02760602"
+    ],
+    "trial_count": 1
+   }
+  ],
+  "rows": []
+ }
+]

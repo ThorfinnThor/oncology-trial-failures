@@ -27,6 +27,9 @@ PRIVATE_DIR = "data/private"
 # A string that appears in the private bundle and nowhere else.
 MARKER = "Server-side only. This file is imported by the API route"
 ALLOWED = {"pages/api", "app/api", "lib/server", "server"}
+# Directories Next never compiles into the site. A test that reads the private bundle is how the
+# delivery path is verified at all, and refusing it would push that check out of the repository.
+NOT_BUILT = ("tests/", "test/", "__tests__/", ".scratch/", "scripts/")
 
 
 def imports_private(path: Path) -> bool:
@@ -41,6 +44,8 @@ def main() -> int:
     for path in sorted(WEB.rglob("*.ts*")):
         rel = path.relative_to(WEB).as_posix()
         if rel.startswith("node_modules") or rel.startswith(".next") or "/node_modules/" in rel:
+            continue
+        if any(rel.startswith(prefix) for prefix in NOT_BUILT):
             continue
         if not imports_private(path):
             continue

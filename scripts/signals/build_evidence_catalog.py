@@ -116,6 +116,10 @@ def main() -> int:
             "generated_at_utc": built["generated_at_utc"],
             "counts": {**built["counts"], "closed": built["headline"]["closed"]},
             "window": built["window"],
+            # Delivery compares the buyer's asset against these, in this area's ontology.
+            "failed_assets": [{k: a.get(k) for k in
+                               ("asset", "modalities", "target_genes", "mechanisms", "trial_count")}
+                              for a in built["failure_signature"]["assets"]],
             "headline": {"rate": built["headline"]["rate"],
                          "comparator_rate": built["headline"]["comparator_rate"],
                          "comparator_label": built["headline"]["comparator_label"]},

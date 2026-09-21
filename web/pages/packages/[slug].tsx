@@ -24,6 +24,7 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
   const [url, setUrl] = useState("");
+  const [again, setAgain] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -136,8 +137,26 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                   <a className="btnPrimary" href={url} target="_blank" rel="noopener noreferrer">
                     Open the package
                   </a>
+                  <div className="againRow">
+                    <input
+                      className="input"
+                      value={again}
+                      onChange={(event) => setAgain(event.target.value)}
+                      placeholder="Compare another molecule"
+                      aria-label="Compare another molecule"
+                    />
+                    <a
+                      className="btnGhost"
+                      href={again.trim() ? `${url}&asset=${encodeURIComponent(again.trim())}` : url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Open with this asset
+                    </a>
+                  </div>
                   <p className="fine">
-                    Keep the link — it works from any device and stays valid for a year. To print it as a PDF, use your
+                    Keep the link — it works from any device and stays valid for a year, and you can put any molecule
+                    after <code>&amp;asset=</code> to rebuild the comparison for it. To print it as a PDF, use your
                     browser&rsquo;s print dialogue.
                   </p>
                 </div>
@@ -153,8 +172,8 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                       <li>Automated analysis. No clinician has reviewed these records, and we do not price as though one has</li>
                       <li>Every figure traces to a trial, and every trial to its registry record</li>
                       <li>
-                        Tell us the asset you are evaluating and we will say which of these failures share its target and
-                        modality
+                        Name the asset you are evaluating and the package opens with it compared against every molecule
+                        that failed here — same target, same pathway, same modality, or none of the three
                       </li>
                     </ul>
                   </div>
@@ -171,7 +190,11 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                       <label htmlFor="pk-asset">
                         The asset you are evaluating <span className="opt">optional</span>
                       </label>
-                      <input id="pk-asset" className="input" name="asset" type="text" placeholder="Name or research code" />
+                      <input id="pk-asset" className="input" name="asset" type="text" placeholder="Name, INN or research code" />
+                      <span className="hint">
+                        Resolved against ChEMBL&rsquo;s clinical-stage molecules. A preclinical or unnamed asset will not
+                        be in it, and the package says so rather than guessing.
+                      </span>
                     </div>
                     <input
                       name="website"
@@ -332,6 +355,22 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
           margin: 8px 0 0;
           font-size: 13.5px;
           line-height: 1.55;
+        }
+        .againRow {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 14px;
+          align-items: center;
+        }
+        .againRow :global(.input) {
+          flex: 1 1 220px;
+          min-width: 0;
+        }
+        .hint {
+          font-size: 11.5px;
+          line-height: 1.45;
+          color: var(--text-muted);
         }
         .noSaleActions {
           display: flex;
