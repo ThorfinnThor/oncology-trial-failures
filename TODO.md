@@ -55,11 +55,20 @@ Three ways out, in order of how much they are worth:
   phase. That is the thing buyers actually ask for, and the machinery already resolves it.
 - **Accept the gap and say so louder.** The current behaviour is honest; it just does not earn.
 
-### 4. Two classes are missing from the ontology entirely
+### 4. ~~Two classes are missing from the ontology entirely~~ — done, and it was bigger than that
 
-`EZH2` (75 trials) and `GLP-1` resolve to a gene and hit no class, so they return nothing at all.
-Adding them to `scripts/universe/mechanism_classes.py` is a few lines each. Worth doing while
-adding whatever else a look at the most-searched targets turns up.
+`EZH2` is in the oncology lexicon and now carries a brief and a package (3 stops in 14 closed
+trials, three programmes). `GLP-1` needed a whole disease area: **Endocrine & Metabolic**, 22
+classes, 4,520 Phase 2/3 trials, built from the targets that actually appear in them.
+
+The area's own finding is that it has almost none: 28 biological stops in 1,637 closed trials,
+1.7% against oncology's 4.3%. Metabolic programmes fail at the endpoint of a completed trial, and
+that is invisible to this measure. So the coverage is real and there is nothing to sell there yet
+— no brief passed the catalogue's thresholds, which is correct.
+
+**Still worth a look:** the MASH targets (FXR, FGF21/KLB, ASK1) barely resolve, because those
+trials are tagged Gastroenterology & Hepatology, not Endocrine. That is a graveyard of expensive
+failures and the buyers are there. It needs a fifth lexicon, not a fix.
 
 ### 5. No package covers a combination the buyer actually has
 
@@ -94,8 +103,6 @@ newsletter from the link in the mail.
 
 ## Smaller, once the above is done
 
-- **`/data-licensing` should be `/pricing`.** The nav says Pricing, the URL and the browser tab
-  still say Data & licensing. Needs a redirect so nothing Google has indexed breaks.
 - **The evidence package has no PDF of its own.** It prints cleanly to A4 — verified — but a
   buyer who wants a file has to use the browser's print dialogue.
 - **The watchlist is shelved, not deleted** (`web/shelved/`). It is a per-subscriber alert and it

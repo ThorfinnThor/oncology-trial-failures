@@ -17,7 +17,7 @@ export type PrimaryNavItem =
   | "briefs"
   | "packages"
   | "newsletter"
-  | "data";
+  | "pricing";
 
 type PrimaryNavProps = {
   active?: PrimaryNavItem;
@@ -93,7 +93,7 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
         <Link className="navlink" href="/newsletter" aria-current={current(active, "newsletter")} onClick={closeMobileNav}>
           Newsletter
         </Link>
-        <Link className="navlink" href="/data-licensing" aria-current={current(active, "data")} onClick={closeMobileNav}>
+        <Link className="navlink" href="/pricing" aria-current={current(active, "pricing")} onClick={closeMobileNav}>
           Pricing
         </Link>
       </nav>

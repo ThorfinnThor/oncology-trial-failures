@@ -491,7 +491,7 @@ export default function ValidationPage() {
             <p>
               Full method and rule design: <Link className="link" href="/methods">methods</Link>. The labelling guidelines, the
               blind sample, the reference labels and this metrics file ship with the licensed dataset, so a licensee can recompute
-              every figure on this page. <Link className="link" href="/data-licensing">Data &amp; licensing</Link>.
+              every figure on this page. <Link className="link" href="/pricing">Pricing</Link>.
             </p>
           </div>
         </div>

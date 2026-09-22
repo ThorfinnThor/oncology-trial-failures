@@ -206,7 +206,7 @@ export default function BriefsIndexPage() {
               </p>
             </div>
             <div className="ctaActions">
-              <Link className="btnPrimary" href="/data-licensing#evidence-package">
+              <Link className="btnPrimary" href="/pricing#evidence-package">
                 Evidence packages
               </Link>
               <Link className="btnGhost" href="/newsletter">

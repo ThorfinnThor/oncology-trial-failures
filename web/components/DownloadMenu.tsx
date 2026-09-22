@@ -181,7 +181,7 @@ export default function DownloadMenu({
             Free exports include up to {EXPORT_ROW_LIMIT} rows. The complete classified dataset, the enriched Oncology Failure Signals
             dataset and bulk or API access are available under{" "}
             <a className="link" href={DATA_PAGE_PATH}>
-              Data &amp; licensing
+              Pricing
             </a>
             .
           </div>

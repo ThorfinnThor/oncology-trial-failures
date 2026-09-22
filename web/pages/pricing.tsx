@@ -1,4 +1,4 @@
-// web/pages/data-licensing.tsx
+// web/pages/pricing.tsx
 
 import Head from "next/head";
 import Link from "next/link";
@@ -97,8 +97,8 @@ const HONESTY = [
 ];
 
 const SITE_URL = "https://clinicaltrialfailures.com";
-const CANONICAL_URL = `${SITE_URL}/data-licensing`;
-const TITLE = "Data & licensing — Clinical trial failure datasets";
+const CANONICAL_URL = `${SITE_URL}/pricing`;
+const TITLE = "Pricing — Clinical trial failure data";
 const DESCRIPTION =
   "License the complete classified stopped-trial dataset, the Oncology Failure Signals dataset and discontinuation rates with denominators: biological failure labels linked to drugs, targets, sponsors, tickers and publications.";
 
@@ -179,7 +179,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             <Link href="/" className="brand">
               Clinical trial failures
             </Link>
-            <PrimaryNav active="data" />
+            <PrimaryNav active="pricing" />
           </div>
         </div>
       </header>

@@ -29,6 +29,13 @@ const nextConfig = {
         permanent: true,
       },
       {
+        // The nav has said Pricing for a while; the URL and the browser tab still said
+        // Data & licensing. Google has the old path indexed, so it redirects rather than 404s.
+        source: "/data-licensing",
+        destination: "/pricing",
+        permanent: true,
+      },
+      {
         source: "/oncology-clinical-trial-failures",
         destination: "/failures/oncology",
         permanent: true,

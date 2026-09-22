@@ -193,7 +193,7 @@ export default function PackagesIndexPage() {
                 >
                   Describe your cohort
                 </a>
-                <Link className="btnGhost" href="/data-licensing">
+                <Link className="btnGhost" href="/pricing">
                   Prices and licence terms
                 </Link>
               </div>

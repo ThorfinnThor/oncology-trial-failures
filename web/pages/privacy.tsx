@@ -176,7 +176,7 @@ export default function PrivacyPage() {
           <section>
             <h2>Dataset sample requests</h2>
             <p>
-              If you request a dataset sample on the Data &amp; licensing page, we process your work email address, name (optional),
+              If you request a dataset sample on the pricing page, we process your work email address, name (optional),
               company or institution, selected use case, the request time and the approximate country derived from your connection.
             </p>
             <p>
