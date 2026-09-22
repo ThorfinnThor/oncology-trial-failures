@@ -23,13 +23,36 @@ function clean(value: unknown, max = 200): string {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const token = clean(req.query.token, 120);
-  if (!token) return res.status(400).json({ ok: false, error: "This page needs the link from your order." });
+  const session = clean(req.query.session, 120);
+  let token = clean(req.query.token, 120);
+  if (!token && !session) {
+    return res.status(400).json({ ok: false, error: "This page needs the link from your order." });
+  }
 
   const store = (globalThis as CloudflareGlobal)[Symbol.for("__cloudflare-context__")]?.env?.LEADS;
   if (!store) {
     console.error(JSON.stringify({ event: "library_store_missing" }));
     return res.status(503).json({ ok: false, error: "Access is not configured. Please contact us." });
+  }
+
+  // Coming back from Stripe. The webhook writes this index when it settles the payment, so its
+  // absence means the webhook has not arrived yet — a few seconds, normally — and not that the
+  // checkout was invalid. The page waits rather than showing a dead end.
+  if (!token && session) {
+    try {
+      token = (await store.get(`session:${session}`)) || "";
+    } catch (error) {
+      console.error(JSON.stringify({ event: "library_session_read_failed", message: String(error) }));
+      return res.status(503).json({ ok: false, error: "Could not check that payment. Please try again." });
+    }
+    if (!token) {
+      console.log(JSON.stringify({ event: "library_session_not_settled" }));
+      return res.status(402).json({
+        ok: false,
+        awaiting_payment: true,
+        error: "Your payment is still confirming. This usually takes a few seconds.",
+      });
+    }
   }
 
   let grant: Grant | null = null;
@@ -82,6 +105,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   return res.status(200).json({
     ok: true,
+    // Handed back so the page can replace the checkout id in the address bar with the link that
+    // keeps working. A buyer who bookmarks this page should not be bookmarking a dead session.
+    token,
     scope: grant.scope === "all" || grant.slug === "any" ? "all" : grant.scope || "cohort",
     asset: grant.asset || "",
     company: grant.company || "",

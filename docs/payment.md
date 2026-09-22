@@ -14,17 +14,26 @@ need — the webhook signing secret — can only be used to *send* us messages, 
                                    returns the Payment Link + ?client_reference_id={token}
               →  Stripe checkout   customer pays
               →  POST /api/stripe  checkout.session.completed → grant.paid = true
-              →  /access?token=…   library opens
+                                   and session:{checkout id} → token
+              →  /access?session=cs_…   resolves to the token, rewrites the URL to ?token=…
 ```
+
+The last step needs saying. A Payment Link redirects to **one fixed URL** — it cannot carry the
+token back, because the link is the same for every buyer. So the redirect carries Stripe's own
+`{CHECKOUT_SESSION_ID}`, the webhook leaves a `session:{id} → token` index behind, and `/access`
+trades one for the other and then replaces the address bar with the token link, which keeps
+working for a year. Without that index a customer who closed the tab they ordered from would come
+back from Stripe to a page that cannot tell who they are.
 
 The token is minted **before** the payment, not after. That is why the webhook has nothing to
 create and nothing to guess: it looks up `grant:{client_reference_id}` and flips one bit. A
 webhook that has to work out which customer it belongs to is a webhook that will one day get it
 wrong.
 
-While the payment is outstanding, `/access?token=…` returns HTTP 402 and the page says the
-payment is still confirming, with a "Check again" button. Stripe normally delivers the webhook in
-a second or two.
+While the payment is outstanding, `/access` returns HTTP 402 and the page says the payment is
+still confirming. Arriving from the checkout it retries by itself every 2.5 seconds, up to eight
+times, because the redirect regularly beats the webhook by a second or two; there is a "Check
+again" button underneath for the rest.
 
 ## What is verified
 
@@ -58,7 +67,7 @@ grant opens nothing (`isUnlocked()` in `web/lib/server/grants.ts`).
 | | Evidence packages, one molecule | Full access |
 |---|---|---|
 | Price | €99, one-off | €999, recurring yearly |
-| After payment | Redirect to `https://clinicaltrialfailures.com/access` | same |
+| After payment | Redirect to `https://clinicaltrialfailures.com/access?session={CHECKOUT_SESSION_ID}` | same |
 | Collect | Email (on by default), business name | same |
 
 Do **not** tick "Let customers adjust quantity". One order is one molecule.
@@ -71,17 +80,24 @@ Copy each link's URL (`https://buy.stripe.com/…`).
 - Events: **`checkout.session.completed`** only.
 - After creating it, click "Reveal" under Signing secret and copy the `whsec_…` value.
 
-**3. Three secrets** — github.com/ThorfinnThor/oncology-trial-failures → Settings → Secrets and
-variables → Actions → New repository secret:
+**3. Three secrets — in Cloudflare, not in GitHub.** The site is deployed by Cloudflare Workers
+Builds on push; GitHub Actions only builds and checks. Runtime configuration therefore lives on
+the Worker: dash.cloudflare.com → Compute (Workers) → `oncology-trial-failures` → Settings →
+Variables and Secrets → Add.
 
-| Name | Value |
-|---|---|
-| `STRIPE_LINK_PACKAGE` | the €99 link |
-| `STRIPE_LINK_ACCESS` | the €999 link |
-| `STRIPE_WEBHOOK_SECRET` | the `whsec_…` value |
+| Name | Type | Value |
+|---|---|---|
+| `STRIPE_LINK_PACKAGE` | Secret | the €99 link |
+| `STRIPE_LINK_ACCESS` | Secret | the €999 link |
+| `STRIPE_WEBHOOK_SECRET` | Secret | the `whsec_…` value |
 
-The deploy workflow passes them to the Worker as secrets. Nothing else changes; the next release
-picks them up.
+All three as **Secret**, including the two links, which are not secret at all. A deploy replaces
+the Worker's plaintext variables with whatever `wrangler.jsonc` declares — and it declares none —
+so a link stored as a plaintext variable disappears at the next release and every order silently
+goes back to being free. Secrets survive deploys. That is the whole reason.
+
+They take effect immediately, without a deploy. `payment.ts` reads the Cloudflare context env at
+request time.
 
 **4. Check it once.** Order a package for a molecule you know resolves, pay with Stripe's test
 card `4242 4242 4242 4242` in test mode, and confirm `/access` opens by itself. In the Stripe

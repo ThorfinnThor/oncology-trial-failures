@@ -12,7 +12,7 @@
     "enabled": true
   },
 
-  // Lead capture for the /data-licensing sample form. Workers Logs keep a lead only for the
+  // Lead capture for the /pricing sample form. Workers Logs keep a lead only for the
   // observability retention window, so leads are also written to this KV namespace.
   // Reading the leads back: see docs/leads.md.
   "kv_namespaces": [

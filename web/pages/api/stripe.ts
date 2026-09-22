@@ -106,6 +106,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     grant.currency = session.currency ?? null;
     await store.put(`grant:${token}`, JSON.stringify(grant), { expirationTtl: YEAR_SECONDS });
     await store.put(`payment:${grant.paid_at}:${grant.email || "unknown"}`, JSON.stringify(grant));
+    // A Payment Link redirects to one fixed URL, so the customer comes back from Stripe carrying
+    // the checkout id and nothing else — the token they left with is in a tab they may have
+    // closed. This is how that id finds its way back to the grant.
+    if (grant.stripe_session) {
+      await store.put(`session:${grant.stripe_session}`, token, { expirationTtl: YEAR_SECONDS });
+    }
   } catch (error) {
     console.error(JSON.stringify({ event: "stripe_settle_failed", message: String(error) }));
     return res.status(500).json({ ok: false, error: "Could not settle." });

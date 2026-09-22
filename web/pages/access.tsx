@@ -31,6 +31,8 @@ type Entry = {
 
 type Library = {
   ok: true;
+  /** Returned when the page was opened with a checkout id, so the address bar can be rewritten. */
+  token?: string;
   scope: "molecule" | "cohort" | "all";
   asset: string;
   company: string;
@@ -45,6 +47,8 @@ export default function AccessPage() {
   const [library, setLibrary] = useState<Library | null>(null);
   const [message, setMessage] = useState("");
   const loadedFor = useRef("");
+  const retries = useRef(0);
+  const [tick, setTick] = useState(0);
 
   // The token is read from the address bar as well as from the router. Waiting only on
   // router.isReady is how this page ends up showing a paying customer a spinner that never
@@ -52,22 +56,29 @@ export default function AccessPage() {
   // that — a stale manifest, a cached shell — turns the whole of what they bought into a blank
   // screen with no way to tell that the link itself was fine.
   useEffect(() => {
+    const query = typeof window === "undefined" ? null : new URLSearchParams(window.location.search);
     const fromRouter = typeof router.query.token === "string" ? router.query.token : "";
-    const fromUrl =
-      typeof window === "undefined" ? "" : new URLSearchParams(window.location.search).get("token") || "";
-    const token = fromRouter || fromUrl;
+    const token = fromRouter || (query ? query.get("token") || "" : "");
+    // Coming back from Stripe. A Payment Link redirects to one fixed URL, so what the customer
+    // arrives with is the checkout id, not the token they left with.
+    const session = (typeof router.query.session === "string" ? router.query.session : "")
+      || (query ? query.get("session") || "" : "");
 
-    if (!token) {
+    if (!token && !session) {
       if (!router.isReady) return; // the router may still be filling in the query
       setState("error");
       setMessage("This page needs the link from your order. Open the link we sent you, or write to us and we will send it again.");
       return;
     }
-    if (loadedFor.current === token) return;
-    loadedFor.current = token;
+    const key = token || `session:${session}`;
+    if (loadedFor.current === key) return;
+    loadedFor.current = key;
 
     setState("loading");
-    fetch(`/api/library?token=${encodeURIComponent(token)}`)
+    const url = token
+      ? `/api/library?token=${encodeURIComponent(token)}`
+      : `/api/library?session=${encodeURIComponent(session)}`;
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         if (data.awaiting_payment) {
@@ -76,17 +87,28 @@ export default function AccessPage() {
           loadedFor.current = "";
           setMessage(data.error || "");
           setState("awaiting");
+          // Arriving from the checkout, the webhook is usually seconds behind the redirect, so
+          // the page tries again by itself before asking anyone to press a button.
+          if (session && retries.current < 8) {
+            retries.current += 1;
+            window.setTimeout(() => setTick((n) => n + 1), 2500);
+          }
           return;
         }
         if (!data.ok) throw new Error(data.error || "That link is not valid.");
         setLibrary(data as Library);
         setState("ready");
+        // Leave the customer with a link that keeps working: the checkout id is spent, the token
+        // opens this page for a year.
+        if (!token && data.token && typeof window !== "undefined") {
+          window.history.replaceState({}, "", `/access?token=${encodeURIComponent(data.token)}`);
+        }
       })
       .catch((error: Error) => {
         setMessage(error.message || "That link is not valid.");
         setState("error");
       });
-  }, [router.isReady, router.query.token]);
+  }, [router.isReady, router.query.token, router.query.session, tick]);
 
   const total = library ? library.packages.reduce((sum, p) => sum + p.counts.total_in_cohort, 0) : 0;
 
