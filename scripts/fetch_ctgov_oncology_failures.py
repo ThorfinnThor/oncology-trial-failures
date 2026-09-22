@@ -129,6 +129,12 @@ DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
     ("Gastroenterology & Hepatology", [
         "gastro", "hepatic", "hepat", "liver", "cirrhos", "pancrea", "colitis", "crohn", "ulcer", "intestinal",
         "bowel", "nash", "nafld",
+        # Added after a Phase 3 FXR trial stopped for futility in primary sclerosing cholangitis and
+        # landed in "Other": none of the words above appear in that condition or its MeSH terms, so
+        # the one biological stop in the class was invisible to every cohort that should have had it.
+        "cholangitis", "cholestas", "biliary", "steatohepat", "portal hypertension",
+        "esophag", "oesophag", "duoden", "celiac", "coeliac", "pouchitis", "proctitis",
+        "diverticul", "dyspepsia", "constipation", "ileus", "hemorrhoid", "haemorrhoid",
     ]),
     ("Renal & Urology", [
         "renal", "kidney", "nephro", "urology", "bladder", "prostate", "urinary",

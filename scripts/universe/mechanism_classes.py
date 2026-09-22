@@ -159,6 +159,37 @@ METABOLIC_CLASSES: dict[str, list[str]] = {
     "11\u03b2-HSD1": ["HSD11B1"],
 }
 
+# Gastroenterology & hepatology. The area is three businesses in one trench coat: the liver
+# (MASH, PBC, PSC), the antivirals that made hepatitis C a solved problem, and the gut. The
+# inflammatory-bowel classes are deliberately absent — those trials are tagged immunology too and
+# are already covered there, and a second cohort over the same trials under a second name would
+# be two answers to one question.
+HEPATOLOGY_CLASSES: dict[str, list[str]] = {
+    # The liver. Nine of the 27 closed FXR trials were terminated, across obeticholic acid,
+    # cilofexor, tropifexor and EDP-305 — different sponsors, one mechanism, and the reason
+    # somebody evaluating an FXR agonist should be able to look this up.
+    "FXR": ["NR1H4"],
+    "FGF21 / FGF19": ["FGF21", "FGF19", "KLB"],
+    "ASK1 (MAP3K5)": ["MAP3K5"],
+    "PPAR (liver)": ["PPARA", "PPARD", "PPARG"],
+    "De novo lipogenesis (ACC / FASN / SCD)": ["ACACA", "ACACB", "FASN", "SCD"],
+    "CCR2 / CCR5": ["CCR2", "CCR5"],
+    "Antifibrotic (LOXL2 / galectin-3)": ["LOXL2", "LGALS3"],
+    "Caspase / apoptosis": ["CASP1", "CASP3", "CASP8", "CASP9"],
+    "Bile acid transport (ASBT / NTCP)": ["SLC10A2", "SLC10A1"],
+    # Antivirals. HBV is left out on purpose: its polymerase resolves to the bare symbols "pol"
+    # and "P", which HIV integrase and protease inhibitors carry as well, and a class that pools
+    # entecavir with dolutegravir measures nothing.
+    "HCV direct-acting antiviral": ["NS5b", "NS3", "NS4A", "NS5A"],
+    "Interferon (viral hepatitis)": ["IFNAR1", "IFNAR2", "IFNLR1"],
+    "IMPDH (ribavirin)": ["IMPDH1", "IMPDH2"],
+    # The gut.
+    "Proton pump": ["ATP4A", "ATP4B"],
+    "Serotonergic motility (5-HT3 / 5-HT4)": ["HTR3A", "HTR4"],
+    "Somatostatin analogue": ["SSTR2", "SSTR5"],
+    "GLP-2": ["GLP2R"],
+}
+
 # Classes are per disease area: a gene set that means "checkpoint inhibitor" in oncology means
 # something different in autoimmune disease, and each area's analysts name different groups.
 CLASSES_BY_AREA: dict[str, dict[str, list[str]]] = {
@@ -166,6 +197,7 @@ CLASSES_BY_AREA: dict[str, dict[str, list[str]]] = {
     "Neurology": NEUROLOGY_CLASSES,
     "Immunology & Autoimmune": IMMUNOLOGY_CLASSES,
     "Endocrine & Metabolic": METABOLIC_CLASSES,
+    "Gastroenterology & Hepatology": HEPATOLOGY_CLASSES,
 }
 
 # Every script that walks the curated areas reads this rather than listing them again. An area

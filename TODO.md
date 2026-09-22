@@ -42,18 +42,30 @@ before signing up for anything.
 
 ### 3. Coverage is thin where it matters commercially
 
-61 mechanism classes carry a signature; 40 of them can be sold. `KRAS` has 2 stops in 15 closed
+131 mechanism classes carry a signature; 42 of them can be sold. `KRAS` has 2 stops in 15 closed
 trials, `CD19` 2 in 76 — real classes, real trials, too few stops to publish a rate on. Someone
-evaluating a KRAS asset now gets an honest answer and nothing to buy.
+evaluating a KRAS asset gets an honest answer and nothing to buy.
+
+Two disease areas were added to find out whether the gap was coverage or the measure. It is the
+measure. Endocrine & metabolic: 28 biological stops in 1,637 closed trials. Gastro & hepatology:
+63 in 1,643, and exactly one class — PPAR (liver) — with enough spread across sponsors to publish
+a rate on. **The MASH graveyard is in the data and correctly classified** — elafibranor, the two
+selonsertib Phase 3s, cenicriviroc AURORA, cilofexor in PSC are all read as efficacy/futility
+stops — but each mechanism is one or two programmes, and two trials of one drug is one
+experiment, not a rate.
 
 Three ways out, in order of how much they are worth:
 
+- **Read the completed trials that missed.** ~5,500 completed Phase 2/3 trials in these five
+  areas have results posted on ClinicalTrials.gov, against 586 biological stops. That is a ten-
+  fold larger evidence base, and it is the failure mode of exactly the fields where drugs are not
+  stopped early. It is also a methodology minefield — which outcome, which arm, what counts as a
+  miss — and a real build, not a lexicon. Biggest lever on the board.
 - **Widen the window.** The cohorts are Phase 2/3, 2015–2024. Phase 1 and pre-2015 would roughly
   double the closed count in the young classes. It weakens comparability across eras, so it needs
   saying plainly rather than quietly.
 - **Sell a cohort built around an asset rather than a class** — one molecule, its target, any
   phase. That is the thing buyers actually ask for, and the machinery already resolves it.
-- **Accept the gap and say so louder.** The current behaviour is honest; it just does not earn.
 
 ### 4. ~~Two classes are missing from the ontology entirely~~ — done, and it was bigger than that
 
@@ -66,9 +78,15 @@ The area's own finding is that it has almost none: 28 biological stops in 1,637 
 that is invisible to this measure. So the coverage is real and there is nothing to sell there yet
 — no brief passed the catalogue's thresholds, which is correct.
 
-**Still worth a look:** the MASH targets (FXR, FGF21/KLB, ASK1) barely resolve, because those
-trials are tagged Gastroenterology & Hepatology, not Endocrine. That is a graveyard of expensive
-failures and the buyers are there. It needs a fifth lexicon, not a fix.
+Gastro & hepatology followed, 16 classes — FXR, FGF21, ASK1, PPAR (liver), CCR2/5, bile acid
+transport, the HCV antivirals, proton pumps. Obeticholic acid, selonsertib, cenicriviroc,
+elafibranor and lanifibranor all resolve and get an answer now. One of the 16 is sellable.
+
+Finding it turned up a real defect: **a Phase 3 FXR trial stopped for futility was filed under
+"Other"**, because "primary sclerosing cholangitis" contains none of the words the disease-area
+taxonomy looked for. 2,007 trials were mistagged the same way. The taxonomy now knows biliary,
+cholestatic, oesophageal and colorectal language, and `fetch_universe.py` re-derives the areas on
+every assembly pass instead of trusting a year slice that was cached before the fix.
 
 ### 5. No package covers a combination the buyer actually has
 

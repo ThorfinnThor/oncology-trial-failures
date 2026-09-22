@@ -204,6 +204,56 @@
     "terminated_with_no_readable_cause": 31,
     "still_open_or_unknown": 766
    }
+  },
+  {
+   "area": "Gastroenterology & Hepatology",
+   "steps": [
+    {
+     "step": "Interventional Phase 2/3 trials registered since 2010",
+     "trials": 94153,
+     "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
+    },
+    {
+     "step": "Tagged Gastroenterology & Hepatology",
+     "trials": 9792,
+     "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
+    },
+    {
+     "step": "Excluding trials also tagged Oncology",
+     "trials": 4649,
+     "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
+    },
+    {
+     "step": "Phase 2 or Phase 3",
+     "trials": 4649,
+     "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
+    },
+    {
+     "step": "Started 2015–2024",
+     "trials": 2591,
+     "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
+    },
+    {
+     "step": "Closed: completed or terminated",
+     "trials": 1643,
+     "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
+    },
+    {
+     "step": "Terminated for an efficacy, safety or benefit–risk reason",
+     "trials": 63,
+     "note": "The rate's numerator, from the registry's own stop-reason text."
+    }
+   ],
+   "closed": 1643,
+   "biological_stops": 63,
+   "rate": 0.03834449178332319,
+   "aside": {
+    "closed_with_resolved_target": 685,
+    "closed_with_resolved_target_stops": 29,
+    "terminated_any_reason": 332,
+    "terminated_with_no_readable_cause": 92,
+    "still_open_or_unknown": 948
+   }
   }
  ],
  "signals_reconciliation": {

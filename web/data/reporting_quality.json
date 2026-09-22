@@ -322,6 +322,70 @@
      "rate_if_all_unresolved_were_biological": 0.021505376344086023
     }
    }
+  },
+  {
+   "area": "Gastroenterology & Hepatology",
+   "terminations": 332,
+   "unreadable": 92,
+   "by_sponsor_class": [
+    {
+     "group": "INDUSTRY",
+     "terminations": 224,
+     "unreadable": 78,
+     "unreadable_share": 0.3482142857142857
+    },
+    {
+     "group": "OTHER",
+     "terminations": 98,
+     "unreadable": 10,
+     "unreadable_share": 0.10204081632653061
+    }
+   ],
+   "by_start_era": [
+    {
+     "group": "2015–2019",
+     "terminations": 200,
+     "unreadable": 61,
+     "unreadable_share": 0.305
+    },
+    {
+     "group": "2020–2024",
+     "terminations": 132,
+     "unreadable": 31,
+     "unreadable_share": 0.23484848484848486
+    }
+   ],
+   "by_phase": [
+    {
+     "group": "Phase 2",
+     "terminations": 225,
+     "unreadable": 67,
+     "unreadable_share": 0.29777777777777775
+    },
+    {
+     "group": "Phase 3",
+     "terminations": 107,
+     "unreadable": 25,
+     "unreadable_share": 0.2336448598130841
+    }
+   ],
+   "by_sponsor_group": [],
+   "consequence": {
+    "industry": {
+     "closed": 1031,
+     "biological_stops": 52,
+     "rate": 0.0504364694471387,
+     "unresolved_terminations": 78,
+     "rate_if_all_unresolved_were_biological": 0.12609117361784675
+    },
+    "non_industry": {
+     "closed": 612,
+     "biological_stops": 11,
+     "rate": 0.017973856209150325,
+     "unresolved_terminations": 14,
+     "rate_if_all_unresolved_were_biological": 0.04084967320261438
+    }
+   }
   }
  ]
 }

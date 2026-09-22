@@ -179,7 +179,14 @@ def main() -> int:
                     if rec["nct_id"] in seen:
                         continue
                     seen.add(rec["nct_id"])
-                    out.write(line)
+                    # Re-derive the disease areas here rather than trusting what the year slice was
+                    # written with. A slice is cached for REFRESH_DAYS, so a taxonomy fix would
+                    # otherwise reach the older years whenever they next happen to be re-fetched —
+                    # which is how a class ended up with its only biological stop filed under
+                    # "Other". This pass costs nothing and cannot go stale.
+                    rec["disease_area"], rec["disease_areas_matched"] = assign_disease_areas(
+                        rec.get("conditions") or [], rec.get("mesh_terms") or [])
+                    out.write(json.dumps(rec, ensure_ascii=False) + "\n")
                     if rec["overall_status"] in STOPPED:
                         n_stopped += 1
                         origin[rec["classification_origin"]] = origin.get(rec["classification_origin"], 0) + 1
