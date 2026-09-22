@@ -75,6 +75,14 @@ function v2PrimaryReason(row: TrialIndexRow): string {
   return reason.startsWith("UNRESOLVED_") ? "UNSPECIFIED" : reason;
 }
 
+function v2FinalCategory(row: TrialIndexRow): string {
+  return (
+    row.classification_final_category ||
+    row.classification_primary_reason_v2 ||
+    "UNSPECIFIED"
+  ).toUpperCase().trim() || "UNSPECIFIED";
+}
+
 function signalSlice(rows: TrialIndexRow[]) {
   return {
     total: rows.length,
@@ -225,6 +233,9 @@ export async function buildInsightStats(): Promise<InsightStats> {
   const operationalRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OPERATIONAL");
   const regulatoryRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "REGULATORY");
   const unknownRows = rows.filter((row) => reasonBucket(row).toUpperCase() === "OTHER/UNKNOWN");
+  const businessStrategyRows = rows.filter((row) => v2FinalCategory(row) === "BUSINESS_STRATEGY");
+  const notInitiatedRows = rows.filter((row) => v2FinalCategory(row) === "NOT_INITIATED");
+  const v2RecruitmentRows = rows.filter((row) => v2FinalCategory(row) === "RECRUITMENT");
   const terminatedRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "TERMINATED");
   const withdrawnRows = rows.filter((row) => (row.overall_status || "").toUpperCase() === "WITHDRAWN");
   const withdrawnScientificCount = withdrawnRows.filter(isLikelyScientificFailure).length;
@@ -267,6 +278,23 @@ export async function buildInsightStats(): Promise<InsightStats> {
     operationalSignals: signalSlice(operationalRows),
     regulatorySignals: signalSlice(regulatoryRows),
     unknownSignals: signalSlice(unknownRows),
+    businessStrategySignals: {
+      ...signalSlice(businessStrategyRows),
+      explicitNoSafetyOrEfficacyCount: businessStrategyRows.filter((row) => {
+        const text = (row.why_stopped_short || "").toLowerCase();
+        return (
+          /(not|no).{0,40}(safety|efficacy)/.test(text) ||
+          /(safety|efficacy).{0,40}(not|no)/.test(text)
+        );
+      }).length,
+    },
+    notInitiatedSignals: {
+      ...signalSlice(notInitiatedRows),
+      phase2Count: notInitiatedRows.filter((row) =>
+        parsePhases(row.phases || "").includes("PHASE2")
+      ).length,
+      recruitmentTotal: v2RecruitmentRows.length,
+    },
     withdrawnSignals: {
       ...signalSlice(withdrawnRows),
       scientificCount: withdrawnScientificCount,

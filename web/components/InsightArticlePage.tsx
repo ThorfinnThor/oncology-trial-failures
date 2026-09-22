@@ -115,7 +115,7 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
             </header>
 
             <section className="insightFacts card p-4" data-ai-summary="true">
-              <div className="facet-title">Five facts from the dataset</div>
+              <div className="facet-title">{article.factsHeading || "Five facts from the dataset"}</div>
               <ul>
                 {article.facts.map((fact) => (
                   <li key={fact}>{fact}</li>
