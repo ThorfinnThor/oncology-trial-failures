@@ -38,8 +38,35 @@ def imports_private(path: Path) -> bool:
                 re.search(r"""import\s*\(\s*["'][^"']*data/private/""", text))
 
 
+# Everything in data/private/ is bundled into the Cloudflare Worker, and a Worker has a hard
+# limit on its compressed size. Going over it does not degrade anything — the deploy simply
+# fails, and the site stops getting the weekly release. So the budget is checked here, where it
+# is cheap to notice, rather than in a deploy log nobody reads.
+COMPRESSED_BUDGET_MB = 2.0
+
+
+def private_data_budget() -> list[str]:
+    import gzip
+
+    private = WEB / PRIVATE_DIR
+    if not private.exists():
+        return []
+    total = 0
+    detail = []
+    for path in sorted(private.glob("*.json")):
+        compressed = len(gzip.compress(path.read_bytes()))
+        total += compressed
+        detail.append(f"{path.name} {compressed / 1e6:.2f} MB")
+    if total / 1e6 <= COMPRESSED_BUDGET_MB:
+        print(f"private data: {total / 1e6:.2f} MB compressed of a {COMPRESSED_BUDGET_MB:.1f} MB budget "
+              f"({', '.join(detail)})")
+        return []
+    return [f"data/private/ is {total / 1e6:.2f} MB compressed, over the {COMPRESSED_BUDGET_MB:.1f} MB budget "
+            f"({', '.join(detail)}). A Worker that exceeds its size limit does not deploy at all."]
+
+
 def main() -> int:
-    problems: list[str] = []
+    problems: list[str] = private_data_budget()
 
     for path in sorted(WEB.rglob("*.ts*")):
         rel = path.relative_to(WEB).as_posix()

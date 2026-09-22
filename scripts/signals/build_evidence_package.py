@@ -145,6 +145,23 @@ ATTRIBUTION_LABEL = {
 }
 
 
+def months_between(start: str | None, end: str | None) -> int | None:
+    """How long a trial ran before it stopped.
+
+    A programme halted at eight months and one halted at four years are different pieces of
+    evidence about the same mechanism, and the registry gives both dates.
+    """
+    if not start or not end:
+        return None
+    try:
+        a = datetime.strptime(start[:7], "%Y-%m")
+        b = datetime.strptime(end[:7], "%Y-%m")
+    except ValueError:
+        return None
+    months = (b.year - a.year) * 12 + (b.month - a.month)
+    return months if months >= 0 else None
+
+
 def e(x) -> str:
     return html.escape(str(x if x is not None else ""))
 
@@ -235,6 +252,10 @@ def build(args) -> dict:
             "experimental_drugs": drugs[:6],
             "start": (r.get("start_date") or "")[:7],
             "stopped": (r.get("stop_date_estimate") or "")[:7],
+            "enrollment": r.get("enrollment_count"),
+            "enrollment_type": r.get("enrollment_type"),
+            "months_to_stop": months_between(r.get("start_date"), r.get("stop_date_estimate")),
+            "has_results": bool(r.get("has_results")),
             "why_stopped": " ".join((r.get("why_stopped") or "").split()),
             "attribution": a.get("attribution"), "attribution_basis": a.get("basis"),
             "attribution_evidence": a.get("cascade_evidence") or a.get("own_data_evidence") or [],
@@ -242,11 +263,46 @@ def build(args) -> dict:
             "registry_url": f"https://clinicaltrials.gov/study/{r['nct_id']}",
         }
 
+    # Every trial in the cohort, compactly, for the CSV a buyer opens in Excel. The document
+    # lists the stops in full and the rest in part, because a table of three thousand rows is a
+    # data dump rather than a report — but the rows themselves are what was paid for, so they
+    # ship beside it rather than being summarised away.
+    stop_ids = {r["nct_id"] for r in stops}
+    unreadable_ids = {r["nct_id"] for r in unreadable}
+
+    def kind_of(r: dict) -> str:
+        if r["nct_id"] in stop_ids:
+            return "biological_stop"
+        if r["nct_id"] in unreadable_ids:
+            return "terminated_cause_not_readable"
+        if not r["_closed"]:
+            return "still_open"
+        return "closed_no_biological_stop"
+
+    cohort_rows = []
+    for r in sorted(cohort, key=lambda r: (r.get("start_date") or ""), reverse=True):
+        a = attr_by_nct.get(r["nct_id"], {})
+        drugs = sorted({c.get("name") or c.get("label") for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM"
+                        for c in i["components"] if c.get("name") or c.get("label")})
+        cohort_rows.append([
+            r["nct_id"], kind_of(r), "3" if "3" in r["_phase"] else "2", r.get("overall_status") or "",
+            r["_sponsor_group"] or "", r.get("lead_sponsor_class") or "",
+            "; ".join(drugs[:8]), "; ".join(sorted(r.get("focus_target_genes") or [])[:8]),
+            "; ".join(sorted(r.get("focus_modalities") or [])[:4]),
+            (r.get("start_date") or "")[:7], (r.get("stop_date_estimate") or "")[:7],
+            months_between(r.get("start_date"), r.get("stop_date_estimate")),
+            r.get("enrollment_count"), r.get("enrollment_type") or "",
+            1 if r.get("has_results") else 0,
+            " ".join((r.get("why_stopped") or "").split()),
+            a.get("attribution") or "",
+        ])
+
     name = " ".join(x for x in [args.klass or args.genes or args.sponsor_group or args.modality or args.area,
                                 f"+ {args.with_class}" if args.with_class else ""] if x).strip()
     p_value = binom_sf(seg["biological_stops"], seg["closed"], comparator["rate"] or 0.0)
 
     return {
+        "cohort_rows": cohort_rows,
         "schema_version": 1,
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "cohort": name,
@@ -310,6 +366,105 @@ def build(args) -> dict:
             "between cohorts is a difference in disclosure.",
         ],
     }
+
+
+# ---------------------------------------------------------------------------
+# Charts, drawn as inline SVG.
+#
+# A buyer reading a discontinuation analysis expects to see the curve, not a table of five
+# numbers standing in for one. These are drawn rather than plotted because the document has to
+# survive being printed, emailed and opened offline: no script, no font, no request.
+#
+# Encoding is emphasis, not identity — this cohort in the accent colour, the comparator in grey.
+# Two categorical hues would say the two series are peers; they are not. The comparator is the
+# thing the cohort is being read against, and grey says that without a legend having to.
+# ---------------------------------------------------------------------------
+CHART_INK = "#5b6470"
+CHART_FOCUS = "#4f46e5"
+CHART_REF = "#64748b"
+
+
+def _steps(points: list[tuple[float, float]], x, y) -> str:
+    """A step path: a cumulative incidence curve holds its value until the next event time."""
+    if not points:
+        return ""
+    d = f"M {x(0):.1f} {y(0):.1f}"
+    last = 0.0
+    for months, value in points:
+        d += f" L {x(months):.1f} {y(last):.1f} L {x(months):.1f} {y(value):.1f}"
+        last = value
+    return d
+
+
+def incidence_chart(cif: dict, base_cif: dict, cohort: str, comparator: str) -> str:
+    """Probability of a biological stop over time, against the comparator's own curve."""
+    months = sorted(cif)
+    if not months:
+        return ""
+    W, H = 640, 260
+    L, R, T, B = 46, 108, 14, 34
+    top = max([cif[m]["ci95"][1] for m in months] + [cif[m]["cif"] for m in months]
+              + [base_cif.get(m, {}).get("cif") or 0 for m in months] + [0.02])
+    top = min(1.0, top * 1.12)
+    x_max = months[-1]
+
+    def x(v):
+        return L + (v / x_max) * (W - L - R)
+
+    def y(v):
+        return H - B - (v / top) * (H - T - B)
+
+    def step_points(bound: int, reverse: bool = False) -> list[str]:
+        out, last = [], 0.0
+        for m in months:
+            value = cif[m]["ci95"][bound]
+            out.append(f"{x(m):.1f},{y(last):.1f}")
+            out.append(f"{x(m):.1f},{y(value):.1f}")
+            last = value
+        out.append(f"{x(months[-1]):.1f},{y(last):.1f}")
+        return list(reversed(out)) if reverse else out
+
+    band_top = " ".join(step_points(1))
+    band_bottom = " ".join(step_points(0, reverse=True))
+
+    grid = ""
+    ticks = [0, top / 2, top]
+    for value in ticks:
+        grid += (f"<line x1='{L}' y1='{y(value):.1f}' x2='{W - R}' y2='{y(value):.1f}' "
+                 f"stroke='#e2e0da' stroke-width='1'/>"
+                 f"<text x='{L - 8}' y='{y(value) + 3.5:.1f}' text-anchor='end' font-size='10' "
+                 f"fill='{CHART_INK}'>{pct(value, 0)}</text>")
+    for m in months:
+        grid += (f"<text x='{x(m):.1f}' y='{H - B + 15}' text-anchor='middle' font-size='10' "
+                 f"fill='{CHART_INK}'>{m}</text>")
+    grid += (f"<text x='{(L + W - R) / 2:.1f}' y='{H - 4}' text-anchor='middle' font-size='10' "
+             f"fill='{CHART_INK}'>months since trial start</text>")
+
+    last = months[-1]
+    labels = (f"<text x='{x(last) + 8:.1f}' y='{y(cif[last]['cif']) + 3.5:.1f}' font-size='11' "
+              f"font-weight='700' fill='{CHART_FOCUS}'>{pct(cif[last]['cif'])}</text>"
+              f"<text x='{x(last) + 8:.1f}' y='{y(cif[last]['cif']) + 16:.1f}' font-size='9.5' "
+              f"fill='{CHART_INK}'>this cohort</text>")
+    base_last = base_cif.get(last, {}).get("cif")
+    if base_last is not None:
+        labels += (f"<text x='{x(last) + 8:.1f}' y='{y(base_last) + 3.5:.1f}' font-size='11' "
+                   f"font-weight='700' fill='{CHART_REF}'>{pct(base_last)}</text>"
+                   f"<text x='{x(last) + 8:.1f}' y='{y(base_last) + 16:.1f}' font-size='9.5' "
+                   f"fill='{CHART_INK}'>comparator</text>")
+
+    base_path = _steps([(m, base_cif[m]["cif"]) for m in months if m in base_cif], x, y)
+    return (f"<figure class='chart'><svg viewBox='0 0 {W} {H}' width='100%' role='img' "
+            f"aria-label='Cumulative incidence of a biological stop in {e(cohort)} against {e(comparator)}'>"
+            f"{grid}"
+            f"<polygon points='{band_top} {band_bottom}' fill='{CHART_FOCUS}' opacity='0.12'/>"
+            + (f"<path d='{base_path}' fill='none' stroke='{CHART_REF}' stroke-width='2' "
+               f"stroke-dasharray='5 4'/>" if base_path else "")
+            + f"<path d='{_steps([(m, cif[m]['cif']) for m in months], x, y)}' fill='none' "
+              f"stroke='{CHART_FOCUS}' stroke-width='2.4' stroke-linejoin='round'/>"
+              f"{labels}"
+              f"<line x1='{L}' y1='{y(0):.1f}' x2='{W - R}' y2='{y(0):.1f}' stroke='#c9c6bd' stroke-width='1'/>"
+              f"</svg><figcaption>Shaded band: 95% confidence interval for this cohort. Dashed: {e(comparator)}. "
+              f"The table below is the same figures, for reading and for quoting.</figcaption></figure>")
 
 
 def interpretation(pkg: dict) -> list[str]:
@@ -411,13 +566,22 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                         + (f" <span class='muted'>— decided with {e(', '.join(t['sibling_stops']))}</span>"
                            if t["sibling_stops"] and t["attribution_basis"] == "structural" else "")
                         + "</div>")
+            size = (f"{t['enrollment']:,}" if isinstance(t["enrollment"], int) else "—")
+            if t.get("enrollment_type") == "ESTIMATED":
+                size += "<span class='muted'> planned</span>"
+            ran = (f"{t['months_to_stop']} mo" if t.get("months_to_stop") is not None else "—")
+            posted = "yes" if t.get("has_results") else "no"
             body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a></td>"
                      f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td>"
                      f"<td>{e(', '.join(t['experimental_drugs']) or '—')}</td>"
+                     f"<td class='num'>{size}</td>"
+                     f"<td class='num'>{ran}</td>"
+                     f"<td class='num muted'>{posted}</td>"
                      f"<td class='num'>{e(t['stopped'] or t['start'])}</td>"
                      f"<td>{e(t['why_stopped']) or '<span class=muted>no reason recorded</span>'}{attr}</td></tr>")
         return (f"<h2>{e(heading)} <span class='count'>{len(rows)}</span></h2><p class='sub'>{e(blurb)}</p>"
                 f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
+                f"<th class='num'>Enrolled</th><th class='num'>Ran for</th><th class='num'>Results</th>"
                 f"<th>Date</th><th>Registry record</th></tr></thead><tbody>{body}</tbody></table>")
 
     review = pkg.get("asset_under_review")
@@ -453,6 +617,7 @@ def render_html(pkg: dict, notes: list[str]) -> str:
         # appended there so the section lands in the right place in the document, not at the end.
         comparison_block = "<!--ASSET_COMPARISON-->"
 
+    incidence_figure = incidence_chart(cif, base_cif, pkg["cohort"], h["comparator_label"])
     cif_rows = "".join(
         f"<tr><td>{m} months</td><td class='num'><b>{pct(cif[m]['cif'])}</b></td>"
         f"<td class='num muted'>{pct(cif[m]['ci95'][0])}–{pct(cif[m]['ci95'][1])}</td>"
@@ -466,6 +631,26 @@ def render_html(pkg: dict, notes: list[str]) -> str:
 body {{ font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   color:var(--ink); background:var(--bg); margin:0; padding:40px 24px; }}
 .sheet {{ max-width:1000px; margin:0 auto; }}
+.download {{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin:18px 0 0; padding:12px 16px;
+  border:1px solid var(--line); border-radius:12px; background:#fff; }}
+.download a {{ background:var(--acc); color:#fff; border-radius:9px; padding:8px 14px; font-weight:700;
+  text-decoration:none; font-size:13px; white-space:nowrap; }}
+.download span {{ font-size:12.5px; color:var(--ink2); line-height:1.5; }}
+@media print {{ .download {{ display:none; }} }}
+figure.chart {{ margin:14px 0 0; padding:0; break-inside:avoid; }}
+figure.chart svg {{ display:block; max-width:660px; }}
+figure.chart figcaption {{ font-size:11px; color:var(--ink2); margin-top:6px; max-width:660px; line-height:1.5; }}
+@page {{ size:A4; margin:16mm 14mm 18mm; }}
+@media print {{
+  body {{ background:#fff; padding:0; }}
+  h2 {{ break-after:avoid; }}
+  /* Rows, not tables. Telling a twenty-row table not to break pushes the whole thing to the
+     next page and leaves the current one blank under its own heading. */
+  tr {{ break-inside:avoid; }}
+  thead {{ display:table-header-group; }}
+  figure.chart, .box {{ break-inside:avoid; }}
+  a[href^="http"]::after {{ content:""; }}
+}}
 h1 {{ font-size:27px; letter-spacing:-.02em; margin:6px 0 4px; }}
 h2 {{ font-size:17px; margin:34px 0 4px; letter-spacing:-.01em; }}
 .kicker {{ font-size:11px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--acc); }}
@@ -513,6 +698,8 @@ a {{ color:var(--acc); }}
  <div class="stat"><b>{c['stop_programmes']}</b><span>independent sponsor–asset programmes behind the stops</span></div>
 </div>
 
+<!--COHORT_CSV-->
+
 <h2>What we read from this</h2>
 <div class="box ours"><ul>{''.join(f'<li>{e(x)}</li>' for x in notes)}</ul>
 <p class="muted" style="margin:6px 0 0">This block is our interpretation. Everything else on this page is extracted
@@ -526,6 +713,7 @@ from the registry and can be checked against the linked records.</p></div>
 <p class="sub">Probability that a trial has been stopped for a biological reason by each point, with completion and
 non-biological termination as competing events and ongoing trials censored at their last registry update. Unlike the
 rate above, this does not move with how mature the cohort is.</p>
+{incidence_figure}
 <table><thead><tr><th>Since trial start</th><th class="num">This cohort</th><th class="num">95% CI</th>
 <th class="num">Comparator</th><th class="num">Still at risk</th></tr></thead><tbody>{cif_rows}</tbody></table>
 

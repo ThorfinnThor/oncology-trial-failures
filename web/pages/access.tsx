@@ -27,6 +27,7 @@ type Entry = {
   counts: { closed: number; stopped: number; still_open: number; total_in_cohort: number };
   brief_slug: string | null;
   url: string;
+  csv_url: string;
 };
 
 type Library = {
@@ -165,9 +166,12 @@ export default function AccessPage() {
                         <a className="open" href={entry.url} target="_blank" rel="noopener noreferrer">
                           Open the package
                         </a>
+                        <a className="ghost csvLink" href={entry.csv_url} download>
+                          CSV
+                        </a>
                         {entry.brief_slug ? (
                           <Link className="ghost" href={`/briefs/${entry.brief_slug}`}>
-                            Free brief
+                            Brief
                           </Link>
                         ) : null}
                       </div>
@@ -331,10 +335,19 @@ export default function AccessPage() {
           background: var(--accent);
           color: #fff;
         }
-        :global(.ghost) {
+        :global(.ghost),
+        .csvLink {
           background: #fff;
           color: inherit;
           border: 1px solid var(--border);
+        }
+        .csvLink {
+          border-radius: 10px;
+          padding: 9px 14px;
+          font-size: 13px;
+          font-weight: 800;
+          text-decoration: none;
+          white-space: nowrap;
         }
         .files {
           display: grid;

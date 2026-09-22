@@ -29,6 +29,7 @@ import {
 
 // The same slot string pages/api/report.ts splices into.
 const SLOT = "<!--ASSET_COMPARISON-->";
+const CSV_SLOT = "<!--COHORT_CSV-->";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 type Case = {
@@ -131,8 +132,12 @@ test("the delivered document really gets the section, and never keeps the empty 
   assert.ok(delivered.includes("Same target, same modality"));
   assert.ok(delivered.includes("ChEMBL CHEMBL3353410"));
 
-  // An unordered package is delivered without the section rather than with a stray comment.
-  assert.ok(!pkg.html.replace(SLOT, "").includes("<!--"), "an empty slot should leave nothing behind");
+  // The document is built with two slots the delivery route fills. Neither may survive into what
+  // the buyer opens, and an unfilled one must leave nothing visible rather than a stray comment.
+  assert.ok(pkg.html.includes(CSV_SLOT), "the prebuilt document should also leave the CSV slot");
+  const bare = pkg.html.replace(SLOT, "").replace(CSV_SLOT, "");
+  assert.ok(!bare.includes("<!--"), "an empty slot should leave nothing behind");
+  assert.ok(!delivered.replace(CSV_SLOT, "").includes("<!--"), "no slot may survive delivery");
 });
 
 test("a buyer whose molecule is not in the index is told so, in the document", () => {

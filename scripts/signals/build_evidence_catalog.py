@@ -36,6 +36,10 @@ PRIVATE = ROOT / "web/data/private/evidence_packages.json"
 # What the site may say about a package before anyone has paid for it: the cohort, how much is
 # in it, and which brief it extends. Never the contents.
 PUBLIC = ROOT / "web/data/evidence_catalogue.json"
+TRIALS = ROOT / "web/data/private/cohort_trials.json"
+PRIVATE_NOTE = ("Server-side only. This file is imported by the API route that delivers a paid "
+                "package; it must never be imported from a page component, or the bundler will "
+                "ship it to the browser.")
 
 
 class Args:
@@ -91,6 +95,7 @@ def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     bundle, failed, started = {}, [], time.time()
+    trials_by_cohort: dict[str, list] = {}
     for stem, job in jobs:
         try:
             built = pkg.build(job)
@@ -106,6 +111,10 @@ def main() -> int:
             continue
 
         slug = f"{slugify(job.area)}-{slugify(built['cohort'])}"
+        # The full cohort ships as its own file: it is ten times the size of everything else and
+        # is read by exactly one route, so keeping it out of the document bundle keeps that bundle
+        # small enough to stay comfortable inside a Worker.
+        trials_by_cohort[slug] = built.pop("cohort_rows", [])
         (OUT_DIR / f"{slug}.json").write_text(json.dumps(built, indent=1, ensure_ascii=False) + "\n",
                                               encoding="utf-8")
         (OUT_DIR / f"{slug}.html").write_text(html, encoding="utf-8")
@@ -126,12 +135,23 @@ def main() -> int:
             "html": html,
         }
 
+    TRIALS.parent.mkdir(parents=True, exist_ok=True)
+    TRIALS.write_text(json.dumps({
+        "schema_version": 1,
+        "note": PRIVATE_NOTE,
+        "columns": ["nct_id", "kind", "phase", "overall_status", "sponsor_group", "sponsor_class",
+                    "experimental_drugs", "target_genes", "modalities", "start_month", "stop_month",
+                    "months_to_stop", "enrollment", "enrollment_type", "has_results",
+                    "why_stopped", "stop_attribution"],
+        "cohorts": trials_by_cohort,
+    }, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    rows = sum(len(v) for v in trials_by_cohort.values())
+    print(f"wrote {TRIALS.relative_to(ROOT)} ({TRIALS.stat().st_size / 1024:.0f} KB, {rows} trial rows)")
+
     PRIVATE.parent.mkdir(parents=True, exist_ok=True)
     PRIVATE.write_text(json.dumps({
         "schema_version": 1,
-        "note": "Server-side only. This file is imported by the API route that delivers a paid "
-                "package; it must never be imported from a page component, or the bundler will "
-                "ship it to the browser.",
+        "note": PRIVATE_NOTE,
         "package_count": len(bundle),
         "packages": bundle,
     }, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")

@@ -63,6 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         brief_slug: brief ? brief.slug : null,
         url: `/api/report?slug=${encodeURIComponent(slug)}&token=${encodeURIComponent(token)}`
           + (grant.asset ? `&asset=${encodeURIComponent(grant.asset)}` : ""),
+        csv_url: `/api/report?slug=${encodeURIComponent(slug)}&token=${encodeURIComponent(token)}&format=csv`,
       };
     })
     .sort((a, b) => b.counts.total_in_cohort - a.counts.total_in_cohort);
