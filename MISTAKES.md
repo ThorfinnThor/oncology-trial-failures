@@ -31,7 +31,31 @@ name or an NCT id ever appears in the free response.
 
 ---
 
-## 2. Selling something the buyer already had for free
+## 2. The route that hands over what somebody paid for never asked who they were
+
+`grants.ts` exists because three routes ask the same question, and a paid boundary decided in
+three places has three answers. `report.ts` imported it — `grantCovers`, right there at the top of
+the file — and then asked its own question instead: does the grant's single-cohort field equal
+this slug?
+
+An order from the site writes a **list** of cohorts and never that field. So the one route that
+delivers the document answered **403 to every self-serve buyer**, and would have done it to the
+first person who ever paid. It also never checked whether the grant was paid at all, so once
+Stripe was connected the document was reachable without paying — by guessing nothing, just by
+using the URL the library had already built.
+
+Neither showed up. The unit tests test `grants.ts`, which was right. The route was never run
+against a real KV binding, which `TODO.md` said out loud and I read as a note about infrastructure
+rather than as a list of the code nobody had executed.
+
+**What stops it.** The route calls `grantedSlugs()` and `isUnlocked()` and decides nothing itself,
+and a test reads `report.ts` and `library.ts` as text: it fails if either stops calling the module
+or starts comparing the grant's fields on its own. The one place a shape can drift from the check
+that reads it is now checked against the shape an order actually writes, field for field.
+
+---
+
+## 3. Selling something the buyer already had for free
 
 The BACE / γ-secretase cohort has four trials. All four are closed and all four stopped, so the
 free brief lists every one of them. The package for that cohort was offered at €100 — the same
@@ -45,7 +69,7 @@ is zero the cohort is not sold, is left out of the catalogue, and the page says 
 
 ---
 
-## 3. Two vocabularies for the same thing, compared directly
+## 4. Two vocabularies for the same thing, compared directly
 
 The cohorts record modality as `ADC`, `Cell therapy`, `Gene therapy`. ChEMBL says
 `Antibody drug conjugate`, `Cell`, `Gene`. The comparison read them as different values, so an ADC
@@ -58,7 +82,7 @@ mapping the cohorts were built with, and a test names the three cases.
 
 ---
 
-## 4. A tool that answered one question and was asked another
+## 5. A tool that answered one question and was asked another
 
 The asset check resolved molecules perfectly — 21 of 21, including research codes and brand names
 — and failed on every single target, gene, short name and mechanism class. Nineteen of nineteen.
@@ -79,7 +103,7 @@ impression.
 
 ---
 
-## 5. Counting things that were not what they were called
+## 6. Counting things that were not what they were called
 
 "Still open" meant every trial that had not closed. In the EGFR cohort that swept up 41 withdrawn
 registrations that never enrolled a patient and 296 whose sponsor stopped updating the registry
@@ -92,7 +116,7 @@ and the document says how many of its open trials have gone quiet.
 
 ---
 
-## 6. A word list deciding what the database can see
+## 7. A word list deciding what the database can see
 
 The disease-area taxonomy is a list of substrings. "Primary sclerosing cholangitis" contains none
 of *gastro, hepat, liver, cirrhos, colitis, bowel*, so a Phase 3 trial stopped on a DMC futility
@@ -115,7 +139,7 @@ trusted.
 
 ---
 
-## 7. Styles that silently never applied
+## 8. Styles that silently never applied
 
 21 CSS rules in `<style jsx>` sat on `<Link>` elements. styled-jsx adds its scope class only to
 native elements, so `.cls.jsx-HASH` never matched anything. No error, no warning, a build that
@@ -126,7 +150,7 @@ right; the cause was code.
 
 ---
 
-## 8. Shipping the analysis without the picture
+## 9. Shipping the analysis without the picture
 
 A discontinuation analysis went out with no curve — five numbers in a table standing in for a
 shape, in a document sold as evidence. The shape is the first thing a reader checks.
@@ -136,7 +160,7 @@ looking at it, which is now a step rather than an afterthought.
 
 ---
 
-## 9. Print CSS written from memory
+## 10. Print CSS written from memory
 
 `break-inside: avoid` on `table` pushed a twenty-row table to the next page and left the current
 one blank under its own heading. The rule belongs on rows.
@@ -146,7 +170,7 @@ found, one page after it was introduced.
 
 ---
 
-## 10. A paying customer's page waiting on a flag it did not need
+## 11. A paying customer's page waiting on a flag it did not need
 
 `/access` waited for `router.isReady` before reading its own token. Anything that stops that flag
 — a stale manifest, a cached shell — turns everything somebody bought into a spinner that never
@@ -157,7 +181,7 @@ place. Found by mirroring the built page and opening it.
 
 ---
 
-## 11. Weakening a check instead of the thing it checked
+## 12. Weakening a check instead of the thing it checked
 
 Twice I hit a failing check and reached for the check first: adding `:global()` to silence
 styled-jsx, and adding test directories to the private-data allowlist. The second was correct —

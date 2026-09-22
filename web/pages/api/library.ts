@@ -11,7 +11,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import briefsIndex from "@/data/briefs_index.json";
 import productSummary from "@/data/product_summary.json";
-import { grantedSlugs, isUnlocked, PACKAGES, type Grant } from "@/lib/server/grants";
+import { grantedSlugs, grantScope, isUnlocked, PACKAGES, type Grant } from "@/lib/server/grants";
 
 type KvBinding = { get(key: string): Promise<string | null> };
 type CloudflareGlobal = typeof globalThis & {
@@ -108,7 +108,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Handed back so the page can replace the checkout id in the address bar with the link that
     // keeps working. A buyer who bookmarks this page should not be bookmarking a dead session.
     token,
-    scope: grant.scope === "all" || grant.slug === "any" ? "all" : grant.scope || "cohort",
+    scope: grantScope(grant),
     asset: grant.asset || "",
     company: grant.company || "",
     issued_at: grant.issued_at || "",

@@ -118,7 +118,13 @@ look.
 
 `/api/order`, `/api/library` and `/api/report` are covered by unit tests on the logic that decides
 what a token opens, but the KV reads and writes have only ever run in production shape once —
-never end to end. The first real order is also the first real test.
+never end to end.
+
+**This already cost something.** `report.ts` was not calling that logic at all: it compared the
+grant's single-cohort field against the slug, and an order writes a list, so it would have
+answered 403 to the first person who ever paid — and, once Stripe was connected, would have
+handed the document to an unpaid one. Fixed, with a test that reads the routes as text. The rest
+of this section is the same risk still unexercised.
 
 Worth doing: order a package on the live site, open the link, check the document, and stop the
 newsletter from the link in the mail.

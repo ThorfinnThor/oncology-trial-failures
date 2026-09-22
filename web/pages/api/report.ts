@@ -13,7 +13,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { grantCovers, isUnlocked, type Grant } from "@/lib/server/grants";
+import { grantedSlugs, isUnlocked, type Grant } from "@/lib/server/grants";
 import bundle from "@/data/private/evidence_packages.json";
 import {
   compareAsset,
@@ -78,10 +78,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(503).send("Could not verify the token. Please try again.");
   }
 
-  // A token is issued for one cohort. "any" exists so a licence can cover the whole catalogue
-  // without minting 51 tokens.
-  if (!grant || (grant.slug !== slug && grant.slug !== "any")) {
+  // What a token opens is decided in grants.ts and nowhere else. This route used to ask its own
+  // question, comparing the grant's single-cohort field against the slug — and an order from the
+  // site writes a list of cohorts, never that field, so it answered 403 to every self-serve
+  // buyer. The module was imported here the whole time and never called. A test in
+  // tests/grants.test.ts now reads these routes and fails if one starts deciding again.
+  if (!grant || !grantedSlugs(grant).includes(slug)) {
     return res.status(403).send("That token is not valid for this package.");
+  }
+  if (!isUnlocked(grant)) {
+    return res.status(402).send("This order has not been paid yet. If you have just paid, give it "
+      + "a moment and reload — confirmation usually takes a few seconds.");
   }
 
   // The asset under review comes from the order, unless this request names another one — a buyer

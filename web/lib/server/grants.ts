@@ -74,6 +74,14 @@ export function cohortsForAsset(asset: string): { matches: CohortMatch[]; slugs:
   return { matches: ranked, slugs: ranked.map((m) => m.slug) };
 }
 
+/** What to call this grant's reach on the page. Here rather than in the route, because every
+ * question of the form "what does this token mean" being in one file is the point of this file. */
+export function grantScope(grant: Grant | null): "molecule" | "cohort" | "all" {
+  if (!grant) return "cohort";
+  if (grant.scope === "all" || grant.slug === "any") return "all";
+  return grant.scope === "molecule" ? "molecule" : "cohort";
+}
+
 /** Every cohort this grant opens. An unknown or empty grant opens nothing. */
 export function grantedSlugs(grant: Grant | null): string[] {
   if (!grant) return [];
