@@ -1,11 +1,12 @@
 // web/pages/api/package-request.ts
 //
-// The evidence package is the one thing on this site somebody pays for, and until now the
-// only way to ask for it was a mailto link. This takes the request properly: what cohort,
-// which asset it is being evaluated against, and where to send it.
+// Requests that need a person: today that is the full-access waiting list on /pricing, and a
+// cohort that is not a mechanism class. The evidence package itself is bought and delivered
+// without anyone in the loop — see api/order.ts — so nothing here takes payment.
 //
-// It does not take payment. A first customer is agreed in a conversation, not in a checkout,
-// and pretending otherwise would put a card form in front of a product nobody has bought yet.
+// Two things this route must get right, because both have been got wrong before. The record is
+// typed by what was actually asked for, so a waiting-list entry is not filed as a package order.
+// And somebody is told: a list that only a KV key knows about is a mailto that never rings.
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -16,6 +17,7 @@ type CloudflareGlobal = typeof globalThis & {
 
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[a-z]{2,24}$/i;
 const FREE_MAIL = /@(gmail|googlemail|yahoo|hotmail|outlook|live|icloud|me|aol|gmx|web|proton|protonmail|mail)\./i;
+const INTENTS = new Set(["full_access_waitlist", "custom_cohort_request"]);
 
 function clean(value: unknown, max = 300): string {
   return String(value ?? "").replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
@@ -38,6 +40,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const asset = clean(body.asset, 200);
   const context = clean(body.context, 1200);
   const marketing = body.marketing === true || body.marketing === "true" || body.marketing === "on";
+  // Whitelisted rather than stored as sent: a type is what somebody later filters the list by.
+  const intent = INTENTS.has(clean(body.intent, 40)) ? clean(body.intent, 40) : "custom_cohort_request";
 
   if (!EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
   if (!company) return res.status(400).json({ ok: false, error: "Please enter your company or institution." });
@@ -46,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const lead = {
-    type: "evidence_package_request",
+    type: intent,
     email,
     company,
     cohort,
@@ -70,11 +74,46 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error(JSON.stringify({ event: "lead_store_failed", message: String(error) }));
   }
 
+  // Told, not stored and forgotten. Best effort by design: the person has already been answered
+  // by the time this runs, and a mail provider having a bad minute must not turn their request
+  // into an error. It is skipped entirely until the sending key is set on the Worker.
+  await notify(lead).catch((error) => {
+    console.error(JSON.stringify({ event: "lead_notify_failed", message: String(error) }));
+  });
+
   return res.status(200).json({
     ok: true,
-    message: "Thanks — we'll come back within one working day with the cohort as we'd define it, "
-      + "what the package will contain, and what it cannot answer.",
+    message: intent === "full_access_waitlist"
+      ? "You are on the list. We will write once there is a price, and not otherwise."
+      : "Thank you — we will read this and reply by email.",
   });
+}
+
+/** A short mail to whoever runs this, when a sending key is configured. */
+async function notify(lead: Record<string, unknown>): Promise<void> {
+  const env = { ...(typeof process !== "undefined" ? process.env : {}),
+                ...((globalThis as CloudflareGlobal)[Symbol.for("__cloudflare-context__")]?.env || {}) } as
+                Record<string, string | undefined>;
+  const key = env.BREVO_API_KEY;
+  if (!key) return;
+  const to = env.LEAD_NOTIFY_TO || "contact@clinicaltrialfailures.com";
+  const lines = Object.entries(lead)
+    .filter(([, value]) => value !== "" && value !== undefined && value !== null)
+    .map(([field, value]) => `<tr><td style="padding:3px 10px 3px 0;color:#666">${field}</td><td>${String(value)}</td></tr>`)
+    .join("");
+  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: { "api-key": key, "content-type": "application/json" },
+    body: JSON.stringify({
+      sender: { email: env.MAIL_FROM || "contact@clinicaltrialfailures.com", name: "Clinical Trial Failures" },
+      to: [{ email: to }],
+      subject: `${lead.type === "full_access_waitlist" ? "Waiting list" : "Request"}: ${lead.company || lead.email}`,
+      htmlContent: `<table style="font:14px -apple-system,Segoe UI,Helvetica,Arial,sans-serif">${lines}</table>`,
+    }),
+  });
+  if (!response.ok) {
+    console.error(JSON.stringify({ event: "lead_notify_rejected", status: response.status }));
+  }
 }
 
 function safeParse(value: string): Record<string, unknown> {

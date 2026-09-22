@@ -272,7 +272,9 @@ export default function AssetCheckPage() {
                   <p className="sectionSub">
                     Each row is a mechanism class we have already built. &ldquo;Same target, same modality&rdquo; is the
                     history you would have to answer for in a diligence meeting; &ldquo;same pathway&rdquo; is the same
-                    bet placed on a different protein.
+                    bet placed on a different protein. A class you did not expect appears when one drug carries two
+                    targets — a bispecific, an antibody–drug conjugate and its payload, or a combination arm — so the
+                    line under each name says which of your targets put it on the list.
                   </p>
 
                   <div className="matches">
@@ -286,7 +288,7 @@ export default function AssetCheckPage() {
                               <div className="matchWhy">
                                 {m.by === "class"
                                   ? `${m.shared_genes.join(", ")} ${m.shared_genes.length === 1 ? "is one of" : "are among"} this class's targets`
-                                  : `a molecule that failed here also acts on ${m.shared_genes.join(", ")}`}
+                                  : `listed because a molecule that failed here also acts on ${m.shared_genes.join(", ")}`}
                               </div>
                             ) : null}
                           </div>
