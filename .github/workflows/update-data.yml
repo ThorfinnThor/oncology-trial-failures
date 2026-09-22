@@ -146,6 +146,10 @@ jobs:
             python -u scripts/universe/discontinuation_rates.py --tables --pack --start 2015:2024 --area "$area"
             python -u scripts/briefs/build_brief_catalog.py --area "$area"
           done
+          # The other half of the evidence: trials that ran to the end and missed. Resumable by
+          # year slice with its own budget, and every downstream step degrades to "no endpoint
+          # section" rather than failing if it has not run.
+          python -u scripts/universe/endpoint_outcomes.py --start-year 2015 --max-seconds 900 || true
           cp .cache/universe/resolution_report.json product/discontinuation_rates/
 
       - name: Render discontinuation-rate briefs to PDF

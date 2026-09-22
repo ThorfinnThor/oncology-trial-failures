@@ -68,17 +68,55 @@ Default start window ends four years before the current year so most trials have
 
 ## What the rate is not
 
-- **Not a failure rate.** Trials that completed and missed their endpoints are not detected; the rate
-  measures early discontinuation for biological reasons reported in the registry.
+- **Not a failure rate.** Trials that completed and missed their endpoints are not in it; the rate
+  measures early discontinuation for biological reasons reported in the registry. Those trials are
+  counted separately — see *Missed endpoints* below — but never folded into the rate.
 - **Not causal.** Stop reasons are sponsor-reported and can be incomplete.
 - **Trial-level, not program-level.** A program discontinued after a completed pivotal trial may show
   no stopped trials.
 - Rates among closed trials can be inflated for recent cohorts because early stops close sooner than
   completions; use older start windows and the lower bound for recent cohorts.
 
+## Missed endpoints
+
+A discontinuation rate only sees trials that were stopped. In oncology that is most of how a
+programme dies; in endocrine and metabolic disease it is almost none of it — 28 biological stops in
+1,637 closed trials — because those fields run large outcome trials to the end and then report that
+the drug did not beat placebo. That failure is real and the registry records it.
+
+`scripts/universe/endpoint_outcomes.py` reads it, and reads nothing else: no re-analysis, no
+inference from an abstract, no judgement about whether the endpoint was the right one.
+
+What counts, deliberately narrowly:
+
+- only trials whose status is **COMPLETED** — a still-recruiting study that posted an interim
+  analysis is not a finished answer;
+- only outcome measures the sponsor typed **PRIMARY**;
+- only analyses the sponsor typed **SUPERIORITY**. A non-inferiority test that fails to reject is a
+  different event; it is counted as skipped and never as a miss;
+- only analyses comparing **at least two groups** — a within-arm change from baseline is not a
+  comparison;
+- only a p-value the record settles against **0.05**. `<0.001` is significant, `>0.05` and an
+  explicit `NS` are not, `<0.1` settles nothing and is left unread.
+
+A trial where every qualifying analysis came back non-significant is `MISSED`; all significant,
+`MET`; co-primaries that disagree, `MIXED`, reported as its own category because the registry does
+not say whether the design needed both.
+
+**It is a floor, not a rate.** Roughly half of completed trials post results at all, and of those
+only about a third post a primary superiority analysis with a readable p-value. 1,500 misses across
+2015–2024 is what the registry states outright, not what happened.
+
+`MET` is not approval and `MISSED` is not a verdict on the molecule. It is the sponsor's own posted
+comparison, read back.
+
+Output: `.cache/universe/endpoint_outcomes.jsonl.gz`, joined into class signatures and evidence
+packages by NCT ID. Every consumer treats a missing file as "no endpoint section" rather than an
+error, so the fetch can lag a release without breaking one.
+
 ## Mechanism classes and briefs
 
-Segments are grouped into 43 curated mechanism classes (`scripts/universe/mechanism_classes.py`) —
+Segments are grouped into 131 curated mechanism classes across five disease areas (`scripts/universe/mechanism_classes.py`) —
 the units analysts use ("PD-(L)1", "PARP", "KRAS", "TGF-β"), each defined as a set of HGNC gene
 symbols. A trial belongs to a class when any drug in an experimental arm targets one of its genes;
 combination filters also consider drugs given as the backbone in both arms.

@@ -36,6 +36,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.signals.stop_attribution import attribute_all, signature, summarise  # noqa: E402
 from scripts.universe.cumulative_incidence import curve  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
+from scripts.universe.endpoint_outcomes import load_verdicts  # noqa: E402
 from scripts.universe.multiplicity import binom_sf  # noqa: E402
 
 # What we compare, and what we deliberately do not. Modality, target and mechanism come out of
@@ -239,6 +240,17 @@ def build(args) -> dict:
                   if r.get("overall_status") == "TERMINATED"
                   and r.get("classification_outcome_v2") in ("CAUSE_NOT_STATED", "UNKNOWN")]
     open_trials = [r for r in cohort if not r["_closed"] and r.get("overall_status") != "WITHDRAWN"]
+
+    # The other way a drug fails: it finishes the trial and misses. A discontinuation rate cannot
+    # see that, and in some fields it is nearly the whole story. Only COMPLETED trials are read —
+    # a still-recruiting study that posted an interim analysis is not a finished answer — and only
+    # the sponsor's own posted primary superiority comparison counts. See endpoint_outcomes.py.
+    verdicts = load_verdicts()
+    completed = [r for r in cohort if r.get("overall_status") == "COMPLETED"]
+    endpoint_of = {r["nct_id"]: verdicts[r["nct_id"]] for r in completed
+                   if verdicts.get(r["nct_id"], {}).get("endpoint_verdict") in ("MISSED", "MET", "MIXED")}
+    missed = sorted([r for r in completed if endpoint_of.get(r["nct_id"], {}).get("endpoint_verdict") == "MISSED"],
+                    key=lambda r: (r.get("start_date") or ""), reverse=True)
     # A trial whose sponsor stopped updating is not running; it is unaccounted for. It stays in the
     # count because it is still in the cohort, but a reader asking "how much is still to come"
     # deserves to know how much of the answer is registry rot.
@@ -261,6 +273,8 @@ def build(args) -> dict:
             "months_to_stop": months_between(r.get("start_date"), r.get("stop_date_estimate")),
             "has_results": bool(r.get("has_results")),
             "why_stopped": " ".join((r.get("why_stopped") or "").split()),
+            "endpoint": (endpoint_of.get(r["nct_id"]) or {}).get("endpoint_verdict"),
+            "endpoint_analyses": (endpoint_of.get(r["nct_id"]) or {}).get("analyses") or [],
             "attribution": a.get("attribution"), "attribution_basis": a.get("basis"),
             "attribution_evidence": a.get("cascade_evidence") or a.get("own_data_evidence") or [],
             "sibling_stops": a.get("sibling_stops") or [],
@@ -310,6 +324,7 @@ def build(args) -> dict:
         "time_to_event": curve(cohort),
         "comparator_time_to_event": curve(resolved if (args.klass or genes) else base_rows),
         "trials": ([trial_row(r, "biological_stop") for r in stops]
+                   + [trial_row(r, "endpoint_miss") for r in missed[:MAX_CONTEXT_ROWS]]
                    + [trial_row(r, "terminated_cause_not_readable") for r in unreadable[:MAX_CONTEXT_ROWS]]
                    + [trial_row(r, "still_open") for r in
                       sorted(open_trials, key=lambda r: (r.get("start_date") or ""), reverse=True)[:MAX_CONTEXT_ROWS]]),
@@ -323,12 +338,32 @@ def build(args) -> dict:
                    "listed_open": len(open_trials[:MAX_CONTEXT_ROWS]),
                    # What the free brief shows of the same cohort. The difference between the two
                    # documents is worth stating as a number, and a number nobody computes drifts.
-                   "brief_lists_stops": min(len(stops), BRIEF_MAX_ROWS)},
+                   "brief_lists_stops": min(len(stops), BRIEF_MAX_ROWS),
+                   "endpoint_missed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MISSED"),
+                   "endpoint_readable": len(endpoint_of),
+                   "listed_endpoint_misses": len(missed[:MAX_CONTEXT_ROWS])},
+        "endpoints": {
+            "read": bool(verdicts),
+            "completed": len(completed),
+            "readable": len(endpoint_of),
+            "missed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MISSED"),
+            "met": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MET"),
+            "mixed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MIXED"),
+            "method": "Only trials the sponsor completed and posted results for, only outcome measures typed "
+                      "PRIMARY, only analyses typed SUPERIORITY comparing at least two groups, and only a p-value "
+                      "the record settles against 0.05. A failed non-inferiority test is a different event and is "
+                      "never counted here.",
+            "why_it_matters": "A discontinuation rate only sees trials that were stopped. A drug that runs its "
+                              "trial to the end and misses is the more common failure in several fields, and the "
+                              "registry records it.",
+        },
         "sources": ["ClinicalTrials.gov (NLM)", "ChEMBL (EMBL-EBI, CC BY-SA 3.0)", "NCI Thesaurus (NCI)",
                     "RxNorm/RxClass (NLM)", "SEC EDGAR"],
         "limits": [
             "This describes registry records for trials that have closed. It is not a forecast for any asset.",
-            "It is not a failure rate: a trial that ran to completion and missed its endpoint is not counted here.",
+            "The rate is not a failure rate: a trial that ran to completion and missed its endpoint is not in it. "
+            "Those trials are listed separately where the sponsor posted an analysis to read; most posted none, "
+            "so the missed-endpoint count is a floor and not a rate.",
             "Comparisons are unadjusted. Indication, line of therapy, biomarker selection and development era are "
             "not matched between this cohort and its comparator.",
             "Extraction, classification and attribution are automated. No clinician has reviewed these records.",
@@ -554,6 +589,36 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                 f"<th class='num'>Enrolled</th><th class='num'>Ran for</th><th class='num'>Results</th>"
                 f"<th>Date</th><th>Registry record</th></tr></thead><tbody>{body}</tbody></table>")
 
+    def endpoint_block():
+        ep = pkg.get("endpoints") or {}
+        if not ep.get("read") or not ep.get("readable"):
+            return ""
+        rows = [t for t in pkg["trials"] if t["kind"] == "endpoint_miss"]
+        body = ""
+        for t in rows:
+            analyses = "".join(
+                f"<div>{e(a['outcome'])} <span class='mono'>p {e(a['p'])}</span></div>"
+                for a in t["endpoint_analyses"] if not a["significant"])
+            size = (f"{t['enrollment']:,}" if isinstance(t["enrollment"], int) else "—")
+            body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a></td>"
+                     f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td>"
+                     f"<td>{e(', '.join(t['experimental_drugs']) or '—')}</td>"
+                     f"<td class='num'>{size}</td><td class='num'>{e(t['start'])}</td>"
+                     f"<td>{analyses}</td></tr>")
+        table = (f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
+                 f"<th class='num'>Enrolled</th><th class='num'>Started</th>"
+                 f"<th>Primary comparison, as posted</th></tr></thead><tbody>{body}</tbody></table>"
+                 if body else "")
+        more = (f" The {MAX_CONTEXT_ROWS} most recently started are listed."
+                if ep["missed"] > MAX_CONTEXT_ROWS else "")
+        return (f"<h2>Ran to the end and missed <span class='count'>{ep['missed']}</span></h2>"
+                f"<p class='sub'>Of {ep['completed']} completed trials in this cohort, {ep['readable']} posted a "
+                f"primary superiority comparison we can read: <b>{ep['missed']}</b> came back non-significant, "
+                f"{ep['met']} significant"
+                + (f", {ep['mixed']} split across co-primaries" if ep["mixed"] else "")
+                + f". {e(ep['method'])} The rest posted no analysis to read, so this is a floor, not a rate.{more}</p>"
+                + table)
+
     review = pkg.get("asset_under_review")
     comparison = pkg.get("asset_comparison") or []
     if comparison and review:
@@ -683,6 +748,8 @@ rate above, this does not move with how mature the cohort is.</p>
 
 {trial_block("biological_stop", "The stops, and what caused each one",
              "Attribution is shown under each registry reason. " + a["why_it_matters"])}
+
+{endpoint_block()}
 
 {trial_block("terminated_cause_not_readable", f"Terminated, cause not readable ({pkg['counts']['unreadable_terminations']} in the cohort)",
              "Listed rather than dropped. These sit in the denominator and never in the numerator; if every one were "

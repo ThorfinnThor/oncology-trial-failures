@@ -9,6 +9,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from scripts.universe.discontinuation_rates import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
+from scripts.universe.endpoint_outcomes import parse_p, read_analyses, significant, verdict_of  # noqa: E402
 from scripts.universe.chembl_index import norm  # noqa: E402
 from scripts.universe.mechanism_classes import CLASSES  # noqa: E402
 from scripts.universe.resolve import expand_regimen, modality  # noqa: E402
@@ -189,6 +190,52 @@ check("Yekutieli is never laxer than Hochberg", all(b >= h - 1e-12 for h, b in z
 check("q-values keep the p-value ordering", _bh == sorted(_bh), True)
 check("q-values stay in [0, 1]", all(0 <= q <= 1 for q in _by), True)
 check("a lone test is uncorrected", round(benjamini_hochberg([0.04])[0], 10), 0.04)
+
+
+# ---------------------------------------------------------------------------
+# Endpoint outcomes. The p-value field is free text and the verdict is a claim
+# about somebody's drug, so anything the record does not settle stays unread.
+check("plain p", parse_p("0.0506"), (0.0506, "="))
+check("leading p=", parse_p("P = .03"), (0.03, "="))
+check("less than", parse_p("<0.001"), (0.001, "<"))
+check("greater than", parse_p(">0.999"), (0.999, ">"))
+check("unicode <=", parse_p("\u2264 0.05"), (0.05, "<="))
+check("spelled out", parse_p("NS"), (1.0, ">"))
+check("prose is not a p-value", parse_p("see publication"), (None, None))
+check("out of range is not a p-value", parse_p("12"), (None, None))
+check("empty", parse_p(""), (None, None))
+
+check("below alpha", significant(0.01, "="), True)
+check("at alpha is not below it", significant(0.05, "="), False)
+check("<0.001 settles it", significant(0.001, "<"), True)
+check(">0.05 settles it the other way", significant(0.05, ">"), False)
+# "<0.1" is compatible with 0.03 and with 0.08. Guessing here would invent findings.
+check("<0.1 settles nothing", significant(0.1, "<"), None)
+check(">0.01 settles nothing", significant(0.01, ">"), None)
+
+_miss = [{"type": "PRIMARY", "title": "OS", "analyses": [
+    {"nonInferiorityType": "SUPERIORITY", "groupIds": ["g1", "g2"], "pValue": "0.6945"}]}]
+_hit = [{"type": "PRIMARY", "title": "PFS", "analyses": [
+    {"nonInferiorityType": "SUPERIORITY", "groupIds": ["g1", "g2"], "pValue": "<0.001"}]}]
+check("a non-significant primary is a miss", verdict_of(read_analyses(_miss)["considered"]), "MISSED")
+check("a significant primary is met", verdict_of(read_analyses(_hit)["considered"]), "MET")
+check("co-primaries that split are their own case",
+      verdict_of(read_analyses(_miss + _hit)["considered"]), "MIXED")
+
+# A failed non-inferiority test is a different event and is never counted as a miss.
+_ni = [{"type": "PRIMARY", "title": "HbA1c", "analyses": [
+    {"nonInferiorityType": "NON_INFERIORITY", "groupIds": ["g1", "g2"], "pValue": "0.4"}]}]
+check("non-inferiority is not read", verdict_of(read_analyses(_ni)["considered"]), "UNREADABLE")
+check("and it is counted as skipped", read_analyses(_ni)["skipped"]["non_inferiority"], 1)
+
+# A change from baseline within one arm is not a comparison against anything.
+_one = [{"type": "PRIMARY", "title": "Change from baseline", "analyses": [
+    {"nonInferiorityType": "SUPERIORITY", "groupIds": ["g1"], "pValue": "0.9"}]}]
+check("a one-group analysis is not a comparison", verdict_of(read_analyses(_one)["considered"]), "UNREADABLE")
+
+_secondary = [{"type": "SECONDARY", "title": "QoL", "analyses": [
+    {"nonInferiorityType": "SUPERIORITY", "groupIds": ["g1", "g2"], "pValue": "0.9"}]}]
+check("secondary outcomes are not read", verdict_of(read_analyses(_secondary)["considered"]), "UNREADABLE")
 
 # Nothing may be called unusual on the site that the correction does not support.
 _index = json.loads((Path(__file__).resolve().parents[2] / "web/data/briefs_index.json").read_text())

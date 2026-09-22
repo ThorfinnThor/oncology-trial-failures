@@ -92,7 +92,30 @@ and the document says how many of its open trials have gone quiet.
 
 ---
 
-## 6. Styles that silently never applied
+## 6. A word list deciding what the database can see
+
+The disease-area taxonomy is a list of substrings. "Primary sclerosing cholangitis" contains none
+of *gastro, hepat, liver, cirrhos, colitis, bowel*, so a Phase 3 trial stopped on a DMC futility
+recommendation — correctly fetched, correctly classified as an efficacy failure — was filed under
+"Other" and belonged to no cohort. It was the only biological stop the FXR class had. The class
+read 0 of 23 closed trials, and would have been published that way. **2,007 trials were mistagged
+the same way.**
+
+Two things made it invisible. The list looked complete because everything it *did* match came out
+right, and a trial in "Other" produces no error — it simply never appears in an answer. The
+cheapest possible bug to ship and the hardest to notice.
+
+**What stops it.** The taxonomy now covers biliary, cholestatic, oesophageal and colorectal
+language, but a word list will always be incomplete — so the mechanism is elsewhere:
+`fetch_universe.py` re-derives every record's areas on each assembly pass instead of trusting the
+tag a cached year slice was written with. Slices are cached for six days, so before this a fix
+reached the older years only whenever they next happened to be re-fetched. Now a taxonomy change
+takes effect everywhere on the next run, which is the only way a fix to a list like this can be
+trusted.
+
+---
+
+## 7. Styles that silently never applied
 
 21 CSS rules in `<style jsx>` sat on `<Link>` elements. styled-jsx adds its scope class only to
 native elements, so `.cls.jsx-HASH` never matched anything. No error, no warning, a build that
@@ -103,7 +126,7 @@ right; the cause was code.
 
 ---
 
-## 7. Shipping the analysis without the picture
+## 8. Shipping the analysis without the picture
 
 A discontinuation analysis went out with no curve — five numbers in a table standing in for a
 shape, in a document sold as evidence. The shape is the first thing a reader checks.
@@ -113,7 +136,7 @@ looking at it, which is now a step rather than an afterthought.
 
 ---
 
-## 8. Print CSS written from memory
+## 9. Print CSS written from memory
 
 `break-inside: avoid` on `table` pushed a twenty-row table to the next page and left the current
 one blank under its own heading. The rule belongs on rows.
@@ -123,7 +146,7 @@ found, one page after it was introduced.
 
 ---
 
-## 9. A paying customer's page waiting on a flag it did not need
+## 10. A paying customer's page waiting on a flag it did not need
 
 `/access` waited for `router.isReady` before reading its own token. Anything that stops that flag
 — a stale manifest, a cached shell — turns everything somebody bought into a spinner that never
@@ -134,7 +157,7 @@ place. Found by mirroring the built page and opening it.
 
 ---
 
-## 10. Weakening a check instead of the thing it checked
+## 11. Weakening a check instead of the thing it checked
 
 Twice I hit a failing check and reached for the check first: adding `:global()` to silence
 styled-jsx, and adding test directories to the private-data allowlist. The second was correct —

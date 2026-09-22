@@ -19,7 +19,11 @@ type ClassEntry = {
   area: string;
   cohort: string;
   slug: string | null;
-  counts: { total_in_cohort: number; closed: number; stopped: number; still_open: number };
+  counts: {
+    total_in_cohort: number; closed: number; stopped: number; still_open: number;
+    /** Completed trials whose sponsor posted a primary comparison we can read, and how they went. */
+    endpoint_readable?: number; endpoint_missed?: number; endpoint_met?: number;
+  };
   headline: { rate: number | null };
   failed_assets: FailedAsset[];
   genes: string[];
@@ -41,6 +45,9 @@ function combinationPackages(): ClassEntry[] {
         closed: pkg.counts.closed,
         stopped: pkg.counts.stopped,
         still_open: pkg.counts.still_open,
+        endpoint_readable: pkg.counts.endpoint_readable,
+        endpoint_missed: pkg.counts.endpoint_missed,
+        endpoint_met: pkg.counts.endpoint_met,
       },
       headline: { rate: pkg.headline.rate },
       failed_assets: pkg.failed_assets || [],
@@ -65,6 +72,8 @@ export type ClassMatch = {
   same_modality_only: number;
   /** How the class was reached: the subject belongs to it, or a molecule in it shares a target. */
   by: "class" | "molecule";
+  /** Completed trials that posted a readable primary comparison, and how many missed. */
+  endpoints: { readable: number; missed: number; met: number } | null;
   best: Verdict | null;
 };
 
@@ -94,6 +103,11 @@ export function coverageFor(subject: Subject): ClassMatch[] {
       same_pathway: rows.filter((r) => !r.shared_target_genes.length && r.shared_classes.length).length,
       same_modality_only: rows.filter((r) => r.verdict === "weak").length,
       by: byClass ? "class" : "molecule",
+      endpoints: entry.counts.endpoint_readable
+        ? { readable: entry.counts.endpoint_readable,
+            missed: entry.counts.endpoint_missed || 0,
+            met: entry.counts.endpoint_met || 0 }
+        : null,
       best: rows.length ? rows[0].verdict : null,
     });
   }

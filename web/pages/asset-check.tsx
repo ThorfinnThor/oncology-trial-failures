@@ -39,6 +39,8 @@ type Match = {
   same_pathway: number;
   same_modality_only: number;
   by: "class" | "molecule";
+  /** Completed trials whose sponsor posted a primary comparison we can read. */
+  endpoints: { readable: number; missed: number; met: number } | null;
   best: "closest" | "related" | "weak" | "distant" | "unknown" | null;
 };
 
@@ -299,8 +301,10 @@ export default function AssetCheckPage() {
                             <span className="noRate">
                               <b>None</b> of the {n(m.counts.closed)} closed trials in this class stopped early for a
                               biological reason. {n(m.counts.total_in_cohort)} in the cohort, {n(m.counts.still_open)}{" "}
-                              still running. A trial that runs to the end and misses its endpoint is not a stop and is
-                              not counted here.
+                              still running.{" "}
+                              {m.endpoints && m.endpoints.readable > 0
+                                ? "Stopping early is not the only way a drug fails, though — see below."
+                                : "A trial that runs to the end and misses its endpoint is not a stop and is not counted here."}
                             </span>
                           ) : (
                             <span className="noRate">
@@ -313,6 +317,16 @@ export default function AssetCheckPage() {
                             </span>
                           )}
                         </div>
+
+                        {m.endpoints && m.endpoints.readable > 0 ? (
+                          // A stop is not the only way a drug fails here, and in some classes it is
+                          // the rarer one. This is the sponsor's own posted comparison, read back.
+                          <div className="matchEndpoints">
+                            <b>{m.endpoints.missed}</b> of {n(m.endpoints.readable)} completed trials that posted a
+                            primary comparison missed it{m.endpoints.met ? `, ${n(m.endpoints.met)} met it` : ""}.{" "}
+                            <span className="muted">Not in the rate above — it counts stops, not misses.</span>
+                          </div>
+                        ) : null}
 
                         <div className="bars">
                           {m.same_target_and_modality > 0 ? (
@@ -749,6 +763,14 @@ export default function AssetCheckPage() {
         .matchRate span {
           font-size: 12.5px;
           color: var(--text-muted);
+        }
+        .matchEndpoints {
+          margin-top: 8px;
+          font-size: 13px;
+          color: #374151;
+        }
+        .matchEndpoints .muted {
+          color: #6b7280;
         }
         .bars {
           display: flex;

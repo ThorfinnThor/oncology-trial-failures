@@ -26,6 +26,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.signals.stop_attribution import signature  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
+from scripts.universe.endpoint_outcomes import load_verdicts  # noqa: E402
 from scripts.universe.mechanism_classes import CURATED_AREAS, classes_of  # noqa: E402
 
 CATALOGUE = ROOT / "web/data/evidence_catalogue.json"
@@ -48,6 +49,7 @@ def packages_by_cohort() -> dict[tuple[str, str], str]:
 
 def build() -> dict:
     sold = packages_by_cohort()
+    verdicts = load_verdicts()
     classes: list[dict] = []
 
     for area in AREAS:
@@ -61,6 +63,11 @@ def build() -> dict:
                 continue
             stats = summarize(cohort)
             stops = [r for r in cohort if r["_bio"]]
+            # The trials that finished and missed. Counted here so a class with no stops at all
+            # still has something to say — which is most of endocrine and half of hepatology.
+            read = [verdicts[r["nct_id"]] for r in cohort
+                    if r.get("overall_status") == "COMPLETED"
+                    and verdicts.get(r["nct_id"], {}).get("endpoint_verdict") in ("MISSED", "MET", "MIXED")]
             sig = signature(stops, area=area, klass=name)
             assets = [{k: a.get(k) for k in ("asset", "modalities", "target_genes", "mechanisms", "trial_count")}
                       for a in sig.get("assets") or []]
@@ -78,6 +85,9 @@ def build() -> dict:
                     "stopped": stats["biological_stops"],
                     "still_open": stats["trials"] - stats["closed"],
                     "unreadable_terminations": stats.get("unresolved_terminations") or 0,
+                    "endpoint_readable": len(read),
+                    "endpoint_missed": sum(1 for v in read if v["endpoint_verdict"] == "MISSED"),
+                    "endpoint_met": sum(1 for v in read if v["endpoint_verdict"] == "MET"),
                 },
                 "headline": {
                     # A rate is only quoted where one was published. Elsewhere the counts stand on

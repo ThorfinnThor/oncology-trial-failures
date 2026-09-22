@@ -21,7 +21,8 @@ import {
 export type Pkg = {
   cohort: string;
   area: string;
-  counts: { closed: number; stopped: number; still_open: number; total_in_cohort: number };
+  counts: { closed: number; stopped: number; still_open: number; total_in_cohort: number;
+    endpoint_readable?: number; endpoint_missed?: number; endpoint_met?: number };
   headline: { rate: number; comparator_rate: number; comparator_label: string };
   failed_assets?: FailedAsset[];
   html: string;
