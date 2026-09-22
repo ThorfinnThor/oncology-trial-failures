@@ -8,6 +8,7 @@
 // for the cohorts that matched their molecule in March should not silently lose one in June
 // because a mechanism class was renamed.
 
+import { isConfigured } from "@/lib/server/payment";
 import bundle from "@/data/private/evidence_packages.json";
 import {
   rankMatches,
@@ -41,6 +42,18 @@ export type Grant = {
   paid?: boolean;
 };
 
+/** Whether this grant opens anything yet.
+ *
+ * Before payment is configured, an order is granted on the spot — the site behaves exactly as it
+ * did before checkout existed, because a half-connected checkout that refuses to deliver is worse
+ * than no checkout. Once the links are set, a grant waits for the webhook.
+ */
+export function isUnlocked(grant: Grant | null): boolean {
+  if (!grant) return false;
+  if (grant.paid) return true;
+  return !isConfigured(grant.scope === "all" ? "all" : "molecule");
+}
+
 /** Cohorts where something that failed acts on the same target as the subject.
  *
  * Target, not pathway: "every cohort where a drug that failed shares your molecule's target" is
@@ -70,7 +83,7 @@ export function grantedSlugs(grant: Grant | null): string[] {
 }
 
 export function grantCovers(grant: Grant | null, slug: string): boolean {
-  if (!grant) return false;
+  if (!grant || !isUnlocked(grant)) return false;
   if (grant.scope === "all" || grant.slug === "any") return slug in PACKAGES;
   return grantedSlugs(grant).includes(slug);
 }

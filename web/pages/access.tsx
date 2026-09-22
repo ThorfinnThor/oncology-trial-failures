@@ -41,7 +41,7 @@ type Library = {
 
 export default function AccessPage() {
   const router = useRouter();
-  const [state, setState] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [state, setState] = useState<"idle" | "loading" | "ready" | "error" | "awaiting">("idle");
   const [library, setLibrary] = useState<Library | null>(null);
   const [message, setMessage] = useState("");
   const loadedFor = useRef("");
@@ -70,6 +70,14 @@ export default function AccessPage() {
     fetch(`/api/library?token=${encodeURIComponent(token)}`)
       .then((response) => response.json())
       .then((data) => {
+        if (data.awaiting_payment) {
+          // Not an error: the order is real, Stripe has simply not confirmed yet. Allow another
+          // attempt rather than making somebody who has just paid think their link is broken.
+          loadedFor.current = "";
+          setMessage(data.error || "");
+          setState("awaiting");
+          return;
+        }
         if (!data.ok) throw new Error(data.error || "That link is not valid.");
         setLibrary(data as Library);
         setState("ready");
@@ -103,6 +111,20 @@ export default function AccessPage() {
       <main className="page">
         <div className="wrap">
           {state === "loading" || state === "idle" ? <p className="muted">Opening your access…</p> : null}
+
+          {state === "awaiting" ? (
+            <div className="card note">
+              <h1>Waiting for your payment to confirm</h1>
+              <p>{message}</p>
+              <button className="again" type="button" onClick={() => router.replace(router.asPath)}>
+                Check again
+              </button>
+              <p className="fine">
+                Nothing is lost if you close this page — the link keeps working, and everything opens as soon as the
+                payment lands.
+              </p>
+            </div>
+          ) : null}
 
           {state === "error" ? (
             <div className="card note">
@@ -355,6 +377,18 @@ export default function AccessPage() {
         }
         .file:hover {
           border-color: rgba(79, 70, 229, 0.45);
+        }
+        .again {
+          margin-top: 16px;
+          background: var(--accent);
+          color: #fff;
+          border: 0;
+          border-radius: 12px;
+          padding: 11px 18px;
+          font-size: 14px;
+          font-weight: 800;
+          cursor: pointer;
+          font-family: inherit;
         }
         .fine {
           margin-top: 14px;

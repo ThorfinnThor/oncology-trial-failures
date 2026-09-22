@@ -70,6 +70,7 @@ export default function AssetCheckPage() {
   const [order, setOrder] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [orderMessage, setOrderMessage] = useState("");
   const [accessUrl, setAccessUrl] = useState("");
+  const [paying, setPaying] = useState(false);
 
   async function check(asset: string) {
     if (!asset.trim()) return;
@@ -108,6 +109,7 @@ export default function AssetCheckPage() {
       const data = await response.json();
       if (!data.ok) throw new Error(data.error || "Could not complete the order.");
       setAccessUrl(data.url || "");
+      setPaying(Boolean(data.payment));
       setOrderMessage(data.message || "");
       setOrder("done");
     } catch (error: any) {
@@ -371,11 +373,17 @@ export default function AssetCheckPage() {
                   <div className="buy">
                     {order === "done" ? (
                       <div>
-                        <div className="buyTitle">Ready</div>
+                        <div className="buyTitle">{paying ? "One step left" : "Ready"}</div>
                         <p className="buySub">{orderMessage}</p>
-                        <Link className="buyCta" href={accessUrl}>
-                          Open your access
-                        </Link>
+                        {paying ? (
+                          <a className="buyCta" href={accessUrl}>
+                            Pay {PACKAGE_PRICE} and open it
+                          </a>
+                        ) : (
+                          <Link className="buyCta" href={accessUrl}>
+                            Open your access
+                          </Link>
+                        )}
                       </div>
                     ) : (
                       <>

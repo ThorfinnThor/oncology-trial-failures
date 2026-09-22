@@ -13,7 +13,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { grantCovers, type Grant } from "@/lib/server/grants";
+import { grantCovers, isUnlocked, type Grant } from "@/lib/server/grants";
 import bundle from "@/data/private/evidence_packages.json";
 import {
   compareAsset,

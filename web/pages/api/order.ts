@@ -7,16 +7,16 @@
 // that failed acts on the same target, and records those. If none do, the order is refused and
 // says why — selling somebody a comparison that will come back empty is worse than not selling.
 //
-// There is no payment here yet. A first customer is agreed in a conversation, not in a checkout,
-// and building a payment flow before anyone has bought anything is how you spend a week to serve
-// zero people. What this does build is the part that has to exist either way: the order is
-// recorded, a token is minted, and everything it covers is available immediately at a URL only
-// that token opens. When Stripe is connected its webhook writes the same record, and nothing else
-// changes.
+// The token is minted before the payment exists and travels to Stripe as the checkout's
+// client_reference_id, so /api/stripe has nothing to create and nobody to identify — it flips one
+// bit on a record that is already there. While no Payment Link is configured the order is granted
+// immediately, exactly as it was before any of this existed: a half-connected checkout that takes
+// an order and then refuses to deliver is worse than no checkout. See docs/payment.md.
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { cohortsForAsset, PACKAGES, type Grant } from "@/lib/server/grants";
+import { checkoutUrl, isConfigured } from "@/lib/server/payment";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -110,15 +110,29 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(503).json({ ok: false, error: "Could not complete the order. Please try again." });
   }
 
-  console.log(JSON.stringify({ event: "order", ...record }));
+  // The token exists before the payment does, and travels to Stripe as the checkout's reference,
+  // so the page the customer lands on after paying is known in advance and the webhook only has
+  // to flip a bit.
+  // Self-serve orders are always the per-molecule tier; full access is arranged by hand.
+  const tier = "molecule" as const;
+  const pay = isConfigured(tier) ? checkoutUrl(tier, value, email) : "";
+
+  console.log(JSON.stringify({ event: "order", ...record, awaiting_payment: Boolean(pay) }));
   return res.status(200).json({
     ok: true,
-    url: `/access?token=${value}`,
+    url: pay || `/access?token=${value}`,
+    access_url: `/access?token=${value}`,
+    payment: Boolean(pay),
     cohorts: slugs.length,
-    message: slugs.length === 1
-      ? "Your package is ready. The link works from any device and stays current for a year."
-      : `${slugs.length} packages are ready — every cohort where something that failed shares your target. The link `
-        + "works from any device and stays current for a year.",
+    message: pay
+      ? (slugs.length === 1
+        ? "One step left. After payment the package opens straight away and the link stays current for a year."
+        : `${slugs.length} packages, one payment. They open straight away afterwards and the link stays current for `
+          + "a year.")
+      : (slugs.length === 1
+        ? "Your package is ready. The link works from any device and stays current for a year."
+        : `${slugs.length} packages are ready — every cohort where something that failed shares your target. The `
+          + "link works from any device and stays current for a year."),
   });
 }
 

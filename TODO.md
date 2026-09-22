@@ -7,17 +7,20 @@ in each section is blocked on nothing but time.
 
 ## Blocking revenue
 
-### 1. There is no way to pay
+### 1. There is no way to pay — code done, account missing
 
-`order.ts` writes `paid: false`. Anyone who fills in the form gets the package immediately and is
-charged nothing. Three prices are on the page and none of them can be paid.
+The code is finished: `/api/order` mints the token first and sends the customer to a Stripe
+Payment Link carrying it, `/api/stripe` verifies the signature and the timestamp and flips
+`paid: true`, and a configured-but-unpaid grant opens nothing (tested). While no link is set the
+site behaves exactly as before — orders are granted and nothing is charged — so this switches on
+without a deploy.
 
-**Schayan:** create the Stripe account, two prices (€99 one-off, €999/year), copy the secret and
-the webhook signing secret into GitHub secrets.
-**Me:** the webhook route — it writes the same grant record `order.ts` already writes, so nothing
-downstream changes. Half a day.
+**Schayan, ~20 minutes, once:** two Payment Links (€99 one-off, €999/year), one webhook endpoint
+at `https://clinicaltrialfailures.com/api/stripe` for `checkout.session.completed`, and three
+GitHub secrets: `STRIPE_LINK_PACKAGE`, `STRIPE_LINK_ACCESS`, `STRIPE_WEBHOOK_SECRET`.
+Step by step, with the exact dashboard paths: **docs/payment.md**.
 
-Until this exists the rest of this file is preparation.
+Until those secrets exist, every order is still free.
 
 ### 2. The newsletter cannot send
 

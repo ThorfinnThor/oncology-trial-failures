@@ -11,7 +11,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import briefsIndex from "@/data/briefs_index.json";
 import productSummary from "@/data/product_summary.json";
-import { grantedSlugs, PACKAGES, type Grant } from "@/lib/server/grants";
+import { grantedSlugs, isUnlocked, PACKAGES, type Grant } from "@/lib/server/grants";
 
 type KvBinding = { get(key: string): Promise<string | null> };
 type CloudflareGlobal = typeof globalThis & {
@@ -44,6 +44,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const slugs = grantedSlugs(grant);
   if (!grant || !slugs.length) {
     return res.status(403).json({ ok: false, error: "That link is not valid, or it has expired." });
+  }
+  if (!isUnlocked(grant)) {
+    // The link is real and the order is real; the payment has not settled yet. Stripe's webhook
+    // usually arrives within seconds, so this is a state to wait in rather than an error.
+    console.log(JSON.stringify({ event: "library_awaiting_payment" }));
+    return res.status(402).json({
+      ok: false,
+      awaiting_payment: true,
+      error: "This order has not been paid yet. If you have just paid, give it a moment and reload — "
+        + "confirmation usually takes a few seconds.",
+    });
   }
 
   const packages = slugs
