@@ -15,7 +15,6 @@ import PrimaryNav from "@/components/PrimaryNav";
 import { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
-import { LICENSING_EMAIL } from "@/lib/licensing";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/packages`;
@@ -39,7 +38,22 @@ export default function PackagesIndexPage() {
   // one a buyer actually wants — where this cohort departs from its comparator.
   const [order, setOrder] = useState<"size" | "signal">("size");
 
+  // Searching by gene matters more than searching by class name: somebody looking for the HER2
+  // package is reading a slide that says ERBB2, and a shop of 53 names is unusable without it.
+  const [query, setQuery] = useState("");
+  const needle = query.trim().toLowerCase();
+  const matches = (p: Pkg) => {
+    if (!needle) return true;
+    const genes = ((p as any).genes || []) as string[];
+    return (
+      p.cohort.toLowerCase().includes(needle)
+      || p.area.toLowerCase().includes(needle)
+      || genes.some((g) => g.toLowerCase().includes(needle))
+    );
+  };
+
   const shown = (area === "All" ? all : all.filter((p) => p.area === area))
+    .filter(matches)
     .slice()
     .sort((a, b) =>
       order === "size"
@@ -100,10 +114,19 @@ export default function PackagesIndexPage() {
           <section className="section">
             <div className="listHead">
               <h2>
-                All {all.length} cohorts
-                {area === "All" ? "" : ` · ${shown.length} in ${area}`}
+                {needle || area !== "All"
+                  ? `${shown.length} of ${all.length} cohorts`
+                  : `All ${all.length} cohorts`}
               </h2>
               <div className="filters">
+                <input
+                  className="search"
+                  type="search"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  placeholder="Class, gene or area — ERBB2, PARP, neurology"
+                  aria-label="Filter cohorts by class, gene or disease area"
+                />
                 <span className="filterLabel">Sort</span>
                 <button
                   type="button"
@@ -136,6 +159,16 @@ export default function PackagesIndexPage() {
               </div>
             </div>
 
+            {shown.length === 0 ? (
+              <p className="lead">
+                Nothing matches “{query}”. The catalogue covers mechanism classes, so a molecule name will not match —
+                try its target, or{" "}
+                <Link className="link" href="/asset-check">
+                  check the molecule itself
+                </Link>
+                .
+              </p>
+            ) : null}
             <div className="grid">
               {shown.map((p) => {
                 const c = p.counts;
@@ -176,34 +209,6 @@ export default function PackagesIndexPage() {
             </div>
           </section>
 
-          <section className="section">
-            <div className="cta">
-              <div>
-                <div className="ctaTitle">Not one of these cohorts?</div>
-                <p className="muted">
-                  A package can be built around one asset, one sponsor or one indication instead of a mechanism class.
-                  Tell us what you are evaluating and we will say whether the data can answer it before anything is built
-                  — and say so plainly when it cannot.
-                </p>
-              </div>
-              <div className="ctaActions">
-                <a
-                  className="btnPrimary"
-                  href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Evidence package for a custom cohort")}`}
-                >
-                  Describe your cohort
-                </a>
-                <Link className="btnGhost" href="/pricing">
-                  Prices and licence terms
-                </Link>
-              </div>
-            </div>
-            <p className="fine">
-              Each package has a free brief for the same cohort — {briefsIndex.brief_count} of them, on{" "}
-              <Link className="link" href="/briefs">the briefs page</Link>. Read one before buying anything: if its method
-              does not convince you, the package will not either.
-            </p>
-          </section>
         </div>
       </main>
 
@@ -280,6 +285,21 @@ export default function PackagesIndexPage() {
         }
         .filterLabel:first-child {
           margin-left: 0;
+        }
+        .search {
+          flex: 1 1 260px;
+          min-width: 200px;
+          padding: 8px 12px;
+          border: 1px solid var(--line, #e2e8f0);
+          border-radius: 999px;
+          font: inherit;
+          font-size: 13px;
+          background: #fff;
+          color: inherit;
+        }
+        .search:focus {
+          outline: 2px solid #4f46e5;
+          outline-offset: 1px;
         }
         .chip {
           border: 1px solid var(--border);

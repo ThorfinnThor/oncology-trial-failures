@@ -13,6 +13,7 @@ import { FormEvent, useState } from "react";
 import PrimaryNav from "@/components/PrimaryNav";
 import productSummary from "@/data/product_summary.json";
 import briefsIndex from "@/data/briefs_index.json";
+import preview from "@/data/newsletter_preview.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -23,7 +24,25 @@ const DESCRIPTION =
 
 const n = (v: number) => v.toLocaleString("en-US");
 
+type PreviewRow = { nct_id: string; title: string; sponsor: string; detail: string };
+
 export default function NewsletterPage() {
+  const p = preview as unknown as {
+    release: string;
+    last_sent_at: string;
+    counts: { added: number; changed: number };
+    added: PreviewRow[];
+    changed: PreviewRow[];
+    recent?: PreviewRow[];
+  };
+  const waiting = p.counts.added + p.counts.changed;
+  const shown = waiting
+    ? [
+        ...p.added.map((row) => ({ ...row, kind: "added" as const })),
+        ...p.changed.map((row) => ({ ...row, kind: "changed" as const })),
+      ].slice(0, 8)
+    : (p.recent || []).map((row) => ({ ...row, kind: "recent" as const }));
+
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -174,6 +193,66 @@ export default function NewsletterPage() {
               .
             </p>
           </section>
+
+          {/* The mail itself, not a description of it. Written by the same job that sends it. */}
+          <section className="section">
+            <h2>{waiting ? "What is waiting for the next one" : "What an issue looks like"}</h2>
+            <p className="previewSub">
+              {waiting > 0 ? (
+                <>
+                  Release {p.release || productSummary.dataset_version}: {n(p.counts.added)}{" "}
+                  {p.counts.added === 1 ? "trial entered the dataset" : "trials entered the dataset"} and{" "}
+                  {n(p.counts.changed)} {p.counts.changed === 1 ? "record was" : "records were"} edited by their
+                  sponsor. {shown.length < waiting ? `The first ${shown.length} are below; ` : "They are below; "}
+                  the mail carries up to 25 of each.
+                </>
+              ) : (
+                <>
+                  Nothing has moved since the last release — the mail would say so in one line rather than padding it
+                  out, which is most of the argument for reading it. So instead, here are the stopped trials whose
+                  registry records changed most recently: the same rows, from the current release.
+                </>
+              )}
+            </p>
+
+            {shown.length ? (
+              <div className="card previewBox">
+                <table className="previewTable">
+                  <tbody>
+                    {shown.map((row) => (
+                      <tr key={`${row.kind}-${row.nct_id}`}>
+                        <td className="pKind">
+                          <span className={row.kind === "added" ? "tag tagAdd" : "tag"}>
+                            {row.kind === "added" ? "entered" : row.kind === "changed" ? "edited" : "stopped"}
+                          </span>
+                        </td>
+                        <td className="pId">
+                          <a
+                            className="link"
+                            href={`https://clinicaltrials.gov/study/${row.nct_id}`}
+                            rel="nofollow noreferrer"
+                            target="_blank"
+                          >
+                            {row.nct_id}
+                          </a>
+                          <div className="pSponsor">{row.sponsor}</div>
+                        </td>
+                        <td>
+                          <div className="pTitle">{row.title}</div>
+                          {row.detail ? <div className="pDetail">{row.detail}</div> : null}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
+
+            <p className="fine">
+              The page and the mail are rendered from the same list, refreshed with every weekly release.{" "}
+              {p.last_sent_at ? `The last mail went out on ${p.last_sent_at.slice(0, 10)}.` : ""}
+            </p>
+          </section>
         </div>
       </main>
 
@@ -302,6 +381,65 @@ export default function NewsletterPage() {
           font-size: 12px;
           color: var(--text-muted);
           text-align: center;
+        }
+        .previewSub {
+          color: var(--text-muted, #64748b);
+          margin: 6px 0 12px;
+          max-width: 78ch;
+          line-height: 1.6;
+        }
+        .previewBox {
+          padding: 6px 4px;
+          overflow-x: auto;
+        }
+        .previewTable {
+          width: 100%;
+          border-collapse: collapse;
+          font-size: 13px;
+        }
+        .previewTable td {
+          padding: 10px 12px;
+          border-bottom: 1px solid #f1f5f9;
+          vertical-align: top;
+        }
+        .previewTable tr:last-child td {
+          border-bottom: 0;
+        }
+        .pKind {
+          width: 84px;
+        }
+        .tag {
+          display: inline-block;
+          font-size: 10.5px;
+          font-weight: 800;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          padding: 3px 7px;
+          border-radius: 999px;
+          background: #f1f5f9;
+          color: #475569;
+          white-space: nowrap;
+        }
+        .tagAdd {
+          background: #eef2ff;
+          color: #4338ca;
+        }
+        .pId {
+          width: 148px;
+          white-space: nowrap;
+        }
+        .pSponsor {
+          color: var(--text-muted, #64748b);
+          font-size: 11.5px;
+          margin-top: 2px;
+        }
+        .pTitle {
+          font-weight: 600;
+        }
+        .pDetail {
+          color: var(--text-muted, #64748b);
+          margin-top: 3px;
+          line-height: 1.5;
         }
         .section {
           margin-top: 34px;

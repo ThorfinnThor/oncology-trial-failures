@@ -41,6 +41,21 @@ const PRICING = [
     href: "/briefs",
   },
   {
+    name: "Newsletter",
+    prefix: "",
+    price: "Free",
+    unit: "",
+    for: "Anyone who wants the changes without going looking for them.",
+    includes: [
+      "Every second week: the trials that entered the dataset, with the sponsor's stop reason",
+      "The records sponsors edited after the fact, kept separate from our own reclassifications",
+      "Mechanism classes whose rate moved enough to be worth a line",
+      "One click to stop, in every mail",
+    ],
+    cta: "Subscribe",
+    href: "/newsletter",
+  },
+  {
     name: "Evidence package",
     prefix: "",
     price: "€99",
@@ -59,20 +74,22 @@ const PRICING = [
     badge: "Most buyers",
   },
   {
+    // Not priced here on purpose. Everything below exists and is delivered by hand today; a
+    // price list for a subscription nobody has bought yet is a guess printed in a table.
     name: "Full access",
     prefix: "",
-    price: "€999",
-    unit: "per year",
+    price: "On request",
+    unit: "",
     for: "A team that comes back: competitive intelligence, portfolio review, investment research.",
     includes: [
-      `Every package, every brief and every rate table — ${SELLABLE_PACKAGES} cohorts, not one`,
-      "The comparison tool for any molecule, as often as you like",
-      "The full dataset and the fortnightly change report as files",
+      `Every package and every brief — ${SELLABLE_PACKAGES} cohorts, not the ones one molecule touches`,
+      "The dataset and the fortnightly change report as files",
       "Rebuilt weekly; the same link shows the latest release",
-      "Corrections tracked and dated · email support",
+      "Arranged by hand while we work out what it should cost",
     ],
-    cta: "Get access",
-    href: `mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Full access")}`,
+    cta: "Join the waiting list",
+    href: "#waitlist",
+    quiet: true,
   },
 ];
 
@@ -130,26 +147,27 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
 export default function DataLicensingPage({ datasetVersion, totalRecords, biologicalRecords, heldoutPrecision, heldoutRecall }: Props) {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
-  const [sampleUrl, setSampleUrl] = useState("");
 
+  // The waiting list. Full access is not priced on this page, so the honest version of a
+  // pricing card is a way to be told when it is — not a mailto that lands in a mailbox and
+  // is answered when somebody remembers.
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     setStatus("sending");
     setMessage("");
     try {
-      const res = await fetch("/api/sample-request", {
+      const res = await fetch("/api/package-request", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.fromEntries(form.entries())),
+        body: JSON.stringify({ ...Object.fromEntries(form.entries()), intent: "full_access_waitlist", cohort: "Full access" }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || "Request failed");
-      setSampleUrl(data.sampleUrl || "");
       setStatus("done");
     } catch (error: any) {
       setStatus("error");
-      setMessage(error?.message || "Request failed. Please email us instead.");
+      setMessage(error?.message || "Could not record that. Please email us instead.");
     }
   }
 
@@ -365,63 +383,6 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </div>
           </section>
 
-          {/* ---------------- what we sell ---------------- */}
-          <section className="section" id="evidence-package">
-            <h2>Three things, and what each one is</h2>
-            <p className="sectionSub">
-              Two of them are free. They are separate things, not tiers of one product, and each has its own page —
-              this page is only the prices and the terms.
-            </p>
-            <div className="sellGrid">
-              <Link href="/briefs" className="sellCard">
-                <div className="sellTop">
-                  <span className="sellName">Brief</span>
-                  <span className="sellPrice sellFree">Free</span>
-                </div>
-                <p className="sellOne">
-                  The trials in one mechanism class that stopped early, and what the sponsor said about each.
-                </p>
-                <div className="sellMeta">
-                  {briefsIndex.brief_count} classes · two pages · PDF or web page, no form
-                </div>
-              </Link>
-
-              <Link href="/packages" className="sellCard sellLead">
-                <div className="sellTop">
-                  <span className="sellName">Evidence package</span>
-                  <span className="sellPrice">€99</span>
-                </div>
-                <p className="sellOne">
-                  Name the molecule you are evaluating and get every cohort where something that failed acts on the
-                  same target — each in full, each opening with your molecule already compared against the molecules
-                  that failed there.
-                </p>
-                <div className="sellMeta">One molecule · delivered immediately · one link, current for a year</div>
-              </Link>
-
-              <Link href="/newsletter" className="sellCard">
-                <div className="sellTop">
-                  <span className="sellName">Newsletter</span>
-                  <span className="sellPrice sellFree">Free</span>
-                </div>
-                <p className="sellOne">
-                  One short mail every second week: the trials that entered the dataset and the records sponsors
-                  changed.
-                </p>
-                <div className="sellMeta">Fortnightly · one click to stop</div>
-              </Link>
-            </div>
-            <p className="fine">
-              Full access below is the version that keeps running: every cohort rather than the ones your molecule
-              touches, the dataset and the change report as files, and the comparison tool for any molecule. Need a
-              cohort that is not a mechanism class — one sponsor, one indication?{" "}
-              <a className="link" href={mailto("Evidence package for a custom cohort")}>
-                Tell us what you are evaluating
-              </a>{" "}
-              and we will say whether the data can answer it before anything is built.
-            </p>
-          </section>
-
           {/* ---------------- rate proof ---------------- */}
           {featured ? (
             <section className="section">
@@ -470,12 +431,15 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           <section className="section" id="pricing">
             <h2>Pricing</h2>
             <p className="sectionSub">
-              Prices exclude VAT. Full access runs for twelve months; a package&rsquo;s link stays live and current for the
-              same year. Academic and single-analyst rates on request.
+              Two of these are free and stay free. Prices exclude VAT; a package&rsquo;s link stays live and current for a
+              year. Academic and single-analyst rates on request.
             </p>
             <div className="tiers">
               {PRICING.map((tier) => (
-                <div className={tier.highlight ? "card tier featured" : "card tier"} key={tier.name}>
+                <div
+                  className={`card tier${tier.highlight ? " featured" : ""}${(tier as any).quiet ? " quiet" : ""}`}
+                  key={tier.name}
+                >
                   {tier.badge ? <div className="tierBadge">{tier.badge}</div> : null}
                   <div className="tierName">{tier.name}</div>
                   <div className="tierPrice">
@@ -511,6 +475,55 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 </div>
               ))}
             </div>
+            <div className="card waitlist" id="waitlist">
+              {status === "done" ? (
+                <>
+                  <div className="formTitle">You are on the list</div>
+                  <p className="formSub">
+                    We will write once there is a price and a date, and not otherwise. In the meantime an evidence
+                    package for a specific molecule is available today.
+                  </p>
+                </>
+              ) : (
+                <form onSubmit={onSubmit} className="waitForm">
+                  <div>
+                    <div className="formTitle">Full access is not for sale yet</div>
+                    <p className="formSub">
+                      It exists and it is delivered by hand. What is missing is a price we can defend, and that
+                      follows from what the first buyers actually use. Leave an address and we will write once there
+                      is one. Nothing else is ever sent to it.
+                    </p>
+                  </div>
+                  <div className="waitFields">
+                    <div className="field">
+                      <label htmlFor="wl-email">Work email</label>
+                      <input id="wl-email" className="input" name="email" type="email" required autoComplete="email" />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="wl-company">Company or institution</label>
+                      <input id="wl-company" className="input" name="company" type="text" required autoComplete="organization" />
+                    </div>
+                    <div className="field">
+                      <label htmlFor="wl-context">What you would use it for <span className="opt">optional</span></label>
+                      <input id="wl-context" className="input" name="context" type="text" />
+                    </div>
+                    <input
+                      name="website"
+                      type="text"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      style={{ position: "absolute", left: "-9999px" }}
+                    />
+                    <button className="submit" type="submit" disabled={status === "sending"}>
+                      {status === "sending" ? "Sending…" : "Join the waiting list"}
+                    </button>
+                    {status === "error" ? <div className="formError">{message}</div> : null}
+                  </div>
+                </form>
+              )}
+            </div>
+
             <p className="fine">
               Free exports on this site are limited to {EXPORT_ROW_LIMIT} rows per download. The underlying registry and reference facts
               remain public at their sources; a licence covers our derived classifications, linkages, validation, curation and delivery.
@@ -518,177 +531,42 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             </p>
           </section>
 
-          {/* ---------------- sample ---------------- */}
-          <section className="section" id="sample">
-            <h2>Try it on {s.sample_record_count} records</h2>
-            <div className="sampleGrid">
-              <div>
-                <p className="sectionSub">
-                  A stratified extract from Oncology Failure Signals with every column of the licensed file, so you can test the linkage
-                  and the labels against your own list before you buy.
-                </p>
-                <ul className="sampleList">
-                  <li>
-                    <span className="dot">1</span>
-                    <span>
-                      <b>Every column.</b> All {s.signals_column_count} columns of the licensed file plus the sponsor&apos;s SEC
-                      ticker — drug and research codes, ChEMBL IDs, mechanism, targets and target genes, sponsor group and class,
-                      publications and the registry stop reason.
-                    </span>
-                  </li>
-                  <li>
-                    <span className="dot">2</span>
-                    <span>
-                      <b>Stratified, not cherry-picked.</b> Efficacy, safety, mixed and unspecified causes in fixed proportions, all
-                      industry-sponsored and drug-resolved.
-                    </span>
-                  </li>
-                  <li>
-                    <span className="dot">3</span>
-                    <span>
-                      <b>Checkable.</b> Every row carries its NCT ID and registry URL, so each label can be verified at the source.
-                      Plain UTF-8 CSV — it opens in Excel, Numbers or pandas without cleaning.
-                    </span>
-                  </li>
-                </ul>
-                {Array.isArray(s.sample_columns) && s.sample_columns.length ? (
-                  <>
-                    <div className="colsTitle">Columns in the sample</div>
-                    <div className="tagRow">
-                      {s.sample_columns.map((c: string) => (
-                        <span className="tag mono" key={c}>
-                          {c}
-                        </span>
-                      ))}
-                    </div>
-                  </>
-                ) : null}
-              </div>
-
-              {status === "done" ? (
-                <div className="card form">
-                  <div className="formTitle">Your sample is ready</div>
-                  <p className="formSub">Evaluation use only. The licensed file has the same columns for every record.</p>
-                  <a className="submit asLink" href={sampleUrl} download>
-                    Download the sample (CSV)
-                  </a>
-                  {s.sample_readme_file ? (
-                    <p className="formFoot">
-                      <a className="link" href={s.sample_readme_file} download>
-                        Sources and terms (README)
-                      </a>
-                    </p>
-                  ) : null}
-                  <p className="formFoot">
-                    For a larger evaluation extract or pricing, email{" "}
-                    <a className="link" href={mailto("Oncology Failure Signals licensing")}>
-                      {LICENSING_EMAIL}
-                    </a>
-                  </p>
-                </div>
-              ) : (
-                <form onSubmit={onSubmit} className="card form">
-                  <div className="formTitle">Request the free sample</div>
-                  <p className="formSub">
-                    {s.sample_record_count} records from dataset {datasetVersion}, as a CSV with {s.sample_columns?.length ?? ""} columns.
-                  </p>
-                  <div className="field">
-                    <label htmlFor="lic-email">Work email</label>
-                    <input id="lic-email" className="input" name="email" type="email" required autoComplete="email" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="lic-name">Name</label>
-                    <input id="lic-name" className="input" name="name" type="text" autoComplete="name" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="lic-company">Company or institution</label>
-                    <input id="lic-company" className="input" name="company" type="text" required autoComplete="organization" />
-                  </div>
-                  <div className="field">
-                    <label htmlFor="lic-use">Primary use case</label>
-                    <select id="lic-use" className="input" name="useCase" required defaultValue="">
-                      <option value="" disabled>
-                        Choose one
-                      </option>
-                      <option value="investment">Biotech investing / equity research</option>
-                      <option value="competitive-intelligence">Competitive intelligence / BD</option>
-                      <option value="clinical-development">Clinical development / trial design</option>
-                      <option value="ai-ml">AI / ML model development</option>
-                      <option value="academic">Academic research</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                  <input
-                    name="website"
-                    type="text"
-                    tabIndex={-1}
-                    autoComplete="off"
-                    aria-hidden="true"
-                    style={{ position: "absolute", left: "-9999px" }}
-                  />
-                  <label className="consent">
-                    <input name="consent" type="checkbox" required />
-                    <span>
-                      I will use the sample for evaluation only.
-                    </span>
-                  </label>
-                  <label className="consent">
-                    <input name="marketing" type="checkbox" />
-                    <span>
-                      Optional: email me about the dataset. Leave it unticked and you still get the sample — we will only reply
-                      about this request. See our{" "}
-                      <Link className="link" href="/privacy">
-                        privacy notice
-                      </Link>
-                      .
-                    </span>
-                  </label>
-                  <button className="submit" type="submit" disabled={status === "sending"}>
-                    {status === "sending" ? "Sending…" : "Get the sample"}
-                  </button>
-                  {status === "error" ? <div className="formError">{message}</div> : null}
-                  <p className="formFoot">
-                    Or email{" "}
-                    <a className="link" href={mailto("Oncology Failure Signals licensing")}>
-                      {LICENSING_EMAIL}
-                    </a>
-                  </p>
-                </form>
-              )}
-            </div>
-          </section>
-
           {/* ---------------- faq ---------------- */}
           <section className="section">
-            <h2>Licensing questions</h2>
+            <h2>Questions</h2>
             <div className="faqGrid">
               <div className="faq">
-                <h3>How is the data delivered?</h3>
+                <h3>What do I actually get for €99?</h3>
                 <p>
-                  A dated release with CSV and JSON files, the discontinuation rate tables and the change report, by download link — or into your S3
-                  bucket on the enterprise tier.
+                  Every cohort where a drug that failed acts on your molecule&rsquo;s target, each as a document: the
+                  trials, what the sponsor said stopped each one, whether that was the trial&rsquo;s own result or a
+                  decision taken elsewhere, the time-to-event curve, and your molecule placed against each failed one.
+                  One link, opened immediately, current for a year.
                 </p>
               </div>
               <div className="faq">
                 <h3>How current is it?</h3>
                 <p>
-                  Rebuilt weekly from the ClinicalTrials.gov snapshot. Every release is dated and kept, so an analysis can be reproduced
-                  against the exact file it used.
+                  Rebuilt weekly from the ClinicalTrials.gov snapshot. Every release is dated and kept, so an analysis
+                  can be reproduced against the exact data it used.
                 </p>
               </div>
               <div className="faq">
-                <h3>Can we train models on it?</h3>
+                <h3>Can we train models on it, or redistribute it?</h3>
                 <p>
-                  Model training, evaluation and redistribution inside a product you sell need a separate licence — ask, and we
-                  will quote it. The tiers on this page
-                  are for internal use by one team.
+                  Not under the package price, which is for one team&rsquo;s own use. Training, evaluation and
+                  redistribution inside a product you sell need a separate licence —{" "}
+                  <a className="link" href={mailto("Licence for model training or redistribution")}>
+                    ask and we will quote it
+                  </a>
+                  .
                 </p>
               </div>
               <div className="faq">
                 <h3>How good are the labels?</h3>
                 <p>
-                  Measured, not asserted: {pct(heldoutPrecision)} precision and {pct(heldoutRecall)} recall for biological failure on a
-                  held-out sample of blind-annotated stop reasons.{" "}
+                  Measured, not asserted: {pct(heldoutPrecision)} precision and {pct(heldoutRecall)} recall for
+                  biological failure on a held-out sample of blind-annotated stop reasons.{" "}
                   <Link className="link" href="/validation">
                     See the validation
                   </Link>
@@ -1155,7 +1033,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
         /* ---------- pricing ---------- */
         .tiers {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 14px;
           margin-top: 18px;
           align-items: stretch;
@@ -1237,6 +1115,35 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           height: 16px;
           margin-top: 2px;
           color: var(--accent);
+        }
+        .tier.quiet .tierPrice {
+          color: #475569;
+        }
+        .waitlist {
+          margin-top: 16px;
+          padding: 22px 20px;
+        }
+        .waitForm {
+          display: grid;
+          grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+          gap: 22px;
+          align-items: start;
+        }
+        .waitFields {
+          display: grid;
+          gap: 10px;
+        }
+        .waitFields .submit {
+          margin-top: 2px;
+        }
+        .opt {
+          color: #6b7280;
+          font-weight: 400;
+        }
+        @media (max-width: 820px) {
+          .waitForm {
+            grid-template-columns: 1fr;
+          }
         }
         .tierCta {
           margin-top: auto;

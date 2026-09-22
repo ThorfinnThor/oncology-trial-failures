@@ -28,6 +28,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.signals import build_evidence_package as pkg  # noqa: E402
+from scripts.universe.mechanism_classes import classes_of  # noqa: E402
 
 BRIEFS = ROOT / "product/briefs"
 MANIFEST = BRIEFS / "manifest.json"
@@ -112,9 +113,16 @@ def main() -> int:
         (OUT_DIR / f"{slug}.json").write_text(json.dumps(built, indent=1, ensure_ascii=False) + "\n",
                                               encoding="utf-8")
         (OUT_DIR / f"{slug}.html").write_text(html, encoding="utf-8")
+        # The gene set that defines the class. Not paid content — the asset check already names
+        # it — and the shop is unsearchable without it: nobody looking for a HER2 package types
+        # "HER2", they type the gene on their own slide.
+        lexicon = classes_of(job.area)
+        genes = sorted({g for name in (job.klass, job.with_class) if name
+                        for g in (lexicon.get(name) or [])})
         bundle[slug] = {
             "cohort": built["cohort"],
             "area": built["area"],
+            "genes": genes,
             "brief_stem": stem,
             "generated_at_utc": built["generated_at_utc"],
             "counts": {**built["counts"], "closed": built["headline"]["closed"]},
@@ -139,6 +147,7 @@ def main() -> int:
 
     public = sorted(
         ({"slug": slug, "cohort": p["cohort"], "area": p["area"], "brief_stem": p["brief_stem"],
+          "genes": p["genes"],
           "counts": p["counts"], "window": p["window"], "headline": p["headline"],
           "generated_at_utc": p["generated_at_utc"]} for slug, p in bundle.items()),
         key=lambda p: (p["area"], p["cohort"]))

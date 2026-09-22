@@ -19,7 +19,7 @@ import { LICENSING_EMAIL } from "@/lib/licensing";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/asset-check`;
-const TITLE = "Asset check — has a molecule like yours already been stopped?";
+const TITLE = "Asset check — what has already failed against your target";
 const DESCRIPTION =
   "Name a molecule. We say how many drugs that share its target, its pathway or its modality were stopped early in trials, in which mechanism classes, and how that compares with the disease area. Free.";
 
@@ -39,6 +39,8 @@ type Match = {
   same_pathway: number;
   same_modality_only: number;
   by: "class" | "molecule";
+  /** The genes that put this class on the list. */
+  shared_genes: string[];
   /** Completed trials whose sponsor posted a primary comparison we can read. */
   endpoints: { readable: number; missed: number; met: number } | null;
   best: "closest" | "related" | "weak" | "distant" | "unknown" | null;
@@ -161,7 +163,7 @@ export default function AssetCheckPage() {
         <div className="wrap">
           <section className="hero">
             <div className="eyebrow">Asset check · free</div>
-            <h1>Has something like yours already been stopped?</h1>
+            <h1>Check a molecule against the failures that share its target</h1>
             <p className="heroLead">
               Name a molecule, a target, a gene or a mechanism — <b>osimertinib</b>, <b>PD-L1</b>, <b>ERBB2</b>,{" "}
               <b>HER2 ADC</b>. We resolve what it acts on and compare it against every drug behind a trial that was
@@ -280,9 +282,16 @@ export default function AssetCheckPage() {
                           <div>
                             <div className="matchArea">{m.area}</div>
                             <div className="matchName">{m.cohort}</div>
+                            {m.shared_genes.length ? (
+                              <div className="matchWhy">
+                                {m.by === "class"
+                                  ? `${m.shared_genes.join(", ")} ${m.shared_genes.length === 1 ? "is one of" : "are among"} this class's targets`
+                                  : `a molecule that failed here also acts on ${m.shared_genes.join(", ")}`}
+                              </div>
+                            ) : null}
                           </div>
                           <span className={`verdict v-${m.best || "tracked"}`}>
-                          {m.best ? BEST_LABEL[m.best] : "We track this class"}
+                          {m.best ? BEST_LABEL[m.best] : "Covers your target"}
                         </span>
                         </div>
 
@@ -366,16 +375,12 @@ export default function AssetCheckPage() {
                           </Link>
                         ) : (
                           <span className="matchNone">
-                            No package: {m.counts.closed < 10
+                            No package for this class: {m.counts.closed < 10
                               ? "too few closed trials to build one on"
                               : m.counts.stopped === 0
-                                ? "nothing in this class stopped early, so there is nothing to itemise"
-                                : "not enough stops with a cause we can read"}
-                            . The trials are in the dataset —{" "}
-                            <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Cohort: ${m.cohort}`)}`}>
-                              ask and we will say what the data can answer
-                            </a>
-                            .
+                                ? "nothing in it stopped early, so there is nothing to itemise"
+                                : "too few stops with a cause we can read"}
+                            . The counts above are what we can say about it.
                           </span>
                         )}
                       </div>
@@ -763,6 +768,11 @@ export default function AssetCheckPage() {
         .matchRate span {
           font-size: 12.5px;
           color: var(--text-muted);
+        }
+        .matchWhy {
+          margin-top: 3px;
+          font-size: 12px;
+          color: #6b7280;
         }
         .matchEndpoints {
           margin-top: 8px;

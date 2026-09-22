@@ -50,6 +50,10 @@ from scripts.signals.send_watchlists import (  # noqa: E402  — one KV client, 
 REPORT = ROOT / "product/oncology_failure_signals_change_report_v1.json"
 SUMMARY = ROOT / "web/data/product_summary.json"
 OUT_DIR = ROOT / "product/newsletter"
+# Shown on the signup page: the same items the mail is built from.
+PREVIEW = ROOT / "web/data/newsletter_preview.json"
+PREVIEW_ROWS = 8
+SIGNALS = ROOT / "product/oncology_failure_signals_v1.jsonl"
 SITE = "https://clinicaltrialfailures.com"
 BREVO_API = "https://api.brevo.com/v3/smtp/email"
 
@@ -201,6 +205,68 @@ classes. <a href="{SITE}/briefs" style="color:#4f46e5">Read the briefs</a> ·
     return subject, body
 
 
+def recent_stops(limit: int) -> list[dict]:
+    """The most recently updated stopped trials in the current release."""
+    if not SIGNALS.exists():
+        return []
+    rows = []
+    with SIGNALS.open(encoding="utf-8") as fh:
+        for line in fh:
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if not r.get("why_stopped"):
+                continue
+            rows.append({
+                "nct_id": r.get("nct_id"),
+                "title": (r.get("brief_title") or "")[:140],
+                "sponsor": r.get("sponsor_group") or r.get("lead_sponsor_raw") or "",
+                "detail": (r.get("why_stopped") or "")[:200],
+                "updated": r.get("last_update_post_date") or "",
+            })
+    rows.sort(key=lambda r: r["updated"], reverse=True)
+    return rows[:limit]
+
+
+def write_preview(pending: dict, summary: dict) -> None:
+    """What the next mail carries, for the signup page to show.
+
+    A signup form for a mail nobody has seen asks for an address and offers a promise. This is
+    the same content the mail is rendered from, written every run, so the page shows the thing
+    itself rather than describing it.
+    """
+    def row(item: dict, kind: str) -> dict:
+        return {
+            "nct_id": item.get("nct_id"),
+            "title": (item.get("brief_title") or "")[:140],
+            "sponsor": item.get("sponsor_group") or "",
+            "detail": ((item.get("why_stopped") or item.get("failure_primary_reason") or "")[:200]
+                       if kind == "added"
+                       else "; ".join(f"{field}: {str(move.get('from'))[:40]} → {str(move.get('to'))[:40]}"
+                                      for field, move in (item.get("changes") or {}).items())[:200]),
+        }
+
+    added = list(pending.get("added", {}).values())
+    changed = list(pending.get("changed", {}).values())
+    PREVIEW.parent.mkdir(parents=True, exist_ok=True)
+    # A fortnight where nothing moved is a real answer in a mail somebody already subscribed to.
+    # On the signup page it is an empty room. So the page always has the most recently updated
+    # stopped trials to show instead — the same kind of row, marked as what it is.
+    recent = recent_stops(PREVIEW_ROWS) if not (added or changed) else []
+    PREVIEW.write_text(json.dumps({
+        "schema_version": 1,
+        "release": (pending.get("releases") or [summary.get("dataset_version") or ""])[-1],
+        "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        "last_sent_at": pending.get("last_sent_at") or "",
+        "counts": {"added": len(added), "changed": len(changed)},
+        "added": [row(i, "added") for i in added[:PREVIEW_ROWS]],
+        "changed": [row(i, "changed") for i in changed[:PREVIEW_ROWS]],
+        "recent": recent,
+    }, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"wrote {PREVIEW.relative_to(ROOT)} ({len(added)} added, {len(changed)} changed)")
+
+
 def send(to: str, subject: str, body: str, key: str) -> bool:
     payload = {
         "sender": {"email": os.environ.get("MAIL_FROM") or "contact@clinicaltrialfailures.com",
@@ -253,6 +319,8 @@ def main() -> int:
     people = subscribers(base, token)
     added, changed = len(pending.get("added", {})), len(pending.get("changed", {}))
     print(f"{added} added and {changed} changed waiting, {len(people)} subscriber(s)")
+    # Written on every run, whether or not a mail is due: the page shows what is waiting.
+    write_preview(pending, summary)
 
     if not due(pending, args.force):
         last = pending.get("last_sent_at")

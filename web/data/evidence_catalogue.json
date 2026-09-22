@@ -7,6 +7,11 @@
    "cohort": "PPAR (liver)",
    "area": "Gastroenterology & Hepatology",
    "brief_stem": "brief_gastroenterology-hepatology_ppar-liver_2015-2024",
+   "genes": [
+    "PPARA",
+    "PPARD",
+    "PPARG"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 2,
@@ -34,13 +39,16 @@
     "comparator_rate": 0.042335766423357665,
     "comparator_label": "all gastroenterology & hepatology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:02Z"
+   "generated_at_utc": "2026-09-22T22:25:40Z"
   },
   {
    "slug": "immunology-autoimmune-btk",
    "cohort": "BTK",
    "area": "Immunology & Autoimmune",
    "brief_stem": "brief_immunology-autoimmune_btk_2015-2024",
+   "genes": [
+    "BTK"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 0,
@@ -68,13 +76,19 @@
     "comparator_rate": 0.03500583430571762,
     "comparator_label": "all immunology & autoimmune trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:04Z"
+   "generated_at_utc": "2026-09-22T22:25:42Z"
   },
   {
    "slug": "immunology-autoimmune-jak-tyk2",
    "cohort": "JAK / TYK2",
    "area": "Immunology & Autoimmune",
    "brief_stem": "brief_immunology-autoimmune_jak-tyk2_2015-2024",
+   "genes": [
+    "JAK1",
+    "JAK2",
+    "JAK3",
+    "TYK2"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 5,
@@ -102,13 +116,16 @@
     "comparator_rate": 0.03500583430571762,
     "comparator_label": "all immunology & autoimmune trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:04Z"
+   "generated_at_utc": "2026-09-22T22:25:42Z"
   },
   {
    "slug": "neurology-amyloid-directed",
    "cohort": "Amyloid-β directed",
    "area": "Neurology",
    "brief_stem": "brief_neurology_amyloid-directed_2015-2024",
+   "genes": [
+    "APP"
+   ],
    "counts": {
     "stopped": 6,
     "unreadable_terminations": 9,
@@ -136,13 +153,17 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:05Z"
+   "generated_at_utc": "2026-09-22T22:25:44Z"
   },
   {
    "slug": "neurology-bace-secretase",
    "cohort": "BACE / γ-secretase",
    "area": "Neurology",
    "brief_stem": "brief_neurology_bace-secretase_2015-2024",
+   "genes": [
+    "BACE1",
+    "PSEN1"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 0,
@@ -170,13 +191,24 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:05Z"
+   "generated_at_utc": "2026-09-22T22:25:44Z"
   },
   {
    "slug": "neurology-dopaminergic",
    "cohort": "Dopaminergic",
    "area": "Neurology",
    "brief_stem": "brief_neurology_dopaminergic_2015-2024",
+   "genes": [
+    "COMT",
+    "DDC",
+    "DRD1",
+    "DRD2",
+    "DRD3",
+    "DRD4",
+    "DRD5",
+    "MAOB",
+    "SLC6A3"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 2,
@@ -204,13 +236,31 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:05Z"
+   "generated_at_utc": "2026-09-22T22:25:44Z"
   },
   {
    "slug": "neurology-gaba-a",
    "cohort": "GABA-A",
    "area": "Neurology",
    "brief_stem": "brief_neurology_gaba-a_2015-2024",
+   "genes": [
+    "GABRA1",
+    "GABRA2",
+    "GABRA3",
+    "GABRA4",
+    "GABRA5",
+    "GABRA6",
+    "GABRB1",
+    "GABRB2",
+    "GABRB3",
+    "GABRD",
+    "GABRE",
+    "GABRG1",
+    "GABRG2",
+    "GABRG3",
+    "GABRP",
+    "GABRQ"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 5,
@@ -238,13 +288,16 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:05Z"
+   "generated_at_utc": "2026-09-22T22:25:44Z"
   },
   {
    "slug": "neurology-tau",
    "cohort": "Tau",
    "area": "Neurology",
    "brief_stem": "brief_neurology_tau_2015-2024",
+   "genes": [
+    "MAPT"
+   ],
    "counts": {
     "stopped": 7,
     "unreadable_terminations": 0,
@@ -272,13 +325,18 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:05Z"
+   "generated_at_utc": "2026-09-22T22:25:44Z"
   },
   {
    "slug": "oncology-alk-ros1-ret",
    "cohort": "ALK / ROS1 / RET",
    "area": "Oncology",
    "brief_stem": "brief_oncology_alk-ros1-ret_2015-2024",
+   "genes": [
+    "ALK",
+    "RET",
+    "ROS1"
+   ],
    "counts": {
     "stopped": 7,
     "unreadable_terminations": 6,
@@ -306,13 +364,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:09Z"
+   "generated_at_utc": "2026-09-22T22:25:48Z"
   },
   {
    "slug": "oncology-androgen-receptor-axis",
    "cohort": "Androgen receptor axis",
    "area": "Oncology",
    "brief_stem": "brief_oncology_androgen-receptor-axis_2015-2024",
+   "genes": [
+    "AR",
+    "CYP17A1"
+   ],
    "counts": {
     "stopped": 13,
     "unreadable_terminations": 6,
@@ -340,13 +402,19 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:09Z"
+   "generated_at_utc": "2026-09-22T22:25:48Z"
   },
   {
    "slug": "oncology-antifolate-nucleoside",
    "cohort": "Antifolate / nucleoside",
    "area": "Oncology",
    "brief_stem": "brief_oncology_antifolate-nucleoside_2015-2024",
+   "genes": [
+    "DHFR",
+    "GART",
+    "RRM1",
+    "TYMS"
+   ],
    "counts": {
     "stopped": 21,
     "unreadable_terminations": 44,
@@ -374,13 +442,21 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:09Z"
+   "generated_at_utc": "2026-09-22T22:25:49Z"
   },
   {
    "slug": "oncology-antifolate-nucleoside-pd-l-1",
    "cohort": "Antifolate / nucleoside + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_antifolate-nucleoside-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "DHFR",
+    "GART",
+    "PDCD1",
+    "RRM1",
+    "TYMS"
+   ],
    "counts": {
     "stopped": 7,
     "unreadable_terminations": 19,
@@ -408,13 +484,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:09Z"
+   "generated_at_utc": "2026-09-22T22:25:49Z"
   },
   {
    "slug": "oncology-bcl-2",
    "cohort": "BCL-2",
    "area": "Oncology",
    "brief_stem": "brief_oncology_bcl-2_2015-2024",
+   "genes": [
+    "BCL2"
+   ],
    "counts": {
     "stopped": 5,
     "unreadable_terminations": 8,
@@ -442,13 +521,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:10Z"
+   "generated_at_utc": "2026-09-22T22:25:49Z"
   },
   {
    "slug": "oncology-bcma",
    "cohort": "BCMA",
    "area": "Oncology",
    "brief_stem": "brief_oncology_bcma_2015-2024",
+   "genes": [
+    "TNFRSF17"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 3,
@@ -476,13 +558,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:10Z"
+   "generated_at_utc": "2026-09-22T22:25:49Z"
   },
   {
    "slug": "oncology-braf-mek",
    "cohort": "BRAF / MEK",
    "area": "Oncology",
    "brief_stem": "brief_oncology_braf-mek_2015-2024",
+   "genes": [
+    "BRAF",
+    "MAP2K1",
+    "MAP2K2"
+   ],
    "counts": {
     "stopped": 9,
     "unreadable_terminations": 11,
@@ -510,13 +597,20 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:10Z"
+   "generated_at_utc": "2026-09-22T22:25:50Z"
   },
   {
    "slug": "oncology-braf-mek-pd-l-1",
    "cohort": "BRAF / MEK + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_braf-mek-pd-l-1_2015-2024",
+   "genes": [
+    "BRAF",
+    "CD274",
+    "MAP2K1",
+    "MAP2K2",
+    "PDCD1"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 4,
@@ -544,13 +638,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:10Z"
+   "generated_at_utc": "2026-09-22T22:25:50Z"
   },
   {
    "slug": "oncology-btk",
    "cohort": "BTK",
    "area": "Oncology",
    "brief_stem": "brief_oncology_btk_2015-2024",
+   "genes": [
+    "BTK"
+   ],
    "counts": {
     "stopped": 5,
     "unreadable_terminations": 7,
@@ -578,13 +675,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:11Z"
+   "generated_at_utc": "2026-09-22T22:25:50Z"
   },
   {
    "slug": "oncology-cd20",
    "cohort": "CD20",
    "area": "Oncology",
    "brief_stem": "brief_oncology_cd20_2015-2024",
+   "genes": [
+    "MS4A1"
+   ],
    "counts": {
     "stopped": 6,
     "unreadable_terminations": 13,
@@ -612,13 +712,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:11Z"
+   "generated_at_utc": "2026-09-22T22:25:50Z"
   },
   {
    "slug": "oncology-cd3-t-cell-engagers",
    "cohort": "CD3 T-cell engagers",
    "area": "Oncology",
    "brief_stem": "brief_oncology_cd3-t-cell-engagers_2015-2024",
+   "genes": [
+    "CD3D",
+    "CD3E",
+    "CD3G"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 5,
@@ -646,13 +751,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:11Z"
+   "generated_at_utc": "2026-09-22T22:25:51Z"
   },
   {
    "slug": "oncology-cd38",
    "cohort": "CD38",
    "area": "Oncology",
    "brief_stem": "brief_oncology_cd38_2015-2024",
+   "genes": [
+    "CD38"
+   ],
    "counts": {
     "stopped": 8,
     "unreadable_terminations": 2,
@@ -680,13 +788,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:11Z"
+   "generated_at_utc": "2026-09-22T22:25:51Z"
   },
   {
    "slug": "oncology-cd38-pd-l-1",
    "cohort": "CD38 + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_cd38-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "CD38",
+    "PDCD1"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 1,
@@ -714,13 +827,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:11Z"
+   "generated_at_utc": "2026-09-22T22:25:51Z"
   },
   {
    "slug": "oncology-cd47-sirp",
    "cohort": "CD47 / SIRPα",
    "area": "Oncology",
    "brief_stem": "brief_oncology_cd47-sirp_2015-2024",
+   "genes": [
+    "CD47",
+    "SIRPA"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 9,
@@ -748,13 +865,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:12Z"
+   "generated_at_utc": "2026-09-22T22:25:51Z"
   },
   {
    "slug": "oncology-cdk4-6",
    "cohort": "CDK4/6",
    "area": "Oncology",
    "brief_stem": "brief_oncology_cdk4-6_2015-2024",
+   "genes": [
+    "CDK4",
+    "CDK6"
+   ],
    "counts": {
     "stopped": 6,
     "unreadable_terminations": 9,
@@ -782,13 +903,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:12Z"
+   "generated_at_utc": "2026-09-22T22:25:51Z"
   },
   {
    "slug": "oncology-ctla-4",
    "cohort": "CTLA-4",
    "area": "Oncology",
    "brief_stem": "brief_oncology_ctla-4_2015-2024",
+   "genes": [
+    "CTLA4"
+   ],
    "counts": {
     "stopped": 11,
     "unreadable_terminations": 8,
@@ -816,13 +940,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:13Z"
+   "generated_at_utc": "2026-09-22T22:25:52Z"
   },
   {
    "slug": "oncology-ctla-4-pd-l-1",
    "cohort": "CTLA-4 + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_ctla-4-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "CTLA4",
+    "PDCD1"
+   ],
    "counts": {
     "stopped": 10,
     "unreadable_terminations": 7,
@@ -850,13 +979,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:12Z"
+   "generated_at_utc": "2026-09-22T22:25:52Z"
   },
   {
    "slug": "oncology-egfr",
    "cohort": "EGFR",
    "area": "Oncology",
    "brief_stem": "brief_oncology_egfr_2015-2024",
+   "genes": [
+    "EGFR"
+   ],
    "counts": {
     "stopped": 20,
     "unreadable_terminations": 19,
@@ -884,13 +1016,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:13Z"
+   "generated_at_utc": "2026-09-22T22:25:52Z"
   },
   {
    "slug": "oncology-er-aromatase",
    "cohort": "ER / aromatase",
    "area": "Oncology",
    "brief_stem": "brief_oncology_er-aromatase_2015-2024",
+   "genes": [
+    "CYP19A1",
+    "ESR1"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 10,
@@ -918,13 +1054,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:13Z"
+   "generated_at_utc": "2026-09-22T22:25:53Z"
   },
   {
    "slug": "oncology-ezh2",
    "cohort": "EZH2",
    "area": "Oncology",
    "brief_stem": "brief_oncology_ezh2_2015-2024",
+   "genes": [
+    "EZH1",
+    "EZH2"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 1,
@@ -952,13 +1092,19 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:13Z"
+   "generated_at_utc": "2026-09-22T22:25:53Z"
   },
   {
    "slug": "oncology-fgfr",
    "cohort": "FGFR",
    "area": "Oncology",
    "brief_stem": "brief_oncology_fgfr_2015-2024",
+   "genes": [
+    "FGFR1",
+    "FGFR2",
+    "FGFR3",
+    "FGFR4"
+   ],
    "counts": {
     "stopped": 6,
     "unreadable_terminations": 19,
@@ -986,13 +1132,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:13Z"
+   "generated_at_utc": "2026-09-22T22:25:53Z"
   },
   {
    "slug": "oncology-flt3-kit",
    "cohort": "FLT3 / KIT",
    "area": "Oncology",
    "brief_stem": "brief_oncology_flt3-kit_2015-2024",
+   "genes": [
+    "FLT3",
+    "KIT"
+   ],
    "counts": {
     "stopped": 14,
     "unreadable_terminations": 13,
@@ -1020,13 +1170,19 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:14Z"
+   "generated_at_utc": "2026-09-22T22:25:53Z"
   },
   {
    "slug": "oncology-hdac",
    "cohort": "HDAC",
    "area": "Oncology",
    "brief_stem": "brief_oncology_hdac_2015-2024",
+   "genes": [
+    "HDAC1",
+    "HDAC2",
+    "HDAC3",
+    "HDAC6"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 4,
@@ -1054,13 +1210,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:14Z"
+   "generated_at_utc": "2026-09-22T22:25:54Z"
   },
   {
    "slug": "oncology-her2",
    "cohort": "HER2",
    "area": "Oncology",
    "brief_stem": "brief_oncology_her2_2015-2024",
+   "genes": [
+    "ERBB2"
+   ],
    "counts": {
     "stopped": 7,
     "unreadable_terminations": 11,
@@ -1088,13 +1247,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:14Z"
+   "generated_at_utc": "2026-09-22T22:25:54Z"
   },
   {
    "slug": "oncology-her3",
    "cohort": "HER3",
    "area": "Oncology",
    "brief_stem": "brief_oncology_her3_2015-2024",
+   "genes": [
+    "ERBB3"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 3,
@@ -1122,13 +1284,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:14Z"
+   "generated_at_utc": "2026-09-22T22:25:54Z"
   },
   {
    "slug": "oncology-ido1",
    "cohort": "IDO1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_ido1_2015-2024",
+   "genes": [
+    "IDO1"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 6,
@@ -1156,13 +1321,19 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:15Z"
+   "generated_at_utc": "2026-09-22T22:25:54Z"
   },
   {
    "slug": "oncology-jak-tyk2",
    "cohort": "JAK / TYK2",
    "area": "Oncology",
    "brief_stem": "brief_oncology_jak-tyk2_2015-2024",
+   "genes": [
+    "JAK1",
+    "JAK2",
+    "JAK3",
+    "TYK2"
+   ],
    "counts": {
     "stopped": 4,
     "unreadable_terminations": 2,
@@ -1190,13 +1361,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:15Z"
+   "generated_at_utc": "2026-09-22T22:25:54Z"
   },
   {
    "slug": "oncology-met",
    "cohort": "MET",
    "area": "Oncology",
    "brief_stem": "brief_oncology_met_2015-2024",
+   "genes": [
+    "MET"
+   ],
    "counts": {
     "stopped": 11,
     "unreadable_terminations": 5,
@@ -1224,13 +1398,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:15Z"
+   "generated_at_utc": "2026-09-22T22:25:55Z"
   },
   {
    "slug": "oncology-met-pd-l-1",
    "cohort": "MET + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_met-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "MET",
+    "PDCD1"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 3,
@@ -1258,13 +1437,19 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:15Z"
+   "generated_at_utc": "2026-09-22T22:25:55Z"
   },
   {
    "slug": "oncology-microtubule",
    "cohort": "Microtubule",
    "area": "Oncology",
    "brief_stem": "brief_oncology_microtubule_2015-2024",
+   "genes": [
+    "TUBA1A",
+    "TUBA1B",
+    "TUBA1C",
+    "TUBB"
+   ],
    "counts": {
     "stopped": 26,
     "unreadable_terminations": 46,
@@ -1292,13 +1477,21 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:16Z"
+   "generated_at_utc": "2026-09-22T22:25:56Z"
   },
   {
    "slug": "oncology-microtubule-pd-l-1",
    "cohort": "Microtubule + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_microtubule-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "PDCD1",
+    "TUBA1A",
+    "TUBA1B",
+    "TUBA1C",
+    "TUBB"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 18,
@@ -1326,13 +1519,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:16Z"
+   "generated_at_utc": "2026-09-22T22:25:55Z"
   },
   {
    "slug": "oncology-ox40-4-1bb-gitr",
    "cohort": "OX40 / 4-1BB / GITR",
    "area": "Oncology",
    "brief_stem": "brief_oncology_ox40-4-1bb-gitr_2015-2024",
+   "genes": [
+    "TNFRSF18",
+    "TNFRSF4",
+    "TNFRSF9"
+   ],
    "counts": {
     "stopped": 5,
     "unreadable_terminations": 2,
@@ -1360,13 +1558,20 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:16Z"
+   "generated_at_utc": "2026-09-22T22:25:56Z"
   },
   {
    "slug": "oncology-ox40-4-1bb-gitr-pd-l-1",
    "cohort": "OX40 / 4-1BB / GITR + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_ox40-4-1bb-gitr-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "PDCD1",
+    "TNFRSF18",
+    "TNFRSF4",
+    "TNFRSF9"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 1,
@@ -1394,13 +1599,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:16Z"
+   "generated_at_utc": "2026-09-22T22:25:56Z"
   },
   {
    "slug": "oncology-parp",
    "cohort": "PARP",
    "area": "Oncology",
    "brief_stem": "brief_oncology_parp_2015-2024",
+   "genes": [
+    "PARP1",
+    "PARP2",
+    "PARP3"
+   ],
    "counts": {
     "stopped": 12,
     "unreadable_terminations": 7,
@@ -1428,13 +1638,20 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:17Z"
+   "generated_at_utc": "2026-09-22T22:25:57Z"
   },
   {
    "slug": "oncology-parp-pd-l-1",
    "cohort": "PARP + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_parp-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "PARP1",
+    "PARP2",
+    "PARP3",
+    "PDCD1"
+   ],
    "counts": {
     "stopped": 5,
     "unreadable_terminations": 2,
@@ -1462,13 +1679,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:17Z"
+   "generated_at_utc": "2026-09-22T22:25:56Z"
   },
   {
    "slug": "oncology-pd-l-1",
    "cohort": "PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "PDCD1"
+   ],
    "counts": {
     "stopped": 97,
     "unreadable_terminations": 122,
@@ -1496,13 +1717,24 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:17Z"
+   "generated_at_utc": "2026-09-22T22:25:57Z"
   },
   {
    "slug": "oncology-pi3k-akt-mtor",
    "cohort": "PI3K / AKT / mTOR",
    "area": "Oncology",
    "brief_stem": "brief_oncology_pi3k-akt-mtor_2015-2024",
+   "genes": [
+    "AKT1",
+    "AKT2",
+    "AKT3",
+    "MTOR",
+    "PIK3CA",
+    "PIK3CB",
+    "PIK3CD",
+    "PIK3CG",
+    "PIK3R1"
+   ],
    "counts": {
     "stopped": 13,
     "unreadable_terminations": 19,
@@ -1530,13 +1762,19 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:17Z"
+   "generated_at_utc": "2026-09-22T22:25:57Z"
   },
   {
    "slug": "oncology-proteasome",
    "cohort": "Proteasome",
    "area": "Oncology",
    "brief_stem": "brief_oncology_proteasome_2015-2024",
+   "genes": [
+    "ADRM1",
+    "PSMA1",
+    "PSMA2",
+    "PSMB5"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 4,
@@ -1564,13 +1802,20 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:17Z"
+   "generated_at_utc": "2026-09-22T22:25:57Z"
   },
   {
    "slug": "oncology-tgf",
    "cohort": "TGF-β",
    "area": "Oncology",
    "brief_stem": "brief_oncology_tgf_2015-2024",
+   "genes": [
+    "TGFB1",
+    "TGFB2",
+    "TGFB3",
+    "TGFBR1",
+    "TGFBR2"
+   ],
    "counts": {
     "stopped": 11,
     "unreadable_terminations": 8,
@@ -1598,13 +1843,22 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:18Z"
+   "generated_at_utc": "2026-09-22T22:25:58Z"
   },
   {
    "slug": "oncology-tgf-pd-l-1",
    "cohort": "TGF-β + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_tgf-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "PDCD1",
+    "TGFB1",
+    "TGFB2",
+    "TGFB3",
+    "TGFBR1",
+    "TGFBR2"
+   ],
    "counts": {
     "stopped": 11,
     "unreadable_terminations": 7,
@@ -1632,13 +1886,16 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:18Z"
+   "generated_at_utc": "2026-09-22T22:25:58Z"
   },
   {
    "slug": "oncology-tigit",
    "cohort": "TIGIT",
    "area": "Oncology",
    "brief_stem": "brief_oncology_tigit_2015-2024",
+   "genes": [
+    "TIGIT"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 9,
@@ -1666,13 +1923,18 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:18Z"
+   "generated_at_utc": "2026-09-22T22:25:58Z"
   },
   {
    "slug": "oncology-tigit-pd-l-1",
    "cohort": "TIGIT + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_tigit-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "PDCD1",
+    "TIGIT"
+   ],
    "counts": {
     "stopped": 3,
     "unreadable_terminations": 9,
@@ -1700,13 +1962,17 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:18Z"
+   "generated_at_utc": "2026-09-22T22:25:58Z"
   },
   {
    "slug": "oncology-topoisomerase",
    "cohort": "Topoisomerase",
    "area": "Oncology",
    "brief_stem": "brief_oncology_topoisomerase_2015-2024",
+   "genes": [
+    "TOP1",
+    "TOP2A"
+   ],
    "counts": {
     "stopped": 13,
     "unreadable_terminations": 21,
@@ -1734,13 +2000,19 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:19Z"
+   "generated_at_utc": "2026-09-22T22:25:59Z"
   },
   {
    "slug": "oncology-vegf-vegfr",
    "cohort": "VEGF / VEGFR",
    "area": "Oncology",
    "brief_stem": "brief_oncology_vegf-vegfr_2015-2024",
+   "genes": [
+    "FLT1",
+    "FLT4",
+    "KDR",
+    "VEGFA"
+   ],
    "counts": {
     "stopped": 20,
     "unreadable_terminations": 38,
@@ -1768,13 +2040,21 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:19Z"
+   "generated_at_utc": "2026-09-22T22:25:59Z"
   },
   {
    "slug": "oncology-vegf-vegfr-pd-l-1",
    "cohort": "VEGF / VEGFR + PD-(L)1",
    "area": "Oncology",
    "brief_stem": "brief_oncology_vegf-vegfr-pd-l-1_2015-2024",
+   "genes": [
+    "CD274",
+    "FLT1",
+    "FLT4",
+    "KDR",
+    "PDCD1",
+    "VEGFA"
+   ],
    "counts": {
     "stopped": 5,
     "unreadable_terminations": 18,
@@ -1802,7 +2082,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T11:40:19Z"
+   "generated_at_utc": "2026-09-22T22:25:59Z"
   }
  ]
 }

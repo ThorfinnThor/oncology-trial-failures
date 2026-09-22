@@ -72,6 +72,10 @@ export type ClassMatch = {
   same_modality_only: number;
   /** How the class was reached: the subject belongs to it, or a molecule in it shares a target. */
   by: "class" | "molecule";
+  /** The genes that put this class on the list — the only honest answer to "why is this here".
+   *  Without it a HER2 ADC gets a microtubule cohort with no way to see that the link is
+   *  trastuzumab emtansine, which carries both the antibody's target and the payload's. */
+  shared_genes: string[];
   /** Completed trials that posted a readable primary comparison, and how many missed. */
   endpoints: { readable: number; missed: number; met: number } | null;
   best: Verdict | null;
@@ -103,6 +107,9 @@ export function coverageFor(subject: Subject): ClassMatch[] {
       same_pathway: rows.filter((r) => !r.shared_target_genes.length && r.shared_classes.length).length,
       same_modality_only: rows.filter((r) => r.verdict === "weak").length,
       by: byClass ? "class" : "molecule",
+      shared_genes: byClass
+        ? entry.genes.filter((g) => genes.has(g))
+        : [...new Set(relevant.flatMap((r) => r.shared_target_genes))].sort(),
       endpoints: entry.counts.endpoint_readable
         ? { readable: entry.counts.endpoint_readable,
             missed: entry.counts.endpoint_missed || 0,

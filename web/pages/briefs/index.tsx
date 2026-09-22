@@ -79,7 +79,6 @@ export default function BriefsIndexPage() {
                 <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard briefCardHero">
                   <div className="tileTop">
                     <span className="tileArea">{b.area}</span>
-                    <span className="badge" title="Still unusual after correcting for every segment screened in this area (Benjamini–Yekutieli q ≤ 0.10), so the gap is not explained by having looked at many segments.">not a screening artefact</span>
                   </div>
                   <div className="tileName">{b.segment}</div>
                   <div className="tileLead">

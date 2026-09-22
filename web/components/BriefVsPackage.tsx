@@ -29,8 +29,11 @@ export type PackageSummary = {
 };
 
 export const PACKAGE_PRICE = "€99";
-export const ACCESS_PRICE = "€999";
-export const ACCESS_UNIT = "per year";
+// Full access has no public price while it is arranged by hand. The constants stay because the
+// scope:"all" grant they describe is real and still issued; nothing on the site quotes a figure
+// for it until there is one we can defend. See the waiting list on /pricing.
+export const ACCESS_PRICE = "On request";
+export const ACCESS_UNIT = "";
 export const CUSTOM_COHORT_MAILTO =
   "mailto:contact@clinicaltrialfailures.com?subject=" + encodeURIComponent("Evidence package for a custom cohort");
 
@@ -210,11 +213,7 @@ export default function BriefVsPackage({
         ) : (
           <>
             A cohort this small cannot carry a rate on its own, and we would rather say so than sell the same{" "}
-            {c.stopped} trials twice.{" "}
-            <a className="bvpLink" href={CUSTOM_COHORT_MAILTO}>
-              Tell us what you are evaluating
-            </a>{" "}
-            and we will say whether the data can answer it before anything is built.
+            {c.stopped} trials twice. The free brief is the whole of what this class has to say.
           </>
         )}
       </p>
