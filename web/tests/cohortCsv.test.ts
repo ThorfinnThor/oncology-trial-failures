@@ -39,11 +39,27 @@ test("a row carries what a denominator is for", () => {
   assert.ok(csv.startsWith("﻿"), "Excel needs the byte order mark to read UTF-8 without being asked");
 });
 
-test("the four kinds of trial are all in the table, stops included", () => {
+test("every kind of trial is named for what it is", () => {
   const csv = cohortCsv("oncology-egfr")!;
-  for (const kind of ["biological_stop", "terminated_cause_not_readable", "still_open", "closed_no_biological_stop"]) {
+  for (const kind of ["biological_stop", "terminated_cause_not_readable", "still_open",
+    "closed_no_biological_stop", "withdrawn_never_enrolled", "status_not_updated"]) {
     assert.ok(csv.includes(`,${kind},`), `the table should contain ${kind} rows`);
   }
+});
+
+test("a withdrawn or abandoned registration is not counted as a running trial", () => {
+  // "Still open" has to mean a trial that could still report. A withdrawn trial never enrolled
+  // anybody and a registration nobody has touched in years is unaccounted for, not running —
+  // and how much is still to come is exactly what the open list is read for.
+  const rows = cohortCsv("oncology-egfr")!.replace(/^\uFEFF/, "").split("\r\n").slice(1).filter(Boolean)
+    .map((line) => line.split(","));
+  const kindOf = (k: string) => rows.filter((r) => r[1] === k);
+  for (const row of kindOf("still_open")) {
+    assert.notEqual(row[3], "WITHDRAWN", `${row[0]} is withdrawn but counted as open`);
+    assert.notEqual(row[3], "UNKNOWN", `${row[0]} has an unknown status but counted as open`);
+  }
+  assert.ok(kindOf("withdrawn_never_enrolled").length > 0, "withdrawn registrations should be labelled");
+  assert.ok(kindOf("status_not_updated").length > 0, "abandoned registrations should be labelled");
 });
 
 test("a cell cannot become a formula when the file is opened", () => {

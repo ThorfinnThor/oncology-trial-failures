@@ -239,6 +239,10 @@ def build(args) -> dict:
                   if r.get("overall_status") == "TERMINATED"
                   and r.get("classification_outcome_v2") in ("CAUSE_NOT_STATED", "UNKNOWN")]
     open_trials = [r for r in cohort if not r["_closed"] and r.get("overall_status") != "WITHDRAWN"]
+    # A trial whose sponsor stopped updating is not running; it is unaccounted for. It stays in the
+    # count because it is still in the cohort, but a reader asking "how much is still to come"
+    # deserves to know how much of the answer is registry rot.
+    stale_open = [r for r in open_trials if (r.get("overall_status") or "") == "UNKNOWN"]
 
     def trial_row(r, kind):
         a = attr_by_nct.get(r["nct_id"], {})
@@ -271,13 +275,25 @@ def build(args) -> dict:
     unreadable_ids = {r["nct_id"] for r in unreadable}
 
     def kind_of(r: dict) -> str:
+        """Four kinds of trial, and two that only look like a fifth.
+
+        "Still open" has to mean a trial that could still report. A withdrawn trial never enrolled
+        anybody, and a trial whose sponsor stopped updating the registry years ago is not running
+        — it is unaccounted for. Counting either as open overstates how much of this cohort is
+        still to come, which is exactly the number a buyer is reading the open list for.
+        """
         if r["nct_id"] in stop_ids:
             return "biological_stop"
         if r["nct_id"] in unreadable_ids:
             return "terminated_cause_not_readable"
-        if not r["_closed"]:
-            return "still_open"
-        return "closed_no_biological_stop"
+        if r["_closed"]:
+            return "closed_no_biological_stop"
+        status = r.get("overall_status") or ""
+        if status == "WITHDRAWN":
+            return "withdrawn_never_enrolled"
+        if status == "UNKNOWN":
+            return "status_not_updated"
+        return "still_open"
 
     cohort_rows = []
     for r in sorted(cohort, key=lambda r: (r.get("start_date") or ""), reverse=True):
@@ -349,6 +365,7 @@ def build(args) -> dict:
                    # What the rate and the curve are computed over, and what the document lists
                    # trial by trial, are not the same number: every stop is listed, the other two
                    # groups are capped so one huge cohort cannot bloat the delivery.
+                   "open_status_not_updated": len(stale_open),
                    "listed_unreadable": len(unreadable[:MAX_CONTEXT_ROWS]),
                    "listed_open": len(open_trials[:MAX_CONTEXT_ROWS]),
                    # What the free brief shows of the same cohort. The difference between the two
@@ -730,6 +747,9 @@ rate above, this does not move with how mature the cohort is.</p>
 
 {trial_block("still_open", f"Still open ({pkg['counts']['still_open']} in the cohort)",
              "Not counted either way. Their outcomes will move this cohort's rate in both directions."
+             + (f" {pkg['counts']['open_status_not_updated']} of them carry an unknown status — the sponsor "
+                f"stopped updating the registry, so they are unaccounted for rather than running."
+                if pkg['counts'].get('open_status_not_updated') else "")
              + (f" All {pkg['counts']['still_open']} are in the time-to-event curve; the {MAX_CONTEXT_ROWS} most "
                 f"recently started are listed here."
                 if pkg['counts']['still_open'] > MAX_CONTEXT_ROWS else ""))}

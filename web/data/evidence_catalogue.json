@@ -12,6 +12,7 @@
     "unreadable_terminations": 0,
     "still_open": 14,
     "total_in_cohort": 40,
+    "open_status_not_updated": 10,
     "listed_unreadable": 0,
     "listed_open": 14,
     "brief_lists_stops": 3,
@@ -30,7 +31,7 @@
     "comparator_rate": 0.03500583430571762,
     "comparator_label": "all immunology & autoimmune trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:02Z"
+   "generated_at_utc": "2026-09-22T06:52:10Z"
   },
   {
    "slug": "immunology-autoimmune-jak-tyk2",
@@ -42,6 +43,7 @@
     "unreadable_terminations": 5,
     "still_open": 42,
     "total_in_cohort": 127,
+    "open_status_not_updated": 14,
     "listed_unreadable": 5,
     "listed_open": 25,
     "brief_lists_stops": 4,
@@ -60,7 +62,7 @@
     "comparator_rate": 0.03500583430571762,
     "comparator_label": "all immunology & autoimmune trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:02Z"
+   "generated_at_utc": "2026-09-22T06:52:10Z"
   },
   {
    "slug": "neurology-amyloid-directed",
@@ -72,6 +74,7 @@
     "unreadable_terminations": 9,
     "still_open": 8,
     "total_in_cohort": 28,
+    "open_status_not_updated": 0,
     "listed_unreadable": 9,
     "listed_open": 8,
     "brief_lists_stops": 6,
@@ -90,7 +93,7 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:03Z"
+   "generated_at_utc": "2026-09-22T06:52:11Z"
   },
   {
    "slug": "neurology-bace-secretase",
@@ -102,6 +105,7 @@
     "unreadable_terminations": 0,
     "still_open": 0,
     "total_in_cohort": 4,
+    "open_status_not_updated": 0,
     "listed_unreadable": 0,
     "listed_open": 0,
     "brief_lists_stops": 4,
@@ -120,7 +124,7 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:03Z"
+   "generated_at_utc": "2026-09-22T06:52:11Z"
   },
   {
    "slug": "neurology-dopaminergic",
@@ -132,6 +136,7 @@
     "unreadable_terminations": 2,
     "still_open": 17,
     "total_in_cohort": 72,
+    "open_status_not_updated": 10,
     "listed_unreadable": 2,
     "listed_open": 17,
     "brief_lists_stops": 4,
@@ -150,7 +155,7 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:03Z"
+   "generated_at_utc": "2026-09-22T06:52:11Z"
   },
   {
    "slug": "neurology-gaba-a",
@@ -162,6 +167,7 @@
     "unreadable_terminations": 5,
     "still_open": 8,
     "total_in_cohort": 49,
+    "open_status_not_updated": 2,
     "listed_unreadable": 5,
     "listed_open": 8,
     "brief_lists_stops": 3,
@@ -180,7 +186,7 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:03Z"
+   "generated_at_utc": "2026-09-22T06:52:11Z"
   },
   {
    "slug": "neurology-tau",
@@ -192,6 +198,7 @@
     "unreadable_terminations": 0,
     "still_open": 0,
     "total_in_cohort": 10,
+    "open_status_not_updated": 0,
     "listed_unreadable": 0,
     "listed_open": 0,
     "brief_lists_stops": 6,
@@ -210,7 +217,7 @@
     "comparator_rate": 0.08469539375928678,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:03Z"
+   "generated_at_utc": "2026-09-22T06:52:11Z"
   },
   {
    "slug": "oncology-alk-ros1-ret",
@@ -222,6 +229,7 @@
     "unreadable_terminations": 6,
     "still_open": 241,
     "total_in_cohort": 414,
+    "open_status_not_updated": 93,
     "listed_unreadable": 6,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -240,7 +248,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:06Z"
+   "generated_at_utc": "2026-09-22T06:52:14Z"
   },
   {
    "slug": "oncology-androgen-receptor-axis",
@@ -252,6 +260,7 @@
     "unreadable_terminations": 6,
     "still_open": 163,
     "total_in_cohort": 295,
+    "open_status_not_updated": 35,
     "listed_unreadable": 6,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -270,7 +279,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:06Z"
+   "generated_at_utc": "2026-09-22T06:52:14Z"
   },
   {
    "slug": "oncology-antifolate-nucleoside",
@@ -282,6 +291,7 @@
     "unreadable_terminations": 44,
     "still_open": 1078,
     "total_in_cohort": 1683,
+    "open_status_not_updated": 439,
     "listed_unreadable": 25,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -300,7 +310,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:07Z"
+   "generated_at_utc": "2026-09-22T06:52:14Z"
   },
   {
    "slug": "oncology-antifolate-nucleoside-pd-l-1",
@@ -312,6 +322,7 @@
     "unreadable_terminations": 19,
     "still_open": 411,
     "total_in_cohort": 610,
+    "open_status_not_updated": 131,
     "listed_unreadable": 19,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -330,7 +341,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:07Z"
+   "generated_at_utc": "2026-09-22T06:52:14Z"
   },
   {
    "slug": "oncology-bcl-2",
@@ -342,6 +353,7 @@
     "unreadable_terminations": 8,
     "still_open": 224,
     "total_in_cohort": 341,
+    "open_status_not_updated": 30,
     "listed_unreadable": 8,
     "listed_open": 25,
     "brief_lists_stops": 5,
@@ -360,7 +372,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:07Z"
+   "generated_at_utc": "2026-09-22T06:52:15Z"
   },
   {
    "slug": "oncology-bcma",
@@ -372,6 +384,7 @@
     "unreadable_terminations": 3,
     "still_open": 104,
     "total_in_cohort": 134,
+    "open_status_not_updated": 11,
     "listed_unreadable": 3,
     "listed_open": 25,
     "brief_lists_stops": 4,
@@ -390,7 +403,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:07Z"
+   "generated_at_utc": "2026-09-22T06:52:15Z"
   },
   {
    "slug": "oncology-braf-mek",
@@ -402,6 +415,7 @@
     "unreadable_terminations": 11,
     "still_open": 249,
     "total_in_cohort": 480,
+    "open_status_not_updated": 80,
     "listed_unreadable": 11,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -420,7 +434,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:07Z"
+   "generated_at_utc": "2026-09-22T06:52:15Z"
   },
   {
    "slug": "oncology-braf-mek-pd-l-1",
@@ -432,6 +446,7 @@
     "unreadable_terminations": 4,
     "still_open": 92,
     "total_in_cohort": 161,
+    "open_status_not_updated": 26,
     "listed_unreadable": 4,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -450,7 +465,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:07Z"
+   "generated_at_utc": "2026-09-22T06:52:15Z"
   },
   {
    "slug": "oncology-btk",
@@ -462,6 +477,7 @@
     "unreadable_terminations": 7,
     "still_open": 258,
     "total_in_cohort": 401,
+    "open_status_not_updated": 64,
     "listed_unreadable": 7,
     "listed_open": 25,
     "brief_lists_stops": 5,
@@ -480,7 +496,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:07Z"
+   "generated_at_utc": "2026-09-22T06:52:15Z"
   },
   {
    "slug": "oncology-cd20",
@@ -492,6 +508,7 @@
     "unreadable_terminations": 13,
     "still_open": 317,
     "total_in_cohort": 504,
+    "open_status_not_updated": 61,
     "listed_unreadable": 13,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -510,7 +527,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:08Z"
+   "generated_at_utc": "2026-09-22T06:52:15Z"
   },
   {
    "slug": "oncology-cd3-t-cell-engagers",
@@ -522,6 +539,7 @@
     "unreadable_terminations": 5,
     "still_open": 216,
     "total_in_cohort": 283,
+    "open_status_not_updated": 14,
     "listed_unreadable": 5,
     "listed_open": 25,
     "brief_lists_stops": 4,
@@ -540,7 +558,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:08Z"
+   "generated_at_utc": "2026-09-22T06:52:16Z"
   },
   {
    "slug": "oncology-cd38",
@@ -552,6 +570,7 @@
     "unreadable_terminations": 2,
     "still_open": 128,
     "total_in_cohort": 209,
+    "open_status_not_updated": 20,
     "listed_unreadable": 2,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -570,7 +589,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:08Z"
+   "generated_at_utc": "2026-09-22T06:52:16Z"
   },
   {
    "slug": "oncology-cd38-pd-l-1",
@@ -582,6 +601,7 @@
     "unreadable_terminations": 1,
     "still_open": 4,
     "total_in_cohort": 17,
+    "open_status_not_updated": 0,
     "listed_unreadable": 1,
     "listed_open": 4,
     "brief_lists_stops": 3,
@@ -600,7 +620,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:08Z"
+   "generated_at_utc": "2026-09-22T06:52:16Z"
   },
   {
    "slug": "oncology-cd47-sirp",
@@ -612,6 +632,7 @@
     "unreadable_terminations": 9,
     "still_open": 34,
     "total_in_cohort": 62,
+    "open_status_not_updated": 10,
     "listed_unreadable": 9,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -630,7 +651,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:08Z"
+   "generated_at_utc": "2026-09-22T06:52:16Z"
   },
   {
    "slug": "oncology-cdk4-6",
@@ -642,6 +663,7 @@
     "unreadable_terminations": 9,
     "still_open": 212,
     "total_in_cohort": 369,
+    "open_status_not_updated": 45,
     "listed_unreadable": 9,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -660,7 +682,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:08Z"
+   "generated_at_utc": "2026-09-22T06:52:16Z"
   },
   {
    "slug": "oncology-ctla-4",
@@ -672,6 +694,7 @@
     "unreadable_terminations": 8,
     "still_open": 426,
     "total_in_cohort": 760,
+    "open_status_not_updated": 105,
     "listed_unreadable": 8,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -690,7 +713,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:09Z"
+   "generated_at_utc": "2026-09-22T06:52:16Z"
   },
   {
    "slug": "oncology-ctla-4-pd-l-1",
@@ -702,6 +725,7 @@
     "unreadable_terminations": 7,
     "still_open": 410,
     "total_in_cohort": 718,
+    "open_status_not_updated": 103,
     "listed_unreadable": 7,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -720,7 +744,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:09Z"
+   "generated_at_utc": "2026-09-22T06:52:16Z"
   },
   {
    "slug": "oncology-egfr",
@@ -732,6 +756,7 @@
     "unreadable_terminations": 19,
     "still_open": 659,
     "total_in_cohort": 971,
+    "open_status_not_updated": 296,
     "listed_unreadable": 19,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -750,7 +775,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:09Z"
+   "generated_at_utc": "2026-09-22T06:52:17Z"
   },
   {
    "slug": "oncology-er-aromatase",
@@ -762,6 +787,7 @@
     "unreadable_terminations": 10,
     "still_open": 233,
     "total_in_cohort": 377,
+    "open_status_not_updated": 68,
     "listed_unreadable": 10,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -780,7 +806,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:09Z"
+   "generated_at_utc": "2026-09-22T06:52:17Z"
   },
   {
    "slug": "oncology-fgfr",
@@ -792,6 +818,7 @@
     "unreadable_terminations": 19,
     "still_open": 166,
     "total_in_cohort": 351,
+    "open_status_not_updated": 70,
     "listed_unreadable": 19,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -810,7 +837,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:09Z"
+   "generated_at_utc": "2026-09-22T06:52:17Z"
   },
   {
    "slug": "oncology-flt3-kit",
@@ -822,6 +849,7 @@
     "unreadable_terminations": 13,
     "still_open": 469,
     "total_in_cohort": 744,
+    "open_status_not_updated": 260,
     "listed_unreadable": 13,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -840,7 +868,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:09Z"
+   "generated_at_utc": "2026-09-22T06:52:17Z"
   },
   {
    "slug": "oncology-hdac",
@@ -852,6 +880,7 @@
     "unreadable_terminations": 4,
     "still_open": 140,
     "total_in_cohort": 216,
+    "open_status_not_updated": 82,
     "listed_unreadable": 4,
     "listed_open": 25,
     "brief_lists_stops": 4,
@@ -870,7 +899,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:09Z"
+   "generated_at_utc": "2026-09-22T06:52:17Z"
   },
   {
    "slug": "oncology-her2",
@@ -882,6 +911,7 @@
     "unreadable_terminations": 11,
     "still_open": 540,
     "total_in_cohort": 766,
+    "open_status_not_updated": 201,
     "listed_unreadable": 11,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -900,7 +930,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:10Z"
+   "generated_at_utc": "2026-09-22T06:52:17Z"
   },
   {
    "slug": "oncology-her3",
@@ -912,6 +942,7 @@
     "unreadable_terminations": 3,
     "still_open": 59,
     "total_in_cohort": 91,
+    "open_status_not_updated": 5,
     "listed_unreadable": 3,
     "listed_open": 25,
     "brief_lists_stops": 4,
@@ -930,7 +961,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:10Z"
+   "generated_at_utc": "2026-09-22T06:52:18Z"
   },
   {
    "slug": "oncology-ido1",
@@ -942,6 +973,7 @@
     "unreadable_terminations": 6,
     "still_open": 11,
     "total_in_cohort": 61,
+    "open_status_not_updated": 2,
     "listed_unreadable": 6,
     "listed_open": 11,
     "brief_lists_stops": 3,
@@ -960,7 +992,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:10Z"
+   "generated_at_utc": "2026-09-22T06:52:18Z"
   },
   {
    "slug": "oncology-jak-tyk2",
@@ -972,6 +1004,7 @@
     "unreadable_terminations": 2,
     "still_open": 47,
     "total_in_cohort": 100,
+    "open_status_not_updated": 8,
     "listed_unreadable": 2,
     "listed_open": 25,
     "brief_lists_stops": 4,
@@ -990,7 +1023,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:10Z"
+   "generated_at_utc": "2026-09-22T06:52:18Z"
   },
   {
    "slug": "oncology-met",
@@ -1002,6 +1035,7 @@
     "unreadable_terminations": 5,
     "still_open": 187,
     "total_in_cohort": 319,
+    "open_status_not_updated": 39,
     "listed_unreadable": 5,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1020,7 +1054,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:10Z"
+   "generated_at_utc": "2026-09-22T06:52:18Z"
   },
   {
    "slug": "oncology-met-pd-l-1",
@@ -1032,6 +1066,7 @@
     "unreadable_terminations": 3,
     "still_open": 68,
     "total_in_cohort": 104,
+    "open_status_not_updated": 5,
     "listed_unreadable": 3,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -1050,7 +1085,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:10Z"
+   "generated_at_utc": "2026-09-22T06:52:18Z"
   },
   {
    "slug": "oncology-microtubule",
@@ -1062,6 +1097,7 @@
     "unreadable_terminations": 46,
     "still_open": 1176,
     "total_in_cohort": 1905,
+    "open_status_not_updated": 452,
     "listed_unreadable": 25,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1080,7 +1116,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:11Z"
+   "generated_at_utc": "2026-09-22T06:52:19Z"
   },
   {
    "slug": "oncology-microtubule-pd-l-1",
@@ -1092,6 +1128,7 @@
     "unreadable_terminations": 18,
     "still_open": 455,
     "total_in_cohort": 676,
+    "open_status_not_updated": 151,
     "listed_unreadable": 18,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -1110,7 +1147,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:11Z"
+   "generated_at_utc": "2026-09-22T06:52:18Z"
   },
   {
    "slug": "oncology-ox40-4-1bb-gitr",
@@ -1122,6 +1159,7 @@
     "unreadable_terminations": 2,
     "still_open": 48,
     "total_in_cohort": 86,
+    "open_status_not_updated": 13,
     "listed_unreadable": 2,
     "listed_open": 25,
     "brief_lists_stops": 5,
@@ -1140,7 +1178,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:11Z"
+   "generated_at_utc": "2026-09-22T06:52:19Z"
   },
   {
    "slug": "oncology-ox40-4-1bb-gitr-pd-l-1",
@@ -1152,6 +1190,7 @@
     "unreadable_terminations": 1,
     "still_open": 25,
     "total_in_cohort": 46,
+    "open_status_not_updated": 5,
     "listed_unreadable": 1,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -1170,7 +1209,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:11Z"
+   "generated_at_utc": "2026-09-22T06:52:19Z"
   },
   {
    "slug": "oncology-parp",
@@ -1182,6 +1221,7 @@
     "unreadable_terminations": 7,
     "still_open": 314,
     "total_in_cohort": 541,
+    "open_status_not_updated": 91,
     "listed_unreadable": 7,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1200,7 +1240,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:11Z"
+   "generated_at_utc": "2026-09-22T06:52:19Z"
   },
   {
    "slug": "oncology-parp-pd-l-1",
@@ -1212,6 +1252,7 @@
     "unreadable_terminations": 2,
     "still_open": 128,
     "total_in_cohort": 195,
+    "open_status_not_updated": 31,
     "listed_unreadable": 2,
     "listed_open": 25,
     "brief_lists_stops": 5,
@@ -1230,7 +1271,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:11Z"
+   "generated_at_utc": "2026-09-22T06:52:19Z"
   },
   {
    "slug": "oncology-pd-l-1",
@@ -1242,6 +1283,7 @@
     "unreadable_terminations": 122,
     "still_open": 3376,
     "total_in_cohort": 5680,
+    "open_status_not_updated": 1206,
     "listed_unreadable": 25,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1260,7 +1302,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:11Z"
+   "generated_at_utc": "2026-09-22T06:52:19Z"
   },
   {
    "slug": "oncology-pi3k-akt-mtor",
@@ -1272,6 +1314,7 @@
     "unreadable_terminations": 19,
     "still_open": 152,
     "total_in_cohort": 352,
+    "open_status_not_updated": 36,
     "listed_unreadable": 19,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1290,7 +1333,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:12Z"
+   "generated_at_utc": "2026-09-22T06:52:20Z"
   },
   {
    "slug": "oncology-proteasome",
@@ -1302,6 +1345,7 @@
     "unreadable_terminations": 4,
     "still_open": 137,
     "total_in_cohort": 249,
+    "open_status_not_updated": 27,
     "listed_unreadable": 4,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -1320,7 +1364,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:12Z"
+   "generated_at_utc": "2026-09-22T06:52:20Z"
   },
   {
    "slug": "oncology-tgf",
@@ -1332,6 +1376,7 @@
     "unreadable_terminations": 8,
     "still_open": 53,
     "total_in_cohort": 117,
+    "open_status_not_updated": 19,
     "listed_unreadable": 8,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1350,7 +1395,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:12Z"
+   "generated_at_utc": "2026-09-22T06:52:20Z"
   },
   {
    "slug": "oncology-tgf-pd-l-1",
@@ -1362,6 +1407,7 @@
     "unreadable_terminations": 7,
     "still_open": 34,
     "total_in_cohort": 83,
+    "open_status_not_updated": 17,
     "listed_unreadable": 7,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1380,7 +1426,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:12Z"
+   "generated_at_utc": "2026-09-22T06:52:20Z"
   },
   {
    "slug": "oncology-tigit",
@@ -1392,6 +1438,7 @@
     "unreadable_terminations": 9,
     "still_open": 67,
     "total_in_cohort": 128,
+    "open_status_not_updated": 7,
     "listed_unreadable": 9,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -1410,7 +1457,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:12Z"
+   "generated_at_utc": "2026-09-22T06:52:20Z"
   },
   {
    "slug": "oncology-tigit-pd-l-1",
@@ -1422,6 +1469,7 @@
     "unreadable_terminations": 9,
     "still_open": 66,
     "total_in_cohort": 126,
+    "open_status_not_updated": 6,
     "listed_unreadable": 9,
     "listed_open": 25,
     "brief_lists_stops": 3,
@@ -1440,7 +1488,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:12Z"
+   "generated_at_utc": "2026-09-22T06:52:20Z"
   },
   {
    "slug": "oncology-topoisomerase",
@@ -1452,6 +1500,7 @@
     "unreadable_terminations": 21,
     "still_open": 770,
     "total_in_cohort": 1134,
+    "open_status_not_updated": 227,
     "listed_unreadable": 21,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1470,7 +1519,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:13Z"
+   "generated_at_utc": "2026-09-22T06:52:20Z"
   },
   {
    "slug": "oncology-vegf-vegfr",
@@ -1482,6 +1531,7 @@
     "unreadable_terminations": 38,
     "still_open": 1433,
     "total_in_cohort": 2172,
+    "open_status_not_updated": 748,
     "listed_unreadable": 25,
     "listed_open": 25,
     "brief_lists_stops": 6,
@@ -1500,7 +1550,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:13Z"
+   "generated_at_utc": "2026-09-22T06:52:21Z"
   },
   {
    "slug": "oncology-vegf-vegfr-pd-l-1",
@@ -1512,6 +1562,7 @@
     "unreadable_terminations": 18,
     "still_open": 765,
     "total_in_cohort": 1080,
+    "open_status_not_updated": 328,
     "listed_unreadable": 18,
     "listed_open": 25,
     "brief_lists_stops": 5,
@@ -1530,7 +1581,7 @@
     "comparator_rate": 0.050026422406200456,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-09-22T06:06:13Z"
+   "generated_at_utc": "2026-09-22T06:52:21Z"
   }
  ]
 }
