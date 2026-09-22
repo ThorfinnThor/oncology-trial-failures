@@ -180,6 +180,9 @@ jobs:
           # Delivery resolves the buyer's own molecule from this, so it must not depend on ChEMBL
           # being reachable at the moment somebody opens a package they paid for.
           python scripts/signals/build_asset_index.py
+          # What we know about every mechanism class, not only the ones with a published brief:
+          # a rate needs enough closed trials, naming the molecules that failed does not.
+          python scripts/signals/build_class_signatures.py
           # Resumable and cached: a full run only fetches descriptions for newly unreadable
           # terminations, so this costs a handful of API calls in a normal week.
           python scripts/signals/event_ascertainment.py --fetch --budget 120 || true

@@ -29,7 +29,6 @@ import {
 
 // The same slot string pages/api/report.ts splices into.
 const SLOT = "<!--ASSET_COMPARISON-->";
-const CSV_SLOT = "<!--COHORT_CSV-->";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 type Case = {
@@ -132,12 +131,8 @@ test("the delivered document really gets the section, and never keeps the empty 
   assert.ok(delivered.includes("Same target, same modality"));
   assert.ok(delivered.includes("ChEMBL CHEMBL3353410"));
 
-  // The document is built with two slots the delivery route fills. Neither may survive into what
-  // the buyer opens, and an unfilled one must leave nothing visible rather than a stray comment.
-  assert.ok(pkg.html.includes(CSV_SLOT), "the prebuilt document should also leave the CSV slot");
-  const bare = pkg.html.replace(SLOT, "").replace(CSV_SLOT, "");
-  assert.ok(!bare.includes("<!--"), "an empty slot should leave nothing behind");
-  assert.ok(!delivered.replace(CSV_SLOT, "").includes("<!--"), "no slot may survive delivery");
+  // An unordered package is delivered without the section rather than with a stray comment.
+  assert.ok(!pkg.html.replace(SLOT, "").includes("<!--"), "an empty slot should leave nothing behind");
 });
 
 test("a buyer whose molecule is not in the index is told so, in the document", () => {
@@ -260,4 +255,40 @@ test("the ChEMBL modality vocabulary is translated into the cohorts'", () => {
   // matched an ADC that failed.
   assert.equal(resolveSubject("trastuzumab deruxtecan")?.modality, "ADC");
   assert.equal(resolveSubject("tisagenlecleucel")?.modality, "Cell therapy");
+});
+
+test("a class we track answers even when no rate was published for it", async () => {
+  // The failure this exists to fix: a CD19 developer, with hundreds of CD19 trials in the
+  // dataset, was told nothing in our data looked like their asset — because a brief had not been
+  // published for the class, and the comparison read the packages rather than the classes.
+  const { coverageFor } = await import("../lib/server/classCoverage");
+  for (const query of ["KRAS", "CD19", "TROP-2", "IL-17"]) {
+    const subject = resolveSubject(query);
+    assert.ok(subject, `${query} should resolve`);
+    const matches = coverageFor(subject);
+    const own = matches.filter((m) => m.by === "class");
+    assert.ok(own.length > 0, `${query}: we track this class and should say so`);
+    assert.ok(own[0].counts.total_in_cohort > 0, `${query}: the counts should be real`);
+    assert.equal(own[0].rate, null, `${query}: no brief was published, so no rate may be quoted`);
+    assert.equal(own[0].slug, null, `${query}: there is nothing to sell here`);
+  }
+});
+
+test("a class with a published rate still carries one, and a package", async () => {
+  const { coverageFor } = await import("../lib/server/classCoverage");
+  const matches = coverageFor(resolveSubject("osimertinib")!);
+  const egfr = matches.find((m) => m.cohort === "EGFR");
+  assert.ok(egfr);
+  assert.ok(typeof egfr.rate === "number" && egfr.rate > 0);
+  assert.equal(egfr.slug, "oncology-egfr");
+  assert.ok(egfr.same_target_and_modality > 0);
+});
+
+test("the combination cohorts are not lost when classes take over", async () => {
+  const { coverageFor } = await import("../lib/server/classCoverage");
+  const matches = coverageFor(resolveSubject("pembrolizumab")!);
+  assert.ok(
+    matches.some((m) => m.cohort.includes("+") && m.slug),
+    "a combination cohort is sold but is not a plain class; it must still appear",
+  );
 });

@@ -267,58 +267,11 @@ def build(args) -> dict:
             "registry_url": f"https://clinicaltrials.gov/study/{r['nct_id']}",
         }
 
-    # Every trial in the cohort, compactly, for the CSV a buyer opens in Excel. The document
-    # lists the stops in full and the rest in part, because a table of three thousand rows is a
-    # data dump rather than a report — but the rows themselves are what was paid for, so they
-    # ship beside it rather than being summarised away.
-    stop_ids = {r["nct_id"] for r in stops}
-    unreadable_ids = {r["nct_id"] for r in unreadable}
-
-    def kind_of(r: dict) -> str:
-        """Four kinds of trial, and two that only look like a fifth.
-
-        "Still open" has to mean a trial that could still report. A withdrawn trial never enrolled
-        anybody, and a trial whose sponsor stopped updating the registry years ago is not running
-        — it is unaccounted for. Counting either as open overstates how much of this cohort is
-        still to come, which is exactly the number a buyer is reading the open list for.
-        """
-        if r["nct_id"] in stop_ids:
-            return "biological_stop"
-        if r["nct_id"] in unreadable_ids:
-            return "terminated_cause_not_readable"
-        if r["_closed"]:
-            return "closed_no_biological_stop"
-        status = r.get("overall_status") or ""
-        if status == "WITHDRAWN":
-            return "withdrawn_never_enrolled"
-        if status == "UNKNOWN":
-            return "status_not_updated"
-        return "still_open"
-
-    cohort_rows = []
-    for r in sorted(cohort, key=lambda r: (r.get("start_date") or ""), reverse=True):
-        a = attr_by_nct.get(r["nct_id"], {})
-        drugs = sorted({c.get("name") or c.get("label") for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM"
-                        for c in i["components"] if c.get("name") or c.get("label")})
-        cohort_rows.append([
-            r["nct_id"], kind_of(r), "3" if "3" in r["_phase"] else "2", r.get("overall_status") or "",
-            r["_sponsor_group"] or "", r.get("lead_sponsor_class") or "",
-            "; ".join(drugs[:8]), "; ".join(sorted(r.get("focus_target_genes") or [])[:8]),
-            "; ".join(sorted(r.get("focus_modalities") or [])[:4]),
-            (r.get("start_date") or "")[:7], (r.get("stop_date_estimate") or "")[:7],
-            months_between(r.get("start_date"), r.get("stop_date_estimate")),
-            r.get("enrollment_count"), r.get("enrollment_type") or "",
-            1 if r.get("has_results") else 0,
-            " ".join((r.get("why_stopped") or "").split()),
-            a.get("attribution") or "",
-        ])
-
     name = " ".join(x for x in [args.klass or args.genes or args.sponsor_group or args.modality or args.area,
                                 f"+ {args.with_class}" if args.with_class else ""] if x).strip()
     p_value = binom_sf(seg["biological_stops"], seg["closed"], comparator["rate"] or 0.0)
 
     return {
-        "cohort_rows": cohort_rows,
         "schema_version": 1,
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "cohort": name,
@@ -648,12 +601,6 @@ def render_html(pkg: dict, notes: list[str]) -> str:
 body {{ font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
   color:var(--ink); background:var(--bg); margin:0; padding:40px 24px; }}
 .sheet {{ max-width:1000px; margin:0 auto; }}
-.download {{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin:18px 0 0; padding:12px 16px;
-  border:1px solid var(--line); border-radius:12px; background:#fff; }}
-.download a {{ background:var(--acc); color:#fff; border-radius:9px; padding:8px 14px; font-weight:700;
-  text-decoration:none; font-size:13px; white-space:nowrap; }}
-.download span {{ font-size:12.5px; color:var(--ink2); line-height:1.5; }}
-@media print {{ .download {{ display:none; }} }}
 figure.chart {{ margin:14px 0 0; padding:0; break-inside:avoid; }}
 figure.chart svg {{ display:block; max-width:660px; }}
 figure.chart figcaption {{ font-size:11px; color:var(--ink2); margin-top:6px; max-width:660px; line-height:1.5; }}
@@ -714,8 +661,6 @@ a {{ color:var(--acc); }}
   <span>own data / decided elsewhere{f" ({a['stops_unclear']} not established)" if a['stops_unclear'] else ""}</span></div>
  <div class="stat"><b>{c['stop_programmes']}</b><span>independent sponsor–asset programmes behind the stops</span></div>
 </div>
-
-<!--COHORT_CSV-->
 
 <h2>What we read from this</h2>
 <div class="box ours"><ul>{''.join(f'<li>{e(x)}</li>' for x in notes)}</ul>

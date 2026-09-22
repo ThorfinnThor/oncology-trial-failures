@@ -14,25 +14,8 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import bundle from "@/data/private/evidence_packages.json";
-import {
-  rankMatches,
-  resolveSubject,
-  suggest,
-  summariseCohort,
-  type CohortMatch,
-  type FailedAsset,
-} from "@/lib/server/assetComparison";
-
-type Pkg = {
-  cohort: string;
-  area: string;
-  counts: { closed: number; stopped: number };
-  headline: { rate: number; comparator_rate: number };
-  failed_assets?: FailedAsset[];
-};
-
-const PACKAGES = (bundle as unknown as { packages: Record<string, Pkg> }).packages;
+import { coverageFor } from "@/lib/server/classCoverage";
+import { resolveSubject, suggest } from "@/lib/server/assetComparison";
 
 function clean(value: unknown, max = 200): string {
   return String(value ?? "").replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
@@ -64,11 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  const matches: CohortMatch[] = [];
-  for (const [slug, pkg] of Object.entries(PACKAGES)) {
-    const match = summariseCohort(asset, { slug, ...pkg });
-    if (match) matches.push(match);
-  }
+  const matches = coverageFor(asset);
 
   console.log(JSON.stringify({
     event: "asset_check", query, resolved: true, chembl_id: asset.chembl_id, cohorts: matches.length,
@@ -85,7 +64,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       modality: asset.modality,
       target_genes: asset.target_genes,
     },
-    matches: rankMatches(matches),
+    matches,
   });
 }
 

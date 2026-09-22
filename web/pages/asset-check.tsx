@@ -26,19 +26,20 @@ const DESCRIPTION =
 const EXAMPLES = ["osimertinib", "PD-L1", "HER2 ADC", "KRAS", "lecanemab", "BCMA CAR-T"];
 
 type Match = {
-  slug: string;
   cohort: string;
   area: string;
-  rate: number;
-  comparator_rate: number;
-  closed: number;
-  stopped: number;
+  /** Null where no rate was published for this class — too few closed trials to put one on. */
+  rate: number | null;
+  /** Null where there is no package to sell for this class. */
+  slug: string | null;
+  counts: { total_in_cohort: number; closed: number; stopped: number; still_open: number };
   molecules: number;
   same_target_and_modality: number;
   same_target: number;
   same_pathway: number;
   same_modality_only: number;
-  best: "closest" | "related" | "weak" | "distant" | "unknown";
+  by: "class" | "molecule";
+  best: "closest" | "related" | "weak" | "distant" | "unknown" | null;
 };
 
 type Result =
@@ -53,7 +54,7 @@ type Result =
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
 const n = (v: number) => v.toLocaleString("en-US");
 
-const BEST_LABEL: Record<Match["best"], string> = {
+const BEST_LABEL: Record<string, string> = {
   closest: "Same target, same modality",
   related: "Related",
   weak: "Same modality only",
@@ -120,11 +121,14 @@ export default function AssetCheckPage() {
   // Sharing only a modality is not a precedent: almost every oncology cohort contains a small
   // molecule, so showing thirty-five cards would bury the four that mean something. The weak ones
   // are counted in one line instead of each being given the weight of a card.
-  const strong = matches.filter((m) => m.best === "closest" || m.best === "related");
-  const modalityOnly = matches.filter((m) => m.best === "weak");
+  // A class the molecule belongs to is always worth showing, even when nothing in it resolved to
+  // a molecule we can compare — "we track this, four trials terminated, none for a reason we can
+  // read" is an answer. Sharing only a modality is not, and goes in the one-line tail.
+  const strong = matches.filter((m) => m.by === "class" || m.best === "closest" || m.best === "related");
+  const modalityOnly = matches.filter((m) => m.by !== "class" && m.best === "weak");
   // What €99 covers: a shared target, not a shared pathway. The price says so on the pricing page,
   // and a promise that is wider in the code than on the page is one nobody can check.
-  const withTarget = matches.filter((m) => m.same_target_and_modality + m.same_target > 0);
+  const withTarget = matches.filter((m) => m.slug && m.same_target_and_modality + m.same_target > 0);
 
   return (
     <>
@@ -255,7 +259,7 @@ export default function AssetCheckPage() {
                 <>
                   <div className="sectionHead">
                     <h2>
-                      {strong.length} {strong.length === 1 ? "cohort" : "cohorts"} share its target or its pathway
+                      {strong.length} {strong.length === 1 ? "cohort" : "cohorts"} we can say something about
                     </h2>
                     <span className="count">closest first</span>
                   </div>
@@ -273,15 +277,30 @@ export default function AssetCheckPage() {
                             <div className="matchArea">{m.area}</div>
                             <div className="matchName">{m.cohort}</div>
                           </div>
-                          <span className={`verdict v-${m.best}`}>{BEST_LABEL[m.best]}</span>
+                          <span className={`verdict v-${m.best || "tracked"}`}>
+                          {m.best ? BEST_LABEL[m.best] : "We track this class"}
+                        </span>
                         </div>
 
                         <div className="matchRate">
-                          <b>{pct(m.rate)}</b>
-                          <span>
-                            of {n(m.closed)} closed trials stopped early · {pct(m.comparator_rate)} for{" "}
-                            {m.area.toLowerCase()} as a whole
-                          </span>
+                          {m.rate !== null ? (
+                            <>
+                              <b>{pct(m.rate)}</b>
+                              <span>
+                                of {n(m.counts.closed)} closed trials stopped early · {n(m.counts.total_in_cohort)} in
+                                the cohort, {n(m.counts.still_open)} still running
+                              </span>
+                            </>
+                          ) : (
+                            <span className="noRate">
+                              <b>
+                                {m.counts.stopped} of {n(m.counts.closed)}
+                              </b>{" "}
+                              closed trials stopped early — too few to publish a rate on, so we do not quote one.{" "}
+                              {n(m.counts.total_in_cohort)} trials in the cohort, {n(m.counts.still_open)} still
+                              running.
+                            </span>
+                          )}
                         </div>
 
                         <div className="bars">
@@ -306,13 +325,32 @@ export default function AssetCheckPage() {
                             </div>
                           ) : null}
                           <div className="bar b0">
-                            <b>{m.molecules}</b> molecules behind {m.stopped} stopped trials
+                            {m.molecules > 0 ? (
+                              <>
+                                <b>{m.molecules}</b> molecules behind {m.counts.stopped} stopped trials
+                              </>
+                            ) : (
+                              <>no molecule behind a stop here could be resolved, so nothing to compare against</>
+                            )}
                           </div>
                         </div>
 
-                        <Link className="matchCta" href={`/packages/${m.slug}`}>
-                          Which molecules, and what stopped them →
-                        </Link>
+                        {m.slug ? (
+                          <Link className="matchCta" href={`/packages/${m.slug}`}>
+                            Which molecules, and what stopped them →
+                          </Link>
+                        ) : (
+                          <span className="matchNone">
+                            No package: {m.counts.closed < 10
+                              ? "too few closed trials to build one on"
+                              : "not enough stops with a cause we can read"}
+                            . The trials are in the dataset —{" "}
+                            <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Cohort: ${m.cohort}`)}`}>
+                              ask and we will say what the data can answer
+                            </a>
+                            .
+                          </span>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -656,6 +694,26 @@ export default function AssetCheckPage() {
         .v-distant,
         .v-unknown {
           background: #9ca3af;
+        }
+        .v-tracked {
+          background: #64748b;
+        }
+        .noRate {
+          font-size: 12.5px;
+          line-height: 1.55;
+          color: var(--text-muted);
+        }
+        .noRate b {
+          color: var(--text);
+          font-weight: 850;
+          font-variant-numeric: tabular-nums;
+        }
+        .matchNone {
+          display: block;
+          margin-top: 14px;
+          font-size: 12.5px;
+          line-height: 1.6;
+          color: var(--text-muted);
         }
         .matchRate {
           margin-top: 12px;

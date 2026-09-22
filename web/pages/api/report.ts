@@ -13,7 +13,6 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { cohortCsv, cohortRowCount } from "@/lib/server/cohortCsv";
 import { grantCovers, type Grant } from "@/lib/server/grants";
 import bundle from "@/data/private/evidence_packages.json";
 import {
@@ -44,9 +43,6 @@ type Pkg = {
 // The prebuilt document leaves this slot empty; the comparison against the buyer's own molecule
 // is the one section that cannot exist before there is a buyer.
 const SLOT = "<!--ASSET_COMPARISON-->";
-// The document is built once a week with no buyer in mind, so the link that needs a token is
-// spliced in at delivery, next to the figures it belongs with.
-const CSV_SLOT = "<!--COHORT_CSV-->";
 const PACKAGES = (bundle as { packages: Record<string, Pkg> }).packages;
 
 function kv(): KvBinding | undefined {
@@ -88,18 +84,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(403).send("That token is not valid for this package.");
   }
 
-  // The same token, the same cohort, a different shape. A report is for reading; a table is for
-  // working in, and a buyer who paid for a denominator should not have to retype it.
-  if (clean(req.query.format, 10).toLowerCase() === "csv") {
-    const csv = cohortCsv(slug);
-    if (!csv) return res.status(404).send("No trial table for that cohort.");
-    console.log(JSON.stringify({ event: "report_csv", slug, email: grant.email }));
-    res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader("Cache-Control", "private, no-store");
-    res.setHeader("Content-Disposition", `attachment; filename="${slug}-cohort.csv"`);
-    return res.status(200).send(csv);
-  }
-
   // The asset under review comes from the order, unless this request names another one — a buyer
   // evaluating a second molecule should not have to order the cohort twice.
   const asset = clean(req.query.asset, 200) || clean(grant.asset, 200);
@@ -125,13 +109,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // A paid document should not sit in a shared cache.
   res.setHeader("Cache-Control", "private, no-store");
   res.setHeader("Content-Disposition", `inline; filename="${slug}.html"`);
-  const rows = cohortRowCount(slug);
-  const download = rows
-    ? `<div class="download"><a href="/api/report?slug=${encodeURIComponent(slug)}`
-      + `&token=${encodeURIComponent(token)}&format=csv" download>Download the cohort (CSV)</a>`
-      + `<span>All ${rows.toLocaleString("en-US")} trials with their status, sponsor, drugs, target, enrolment, `
-      + `dates, stop reason and attribution — the table this report was computed from, for your own model.</span></div>`
-    : "";
-
-  return res.status(200).send(pkg.html.replace(SLOT, section).replace(CSV_SLOT, download));
+  return res.status(200).send(pkg.html.replace(SLOT, section));
 }
