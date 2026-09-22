@@ -142,7 +142,7 @@ jobs:
           python -u scripts/universe/discontinuation_rates.py --tables --pack --start 2015:2024
           python -u scripts/briefs/build_brief_catalog.py
           # Disease areas beyond oncology reuse the same universe; each needs only a class lexicon.
-          for area in "Neurology" "Immunology & Autoimmune"; do
+          for area in "Neurology" "Immunology & Autoimmune" "Endocrine & Metabolic"; do
             python -u scripts/universe/discontinuation_rates.py --tables --pack --start 2015:2024 --area "$area"
             python -u scripts/briefs/build_brief_catalog.py --area "$area"
           done

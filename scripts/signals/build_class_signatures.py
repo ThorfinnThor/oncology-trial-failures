@@ -26,11 +26,11 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.signals.stop_attribution import signature  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
-from scripts.universe.mechanism_classes import classes_of  # noqa: E402
+from scripts.universe.mechanism_classes import CURATED_AREAS, classes_of  # noqa: E402
 
 CATALOGUE = ROOT / "web/data/evidence_catalogue.json"
 OUT = ROOT / "web/data/private/class_signatures.json"
-AREAS = ("Oncology", "Neurology", "Immunology & Autoimmune")
+AREAS = CURATED_AREAS
 PHASES = ("2", "3")
 START = (2015, 2024)
 MARKER = ("Server-side only. This file is imported by the API route that delivers a paid "

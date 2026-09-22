@@ -22,10 +22,11 @@ sys.path.insert(0, str(ROOT))
 from scripts.universe.discontinuation_rates import (  # noqa: E402
     UNIVERSE, areas_of, is_bio_stop, phase_groups,
 )
+from scripts.universe.mechanism_classes import CURATED_AREAS  # noqa: E402
 
 OUT = ROOT / "web/data/cohort_flow.json"
 SIGNALS = ROOT / "product/oncology_failure_signals_v1.csv"
-AREAS = ["Oncology", "Neurology", "Immunology & Autoimmune"]
+AREAS = list(CURATED_AREAS)
 WINDOW = (2015, 2024)
 PHASES = {"2", "3"}
 

@@ -27,9 +27,10 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.universe.discontinuation_rates import UNRESOLVED_TERMINATIONS, load, select, summarize  # noqa: E402
+from scripts.universe.mechanism_classes import CURATED_AREAS  # noqa: E402
 
 OUT = ROOT / "web/data/reporting_quality.json"
-AREAS = ["Oncology", "Neurology", "Immunology & Autoimmune"]
+AREAS = list(CURATED_AREAS)
 WINDOW = (2015, 2024)
 PHASES = ["2", "3"]
 MIN_TERMINATIONS = 25  # below this a sponsor's share is noise, and naming them would be unfair

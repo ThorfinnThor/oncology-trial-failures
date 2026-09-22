@@ -41,6 +41,7 @@ CLASSES: dict[str, list[str]] = {
     "BCL-2": ["BCL2"],
     "JAK / TYK2": ["JAK1", "JAK2", "JAK3", "TYK2"],
     "HDAC": ["HDAC1", "HDAC2", "HDAC3", "HDAC6"],
+    "EZH2": ["EZH2", "EZH1"],
     "Proteasome": ["PSMB5", "PSMA1", "PSMA2", "ADRM1"],
     "Androgen receptor axis": ["AR", "CYP17A1"],
     "ER / aromatase": ["ESR1", "CYP19A1"],
@@ -124,13 +125,53 @@ NEUROLOGY_CLASSES: dict[str, list[str]] = {
     "SOD1 / ALS gene-targeted": ["SOD1", "FUS", "TARDBP", "C9orf72"],
 }
 
+# Endocrine & metabolic. The area that grew the most between 2015 and 2024, and the one buyers
+# ask about most often outside oncology: obesity, type 2 diabetes, dyslipidaemia, bone disease.
+# Same rule as the others — every class here was read off the targets that actually appear in
+# Phase 2/3 trials in the universe, not off a textbook.
+METABOLIC_CLASSES: dict[str, list[str]] = {
+    # Split from glucagon deliberately. Nearly every GLP1R/GIPR trial is an agonist and the class
+    # has produced the decade's biggest approvals; GCGR is dominated by antagonists, a different
+    # bet with a different history. Pooled, the rate would describe neither.
+    "GLP-1 / GIP": ["GLP1R", "GIPR"],
+    "Glucagon receptor": ["GCGR"],
+    "SGLT1/2": ["SLC5A2", "SLC5A1"],
+    "Insulin": ["INSR"],
+    "DPP-4": ["DPP4"],
+    # Metformin. ChEMBL resolves it to the whole of complex I, so any subunit identifies it;
+    # all three of these appear together in every trial that carries any of them.
+    "Biguanide / complex I": ["GPD2", "NDUFS1", "MT-ND1"],
+    "Sulfonylurea / K-ATP": ["KCNJ11", "ABCC8"],
+    "Glucokinase": ["GCK"],
+    "GPR40 (FFAR1)": ["FFAR1"],
+    "PPAR": ["PPARA", "PPARG", "PPARD"],
+    "Melanocortin (MC4R)": ["MC4R"],
+    "Amylin": ["IAPP", "CALCR", "RAMP1", "RAMP3"],
+    "Leptin": ["LEP", "LEPR"],
+    "PCSK9": ["PCSK9"],
+    "Statin (HMGCR)": ["HMGCR"],
+    "Non-statin lipid lowering": ["NPC1L1", "ACLY", "CETP", "MTTP"],
+    "ANGPTL3 / APOC3": ["ANGPTL3", "APOC3"],
+    "Thyroid hormone receptor": ["THRB", "THRA"],
+    "Growth hormone / IGF": ["GH1", "GHR", "GHRHR", "IGF1R"],
+    "Bone & mineral (PTH / CaSR / vitamin D)": ["PTH1R", "CASR", "VDR"],
+    "Mineralocorticoid receptor": ["NR3C2"],
+    "11\u03b2-HSD1": ["HSD11B1"],
+}
+
 # Classes are per disease area: a gene set that means "checkpoint inhibitor" in oncology means
 # something different in autoimmune disease, and each area's analysts name different groups.
 CLASSES_BY_AREA: dict[str, dict[str, list[str]]] = {
     "Oncology": CLASSES,
-    "Immunology & Autoimmune": IMMUNOLOGY_CLASSES,
     "Neurology": NEUROLOGY_CLASSES,
+    "Immunology & Autoimmune": IMMUNOLOGY_CLASSES,
+    "Endocrine & Metabolic": METABOLIC_CLASSES,
 }
+
+# Every script that walks the curated areas reads this rather than listing them again. An area
+# was once added here and missed in three other files, so it answered questions on the site
+# without ever appearing in the index that makes it findable.
+CURATED_AREAS: tuple[str, ...] = tuple(CLASSES_BY_AREA)
 
 COMBINATION_PARTNER: dict[str, str] = {"Oncology": "PD-(L)1"}
 

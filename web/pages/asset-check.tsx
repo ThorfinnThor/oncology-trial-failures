@@ -163,8 +163,8 @@ export default function AssetCheckPage() {
             <p className="heroLead">
               Name a molecule, a target, a gene or a mechanism — <b>osimertinib</b>, <b>PD-L1</b>, <b>ERBB2</b>,{" "}
               <b>HER2 ADC</b>. We resolve what it acts on and compare it against every drug behind a trial that was
-              stopped early for an efficacy, safety or benefit–risk reason, across {catalogue.package_count} mechanism
-              classes in oncology, neurology and immunology. You get the counts and the rates now, free. The names of
+              stopped early for an efficacy, safety or benefit–risk reason, across every mechanism class we track in
+              oncology, neurology, immunology and metabolic disease. You get the counts and the rates now, free. The names of
               those molecules and the trials behind them are what a package costs {PACKAGE_PRICE}.
             </p>
 
@@ -293,6 +293,15 @@ export default function AssetCheckPage() {
                                 the cohort, {n(m.counts.still_open)} still running
                               </span>
                             </>
+                          ) : m.counts.stopped === 0 && m.counts.closed >= 10 ? (
+                            // Not a gap in the data — it is the finding. Saying "too few to publish a rate on"
+                            // about 183 closed trials would describe our thresholds instead of the class.
+                            <span className="noRate">
+                              <b>None</b> of the {n(m.counts.closed)} closed trials in this class stopped early for a
+                              biological reason. {n(m.counts.total_in_cohort)} in the cohort, {n(m.counts.still_open)}{" "}
+                              still running. A trial that runs to the end and misses its endpoint is not a stop and is
+                              not counted here.
+                            </span>
                           ) : (
                             <span className="noRate">
                               <b>
@@ -345,7 +354,9 @@ export default function AssetCheckPage() {
                           <span className="matchNone">
                             No package: {m.counts.closed < 10
                               ? "too few closed trials to build one on"
-                              : "not enough stops with a cause we can read"}
+                              : m.counts.stopped === 0
+                                ? "nothing in this class stopped early, so there is nothing to itemise"
+                                : "not enough stops with a cause we can read"}
                             . The trials are in the dataset —{" "}
                             <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Cohort: ${m.cohort}`)}`}>
                               ask and we will say what the data can answer

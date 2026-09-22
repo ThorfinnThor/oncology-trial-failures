@@ -55,10 +55,10 @@ def mechanism_classes() -> dict:
     cohort comes back "different hypothesis" because PD-1 and PD-L1 are two genes. They are one
     axis, and the ontology that groups the trials already knows it.
     """
-    from scripts.universe.mechanism_classes import classes_of
+    from scripts.universe.mechanism_classes import CURATED_AREAS, classes_of
 
     return {area: {name: sorted(genes) for name, genes in classes_of(area).items()}
-            for area in ("Oncology", "Neurology", "Immunology & Autoimmune")}
+            for area in CURATED_AREAS}
 
 
 def target_index(index: dict, classes: dict) -> dict:

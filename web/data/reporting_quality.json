@@ -258,6 +258,70 @@
      "rate_if_all_unresolved_were_biological": 0.029548989113530325
     }
    }
+  },
+  {
+   "area": "Endocrine & Metabolic",
+   "terminations": 157,
+   "unreadable": 31,
+   "by_sponsor_class": [
+    {
+     "group": "INDUSTRY",
+     "terminations": 82,
+     "unreadable": 24,
+     "unreadable_share": 0.2926829268292683
+    },
+    {
+     "group": "OTHER",
+     "terminations": 70,
+     "unreadable": 7,
+     "unreadable_share": 0.1
+    }
+   ],
+   "by_start_era": [
+    {
+     "group": "2015–2019",
+     "terminations": 96,
+     "unreadable": 19,
+     "unreadable_share": 0.19791666666666666
+    },
+    {
+     "group": "2020–2024",
+     "terminations": 61,
+     "unreadable": 12,
+     "unreadable_share": 0.19672131147540983
+    }
+   ],
+   "by_phase": [
+    {
+     "group": "Phase 2",
+     "terminations": 92,
+     "unreadable": 15,
+     "unreadable_share": 0.16304347826086957
+    },
+    {
+     "group": "Phase 3",
+     "terminations": 65,
+     "unreadable": 16,
+     "unreadable_share": 0.24615384615384617
+    }
+   ],
+   "by_sponsor_group": [],
+   "consequence": {
+    "industry": {
+     "closed": 986,
+     "biological_stops": 21,
+     "rate": 0.02129817444219067,
+     "unresolved_terminations": 24,
+     "rate_if_all_unresolved_were_biological": 0.04563894523326572
+    },
+    "non_industry": {
+     "closed": 651,
+     "biological_stops": 7,
+     "rate": 0.010752688172043012,
+     "unresolved_terminations": 7,
+     "rate_if_all_unresolved_were_biological": 0.021505376344086023
+    }
+   }
   }
  ]
 }
