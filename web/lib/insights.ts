@@ -40,6 +40,13 @@ export type InsightStats = {
   operationalSignals: InsightSignalSlice;
   regulatorySignals: InsightSignalSlice;
   unknownSignals: InsightSignalSlice;
+  businessStrategySignals: InsightSignalSlice & {
+    explicitNoSafetyOrEfficacyCount: number;
+  };
+  notInitiatedSignals: InsightSignalSlice & {
+    phase2Count: number;
+    recruitmentTotal: number;
+  };
   withdrawnSignals: InsightSignalSlice & {
     scientificCount: number;
     scientificShare: string;
@@ -138,6 +145,7 @@ export type InsightArticle = {
   datePublished: string;
   readingTime: string;
   keyword: string;
+  factsHeading?: string;
   facts: string[];
   sections: Array<{
     heading: string;
@@ -156,6 +164,183 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "business-reasons-clinical-trial-termination",
+    title: "When a clinical trial stops for business reasons, the drug has not necessarily failed",
+    metaDescription:
+      "A data-led analysis of business-strategy clinical trial stops and why a terminated program is not automatically evidence of failed efficacy or safety.",
+    eyebrow: "Strategy versus evidence",
+    dek:
+      "A program can close because priorities, portfolios, ownership, or commercial plans changed. Those decisions matter, but they answer a different question from whether the drug worked.",
+    datePublished: "2026-09-22",
+    readingTime: "8 min read",
+    keyword: "clinical trial terminated for business reasons",
+    factsHeading: "The strategy/evidence split",
+    facts: [],
+    sections: [
+      {
+        heading: "The near-miss that changes the interpretation",
+        body: [
+          "One of the most consequential comparisons in the database is also one of the easiest to miss. Business-strategy stops are almost as numerous as all records carrying a biological failure outcome. Put those groups into one generic 'failed trial' total and the result ceases to describe either science or strategy accurately.",
+          "The distinction is not semantic housekeeping. A futility finding says something unfavorable about benefit under the studied conditions. A safety stop says something about risk or tolerability. A portfolio decision says that an organization changed what it chose to pursue. All three can end a trial, but only the first two directly support a biological failure signal.",
+        ],
+      },
+      {
+        heading: "Business strategy must be stated, not guessed",
+        body: [
+          "Classification V2 uses the business-strategy category when the source language gives an affirmative strategic or commercial reason: portfolio reprioritization, a business decision, discontinuation of development, duplication by other work, or a comparable program-level choice. It does not convert a bare phrase such as 'Sponsor decision' into strategy. Those actor-only statements sit in the separate decision-without-stated-cause category.",
+          "That boundary is important. It lets the database retain useful strategic evidence without pretending to know the rationale behind every corporate action. It also prevents missing explanations from quietly becoming non-biological explanations.",
+        ],
+      },
+      {
+        heading: "Terminated still does not tell you why",
+        body: [
+          "Most business-strategy records are marked Terminated, so a status-only search can make them look deceptively similar to trials stopped for futility or toxicity. The stop statement is what changes the meaning. In some records, the sponsor even states that the decision was not driven by safety or efficacy concerns.",
+          "That negative wording should also be handled carefully. 'Not due to safety or efficacy' supports a non-biological classification for the stated stop. It does not prove that the drug was effective, safe in every setting, or commercially attractive. Absence of a cited biological reason is not positive clinical evidence.",
+        ],
+      },
+      {
+        heading: "Why oncology appears so often",
+        body: [
+          "Oncology supplies the largest disease-area slice of business-strategy stops in the current snapshot. That is useful for portfolio research, but it is not a sponsor scorecard and it is not a failure rate. Oncology is also the largest disease area in the database overall, and a single record may sit inside a much larger development program that is not represented by the stopped study alone.",
+          "The defensible use is narrower: identify where the registry explicitly records a strategic stop, read the linked source language, and then add external program context before drawing conclusions about an asset or company.",
+        ],
+      },
+      {
+        heading: "How I would use this signal",
+        body: [
+          "For scientific screening, exclude business-strategy records from the biological-failure denominator unless another explicit biological reason is also present. For competitive-intelligence work, keep them: a strategic stop can be highly relevant to portfolio direction even when it says nothing adverse about the mechanism.",
+          "The practical rule is simple. Use status to find stopped studies, the classified cause to decide what kind of event occurred, and the original registry statement to verify the claim. None of those fields can safely substitute for the other two.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/trial/NCT05276830-an-efficacy-and-safety-study-of-bxcl501-for-the-treatment-of-agitation-associate",
+        label: "BXCL501: an explicit business reason",
+        text: "The registry says the stop was for business reasons and not due to safety or efficacy concerns.",
+      },
+      {
+        href: "/trial/NCT04261712-a-study-to-evaluate-the-long-term-safety-and-efficacy-of-paltusotine-for-the-tre",
+        label: "Paltusotine: benefits and risks explicitly separated",
+        text: "This record distinguishes the business decision from changes in the treatment's benefits or risks.",
+      },
+      {
+        href: "/methods",
+        label: "Review the classification boundary",
+        text: "See how V2 separates stated business strategy from decisions that provide no underlying cause.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does a business decision mean a clinical trial failed?",
+        answer:
+          "No. It means the source states a strategic or commercial reason for stopping. It does not by itself establish failed efficacy, unacceptable safety, or successful treatment.",
+      },
+      {
+        question: "Is every sponsor decision classified as business strategy?",
+        answer:
+          "No. A statement such as 'Sponsor decision' gives no underlying cause and is kept in decision-without-stated-cause. Strategy must be supported by the source wording.",
+      },
+      {
+        question: "Can business-strategy records still be useful?",
+        answer:
+          "Yes. They can inform portfolio and competitive research, provided the registry statement is verified and the record is not misrepresented as biological evidence.",
+      },
+    ],
+  },
+  {
+    slug: "withdrawn-before-enrollment-not-recruitment-failure",
+    title: "No participants enrolled: why a withdrawn trial may never have started",
+    metaDescription:
+      "What stopped clinical trial data shows about studies withdrawn before enrollment, and why never initiated is different from recruitment failure.",
+    eyebrow: "Before the first participant",
+    dek:
+      "A study with zero participants did not generate a negative treatment result. It may not even have tested whether recruitment was possible. That boundary matters when withdrawn records are used as evidence.",
+    datePublished: "2026-09-22",
+    readingTime: "7 min read",
+    keyword: "clinical trial withdrawn before enrollment",
+    factsHeading: "What zero enrollment changes",
+    facts: [],
+    sections: [
+      {
+        heading: "There are two very different kinds of zero",
+        body: [
+          "A trial can end with too few participants because recruitment began and failed to reach the required sample. It can also close before the first participant was enrolled. Both records may contain the words 'no participants enrolled', but they do not describe the same event.",
+          "The first is evidence about execution: sites opened, recruitment was attempted, and accrual was insufficient or too slow. The second is a lifecycle boundary. It tells us the study did not get under way, but often says little about whether eligible patients could have been recruited under an active protocol.",
+        ],
+      },
+      {
+        heading: "Withdrawn is the expected status, not the explanation",
+        body: [
+          "Nearly every not-initiated record in the current dataset is marked Withdrawn. That alignment makes sense because ClinicalTrials.gov uses withdrawn for studies stopped before enrolling the first participant. But the status still does not supply the underlying reason.",
+          "Some source statements mention an administrative constraint, a sponsor choice, a redesign, or a regulatory issue. Others say only that the study never started. Classification V2 preserves not initiated as a non-failure transition instead of translating the absence of participants into failed recruitment or failed biology.",
+        ],
+      },
+      {
+        heading: "Recruitment failure requires evidence of recruitment",
+        body: [
+          "The recruitment category is much larger and usually reflects language such as slow enrollment, poor accrual, too few eligible participants, or inability to recruit across active sites. Those statements support an operational constraint. They still do not establish that the intervention lacked efficacy or caused harm.",
+          "The difference is especially important for denominator design. Counting every withdrawn study with zero enrollment as a recruitment failure inflates operational failure estimates. Counting it as a drug failure is more misleading still, because no participant received the intervention under that record.",
+        ],
+      },
+      {
+        heading: "The phase label can survive even when the trial did not begin",
+        body: [
+          "Not-initiated records still carry planned phase labels. A withdrawn Phase II or Phase III record therefore describes the intended design stage, not completed clinical exposure at that stage. The phase remains useful for finding the protocol, but it should not be read as evidence generated by an executed Phase II or Phase III study.",
+          "This is a broader lesson for registry analysis: planned attributes and observed events live in the same row. Good analysis keeps them separate. Phase, intervention, and target population describe the intended study; enrollment and stop text describe what actually happened.",
+        ],
+      },
+      {
+        heading: "What the record can and cannot support",
+        body: [
+          "A not-initiated record supports a modest conclusion: the registered study stopped before enrollment. If the source gives an additional cause, that wording may support a second, more specific interpretation after manual review. Without it, the responsible answer is to stop at the lifecycle fact.",
+          "For evidence reviews, exclude these records from treatment-outcome counts. For feasibility research, keep them visible but separate from active recruitment failures. And for every individual case, open the registry link before deciding whether the short stop statement is sufficient for the claim you want to make.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/trial/NCT05313386-study-of-bxcl501-in-agitation-associated-with-delirium-in-icu-patients",
+        label: "A study stopped before its first participant",
+        text: "NCT05313386 states the timing clearly without claiming a biological or recruitment result.",
+      },
+      {
+        href: "/trial/NCT04794348-clinical-trial-assessing-non-inferiority-of-freeze-dried-plasma-to-fresh-frozen-",
+        label: "A never-started study moving toward redesign",
+        text: "NCT04794348 links non-initiation to plans for a new design and FDA alignment.",
+      },
+      {
+        href: "/trial/NCT06162663-double-blind-randomized-controlled-trial-comparing-suvorexant-20-mg-to-placebo-f",
+        label: "Contrast with actual insufficient accrual",
+        text: "NCT06162663 reports that enrollment occurred but was inadequate for the planned statistical analysis.",
+      },
+      {
+        href: "/insights/enrollment-failure-clinical-trials",
+        label: "Read the broader recruitment analysis",
+        text: "See why enrollment problems are operational evidence rather than automatic drug-failure evidence.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Does withdrawn mean that a clinical trial recruited no participants?",
+        answer:
+          "Often, but not every withdrawn record should be interpreted from status alone. The stop statement should confirm whether enrollment never began and whether any underlying reason is stated.",
+      },
+      {
+        question: "Is no enrollment the same as recruitment failure?",
+        answer:
+          "No. Recruitment failure requires evidence that recruitment was attempted and was too slow or insufficient. A never-initiated study may have closed before that question was tested.",
+      },
+      {
+        question: "Can a never-started Phase III study count as a Phase III drug failure?",
+        answer:
+          "No. The phase describes the planned protocol. If no participant enrolled, the record did not generate a Phase III treatment outcome.",
+      },
+    ],
+  },
   {
     slug: "classification-v2-clinical-trial-stop-reasons",
     title: "Classification V2: a clearer map of why clinical trials stop",
@@ -1942,6 +2127,180 @@ export function sortInsightArticlesByDate<T extends Pick<InsightArticle, "datePu
   return [...articles].sort((a, b) => insightDateTime(b) - insightDateTime(a) || a.slug.localeCompare(b.slug));
 }
 
+function hydrateBusinessStrategyArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const strategy = stats.businessStrategySignals;
+  const biological = stats.classificationV2.outcomes.BIOLOGICAL_FAILURE || 0;
+  const efficacy = stats.classificationV2.primaryReasons.EFFICACY_FUTILITY || 0;
+  const safety = stats.classificationV2.primaryReasons.SAFETY || 0;
+  const biologicalUnspecified = stats.classificationV2.primaryReasons.BIOLOGICAL_UNSPECIFIED || 0;
+  const terminated = strategy.statuses.TERMINATED || 0;
+  const withdrawn = strategy.statuses.WITHDRAWN || 0;
+  const suspended = strategy.statuses.SUSPENDED || 0;
+  const topArea = strategy.topAreas[0];
+  const topPhase = strategy.phases[0];
+
+  return {
+    ...article,
+    metaDescription: `${n(strategy.total)} stopped clinical trials cite business strategy. See why these records are not equivalent to efficacy or safety failures.`,
+    dek: `${n(strategy.total)} stopped records cite business strategy, compared with ${n(biological)} records carrying a biological failure outcome. Similar scale does not mean similar evidence.`,
+    facts: [
+      `${n(strategy.total)} of ${n(stats.total)} records (${pctFromCounts(strategy.total, stats.total)}) have business strategy as their final primary category.`,
+      `${n(terminated)} business-strategy records are terminated, ${n(withdrawn)} are withdrawn, and ${n(suspended)} are suspended.`,
+      `The business-strategy group is close in size to all ${n(biological)} biological failure outcomes in the current dataset.`,
+      `A phrase scan finds ${n(strategy.explicitNoSafetyOrEfficacyCount)} business-strategy stop statements with an explicit negation close to the words safety or efficacy.`,
+      topArea
+        ? `${topArea.label} is the largest disease-area slice with ${n(topArea.count)} business-strategy records.`
+        : "No disease-area slice is available for the business-strategy group.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "The near-miss that changes the interpretation") {
+        return {
+          ...section,
+          body: [
+            `The current dataset contains ${n(strategy.total)} records classified with business strategy as the final primary reason. That is only ${n(Math.abs(biological - strategy.total))} ${biological >= strategy.total ? "fewer than" : "more than"} the ${n(biological)} records carrying a biological failure outcome. Put those groups into one generic 'failed trial' total and the result ceases to describe either science or strategy accurately.`,
+            `The distinction is not semantic housekeeping. The biological group includes ${n(efficacy)} efficacy or futility signals, ${n(safety)} safety signals, and ${n(biologicalUnspecified)} unfavorable biological signals that cannot be split responsibly. A portfolio decision instead says that an organization changed what it chose to pursue. Both can end a trial, but they support different conclusions.`,
+          ],
+        };
+      }
+      if (section.heading === "Terminated still does not tell you why") {
+        return {
+          ...section,
+          body: [
+            `${n(terminated)} of the ${n(strategy.total)} business-strategy records (${pctFromCounts(terminated, strategy.total)}) are marked Terminated. A status-only search can therefore make them look deceptively similar to trials stopped for futility or toxicity. A transparent phrase scan finds ${n(strategy.explicitNoSafetyOrEfficacyCount)} stop statements in this group where 'not' or 'no' appears within 40 characters of 'safety' or 'efficacy'. This is a language pattern, not a separate classification.`,
+            "That negative wording should still be handled carefully. 'Not due to safety or efficacy' supports a non-biological classification for the stated stop. It does not prove that the drug was effective, safe in every setting, or commercially attractive. Absence of a cited biological reason is not positive clinical evidence.",
+          ],
+        };
+      }
+      if (section.heading === "Why oncology appears so often" && topArea) {
+        return {
+          ...section,
+          body: [
+            `${topArea.label} supplies ${n(topArea.count)} business-strategy records, or ${pctFromCounts(topArea.count, strategy.total)} of this category in the current snapshot. ${topPhase ? `${topPhase.label} is the largest single phase grouping with ${n(topPhase.count)} records.` : ""} These concentrations are useful for portfolio research, but they are not sponsor scorecards or failure rates.`,
+            "The defensible use is narrower: identify where the registry explicitly records a strategic stop, read the linked source language, and then add external program context before drawing conclusions about an asset or company.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Strategy and biological evidence are different groups",
+        columns: ["Classification", "Records"],
+        rows: [
+          ["Business strategy", n(strategy.total)],
+          ["All biological failure outcomes", n(biological)],
+          ["Efficacy / futility", n(efficacy)],
+          ["Safety", n(safety)],
+          ["Biological, unspecified", n(biologicalUnspecified)],
+        ],
+      },
+      {
+        heading: "Registry status within business-strategy stops",
+        columns: ["Status", "Records"],
+        rows: [
+          ["Terminated", n(terminated)],
+          ["Withdrawn", n(withdrawn)],
+          ["Suspended", n(suspended)],
+        ],
+      },
+      {
+        heading: "Largest disease-area slices",
+        columns: ["Disease area", "Business-strategy records"],
+        rows: strategy.topAreas.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+  };
+}
+
+function hydrateNotInitiatedArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const notInitiated = stats.notInitiatedSignals;
+  const withdrawn = notInitiated.statuses.WITHDRAWN || 0;
+  const terminated = notInitiated.statuses.TERMINATED || 0;
+  const suspended = notInitiated.statuses.SUSPENDED || 0;
+  const topArea = notInitiated.topAreas[0];
+
+  return {
+    ...article,
+    metaDescription: `${n(notInitiated.total)} stopped trial records describe studies that never began. See why that differs from ${n(notInitiated.recruitmentTotal)} recruitment stops.`,
+    dek: `${n(notInitiated.total)} records describe studies that did not begin, while ${n(notInitiated.recruitmentTotal)} separately report recruitment problems. The difference is whether enrollment was ever tested.`,
+    facts: [
+      `${n(notInitiated.total)} of ${n(stats.total)} records (${pctFromCounts(notInitiated.total, stats.total)}) are classified as not initiated.`,
+      `${n(withdrawn)} of those records (${pctFromCounts(withdrawn, notInitiated.total)}) carry the registry status Withdrawn.`,
+      `All ${n(notInitiated.total)} are retained as non-failure transitions rather than biological or recruitment failures.`,
+      `${n(notInitiated.phase2Count)} not-initiated protocols include a planned Phase II component, but no Phase II treatment result was generated by those records.`,
+      `The dataset separately contains ${n(notInitiated.recruitmentTotal)} records whose source language supports an actual recruitment problem.`,
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "There are two very different kinds of zero") {
+        return {
+          ...section,
+          body: [
+            `A trial can end with too few participants because recruitment began and failed to reach the required sample. It can also close before the first participant was enrolled. The current dataset separates ${n(notInitiated.total)} not-initiated records from ${n(notInitiated.recruitmentTotal)} recruitment records because those events do not describe the same evidence.`,
+            "Recruitment language describes execution: sites tried to enroll and accrual was insufficient or too slow. Not-initiated language describes a lifecycle boundary. It tells us the study did not get under way, but often says little about whether eligible patients could have been recruited under an active protocol.",
+          ],
+        };
+      }
+      if (section.heading === "Withdrawn is the expected status, not the explanation") {
+        return {
+          ...section,
+          body: [
+            `${n(withdrawn)} of ${n(notInitiated.total)} not-initiated records are marked Withdrawn; only ${n(terminated)} are Terminated and ${n(suspended)} are Suspended. That alignment makes sense because ClinicalTrials.gov uses withdrawn for studies stopped before enrolling the first participant. But the status still does not supply the underlying reason.`,
+            "Some source statements mention an administrative constraint, a sponsor choice, a redesign, or a regulatory issue. Others say only that the study never started. Classification V2 preserves not initiated as a non-failure transition instead of translating the absence of participants into failed recruitment or failed biology.",
+          ],
+        };
+      }
+      if (section.heading === "The phase label can survive even when the trial did not begin") {
+        return {
+          ...section,
+          body: [
+            `${n(notInitiated.phase2Count)} not-initiated protocols include a Phase II component. Those labels describe the intended design stage, not completed clinical exposure. A withdrawn Phase II record can therefore be useful for locating the protocol while providing no Phase II treatment outcome.`,
+            "This is a broader lesson for registry analysis: planned attributes and observed events live in the same row. Good analysis keeps them separate. Phase, intervention, and target population describe the intended study; enrollment and stop text describe what actually happened.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Not initiated and recruitment are separate classifications",
+        columns: ["Primary category", "Records"],
+        rows: [
+          ["Not initiated", n(notInitiated.total)],
+          ["Recruitment", n(notInitiated.recruitmentTotal)],
+        ],
+      },
+      {
+        heading: "Registry status of not-initiated studies",
+        columns: ["Status", "Records"],
+        rows: [
+          ["Withdrawn", n(withdrawn)],
+          ["Terminated", n(terminated)],
+          ["Suspended", n(suspended)],
+        ],
+      },
+      {
+        heading: "Largest planned phase groups",
+        columns: ["Planned phase", "Not-initiated records"],
+        rows: notInitiated.phases.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Largest disease-area slices",
+        columns: ["Disease area", "Not-initiated records"],
+        rows: notInitiated.topAreas.slice(0, 8).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "Does withdrawn mean that a clinical trial recruited no participants?") {
+        return {
+          ...faq,
+          answer: `${n(withdrawn)} of the ${n(notInitiated.total)} explicitly not-initiated records are Withdrawn, but status alone is not enough. The stop statement should confirm whether enrollment never began and whether another cause is stated.`,
+        };
+      }
+      return faq;
+    }),
+  };
+}
+
 function hydrateClassificationV2Article(article: InsightArticle, stats: InsightStats): InsightArticle {
   const v2 = stats.classificationV2;
   const outcomes = v2.outcomes;
@@ -3133,6 +3492,12 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "business-reasons-clinical-trial-termination") {
+    return hydrateBusinessStrategyArticle(article, stats);
+  }
+  if (article.slug === "withdrawn-before-enrollment-not-recruitment-failure") {
+    return hydrateNotInitiatedArticle(article, stats);
+  }
   if (article.slug === "classification-v2-clinical-trial-stop-reasons") {
     return hydrateClassificationV2Article(article, stats);
   }
