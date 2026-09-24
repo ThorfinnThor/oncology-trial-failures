@@ -4,7 +4,7 @@
 The briefs themselves live in the licensed release; this writes the public index the
 /briefs pages render from: one entry per brief with its headline rate, the comparison it
 is measured against, the cohort table and a short preview of the stopped trials. The full
-trial list stays in the PDF and the dataset.
+trial list stays in the evidence package and dataset, not the public PDF preview.
 
 Reads product/briefs/*.facts.json, writes web/data/briefs_index.json.
 """
