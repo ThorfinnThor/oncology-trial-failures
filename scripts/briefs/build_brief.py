@@ -100,6 +100,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--family-size", type=int, help="how many segments were screened alongside it")
     ap.add_argument("--area", default="Oncology")
     ap.add_argument("--out")
+    ap.add_argument("--canonical-url")
     args = ap.parse_args(argv)
 
     start = tuple(int(x) for x in args.start.split(":"))
@@ -291,7 +292,8 @@ def main(argv: list[str] | None = None) -> int:
                         + " A class groups drugs by what they act on; check that the grouping is one you would make"
                           " before reading the rate as a property of the mechanism.")
 
-    doc = f"""<!doctype html><html><head><meta charset="utf-8"><title>{e(name)} — discontinuation rate</title><style>
+    canonical_link = f"<link rel='canonical' href='{e(args.canonical_url)}'>" if args.canonical_url else ""
+    doc = f"""<!doctype html><html><head><meta charset="utf-8">{canonical_link}<title>{e(name)} — discontinuation rate</title><style>
 @page {{ size:A4; margin:14mm 13mm; }}
 :root {{ --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }}
 body {{ font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }}

@@ -3,6 +3,8 @@
 import type { GetServerSideProps } from "next";
 
 import { trialPath } from "@/lib/seoUrls";
+import briefsIndex from "@/data/briefs_index.json";
+import { latestBriefSitemapLastmod, selectBriefSitemapEntries } from "@/lib/briefSitemap";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "@/lib/seoHubs";
 import { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } from "@/lib/insights";
 
@@ -35,6 +37,9 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/failures",
     "/sponsors",
     "/insights",
+    "/briefs",
+    "/validation",
+    "/asset-check",
     "/reports/latest-two-week-stopped-trial-updates",
     "/sponsor-insights",
     "/top-entities",
@@ -71,10 +76,17 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     ? new Date(meta.version).toISOString()
     : new Date().toISOString();
 
+  const briefEntries = selectBriefSitemapEntries(briefsIndex.briefs);
+  const latestBriefLastmod = latestBriefSitemapLastmod(briefEntries) || lastmod;
+
   const urls = [
     ...dataDrivenPaths.map((path) => ({
       loc: `${SITE_URL}${path}`,
-      lastmod,
+      lastmod: path === "/briefs" ? latestBriefLastmod : lastmod,
+    })),
+    ...briefEntries.map((entry) => ({
+      loc: `${SITE_URL}${entry.path}`,
+      lastmod: toIsoDate(entry.lastmod, lastmod),
     })),
     ...stableInformationPaths.map((path) => ({
       loc: `${SITE_URL}${path}`,

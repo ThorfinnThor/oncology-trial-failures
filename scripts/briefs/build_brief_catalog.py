@@ -108,12 +108,13 @@ def main() -> int:
 
     # One process, one universe load: building 40+ briefs as subprocesses re-read the
     # whole universe each time and exhausted memory when run in parallel.
-    for label, job_args in jobs:
-        code = build_one(job_args)
-        if code:
-            print(f"skipped {label} (exit {code})", file=sys.stderr)
     slug = lambda v: re.sub(r"[^a-z0-9]+", "-", (v or "").lower()).strip("-")
     area_slug = slug(args.area)
+    for label, job_args in jobs:
+        canonical_url = f"https://clinicaltrialfailures.com/briefs/{area_slug}-{slug(label)}"
+        code = build_one([*job_args, "--canonical-url", canonical_url])
+        if code:
+            print(f"skipped {label} (exit {code})", file=sys.stderr)
     window_slug = f"{start[0]}-{start[1]}"
     record_manifest(args.area, [f"brief_{area_slug}_{slug(label)}_{window_slug}" for label, _ in jobs])
     print(f"built {len(jobs)} briefs: {', '.join(n for n, _ in jobs)}")

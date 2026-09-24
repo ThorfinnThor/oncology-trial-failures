@@ -31,10 +31,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 export default function BriefPage({ brief }: Props) {
 
   const area = brief.area.toLowerCase();
+  const areaLabel = brief.area === "Immunology & Autoimmune" ? "immunology and autoimmune disease" : area;
   const phases = brief.phases.join("/");
-  const title = `${brief.segment}: ${pct(brief.rate)} of closed trials stopped early`;
+  const title = `${brief.segment} trial stops in ${areaLabel}`;
   const description =
-    `${brief.biological_stops} of ${brief.closed} closed Phase ${phases} ${area} trials of ${brief.segment} were ` +
+    `${brief.biological_stops} of ${brief.closed} closed Phase ${phases} ${areaLabel} trials of ${brief.segment} were ` +
     `terminated for an efficacy, safety or benefit–risk reason, against ${pct(brief.baseline_rate)} across ${area}. ` +
     `Trials, sponsors and registry stop reasons included.`;
   const hasReference = Math.abs(brief.reference_rate - brief.baseline_rate) > 1e-9;
@@ -98,8 +99,7 @@ export default function BriefPage({ brief }: Props) {
           </nav>
 
           <h1>
-            {brief.segment}
-            {sig ? `: ${sig.headline}` : `: ${pct(brief.rate)} of closed trials stopped early`}
+            {brief.segment} trial stops in {areaLabel}
           </h1>
           {sig ? <p className="lead strongLead">{sig.sentence}</p> : null}
           <p className="lead">
@@ -415,7 +415,7 @@ export default function BriefPage({ brief }: Props) {
             {brief.trial_count > brief.trials_preview.length ? (
               <p className="fine">
                 Showing {brief.trials_preview.length} of {brief.trial_count} stopped trials. The remaining{" "}
-                {brief.trial_count - brief.trials_preview.length} are in the PDF below, with the full stop-reason text.
+                {brief.trial_count - brief.trials_preview.length} are available in the evidence package.
               </p>
             ) : null}
           </section>
@@ -425,7 +425,7 @@ export default function BriefPage({ brief }: Props) {
               <div>
                 <h2>Take it with you</h2>
                 <p className="sectionSub">
-                  The same brief as a two-page document: every molecule behind the stops, the comparison, the trials and the
+                  The same brief as a document: every molecule behind the stops, the comparison, selected trials and the
                   method. No form — if the work does not stand up to reading, an email address is worth nothing anyway.
                 </p>
                 <ul className="list">
