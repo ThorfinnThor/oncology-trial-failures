@@ -62,6 +62,17 @@ DAYS_BETWEEN = 12          # a fortnight, with room for a run that starts late
 MAX_ROWS = 25              # a mail is a summary; the site is the list
 
 
+def shorten(value, limit: int) -> str:
+    """Cut at a word, not mid-word. A registry title ending in "High Risk Mantle Cel" reads like
+    the mail broke, and the first one anybody received did exactly that."""
+    text = " ".join(str(value or "").split())
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    space = cut.rfind(" ")
+    return (cut[:space] if space > limit * 0.6 else cut).rstrip(" ,;:-") + "…"
+
+
 def e(value) -> str:
     return html.escape(str(value if value is not None else ""))
 
@@ -158,7 +169,7 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
         out = ""
         for item in items[:MAX_ROWS]:
             nct = e(item.get("nct_id"))
-            title = e((item.get("brief_title") or "")[:130])
+            title = e(shorten(item.get("brief_title"), 130))
             sponsor = e(item.get("sponsor_group") or "")
             if kind == "added":
                 detail = e((item.get("why_stopped") or item.get("failure_primary_reason") or "")[:180])
@@ -220,7 +231,7 @@ def recent_stops(limit: int) -> list[dict]:
                 continue
             rows.append({
                 "nct_id": r.get("nct_id"),
-                "title": (r.get("brief_title") or "")[:140],
+                "title": shorten(r.get("brief_title"), 140),
                 "sponsor": r.get("sponsor_group") or r.get("lead_sponsor_raw") or "",
                 "detail": (r.get("why_stopped") or "")[:200],
                 "updated": r.get("last_update_post_date") or "",
@@ -239,7 +250,7 @@ def write_preview(pending: dict, summary: dict) -> None:
     def row(item: dict, kind: str) -> dict:
         return {
             "nct_id": item.get("nct_id"),
-            "title": (item.get("brief_title") or "")[:140],
+            "title": shorten(item.get("brief_title"), 140),
             "sponsor": item.get("sponsor_group") or "",
             "detail": ((item.get("why_stopped") or item.get("failure_primary_reason") or "")[:200]
                        if kind == "added"
