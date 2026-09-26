@@ -14,20 +14,20 @@
  "areas": [
   {
    "area": "Oncology",
-   "terminations": 2430,
-   "unreadable": 482,
+   "terminations": 2436,
+   "unreadable": 484,
    "by_sponsor_class": [
     {
      "group": "OTHER",
-     "terminations": 1277,
-     "unreadable": 176,
-     "unreadable_share": 0.13782302270947533
+     "terminations": 1280,
+     "unreadable": 177,
+     "unreadable_share": 0.13828125
     },
     {
      "group": "INDUSTRY",
-     "terminations": 1048,
-     "unreadable": 291,
-     "unreadable_share": 0.2776717557251908
+     "terminations": 1051,
+     "unreadable": 292,
+     "unreadable_share": 0.27783063748810655
     },
     {
      "group": "NIH",
@@ -45,23 +45,23 @@
    "by_start_era": [
     {
      "group": "2015–2019",
-     "terminations": 1431,
-     "unreadable": 277,
-     "unreadable_share": 0.19357092941998602
+     "terminations": 1433,
+     "unreadable": 278,
+     "unreadable_share": 0.19399860432658758
     },
     {
      "group": "2020–2024",
-     "terminations": 999,
-     "unreadable": 205,
-     "unreadable_share": 0.20520520520520522
+     "terminations": 1003,
+     "unreadable": 206,
+     "unreadable_share": 0.2053838484546361
     }
    ],
    "by_phase": [
     {
      "group": "Phase 2",
-     "terminations": 2102,
-     "unreadable": 403,
-     "unreadable_share": 0.1917221693625119
+     "terminations": 2108,
+     "unreadable": 405,
+     "unreadable_share": 0.19212523719165087
     },
     {
      "group": "Phase 3",
@@ -116,31 +116,31 @@
    ],
    "consequence": {
     "industry": {
-     "closed": 3008,
+     "closed": 3022,
      "biological_stops": 177,
-     "rate": 0.05884308510638298,
-     "unresolved_terminations": 291,
-     "rate_if_all_unresolved_were_biological": 0.15558510638297873
+     "rate": 0.0585704831237591,
+     "unresolved_terminations": 292,
+     "rate_if_all_unresolved_were_biological": 0.15519523494374587
     },
     "non_industry": {
-     "closed": 4790,
+     "closed": 4807,
      "biological_stops": 161,
-     "rate": 0.03361169102296451,
-     "unresolved_terminations": 191,
-     "rate_if_all_unresolved_were_biological": 0.07348643006263048
+     "rate": 0.03349282296650718,
+     "unresolved_terminations": 192,
+     "rate_if_all_unresolved_were_biological": 0.07343457457873934
     }
    }
   },
   {
    "area": "Neurology",
-   "terminations": 329,
+   "terminations": 330,
    "unreadable": 87,
    "by_sponsor_class": [
     {
      "group": "INDUSTRY",
-     "terminations": 235,
+     "terminations": 236,
      "unreadable": 74,
-     "unreadable_share": 0.3148936170212766
+     "unreadable_share": 0.3135593220338983
     },
     {
      "group": "OTHER",
@@ -158,17 +158,17 @@
     },
     {
      "group": "2020–2024",
-     "terminations": 150,
+     "terminations": 151,
      "unreadable": 48,
-     "unreadable_share": 0.32
+     "unreadable_share": 0.31788079470198677
     }
    ],
    "by_phase": [
     {
      "group": "Phase 2",
-     "terminations": 188,
+     "terminations": 189,
      "unreadable": 44,
-     "unreadable_share": 0.23404255319148937
+     "unreadable_share": 0.2328042328042328
     },
     {
      "group": "Phase 3",
@@ -180,18 +180,18 @@
    "by_sponsor_group": [],
    "consequence": {
     "industry": {
-     "closed": 946,
-     "biological_stops": 79,
-     "rate": 0.08350951374207188,
+     "closed": 947,
+     "biological_stops": 80,
+     "rate": 0.08447729672650475,
      "unresolved_terminations": 74,
-     "rate_if_all_unresolved_were_biological": 0.16173361522198731
+     "rate_if_all_unresolved_were_biological": 0.16261879619852165
     },
     "non_industry": {
-     "closed": 600,
+     "closed": 602,
      "biological_stops": 12,
-     "rate": 0.02,
+     "rate": 0.019933554817275746,
      "unresolved_terminations": 13,
-     "rate_if_all_unresolved_were_biological": 0.041666666666666664
+     "rate_if_all_unresolved_were_biological": 0.04152823920265781
     }
    }
   },
@@ -244,18 +244,18 @@
    "by_sponsor_group": [],
    "consequence": {
     "industry": {
-     "closed": 1324,
+     "closed": 1329,
      "biological_stops": 59,
-     "rate": 0.0445619335347432,
+     "rate": 0.04439428141459744,
      "unresolved_terminations": 85,
-     "rate_if_all_unresolved_were_biological": 0.10876132930513595
+     "rate_if_all_unresolved_were_biological": 0.10835214446952596
     },
     "non_industry": {
-     "closed": 643,
+     "closed": 645,
      "biological_stops": 7,
-     "rate": 0.01088646967340591,
+     "rate": 0.010852713178294573,
      "unresolved_terminations": 12,
-     "rate_if_all_unresolved_were_biological": 0.029548989113530325
+     "rate_if_all_unresolved_were_biological": 0.02945736434108527
     }
    }
   },
@@ -308,24 +308,24 @@
    "by_sponsor_group": [],
    "consequence": {
     "industry": {
-     "closed": 986,
+     "closed": 988,
      "biological_stops": 21,
-     "rate": 0.02129817444219067,
+     "rate": 0.02125506072874494,
      "unresolved_terminations": 24,
-     "rate_if_all_unresolved_were_biological": 0.04563894523326572
+     "rate_if_all_unresolved_were_biological": 0.04554655870445344
     },
     "non_industry": {
-     "closed": 651,
+     "closed": 652,
      "biological_stops": 7,
-     "rate": 0.010752688172043012,
+     "rate": 0.010736196319018405,
      "unresolved_terminations": 7,
-     "rate_if_all_unresolved_were_biological": 0.021505376344086023
+     "rate_if_all_unresolved_were_biological": 0.02147239263803681
     }
    }
   },
   {
    "area": "Gastroenterology & Hepatology",
-   "terminations": 332,
+   "terminations": 333,
    "unreadable": 92,
    "by_sponsor_class": [
     {
@@ -336,17 +336,17 @@
     },
     {
      "group": "OTHER",
-     "terminations": 98,
+     "terminations": 99,
      "unreadable": 10,
-     "unreadable_share": 0.10204081632653061
+     "unreadable_share": 0.10101010101010101
     }
    ],
    "by_start_era": [
     {
      "group": "2015–2019",
-     "terminations": 200,
+     "terminations": 201,
      "unreadable": 61,
-     "unreadable_share": 0.305
+     "unreadable_share": 0.3034825870646766
     },
     {
      "group": "2020–2024",
@@ -358,9 +358,9 @@
    "by_phase": [
     {
      "group": "Phase 2",
-     "terminations": 225,
+     "terminations": 226,
      "unreadable": 67,
-     "unreadable_share": 0.29777777777777775
+     "unreadable_share": 0.29646017699115046
     },
     {
      "group": "Phase 3",
@@ -372,18 +372,18 @@
    "by_sponsor_group": [],
    "consequence": {
     "industry": {
-     "closed": 1031,
+     "closed": 1034,
      "biological_stops": 52,
-     "rate": 0.0504364694471387,
+     "rate": 0.05029013539651837,
      "unresolved_terminations": 78,
-     "rate_if_all_unresolved_were_biological": 0.12609117361784675
+     "rate_if_all_unresolved_were_biological": 0.12572533849129594
     },
     "non_industry": {
-     "closed": 612,
+     "closed": 616,
      "biological_stops": 11,
-     "rate": 0.017973856209150325,
+     "rate": 0.017857142857142856,
      "unresolved_terminations": 14,
-     "rate_if_all_unresolved_were_biological": 0.04084967320261438
+     "rate_if_all_unresolved_were_biological": 0.040584415584415584
     }
    }
   }

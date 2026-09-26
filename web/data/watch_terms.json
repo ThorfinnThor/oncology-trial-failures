@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_trials": 987,
+  "source_trials": 985,
   "groups": [
     {
       "key": "assets",
@@ -8,11 +8,11 @@
       "terms": [
         {
           "term": "gemcitabine",
-          "trials": 20
+          "trials": 22
         },
         {
           "term": "carboplatin",
-          "trials": 20
+          "trials": 22
         },
         {
           "term": "docetaxel anhydrous",
@@ -20,7 +20,7 @@
         },
         {
           "term": "pembrolizumab",
-          "trials": 16
+          "trials": 17
         },
         {
           "term": "cyclophosphamide anhydrous",
@@ -31,12 +31,12 @@
           "trials": 15
         },
         {
-          "term": "paclitaxel",
+          "term": "cisplatin",
           "trials": 14
         },
         {
-          "term": "cisplatin",
-          "trials": 13
+          "term": "paclitaxel",
+          "trials": 14
         },
         {
           "term": "bevacizumab",
@@ -51,16 +51,16 @@
           "trials": 13
         },
         {
+          "term": "fluorouracil",
+          "trials": 12
+        },
+        {
+          "term": "lenalidomide",
+          "trials": 12
+        },
+        {
           "term": "nivolumab",
           "trials": 12
-        },
-        {
-          "term": "bintrafusp alfa",
-          "trials": 12
-        },
-        {
-          "term": "capecitabine",
-          "trials": 11
         }
       ]
     },
@@ -70,19 +70,19 @@
       "terms": [
         {
           "term": "TUBB",
-          "trials": 48
+          "trials": 49
+        },
+        {
+          "term": "PDCD1",
+          "trials": 44
         },
         {
           "term": "CD274",
           "trials": 44
         },
         {
-          "term": "PDCD1",
-          "trials": 43
-        },
-        {
           "term": "TYMS",
-          "trials": 30
+          "trials": 32
         },
         {
           "term": "EGFR",
@@ -117,12 +117,12 @@
           "trials": 17
         },
         {
-          "term": "HDAC1",
+          "term": "SEM1",
           "trials": 16
         },
         {
-          "term": "SEM1",
-          "trials": 15
+          "term": "HDAC1",
+          "trials": 16
         }
       ]
     },
@@ -132,23 +132,23 @@
       "terms": [
         {
           "term": "DNA inhibitor",
-          "trials": 76
+          "trials": 79
         },
         {
           "term": "Nucleic Acid Synthesis Inhibitors",
-          "trials": 34
+          "trials": 36
         },
         {
           "term": "RNA inhibitor",
+          "trials": 33
+        },
+        {
+          "term": "Thymidylate synthase inhibitor",
           "trials": 32
         },
         {
           "term": "Programmed cell death protein 1 inhibitor",
-          "trials": 31
-        },
-        {
-          "term": "Thymidylate synthase inhibitor",
-          "trials": 30
+          "trials": 32
         },
         {
           "term": "Tubulin inhibitor",
@@ -172,7 +172,7 @@
         },
         {
           "term": "Tubulin stabiliser",
-          "trials": 19
+          "trials": 20
         },
         {
           "term": "Alkylating Activity",
@@ -194,7 +194,7 @@
       "terms": [
         {
           "term": "National Cancer Institute (NCI)",
-          "trials": 39
+          "trials": 38
         },
         {
           "term": "M.D. Anderson Cancer Center",
@@ -209,15 +209,15 @@
           "trials": 23
         },
         {
-          "term": "Pfizer",
-          "trials": 19
-        },
-        {
           "term": "Eli Lilly",
           "trials": 19
         },
         {
           "term": "GSK",
+          "trials": 18
+        },
+        {
+          "term": "Pfizer",
           "trials": 18
         },
         {
