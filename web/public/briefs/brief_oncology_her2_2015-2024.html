@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><link rel="canonical" href="https://clinicaltrialfailures.com/briefs/oncology-her2"><title>HER2 — discontinuation rate</title><style>
+<!doctype html><html><head><meta charset="utf-8"><link rel='canonical' href='https://clinicaltrialfailures.com/briefs/oncology-her2'><title>HER2 — discontinuation rate</title><style>
 @page { size:A4; margin:14mm 13mm; }
 :root { --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }
 body { font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }
@@ -28,6 +28,11 @@ td { border-bottom:1px solid var(--rule); padding:2.5px 4px; vertical-align:top;
 .reason { font-size:7.2pt; line-height:1.28; width:40%; overflow-wrap:anywhere; } .muted { color:var(--muted); }
 table.stops td:nth-child(4) { width:16%; } table.stops td:nth-child(3) { width:13%; }
 table { page-break-inside:auto; } tr { page-break-inside:avoid; }
+/* A method box split down the middle of a sentence reads as a broken document. Keep each
+   block whole and let it move to the next page instead. */
+.box, .cta, .stats, .barrow, .robust { page-break-inside:avoid; break-inside:avoid; }
+.cols { page-break-inside:avoid; break-inside:avoid; }
+h2 { page-break-after:avoid; break-after:avoid; }
 .tk { font-size:7pt; border:1px solid var(--rule); border-radius:3px; padding:0 3px; color:var(--ink2); }
 .box { background:#f4f3ef; padding:8px 10px; border-radius:4px; font-size:7.8pt; color:var(--ink2); }
 .box b { color:var(--ink); }
@@ -42,17 +47,17 @@ Rates count trials that stopped early for efficacy, safety or benefit–risk rea
 <div class="stats">
  <div class="stat"><b>3.5%</b><span>7 of 200 closed trials (95% CI 1.7%–7.0%)</span></div>
  <div class="stat"><b>5 / 2 / 0</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to 7)</span></div>
- <div class="stat"><b>26.1%</b><span>of 766 trials have closed · 566 still open or unresolved</span></div>
+ <div class="stat"><b>26.1%</b><span>of 765 trials have closed · 565 still open or unresolved</span></div>
  <div class="stat"><b>1.3%</b><span>stopped for a biological reason within 3 years of starting (95% CI 0.6%–2.9%; 297 still at risk; 1.5% area-wide)</span></div>
 </div>
 <div class="cols">
 <div>
 <h2>How this compares</h2>
-<div class="barrow"><div class="blabel">HER2</div><div class="track"><span class="seg" style="width:70.0%"></span><span class="val">3.5%</span></div><div class="bnote">7/200 closed</div></div>
-<div class="barrow"><div class="blabel">all oncology trials with a resolved drug target</div><div class="track"><span class="seg" style="width:100.0%"></span><span class="val">5.0%</span></div><div class="bnote">284/5677 closed</div></div>
-<div class="barrow"><div class="blabel">All oncology Phase 2,3</div><div class="track"><span class="seg" style="width:86.6%"></span><span class="val">4.3%</span></div><div class="bnote">338/7798 closed</div></div>
-<p class="robust"><b>What is in this class:</b> 345 distinct experimental drugs across 766 trials (small molecule 477, antibody 382, adc 271, unknown 125). Most tested: TRASTUZUMAB (220), PYROTINIB (114), PERTUZUMAB (96), DISITAMAB VEDOTIN (81), PACLITAXEL (70). A class groups drugs by what they act on; check that the grouping is one you would make before reading the rate as a property of the mechanism.</p>
-<p class="robust"><b>How much does this rest on one decision?</b> The 7 stops came from 6 sponsor-asset programmes across 6 sponsors; the largest (Rain Oncology Inc) contributed 2; removing that programme's trials from both sides leaves 2.5%. Screened alongside 83 other segments in this area, it does not survive a 10% false-discovery correction (q=1, Benjamini-Yekutieli). A further 11 closed trials here were terminated with no cause recorded in the registry; if every one of them were biological the rate would be 9.0%. Read it as a screen worth checking against the
+<div class="barrow"><div class="blabel">HER2</div><div class="track"><span class="seg" style="width:70.2%"></span><span class="val">3.5%</span></div><div class="bnote">7/200 closed</div></div>
+<div class="barrow"><div class="blabel">all oncology trials with a resolved drug target</div><div class="track"><span class="seg" style="width:100.0%"></span><span class="val">5.0%</span></div><div class="bnote">284/5698 closed</div></div>
+<div class="barrow"><div class="blabel">All oncology Phase 2,3</div><div class="track"><span class="seg" style="width:86.6%"></span><span class="val">4.3%</span></div><div class="bnote">338/7829 closed</div></div>
+<p class="robust"><b>What is in this class:</b> 345 distinct experimental drugs across 765 trials (small molecule 476, antibody 382, adc 270, unknown 125). Most tested: TRASTUZUMAB (220), PYROTINIB (113), PERTUZUMAB (96), DISITAMAB VEDOTIN (80), PACLITAXEL (70). A class groups drugs by what they act on; check that the grouping is one you would make before reading the rate as a property of the mechanism.</p>
+<p class="robust"><b>How much does this rest on one decision?</b> The 7 stops came from 6 sponsor-asset programmes across 6 sponsors; the largest (Rain Oncology Inc) contributed 2; removing that programme's trials from both sides leaves 2.5%. Screened alongside 85 other segments in this area, it does not survive a 10% false-discovery correction (q=1, Benjamini-Yekutieli). A further 11 closed trials here were terminated with no cause recorded in the registry; if every one of them were biological the rate would be 9.0%. Read it as a screen worth checking against the
 underlying trials.</p>
 <p style="font-size:7.4pt;color:var(--muted);margin-top:6px">Bars show the share of closed trials stopped for biological reasons. Confidence intervals overlap where sample sizes are small — read the counts, not just the bars.</p>
 </div>
@@ -71,7 +76,7 @@ Sponsors with most stops: Rain Oncology Inc (2), Spanish Breast Cancer Research 
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase 2,3 oncology trials started 2015–2024 that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; 76% of industry oncology trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
 <div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only 26.1% of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
-<div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped oncology trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
+<div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped oncology trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/pricing</b></div>
 <div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started 2015–2024.</div>
 </div>
 </body></html>

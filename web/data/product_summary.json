@@ -1,7 +1,7 @@
 {
   "product": "Oncology Failure Signals",
   "product_version": "1.0.0",
-  "dataset_version": "2026-09-18",
+  "dataset_version": "2026-09-25",
   "trial_count": 985,
   "industry_trial_count": 443,
   "industry_phase2_3_trial_count": 296,
@@ -12,17 +12,17 @@
     "MULTIPLE": 94
   },
   "trials_with_resolved_focus_asset": 0.7299492385786802,
-  "trials_with_focus_target_gene": 0.5228426395939086,
+  "trials_with_focus_target_gene": 0.5238578680203045,
   "trials_with_pubmed_publication": 0.28426395939086296,
   "industry_trials_with_sec_issuer": 0.48081264108352145,
-  "unique_assets": 569,
-  "assets_with_repeated_safety_signal": 71,
+  "unique_assets": 570,
+  "assets_with_repeated_safety_signal": 72,
   "assets_with_repeated_efficacy_signal": 123,
   "discontinuation_rates": {
-    "segments": 194,
-    "mechanism_classes": 39,
-    "universe_closed_trials": 7798,
-    "baseline_rate": 0.043344447294177996,
+    "segments": 198,
+    "mechanism_classes": 40,
+    "universe_closed_trials": 7829,
+    "baseline_rate": 0.04317281900625878,
     "window": {
       "start_year_from": 2015,
       "start_year_to": 2024,
@@ -35,37 +35,37 @@
   "featured_segment": {
     "segment": {
       "label": "TGF-\u03b2 + PD-(L)1",
-      "rate": 0.25,
+      "rate": 0.24444444444444444,
       "stops": 11,
-      "closed": 44,
+      "closed": 45,
       "ci95": [
-        0.14574066080685744,
-        0.39440849808414946
+        0.14235335025509283,
+        0.3867366058479013
       ]
     },
     "baseline": {
       "label": "All oncology Phase 2/3",
-      "rate": 0.043344447294177996,
+      "rate": 0.04317281900625878,
       "stops": 338,
-      "closed": 7798,
+      "closed": 7829,
       "ci95": [
-        0.03904513102638861,
-        0.04809347481251999
+        0.03889019928963327,
+        0.047903538502791894
       ]
     },
     "reference": {
       "label": "All PD-(L)1 trials",
-      "rate": 0.04701890450799806,
+      "rate": 0.046792088760250844,
       "stops": 97,
-      "closed": 2063,
+      "closed": 2073,
       "ci95": [
-        0.03869608759512371,
-        0.057025616477408995
+        0.0385086916283251,
+        0.05675211208438943
       ]
     }
   },
-  "brief_count": 51,
-  "sample_file": "/samples/oncology-failure-signals-sample-2026-09-18-7bd4b15776d664f2.csv",
+  "brief_count": 52,
+  "sample_file": "/samples/oncology-failure-signals-sample-2026-09-25-7bd4b15776d664f2.csv",
   "sample_record_count": 100,
   "sample_columns": [
     "nct_id",
@@ -99,6 +99,6 @@
     "last_update_post_date",
     "registry_url"
   ],
-  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-09-18-7bd4b15776d664f2-README.txt",
+  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-09-25-7bd4b15776d664f2-README.txt",
   "signals_column_count": 30
 }

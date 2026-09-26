@@ -1,4 +1,4 @@
-<!doctype html><html><head><meta charset="utf-8"><link rel="canonical" href="https://clinicaltrialfailures.com/briefs/immunology-autoimmune-btk"><title>BTK — discontinuation rate</title><style>
+<!doctype html><html><head><meta charset="utf-8"><link rel='canonical' href='https://clinicaltrialfailures.com/briefs/immunology-autoimmune-btk'><title>BTK — discontinuation rate</title><style>
 @page { size:A4; margin:14mm 13mm; }
 :root { --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }
 body { font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }
@@ -28,6 +28,11 @@ td { border-bottom:1px solid var(--rule); padding:2.5px 4px; vertical-align:top;
 .reason { font-size:7.2pt; line-height:1.28; width:40%; overflow-wrap:anywhere; } .muted { color:var(--muted); }
 table.stops td:nth-child(4) { width:16%; } table.stops td:nth-child(3) { width:13%; }
 table { page-break-inside:auto; } tr { page-break-inside:avoid; }
+/* A method box split down the middle of a sentence reads as a broken document. Keep each
+   block whole and let it move to the next page instead. */
+.box, .cta, .stats, .barrow, .robust { page-break-inside:avoid; break-inside:avoid; }
+.cols { page-break-inside:avoid; break-inside:avoid; }
+h2 { page-break-after:avoid; break-after:avoid; }
 .tk { font-size:7pt; border:1px solid var(--rule); border-radius:3px; padding:0 3px; color:var(--ink2); }
 .box { background:#f4f3ef; padding:8px 10px; border-radius:4px; font-size:7.8pt; color:var(--ink2); }
 .box b { color:var(--ink); }
@@ -37,7 +42,7 @@ table { page-break-inside:auto; } tr { page-break-inside:avoid; }
 <div class="sheet">
 <div class="kicker">Clinical Trial Failures · Discontinuation rate · Immunology &amp; Autoimmune Phase 2,3 · starts 2015–2024</div>
 <h1>BTK: 3 molecules stopped early, all small molecules</h1>
-<p class="dek"><b>3 stopped trials, but 3 molecules — all small molecules: Elsubrutinib, Fenebrutinib and Poseltinib.</b> 1 of the stops were the trial's own verdict and 2 followed a decision taken elsewhere. Against 3.5% for all immunology &amp; autoimmune trials with a resolved drug target and 3.4% across all immunology &amp; autoimmune Phase 2,3 trials in the same window.
+<p class="dek"><b>3 stopped trials, but 3 molecules — all small molecules: Elsubrutinib, Fenebrutinib and Poseltinib.</b> 1 of the stops were the trial's own verdict and 2 followed a decision taken elsewhere. Against 3.5% for all immunology &amp; autoimmune trials with a resolved drug target and 3.3% across all immunology &amp; autoimmune Phase 2,3 trials in the same window.
 Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
 <div class="stats">
  <div class="stat"><b>12.0%</b><span>3 of 25 closed trials (95% CI 4.2%–30.0%)</span></div>
@@ -49,9 +54,9 @@ Rates count trials that stopped early for efficacy, safety or benefit–risk rea
 <div>
 <h2>How this compares</h2>
 <div class="barrow"><div class="blabel">BTK</div><div class="track"><span class="seg" style="width:100.0%"></span><span class="val">12.0%</span></div><div class="bnote">3/25 closed</div></div>
-<div class="barrow"><div class="blabel">all immunology &amp; autoimmune trials with a resolved drug target</div><div class="track"><span class="seg" style="width:29.2%"></span><span class="val">3.5%</span></div><div class="bnote">30/857 closed</div></div>
-<div class="barrow"><div class="blabel">All immunology &amp; autoimmune Phase 2,3</div><div class="track"><span class="seg" style="width:28.0%"></span><span class="val">3.4%</span></div><div class="bnote">66/1967 closed</div></div>
-<p class="robust"><b>What is in this class:</b> 18 distinct experimental drugs across 40 trials (small molecule 40, unknown 1). Most tested: ZANUBRUTINIB (8), ORELABRUTINIB (6), FENEBRUTINIB (4), RITLECITINIB (4), ELSUBRUTINIB (4). A class groups drugs by what they act on; check that the grouping is one you would make before reading the rate as a property of the mechanism.</p>
+<div class="barrow"><div class="blabel">all immunology &amp; autoimmune trials with a resolved drug target</div><div class="track"><span class="seg" style="width:29.1%"></span><span class="val">3.5%</span></div><div class="bnote">30/858 closed</div></div>
+<div class="barrow"><div class="blabel">All immunology &amp; autoimmune Phase 2,3</div><div class="track"><span class="seg" style="width:27.9%"></span><span class="val">3.3%</span></div><div class="bnote">66/1974 closed</div></div>
+<p class="robust"><b>What is in this class:</b> 18 distinct experimental drugs across 40 trials (small molecule 40, unknown 1). Most tested: ZANUBRUTINIB (8), ORELABRUTINIB (6), FENEBRUTINIB (4), RITLECITINIB (4), RILZABRUTINIB (4). A class groups drugs by what they act on; check that the grouping is one you would make before reading the rate as a property of the mechanism.</p>
 <p class="robust"><b>How much does this rest on one decision?</b> The 3 stops came from 3 sponsor-asset programmes across 3 sponsors; the largest (Roche) contributed 1; removing that programme's trials from both sides leaves 9.5%. Screened alongside 28 other segments in this area, it does not survive a 10% false-discovery correction (q=1, Benjamini-Yekutieli). Read it as a screen worth checking against the
 underlying trials.</p>
 <p style="font-size:7.4pt;color:var(--muted);margin-top:6px">Bars show the share of closed trials stopped for biological reasons. Confidence intervals overlap where sample sizes are small — read the counts, not just the bars.</p>
@@ -71,7 +76,7 @@ Sponsors with most stops: AbbVie (1), Roche (1), Eli Lilly (1).</p>
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase 2,3 immunology &amp; autoimmune trials started 2015–2024 that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; 48% of industry immunology &amp; autoimmune trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
 <div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only 62.5% of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
-<div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped immunology &amp; autoimmune trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/data-licensing</b></div>
+<div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped immunology &amp; autoimmune trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/pricing</b></div>
 <div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started 2015–2024.</div>
 </div>
 </body></html>
