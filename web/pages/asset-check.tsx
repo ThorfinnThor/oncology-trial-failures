@@ -10,12 +10,13 @@
 
 import Head from "next/head";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
+import { useLinkKey } from "@/lib/linkKey";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/asset-check`;
@@ -91,6 +92,18 @@ export default function AssetCheckPage() {
       setMessage(error?.message || "Could not check that molecule. Please try again.");
     }
   }
+
+  // Arriving from a package page with ?q=<class>: fill the box and run the check, so the buyer
+  // lands on the result with the buy box already under it rather than on an empty form. Read
+  // through useLinkKey for the same reason the mail pages do — the address bar, not a router flag.
+  const { key: preset } = useLinkKey("q");
+  const ranPreset = useRef(false);
+  useEffect(() => {
+    if (!preset || ranPreset.current) return;
+    ranPreset.current = true;
+    setValue(preset);
+    void check(preset);
+  }, [preset]);
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

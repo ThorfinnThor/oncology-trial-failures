@@ -1,19 +1,17 @@
 // web/pages/packages/[slug].tsx
 //
-// What a package contains, and the form that delivers it. The brief is the teaser: it shows
+// What a package contains, and the way to buy it — through the asset check, which sells by target. The brief is the teaser: it shows
 // the finding and the stopped trials. This shows what the brief leaves out, using real counts
 // from the cohort rather than a feature list, and hands over the document immediately.
 
 import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticPaths, GetStaticProps } from "next";
-import { FormEvent, useState } from "react";
 
-import BriefVsPackage, { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
+import BriefVsPackage, { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
-import { LICENSING_EMAIL } from "@/lib/licensing";
 
 type Pkg = (typeof catalogue.packages)[number];
 
@@ -21,30 +19,9 @@ const SITE_URL = "https://clinicaltrialfailures.com";
 const n = (v: number) => v.toLocaleString("en-US");
 
 export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: string | null }) {
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
-  const [message, setMessage] = useState("");
-  const [url, setUrl] = useState("");
-
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setStatus("sending");
-    const form = new FormData(event.currentTarget);
-    try {
-      const response = await fetch("/api/order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...Object.fromEntries(form.entries()), slug: pkg.slug }),
-      });
-      const data = await response.json();
-      if (!response.ok || !data.ok) throw new Error(data.error || "Request failed");
-      setUrl(data.url || "");
-      setMessage(data.message || "");
-      setStatus("done");
-    } catch (error: any) {
-      setMessage(error?.message || "Request failed. Please email us instead.");
-      setStatus("error");
-    }
-  }
+  // The class name is what the buyer is sent to the asset check with. Every one of the 52 resolves
+  // there, and buying through it always includes this cohort — checked against the catalogue.
+  const buyAs = pkg.cohort.split(" + ")[0];
 
   const title = `${pkg.cohort} — evidence package`;
   const c = pkg.counts;
@@ -119,8 +96,9 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
               <div className="card">
                 <div className="cardTitle">What it cannot tell you</div>
                 <p>
-                  The limits in full: unadjusted comparisons, no clinician review, disclosure differences between sponsors,
-                  and the fact that a completed trial that missed its endpoint is not counted anywhere.
+                  The limits in full: unadjusted comparisons, no clinician review, and disclosure differences between
+                  sponsors. Completed trials that missed their primary endpoint are listed separately, and only where
+                  the sponsor posted an analysis to read — so that count is a floor, not a rate.
                 </p>
               </div>
             </div>
@@ -129,83 +107,32 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
           {adds > 0 ? (
           <section className="section" id="get">
             <div className="box">
-              {status === "done" ? (
-                <div>
-                  <h2>Ready</h2>
-                  <p className="lead">{message}</p>
-                  <Link className="btnPrimary" href={url}>
-                    Open your access
-                  </Link>
-                  <p className="fine">
-                    Keep that link. It opens everything this order covers, it does not expire for a year, and it always
-                    shows the current release — there is nothing to download and keep up to date.
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <div>
-                    <h2>Get this package</h2>
-                    <p className="lead">
-                      Delivered the moment you ask — it is already built, rebuilt every week with the registry. No call, no
-                      waiting.
-                    </p>
-                    <ul className="list">
-                      <li>Automated analysis. No clinician has reviewed these records, and we do not price as though one has</li>
-                      <li>Every figure traces to a trial, and every trial to its registry record</li>
-                      <li>
-                        Name the asset you are evaluating and the package opens with it compared against every molecule
-                        that failed here — same target, same pathway, same modality, or none of the three.{" "}
-                        <Link className="link" href="/asset-check">
-                          Not sure this is the right cohort? Check your molecule free first
-                        </Link>
-                      </li>
-                    </ul>
-                  </div>
-                  <form className="form" onSubmit={submit}>
-                    <div className="field">
-                      <label htmlFor="pk-email">Work email</label>
-                      <input id="pk-email" className="input" name="email" type="email" required autoComplete="email" />
-                    </div>
-                    <div className="field">
-                      <label htmlFor="pk-company">Company or institution</label>
-                      <input id="pk-company" className="input" name="company" type="text" required autoComplete="organization" />
-                    </div>
-                    <div className="field">
-                      <label htmlFor="pk-asset">
-                        The asset you are evaluating <span className="opt">optional</span>
-                      </label>
-                      <input id="pk-asset" className="input" name="asset" type="text" placeholder="Name, INN or research code" />
-                      <span className="hint">
-                        Resolved against ChEMBL&rsquo;s clinical-stage molecules. A preclinical or unnamed asset will not
-                        be in it, and the package says so rather than guessing.
-                      </span>
-                    </div>
-                    <input
-                      name="website"
-                      type="text"
-                      tabIndex={-1}
-                      autoComplete="off"
-                      aria-hidden="true"
-                      style={{ position: "absolute", left: "-9999px" }}
-                    />
-                    <label className="consent">
-                      <input name="marketing" type="checkbox" />
-                      <span>Optional: tell me when this cohort changes. You get the package either way.</span>
-                    </label>
-                    <button className="submit" type="submit" disabled={status === "sending"}>
-                      {status === "sending" ? "Preparing…" : "Get the package"}
-                    </button>
-                    {status === "error" ? <div className="formError">{message}</div> : null}
-                    <p className="fine">
-                      Or email{" "}
-                      <a className="link" href={`mailto:${LICENSING_EMAIL}`}>
-                        {LICENSING_EMAIL}
-                      </a>
-                      .
-                    </p>
-                  </form>
-                </>
-              )}
+              <div>
+                <h2>Get this package — {PACKAGE_PRICE}</h2>
+                <p className="lead">
+                  Packages are bought for a molecule or a target rather than one cohort at a time. You receive every
+                  cohort in which a drug that failed shares that target — this one included — each opening with your
+                  molecule compared against the molecules that failed there.
+                </p>
+                <ul className="list">
+                  <li>One payment, delivered immediately, and a link that stays current for a year</li>
+                  <li>Every figure traces to a trial, and every trial to its registry record</li>
+                  <li>Automated analysis: no clinician has reviewed these records, and the price reflects that</li>
+                </ul>
+              </div>
+              <div className="buySide">
+                <Link className="btnPrimary buyMain" href={`/asset-check?q=${encodeURIComponent(buyAs)}`}>
+                  Buy for {buyAs}
+                </Link>
+                <p className="fine">
+                  Evaluating a specific molecule?{" "}
+                  <Link className="link" href="/asset-check">
+                    Check it first
+                  </Link>{" "}
+                  — the comparison is free, and the package then opens with your molecule already placed against the
+                  ones that failed.
+                </p>
+              </div>
             </div>
           </section>
           ) : (
@@ -229,10 +156,6 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                         other cohorts
                       </Link>
                     </li>
-                    <li>
-                      For your own asset, sponsor or indication, tell us what you are evaluating and we will say whether
-                      the data can answer it before anything is built
-                    </li>
                   </ul>
                   <div className="noSaleActions">
                     {briefSlug ? (
@@ -240,12 +163,6 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                         Read the free brief
                       </Link>
                     ) : null}
-                    <a
-                      className="btnGhost"
-                      href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Evidence package for a custom cohort")}`}
-                    >
-                      Describe your cohort
-                    </a>
                   </div>
                 </div>
               </div>
@@ -355,6 +272,19 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
           font-size: 11.5px;
           line-height: 1.45;
           color: var(--text-muted);
+        }
+        .buySide {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 12px;
+        }
+        .buySide :global(.buyMain) {
+          display: block;
+          width: 100%;
+          text-align: center;
+          padding: 14px 18px;
+          font-size: 15px;
         }
         .noSaleActions {
           display: flex;
