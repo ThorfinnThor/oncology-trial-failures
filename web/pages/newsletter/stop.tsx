@@ -33,7 +33,7 @@ export default function NewsletterStopPage() {
   return (
     <>
       <Head>
-        <title>Stop these emails — Clinical trial failures</title>
+        <title>Unsubscribe — Clinical trial failures</title>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
 
@@ -52,10 +52,10 @@ export default function NewsletterStopPage() {
           <div className="card box">
             {status === "done" ? (
               <>
-                <h1>Done</h1>
+                <h1>You have been unsubscribed</h1>
                 <p>{message}</p>
                 <p className="fine">
-                  If you want it back later, sign up again on the{" "}
+                  You can subscribe again at any time on the{" "}
                   <Link className="link" href="/newsletter">
                     newsletter page
                   </Link>
@@ -64,13 +64,13 @@ export default function NewsletterStopPage() {
               </>
             ) : (
               <>
-                <h1>Stop these emails?</h1>
+                <h1>Unsubscribe</h1>
                 <p>
-                  This removes your address from the list. No more mail, and the address is not kept for anything else.
+                  This removes your address from the mailing list. It is deleted, not kept for any other purpose.
                 </p>
                 {!resolved ? null : key ? (
                   <button className="submit" type="button" onClick={stop} disabled={status === "sending"}>
-                    {status === "sending" ? "Stopping…" : "Stop these emails"}
+                    {status === "sending" ? "Unsubscribing…" : "Unsubscribe"}
                   </button>
                 ) : (
                   <p className="err">

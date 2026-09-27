@@ -24,7 +24,7 @@ export function canSendMail(): boolean {
   return Boolean(mailEnv().BREVO_API_KEY);
 }
 
-export async function sendMail(to: string, subject: string, html: string): Promise<boolean> {
+export async function sendMail(to: string, subject: string, html: string, text?: string): Promise<boolean> {
   const env = mailEnv();
   const key = env.BREVO_API_KEY;
   if (!key) return false;
@@ -39,6 +39,9 @@ export async function sendMail(to: string, subject: string, html: string): Promi
       to: [{ email: to }],
       subject,
       htmlContent: html,
+      // A plain-text part alongside the HTML. Mail without one scores worse with spam filters,
+      // and some readers in regulated companies see nothing else.
+      ...(text ? { textContent: text } : {}),
     }),
   });
   if (!response.ok) {
@@ -52,4 +55,67 @@ export async function sendMail(to: string, subject: string, html: string): Promi
 export function frame(body: string): string {
   return `<div style="font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#14161a;`
     + `max-width:560px;font-size:15px;line-height:1.55">${body}</div>`;
+}
+
+
+const esc = (value: string) =>
+  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+/**
+ * The layout for mail a reader actually sees. Tables and inline styles because that is what
+ * Outlook renders; no images, so nothing is blocked and nothing is fetched on open.
+ *
+ * The fallback link is printed as text on purpose. Brevo rewrites every <a href> in a
+ * transactional mail through its own click-tracking domain and, on this plan, that cannot be
+ * turned off. The button still works — the redirect lands on our page — but a recipient who
+ * looks at where a confirmation link goes should be able to see our own address, unwrapped.
+ */
+export function layout(opts: {
+  preheader: string;
+  heading: string;
+  paragraphs: string[];
+  button?: { label: string; href: string };
+  fallbackUrl?: string;
+  footnote?: string;
+}): string {
+  const font = "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
+  const button = opts.button
+    ? `<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:26px 0 8px">`
+      + `<tr><td style="border-radius:8px;background:#4f46e5">`
+      + `<a href="${esc(opts.button.href)}" style="display:inline-block;padding:13px 24px;font-family:${font};`
+      + `font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:8px">`
+      + `${esc(opts.button.label)}</a></td></tr></table>`
+    : "";
+  const fallback = opts.fallbackUrl
+    ? `<p style="margin:26px 0 6px;font-size:13px;line-height:1.5;color:#6b7280">If the button does not work, `
+      + `copy this address into your browser:</p>`
+      + `<p style="margin:0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.5;`
+      + `color:#374151;word-break:break-all">${esc(opts.fallbackUrl)}</p>`
+    : "";
+  const footnote = opts.footnote
+    ? `<p style="margin:22px 0 0;padding-top:18px;border-top:1px solid #e5e7eb;font-size:13px;line-height:1.55;`
+      + `color:#6b7280">${esc(opts.footnote)}</p>`
+    : "";
+
+  return `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">`
+    + `<title>${esc(opts.heading)}</title></head>`
+    + `<body style="margin:0;padding:0;background:#f4f5f7">`
+    + `<div style="display:none;max-height:0;overflow:hidden;opacity:0">${esc(opts.preheader)}</div>`
+    + `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="background:#f4f5f7">`
+    + `<tr><td align="center" style="padding:32px 16px">`
+    + `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:560px">`
+    + `<tr><td style="padding:0 4px 14px;font-family:${font};font-size:13px;font-weight:700;letter-spacing:0.02em;`
+    + `color:#111827">Clinical Trial Failures</td></tr>`
+    + `<tr><td style="background:#ffffff;border:1px solid #e5e7eb;border-radius:12px;padding:34px 32px;`
+    + `font-family:${font};color:#111827">`
+    + `<h1 style="margin:0 0 14px;font-size:21px;line-height:1.3;font-weight:700;color:#111827">${esc(opts.heading)}</h1>`
+    + opts.paragraphs
+      .map((text) => `<p style="margin:0 0 12px;font-size:15px;line-height:1.6;color:#374151">${text}</p>`)
+      .join("")
+    + button + fallback + footnote
+    + `</td></tr>`
+    + `<tr><td style="padding:16px 4px 0;font-family:${font};font-size:12px;line-height:1.5;color:#9ca3af">`
+    // Plain text, not a link: every <a> here goes through the tracker, and a footer is not worth one.
+    + `Clinical Trial Failures · clinicaltrialfailures.com</td></tr>`
+    + `</table></td></tr></table></body></html>`;
 }

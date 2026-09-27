@@ -212,7 +212,7 @@ The dataset now holds {e(summary.get("trial_count"))} stopped trials across {e(s
 classes. <a href="{SITE}/briefs" style="color:#4f46e5">Read the briefs</a> ·
 <a href="{SITE}/asset-check" style="color:#4f46e5">Check a molecule</a></p>
 <p style="font-size:12px;color:#8a8f98">
-<a href="{stop_url}" style="color:#8a8f98">Stop these emails</a> · Clinical Trial Failures</p></div>"""
+<a href="{stop_url}" style="color:#8a8f98">Unsubscribe</a> · Clinical Trial Failures</p></div>"""
     return subject, body
 
 

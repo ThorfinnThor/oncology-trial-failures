@@ -45,10 +45,12 @@ export default function NewsletterPage() {
 
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [address, setAddress] = useState("");
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    setAddress(String(form.get("email") || "").trim());
     setStatus("sending");
     setMessage("");
     try {
@@ -117,16 +119,20 @@ export default function NewsletterPage() {
             <div className="card form">
               {status === "done" ? (
                 <>
-                  <div className="formTitle">One more click</div>
-                  <p className="formSub">{message}</p>
+                  <div className="formTitle">Please check your inbox</div>
+                  <p className="formSub">
+                    We have sent a confirmation email{address ? <> to <b>{address}</b></> : null}. Your subscription
+                    starts once you click the link in it; the link is valid for seven days.
+                  </p>
+                  <p className="formHint">Not there after a few minutes? Please check your spam or junk folder.</p>
                   <Link className="ctaLink" href="/briefs">
                     Read the briefs while you wait
                   </Link>
                 </>
               ) : (
                 <form onSubmit={onSubmit}>
-                  <div className="formTitle">Get it</div>
-                  <p className="formSub">One mail per fortnight. Nothing else is ever sent to this address.</p>
+                  <div className="formTitle">Subscribe</div>
+                  <p className="formSub">One email every two weeks. Your address is used for nothing else.</p>
                   <div className="field">
                     <label htmlFor="nl-email">Work email</label>
                     <input id="nl-email" className="input" name="email" type="email" required autoComplete="email" />
@@ -324,8 +330,21 @@ export default function NewsletterPage() {
           padding: 22px;
         }
         .formTitle {
-          font-size: 15px;
-          font-weight: 850;
+          font-size: 16px;
+          font-weight: 800;
+          /* Set explicitly: the hero around this card is white text on navy, and the title inherited
+             it — invisible on the white card, which is why it looked like the card had no heading. */
+          color: #0f172a;
+        }
+        .formSub b {
+          color: #0f172a;
+          font-weight: 700;
+        }
+        .formHint {
+          margin: -6px 0 16px;
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: var(--text-muted);
         }
         .formSub {
           margin: 4px 0 16px;

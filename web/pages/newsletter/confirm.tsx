@@ -52,30 +52,31 @@ export default function NewsletterConfirmPage() {
           <div className="card box">
             {status === "done" ? (
               <>
-                <h1>Confirmed</h1>
+                <h1>Subscription confirmed</h1>
                 <p>{message}</p>
                 <p className="fine">
-                  Every issue carries an unsubscribe link. Until then, the{" "}
+                  In the meantime, all{" "}
                   <Link className="link" href="/briefs">
                     briefs
                   </Link>{" "}
-                  are free and need no address at all.
+                  are available free of charge, without registration.
                 </p>
               </>
             ) : (
               <>
                 <h1>Confirm your subscription</h1>
                 <p>
-                  One mail every second week: the trials that entered the dataset and the records sponsors changed.
-                  Nothing else is ever sent to this address, and every issue carries a link that unsubscribes it.
+                  You will receive one email every two weeks with the trials newly added to the dataset and the
+                  registry records sponsors have changed. Your address is used for nothing else, and every issue
+                  includes a one-click unsubscribe link.
                 </p>
                 {!resolved ? null : key ? (
                   <button className="submit" type="button" onClick={subscribe} disabled={status === "sending"}>
-                    {status === "sending" ? "Confirming…" : "Yes, subscribe me"}
+                    {status === "sending" ? "Confirming…" : "Confirm subscription"}
                   </button>
                 ) : (
                   <p className="err">
-                    This link is missing its identifier. Please open the link from the mail again, or sign up once more on the
+                    This link is incomplete. Please open it again from the confirmation email, or sign up again on the
                     newsletter page.
                   </p>
                 )}

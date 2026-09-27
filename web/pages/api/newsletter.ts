@@ -15,7 +15,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { canSendMail, frame, sendMail } from "@/lib/server/mail";
+import { canSendMail, layout, sendMail } from "@/lib/server/mail";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -69,7 +69,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!key) return res.status(400).json({ ok: false, error: "Nothing to stop." });
     try {
       const raw = await store.get(`news:${key}`);
-      if (!raw) return res.status(200).json({ ok: true, message: "That subscription is already gone." });
+      if (!raw) return res.status(200).json({ ok: true, message: "This address is no longer subscribed." });
       if (store.delete) await store.delete(`news:${key}`);
       else await store.put(`news:${key}`, JSON.stringify({ stopped_at: new Date().toISOString() }));
       // The index goes too. Leaving it behind would point at a subscription that no longer
@@ -81,7 +81,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(503).json({ ok: false, error: "Could not stop it. Please reply to the mail." });
     }
     console.log(JSON.stringify({ event: "newsletter_stopped", key }));
-    return res.status(200).json({ ok: true, message: "Stopped. No more mail." });
+    return res.status(200).json({ ok: true, message: "You have been unsubscribed and will not receive further emails." });
   }
 
   if (req.method !== "POST") {
@@ -115,8 +115,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.log(JSON.stringify({ event: "newsletter_already_subscribed" }));
     return res.status(200).json({
       ok: true,
-      message: "Check your inbox. Nothing is sent to this address until you open the link in that mail — which is also "
-        + "how we can prove you asked for it.",
+      message: "Please check your inbox to confirm your subscription.",
     });
   }
 
@@ -143,15 +142,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const link = `${SITE}/newsletter/confirm?k=${key}`;
   const sent = await sendMail(
     email,
-    "Confirm your subscription — Clinical Trial Failures",
-    frame(
-      `<p>Somebody asked for the fortnightly mail from Clinical Trial Failures to go to this address.</p>`
-      + `<p><a href="${link}" style="color:#4f46e5">Confirm that it was you</a> and the next issue will arrive with the `
-      + `release after this one. Every mail has an unsubscribe link.</p>`
-      + `<p style="color:#666;font-size:13px">If it was not you, do nothing: this address is not on any list until `
-      + `that link is clicked, and this request is forgotten within a week.</p>`
-      + `<p style="color:#8a8f98;font-size:12px">${link}</p>`,
-    ),
+    "Please confirm your subscription to Clinical Trial Failures",
+    layout({
+      preheader: "One click to start receiving the fortnightly update.",
+      heading: "Confirm your subscription",
+      paragraphs: [
+        "Thank you for signing up for the Clinical Trial Failures newsletter. Please confirm that you would like "
+          + "to receive it at this address.",
+        "Every two weeks you will receive a short update: trials newly added to the dataset with the stop reason "
+          + "recorded by the sponsor, registry records that sponsors have changed, and notable shifts in "
+          + "discontinuation rates. Each issue includes a one-click unsubscribe link.",
+      ],
+      button: { label: "Confirm subscription", href: link },
+      fallbackUrl: link,
+      footnote: "If you did not request this, no action is needed. You will not be subscribed, and this request "
+        + "will be deleted automatically within seven days.",
+    }),
+    [
+      "Confirm your subscription to Clinical Trial Failures",
+      "",
+      "Thank you for signing up. Please confirm that you would like to receive the newsletter at this address:",
+      link,
+      "",
+      "Every two weeks: trials newly added to the dataset, registry records changed by sponsors, and notable",
+      "shifts in discontinuation rates. Each issue includes a one-click unsubscribe link.",
+      "",
+      "If you did not request this, no action is needed. You will not be subscribed, and this request will be",
+      "deleted automatically within seven days.",
+      "",
+      "Clinical Trial Failures · clinicaltrialfailures.com",
+    ].join("\n"),
   ).catch((error) => {
     console.error(JSON.stringify({ event: "newsletter_confirm_send_failed", message: String(error) }));
     return false;
@@ -167,8 +187,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   console.log(JSON.stringify({ event: "newsletter_confirmation_sent", email }));
   return res.status(200).json({
     ok: true,
-    message: "Check your inbox. Nothing is sent to this address until you open the link in that mail — which is also "
-      + "how we can prove you asked for it.",
+    message: "Please check your inbox to confirm your subscription.",
   });
 }
 
@@ -188,10 +207,10 @@ export async function confirm(store: KvBinding, key: string, res: NextApiRespons
     // "you are fine" and "do it again", and the subscriber cannot tell from the link alone.
     const live = await store.get(`news:${key}`).catch(() => null);
     return live
-      ? res.status(200).json({ ok: true, message: "Already confirmed. You are on the list." })
+      ? res.status(200).json({ ok: true, message: "Your subscription is already confirmed." })
       : res.status(410).json({
           ok: false,
-          error: "This link has expired. Sign up again and we will send a fresh one.",
+          error: "This confirmation link has expired. Please sign up again to receive a new one.",
         });
   }
 
@@ -206,7 +225,10 @@ export async function confirm(store: KvBinding, key: string, res: NextApiRespons
   }
 
   console.log(JSON.stringify({ event: "newsletter_confirmed", email: record.email }));
-  return res.status(200).json({ ok: true, message: "Confirmed. The next issue goes out with the release after this." });
+  return res.status(200).json({
+    ok: true,
+    message: "Thank you — your subscription is confirmed. The next issue will arrive with the next fortnightly release.",
+  });
 }
 
 function safeParse(value: string): Record<string, unknown> {
