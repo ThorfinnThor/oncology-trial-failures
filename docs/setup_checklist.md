@@ -186,14 +186,18 @@ npx wrangler kv key list --namespace-id 0601b1ee829841bf90a3ce764b4d958d --prefi
 
 ---
 
-## Was noch offen ist, bevor die erste Mail rausgeht
+## Double Opt-in — gebaut, braucht aber ein Secret
 
-Die Anmeldung ist **Single Opt-in**: eine Adresse eintragen genügt, es wird keine Bestätigungsmail
-verschickt. Für Werbemails an deutsche Empfänger ist Double Opt-in der etablierte Standard (UWG
-§7, plus Nachweispflicht aus der DSGVO) — Single Opt-in ist angreifbar, und der Nachweis, dass
-sich jemand selbst eingetragen hat, fehlt.
+Die Anmeldung trägt niemanden mehr direkt ein: sie schreibt `pending:<token>` mit sieben Tagen
+Haltbarkeit und verschickt eine Mail; erst der Klick darin legt `news:<token>` an, und nur dieses
+Präfix liest der Versender. Jeder Datensatz trägt `requested_at` und `confirmed_at` — das ist der
+Nachweis, dass diese Adresse selbst gefragt und dann zugestimmt hat.
 
-Das ist Entwicklungsarbeit, keine Klickarbeit: Anmeldung schreibt `pending:{token}`, Brevo
-verschickt eine Bestätigungsmail, erst der Klick legt `news:{token}` an. Ich kann das bauen.
-Ich bin kein Anwalt, und ob es für dich ein echtes Risiko ist, entscheidest du — aber ich würde
-die erste Mail nicht ohne verschicken.
+**Dafür muss `BREVO_API_KEY` als Secret am Worker liegen** (Cloudflare → Workers & Pages →
+`oncology-trial-failures` → Settings → Variables and Secrets). Derselbe Key wie in GitHub, aber
+die beiden sehen einander nicht: der Workflow verschickt den Newsletter, der Worker die
+Bestätigungsmail. Fehlt er am Worker, verweigert die Anmeldung mit einer Fehlermeldung, statt
+jemanden ohne Bestätigung einzutragen.
+
+Ich bin kein Anwalt; Double Opt-in ist für Mails an deutsche Empfänger der etablierte Standard
+(UWG §7, plus die Nachweispflicht aus der DSGVO), und der Nachweis liegt jetzt vor.

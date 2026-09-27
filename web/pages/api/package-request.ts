@@ -10,6 +10,8 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { canSendMail, frame, mailEnv, sendMail } from "@/lib/server/mail";
+
 type KvBinding = { put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void> };
 type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: { LEADS?: KvBinding } } | undefined;
@@ -91,30 +93,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 /** A short mail to whoever runs this, when a sending key is configured. */
 async function notify(lead: Record<string, unknown>): Promise<void> {
-  const env = { ...(typeof process !== "undefined" ? process.env : {}),
-                ...((globalThis as CloudflareGlobal)[Symbol.for("__cloudflare-context__")]?.env || {}) } as
-                Record<string, string | undefined>;
-  const key = env.BREVO_API_KEY;
-  if (!key) return;
-  const to = env.LEAD_NOTIFY_TO || "contact@clinicaltrialfailures.com";
+  if (!canSendMail()) return;
   const lines = Object.entries(lead)
     .filter(([, value]) => value !== "" && value !== undefined && value !== null)
     .map(([field, value]) => `<tr><td style="padding:3px 10px 3px 0;color:#666">${field}</td><td>${String(value)}</td></tr>`)
     .join("");
-  const response = await fetch("https://api.brevo.com/v3/smtp/email", {
-    method: "POST",
-    headers: { "api-key": key, "content-type": "application/json" },
-    body: JSON.stringify({
-      sender: { email: env.MAIL_FROM || "contact@clinicaltrialfailures.com", name: "Clinical Trial Failures" },
-      to: [{ email: to }],
-      subject: `${lead.type === "full_access_waitlist" ? "Waiting list" : "Request"}: ${lead.company || lead.email}`,
-      htmlContent: `<table style="font:14px -apple-system,Segoe UI,Helvetica,Arial,sans-serif">${lines}</table>`,
-    }),
-  });
-  if (!response.ok) {
-    console.error(JSON.stringify({ event: "lead_notify_rejected", status: response.status }));
-  }
+  await sendMail(
+    mailEnv().LEAD_NOTIFY_TO || "contact@clinicaltrialfailures.com",
+    `${lead.type === "full_access_waitlist" ? "Waiting list" : "Request"}: ${lead.company || lead.email}`,
+    frame(`<table style="font-size:14px">${lines}</table>`),
+  );
 }
+
+
 
 function safeParse(value: string): Record<string, unknown> {
   try {

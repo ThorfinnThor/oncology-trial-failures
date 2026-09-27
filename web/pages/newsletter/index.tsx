@@ -103,7 +103,10 @@ export default function NewsletterPage() {
                 mention. Written by the same job that builds the data, so it says what actually changed and nothing
                 else.
               </p>
-              <p className="ctaNote">Free. No account. Every mail carries a link that stops it for good.</p>
+              <p className="ctaNote">
+                Free. No account. We send one mail to confirm the address, and every issue after it has an unsubscribe
+                link — one click, and the address is deleted.
+              </p>
               <div className="sourceStrip">
                 <span>{n(productSummary.trial_count)} stopped trials</span>
                 <span>{briefsIndex.brief_count} mechanism classes</span>
@@ -114,7 +117,7 @@ export default function NewsletterPage() {
             <div className="card form">
               {status === "done" ? (
                 <>
-                  <div className="formTitle">You are on the list</div>
+                  <div className="formTitle">One more click</div>
                   <p className="formSub">{message}</p>
                   <Link className="ctaLink" href="/briefs">
                     Read the briefs while you wait

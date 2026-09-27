@@ -27,13 +27,39 @@ A subscriber sent an ontology update as though a sponsor had done something lear
 next mail. That is the one failure here that cannot be undone, so the split is enforced in
 `merge()` and checked by a test.
 
+## Signing up does not subscribe anybody
+
+Double opt-in. A POST writes `pending:<token>` with a seven-day TTL and sends one mail; only the
+click on the link in that mail writes `news:<token>`, which is the prefix the sender reads. An
+address that never confirms expires on its own and leaves nothing behind.
+
+It is not a formality. Anybody can type anybody's address into a form, so a single-opt-in list is
+a claim that somebody consented with nothing behind it — and for a mail like this to German
+recipients, double opt-in is what the law expects. The pair of timestamps on each record,
+`requested_at` and `confirmed_at`, is the evidence.
+
+Both the confirm and the stop page do nothing on load and need a click. Corporate mail gateways
+fetch every URL in a message before the recipient sees it: a page that acted on load would
+manufacture consent for somebody who never opened the mail, and unsubscribe people who never
+asked to leave.
+
+If `BREVO_API_KEY` is missing from the **Worker** the signup is refused with a 503 rather than
+subscribing anybody, because the confirmation could never arrive.
+
+| key | what it is |
+| --- | --- |
+| `pending:<token>` | signed up, not confirmed. Expires after seven days. |
+| `news:<token>` | confirmed. The only prefix `newsletter.py` reads. |
+
 ## Pieces
 
 | file | does |
 | --- | --- |
 | `web/pages/newsletter/index.tsx` | the signup page |
-| `web/pages/newsletter/stop.tsx` | the end of the link in every mail; one button, nothing on load |
-| `web/pages/api/newsletter.ts` | POST subscribes, GET `?stop=<key>` removes |
+| `web/pages/newsletter/confirm.tsx` | the link in the confirmation mail; one button, nothing on load |
+| `web/pages/newsletter/stop.tsx` | the link in every issue; one button, nothing on load |
+| `web/pages/api/newsletter.ts` | POST starts a signup, GET `?confirm=<key>` subscribes, GET `?stop=<key>` removes |
+| `web/lib/server/mail.ts` | the one place the site sends a mail from |
 | `scripts/signals/newsletter.py` | accumulates, composes, sends, at the end of the weekly workflow |
 
 ## Running it without a sending account
@@ -50,10 +76,11 @@ python scripts/signals/newsletter.py --force     # ignores the twelve-day wait
 
 Two, both in GitHub → Settings → Secrets and variables → Actions:
 
-| secret | what for |
-| --- | --- |
-| `CF_API_TOKEN` | the subscriber list and the pending changes. Needs **Workers KV Storage: Read and Write** — write, because what is waiting to be mailed is kept in KV between runs. |
-| `BREVO_API_KEY` | sending. Until it exists, nothing is sent and the mail becomes an artifact. |
+| secret | where | what for |
+| --- | --- | --- |
+| `CF_API_TOKEN` | GitHub | the subscriber list and the pending changes. Needs **Workers KV Storage: Read and Write** — write, because what is waiting to be mailed is kept in KV between runs. |
+| `BREVO_API_KEY` | GitHub | sending the fortnightly mail from the workflow. Until it exists, nothing is sent and the mail becomes an artifact. |
+| `BREVO_API_KEY` | **Cloudflare Worker** | the confirmation mail, and the waiting-list notice. The same key, and it has to be in both places: the workflow cannot read the Worker's secrets and the Worker cannot read GitHub's. |
 
 Neither the account id nor the namespace id needs a secret: the namespace is read from
 `web/wrangler.jsonc` and the account is resolved from the token.
@@ -66,4 +93,8 @@ or the mail lands in spam.
 
 ```
 npx wrangler kv key list --namespace-id 0601b1ee829841bf90a3ce764b4d958d --prefix news:
+npx wrangler kv key list --namespace-id 0601b1ee829841bf90a3ce764b4d958d --prefix pending:
 ```
+
+The second list is people who signed up and have not clicked yet. A large gap between the two is
+worth looking at: it usually means the confirmation is landing in spam.
