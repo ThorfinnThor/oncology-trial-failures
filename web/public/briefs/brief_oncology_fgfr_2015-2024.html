@@ -37,19 +37,25 @@ h2 { page-break-after:avoid; break-after:avoid; }
 .box { background:#f4f3ef; padding:8px 10px; border-radius:4px; font-size:7.8pt; color:var(--ink2); }
 .box b { color:var(--ink); }
 .cta { border:1.5px solid var(--ink); padding:8px 10px; border-radius:4px; margin-top:10px; font-size:8.4pt; }
+.endp { display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:baseline; border:1px solid var(--rule);
+  border-left:3px solid var(--ink2); border-radius:4px; padding:7px 10px; margin:0 0 12px; background:#fafaf8;
+  page-break-inside:avoid; break-inside:avoid; }
+.endp > b { font-size:15pt; font-variant-numeric:tabular-nums; white-space:nowrap; }
+.endp span { font-size:8pt; color:var(--ink2); line-height:1.4; } .endp span b { color:var(--ink); }
 .foot { margin-top:8px; font-size:7.2pt; color:var(--muted); border-top:1px solid var(--rule); padding-top:5px; }
 </style></head><body>
 <div class="sheet">
 <div class="kicker">Clinical Trial Failures · Discontinuation rate · Oncology Phase 2,3 · starts 2015–2024</div>
 <h1>FGFR: 5 molecules stopped early, all small molecules</h1>
 <p class="dek"><b>6 stopped trials, but 5 molecules — all small molecules: Regorafenib, Fgfr Inhibitor Debio 1347, Infigratinib, Nintedanib and 1 more.</b>  Against 5.0% for all oncology trials with a resolved drug target and 4.3% across all oncology Phase 2,3 trials in the same window.
-Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
+The rate counts trials that stopped early for efficacy, safety or benefit–risk reasons. Trials that ran to completion and missed their primary endpoint are counted separately below, never in the rate.</p>
 <div class="stats">
  <div class="stat"><b>3.6%</b><span>6 of 167 closed trials (95% CI 1.7%–7.6%)</span></div>
  <div class="stat"><b>3 / 0 / 1</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to 6)</span></div>
  <div class="stat"><b>47.6%</b><span>of 351 trials have closed · 184 still open or unresolved</span></div>
  <div class="stat"><b>1.7%</b><span>stopped for a biological reason within 3 years of starting (95% CI 0.6%–4.5%; 159 still at risk; 1.5% area-wide)</span></div>
 </div>
+<div class="endp"><b>2 of 5</b><span><b>Completed and missed the primary endpoint.</b> Of 103 completed trials in this segment, 5 posted a primary superiority analysis on ClinicalTrials.gov; 2 came back non-significant and 3 significant. Counted separately and never in the rate above. The rest posted no analysis to read, so this is a floor, not a rate.</span></div>
 <div class="cols">
 <div>
 <h2>How this compares</h2>
@@ -74,9 +80,9 @@ Sponsors with most stops: Great Novel Therapeutics Biotech &amp; Medicals Corpor
 
 <div class="cols" style="margin-top:10px">
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase 2,3 oncology trials started 2015–2024 that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; 76% of industry oncology trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
-<div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only 47.6% of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
+<div class="box"><b>Limits</b><br>Not a failure rate: completed trials that missed their endpoints are not in the rate. They are counted separately where the sponsor posted a primary analysis that can be read — most did not, so that count is a floor — and programmes discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only 47.6% of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
-<div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped oncology trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/pricing</b></div>
+<div class="cta"><b>The whole cohort, trial by trial.</b> The evidence package names every trial behind these figures — the ones still running and the ones that completed and missed their primary endpoint included — and places your molecule against each one that failed. €99, delivered immediately: <b>clinicaltrialfailures.com/asset-check</b></div>
 <div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started 2015–2024.</div>
 </div>
 </body></html>
