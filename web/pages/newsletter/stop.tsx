@@ -7,14 +7,12 @@
 
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
+import { useLinkKey } from "@/lib/linkKey";
+
 export default function NewsletterStopPage() {
-  // The router, not the effect: the key is a URL value, and reading it into state on mount
-  // only creates a render where the page claims the link is broken.
-  const router = useRouter();
-  const key = typeof router.query.k === "string" ? router.query.k : "";
+  const { key, resolved } = useLinkKey();
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -70,7 +68,7 @@ export default function NewsletterStopPage() {
                 <p>
                   This removes your address from the list. No more mail, and the address is not kept for anything else.
                 </p>
-                {!router.isReady ? null : key ? (
+                {!resolved ? null : key ? (
                   <button className="submit" type="button" onClick={stop} disabled={status === "sending"}>
                     {status === "sending" ? "Stopping…" : "Stop these emails"}
                   </button>

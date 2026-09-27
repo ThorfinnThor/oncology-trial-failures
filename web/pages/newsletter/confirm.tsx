@@ -7,14 +7,12 @@
 
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
+import { useLinkKey } from "@/lib/linkKey";
+
 export default function NewsletterConfirmPage() {
-  // The router, not the effect: the key is a URL value, and reading it into state on mount
-  // only creates a render where the page claims the link is broken.
-  const router = useRouter();
-  const key = typeof router.query.k === "string" ? router.query.k : "";
+  const { key, resolved } = useLinkKey();
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
@@ -71,7 +69,7 @@ export default function NewsletterConfirmPage() {
                   One mail every second week: the trials that entered the dataset and the records sponsors changed.
                   Nothing else is ever sent to this address, and every issue carries a link that unsubscribes it.
                 </p>
-                {!router.isReady ? null : key ? (
+                {!resolved ? null : key ? (
                   <button className="submit" type="button" onClick={subscribe} disabled={status === "sending"}>
                     {status === "sending" ? "Confirming…" : "Yes, subscribe me"}
                   </button>

@@ -179,6 +179,12 @@ resolves, with no way for them to tell that their link was fine.
 **What stops it.** It reads the address bar too, and only waits when there is no token in either
 place. Found by mirroring the built page and opening it.
 
+
+**It came back.** The confirmation page for the newsletter was written from the same template and
+inherited the same gate, and this time there was no second route at all: a subscriber who cannot
+confirm is not on the list and has no way to know the page, not the link, is at fault. Both mail
+pages now read the key through `lib/linkKey.ts`, which takes it from the address bar, uses the
+router when it arrives, and concludes "there is none" only once one of them has answered.
 ---
 
 ## 12. Weakening a check instead of the thing it checked
