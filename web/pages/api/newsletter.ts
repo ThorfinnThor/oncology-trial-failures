@@ -36,6 +36,18 @@ function clean(value: unknown, max = 200): string {
   return String(value ?? "").replace(/[\r\n\t]+/g, " ").trim().slice(0, max);
 }
 
+/** Where an address's subscription can be found again.
+ *
+ *  Without it, subscribing is write-only: the record is keyed by a random token, so a second
+ *  signup with the same address cannot see the first and simply makes another one — and the
+ *  person then gets every issue twice, with two unsubscribe links, only one of which works.
+ *  Hashed rather than stored plainly: it is an index, and it does not need to be readable.
+ */
+async function addressKey(email: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(email));
+  return `sub:${[...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+}
+
 function token(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(20));
   return [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -60,6 +72,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (!raw) return res.status(200).json({ ok: true, message: "That subscription is already gone." });
       if (store.delete) await store.delete(`news:${key}`);
       else await store.put(`news:${key}`, JSON.stringify({ stopped_at: new Date().toISOString() }));
+      // The index goes too. Leaving it behind would point at a subscription that no longer
+      // exists, and the same person could never sign up again.
+      const email = (JSON.parse(raw) as { email?: string }).email;
+      if (email && store.delete) await store.delete(await addressKey(email));
     } catch (error) {
       console.error(JSON.stringify({ event: "newsletter_stop_failed", message: String(error) }));
       return res.status(503).json({ ok: false, error: "Could not stop it. Please reply to the mail." });
@@ -87,6 +103,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(503).json({
       ok: false,
       error: "Sign-up is briefly unavailable. Please try again later, or write to contact@clinicaltrialfailures.com.",
+    });
+  }
+
+  const index = await addressKey(email);
+  const existing = await store.get(index).catch(() => null);
+  if (existing && (await store.get(`news:${existing}`).catch(() => null))) {
+    // Deliberately the same shape of answer as a fresh signup, and no second mail. Telling a
+    // stranger "that address is already subscribed" turns the form into a way to test whether
+    // somebody is on the list.
+    console.log(JSON.stringify({ event: "newsletter_already_subscribed" }));
+    return res.status(200).json({
+      ok: true,
+      message: "Check your inbox. Nothing is sent to this address until you open the link in that mail — which is also "
+        + "how we can prove you asked for it.",
     });
   }
 
@@ -168,6 +198,7 @@ export async function confirm(store: KvBinding, key: string, res: NextApiRespons
   const record = { ...JSON.parse(raw), confirmed_at: new Date().toISOString() };
   try {
     await store.put(`news:${key}`, JSON.stringify(record));
+    if (record.email) await store.put(await addressKey(record.email), key);
     if (store.delete) await store.delete(`pending:${key}`);
   } catch (error) {
     console.error(JSON.stringify({ event: "newsletter_confirm_failed", message: String(error) }));

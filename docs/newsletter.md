@@ -50,6 +50,10 @@ subscribing anybody, because the confirmation could never arrive.
 | --- | --- |
 | `pending:<token>` | signed up, not confirmed. Expires after seven days. |
 | `news:<token>` | confirmed. The only prefix `newsletter.py` reads. |
+| `sub:<sha256(email)>` | where an address's subscription can be found again, so a second signup does not make a second copy of it. Written on confirmation, removed on unsubscribe. |
+
+A signup with an address that is already confirmed answers exactly as a new one does and sends
+nothing. The form must not become a way to find out whether somebody is on the list.
 
 ## Pieces
 

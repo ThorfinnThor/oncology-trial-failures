@@ -84,3 +84,18 @@ test("an unconfirmed signup is not readable as a subscriber", async () => {
   const store = fakeStore({ "pending:abc": JSON.stringify({ email: "someone@example.com" }) });
   assert.equal(await store.get("news:abc"), null);
 });
+
+test("confirming writes an index, so the same address cannot be subscribed twice", async () => {
+  const store = fakeStore({
+    "pending:abc": JSON.stringify({ email: "someone@example.com", requested_at: "2026-09-27T10:00:00Z" }),
+  });
+  const { res } = fakeRes();
+  await confirm(store as any, "abc", res);
+
+  const index = [...store.data.keys()].filter((k) => k.startsWith("sub:"));
+  assert.equal(index.length, 1, "a confirmed address must be findable again without listing the store");
+  assert.equal(store.data.get(index[0]), "abc", "the index points at the subscription");
+  // And it is a hash, not the address: this key is an index, not a second copy of the list.
+  assert.ok(!index[0].includes("@"));
+  assert.match(index[0], /^sub:[0-9a-f]{64}$/);
+});
