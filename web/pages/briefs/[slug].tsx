@@ -8,6 +8,7 @@ import BriefVsPackage from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
 import briefsIndex from "@/data/briefs_index.json";
 import catalogue from "@/data/evidence_catalogue.json";
+import { pluralModality } from "@/lib/modality";
 import { LICENSING_EMAIL } from "@/lib/licensing";
 
 type Brief = (typeof briefsIndex.briefs)[number];
@@ -47,6 +48,11 @@ export default function BriefPage({ brief }: Props) {
   const ratio = comparator ? brief.rate / comparator : 0;
   // The package that extends this brief: same cohort, the rest of the trials.
   const pkg = (catalogue.packages as any[]).find((p) => p.brief_stem === brief.file_stem);
+  // Absent in an index built before the endpoint verdicts existed: the block is simply not shown.
+  const ep = (brief as any).endpoints as
+    | { available: boolean; completed: number; readable: number; missed: number; met: number; mixed: number }
+    | null
+    | undefined;
   const sig = (brief as any).failure_signature;
   const attr = (brief as any).stop_attribution;
   const cif = (brief.cumulative_incidence || []) as { months: number; cif: number; ci95: number[]; n_risk: number }[];
@@ -121,7 +127,7 @@ export default function BriefPage({ brief }: Props) {
               <b>{sig ? sig.molecules : "—"}</b>
               <span>
                 distinct molecules behind {brief.biological_stops} stopped trials
-                {sig && sig.shared_modality ? `, all ${sig.shared_modality.toLowerCase()}s` : ""}
+                {sig && sig.shared_modality ? `, all ${pluralModality(sig.shared_modality)}` : ""}
               </span>
             </div>
             <div className="stat">
@@ -154,6 +160,31 @@ export default function BriefPage({ brief }: Props) {
               </span>
             </div>
           </div>
+
+          {ep && ep.available ? (
+            // The second number, and kept visibly apart from the rate block above. A stop and a
+            // miss are different events; putting them in one figure would be the easiest way to
+            // make this page say something it cannot support.
+            <div className="endp">
+              <b>{ep.readable ? `${ep.missed} of ${ep.readable}` : "—"}</b>
+              <span>
+                <strong>Completed and missed the primary endpoint.</strong>{" "}
+                {ep.readable ? (
+                  <>
+                    Of {n(ep.completed)} completed trials in this segment, {n(ep.readable)} posted a primary superiority
+                    analysis on ClinicalTrials.gov: {ep.missed} came back non-significant and {ep.met} significant
+                    {ep.mixed ? `, ${ep.mixed} split across co-primary endpoints` : ""}. Counted separately and never in
+                    the rate above. The rest posted no analysis to read, so this is a floor, not a rate.
+                  </>
+                ) : (
+                  <>
+                    None of the {n(ep.completed)} completed trials in this segment posted a primary superiority analysis
+                    that can be read, so nothing can be said here either way.
+                  </>
+                )}
+              </span>
+            </div>
+          ) : null}
 
           <section className="section">
             <h2>How this compares</h2>
@@ -516,6 +547,32 @@ export default function BriefPage({ brief }: Props) {
           line-height: 1.55;
           color: var(--text-muted);
           max-width: 80ch;
+        }
+        .endp {
+          display: grid;
+          grid-template-columns: auto 1fr;
+          gap: 16px;
+          align-items: baseline;
+          margin: 14px 0 0;
+          padding: 14px 18px;
+          border: 1px solid var(--border);
+          border-left: 3px solid #475569;
+          border-radius: 12px;
+          background: var(--surface);
+        }
+        .endp > b {
+          font-size: 24px;
+          font-weight: 800;
+          font-variant-numeric: tabular-nums;
+          white-space: nowrap;
+        }
+        .endp span {
+          font-size: 13px;
+          line-height: 1.55;
+          color: var(--text-muted);
+        }
+        .endp strong {
+          color: var(--text);
         }
         .stats {
           display: grid;

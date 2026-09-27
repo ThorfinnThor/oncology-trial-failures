@@ -139,17 +139,21 @@ jobs:
           python -u scripts/universe/chembl_index.py
           python -u scripts/universe/ncit_index.py
           python -u scripts/universe/resolve.py
+          # The other half of the evidence: trials that ran to the end and missed. Before the
+          # briefs, which carry the count as a second number; resumable by year slice, and every
+          # consumer degrades to "no endpoint section" rather than failing if it has not run.
+          python -u scripts/universe/endpoint_outcomes.py --start-year 2015 --max-seconds 900 || true
           python -u scripts/universe/discontinuation_rates.py --tables --pack --start 2015:2024
           python -u scripts/briefs/build_brief_catalog.py
-          # Disease areas beyond oncology reuse the same universe; each needs only a class lexicon.
-          for area in "Neurology" "Immunology & Autoimmune" "Endocrine & Metabolic"; do
+          # Every curated area beyond oncology, read from the lexicon rather than listed here. This
+          # loop once named three areas while the lexicon had four, and the fourth — its brief and
+          # its one sellable package — quietly left the site at the next weekly run.
+          python -c "from scripts.universe.mechanism_classes import CURATED_AREAS; print('\n'.join(a for a in CURATED_AREAS if a != 'Oncology'))" > .cache/areas.txt
+          cat .cache/areas.txt
+          while IFS= read -r area; do
             python -u scripts/universe/discontinuation_rates.py --tables --pack --start 2015:2024 --area "$area"
             python -u scripts/briefs/build_brief_catalog.py --area "$area"
-          done
-          # The other half of the evidence: trials that ran to the end and missed. Resumable by
-          # year slice with its own budget, and every downstream step degrades to "no endpoint
-          # section" rather than failing if it has not run.
-          python -u scripts/universe/endpoint_outcomes.py --start-year 2015 --max-seconds 900 || true
+          done < .cache/areas.txt
           cp .cache/universe/resolution_report.json product/discontinuation_rates/
 
       - name: Render discontinuation-rate briefs to PDF

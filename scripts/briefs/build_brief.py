@@ -29,6 +29,7 @@ from scripts.signals.http_cache import SourceUnavailable  # noqa: E402
 from scripts.universe.discontinuation_rates import fmt, load, select, summarize  # noqa: E402
 from scripts.universe.cumulative_incidence import curve  # noqa: E402
 from scripts.signals.stop_attribution import attribute_all, signature, summarise  # noqa: E402
+from scripts.universe.endpoint_outcomes import load_verdicts  # noqa: E402
 
 OUT_DIR = ROOT / "product/briefs"
 COHORTS = [(2015, 2017), (2018, 2020), (2021, 2024)]
@@ -197,6 +198,24 @@ def main(argv: list[str] | None = None) -> int:
 
     reasons = Counter(bucket(r) for r in stops)
 
+    # The second number. A trial that ran to the end and missed its primary endpoint is a failure
+    # the rate cannot see, and in some classes it is most of the story. It is counted here, from
+    # the sponsor's own posted primary superiority analysis, and deliberately kept out of the rate:
+    # a stop and a miss are different events, and roughly half of completed trials post no
+    # analysis at all, so this is a floor and says so. See scripts/universe/endpoint_outcomes.py.
+    verdicts = load_verdicts()
+    completed = [r for r in segment_rows if r.get("overall_status") == "COMPLETED"]
+    read = [verdicts[r["nct_id"]]["endpoint_verdict"] for r in completed
+            if verdicts.get(r["nct_id"], {}).get("endpoint_verdict") in ("MISSED", "MET", "MIXED")]
+    endpoints = {
+        "available": bool(verdicts),
+        "completed": len(completed),
+        "readable": len(read),
+        "missed": read.count("MISSED"),
+        "met": read.count("MET"),
+        "mixed": read.count("MIXED"),
+    }
+
     facts = {
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "segment": name, "window": {"phases": phases, "start_from": start[0], "start_to": start[1], "area": args.area},
@@ -207,6 +226,7 @@ def main(argv: list[str] | None = None) -> int:
         "failure_signature": sig,
         "stop_attribution": attribution,
         "segment_composition": composition,
+        "endpoints": endpoints,
         "multiplicity": {"q_value_by": args.q_value, "family_size": args.family_size,
                          "method": "Benjamini-Yekutieli over a one-sided exact binomial test against the "
                                    "target-resolved baseline, valid under arbitrary dependence because the "
@@ -292,6 +312,23 @@ def main(argv: list[str] | None = None) -> int:
                         + " A class groups drugs by what they act on; check that the grouping is one you would make"
                           " before reading the rate as a property of the mechanism.")
 
+    if not endpoints["available"]:
+        endpoint_html = ""
+    elif endpoints["readable"]:
+        endpoint_html = (
+            f'<div class="endp"><b>{endpoints["missed"]} of {endpoints["readable"]}</b>'
+            f'<span><b>Completed and missed the primary endpoint.</b> Of {endpoints["completed"]} completed trials in '
+            f'this segment, {endpoints["readable"]} posted a primary superiority analysis on ClinicalTrials.gov; '
+            f'{endpoints["missed"]} came back non-significant and {endpoints["met"]} significant'
+            + (f', {endpoints["mixed"]} split across co-primary endpoints' if endpoints["mixed"] else "")
+            + '. Counted separately and never in the rate above. The rest posted no analysis to read, so this is a '
+              'floor, not a rate.</span></div>')
+    else:
+        endpoint_html = (
+            f'<div class="endp"><b>—</b><span><b>Completed and missed the primary endpoint.</b> None of the '
+            f'{endpoints["completed"]} completed trials in this segment posted a primary superiority analysis on '
+            f'ClinicalTrials.gov that can be read, so nothing can be said here either way.</span></div>')
+
     canonical_link = f"<link rel='canonical' href='{e(args.canonical_url)}'>" if args.canonical_url else ""
     doc = f"""<!doctype html><html><head><meta charset="utf-8">{canonical_link}<title>{e(name)} — discontinuation rate</title><style>
 @page {{ size:A4; margin:14mm 13mm; }}
@@ -332,19 +369,25 @@ h2 {{ page-break-after:avoid; break-after:avoid; }}
 .box {{ background:#f4f3ef; padding:8px 10px; border-radius:4px; font-size:7.8pt; color:var(--ink2); }}
 .box b {{ color:var(--ink); }}
 .cta {{ border:1.5px solid var(--ink); padding:8px 10px; border-radius:4px; margin-top:10px; font-size:8.4pt; }}
+.endp {{ display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:baseline; border:1px solid var(--rule);
+  border-left:3px solid var(--ink2); border-radius:4px; padding:7px 10px; margin:0 0 12px; background:#fafaf8;
+  page-break-inside:avoid; break-inside:avoid; }}
+.endp > b {{ font-size:15pt; font-variant-numeric:tabular-nums; white-space:nowrap; }}
+.endp span {{ font-size:8pt; color:var(--ink2); line-height:1.4; }} .endp span b {{ color:var(--ink); }}
 .foot {{ margin-top:8px; font-size:7.2pt; color:var(--muted); border-top:1px solid var(--rule); padding-top:5px; }}
 </style></head><body>
 <div class="sheet">
 <div class="kicker">Clinical Trial Failures · Discontinuation rate · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
 <h1>{e(name)}: {e(sig['headline'])}</h1>
 <p class="dek"><b>{e(sig['sentence'])}</b> {attribution_line} Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
-Rates count trials that stopped early for efficacy, safety or benefit–risk reasons; trials that completed and missed their endpoints are not counted.</p>
+The rate counts trials that stopped early for efficacy, safety or benefit–risk reasons. Trials that ran to completion and missed their primary endpoint are counted separately below, never in the rate.</p>
 <div class="stats">
  <div class="stat"><b>{pct(segment['rate'])}</b><span>{segment['biological_stops']} of {segment['closed']} closed trials (95% CI {pct(segment['ci95'][0])}–{pct(segment['ci95'][1])})</span></div>
  <div class="stat"><b>{segment['stops_efficacy_only']} / {segment['stops_safety_only']} / {segment['stops_efficacy_and_safety']}</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to {segment['biological_stops']})</span></div>
  <div class="stat"><b>{pct(segment['closed_share'])}</b><span>of {segment['trials']} trials have closed · {segment['open_or_other']} still open or unresolved</span></div>
  <div class="stat"><b>{cif36_value}</b><span>{cif36_note}</span></div>
 </div>
+{endpoint_html}
 <div class="cols">
 <div>
 <h2>How this compares</h2>
@@ -369,9 +412,9 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 {f'<p style="font-size:7.4pt;color:var(--muted)">The {MAX_ROWS} most recent of {len(stops)} stopped trials. Every molecule behind all {len(stops)} is named above; the complete trial list, the trials still running and the terminations with no readable cause ship with the dataset and the evidence package.</p>' if len(stops) > MAX_ROWS else ''}
 <div class="cols" style="margin-top:10px">
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase {e(args.phases)} {e(args.area.lower())} trials started {start[0]}–{start[1]} that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; {linked_pct}% of industry {e(args.area.lower())} trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
-<div class="box"><b>Limits</b><br>Not a failure rate: trials that completed with negative results are not counted, and programs discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only {pct(segment['closed_share'])} of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
+<div class="box"><b>Limits</b><br>Not a failure rate: completed trials that missed their endpoints are not in the rate. They are counted separately where the sponsor posted a primary analysis that can be read — most did not, so that count is a floor — and programmes discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only {pct(segment['closed_share'])} of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
-<div class="cta"><b>Any mechanism, sponsor or indication, updated weekly.</b> The dataset behind this brief covers every stopped {e(args.area.lower())} trial with an efficacy or safety signal plus the full denominator universe. Free sample and licensing: <b>clinicaltrialfailures.com/pricing</b></div>
+<div class="cta"><b>The whole cohort, trial by trial.</b> The evidence package names every trial behind these figures — the ones still running and the ones that completed and missed their primary endpoint included — and places your molecule against each one that failed. €99, delivered immediately: <b>clinicaltrialfailures.com/asset-check</b></div>
 <div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>
 </div>
 </body></html>"""

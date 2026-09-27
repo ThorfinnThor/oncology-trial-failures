@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import briefsIndex from "@/data/briefs_index.json";
+import { pluralModality } from "@/lib/modality";
 import { LICENSING_EMAIL } from "@/lib/licensing";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -85,7 +86,7 @@ export default function BriefsIndexPage() {
                     <b>{(b as any).failure_signature ? (b as any).failure_signature.molecules : "—"}</b>
                     <span>molecules</span>
                     {(b as any).failure_signature?.shared_modality ? (
-                      <em>· all {(b as any).failure_signature.shared_modality.toLowerCase()}s</em>
+                      <em>· all {pluralModality((b as any).failure_signature.shared_modality)}</em>
                     ) : null}
                   </div>
                   <div className="tileMeta">
@@ -133,13 +134,19 @@ export default function BriefsIndexPage() {
                       <b>{sig ? sig.molecules : "—"}</b>
                       <span>{sig && sig.molecules === 1 ? "molecule" : "molecules"}</span>
                       {sig && sig.shared_modality ? (
-                        <em>· all {sig.shared_modality.toLowerCase()}s</em>
+                        <em>· all {pluralModality(sig.shared_modality)}</em>
                       ) : null}
                     </div>
                     <div className="tileMeta">
                       {b.biological_stops} of {n(b.closed)} closed trials stopped early — {pct(b.rate)} against{" "}
                       {pct(b.baseline_resolved_rate ?? b.baseline_rate)}
                     </div>
+                    {(b as any).endpoints?.readable ? (
+                      <div className="tileEndp">
+                        {(b as any).endpoints.missed} of {(b as any).endpoints.readable} completed trials missed their
+                        primary endpoint
+                      </div>
+                    ) : null}
                     <div className="tileFoot">
                       <span>{b.stop_programmes ?? "—"} programmes</span>
                       <span>95% CI {pct(b.ci95[0])}–{pct(b.ci95[1])}</span>
@@ -391,6 +398,14 @@ export default function BriefsIndexPage() {
         }
         .tilePdf:hover {
           text-decoration: underline;
+        }
+        .tileEndp {
+          margin-top: 6px;
+          font-size: 12.5px;
+          line-height: 1.45;
+          color: var(--text-muted);
+          padding-left: 8px;
+          border-left: 2px solid #94a3b8;
         }
         .tileFoot {
           margin-top: 10px;

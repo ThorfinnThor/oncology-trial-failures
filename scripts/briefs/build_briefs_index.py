@@ -121,6 +121,9 @@ def main() -> int:
             "survives_fdr_10pct": ((f.get("multiplicity") or {}).get("q_value_by") is not None
                                    and (f.get("multiplicity") or {}).get("q_value_by") <= 0.10),
             "composition": f.get("segment_composition"),
+            # Completed trials that missed their primary endpoint: a second number, never part of
+            # the rate above. None when the verdicts were not available to this build.
+            "endpoints": f.get("endpoints"),
             # Records are not experiments: lead with molecules.
             "failure_signature": f.get("failure_signature"),
             "stop_attribution": f.get("stop_attribution"),

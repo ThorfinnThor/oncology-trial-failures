@@ -137,6 +137,13 @@ reached the older years only whenever they next happened to be re-fetched. Now a
 takes effect everywhere on the next run, which is the only way a fix to a list like this can be
 trusted.
 
+
+**And the list of areas did the same thing one level up.** Gastroenterology & hepatology was added
+to the lexicon, and `CURATED_AREAS` was introduced precisely so that no script would list the
+areas by hand again — but the weekly workflow still did, in a shell loop naming three areas. The
+next scheduled run rebuilt everything from that loop: the hepatology brief and its one sellable
+package (PPAR, liver) disappeared from the live site, with no error anywhere. The loop now reads
+`CURATED_AREAS` like everything else; there is no file left that names the areas.
 ---
 
 ## 8. Styles that silently never applied
