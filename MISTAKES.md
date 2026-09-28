@@ -222,6 +222,19 @@ came from, so the next one of these is visible to anyone who looks, not only to 
 
 ---
 
+## 14. The newsletter read the source that happened to exist
+
+The fortnightly mail was built on the change report that already existed — the oncology signal set,
+about 985 trials — while the sign-up page, the site and the owner all meant the whole database of
+about 24,000. Two weeks of mail went out covering one disease area in twenty-odd, and the sign-up
+page also promised a "rates that moved" section the mail never contained.
+
+**What stops it.** Writing down, before building, what the product says it is, and checking the
+data source against that sentence rather than against what is convenient to diff. A test now
+asserts that the mail describes the whole database.
+
+---
+
 ## What I would tell myself at the start
 
 1. **Write the claim from the data, not the data from the claim.** Every number in the copy should
