@@ -50,7 +50,17 @@ export default function BriefPage({ brief }: Props) {
   const pkg = (catalogue.packages as any[]).find((p) => p.brief_stem === brief.file_stem);
   // Absent in an index built before the endpoint verdicts existed: the block is simply not shown.
   const ep = (brief as any).endpoints as
-    | { available: boolean; completed: number; readable: number; missed: number; met: number; mixed: number }
+    | {
+        available: boolean;
+        completed: number;
+        readable: number;
+        missed: number;
+        met: number;
+        mixed: number;
+        // Absent in an index built before the disclosure gap was counted.
+        results_due?: number;
+        results_not_posted?: number;
+      }
     | null
     | undefined;
   const sig = (brief as any).failure_signature;
@@ -171,17 +181,25 @@ export default function BriefPage({ brief }: Props) {
                 <strong>Completed and missed the primary endpoint.</strong>{" "}
                 {ep.readable ? (
                   <>
-                    Of {n(ep.completed)} completed trials in this segment, {n(ep.readable)} posted a primary superiority
-                    analysis on ClinicalTrials.gov: {ep.missed} came back non-significant and {ep.met} significant
+                    Of {n(ep.completed)} completed trials in this segment, {n(ep.readable)} posted a primary result on
+                    ClinicalTrials.gov that can be read — the sponsor&apos;s own comparison held to the sponsor&apos;s own
+                    threshold, or its statement that the endpoint was missed: {ep.missed} missed and {ep.met} met
                     {ep.mixed ? `, ${ep.mixed} split across co-primary endpoints` : ""}. Counted separately and never in
-                    the rate above. The rest posted no analysis to read, so this is a floor, not a rate.
+                    the rate above; a floor, not a rate.
                   </>
                 ) : (
                   <>
-                    None of the {n(ep.completed)} completed trials in this segment posted a primary superiority analysis
-                    that can be read, so nothing can be said here either way.
+                    None of the {n(ep.completed)} completed trials in this segment posted a primary result that can be
+                    read, so nothing can be said here either way.
                   </>
                 )}
+                {ep.results_due ? (
+                  <>
+                    {" "}
+                    {n(ep.results_not_posted ?? 0)} of the {n(ep.results_due)} completed trials that finished more than a
+                    year ago have posted no results at all — a gap in what can be known, not a sign of failure.
+                  </>
+                ) : null}
               </span>
             </div>
           ) : null}

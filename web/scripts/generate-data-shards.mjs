@@ -8,6 +8,18 @@ const SOURCE_FILE = path.join(PUBLIC_DIR, "all_stopped_trials.json");
 const INDEX_FILE = path.join(PUBLIC_DIR, "trials-index.json");
 const INDEX_SHARD_DIR = path.join(PUBLIC_DIR, "trials-index-shards");
 const SHARD_DIR = path.join(PUBLIC_DIR, "trial-shards");
+// What the posted results say, per stopped trial (scripts/universe/publish_trial_endpoints.py).
+// Optional: without it the trial pages simply carry no results panel.
+const ENDPOINTS_FILE = path.join(PUBLIC_DIR, "trial_endpoints.json");
+
+async function loadEndpoints() {
+  try {
+    const parsed = JSON.parse(await fs.readFile(ENDPOINTS_FILE, "utf8"));
+    return { readOn: parsed.read_on || null, trials: parsed.trials || {} };
+  } catch {
+    return { readOn: null, trials: {} };
+  }
+}
 
 function asString(value) {
   if (value == null) return "";
@@ -118,6 +130,8 @@ async function main() {
     throw new Error(`${SOURCE_FILE} must contain a JSON array`);
   }
 
+  const endpoints = await loadEndpoints();
+  let withResult = 0;
   const indexRows = [];
   const indexShards = Array.from({ length: INDEX_SHARD_COUNT }, () => []);
   const shards = Array.from({ length: SHARD_COUNT }, () => []);
@@ -127,11 +141,15 @@ async function main() {
     if (!indexRow.nct_id) continue;
 
     indexRows.push(indexRow);
+    const result = endpoints.trials[indexRow.nct_id.toUpperCase()];
+    if (result) withResult += 1;
     const detailRow = compact({
       ...indexRow,
       why_stopped: indexRow.why_stopped_short || "",
       conditions: indexRow.conditions || indexRow.condition_first || "",
       intervention_names: indexRow.intervention_names || indexRow.intervention_first || "",
+      // Detail only: the index stays compact, and only the trial page shows the evidence.
+      endpoint_result: result ? { ...result, read_on: endpoints.readOn } : null,
     });
     const key = shardKey(indexRow.nct_id);
     indexShards[Number.parseInt(key[0], 16)].push(indexRow);
@@ -164,7 +182,8 @@ async function main() {
   console.log(
     `Generated ${indexRows.length.toLocaleString()} compact trial rows across ${INDEX_SHARD_COUNT} index shards ` +
       `and ${SHARD_COUNT} detail shards. Largest index shard: ${(largestIndexShard / 1024 / 1024).toFixed(2)} MB; ` +
-      `largest detail shard: ${(largestShard / 1024).toFixed(1)} KB.`
+      `largest detail shard: ${(largestShard / 1024).toFixed(1)} KB. ` +
+      `${withResult.toLocaleString()} trials carry a read primary result.`
   );
 }
 

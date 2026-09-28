@@ -205,6 +205,23 @@ one; it is a habit.
 
 ---
 
+## 13. Trusting a registry type field over the sponsor's own words
+
+The first endpoint reader took `nonInferiorityType` at face value. Older records answered one
+question — "is this a non-inferiority or equivalence analysis?" — and sponsors answered it wrongly
+often enough to matter: an HIV switch trial with a 12% margin, filed as "superiority or other",
+read as a miss at p = 0.13. The same reader took the superiority step that follows a met
+non-inferiority test ("…then superiority, p = 1.00") as a missed endpoint, and counted "no
+difference in adverse events" as a failed trial. About 140 of 1,556 published misses were wrong
+this way, every one of them against the drug.
+
+**What stops it.** A structured field is a claim by the same person who wrote the free text next to
+it; where the two disagree, the words win (`_NI_WORDS`), and a trial with any non-inferiority
+primary is not read at all. Every verdict is now published with the sentence or the numbers it
+came from, so the next one of these is visible to anyone who looks, not only to a re-audit.
+
+---
+
 ## What I would tell myself at the start
 
 1. **Write the claim from the data, not the data from the claim.** Every number in the copy should

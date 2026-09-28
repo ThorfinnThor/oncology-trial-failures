@@ -143,8 +143,8 @@ export default function BriefsIndexPage() {
                     </div>
                     {(b as any).endpoints?.readable ? (
                       <div className="tileEndp">
-                        {(b as any).endpoints.missed} of {(b as any).endpoints.readable} completed trials missed their
-                        primary endpoint
+                        {(b as any).endpoints.missed} of {(b as any).endpoints.readable} completed trials with a readable
+                        result missed their primary endpoint
                       </div>
                     ) : null}
                     <div className="tileFoot">

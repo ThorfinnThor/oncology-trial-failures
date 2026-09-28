@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadDetail, loadMeta } from "@/lib/data";
-import { DatasetMeta, TrialDetail } from "@/lib/types";
+import { DatasetMeta, EndpointResult, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
 import { areaHubPath, isIndexableTrial, phaseHubPath, reasonHubPath } from "@/lib/seoHubs";
@@ -134,6 +134,18 @@ function safeReturnPath(value: string | string[] | undefined): string {
   return raw.startsWith("/") && !raw.startsWith("//") ? raw : "/explore";
 }
 
+const ENDPOINT_LABEL: Record<EndpointResult["verdict"], string> = {
+  MISSED: "missed",
+  MET: "met",
+  MIXED: "split",
+};
+
+const ENDPOINT_HEADING: Record<EndpointResult["verdict"], string> = {
+  MISSED: "The primary endpoint was missed",
+  MET: "The primary endpoint was met",
+  MIXED: "The primary comparisons split",
+};
+
 export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps) {
   const router = useRouter();
 
@@ -187,6 +199,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   const outcomeLabel = OUTCOME_LABELS[outcomeCode] || "Review required";
   const reasonLabel = REASON_LABELS[reasonCode] || reasonCode.replace(/_/g, " ").toLowerCase();
   const sourceReason = (trial?.why_stopped || trial?.why_stopped_short || "").trim();
+  const er = trial?.endpoint_result || null;
   const sourceUrl = trial?.url || (trialId ? `https://clinicaltrials.gov/study/${trialId}` : SITE_URL);
   const interpretation = classificationInterpretation(outcomeCode, reasonCode);
   const reasonHubHref = ["DECISION ONLY", "PROGRAM STOP ONLY"].includes(bucket)
@@ -304,6 +317,11 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                       </span>
                       <span className={bucketChipClass(reasonCode)}>{reasonLabel}</span>
                       <span className="chip chip-neutral">{outcomeLabel}</span>
+                      {trial.endpoint_result ? (
+                        <span className="chip chip-neutral">
+                          Posted primary result: {ENDPOINT_LABEL[trial.endpoint_result.verdict]}
+                        </span>
+                      ) : null}
                     </div>
 
                     <p className="trialStatusNote">
@@ -371,6 +389,53 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                     </p>
                   </section>
                 </div>
+
+                {/* What the sponsor's posted results say, next to why the trial was stopped. Every line is what
+                    the verdict was read from, so the reader can check it here instead of reconstructing it. */}
+                {er ? (
+                  <section className="card trialPanel trialEndpointPanel">
+                    <div className="trialEyebrow">Posted results on ClinicalTrials.gov</div>
+                    <h2>{ENDPOINT_HEADING[er.verdict]}</h2>
+                    {er.statement ? (
+                      <>
+                        <blockquote>
+                          &ldquo;{er.statement.text}&rdquo;
+                          <span className="endpointWhere"> — sponsor, {er.statement.where}</span>
+                        </blockquote>
+                        {er.statistical_verdict === "MET" || er.statistical_verdict === "MIXED" ? (
+                          <p className="endpointNote">
+                            The posted numbers alone would read {ENDPOINT_LABEL[er.statistical_verdict]}. The sponsor&apos;s
+                            statement is taken over them, because the sponsor knows the testing rule and the numbers do not carry it.
+                          </p>
+                        ) : null}
+                      </>
+                    ) : null}
+                    {er.lines.length ? (
+                      <ul className="endpointLines">
+                        {er.lines.map((line, i) => (
+                          <li key={i}>{line}</li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    {er.more ? (
+                      <p className="endpointNote">And {er.more} more comparison(s) on the results tab.</p>
+                    ) : null}
+                    {er.rules.map((rule, i) => (
+                      <p className="endpointNote" key={i}>
+                        The sponsor on the test: &ldquo;{rule}&rdquo;
+                      </p>
+                    ))}
+                    <a className="trialSourceLink" href={er.results_url} target="_blank" rel="noreferrer">
+                      Check the results tab for {trial.nct_id} <span aria-hidden="true">↗</span>
+                    </a>
+                    <p className="trialCaution">
+                      Read automatically from the sponsor&apos;s posted results{er.read_on ? ` on ${er.read_on}` : ""}: only
+                      primary efficacy outcomes, only between-group comparisons that are not non-inferiority tests, each held to the
+                      threshold the sponsor wrote down (0.05 where it wrote none). A missed primary endpoint is not a verdict on the
+                      drug — dose, population, endpoint and comparator decide it too.
+                    </p>
+                  </section>
+                ) : null}
 
                 <section className="card trialPanel trialContextPanel">
                   <div className="trialSectionHeading">
@@ -600,6 +665,48 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
         }
         .trialContextPanel {
           margin-top: 16px;
+        }
+        .trialEndpointPanel {
+          margin-top: 16px;
+        }
+        .trialEndpointPanel blockquote {
+          margin: 16px 0 10px;
+          padding: 14px 16px;
+          border-left: 4px solid var(--accent);
+          background: #eef2ff;
+          color: #1e293b;
+          font-size: 15px;
+          font-weight: 600;
+          line-height: 1.6;
+        }
+        .endpointWhere {
+          color: var(--text-muted);
+          font-size: 13px;
+          font-weight: 500;
+        }
+        .endpointLines {
+          margin: 14px 0;
+          padding-left: 18px;
+          color: #334155;
+          font-size: 14.5px;
+          line-height: 1.6;
+        }
+        .endpointLines li {
+          margin-bottom: 6px;
+          overflow-wrap: anywhere;
+        }
+        .endpointNote {
+          margin: 8px 0;
+          color: var(--text-muted);
+          font-size: 13px;
+          line-height: 1.55;
+        }
+        .trialEndpointPanel .trialCaution {
+          margin: 14px 0 0;
+          padding-top: 14px;
+          border-top: 1px solid var(--border);
+          color: var(--text-muted);
+          font-size: 13px;
         }
         .trialSectionHeading {
           display: flex;

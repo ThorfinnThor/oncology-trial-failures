@@ -36,7 +36,7 @@ sys.path.insert(0, str(ROOT))
 from scripts.signals.stop_attribution import attribute_all, signature, summarise  # noqa: E402
 from scripts.universe.cumulative_incidence import curve  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
-from scripts.universe.endpoint_outcomes import load_verdicts  # noqa: E402
+from scripts.universe.endpoint_outcomes import disclosure_gap, evidence_of, load_verdicts, read_on, results_url  # noqa: E402
 from scripts.universe.multiplicity import binom_sf  # noqa: E402
 
 # What we compare, and what we deliberately do not. Modality, target and mechanism come out of
@@ -275,6 +275,11 @@ def build(args) -> dict:
             "why_stopped": " ".join((r.get("why_stopped") or "").split()),
             "endpoint": (endpoint_of.get(r["nct_id"]) or {}).get("endpoint_verdict"),
             "endpoint_analyses": (endpoint_of.get(r["nct_id"]) or {}).get("analyses") or [],
+            # What the posted results say, with the sentence or the numbers it was read from — for
+            # every listed trial, stopped ones included: a stop "for futility" with a posted
+            # primary comparison has its evidence next to the word.
+            "endpoint_evidence": evidence_of(verdicts.get(r["nct_id"])),
+            "results_url": results_url(r["nct_id"]),
             "attribution": a.get("attribution"), "attribution_basis": a.get("basis"),
             "attribution_evidence": a.get("cascade_evidence") or a.get("own_data_evidence") or [],
             "sibling_stops": a.get("sibling_stops") or [],
@@ -349,10 +354,16 @@ def build(args) -> dict:
             "missed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MISSED"),
             "met": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MET"),
             "mixed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MIXED"),
-            "method": "Only trials the sponsor completed and posted results for, only outcome measures typed "
-                      "PRIMARY, only analyses typed SUPERIORITY comparing at least two groups, and only a p-value "
-                      "the record settles against 0.05. A failed non-inferiority test is a different event and is "
-                      "never counted here.",
+            "from_sponsor_statement": sum(1 for v in endpoint_of.values() if v.get("basis") == "sponsor_statement"),
+            "read_on": read_on(),
+            **{f"results_{k}": v for k, v in disclosure_gap(completed).items()},
+            "method": "Only trials the sponsor completed and posted results for. A sentence in the posted results "
+                      "saying this trial did not meet its primary endpoint decides it. Otherwise: only outcome "
+                      "measures typed PRIMARY that measure efficacy, only between-group comparisons that are not "
+                      "non-inferiority or equivalence tests, and only a p-value held to the threshold the sponsor "
+                      "wrote down — 0.05 where it wrote none — or, with no p-value, a two-sided 95% interval "
+                      "against no effect. A failed non-inferiority test is a different event and is never counted "
+                      "here.",
             "why_it_matters": "A discontinuation rate only sees trials that were stopped. A drug that runs its "
                               "trial to the end and misses is the more common failure in several fields, and the "
                               "registry records it.",
@@ -362,8 +373,9 @@ def build(args) -> dict:
         "limits": [
             "This describes registry records for trials that have closed. It is not a forecast for any asset.",
             "The rate is not a failure rate: a trial that ran to completion and missed its endpoint is not in it. "
-            "Those trials are listed separately where the sponsor posted an analysis to read; most posted none, "
-            "so the missed-endpoint count is a floor and not a rate.",
+            "Those trials are listed separately where the sponsor posted a result that can be read, each with the "
+            "numbers or the sentence it was read from; most posted nothing readable, so the missed-endpoint count "
+            "is a floor and not a rate.",
             "Comparisons are unadjusted. Indication, line of therapy, biomarker selection and development era are "
             "not matched between this cohort and its comparator.",
             "Extraction, classification and attribution are automated. No clinician has reviewed these records.",
@@ -548,6 +560,41 @@ def interpretation(pkg: dict) -> list[str]:
     return out
 
 
+ENDPOINT_LABEL = {"MISSED": "missed", "MET": "met", "MIXED": "split"}
+
+
+def evidence_html(ev: dict | None, compact: bool = False) -> str:
+    """The posted result in words: the sponsor's sentence first, then the numbers and their bar."""
+    if not ev:
+        return "<span class='muted'>—</span>"
+    parts = []
+    if compact:
+        parts.append(f"<div class='evid'><b>Posted primary result: {e(ENDPOINT_LABEL[ev['verdict']])}.</b> ")
+        if ev.get("statement"):
+            parts.append(f"&ldquo;{e(ev['statement']['text'])}&rdquo;")
+        elif ev.get("lines"):
+            # The stop table is narrow: the endpoint and the number, the full line is in the miss table
+            # and on the results tab.
+            line = ev["lines"][0]
+            parts.append(e(line if len(line) <= 170 else line[:170].rsplit(" ", 1)[0] + "…"))
+        parts.append("</div>")
+        return "".join(parts)
+    if ev.get("statement"):
+        parts.append(f"<div class='quote'>&ldquo;{e(ev['statement']['text'])}&rdquo; "
+                     f"<span class='muted'>— sponsor, {e(ev['statement']['where'])}</span></div>")
+        if ev.get("statistical_verdict") in ("MET", "MIXED"):
+            parts.append("<div class='muted small'>The posted numbers alone would read "
+                         f"{e(ENDPOINT_LABEL[ev['statistical_verdict']])}; the sponsor's statement is taken over them, "
+                         "because it knows the testing rule and the numbers do not carry it.</div>")
+    for line in ev.get("lines") or []:
+        parts.append(f"<div class='evline'>{e(line)}</div>")
+    if ev.get("more"):
+        parts.append(f"<div class='muted small'>and {ev['more']} more comparison(s) on the results tab.</div>")
+    for rule in ev.get("rules") or []:
+        parts.append(f"<div class='muted small'>The sponsor on the test: &ldquo;{e(rule)}&rdquo;</div>")
+    return "".join(parts)
+
+
 def render_html(pkg: dict, notes: list[str]) -> str:
     h, a, c = pkg["headline"], pkg["attribution"], pkg["concentration"]
     cif = {x["months"]: x for x in (pkg["time_to_event"].get("cif") or [])}
@@ -576,6 +623,10 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                 size += "<span class='muted'> planned</span>"
             ran = (f"{t['months_to_stop']} mo" if t.get("months_to_stop") is not None else "—")
             posted = "yes" if t.get("has_results") else "no"
+            ev = t.get("endpoint_evidence")
+            if ev:
+                posted = (f"<a href='{e(t['results_url'])}'>{e(ENDPOINT_LABEL[ev['verdict']])}</a>")
+            evidence = evidence_html(ev, compact=True) if ev else ""
             body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a></td>"
                      f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td>"
                      f"<td>{e(', '.join(t['experimental_drugs']) or '—')}</td>"
@@ -583,7 +634,7 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                      f"<td class='num'>{ran}</td>"
                      f"<td class='num muted'>{posted}</td>"
                      f"<td class='num'>{e(t['stopped'] or t['start'])}</td>"
-                     f"<td>{e(t['why_stopped']) or '<span class=muted>no reason recorded</span>'}{attr}</td></tr>")
+                     f"<td>{e(t['why_stopped']) or '<span class=muted>no reason recorded</span>'}{attr}{evidence}</td></tr>")
         return (f"<h2>{e(heading)} <span class='count'>{len(rows)}</span></h2><p class='sub'>{e(blurb)}</p>"
                 f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
                 f"<th class='num'>Enrolled</th><th class='num'>Ran for</th><th class='num'>Results</th>"
@@ -596,27 +647,35 @@ def render_html(pkg: dict, notes: list[str]) -> str:
         rows = [t for t in pkg["trials"] if t["kind"] == "endpoint_miss"]
         body = ""
         for t in rows:
-            analyses = "".join(
-                f"<div>{e(a['outcome'])} <span class='mono'>p {e(a['p'])}</span></div>"
-                for a in t["endpoint_analyses"] if not a["significant"])
             size = (f"{t['enrollment']:,}" if isinstance(t["enrollment"], int) else "—")
-            body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a></td>"
+            body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a>"
+                     f"<div class='muted small'><a href='{e(t['results_url'])}'>results tab</a></div></td>"
                      f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td>"
                      f"<td>{e(', '.join(t['experimental_drugs']) or '—')}</td>"
                      f"<td class='num'>{size}</td><td class='num'>{e(t['start'])}</td>"
-                     f"<td>{analyses}</td></tr>")
+                     f"<td>{evidence_html(t.get('endpoint_evidence'))}</td></tr>")
         table = (f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
                  f"<th class='num'>Enrolled</th><th class='num'>Started</th>"
-                 f"<th>Primary comparison, as posted</th></tr></thead><tbody>{body}</tbody></table>"
+                 f"<th>What the posted results say</th></tr></thead><tbody>{body}</tbody></table>"
                  if body else "")
         more = (f" The {MAX_CONTEXT_ROWS} most recently started are listed."
                 if ep["missed"] > MAX_CONTEXT_ROWS else "")
+        gap = (f" {ep['results_not_posted']} of the {ep['results_due']} completed trials that finished more than a "
+               f"year ago have posted no results at all — a gap in what can be known, not a sign of failure."
+               if ep.get("results_due") else "")
+        stated = (f" {ep['from_sponsor_statement']} of the misses rest on the sponsor's own sentence rather than the "
+                  f"numbers." if ep.get("from_sponsor_statement") else "")
+        read = f" Read from ClinicalTrials.gov on {e(ep['read_on'])}." if ep.get("read_on") else ""
         return (f"<h2>Ran to the end and missed <span class='count'>{ep['missed']}</span></h2>"
                 f"<p class='sub'>Of {ep['completed']} completed trials in this cohort, {ep['readable']} posted a "
-                f"primary superiority comparison we can read: <b>{ep['missed']}</b> came back non-significant, "
-                f"{ep['met']} significant"
+                f"primary result that can be read: <b>{ep['missed']}</b> missed, {ep['met']} met"
                 + (f", {ep['mixed']} split across co-primaries" if ep["mixed"] else "")
-                + f". {e(ep['method'])} The rest posted no analysis to read, so this is a floor, not a rate.{more}</p>"
+                + f".{stated} {e(ep['method'])} The rest posted nothing readable, so this is a floor, not a rate."
+                + f"{gap}{more}{read}</p>"
+                + "<p class='sub'>Each row carries what the verdict was read from — the sponsor's sentence, or the "
+                  "posted comparison with the threshold it was held to — and a link to the trial's results tab, so a "
+                  "row can be checked without being reconstructed. A missed endpoint is not a verdict on the "
+                  "molecule: dose, population, endpoint and comparator all decide it too.</p>"
                 + table)
 
     review = pkg.get("asset_under_review")
@@ -700,6 +759,10 @@ a {{ color:var(--acc); }}
 .stat b {{ display:block; font-size:22px; font-variant-numeric:tabular-nums; }}
 .stat span {{ color:var(--ink2); font-size:11.5px; }}
 .attr {{ margin-top:4px; font-size:12px; font-weight:700; }}
+.evid {{ margin-top:4px; font-size:12px; color:var(--ink2); }}
+.evline {{ font-size:12.5px; margin-bottom:3px; }}
+.quote {{ font-size:12.5px; font-style:italic; margin-bottom:4px; }}
+.small {{ font-size:11.5px; }}
 .attr.own {{ color:#166534; }} .attr.casc {{ color:#9a3412; }} .attr.unk {{ color:var(--ink2); }}
 .box {{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-top:10px; }}
 .box.ours {{ border-left:3px solid var(--acc); }}

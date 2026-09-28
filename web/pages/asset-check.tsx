@@ -346,8 +346,8 @@ export default function AssetCheckPage() {
                           // A stop is not the only way a drug fails here, and in some classes it is
                           // the rarer one. This is the sponsor's own posted comparison, read back.
                           <div className="matchEndpoints">
-                            <b>{m.endpoints.missed}</b> of {n(m.endpoints.readable)} completed trials that posted a
-                            primary comparison missed it{m.endpoints.met ? `, ${n(m.endpoints.met)} met it` : ""}.{" "}
+                            <b>{m.endpoints.missed}</b> of {n(m.endpoints.readable)} completed trials with a readable
+                            primary result missed it{m.endpoints.met ? `, ${n(m.endpoints.met)} met it` : ""}.{" "}
                             <span className="muted">Not in the rate above — it counts stops, not misses.</span>
                           </div>
                         ) : null}

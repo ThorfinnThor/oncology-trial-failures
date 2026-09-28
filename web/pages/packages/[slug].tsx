@@ -97,8 +97,9 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                 <div className="cardTitle">What it cannot tell you</div>
                 <p>
                   The limits in full: unadjusted comparisons, no clinician review, and disclosure differences between
-                  sponsors. Completed trials that missed their primary endpoint are listed separately, and only where
-                  the sponsor posted an analysis to read — so that count is a floor, not a rate.
+                  sponsors. Completed trials that missed their primary endpoint are listed separately, each with the
+                  sponsor&apos;s posted numbers or sentence it was read from, and only where the sponsor posted a result
+                  that can be read — so that count is a floor, not a rate.
                 </p>
               </div>
             </div>

@@ -120,9 +120,23 @@ export type TrialIndexRow = {
   url?: string;
 };
 
+/** What the posted results say about a trial's primary endpoint, with what it was read from. */
+export type EndpointResult = {
+  verdict: "MISSED" | "MET" | "MIXED";
+  basis: "sponsor_statement" | "posted_analysis" | null;
+  statement: { text: string; where: string } | null;
+  statistical_verdict: "MISSED" | "MET" | "MIXED" | "UNREADABLE";
+  lines: string[];
+  more: number;
+  rules: string[];
+  results_url: string;
+  read_on: string | null;
+};
+
 export type TrialDetail = TrialIndexRow & {
   // The detail page expects these (some code maps from the compact fields)
   why_stopped?: string;
   conditions?: string;
   intervention_names?: string;
+  endpoint_result?: EndpointResult | null;
 };

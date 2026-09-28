@@ -34,6 +34,7 @@ test("detail shards preserve every condition and intervention from the registry"
     assert.equal(index.intervention_names, record.intervention_names);
     assert.equal(index.countries, record.countries);
     assert.equal(detail.countries, record.countries);
+    assert.equal(detail.endpoint_result, undefined, "no results file, no results panel");
 
     assert.deepEqual(filterRows([index], { country: ["germany"] }), [index]);
     assert.deepEqual(filterRows([index], { condition: [" relapsed   multiple myeloma "] }), [index]);
@@ -91,4 +92,28 @@ test("first-only indexes still support entity filters and search", () => {
   assert.deepEqual(filterRows(rows, { condition: ["First condition"], intervention: ["First drug"] }), rows);
   assert.deepEqual(filterRows(rows, { q: "First drug" }), rows);
   assert.deepEqual(filterRows(rows, { country: ["Germany"] }), []);
+});
+
+test("a trial's posted primary result rides along in its detail shard, not in the index", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "trial-shards-endpoints-"));
+  try {
+    await mkdir(path.join(dir, "public"));
+    await writeFile(path.join(dir, "public/all_stopped_trials.json"), JSON.stringify([{ nct_id: "NCT00000001" }]));
+    const result = {
+      verdict: "MISSED", basis: "posted_analysis", statement: null, statistical_verdict: "MISSED",
+      lines: ["Overall survival — p 0.41 against 0.05: not significant."], more: 0, rules: [],
+      results_url: "https://clinicaltrials.gov/study/NCT00000001?tab=results",
+    };
+    await writeFile(path.join(dir, "public/trial_endpoints.json"),
+      JSON.stringify({ read_on: "2026-09-28", trials: { NCT00000001: result } }));
+    const generator = fileURLToPath(new URL("../scripts/generate-data-shards.mjs", import.meta.url));
+    execFileSync(process.execPath, [generator], { cwd: dir });
+    const [detail] = JSON.parse(await readFile(path.join(dir, "public/trial-shards/01.json"), "utf8"));
+    const [index] = JSON.parse(await readFile(path.join(dir, "public/trials-index-shards/0.json"), "utf8"));
+    assert.equal(detail.endpoint_result.verdict, "MISSED");
+    assert.equal(detail.endpoint_result.read_on, "2026-09-28");
+    assert.equal(index.endpoint_result, undefined);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
 });

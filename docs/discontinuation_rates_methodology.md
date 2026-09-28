@@ -87,28 +87,67 @@ the drug did not beat placebo. That failure is real and the registry records it.
 `scripts/universe/endpoint_outcomes.py` reads it, and reads nothing else: no re-analysis, no
 inference from an abstract, no judgement about whether the endpoint was the right one.
 
-What counts, deliberately narrowly:
+Two kinds of evidence, in this order (reader version 2, 28 Sep 2026):
+
+**1. The sponsor says so.** A sentence in the posted results — limitations and caveats, a primary
+analysis comment, the primary outcome description — stating that this trial did not meet its
+primary endpoint. It wins over the numbers, because the sponsor knows the multiplicity rule, the
+co-primary logic and the single-arm bar, and the posted numbers carry none of them. Not read:
+sentences about another study (another NCT ID, a study code, "the parent study"), a pronoun that
+points back at another study, individual patients who "did not meet the endpoint", a rule ("…would
+be stopped if the endpoint was not met"), and an enrolment failure phrased as a miss ("did not reach
+its primary objective; did not accrue enough patients"). Only misses are taken from prose: "the
+primary endpoint was met" is written far more often as a rule than as a result.
+
+**2. The sponsor's posted comparison, held to the sponsor's own bar.**
 
 - only trials whose status is **COMPLETED** — a still-recruiting study that posted an interim
   analysis is not a finished answer;
-- only outcome measures the sponsor typed **PRIMARY**;
-- only analyses the sponsor typed **SUPERIORITY**. A non-inferiority test that fails to reject is a
-  different event; it is counted as skipped and never as a miss;
-- only analyses comparing **at least two groups** — a within-arm change from baseline is not a
-  comparison;
-- only a p-value the record settles against **0.05**. `<0.001` is significant, `>0.05` and an
-  explicit `NS` are not, `<0.1` settles nothing and is left unread.
+- only outcome measures the sponsor typed **PRIMARY** that measure efficacy — an outcome about
+  adverse events, tolerability or drug levels is not a test of whether the drug worked;
+- only analyses that are not non-inferiority or equivalence tests: typed **SUPERIORITY**, or the
+  older registry answer "not a non-inferiority or equivalence analysis" (**SUPERIORITY_OR_OTHER**).
+  Where the sponsor's own words describe a margin or a non-inferiority hypothesis, the words win.
+  A trial with any non-inferiority primary analysis is left unread as a whole: its superiority
+  tests are the next step of the hierarchy, and read alone they turn a trial that met its aim into
+  a miss;
+- only analyses comparing **at least two groups**, and no Bayesian analyses (a posterior
+  probability in the p-value field is not a p-value);
+- the threshold is the one the sponsor wrote down — "one-sided alpha 0.10", "Bonferroni-corrected
+  0.025", "threshold for significance ≤ 0.0125" — where there is one. A p exactly on a stated bar is
+  decided by rounding and left unread. Where the sponsor only says the test was one-sided, below
+  0.025 is significant and 0.2 or above is not; in between it depends on a number we do not have
+  and is left unread. Otherwise 0.05, and a p-value the record does not settle (`<0.1`) is unread;
+- with no p-value, a two-sided 95% interval for a difference or a ratio that includes no effect is
+  non-significant, one that excludes it significant, one that ends on it unread.
 
 A trial where every qualifying analysis came back non-significant is `MISSED`; all significant,
-`MET`; co-primaries that disagree, `MIXED`, reported as its own category because the registry does
-not say whether the design needed both.
+`MET`; co-primaries or doses that disagree, `MIXED`, reported as its own category because the
+registry does not say whether the design needed both. `MET` does not check that the effect went
+the right way.
 
-**It is a floor, not a rate.** Roughly half of completed trials post results at all, and of those
-only about a third post a primary superiority analysis with a readable p-value. 1,500 misses across
-2015–2024 is what the registry states outright, not what happened.
+Effect of version 2 on the 26,300 Phase 2/3 trials with posted results (starts 2010 onwards),
+completed trials only: readable 3,866 → 5,208; `MISSED` 1,556 → 1,963; `MET` 1,807 → 2,512. About
+140 trials that version 1 called missed are now unread — mostly non-inferiority trials filed as
+superiority and adverse-event outcomes — and a handful moved between missed and met because the
+sponsor's own threshold differed from 0.05.
 
-`MET` is not approval and `MISSED` is not a verdict on the molecule. It is the sponsor's own posted
-comparison, read back.
+**It is a floor, not a rate.** Most completed trials post nothing readable. What the registry states
+outright is not what happened.
+
+`MET` is not approval and `MISSED` is not a verdict on the molecule — dose, population, endpoint and
+comparator decide it too. Every verdict is published with what it was read from: the sponsor's
+sentence, or each comparison with its number, its estimate and interval, the threshold it was held
+to and the sponsor's words about that threshold, plus a link to the results tab and the date it was
+read. Packages print these next to every listed trial; the stopped-trial pages on the site carry
+them in a "Posted results" panel (`scripts/universe/publish_trial_endpoints.py` →
+`web/public/trial_endpoints.json` → folded into the detail shards at build).
+
+**The disclosure gap.** Briefs and packages also count, per cohort, the completed trials whose actual
+primary completion is more than 13 months behind us (the US rule allows twelve; one more for
+quality control) and that have posted no results at all. It is a gap in what can be known, never a
+failure and never a claim of non-compliance: many trials are outside the US posting rule, and some
+have a certified delay.
 
 Output: `.cache/universe/endpoint_outcomes.jsonl.gz`, joined into class signatures and evidence
 packages by NCT ID. Every consumer treats a missing file as "no endpoint section" rather than an

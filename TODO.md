@@ -64,9 +64,15 @@ Three ways out, in order of how much they are worth:
   none met, PD-(L)1 62 misses beside its 97 stops. It also settles the metabolic question in the
   other direction — GLP-1/GIP: 81 of 86 posted comparisons **met** their endpoint. There is
   nothing to sell there because the drugs work, not because we cannot see them.
-  Still open: it appears in the paid packages and the free asset check, not in the briefs or the
-  published rates. A miss and a stop are different events and folding them into one number would
-  wreck the thing the site is trusted for, so the brief needs its own second number, deliberately.
+  The briefs carry it as a second number since 27 Sep. **Reader v2 (28 Sep):** the sponsor's own
+  threshold where it wrote one, the sponsor's own "did not meet its primary endpoint" sentence,
+  the older "superiority or other" analyses, 95% intervals where no p was posted; non-inferiority
+  trials, adverse-event outcomes and Bayesian analyses out. Completed and readable 3,866 → 5,208,
+  missed 1,556 → 1,963, and ~140 v1 misses withdrawn as wrong. Every verdict now ships with what
+  it was read from (packages, and a "Posted results" panel on 625 stopped-trial pages), plus a
+  per-cohort count of completed trials that posted nothing at all.
+  Next, if wanted: PubMed abstracts for trials with no posted results (same rule — only the
+  paper's own sentence about this trial, matched by NCT ID).
 - **Widen the window.** The cohorts are Phase 2/3, 2015–2024. Phase 1 and pre-2015 would roughly
   double the closed count in the young classes. It weakens comparability across eras, so it needs
   saying plainly rather than quietly.

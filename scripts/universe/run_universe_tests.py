@@ -9,7 +9,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from scripts.universe.discontinuation_rates import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
-from scripts.universe.endpoint_outcomes import parse_p, read_analyses, significant, verdict_of  # noqa: E402
+from scripts.universe.endpoint_outcomes import (disclosure_gap, evidence_line, evidence_of, parse_p,  # noqa: E402
+                                               read_analyses, row_for, significant, stated_threshold,
+                                               statement_in, verdict_of)
 from scripts.universe.chembl_index import norm  # noqa: E402
 from scripts.universe.mechanism_classes import CLASSES  # noqa: E402
 from scripts.universe.resolve import expand_regimen, modality  # noqa: E402
@@ -236,6 +238,122 @@ check("a one-group analysis is not a comparison", verdict_of(read_analyses(_one)
 _secondary = [{"type": "SECONDARY", "title": "QoL", "analyses": [
     {"nonInferiorityType": "SUPERIORITY", "groupIds": ["g1", "g2"], "pValue": "0.9"}]}]
 check("secondary outcomes are not read", verdict_of(read_analyses(_secondary)["considered"]), "UNREADABLE")
+
+
+def _one_analysis(title="Primary efficacy", **analysis):
+    base = {"nonInferiorityType": "SUPERIORITY", "groupIds": ["g1", "g2"]}
+    return [{"type": "PRIMARY", "title": title, "analyses": [{**base, **analysis}]}]
+
+
+def _verdict(outcomes):
+    return verdict_of(read_analyses(outcomes)["considered"])
+
+
+# The sponsor's own bar, where it wrote one down. A phase 2 run at one-sided 0.10 that came in at
+# 0.07 met its aim; a Bonferroni-split comparison at 0.04 against 0.025 did not.
+check("stated one-sided 0.10 is the bar",
+      _verdict(_one_analysis(pValue="0.07", pValueComment="Test for Arm B vs. Arm A was carried out at one-sided 10% alpha.")),
+      "MET")
+check("stated corrected 0.025 is the bar",
+      _verdict(_one_analysis(pValue="0.043", groupDescription="tested at a Bonferroni-corrected significance level of 0.025")),
+      "MISSED")
+check("the threshold is read out of the words",
+      stated_threshold({"pValueComment": "Threshold for significance \u2264 0.0125."})["values"], [0.0125])
+check("the excerpt keeps the whole first sentence",
+      stated_threshold({"pValueComment": "One-sided p-value."})["excerpt"], "One-sided p-value.")
+check("p on the stated bar is decided by rounding, so unread",
+      _verdict(_one_analysis(pValue="0.0167", groupDescription="conducted at the 0.0167 significance level")), "UNREADABLE")
+# One-sided with no number: only what every one-sided design would agree on is read.
+check("one-sided, clearly significant", _verdict(_one_analysis(pValue="0.01", statisticalMethod="t-test, 1 sided")), "MET")
+check("one-sided, clearly not", _verdict(_one_analysis(pValue="0.35", pValueComment="One-sided p-value.")), "MISSED")
+check("one-sided, depends on a number we lack",
+      _verdict(_one_analysis(pValue="0.12", pValueComment="One-sided p-value.")), "UNREADABLE")
+
+# The older registry answer "not a non-inferiority or equivalence analysis" is a comparison…
+check("superiority-or-other is read", _verdict(_one_analysis(nonInferiorityType="SUPERIORITY_OR_OTHER", pValue="0.4")),
+      "MISSED")
+# …unless the sponsor's own words describe a margin.
+check("a margin in the words makes it non-inferiority",
+      _verdict(_one_analysis(nonInferiorityType="SUPERIORITY_OR_OTHER_LEGACY", pValue="0.13",
+                             groupDescription="Null hypothesis: the E/C/F/TAF group was >= 12% worse than the TDF group")),
+      "UNREADABLE")
+_ni_then_sup = [{"type": "PRIMARY", "title": "HIV-1 RNA < 50 copies/mL", "analyses": [
+    {"nonInferiorityType": "NON_INFERIORITY", "groupIds": ["g1", "g2"], "pValue": "<0.001"},
+    {"nonInferiorityType": "SUPERIORITY", "groupIds": ["g1", "g2"], "pValue": "1.00"}]}]
+check("a non-inferiority trial's superiority step is not read on its own", _verdict(_ni_then_sup), "UNREADABLE")
+check("a posterior probability is not a p-value",
+      _verdict(_one_analysis(pValue="0.447", groupDescription="Posterior Probability the True Treatment Ratio <1")),
+      "UNREADABLE")
+check("no difference in adverse events is not a missed endpoint",
+      _verdict(_one_analysis(title="Number of Participants With Treatment-Emergent Adverse Events", pValue="0.8")),
+      "UNREADABLE")
+
+# No p-value: a two-sided 95% interval against no effect, and nothing else.
+_ci = dict(ciNumSides="TWO_SIDED", ciPctValue="95")
+check("a hazard ratio interval across 1 is a miss",
+      _verdict(_one_analysis(paramType="Hazard Ratio (HR)", paramValue="1.02", ciLowerLimit="0.77", ciUpperLimit="1.35", **_ci)),
+      "MISSED")
+check("a difference interval clear of 0 is met",
+      _verdict(_one_analysis(paramType="LS Mean Difference", paramValue="-3", ciLowerLimit="-5", ciUpperLimit="-1", **_ci)),
+      "MET")
+check("a 90% interval is not a 0.05 test",
+      _verdict(_one_analysis(paramType="Hazard Ratio (HR)", paramValue="1.02", ciLowerLimit="0.8", ciUpperLimit="1.3",
+                             ciNumSides="TWO_SIDED", ciPctValue="90")), "UNREADABLE")
+check("an interval ending on no effect is unread",
+      _verdict(_one_analysis(paramType="Odds Ratio (OR)", paramValue="2", ciLowerLimit="1.00", ciUpperLimit="4", **_ci)),
+      "UNREADABLE")
+
+# The sponsor saying it in words — about this trial, as a result, not a rule or somebody else's study.
+_own = "This study was terminated early by the Sponsor because the study did not meet the primary endpoint."
+check("the sponsor's sentence is read", statement_in(_own, "NCT04757610"), _own)
+check("another study's miss is not this trial's",
+      statement_in("Development was discontinued after Study HZNP-ACT-301 (NCT02415127) failed to meet its primary "
+                   "efficacy endpoint.", "NCT02593773"), None)
+check("a pronoun pointing back at another study is not this trial",
+      statement_in("The study was prematurely terminated because of the results of the TRIO-013/LOGiC trial. It failed "
+                   "to meet its primary survival endpoint.", "NCT01395537"), None)
+check("patients not meeting an endpoint is not the trial missing it",
+      statement_in("14/18 were analyzed because 4 pts did not meet the study primary endpoint.", "NCT01794117"), None)
+check("a rule is not a result",
+      statement_in("The trial would be stopped if the primary endpoint was not met at interim.", "NCT00000001"), None)
+check("no answer is not a negative answer",
+      statement_in("Study did not reach primary objective; study didn't accrue enough patients.", "NCT01313884"), None)
+_study = {"protocolSection": {"identificationModule": {"nctId": "NCT03790865"}, "statusModule": {"overallStatus": "TERMINATED"}},
+          "resultsSection": {"moreInfoModule": {"limitationsAndCaveats": {"description":
+              "The double-blind, placebo-controlled phase 2b study did not meet the primary endpoint or any of the "
+              "secondary endpoints."}},
+              "outcomeMeasuresModule": {"outcomeMeasures": _hit}}}
+_row = row_for(_study)
+check("the sponsor's sentence beats the posted numbers", (_row["endpoint_verdict"], _row["basis"]),
+      ("MISSED", "sponsor_statement"))
+check("and the numbers are still kept", _row["statistical_verdict"], "MET")
+check("registry escapes are removed from what we quote",
+      stated_threshold({"groupDescription": "Using a 1-sided alpha=0.2 \\[HR\\] =0.75"})["excerpt"],
+      "Using a 1-sided alpha=0.2 [HR] =0.75")
+_ev = evidence_of(_row)
+check("the evidence carries the sponsor's sentence", _ev["statement"]["where"], "limitations and caveats")
+check("and a link straight to the results tab", _ev["results_url"], "https://clinicaltrials.gov/study/NCT03790865?tab=results")
+check("an unread trial has no evidence record", evidence_of({"nct_id": "X", "endpoint_verdict": "UNREADABLE"}), None)
+check("a stated bar is named in the line",
+      evidence_line({"outcome": "6MWD", "p": "0.048", "significant": False, "threshold": 0.025,
+                     "threshold_basis": "stated", "method": "MMRM", "estimate": None}),
+      "6MWD — p 0.048 against the sponsor's stated threshold of 0.025: not significant. Method: MMRM.")
+
+# The evidence gap: finished more than thirteen months ago with an actual date, nothing posted.
+from datetime import date as _date  # noqa: E402
+_gap = disclosure_gap([
+    {"overall_status": "COMPLETED", "primary_completion_date": "2024-05", "primary_completion_date_type": "ACTUAL",
+     "has_results": False, "lead_sponsor_class": "INDUSTRY"},
+    {"overall_status": "COMPLETED", "primary_completion_date": "2026-01", "primary_completion_date_type": "ACTUAL",
+     "has_results": False},
+    {"overall_status": "COMPLETED", "primary_completion_date": "2020-01", "primary_completion_date_type": "ACTUAL",
+     "has_results": True},
+    {"overall_status": "COMPLETED", "primary_completion_date": "2020-01", "primary_completion_date_type": "ESTIMATED",
+     "has_results": False},
+    {"overall_status": "TERMINATED", "primary_completion_date": "2020-01", "has_results": False},
+], _date(2026, 9, 28))
+check("the gap counts only completed trials past the deadline", (_gap["due"], _gap["not_posted"]), (2, 1))
+check("and says how much of it is industry", _gap["not_posted_industry"], 1)
 
 # Nothing may be called unusual on the site that the correction does not support.
 _index = json.loads((Path(__file__).resolve().parents[2] / "web/data/briefs_index.json").read_text())
