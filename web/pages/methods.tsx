@@ -164,6 +164,25 @@ export default function MethodsPage() {
               This is inferred from registry text and may be incomplete. Verify using primary sources.
             </p>
 
+            <h2 id="completed-endpoints" className="h2">
+              Completed trials that missed their primary endpoint
+            </h2>
+            <p className="muted">
+              A stop reason only covers trials that were stopped. A trial that runs to the end and misses its primary endpoint
+              is read separately, from the results the sponsor posted on ClinicalTrials.gov, and never counted in a
+              discontinuation rate. A sentence in the posted results saying this trial did not meet its primary endpoint
+              decides it. Otherwise only primary outcomes that measure efficacy are read, only comparisons between at least
+              two groups that are not non-inferiority or equivalence tests, and each p-value is held to the threshold the
+              sponsor wrote down — 0.05 where it wrote none. With no p-value, a two-sided 95% confidence interval that includes
+              no effect counts as not significant. Anything the record does not settle is left unread.
+            </p>
+            <p className="muted">
+              Every verdict is shown with what it was read from — the sponsor&apos;s sentence, or the comparison with its
+              number and threshold — and a link to the trial&apos;s results tab. Most completed trials post nothing readable,
+              so the counts are floors, not rates. A met endpoint is not an approval, and a missed one is not a verdict on
+              the drug: dose, population, endpoint and comparator decide it too.
+            </p>
+
             <h2 className="h2">Reason buckets</h2>
             <p className="muted">
               Stop reasons are grouped into high-level buckets (e.g., efficacy/futility, safety, operational, enrollment, funding, regulatory,

@@ -7,6 +7,28 @@ import PrimaryNav from "@/components/PrimaryNav";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { trialPath } from "@/lib/seoUrls";
 import type { TrialIndexRow } from "@/lib/types";
+import homeOutcomes from "@/data/home_outcomes.json";
+
+type OutcomeExample = {
+  nct_id: string;
+  sponsor: string | null;
+  phase: string;
+  drugs: string;
+  evidence: string;
+  evidence_source: string;
+  posted: string | null;
+  href: string;
+  external: boolean;
+};
+
+type OutcomeCard = {
+  key: string;
+  status: string;
+  label: string;
+  count: number;
+  count_label: string;
+  example: OutcomeExample | null;
+};
 
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -285,7 +307,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 </div>
                 <h1 id="v2-hero-title">Clinical trial stops,<span>reclassified.</span></h1>
                 <p className="v2HeroLede">
-                  A searchable evidence layer for terminated, suspended, and withdrawn trials. Separate likely biological failure signals from recruitment, funding, strategy, and other non-biological causes.
+                  A searchable evidence layer for terminated, suspended, and withdrawn trials. Separate likely biological failure signals from recruitment, funding, strategy, and other non-biological causes — and see which completed trials missed their primary endpoint.
                 </p>
 
                 <form className="v2Search" action="/explore" method="get" role="search">
@@ -333,6 +355,64 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                 </div>
                 <div className="v2ConsoleFooter"><span>Source-linked evidence</span><span>Free · no sign-up</span></div>
               </div>
+            </div>
+          </section>
+
+          {/* Four ways a trial ends, one real record each. "Stopped" and "failed" are different
+              questions; this is where a visitor sees that the site answers both. The examples are
+              picked by rule in scripts/universe/build_home_outcomes.py, never by hand. */}
+          <section className="v2Outcomes" aria-labelledby="v2-outcomes-title">
+            <div className="v2Container">
+              <div className="v2SectionIntro">
+                <div><p className="v2Kicker">Two ways a trial fails</p><h2 id="v2-outcomes-title">Stopped is not the same as failed.</h2></div>
+                <p>A trial can be stopped early — for efficacy, for safety, or for reasons that say nothing about the drug. Or it can run to the end and miss its primary endpoint, which a stop reason never shows. We read both from the registry, each with the record it came from.</p>
+              </div>
+              <div className="v2OutcomeGrid">
+                {(homeOutcomes.cards as OutcomeCard[]).map((card) => (
+                  <article className={`v2Outcome v2Outcome-${card.key}`} key={card.key}>
+                    <div className="v2OutcomeHead">
+                      <span className="v2OutcomeStatus">{card.status}</span>
+                      <h3>{card.label}</h3>
+                    </div>
+                    <div className="v2OutcomeCount">
+                      <strong>{compactNumber(card.count)}</strong>
+                      <span>{card.count_label}</span>
+                    </div>
+                    {card.example ? (
+                      <div className="v2OutcomeExample">
+                        <div className="v2OutcomeId">
+                          <strong>{card.example.nct_id}</strong>
+                          <small>
+                            {[card.example.sponsor, card.example.phase, card.example.drugs].filter(Boolean).join(" · ")}
+                          </small>
+                        </div>
+                        <p className="v2OutcomeEvidence">{card.example.evidence}</p>
+                        <p className="v2OutcomeSource">From {card.example.evidence_source}.</p>
+                        {card.example.posted ? (
+                          <p className="v2OutcomePosted"><b>Posted results:</b> {card.example.posted}</p>
+                        ) : null}
+                        {card.example.external ? (
+                          <a className="v2OutcomeLink" href={card.example.href} target="_blank" rel="noreferrer">
+                            Check the results tab <span aria-hidden="true">↗</span>
+                          </a>
+                        ) : (
+                          <Link className="v2OutcomeLink" href={card.example.href}>
+                            Open the record <span aria-hidden="true">→</span>
+                          </Link>
+                        )}
+                      </div>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+              <p className="v2OutcomeNote">
+                Stopped: terminated, suspended or withdrawn trials whose sponsor-stated primary reason is efficacy, futility
+                or safety. Completed: Phase 2/3
+                trials whose posted primary result can be read — {compactNumber(homeOutcomes.readable_completed)} so far
+                {homeOutcomes.read_on ? `, read ${homeOutcomes.read_on}` : ""}. Most completed trials post nothing readable,
+                so these are floors. Met is not approval, and missed is not a verdict on the drug.{" "}
+                <Link href="/methods#completed-endpoints">How it is read →</Link>
+              </p>
             </div>
           </section>
 
@@ -465,6 +545,22 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .v2ResolutionBar{height:4px;background:#273449}.v2ResolutionBar span{display:block;height:100%;background:var(--v2-green-deep)}.v2ConsoleRows{min-height:364px}
         .v2ConsoleRow{display:grid;grid-template-columns:28px minmax(125px,.8fr) minmax(108px,auto) minmax(170px,1.3fr) 16px;gap:12px;align-items:start;min-height:91px;padding:14px;border-bottom:1px solid #343d42;color:#dce3e0}.v2ConsoleRow:hover{background:#1d2529}.v2RowIndex{color:#657177;font-family:var(--font-mono);font-size:10px}.v2TrialIdentity strong,.v2TrialIdentity small{display:block}.v2TrialIdentity strong{color:var(--v2-cyan);font-family:var(--font-mono);font-size:11px}.v2TrialIdentity small{margin-top:6px;color:#98a4a8;font-size:10px;line-height:1.35}
         .v2Tag{display:inline-flex;align-items:center;width:fit-content;min-height:22px;padding:3px 7px;border:1px solid currentColor;font-family:var(--font-mono);font-size:9px;font-weight:800;line-height:1.2}.v2TagEfficacy{color:var(--v2-green)}.v2TagSafety{color:var(--v2-coral)}.v2TagFunding{color:var(--v2-amber)}.v2TagRegulatory{color:var(--v2-cyan)}.v2TagDecision{color:#c4b5fd}.v2TagOperational{color:#cbd5e1}.v2Evidence{color:#aeb8c8;font-size:10px;line-height:1.45}.v2RowArrow{color:var(--v2-green);font-size:13px}.v2ConsoleFooter{border-top:1px solid #334155}
+        .v2Outcomes{padding:72px 0;background:var(--v2-paper);border-bottom:1px solid var(--v2-line)}.v2Outcomes h2{max-width:760px;margin-top:10px;color:var(--v2-ink);font-size:clamp(2rem,3.6vw,3.4rem);font-weight:850;line-height:1.04}
+        .v2OutcomeGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:34px;border:1px solid var(--v2-line);background:#fff}
+        .v2Outcome{display:flex;flex-direction:column;min-width:0;padding:22px 20px;border-right:1px solid var(--v2-line);border-top:4px solid var(--v2-green-deep)}.v2Outcome:last-child{border-right:0}
+        .v2Outcome-stopped_safety{border-top-color:#be123c}.v2Outcome-completed_missed{border-top-color:#b45309}.v2Outcome-completed_met{border-top-color:#0f766e}
+        .v2OutcomeStatus{color:var(--v2-muted);font-family:var(--font-mono);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+        .v2Outcome h3{margin-top:6px!important;color:var(--v2-ink);font-size:17px;font-weight:850;line-height:1.25}
+        .v2OutcomeCount{margin-top:16px}.v2OutcomeCount strong,.v2OutcomeCount span{display:block}.v2OutcomeCount strong{font-family:var(--font-mono);font-size:28px;font-variant-numeric:tabular-nums;color:var(--v2-ink)}.v2OutcomeCount span{margin-top:2px;color:var(--v2-muted);font-size:11px}
+        .v2OutcomeExample{display:flex;flex-direction:column;flex:1;margin-top:18px;padding-top:16px;border-top:1px solid var(--v2-line)}
+        .v2OutcomeId strong,.v2OutcomeId small{display:block}.v2OutcomeId strong{color:var(--v2-green-deep);font-family:var(--font-mono);font-size:12px}.v2OutcomeId small{margin-top:4px;color:var(--v2-muted);font-size:11px;line-height:1.4}
+        .v2OutcomeEvidence{margin-top:12px!important;color:var(--v2-copy);font-size:13px;line-height:1.55}
+        .v2OutcomeSource{margin-top:6px!important;color:var(--v2-muted);font-size:11px}
+        .v2OutcomePosted{margin-top:10px!important;padding:9px 10px;background:var(--v2-paper);color:var(--v2-copy);font-size:12px;line-height:1.5}
+        .v2OutcomeLink{margin-top:auto;padding-top:16px;color:var(--v2-green-deep);font-size:12px;font-weight:850}.v2OutcomeLink:hover{text-decoration:underline}
+        .v2OutcomeNote{max-width:980px;margin-top:16px!important;color:var(--v2-muted);font-size:12px;line-height:1.6}.v2OutcomeNote a{color:var(--v2-green-deep);font-weight:800}
+        @media(max-width:1080px){.v2OutcomeGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.v2Outcome:nth-child(2){border-right:0}.v2Outcome:nth-child(-n+2){border-bottom:1px solid var(--v2-line)}}
+        @media(max-width:600px){.v2Outcomes{padding:56px 0}.v2Outcomes h2{font-size:2.15rem}.v2OutcomeGrid{grid-template-columns:1fr}.v2Outcome{border-right:0;border-bottom:1px solid var(--v2-line)}.v2Outcome:last-child{border-bottom:0}}
         .v2Signals{padding:78px 0;background:#fff}.v2SectionIntro,.v2MethodHeader,.v2TrustInner{display:grid;grid-template-columns:minmax(0,.9fr) minmax(360px,.7fr);gap:56px;align-items:end}.v2Kicker,.v2PanelCode{color:#647078;font-family:var(--font-mono);font-size:10px;font-weight:800;text-transform:uppercase}.v2Signals h2,.v2Method h2,.v2Workflows h2,.v2Trust h2{max-width:760px;margin-top:10px;color:var(--v2-ink);font-size:clamp(2rem,3.6vw,3.4rem);font-weight:850;line-height:1.04}.v2SectionIntro>p{color:var(--v2-copy);font-size:16px;line-height:1.65}
         .v2SignalLayout{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);gap:18px;margin-top:36px;align-items:stretch}.v2BiologicalPanel,.v2CauseIndex{border:1px solid var(--v2-line);background:var(--v2-paper)}.v2PanelHeading,.v2CauseIndexHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding:22px;border-bottom:1px solid var(--v2-line)}.v2PanelHeading h3,.v2CauseIndexHeader h3{margin-top:7px;color:var(--v2-ink);font-size:18px;font-weight:850}.v2PanelTotal{text-align:right}.v2PanelTotal strong,.v2PanelTotal span{display:block}.v2PanelTotal strong{font-family:var(--font-mono);font-size:27px;font-variant-numeric:tabular-nums}.v2PanelTotal span{margin-top:4px;color:var(--v2-muted);font-size:11px}
         .v2BiologicalBar{display:flex;height:8px;background:#e2e8f0}.v2BiologicalBar span{display:block;height:100%}.v2BioBarEfficacy{background:var(--v2-green-deep)}.v2BioBarSafety{background:var(--v2-coral)}.v2BioBarUnspecified{background:var(--v2-cyan)}.v2BiologicalGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.v2BiologicalItem{position:relative;min-height:264px;padding:24px 21px 22px;border-right:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-right:0}.v2BiologicalItem:hover{background:#fff}.v2CategoryMarker{display:block;width:12px;height:12px;margin-bottom:25px;background:currentColor}.v2BioEfficacy{color:var(--v2-green-deep)}.v2BioSafety{color:#be123c}.v2BioUnspecified{color:#0369a1}.v2BiologicalItem>strong{display:block;color:var(--v2-ink);font-family:var(--font-mono);font-size:30px;font-variant-numeric:tabular-nums}.v2BiologicalItem h4{margin-top:7px;color:var(--v2-ink);font-size:15px;font-weight:850}.v2BiologicalItem p{margin-top:13px;color:var(--v2-copy);font-size:12px;line-height:1.55}.v2InlineAction{position:absolute;left:21px;bottom:22px;color:currentColor;font-size:12px;font-weight:850}

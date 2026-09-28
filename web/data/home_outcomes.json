@@ -1,0 +1,78 @@
+{
+ "read_on": "2026-09-28",
+ "readable_completed": 5208,
+ "cards": [
+  {
+   "key": "stopped_efficacy",
+   "status": "Stopped",
+   "label": "Efficacy or futility",
+   "count": 1599,
+   "count_label": "stopped trials",
+   "example": {
+    "nct_id": "NCT04757636",
+    "sponsor": "Opthea Limited",
+    "phase": "Phase 3",
+    "drugs": "OPT-302",
+    "evidence": "“The primary endpoint was not achieved in the study.”",
+    "evidence_source": "the sponsor's stop reason",
+    "posted": "“This study was terminated early by the Sponsor because the study did not meet the primary endpoint.”",
+    "href": "/trial/NCT04757636",
+    "external": false
+   }
+  },
+  {
+   "key": "stopped_safety",
+   "status": "Stopped",
+   "label": "Safety",
+   "count": 615,
+   "count_label": "stopped trials",
+   "example": {
+    "nct_id": "NCT04921358",
+    "sponsor": "BeiGene",
+    "phase": "Phase 3",
+    "drugs": "Tislelizumab, Sitravatinib",
+    "evidence": "“Due to safety risks and unfavorable risk-benefit assessment results, the sponsor has decided to voluntarily terminate the study.”",
+    "evidence_source": "the sponsor's stop reason",
+    "posted": null,
+    "href": "/trial/NCT04921358",
+    "external": false
+   }
+  },
+  {
+   "key": "completed_missed",
+   "status": "Completed",
+   "label": "Primary endpoint missed",
+   "count": 1963,
+   "count_label": "completed trials",
+   "example": {
+    "nct_id": "NCT04527991",
+    "sponsor": "Gilead Sciences",
+    "phase": "Phase 3",
+    "drugs": "Sacituzumab govitecan",
+    "evidence": "Overall Survival (OS) — p 0.087 against 0.05: not significant. Stratified Hazard Ratio 0.86 (95% CI 0.73 to 1.02).",
+    "evidence_source": "the sponsor's posted comparison",
+    "posted": null,
+    "href": "https://clinicaltrials.gov/study/NCT04527991?tab=results",
+    "external": true
+   }
+  },
+  {
+   "key": "completed_met",
+   "status": "Completed",
+   "label": "Primary endpoint met",
+   "count": 2512,
+   "count_label": "completed trials",
+   "example": {
+    "nct_id": "NCT05872620",
+    "sponsor": "Eli Lilly and Company",
+    "phase": "Phase 3",
+    "drugs": "Orforglipron",
+    "evidence": "Percent Change From Baseline in Body Weight — p <0.001 against 0.05: significant. LS Mean Difference (Net) -3.28 (95% CI -4.1 to -2.47).",
+    "evidence_source": "the sponsor's posted comparison",
+    "posted": null,
+    "href": "https://clinicaltrials.gov/study/NCT05872620?tab=results",
+    "external": true
+   }
+  }
+ ]
+}

@@ -185,6 +185,8 @@ jobs:
           python scripts/universe/reporting_quality.py
           # What the posted results say, for every stopped trial that has a page on the site.
           python scripts/universe/publish_trial_endpoints.py || true
+          # The home page's four ways a trial ends, each with one real record picked by rule.
+          python scripts/universe/build_home_outcomes.py || true
           # Every package exists before anyone orders one: delivery is a lookup, not a job.
           python scripts/signals/build_evidence_catalog.py
           # The watchlist page offers terms that occur in this release, so a pick can always match.
@@ -220,7 +222,7 @@ jobs:
       - name: Commit public product summary and sample
         if: steps.signals.outcome == 'success'
         run: |
-          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/data/cohort_flow.json web/data/reporting_quality.json web/data/event_ascertainment.json web/data/evidence_catalogue.json web/data/watch_terms.json web/data/private web/public/samples web/public/briefs web/public/trial_endpoints.json
+          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/data/cohort_flow.json web/data/reporting_quality.json web/data/event_ascertainment.json web/data/evidence_catalogue.json web/data/watch_terms.json web/data/private web/public/samples web/public/briefs web/public/trial_endpoints.json web/data/home_outcomes.json
           git diff --cached --quiet && echo "No product summary changes" && exit 0
           git commit -m "Update product summary, sample and briefs"
           git push
