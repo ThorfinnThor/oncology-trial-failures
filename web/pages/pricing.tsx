@@ -49,7 +49,7 @@ const PRICING = [
     includes: [
       "Every second week: the trials that entered the dataset, with the sponsor's stop reason",
       "The records sponsors edited after the fact, kept separate from our own reclassifications",
-      "Mechanism classes whose rate moved enough to be worth a line",
+      "Every disease area, stops for efficacy or safety first",
       "One click to stop, in every mail",
     ],
     cta: "Subscribe",
@@ -70,6 +70,7 @@ const PRICING = [
     ],
     cta: "Check your molecule",
     href: "/asset-check",
+    sample: { label: "See a complete package, unlocked", href: "/packages/sample" },
     highlight: true,
     badge: "Most buyers",
   },
@@ -472,6 +473,11 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                       </a>
                     )}
                   </div>
+                  {(tier as any).sample ? (
+                    <Link className="tierSample" href={(tier as any).sample.href}>
+                      {(tier as any).sample.label} →
+                    </Link>
+                  ) : null}
                 </div>
               ))}
             </div>
@@ -541,7 +547,11 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   Every cohort where a drug that failed acts on your molecule&rsquo;s target, each as a document: the
                   trials, what the sponsor said stopped each one, whether that was the trial&rsquo;s own result or a
                   decision taken elsewhere, the time-to-event curve, and your molecule placed against each failed one.
-                  One link, opened immediately, current for a year.
+                  One link, opened immediately, current for a year.{" "}
+                  <Link className="link" href="/packages/sample">
+                    See one in full
+                  </Link>
+                  .
                 </p>
               </div>
               <div className="faq">
@@ -1144,6 +1154,17 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           .waitForm {
             grid-template-columns: 1fr;
           }
+        }
+        .tier :global(.tierSample) {
+          display: block;
+          margin-top: 10px;
+          text-align: center;
+          font-size: 13px;
+          font-weight: 700;
+          color: var(--accent);
+        }
+        .tier :global(.tierSample:hover) {
+          text-decoration: underline;
         }
         .tierCta {
           margin-top: auto;

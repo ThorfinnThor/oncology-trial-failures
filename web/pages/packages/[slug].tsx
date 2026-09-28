@@ -133,6 +133,13 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                   — the comparison is free, and the package then opens with your molecule already placed against the
                   ones that failed.
                 </p>
+                <p className="fine">
+                  Want to see what you get first?{" "}
+                  <Link className="link" href="/packages/sample">
+                    A complete package, unlocked
+                  </Link>
+                  .
+                </p>
               </div>
             </div>
           </section>

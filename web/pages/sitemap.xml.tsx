@@ -40,6 +40,8 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/briefs",
     "/validation",
     "/asset-check",
+    "/packages",
+    "/packages/sample",
     "/reports/latest-two-week-stopped-trial-updates",
     "/sponsor-insights",
     "/top-entities",

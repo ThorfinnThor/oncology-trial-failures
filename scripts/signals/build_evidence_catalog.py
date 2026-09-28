@@ -37,6 +37,14 @@ PRIVATE = ROOT / "web/data/private/evidence_packages.json"
 # What the site may say about a package before anyone has paid for it: the cohort, how much is
 # in it, and which brief it extends. Never the contents.
 PUBLIC = ROOT / "web/data/evidence_catalogue.json"
+# One package published in full, so a buyer can see exactly what €99 buys before paying: the same
+# cohort as the one brief that is also open (TGF-β + PD-(L)1), with a real molecule in the slot a
+# buyer's own asset goes into. Fresolimumab shares the TGF-β target with the molecules that failed
+# here but not their PD-L1 arm, which is the kind of partial overlap the comparison exists to show.
+SAMPLE_SLUG = "oncology-tgf-pd-l-1"
+SAMPLE_ASSET = "fresolimumab"
+SAMPLE_OUT = ROOT / "web/public/samples/evidence-package-sample.html"
+SAMPLE_PATH = "/samples/evidence-package-sample.html"
 PRIVATE_NOTE = ("Server-side only. This file is imported by the API route that delivers a paid "
                 "package; it must never be imported from a page component, or the bundler will "
                 "ship it to the browser.")
@@ -84,6 +92,42 @@ def slugify(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", (value or "").lower()).strip("-")
 
 
+def sample_banner(cohort: str, asset: str) -> str:
+    return ("<div style='background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;color:#78350f;padding:12px 18px;margin:0 0 22px;"
+            "font:14px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif'>"
+            f"<b>Sample — a complete evidence package, published in full.</b> This is exactly what a buyer receives "
+            f"for the {cohort} cohort, with {asset} in the place of the buyer's own molecule. Every other package has "
+            f"the same sections for its own cohort. <a href='https://clinicaltrialfailures.com/packages' "
+            f"style='color:#78350f;font-weight:700'>All packages</a> · <a href='https://clinicaltrialfailures.com/asset-check' "
+            f"style='color:#78350f;font-weight:700'>Get one for your molecule — €99</a></div>")
+
+
+def write_sample(built: dict, job) -> dict | None:
+    """The public copy of one package, with a real comparison in the buyer's slot."""
+    try:
+        resolved = pkg.resolve_asset(SAMPLE_ASSET)
+    except Exception as exc:  # noqa: BLE001 — the index is a cache; without it the sample waits a week
+        print(f"  sample: could not resolve {SAMPLE_ASSET}: {exc}", file=sys.stderr)
+        return None
+    if not resolved:
+        return None
+    sample = dict(built)
+    sample["asset_under_review"] = resolved
+    sample["asset_comparison"] = pkg.compare_asset(resolved, built["failure_signature"]["assets"], job.area)
+    sample["asset_not_compared"] = pkg.NOT_COMPARED
+    notes = pkg.interpretation(sample)
+    sample["interpretation"] = notes
+    html = pkg.render_html(sample, notes)
+    html = re.sub(r"(<body[^>]*>)", lambda m: m.group(1) + sample_banner(built["cohort"], resolved["asset"].title()),
+                  html, count=1)
+    # A sample is for looking at, not for being found instead of the product page.
+    html = html.replace("<head>", "<head><meta name='robots' content='noindex,follow'>", 1)
+    SAMPLE_OUT.parent.mkdir(parents=True, exist_ok=True)
+    SAMPLE_OUT.write_text(html, encoding="utf-8")
+    print(f"wrote {SAMPLE_OUT.relative_to(ROOT)} (public sample: {built['cohort']} with {resolved['asset']})")
+    return {"slug": SAMPLE_SLUG, "cohort": built["cohort"], "asset": resolved["asset"].title(), "path": SAMPLE_PATH}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, help="build only the first N (for a quick check)")
@@ -95,6 +139,7 @@ def main() -> int:
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     bundle, failed, started = {}, [], time.time()
+    sample = None
     for stem, job in jobs:
         try:
             built = pkg.build(job)
@@ -110,6 +155,8 @@ def main() -> int:
             continue
 
         slug = f"{slugify(job.area)}-{slugify(built['cohort'])}"
+        if slug == SAMPLE_SLUG:
+            sample = write_sample(built, job)
         (OUT_DIR / f"{slug}.json").write_text(json.dumps(built, indent=1, ensure_ascii=False) + "\n",
                                               encoding="utf-8")
         (OUT_DIR / f"{slug}.html").write_text(html, encoding="utf-8")
@@ -151,7 +198,8 @@ def main() -> int:
           "counts": p["counts"], "window": p["window"], "headline": p["headline"],
           "generated_at_utc": p["generated_at_utc"]} for slug, p in bundle.items()),
         key=lambda p: (p["area"], p["cohort"]))
-    PUBLIC.write_text(json.dumps({"schema_version": 1, "package_count": len(public), "packages": public},
+    PUBLIC.write_text(json.dumps({"schema_version": 1, "package_count": len(public), "sample": sample,
+                                  "packages": public},
                                  indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
 
     size = PRIVATE.stat().st_size / 1024

@@ -485,7 +485,11 @@ export default function AssetCheckPage() {
                     What is withheld here is deliberate and small: the names of the molecules, the trials behind each,
                     and whether a stop was that trial&rsquo;s own result or a programme decision taken elsewhere. That is
                     the package, at {PACKAGE_PRICE}, and it opens with this comparison already run for your molecule.
-                    The brief for each class is free either way.
+                    The brief for each class is free either way.{" "}
+                    <Link className="link" href="/packages/sample">
+                      See a complete package, unlocked
+                    </Link>
+                    .
                   </p>
                 </>
               )}

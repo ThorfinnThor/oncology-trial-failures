@@ -97,6 +97,13 @@ export default function PackagesIndexPage() {
               elsewhere, and the probability of a stop over time against a like-for-like comparator.
             </p>
             <p className="lead">
+              <b>See exactly what you get:</b>{" "}
+              <Link className="link" href="/packages/sample">
+                one complete package, unlocked
+              </Link>{" "}
+              — every section, nothing blurred.
+            </p>
+            <p className="lead">
               Not sure which of them is yours?{" "}
               <Link className="link" href="/asset-check">
                 Name your molecule and we will say which cohorts contain drugs like it
