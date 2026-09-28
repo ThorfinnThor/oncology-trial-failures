@@ -7,7 +7,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { confirm } from "../pages/api/newsletter";
+import { confirm, notifyOwner } from "../pages/api/newsletter";
 
 type Json = { status: number; body: any };
 
@@ -98,4 +98,36 @@ test("confirming writes an index, so the same address cannot be subscribed twice
   // And it is a hash, not the address: this key is an index, not a second copy of the list.
   assert.ok(!index[0].includes("@"));
   assert.match(index[0], /^sub:[0-9a-f]{64}$/);
+});
+
+test("a confirmation tells the owner who joined, once, at the address the Worker names", async () => {
+  const sent: any[] = [];
+  const realFetch = globalThis.fetch;
+  const saved = { key: process.env.BREVO_API_KEY, to: process.env.NEWSLETTER_NOTIFY_TO };
+  process.env.BREVO_API_KEY = "test-key";
+  process.env.NEWSLETTER_NOTIFY_TO = "owner@example.com";
+  globalThis.fetch = (async (_url: string, init: any) => {
+    sent.push(JSON.parse(init.body));
+    return new Response("{}", { status: 201 });
+  }) as any;
+  try {
+    const store = fakeStore({ "pending:abc": JSON.stringify({ email: "new@example.com", company: "Acme", confirmed_at: null }) });
+    await confirm(store as any, "abc", fakeRes().res);
+    assert.equal(sent.length, 1);
+    assert.equal(sent[0].subject, "New Newsletter Registration CTF");
+    assert.deepEqual(sent[0].to, [{ email: "owner@example.com" }]);
+    assert.match(sent[0].textContent, /new@example\.com/);
+
+    // The same link again: already confirmed, no second note.
+    await confirm(store as any, "abc", fakeRes().res);
+    assert.equal(sent.length, 1);
+
+    // Markup in a company name is text in the note, not markup.
+    await notifyOwner({ email: "x@example.com", company: "<b>Evil</b>" });
+    assert.ok(!sent[1].htmlContent.includes("<b>Evil</b>"));
+  } finally {
+    globalThis.fetch = realFetch;
+    if (saved.key === undefined) delete process.env.BREVO_API_KEY; else process.env.BREVO_API_KEY = saved.key;
+    if (saved.to === undefined) delete process.env.NEWSLETTER_NOTIFY_TO; else process.env.NEWSLETTER_NOTIFY_TO = saved.to;
+  }
 });

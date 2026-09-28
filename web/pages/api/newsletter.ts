@@ -10,12 +10,12 @@
 // anybody can type anybody's address into a form, so without it the list is a claim that somebody
 // consented, with nothing behind it. It is also what German law expects of a mail like this.
 //
-// The fortnightly mail itself is still composed and sent by the weekly workflow. The only mail the
-// site sends is this confirmation.
+// The fortnightly mail itself is still composed and sent by the weekly workflow. The site sends two
+// mails here: the confirmation to the subscriber, and a one-line note to the owner once they confirm.
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { canSendMail, layout, sendMail } from "@/lib/server/mail";
+import { canSendMail, frame, layout, mailEnv, sendMail } from "@/lib/server/mail";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -225,10 +225,34 @@ export async function confirm(store: KvBinding, key: string, res: NextApiRespons
   }
 
   console.log(JSON.stringify({ event: "newsletter_confirmed", email: record.email }));
+  // Awaited, because a Worker may drop a promise nobody waits for; but its failure is only logged —
+  // the subscriber is confirmed either way, and the list in KV is the record, not this mail.
+  await notifyOwner(record).catch((error) => {
+    console.error(JSON.stringify({ event: "newsletter_notify_failed", message: String(error) }));
+  });
   return res.status(200).json({
     ok: true,
     message: "Thank you — your subscription is confirmed. The next issue will arrive with the next fortnightly release.",
   });
+}
+
+/** A note to the owner that somebody confirmed. Only on the first confirmation: a second click on
+ *  the same link returns before this, so one subscriber is one mail. The recipient is a Worker
+ *  variable rather than a line in this file because the repository is public. */
+export async function notifyOwner(record: { email?: string; company?: string; country?: string; confirmed_at?: string }) {
+  if (!canSendMail()) return false;
+  const env = mailEnv();
+  const to = env.NEWSLETTER_NOTIFY_TO || env.LEAD_NOTIFY_TO || "contact@clinicaltrialfailures.com";
+  const email = clean(record.email, 254);
+  const lines = [
+    `New confirmed newsletter subscriber: ${email}`,
+    record.company ? `Company: ${clean(record.company, 160)}` : "",
+    record.country ? `Country: ${clean(record.country, 4)}` : "",
+    `Confirmed: ${record.confirmed_at || new Date().toISOString()}`,
+  ].filter(Boolean);
+  const esc = (v: string) => v.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string);
+  return sendMail(to, "New Newsletter Registration CTF", frame(lines.map((l) => `<p style="margin:0 0 6px">${esc(l)}</p>`).join("")),
+    lines.join("\n"));
 }
 
 function safeParse(value: string): Record<string, unknown> {
