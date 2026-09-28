@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import SampleCallout from "@/components/SampleCallout";
+import SalesFunnel from "@/components/SalesFunnel";
 import briefsIndex from "@/data/briefs_index.json";
 import { pluralModality } from "@/lib/modality";
 import { LICENSING_EMAIL } from "@/lib/licensing";
@@ -58,14 +60,18 @@ export default function BriefsIndexPage() {
       <main className="page">
         <div className="wrap">
           <section className="intro">
-            <div className="eyebrow">Discontinuation briefs</div>
-            <h1>How often do trials of this mechanism stop early?</h1>
+            <div className="eyebrow">Free briefs</div>
+            <h1>How do trials of this mechanism fail?</h1>
             <p className="lead">
-              {briefsIndex.brief_count} briefs, one per mechanism class. Each gives the share of closed trials stopped early for an
-              efficacy, safety or benefit–risk reason, the rate for the whole disease area to compare it against, and the trials
-              behind the number with their registry stop reasons. Rebuilt weekly.
+              {briefsIndex.brief_count} free briefs, one per mechanism class. Most give the share of closed trials stopped
+              early for an efficacy, safety or benefit–risk reason, against the whole disease area, with the trials behind
+              the number and their registry stop reasons. Classes whose trials run to the end and miss — psychiatry,
+              respiratory, LAG-3 — lead with the completed trials that missed instead. Rebuilt weekly.
             </p>
+            <SalesFunnel current="brief" title="From a free brief to a decision — every step but the last is free" />
           </section>
+
+          <SampleCallout />
 
           <section className="section">
             <h2>What survives a multiplicity correction</h2>

@@ -13,6 +13,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import SampleCallout from "@/components/SampleCallout";
 import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
@@ -413,6 +414,8 @@ export default function AssetCheckPage() {
                       </Link>
                     </p>
                   ) : null}
+
+                  {withTarget.length && order !== "done" ? <SampleCallout compact /> : null}
 
                   {withTarget.length ? (
                   <div className="buy">

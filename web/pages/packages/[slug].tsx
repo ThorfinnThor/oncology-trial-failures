@@ -10,6 +10,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 
 import BriefVsPackage, { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
+import SampleCallout from "@/components/SampleCallout";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
 
@@ -104,6 +105,8 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
               </div>
             </div>
           </section>
+
+          {adds > 0 ? <SampleCallout /> : null}
 
           {adds > 0 ? (
           <section className="section" id="get">

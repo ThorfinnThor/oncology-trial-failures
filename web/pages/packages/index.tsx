@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import SampleCallout from "@/components/SampleCallout";
 import { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
@@ -97,13 +98,6 @@ export default function PackagesIndexPage() {
               elsewhere, and the probability of a stop over time against a like-for-like comparator.
             </p>
             <p className="lead">
-              <b>See exactly what you get:</b>{" "}
-              <Link className="link" href="/packages/sample">
-                one complete package, unlocked
-              </Link>{" "}
-              — every section, nothing blurred.
-            </p>
-            <p className="lead">
               Not sure which of them is yours?{" "}
               <Link className="link" href="/asset-check">
                 Name your molecule and we will say which cohorts contain drugs like it
@@ -117,6 +111,8 @@ export default function PackagesIndexPage() {
               <span>Rebuilt weekly</span>
             </div>
           </section>
+
+          <SampleCallout />
 
           <section className="section">
             <div className="listHead">

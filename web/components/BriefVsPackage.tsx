@@ -131,6 +131,11 @@ export default function BriefVsPackage({
                 Your molecule against the ones that failed here — and the same cohort itemised, every trial named
                 instead of counted.
               </div>
+              <p className="bvpSample">
+                <Link className="bvpInline" href="/packages/sample">
+                  See a complete package first — free, nothing blurred →
+                </Link>
+              </p>
               <ul>
                 <li>
                   <b>Name the asset you are evaluating</b> and every molecule that failed in this cohort is placed
@@ -219,6 +224,10 @@ export default function BriefVsPackage({
       </p>
 
       <style jsx>{`
+        .bvpSample {
+          margin: 8px 0 0;
+          font-size: 14px;
+        }
         .bvp {
           margin-top: 34px;
         }

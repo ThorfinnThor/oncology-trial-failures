@@ -6,6 +6,8 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 
 import BriefVsPackage from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
+import SampleCallout from "@/components/SampleCallout";
+import SalesFunnel from "@/components/SalesFunnel";
 import briefsIndex from "@/data/briefs_index.json";
 import catalogue from "@/data/evidence_catalogue.json";
 import { pluralModality } from "@/lib/modality";
@@ -218,6 +220,8 @@ export default function BriefPage({ brief }: Props) {
               </span>
             </div>
           </div>
+
+          <SalesFunnel current="brief" title="You are reading the free brief — the next two steps are free too" />
 
           {ep && ep.available ? (
             // The second number, and kept visibly apart from the rate block above. A stop and a
@@ -604,6 +608,8 @@ export default function BriefPage({ brief }: Props) {
               </div>
             </div>
           </section>
+
+          <SampleCallout />
 
           {pkg ? <BriefVsPackage pkg={pkg} briefSlug={null} emphasis="brief" /> : null}
 

@@ -6,6 +6,7 @@ import type { GetStaticProps } from "next";
 import { FormEvent, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import SampleCallout from "@/components/SampleCallout";
 import productSummary from "@/data/product_summary.json";
 import briefsIndex from "@/data/briefs_index.json";
 import { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
@@ -481,6 +482,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 </div>
               ))}
             </div>
+            <SampleCallout />
             <div className="card waitlist" id="waitlist">
               {status === "done" ? (
                 <>
