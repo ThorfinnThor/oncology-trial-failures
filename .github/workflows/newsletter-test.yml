@@ -1,0 +1,29 @@
+name: Send test newsletter
+
+# One mail, marked [TEST], to the address in the NEWSLETTER_TEST_TO secret. Reads what is waiting
+# for the next issue (or, if nothing is, the last two weeks of stopped trials) and changes nothing:
+# no subscriber gets it, the pending list and the last-sent date stay as they are.
+#
+# The address is a secret and not an input on purpose: the repository is public, and so are the
+# logs and the inputs of every run.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Send one test mail
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          NEWSLETTER_TEST_TO: ${{ secrets.NEWSLETTER_TEST_TO }}
+        run: python scripts/signals/newsletter.py --test

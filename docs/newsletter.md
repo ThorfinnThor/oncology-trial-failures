@@ -90,6 +90,15 @@ Every mail also carries:
 `product/newsletter/next.html` and `next.txt` are written on every run that does not send, so the
 next issue can be looked at before it goes.
 
+## Sending yourself a test
+
+GitHub → Actions → **Send test newsletter** → Run workflow. One mail, subject prefixed `[TEST]`,
+to the address in the GitHub secret `NEWSLETTER_TEST_TO`, with a yellow line saying it is a test.
+It carries what is waiting for the next issue; when nothing is, the stopped trials updated in the
+registry over the last two weeks, so the layout is seen full rather than as a quiet fortnight.
+Nothing else changes — no subscriber gets it, and the pending list and the last-sent date are
+untouched.
+
 ## Running it without a sending account
 
 With no `BREVO_API_KEY` — or no subscribers — nothing is sent and the mail that would have gone

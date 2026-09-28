@@ -479,6 +479,11 @@ check("even a huge fortnight stays under Gmail's clipping limit",
 check("a quiet fortnight shows no row of zeros",
       "new stopped trials</div>" in _nl.render({"added": {}, "changed": {}, "releases": ["v"]}, {}, "u")[1], False)
 
+check("a test send says so in the mail itself",
+      "Test send." in _nl.render(_p, {}, "u", note="sample")[1], True)
+check("a real issue carries no test banner", "Test send." in _nl.render(_p, {}, "u")[1], False)
+check("a biopsy is not a drug", _nl.drugs("Biopsy; Biospecimen Collection; Glofitamab"), "Glofitamab")
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

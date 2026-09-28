@@ -227,6 +227,9 @@ REASON_LABEL = {
     "NOT_INITIATED": ("Never started", COPY, PAPER),
 }
 NOT_A_DRUG = {"placebo", "premedication", "standard of care", "best supportive care", "saline", "sham"}
+# Registry "interventions" include procedures and paperwork; a card's drug line is for drugs.
+NOT_A_DRUG_WORDS = re.compile(r"biopsy|biospecimen|questionnaire|survey|laboratory|imaging|procedure|"
+                              r"quality-of-life|assessment|scan\b|interview|blood draw|sample collection", re.I)
 
 
 def reason_of(item: dict) -> tuple[str, str, str]:
@@ -261,7 +264,7 @@ def drugs(value) -> str:
     items = value if isinstance(value, list) else str(value or "").split(";")
     names = []
     for name in (" ".join(str(n).split()) for n in items):
-        if not name or name.lower() in NOT_A_DRUG:
+        if not name or name.lower() in NOT_A_DRUG or NOT_A_DRUG_WORDS.search(name):
             continue
         # "tak-243" is a research code, "vibostolimab" a name: codes read in capitals.
         pretty = name.upper() if any(ch.isdigit() for ch in name) and len(name) < 14 else name[:1].upper() + name[1:]
@@ -313,7 +316,7 @@ def order(items: list[dict]) -> list[dict]:
                                         -top_phase(i), i.get("nct_id") or ""))
 
 
-def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
+def render(pending: dict, summary: dict, stop_url: str, note: str | None = None) -> tuple[str, str]:
     added = order(list(pending.get("added", {}).values()))
     changed = list(pending.get("changed", {}).values())
     version = (pending.get("releases") or [""])[-1]
@@ -324,7 +327,7 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
     areas = {}
     for a_ in added:
         areas[a_.get("disease_area") or "Other"] = areas.get(a_.get("disease_area") or "Other", 0) + 1
-    area_line = " · ".join(f"{k} {v}" for k, v in sorted(areas.items(), key=lambda kv: (kv[0] == "Other", -kv[1]))[:6])
+    area_line = " · ".join(f"{k} {v}" for k, v in sorted(areas.items(), key=lambda kv: (kv[0] == "Other", -kv[1]))[:7])
     lead = added[0] if added else None
     preheader = (f"{plural(bio, 'stop', 'stops')} for efficacy or safety"
                  + (f" — first up: {shorten(lead.get('brief_title'), 70)}" if lead else "")
@@ -416,6 +419,8 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
              + (f"<div class='px' style='padding:10px 14px 12px;border-top:1px solid {LINE};font-family:{FONT};"
                 f"font-size:12px;color:{MUTED}'>By area: {e(area_line)}</div>" if area_line else "")
              + "</td></tr>") if (added or changed) else ""
+    banner = (f"<tr><td class='px' bgcolor='#fef3c7' style='background:#fef3c7;padding:12px 32px;font-family:{FONT};"
+              f"font-size:13px;line-height:1.5;color:#92400e'><b>Test send.</b> {e(note)}</td></tr>") if note else ""
     title = (f"{plural(len(added), 'trial', 'trials')} stopped, {plural(len(changed), 'record', 'records')} changed"
              if added or changed else "A quiet fortnight")
     button = (f"<table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr>"
@@ -449,7 +454,7 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
   <div class="h1" style="margin-top:18px;font-family:{FONT};font-size:28px;line-height:1.15;font-weight:800;color:#ffffff">{e(title)}</div>
   <div style="margin-top:8px;font-family:{FONT};font-size:14px;line-height:1.5;color:#cbd5e1">Stopped clinical trials across every disease area, {e(window)}. Read from ClinicalTrials.gov and diffed week by week.</div>
 </td></tr>
-{stats}
+{banner}{stats}
 {sections.replace("<td style='padding:14px 32px", "<td class='px' style='padding:14px 32px")}
 <tr><td class="px" style="padding:26px 32px;border-top:1px solid {LINE};background:#f8fafc" bgcolor="#f8fafc">
   <div style="font-family:{FONT};font-size:15px;font-weight:700;color:{INK}">Is your molecule's target in here?</div>
@@ -582,10 +587,50 @@ def send(to: str, subject: str, body: str, key: str, text: str | None = None,
     return False
 
 
+def sample_pending(days: int = 14, limit: int = 40) -> dict:
+    """For a test send when nothing is waiting: the stopped trials whose registry record was
+    updated most recently, shaped exactly like real new entries, so the test shows the layout
+    with a full issue rather than the one-line quiet-fortnight version."""
+    if not DATASET.exists():
+        return {}
+    rows = [r for r in json.loads(DATASET.read_text(encoding="utf-8")) if r.get("why_stopped")]
+    rows.sort(key=lambda r: (r.get("last_update_post_date") or "", r.get("nct_id") or ""), reverse=True)
+    newest = (rows[0].get("last_update_post_date") or "")[:10] if rows else ""
+    try:
+        cutoff = (datetime.fromisoformat(newest) - timedelta(days=days)).date().isoformat()
+    except ValueError:
+        cutoff = ""
+    picked = [r for r in rows if (r.get("last_update_post_date") or "") >= cutoff][:limit]
+    return {"since": cutoff, "releases": [newest], "added": {r["nct_id"]: compact(r) for r in picked},
+            "changed": {}, "last_sent_at": None}
+
+
+def send_test(to: str, pending: dict, summary: dict, people: list[dict], key: str) -> int:
+    """One mail to one address, marked as a test. Reads what is waiting and changes nothing: the
+    pending list, the last-sent date and the preview are left exactly as they were."""
+    note = None
+    if not (pending.get("added") or pending.get("changed")):
+        pending = sample_pending()
+        note = ("Nothing is waiting for the next issue yet, so this shows the stopped trials updated in the "
+                "registry over the last two weeks instead. The real issue carries only what changed since the last one.")
+    else:
+        note = "This is exactly what is waiting for the next issue. It has not been sent to anybody else."
+    person = next((p for p in people if (p.get("email") or "").lower() == to.lower()), None)
+    person_key = person["_key"] if person else "TEST"
+    stop_url = f"{SITE}/newsletter/stop?k={person_key}"
+    subject, body = render(pending, summary, stop_url, note=note)
+    ok = send(to, f"[TEST] {subject}", body, key, text=render_text(pending, summary, stop_url),
+              headers=unsubscribe_headers(person_key))
+    print("test mail sent" if ok else "test mail failed")
+    return 0 if ok else 1
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true", help="never send, always write, never clear what is pending")
     ap.add_argument("--force", action="store_true", help="send now, whatever the date of the last one")
+    ap.add_argument("--test", action="store_true",
+                    help="send one mail, marked as a test, to NEWSLETTER_TEST_TO and change nothing else")
     args = ap.parse_args()
 
     if not REPORT.exists():
@@ -612,6 +657,14 @@ def main() -> int:
         pending = merge(pending, report)
 
     people = subscribers(base, token)
+    if args.test:
+        # The address comes from a secret, never from the command line or a workflow input: the
+        # repository is public, and so are its workflow logs.
+        to, key = os.environ.get("NEWSLETTER_TEST_TO") or "", os.environ.get("BREVO_API_KEY") or ""
+        if not to or not key:
+            print("a test send needs NEWSLETTER_TEST_TO and BREVO_API_KEY", file=sys.stderr)
+            return 1
+        return send_test(to, pending, summary, people, key)
     added, changed = len(pending.get("added", {})), len(pending.get("changed", {}))
     print(f"{added} added and {changed} changed waiting, {len(people)} subscriber(s)")
     # Written on every run, whether or not a mail is due: the page shows what is waiting.
