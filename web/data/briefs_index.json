@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
-  "brief_count": 52,
+  "brief_count": 53,
   "open_access_slug": "oncology-tgf-pd-l-1",
   "areas": [
+    "Gastroenterology & Hepatology",
     "Immunology & Autoimmune",
     "Neurology",
     "Oncology"
@@ -176,6 +177,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 0,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 3,
@@ -308,7 +317,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:57Z",
+      "generated_at_utc": "2026-09-27T17:36:52Z",
       "open_access": false
     },
     {
@@ -484,6 +493,14 @@
             "components": 10
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 3,
+        "readable": 2,
+        "missed": 1,
+        "met": 0,
+        "mixed": 1
       },
       "failure_signature": {
         "stops": 7,
@@ -661,7 +678,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:57Z",
+      "generated_at_utc": "2026-09-27T17:36:52Z",
       "open_access": false
     },
     {
@@ -868,6 +885,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 5,
+        "readable": 3,
+        "missed": 1,
+        "met": 2,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 6,
         "molecules": 3,
@@ -1034,7 +1059,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:57Z",
+      "generated_at_utc": "2026-09-27T17:36:52Z",
       "open_access": false
     },
     {
@@ -1249,6 +1274,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 6,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 2,
@@ -1370,7 +1403,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:34Z",
+      "generated_at_utc": "2026-09-27T17:36:22Z",
       "open_access": false
     },
     {
@@ -1521,8 +1554,8 @@
           "Unknown": 19,
           "Antibody": 18,
           "Vaccine": 4,
-          "Bispecific antibody": 3,
           "ADC": 3,
+          "Bispecific antibody": 3,
           "Gene therapy": 1,
           "Oncolytic virus": 1,
           "Cell therapy": 1
@@ -1587,6 +1620,14 @@
             "components": 10
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 22,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 11,
@@ -1813,7 +1854,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:31Z",
+      "generated_at_utc": "2026-09-27T17:36:18Z",
       "open_access": true
     },
     {
@@ -2025,6 +2066,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 9,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 2,
@@ -2136,7 +2185,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:44Z",
+      "generated_at_utc": "2026-09-27T17:36:36Z",
       "open_access": false
     },
     {
@@ -2354,6 +2403,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 32,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 11,
         "molecules": 2,
@@ -2513,7 +2570,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:30Z",
+      "generated_at_utc": "2026-09-27T17:36:17Z",
       "open_access": false
     },
     {
@@ -2730,6 +2787,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 8,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 3,
@@ -2871,7 +2936,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:32Z",
+      "generated_at_utc": "2026-09-27T17:36:19Z",
       "open_access": false
     },
     {
@@ -3090,6 +3155,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 15,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 5,
         "molecules": 5,
@@ -3301,7 +3374,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:31Z",
+      "generated_at_utc": "2026-09-27T17:36:19Z",
       "open_access": false
     },
     {
@@ -3517,6 +3590,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 16,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 2,
@@ -3668,7 +3749,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:33Z",
+      "generated_at_utc": "2026-09-27T17:36:21Z",
       "open_access": false
     },
     {
@@ -3881,6 +3962,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 12,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 3,
@@ -4051,7 +4140,371 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:35Z",
+      "generated_at_utc": "2026-09-27T17:36:24Z",
+      "open_access": false
+    },
+    {
+      "slug": "gastroenterology-hepatology-ppar-liver",
+      "file_stem": "brief_gastroenterology-hepatology_ppar-liver_2015-2024",
+      "segment": "PPAR (liver)",
+      "area": "Gastroenterology & Hepatology",
+      "phases": [
+        "2",
+        "3"
+      ],
+      "start_from": 2015,
+      "start_to": 2024,
+      "rate": 0.12903225806451613,
+      "closed": 31,
+      "trials_in_segment": 55,
+      "biological_stops": 4,
+      "efficacy_stops": 2,
+      "safety_stops": 2,
+      "stops_efficacy_only": 2,
+      "stops_safety_only": 2,
+      "stops_efficacy_and_safety": 0,
+      "stops_benefit_risk_only": 0,
+      "closed_share": 0.5636363636363636,
+      "ci95": [
+        0.05134201164644764,
+        0.28852756954385356
+      ],
+      "reference_label": "all gastroenterology & hepatology trials with a resolved drug target",
+      "reference_rate": 0.04215116279069767,
+      "reference_closed": 688,
+      "reference_stops": 29,
+      "baseline_rate": 0.038181818181818185,
+      "baseline_closed": 1650,
+      "baseline_stops": 63,
+      "baseline_resolved_rate": 0.04215116279069767,
+      "baseline_resolved_closed": 688,
+      "stop_programmes": 2,
+      "stop_sponsors": 2,
+      "stop_assets": 2,
+      "largest_programme": "Gilead Sciences",
+      "largest_programme_stops": 2,
+      "rate_leave_one_programme_out": 0.08333333333333333,
+      "unresolved_terminations": 2,
+      "rate_if_all_unresolved_were_biological": 0.1935483870967742,
+      "cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.04041666666666666,
+          "ci95": [
+            0.010261489810078683,
+            0.1521206274435979
+          ],
+          "n_risk": 41
+        },
+        {
+          "months": 24,
+          "cif": 0.04041666666666666,
+          "ci95": [
+            0.010261489810078683,
+            0.1521206274435979
+          ],
+          "n_risk": 33
+        },
+        {
+          "months": 36,
+          "cif": 0.06378251930081197,
+          "ci95": [
+            0.02094396477735827,
+            0.18553292171151126
+          ],
+          "n_risk": 15
+        },
+        {
+          "months": 48,
+          "cif": 0.06378251930081197,
+          "ci95": [
+            0.02094396477735827,
+            0.18553292171151126
+          ],
+          "n_risk": 11
+        },
+        {
+          "months": 60,
+          "cif": 0.10207243370441314,
+          "ci95": [
+            0.03788881721264492,
+            0.2592654465743184
+          ],
+          "n_risk": 7
+        }
+      ],
+      "baseline_cumulative_incidence": [
+        {
+          "months": 12,
+          "cif": 0.004991891014302901,
+          "ci95": [
+            0.0027673287219051046,
+            0.008996619377030557
+          ],
+          "n_risk": 1872
+        },
+        {
+          "months": 24,
+          "cif": 0.014194242824462966,
+          "ci95": [
+            0.00994296656900262,
+            0.02024454697682665
+          ],
+          "n_risk": 1203
+        },
+        {
+          "months": 36,
+          "cif": 0.024081970153876614,
+          "ci95": [
+            0.018183762765623057,
+            0.0318620863384097
+          ],
+          "n_risk": 672
+        },
+        {
+          "months": 48,
+          "cif": 0.02992595524068661,
+          "ci95": [
+            0.02311240917728863,
+            0.03870798745190651
+          ],
+          "n_risk": 361
+        },
+        {
+          "months": 60,
+          "cif": 0.031511242527933914,
+          "ci95": [
+            0.024426559946903015,
+            0.04060760226213478
+          ],
+          "n_risk": 205
+        }
+      ],
+      "q_value_by": 0.722873,
+      "family_size": 16,
+      "survives_fdr_10pct": false,
+      "composition": {
+        "distinct_assets": 17,
+        "modalities": {
+          "Small molecule": 54,
+          "Unknown": 6
+        },
+        "top_assets": [
+          {
+            "asset": "FENOFIBRATE",
+            "trials": 11
+          },
+          {
+            "asset": "SAROGLITAZAR",
+            "trials": 10
+          },
+          {
+            "asset": "SELADELPAR",
+            "trials": 9
+          },
+          {
+            "asset": "MESALAMINE",
+            "trials": 7
+          },
+          {
+            "asset": "ELAFIBRANOR",
+            "trials": 6
+          },
+          {
+            "asset": "BEZAFIBRATE",
+            "trials": 5
+          },
+          {
+            "asset": "LANIFIBRANOR",
+            "trials": 3
+          },
+          {
+            "asset": "Ursodiol",
+            "trials": 2
+          }
+        ],
+        "top_mechanisms": [
+          {
+            "mechanism": "Peroxisome proliferator-activated receptor alpha agonist",
+            "components": 39
+          },
+          {
+            "mechanism": "Peroxisome proliferator-activated receptor gamma agonist",
+            "components": 24
+          },
+          {
+            "mechanism": "Peroxisome proliferator-activated receptor delta agonist",
+            "components": 23
+          },
+          {
+            "mechanism": "Peroxisome proliferator-activated receptor agonist",
+            "components": 10
+          },
+          {
+            "mechanism": "Arachidonate 5-lipoxygenase inhibitor",
+            "components": 7
+          },
+          {
+            "mechanism": "Cyclooxygenase inhibitor",
+            "components": 7
+          }
+        ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 22,
+        "readable": 7,
+        "missed": 2,
+        "met": 4,
+        "mixed": 1
+      },
+      "failure_signature": {
+        "stops": 4,
+        "molecules": 2,
+        "molecules_unresolved": 0,
+        "sponsors": 2,
+        "shared_modality": "Small molecule",
+        "modalities": [
+          "Small molecule"
+        ],
+        "assets": [
+          {
+            "asset": "Elafibranor",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "target_genes": [
+              "PPARA",
+              "PPARD"
+            ],
+            "mechanisms": [
+              "Peroxisome proliferator-activated receptor alpha agonist",
+              "Peroxisome proliferator-activated receptor delta agonist"
+            ],
+            "sponsors": [
+              "Genfit"
+            ],
+            "trials": [
+              "NCT02704403",
+              "NCT03883607"
+            ],
+            "trial_count": 2
+          },
+          {
+            "asset": "Seladelpar",
+            "resolved": true,
+            "modalities": [
+              "Small molecule"
+            ],
+            "target_genes": [
+              "PPARD"
+            ],
+            "mechanisms": [
+              "Peroxisome proliferator-activated receptor delta agonist"
+            ],
+            "sponsors": [
+              "Gilead Sciences"
+            ],
+            "trials": [
+              "NCT03551522",
+              "NCT04024813"
+            ],
+            "trial_count": 2
+          }
+        ],
+        "sentence": "4 stopped trials, but 2 molecules — all small molecules: Elafibranor and Seladelpar.",
+        "headline": "2 molecules stopped early, all small molecules"
+      },
+      "stop_attribution": {
+        "stops_from_own_data": 1,
+        "stops_from_programme_cascade": 2,
+        "stops_unclear": 1,
+        "cascade_textual": 1,
+        "cascade_structural": 1
+      },
+      "median_followup_months": 58.4148,
+      "cohorts": [
+        {
+          "cohort": "2015–2017",
+          "biological_stops": 1,
+          "closed": 13,
+          "rate": 0.07692307692307693,
+          "ci95": [
+            0.013710066379696323,
+            0.3331453392824736
+          ]
+        },
+        {
+          "cohort": "2018–2020",
+          "biological_stops": 3,
+          "closed": 8,
+          "rate": 0.375,
+          "ci95": [
+            0.13684175946152105,
+            0.6942621454161981
+          ]
+        },
+        {
+          "cohort": "2021–2024",
+          "biological_stops": 0,
+          "closed": 10,
+          "rate": 0.0,
+          "ci95": [
+            0.0,
+            0.2775401687666166
+          ]
+        }
+      ],
+      "trial_count": 4,
+      "trials_preview": [
+        {
+          "nct_id": "NCT02704403",
+          "phase": "3",
+          "sponsor_group": "Genfit",
+          "sponsor_ticker": "",
+          "drugs": "ELAFIBRANOR",
+          "stopped": "2020-10",
+          "type": "Efficacy",
+          "why_stopped": "Study did not meet the predefined primary surrogate efficacy endpoint, no safety issues identified",
+          "registry_url": "https://clinicaltrials.gov/study/NCT02704403"
+        },
+        {
+          "nct_id": "NCT03883607",
+          "phase": "2",
+          "sponsor_group": "Genfit",
+          "sponsor_ticker": "",
+          "drugs": "ELAFIBRANOR",
+          "stopped": "2020-06",
+          "type": "Efficacy",
+          "why_stopped": "Due to lack of efficacy (but not due to safety) in a Phase 3 trial of elafibranor in adult participants with NASH and fibrosis, this study in pediatric NASH was prematurely terminated",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03883607"
+        },
+        {
+          "nct_id": "NCT04024813",
+          "phase": "2",
+          "sponsor_group": "Gilead Sciences",
+          "sponsor_ticker": "GILD",
+          "drugs": "SELADELPAR",
+          "stopped": "2020-01",
+          "type": "Safety",
+          "why_stopped": "Study was terminated as a precautionary measure due to histological findings in a nonalcoholic steatohepatitis (NASH) study (CB8025-21730, NCT03551522).",
+          "registry_url": "https://clinicaltrials.gov/study/NCT04024813"
+        },
+        {
+          "nct_id": "NCT03551522",
+          "phase": "2",
+          "sponsor_group": "Gilead Sciences",
+          "sponsor_ticker": "GILD",
+          "drugs": "SELADELPAR",
+          "stopped": "2019-05",
+          "type": "Safety",
+          "why_stopped": "unexpected histological findings",
+          "registry_url": "https://clinicaltrials.gov/study/NCT03551522"
+        }
+      ],
+      "has_pdf": true,
+      "generated_at_utc": "2026-09-27T17:37:14Z",
       "open_access": false
     },
     {
@@ -4261,6 +4714,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 21,
+        "readable": 10,
+        "missed": 4,
+        "met": 3,
+        "mixed": 3
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 3,
@@ -4402,7 +4863,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:17:05Z",
+      "generated_at_utc": "2026-09-27T17:37:00Z",
       "open_access": false
     },
     {
@@ -4617,6 +5078,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 8,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 2,
@@ -4740,7 +5209,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:29Z",
+      "generated_at_utc": "2026-09-27T17:36:16Z",
       "open_access": false
     },
     {
@@ -4959,6 +5428,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 47,
+        "readable": 7,
+        "missed": 0,
+        "met": 7,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 8,
         "molecules": 3,
@@ -5138,7 +5615,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:34Z",
+      "generated_at_utc": "2026-09-27T17:36:22Z",
       "open_access": false
     },
     {
@@ -5353,6 +5830,14 @@
             "components": 23
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 80,
+        "readable": 6,
+        "missed": 2,
+        "met": 4,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 13,
@@ -5627,7 +6112,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:45Z",
+      "generated_at_utc": "2026-09-27T17:36:37Z",
       "open_access": false
     },
     {
@@ -5840,6 +6325,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 17,
+        "readable": 3,
+        "missed": 1,
+        "met": 1,
+        "mixed": 1
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 2,
@@ -5980,7 +6473,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:38Z",
+      "generated_at_utc": "2026-09-27T17:36:28Z",
       "open_access": false
     },
     {
@@ -6193,6 +6686,14 @@
             "components": 54
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 72,
+        "readable": 4,
+        "missed": 1,
+        "met": 2,
+        "mixed": 1
       },
       "failure_signature": {
         "stops": 11,
@@ -6485,7 +6986,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:37Z",
+      "generated_at_utc": "2026-09-27T17:36:27Z",
       "open_access": false
     },
     {
@@ -6699,6 +7200,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 29,
+        "readable": 1,
+        "missed": 0,
+        "met": 1,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 2,
@@ -6857,7 +7366,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:43Z",
+      "generated_at_utc": "2026-09-27T17:36:35Z",
       "open_access": false
     },
     {
@@ -7067,6 +7576,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 28,
+        "readable": 4,
+        "missed": 3,
+        "met": 1,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 3,
@@ -7263,7 +7780,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:57Z",
+      "generated_at_utc": "2026-09-27T17:36:51Z",
       "open_access": false
     },
     {
@@ -7477,6 +7994,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 23,
+        "readable": 2,
+        "missed": 2,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 2,
@@ -7599,7 +8124,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:30Z",
+      "generated_at_utc": "2026-09-27T17:36:16Z",
       "open_access": false
     },
     {
@@ -7814,6 +8339,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 43,
+        "readable": 7,
+        "missed": 4,
+        "met": 1,
+        "mixed": 2
+      },
       "failure_signature": {
         "stops": 5,
         "molecules": 3,
@@ -7995,7 +8528,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:42Z",
+      "generated_at_utc": "2026-09-27T17:36:33Z",
       "open_access": false
     },
     {
@@ -8206,6 +8739,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 45,
+        "readable": 10,
+        "missed": 1,
+        "met": 9,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 3,
@@ -8381,7 +8922,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:57Z",
+      "generated_at_utc": "2026-09-27T17:36:51Z",
       "open_access": false
     },
     {
@@ -8598,6 +9139,14 @@
             "components": 97
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 178,
+        "readable": 6,
+        "missed": 4,
+        "met": 2,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 20,
@@ -9010,7 +9559,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:36Z",
+      "generated_at_utc": "2026-09-27T17:36:24Z",
       "open_access": false
     },
     {
@@ -9223,6 +9772,14 @@
             "components": 53
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 96,
+        "readable": 11,
+        "missed": 5,
+        "met": 5,
+        "mixed": 1
       },
       "failure_signature": {
         "stops": 13,
@@ -9554,7 +10111,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:40Z",
+      "generated_at_utc": "2026-09-27T17:36:31Z",
       "open_access": false
     },
     {
@@ -9770,6 +10327,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 32,
+        "readable": 1,
+        "missed": 0,
+        "met": 1,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 4,
@@ -9950,7 +10515,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:32Z",
+      "generated_at_utc": "2026-09-27T17:36:20Z",
       "open_access": false
     },
     {
@@ -10165,6 +10730,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 44,
+        "readable": 0,
+        "missed": 0,
+        "met": 0,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 3,
@@ -10331,7 +10904,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:44Z",
+      "generated_at_utc": "2026-09-27T17:36:35Z",
       "open_access": false
     },
     {
@@ -10547,6 +11120,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 137,
+        "readable": 15,
+        "missed": 8,
+        "met": 5,
+        "mixed": 2
+      },
       "failure_signature": {
         "stops": 12,
         "molecules": 4,
@@ -10761,7 +11342,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:41Z",
+      "generated_at_utc": "2026-09-27T17:36:32Z",
       "open_access": false
     },
     {
@@ -10975,6 +11556,14 @@
             "components": 264
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 167,
+        "readable": 10,
+        "missed": 6,
+        "met": 4,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 14,
@@ -11422,7 +12011,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:46Z",
+      "generated_at_utc": "2026-09-27T17:36:38Z",
       "open_access": false
     },
     {
@@ -11636,6 +12225,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 40,
+        "readable": 10,
+        "missed": 6,
+        "met": 2,
+        "mixed": 2
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 3,
@@ -11777,7 +12374,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:29Z",
+      "generated_at_utc": "2026-09-27T17:36:15Z",
       "open_access": false
     },
     {
@@ -11989,6 +12586,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 65,
+        "readable": 33,
+        "missed": 5,
+        "met": 18,
+        "mixed": 10
+      },
       "failure_signature": {
         "stops": 4,
         "molecules": 3,
@@ -12160,7 +12765,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:17:04Z",
+      "generated_at_utc": "2026-09-27T17:37:00Z",
       "open_access": false
     },
     {
@@ -12374,6 +12979,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 40,
+        "readable": 10,
+        "missed": 6,
+        "met": 2,
+        "mixed": 2
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 3,
@@ -12515,7 +13128,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:28Z",
+      "generated_at_utc": "2026-09-27T17:36:15Z",
       "open_access": false
     },
     {
@@ -12730,6 +13343,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 59,
+        "readable": 5,
+        "missed": 1,
+        "met": 4,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 5,
         "molecules": 1,
@@ -12871,7 +13492,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:43Z",
+      "generated_at_utc": "2026-09-27T17:36:34Z",
       "open_access": false
     },
     {
@@ -13085,6 +13706,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 45,
+        "readable": 5,
+        "missed": 2,
+        "met": 3,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 2,
@@ -13222,7 +13851,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:40Z",
+      "generated_at_utc": "2026-09-27T17:36:30Z",
       "open_access": false
     },
     {
@@ -13441,6 +14070,14 @@
             "components": 641
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 1469,
+        "readable": 147,
+        "missed": 63,
+        "met": 59,
+        "mixed": 25
       },
       "failure_signature": {
         "stops": 97,
@@ -13969,7 +14606,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:27Z",
+      "generated_at_utc": "2026-09-27T17:36:13Z",
       "open_access": false
     },
     {
@@ -14181,6 +14818,14 @@
             "components": 169
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 100,
+        "readable": 7,
+        "missed": 1,
+        "met": 5,
+        "mixed": 1
       },
       "failure_signature": {
         "stops": 7,
@@ -14479,7 +15124,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:39Z",
+      "generated_at_utc": "2026-09-27T17:36:29Z",
       "open_access": false
     },
     {
@@ -14693,6 +15338,14 @@
             "components": 214
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 146,
+        "readable": 9,
+        "missed": 4,
+        "met": 5,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 9,
@@ -15005,7 +15658,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:39Z",
+      "generated_at_utc": "2026-09-27T17:36:29Z",
       "open_access": false
     },
     {
@@ -15219,6 +15872,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 100,
+        "readable": 9,
+        "missed": 2,
+        "met": 7,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 6,
         "molecules": 4,
@@ -15422,7 +16083,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:41Z",
+      "generated_at_utc": "2026-09-27T17:36:31Z",
       "open_access": false
     },
     {
@@ -15640,6 +16301,14 @@
             "components": 542
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 351,
+        "readable": 10,
+        "missed": 7,
+        "met": 3,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 21,
@@ -15965,7 +16634,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:48Z",
+      "generated_at_utc": "2026-09-27T17:36:42Z",
       "open_access": false
     },
     {
@@ -16183,6 +16852,14 @@
             "components": 300
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 454,
+        "readable": 19,
+        "missed": 10,
+        "met": 7,
+        "mixed": 2
       },
       "failure_signature": {
         "stops": 26,
@@ -16665,7 +17342,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:47Z",
+      "generated_at_utc": "2026-09-27T17:36:40Z",
       "open_access": false
     },
     {
@@ -16883,6 +17560,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 121,
+        "readable": 5,
+        "missed": 3,
+        "met": 2,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 7,
         "molecules": 2,
@@ -17065,7 +17750,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:49Z",
+      "generated_at_utc": "2026-09-27T17:36:42Z",
       "open_access": false
     },
     {
@@ -17283,6 +17968,14 @@
             "components": 257
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 236,
+        "readable": 9,
+        "missed": 5,
+        "met": 4,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 13,
@@ -17610,7 +18303,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:46Z",
+      "generated_at_utc": "2026-09-27T17:36:39Z",
       "open_access": false
     },
     {
@@ -17828,6 +18521,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 104,
+        "readable": 4,
+        "missed": 0,
+        "met": 4,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 5,
         "molecules": 2,
@@ -17987,7 +18688,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:42Z",
+      "generated_at_utc": "2026-09-27T17:36:34Z",
       "open_access": false
     },
     {
@@ -18200,6 +18901,14 @@
             "components": 132
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 103,
+        "readable": 5,
+        "missed": 2,
+        "met": 3,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 6,
@@ -18468,7 +19177,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:38Z",
+      "generated_at_utc": "2026-09-27T17:36:28Z",
       "open_access": false
     },
     {
@@ -18687,6 +19396,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 232,
+        "readable": 20,
+        "missed": 12,
+        "met": 6,
+        "mixed": 2
+      },
       "failure_signature": {
         "stops": 11,
         "molecules": 3,
@@ -18876,7 +19593,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:27Z",
+      "generated_at_utc": "2026-09-27T17:36:13Z",
       "open_access": false
     },
     {
@@ -19094,6 +19811,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 99,
+        "readable": 3,
+        "missed": 0,
+        "met": 3,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 6,
         "molecules": 2,
@@ -19253,7 +19978,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:33Z",
+      "generated_at_utc": "2026-09-27T17:36:21Z",
       "open_access": false
     },
     {
@@ -19471,6 +20196,14 @@
             "components": 112
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 141,
+        "readable": 9,
+        "missed": 4,
+        "met": 4,
+        "mixed": 1
       },
       "failure_signature": {
         "stops": 7,
@@ -19715,7 +20448,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:35Z",
+      "generated_at_utc": "2026-09-27T17:36:23Z",
       "open_access": false
     },
     {
@@ -19934,6 +20667,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 220,
+        "readable": 19,
+        "missed": 11,
+        "met": 6,
+        "mixed": 2
+      },
       "failure_signature": {
         "stops": 10,
         "molecules": 3,
@@ -20121,7 +20862,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:28Z",
+      "generated_at_utc": "2026-09-27T17:36:14Z",
       "open_access": false
     },
     {
@@ -20339,6 +21080,14 @@
             "components": 423
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 490,
+        "readable": 33,
+        "missed": 10,
+        "met": 17,
+        "mixed": 6
       },
       "failure_signature": {
         "stops": 20,
@@ -20818,7 +21567,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:36Z",
+      "generated_at_utc": "2026-09-27T17:36:26Z",
       "open_access": false
     },
     {
@@ -21033,6 +21782,14 @@
             "components": 83
           }
         ]
+      },
+      "endpoints": {
+        "available": true,
+        "completed": 70,
+        "readable": 5,
+        "missed": 2,
+        "met": 3,
+        "mixed": 0
       },
       "failure_signature": {
         "stops": 3,
@@ -21257,7 +22014,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:45Z",
+      "generated_at_utc": "2026-09-27T17:36:37Z",
       "open_access": false
     },
     {
@@ -21474,6 +22231,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 95,
+        "readable": 5,
+        "missed": 1,
+        "met": 4,
+        "mixed": 0
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 3,
@@ -21627,7 +22392,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:45Z",
+      "generated_at_utc": "2026-09-27T17:36:38Z",
       "open_access": false
     },
     {
@@ -21846,6 +22611,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 208,
+        "readable": 19,
+        "missed": 6,
+        "met": 7,
+        "mixed": 6
+      },
       "failure_signature": {
         "stops": 5,
         "molecules": 3,
@@ -22034,7 +22807,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:37Z",
+      "generated_at_utc": "2026-09-27T17:36:26Z",
       "open_access": false
     },
     {
@@ -22253,6 +23026,14 @@
           }
         ]
       },
+      "endpoints": {
+        "available": true,
+        "completed": 142,
+        "readable": 4,
+        "missed": 1,
+        "met": 1,
+        "mixed": 2
+      },
       "failure_signature": {
         "stops": 3,
         "molecules": 2,
@@ -22417,7 +23198,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-26T11:16:47Z",
+      "generated_at_utc": "2026-09-27T17:36:41Z",
       "open_access": false
     }
   ]
