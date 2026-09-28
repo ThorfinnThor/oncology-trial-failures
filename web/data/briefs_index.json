@@ -183,7 +183,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 0,
+        "results_not_posted": 0,
+        "results_not_posted_industry": 0,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -317,7 +321,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:52Z",
+      "generated_at_utc": "2026-09-28T14:07:11Z",
       "open_access": false
     },
     {
@@ -500,7 +504,11 @@
         "readable": 2,
         "missed": 1,
         "met": 0,
-        "mixed": 1
+        "mixed": 1,
+        "results_due": 3,
+        "results_not_posted": 0,
+        "results_not_posted_industry": 0,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 7,
@@ -678,7 +686,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:52Z",
+      "generated_at_utc": "2026-09-28T14:07:11Z",
       "open_access": false
     },
     {
@@ -891,7 +899,11 @@
         "readable": 3,
         "missed": 1,
         "met": 2,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 5,
+        "results_not_posted": 1,
+        "results_not_posted_industry": 1,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 6,
@@ -1059,7 +1071,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:52Z",
+      "generated_at_utc": "2026-09-28T14:07:10Z",
       "open_access": false
     },
     {
@@ -1277,10 +1289,14 @@
       "endpoints": {
         "available": true,
         "completed": 6,
-        "readable": 0,
-        "missed": 0,
+        "readable": 1,
+        "missed": 1,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 6,
+        "results_not_posted": 1,
+        "results_not_posted_industry": 0,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -1403,7 +1419,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:22Z",
+      "generated_at_utc": "2026-09-28T14:06:40Z",
       "open_access": false
     },
     {
@@ -1554,8 +1570,8 @@
           "Unknown": 19,
           "Antibody": 18,
           "Vaccine": 4,
-          "ADC": 3,
           "Bispecific antibody": 3,
+          "ADC": 3,
           "Gene therapy": 1,
           "Oncolytic virus": 1,
           "Cell therapy": 1
@@ -1627,7 +1643,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 22,
+        "results_not_posted": 5,
+        "results_not_posted_industry": 2,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 11,
@@ -1854,7 +1874,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:18Z",
+      "generated_at_utc": "2026-09-28T14:06:35Z",
       "open_access": true
     },
     {
@@ -2072,7 +2092,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 8,
+        "results_not_posted": 4,
+        "results_not_posted_industry": 3,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -2185,7 +2209,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:36Z",
+      "generated_at_utc": "2026-09-28T14:06:55Z",
       "open_access": false
     },
     {
@@ -2409,7 +2433,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 32,
+        "results_not_posted": 12,
+        "results_not_posted_industry": 8,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 11,
@@ -2570,7 +2598,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:17Z",
+      "generated_at_utc": "2026-09-28T14:06:34Z",
       "open_access": false
     },
     {
@@ -2793,7 +2821,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 6,
+        "results_not_posted": 0,
+        "results_not_posted_industry": 0,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -2936,7 +2968,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:19Z",
+      "generated_at_utc": "2026-09-28T14:06:37Z",
       "open_access": false
     },
     {
@@ -3161,7 +3193,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 12,
+        "results_not_posted": 1,
+        "results_not_posted_industry": 0,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 5,
@@ -3374,7 +3410,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:19Z",
+      "generated_at_utc": "2026-09-28T14:06:36Z",
       "open_access": false
     },
     {
@@ -3596,7 +3632,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 13,
+        "results_not_posted": 2,
+        "results_not_posted_industry": 1,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -3749,7 +3789,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:21Z",
+      "generated_at_utc": "2026-09-28T14:06:38Z",
       "open_access": false
     },
     {
@@ -3968,7 +4008,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 12,
+        "results_not_posted": 8,
+        "results_not_posted_industry": 3,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -4140,7 +4184,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:24Z",
+      "generated_at_utc": "2026-09-28T14:06:42Z",
       "open_access": false
     },
     {
@@ -4356,7 +4400,11 @@
         "readable": 7,
         "missed": 2,
         "met": 4,
-        "mixed": 1
+        "mixed": 1,
+        "results_due": 19,
+        "results_not_posted": 8,
+        "results_not_posted_industry": 5,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -4504,7 +4552,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:37:14Z",
+      "generated_at_utc": "2026-09-28T14:07:29Z",
       "open_access": false
     },
     {
@@ -4717,10 +4765,14 @@
       "endpoints": {
         "available": true,
         "completed": 21,
-        "readable": 10,
+        "readable": 9,
         "missed": 4,
         "met": 3,
-        "mixed": 3
+        "mixed": 2,
+        "results_due": 21,
+        "results_not_posted": 4,
+        "results_not_posted_industry": 3,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -4863,7 +4915,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:37:00Z",
+      "generated_at_utc": "2026-09-28T14:07:18Z",
       "open_access": false
     },
     {
@@ -5084,7 +5136,11 @@
         "readable": 0,
         "missed": 0,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 5,
+        "results_not_posted": 4,
+        "results_not_posted_industry": 4,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -5209,7 +5265,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:16Z",
+      "generated_at_utc": "2026-09-28T14:06:33Z",
       "open_access": false
     },
     {
@@ -5431,10 +5487,14 @@
       "endpoints": {
         "available": true,
         "completed": 47,
-        "readable": 7,
-        "missed": 0,
+        "readable": 8,
+        "missed": 1,
         "met": 7,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 43,
+        "results_not_posted": 13,
+        "results_not_posted_industry": 5,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 8,
@@ -5615,7 +5675,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:22Z",
+      "generated_at_utc": "2026-09-28T14:06:39Z",
       "open_access": false
     },
     {
@@ -5834,10 +5894,14 @@
       "endpoints": {
         "available": true,
         "completed": 80,
-        "readable": 6,
-        "missed": 2,
+        "readable": 5,
+        "missed": 1,
         "met": 4,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 77,
+        "results_not_posted": 30,
+        "results_not_posted_industry": 5,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 13,
@@ -6112,7 +6176,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:37Z",
+      "generated_at_utc": "2026-09-28T14:06:57Z",
       "open_access": false
     },
     {
@@ -6331,7 +6395,11 @@
         "readable": 3,
         "missed": 1,
         "met": 1,
-        "mixed": 1
+        "mixed": 1,
+        "results_due": 17,
+        "results_not_posted": 4,
+        "results_not_posted_industry": 0,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -6473,7 +6541,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:28Z",
+      "generated_at_utc": "2026-09-28T14:06:46Z",
       "open_access": false
     },
     {
@@ -6693,7 +6761,11 @@
         "readable": 4,
         "missed": 1,
         "met": 2,
-        "mixed": 1
+        "mixed": 1,
+        "results_due": 64,
+        "results_not_posted": 28,
+        "results_not_posted_industry": 5,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 11,
@@ -6986,7 +7058,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:27Z",
+      "generated_at_utc": "2026-09-28T14:06:45Z",
       "open_access": false
     },
     {
@@ -7206,7 +7278,11 @@
         "readable": 1,
         "missed": 0,
         "met": 1,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 26,
+        "results_not_posted": 9,
+        "results_not_posted_industry": 5,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -7366,7 +7442,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:35Z",
+      "generated_at_utc": "2026-09-28T14:06:54Z",
       "open_access": false
     },
     {
@@ -7582,7 +7658,11 @@
         "readable": 4,
         "missed": 3,
         "met": 1,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 26,
+        "results_not_posted": 5,
+        "results_not_posted_industry": 1,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -7780,7 +7860,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:51Z",
+      "generated_at_utc": "2026-09-28T14:07:10Z",
       "open_access": false
     },
     {
@@ -8000,7 +8080,11 @@
         "readable": 2,
         "missed": 2,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 21,
+        "results_not_posted": 0,
+        "results_not_posted_industry": 0,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -8124,7 +8208,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:16Z",
+      "generated_at_utc": "2026-09-28T14:06:34Z",
       "open_access": false
     },
     {
@@ -8345,7 +8429,11 @@
         "readable": 7,
         "missed": 4,
         "met": 1,
-        "mixed": 2
+        "mixed": 2,
+        "results_due": 39,
+        "results_not_posted": 8,
+        "results_not_posted_industry": 2,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 5,
@@ -8528,7 +8616,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:33Z",
+      "generated_at_utc": "2026-09-28T14:06:52Z",
       "open_access": false
     },
     {
@@ -8742,10 +8830,14 @@
       "endpoints": {
         "available": true,
         "completed": 45,
-        "readable": 10,
+        "readable": 12,
         "missed": 1,
-        "met": 9,
-        "mixed": 0
+        "met": 11,
+        "mixed": 0,
+        "results_due": 43,
+        "results_not_posted": 11,
+        "results_not_posted_industry": 6,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -8922,7 +9014,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:51Z",
+      "generated_at_utc": "2026-09-28T14:07:10Z",
       "open_access": false
     },
     {
@@ -9146,7 +9238,11 @@
         "readable": 6,
         "missed": 4,
         "met": 2,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 167,
+        "results_not_posted": 97,
+        "results_not_posted_industry": 26,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 20,
@@ -9559,7 +9655,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:24Z",
+      "generated_at_utc": "2026-09-28T14:06:43Z",
       "open_access": false
     },
     {
@@ -9776,10 +9872,14 @@
       "endpoints": {
         "available": true,
         "completed": 96,
-        "readable": 11,
-        "missed": 5,
-        "met": 5,
-        "mixed": 1
+        "readable": 13,
+        "missed": 6,
+        "met": 6,
+        "mixed": 1,
+        "results_due": 92,
+        "results_not_posted": 32,
+        "results_not_posted_industry": 17,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 13,
@@ -10111,7 +10211,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:31Z",
+      "generated_at_utc": "2026-09-28T14:06:50Z",
       "open_access": false
     },
     {
@@ -10330,10 +10430,14 @@
       "endpoints": {
         "available": true,
         "completed": 32,
-        "readable": 1,
-        "missed": 0,
+        "readable": 2,
+        "missed": 1,
         "met": 1,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 27,
+        "results_not_posted": 14,
+        "results_not_posted_industry": 6,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -10515,7 +10619,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:20Z",
+      "generated_at_utc": "2026-09-28T14:06:37Z",
       "open_access": false
     },
     {
@@ -10733,10 +10837,14 @@
       "endpoints": {
         "available": true,
         "completed": 44,
-        "readable": 0,
-        "missed": 0,
+        "readable": 1,
+        "missed": 1,
         "met": 0,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 43,
+        "results_not_posted": 21,
+        "results_not_posted_industry": 9,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -10904,7 +11012,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:35Z",
+      "generated_at_utc": "2026-09-28T14:06:55Z",
       "open_access": false
     },
     {
@@ -11123,10 +11231,14 @@
       "endpoints": {
         "available": true,
         "completed": 137,
-        "readable": 15,
-        "missed": 8,
+        "readable": 14,
+        "missed": 7,
         "met": 5,
-        "mixed": 2
+        "mixed": 2,
+        "results_due": 129,
+        "results_not_posted": 52,
+        "results_not_posted_industry": 13,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 12,
@@ -11342,7 +11454,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:32Z",
+      "generated_at_utc": "2026-09-28T14:06:51Z",
       "open_access": false
     },
     {
@@ -11561,9 +11673,13 @@
         "available": true,
         "completed": 167,
         "readable": 10,
-        "missed": 6,
-        "met": 4,
-        "mixed": 0
+        "missed": 7,
+        "met": 3,
+        "mixed": 0,
+        "results_due": 155,
+        "results_not_posted": 89,
+        "results_not_posted_industry": 22,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 14,
@@ -12011,7 +12127,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:38Z",
+      "generated_at_utc": "2026-09-28T14:06:59Z",
       "open_access": false
     },
     {
@@ -12228,10 +12344,14 @@
       "endpoints": {
         "available": true,
         "completed": 40,
-        "readable": 10,
-        "missed": 6,
+        "readable": 12,
+        "missed": 8,
         "met": 2,
-        "mixed": 2
+        "mixed": 2,
+        "results_due": 29,
+        "results_not_posted": 2,
+        "results_not_posted_industry": 2,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -12374,7 +12494,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:15Z",
+      "generated_at_utc": "2026-09-28T14:06:32Z",
       "open_access": false
     },
     {
@@ -12589,10 +12709,14 @@
       "endpoints": {
         "available": true,
         "completed": 65,
-        "readable": 33,
+        "readable": 31,
         "missed": 5,
         "met": 18,
-        "mixed": 10
+        "mixed": 8,
+        "results_due": 60,
+        "results_not_posted": 9,
+        "results_not_posted_industry": 5,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 4,
@@ -12765,7 +12889,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:37:00Z",
+      "generated_at_utc": "2026-09-28T14:07:17Z",
       "open_access": false
     },
     {
@@ -12982,10 +13106,14 @@
       "endpoints": {
         "available": true,
         "completed": 40,
-        "readable": 10,
-        "missed": 6,
+        "readable": 12,
+        "missed": 8,
         "met": 2,
-        "mixed": 2
+        "mixed": 2,
+        "results_due": 29,
+        "results_not_posted": 2,
+        "results_not_posted_industry": 2,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -13128,7 +13256,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:15Z",
+      "generated_at_utc": "2026-09-28T14:06:31Z",
       "open_access": false
     },
     {
@@ -13349,7 +13477,11 @@
         "readable": 5,
         "missed": 1,
         "met": 4,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 54,
+        "results_not_posted": 24,
+        "results_not_posted_industry": 2,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 5,
@@ -13492,7 +13624,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:34Z",
+      "generated_at_utc": "2026-09-28T14:06:53Z",
       "open_access": false
     },
     {
@@ -13710,9 +13842,13 @@
         "available": true,
         "completed": 45,
         "readable": 5,
-        "missed": 2,
-        "met": 3,
-        "mixed": 0
+        "missed": 3,
+        "met": 2,
+        "mixed": 0,
+        "results_due": 40,
+        "results_not_posted": 17,
+        "results_not_posted_industry": 2,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -13851,7 +13987,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:30Z",
+      "generated_at_utc": "2026-09-28T14:06:48Z",
       "open_access": false
     },
     {
@@ -14074,10 +14210,14 @@
       "endpoints": {
         "available": true,
         "completed": 1469,
-        "readable": 147,
-        "missed": 63,
-        "met": 59,
-        "mixed": 25
+        "readable": 136,
+        "missed": 60,
+        "met": 54,
+        "mixed": 22,
+        "results_due": 1347,
+        "results_not_posted": 484,
+        "results_not_posted_industry": 127,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 97,
@@ -14606,7 +14746,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:13Z",
+      "generated_at_utc": "2026-09-28T14:06:29Z",
       "open_access": false
     },
     {
@@ -14822,10 +14962,14 @@
       "endpoints": {
         "available": true,
         "completed": 100,
-        "readable": 7,
+        "readable": 6,
         "missed": 1,
-        "met": 5,
-        "mixed": 1
+        "met": 4,
+        "mixed": 1,
+        "results_due": 89,
+        "results_not_posted": 45,
+        "results_not_posted_industry": 7,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 7,
@@ -15124,7 +15268,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:29Z",
+      "generated_at_utc": "2026-09-28T14:06:47Z",
       "open_access": false
     },
     {
@@ -15342,10 +15486,14 @@
       "endpoints": {
         "available": true,
         "completed": 146,
-        "readable": 9,
-        "missed": 4,
-        "met": 5,
-        "mixed": 0
+        "readable": 8,
+        "missed": 5,
+        "met": 3,
+        "mixed": 0,
+        "results_due": 133,
+        "results_not_posted": 62,
+        "results_not_posted_industry": 14,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 9,
@@ -15658,7 +15806,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:29Z",
+      "generated_at_utc": "2026-09-28T14:06:48Z",
       "open_access": false
     },
     {
@@ -15878,7 +16026,11 @@
         "readable": 9,
         "missed": 2,
         "met": 7,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 95,
+        "results_not_posted": 34,
+        "results_not_posted_industry": 12,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 6,
@@ -16083,7 +16235,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:31Z",
+      "generated_at_utc": "2026-09-28T14:06:50Z",
       "open_access": false
     },
     {
@@ -16306,9 +16458,13 @@
         "available": true,
         "completed": 351,
         "readable": 10,
-        "missed": 7,
+        "missed": 6,
         "met": 3,
-        "mixed": 0
+        "mixed": 1,
+        "results_due": 320,
+        "results_not_posted": 180,
+        "results_not_posted_industry": 27,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 21,
@@ -16634,7 +16790,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:42Z",
+      "generated_at_utc": "2026-09-28T14:07:01Z",
       "open_access": false
     },
     {
@@ -16856,10 +17012,14 @@
       "endpoints": {
         "available": true,
         "completed": 454,
-        "readable": 19,
-        "missed": 10,
-        "met": 7,
-        "mixed": 2
+        "readable": 23,
+        "missed": 13,
+        "met": 6,
+        "mixed": 4,
+        "results_due": 420,
+        "results_not_posted": 194,
+        "results_not_posted_industry": 53,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 26,
@@ -17342,7 +17502,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:40Z",
+      "generated_at_utc": "2026-09-28T14:07:00Z",
       "open_access": false
     },
     {
@@ -17564,9 +17724,13 @@
         "available": true,
         "completed": 121,
         "readable": 5,
-        "missed": 3,
+        "missed": 2,
         "met": 2,
-        "mixed": 0
+        "mixed": 1,
+        "results_due": 106,
+        "results_not_posted": 51,
+        "results_not_posted_industry": 14,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 7,
@@ -17750,7 +17914,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:42Z",
+      "generated_at_utc": "2026-09-28T14:07:02Z",
       "open_access": false
     },
     {
@@ -17975,7 +18139,11 @@
         "readable": 9,
         "missed": 5,
         "met": 4,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 218,
+        "results_not_posted": 93,
+        "results_not_posted_industry": 21,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 13,
@@ -18303,7 +18471,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:39Z",
+      "generated_at_utc": "2026-09-28T14:06:59Z",
       "open_access": false
     },
     {
@@ -18524,10 +18692,14 @@
       "endpoints": {
         "available": true,
         "completed": 104,
-        "readable": 4,
+        "readable": 3,
         "missed": 0,
-        "met": 4,
-        "mixed": 0
+        "met": 3,
+        "mixed": 0,
+        "results_due": 98,
+        "results_not_posted": 29,
+        "results_not_posted_industry": 7,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 5,
@@ -18688,7 +18860,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:34Z",
+      "generated_at_utc": "2026-09-28T14:06:52Z",
       "open_access": false
     },
     {
@@ -18905,10 +19077,14 @@
       "endpoints": {
         "available": true,
         "completed": 103,
-        "readable": 5,
+        "readable": 4,
         "missed": 2,
-        "met": 3,
-        "mixed": 0
+        "met": 2,
+        "mixed": 0,
+        "results_due": 94,
+        "results_not_posted": 46,
+        "results_not_posted_industry": 18,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 6,
@@ -19177,7 +19353,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:28Z",
+      "generated_at_utc": "2026-09-28T14:06:47Z",
       "open_access": false
     },
     {
@@ -19400,9 +19576,13 @@
         "available": true,
         "completed": 232,
         "readable": 20,
-        "missed": 12,
-        "met": 6,
-        "mixed": 2
+        "missed": 11,
+        "met": 5,
+        "mixed": 4,
+        "results_due": 207,
+        "results_not_posted": 76,
+        "results_not_posted_industry": 21,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 11,
@@ -19593,7 +19773,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:13Z",
+      "generated_at_utc": "2026-09-28T14:06:30Z",
       "open_access": false
     },
     {
@@ -19814,10 +19994,14 @@
       "endpoints": {
         "available": true,
         "completed": 99,
-        "readable": 3,
-        "missed": 0,
+        "readable": 4,
+        "missed": 1,
         "met": 3,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 94,
+        "results_not_posted": 42,
+        "results_not_posted_industry": 7,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 6,
@@ -19978,7 +20162,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:21Z",
+      "generated_at_utc": "2026-09-28T14:06:39Z",
       "open_access": false
     },
     {
@@ -20200,10 +20384,14 @@
       "endpoints": {
         "available": true,
         "completed": 141,
-        "readable": 9,
-        "missed": 4,
+        "readable": 8,
+        "missed": 3,
         "met": 4,
-        "mixed": 1
+        "mixed": 1,
+        "results_due": 128,
+        "results_not_posted": 59,
+        "results_not_posted_industry": 17,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 7,
@@ -20448,7 +20636,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:23Z",
+      "generated_at_utc": "2026-09-28T14:06:41Z",
       "open_access": false
     },
     {
@@ -20671,9 +20859,13 @@
         "available": true,
         "completed": 220,
         "readable": 19,
-        "missed": 11,
-        "met": 6,
-        "mixed": 2
+        "missed": 10,
+        "met": 5,
+        "mixed": 4,
+        "results_due": 196,
+        "results_not_posted": 73,
+        "results_not_posted_industry": 18,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 10,
@@ -20862,7 +21054,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:14Z",
+      "generated_at_utc": "2026-09-28T14:06:30Z",
       "open_access": false
     },
     {
@@ -21085,9 +21277,13 @@
         "available": true,
         "completed": 490,
         "readable": 33,
-        "missed": 10,
-        "met": 17,
-        "mixed": 6
+        "missed": 12,
+        "met": 15,
+        "mixed": 6,
+        "results_due": 456,
+        "results_not_posted": 249,
+        "results_not_posted_industry": 57,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 20,
@@ -21567,7 +21763,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:26Z",
+      "generated_at_utc": "2026-09-28T14:06:43Z",
       "open_access": false
     },
     {
@@ -21789,7 +21985,11 @@
         "readable": 5,
         "missed": 2,
         "met": 3,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 66,
+        "results_not_posted": 19,
+        "results_not_posted_industry": 3,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -22014,7 +22214,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:37Z",
+      "generated_at_utc": "2026-09-28T14:06:56Z",
       "open_access": false
     },
     {
@@ -22166,8 +22366,8 @@
           "Protein": 37,
           "ADC": 14,
           "Oncolytic virus": 5,
-          "Cell therapy": 5,
           "Vaccine": 5,
+          "Cell therapy": 5,
           "Bispecific antibody": 2
         },
         "top_assets": [
@@ -22234,10 +22434,14 @@
       "endpoints": {
         "available": true,
         "completed": 95,
-        "readable": 5,
-        "missed": 1,
+        "readable": 6,
+        "missed": 2,
         "met": 4,
-        "mixed": 0
+        "mixed": 0,
+        "results_due": 89,
+        "results_not_posted": 30,
+        "results_not_posted_industry": 10,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -22392,7 +22596,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:38Z",
+      "generated_at_utc": "2026-09-28T14:06:57Z",
       "open_access": false
     },
     {
@@ -22543,8 +22747,8 @@
           "Unknown": 191,
           "Protein": 52,
           "ADC": 27,
-          "Cell therapy": 18,
           "Vaccine": 18,
+          "Cell therapy": 18,
           "Bispecific antibody": 18,
           "Oncolytic virus": 15,
           "Oligonucleotide": 1,
@@ -22614,10 +22818,14 @@
       "endpoints": {
         "available": true,
         "completed": 208,
-        "readable": 19,
-        "missed": 6,
+        "readable": 20,
+        "missed": 8,
         "met": 7,
-        "mixed": 6
+        "mixed": 5,
+        "results_due": 184,
+        "results_not_posted": 91,
+        "results_not_posted_industry": 21,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 5,
@@ -22807,7 +23015,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:26Z",
+      "generated_at_utc": "2026-09-28T14:06:44Z",
       "open_access": false
     },
     {
@@ -23029,10 +23237,14 @@
       "endpoints": {
         "available": true,
         "completed": 142,
-        "readable": 4,
-        "missed": 1,
+        "readable": 6,
+        "missed": 2,
         "met": 1,
-        "mixed": 2
+        "mixed": 3,
+        "results_due": 124,
+        "results_not_posted": 52,
+        "results_not_posted_industry": 16,
+        "results_months": 13
       },
       "failure_signature": {
         "stops": 3,
@@ -23198,7 +23410,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-09-27T17:36:41Z",
+      "generated_at_utc": "2026-09-28T14:07:01Z",
       "open_access": false
     }
   ]
