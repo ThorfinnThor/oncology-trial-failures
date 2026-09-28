@@ -134,6 +134,12 @@ def build_ingest_change_report(
 
         item = _compact(new)
         item["changed_fields"] = changed_fields
+        # What it was before, for the fields a sponsor edits. A newsletter line saying "the stop
+        # reason changed" is useless without the old one next to the new one.
+        item["previous"] = {
+            field: _text(old.get(field)) for field in changed_fields
+            if field in ("overall_status", "why_stopped", "brief_title", "lead_sponsor")
+        }
         updated_records.append(item)
 
         if "overall_status" in changed_fields:

@@ -47,13 +47,15 @@ from scripts.signals.send_watchlists import (  # noqa: E402  — one KV client, 
     namespace_id,
 )
 
-REPORT = ROOT / "product/oncology_failure_signals_change_report_v1.json"
+# The whole stopped-trial database, every disease area: what entered it and what a sponsor changed,
+# diffed by the weekly workflow against the snapshot it started from (scripts/ingest_changes.py).
+REPORT = ROOT / "data/ingest_changes.json"
+DATASET = ROOT / "data/all_stopped_trials.json"
 SUMMARY = ROOT / "web/data/product_summary.json"
 OUT_DIR = ROOT / "product/newsletter"
 # Shown on the signup page: the same items the mail is built from.
 PREVIEW = ROOT / "web/data/newsletter_preview.json"
 PREVIEW_ROWS = 8
-SIGNALS = ROOT / "product/oncology_failure_signals_v1.jsonl"
 SITE = "https://clinicaltrialfailures.com"
 BREVO_API = "https://api.brevo.com/v3/smtp/email"
 
@@ -125,26 +127,61 @@ def subscribers(base: str, token: str) -> list[dict]:
     return out
 
 
-def merge(pending: dict, report: dict) -> dict:
-    """Fold this release's changes into what is waiting to be told.
+SPONSOR_FIELDS = ("overall_status", "why_stopped")
+KEEP = ("nct_id", "brief_title", "overall_status", "why_stopped", "classification_outcome_v2",
+        "classification_primary_reason_v2", "disease_area", "phases", "lead_sponsor", "intervention_names",
+        "last_update_post_date")
 
-    Keyed by trial, so a trial that moved twice in a fortnight is one line and carries its latest
-    state rather than appearing as two half-stories.
+
+def compact(row: dict) -> dict:
+    return {k: row.get(k) for k in KEEP}
+
+
+def merge(pending: dict, report: dict) -> dict:
+    """Fold one run's changes into what is waiting to be told.
+
+    Keyed by trial, so a trial that moved twice in a fortnight is one line: its first "before"
+    and its latest "after". Only what a sponsor edits counts as a change — a status or a stop
+    reason. Our own reclassifications and disease-area re-derivations are ours, not news.
     """
-    added = {a["nct_id"]: a for a in report.get("added", []) if a.get("nct_id")}
-    changed = {c["nct_id"]: c for c in report.get("changed", [])
-               if c.get("nct_id") and c.get("origin") in ("registry_event", "mixed")}
+    release = (report.get("generated_at_utc") or "")[:10]
+    added = {**(pending.get("added") or {})}
+    for row in report.get("new_records", []):
+        if row.get("nct_id"):
+            added[row["nct_id"]] = compact(row)
+    # A trial that left the stopped set again (a status corrected back) is no longer news.
+    for row in report.get("removed_records", []):
+        added.pop(row.get("nct_id"), None)
+
+    previous_status = {r.get("nct_id"): r.get("previous_status") for r in report.get("status_changes", [])}
+    changed = {**(pending.get("changed") or {})}
+    for row in report.get("updated_records", []):
+        nct = row.get("nct_id")
+        fields = [f for f in row.get("changed_fields", []) if f in SPONSOR_FIELDS]
+        if not nct or not fields:
+            continue
+        before = dict(row.get("previous") or {})
+        if "overall_status" in fields and not before.get("overall_status"):
+            before["overall_status"] = previous_status.get(nct)
+        moves = dict((changed.get(nct) or {}).get("changes") or {})
+        for f in fields:
+            first = (moves.get(f) or {}).get("from", before.get(f))
+            moves[f] = {"from": first, "to": row.get(f)}
+        # Edited and then edited back: nothing to tell.
+        moves = {f: m for f, m in moves.items() if (m.get("from") or "") != (m.get("to") or "")}
+        if moves:
+            changed[nct] = {**compact(row), "changes": moves}
+        else:
+            changed.pop(nct, None)
 
     out = {
-        "since": pending.get("since") or report.get("previous_dataset_version") or "",
-        "releases": sorted({*(pending.get("releases") or []), report.get("dataset_version") or ""}),
-        "added": {**(pending.get("added") or {}), **added},
-        "changed": {**(pending.get("changed") or {}), **changed},
+        "since": pending.get("since") or (report.get("previous") or {}).get("max_last_update_post_date") or release,
+        "releases": sorted({*(pending.get("releases") or []), release} - {""}),
+        "added": added,
+        # A trial that has just entered does not also need a "changed" line.
+        "changed": {k: v for k, v in changed.items() if k not in added},
         "last_sent_at": pending.get("last_sent_at"),
     }
-    # A trial that has just entered does not also need a "changed" line.
-    out["changed"] = {k: v for k, v in out["changed"].items() if k not in out["added"]}
-    out["releases"] = [r for r in out["releases"] if r]
     return out
 
 
@@ -176,14 +213,31 @@ FONT = "-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif"
 MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace"
 INK, COPY, MUTED, LINE, PAPER, ACCENT = "#0f172a", "#334155", "#64748b", "#e2e8f0", "#f1f5f9", "#4f46e5"
 
+BIO = ("#be123c", "#fff1f2"), ("#4338ca", "#eef2ff"), ("#0369a1", "#f0f9ff")
 REASON_LABEL = {
-    "EFFICACY_FUTILITY": ("Efficacy / futility", "#4338ca", "#eef2ff"),
-    "SAFETY": ("Safety", "#be123c", "#fff1f2"),
-    "BIOLOGICAL_UNSPECIFIED": ("Biological, unspecified", "#0369a1", "#f0f9ff"),
+    "SAFETY": ("Safety", *BIO[0]),
+    "EFFICACY_FUTILITY": ("Efficacy / futility", *BIO[1]),
+    "BIOLOGICAL_UNSPECIFIED": ("Biological, unspecified", *BIO[2]),
+    "RECRUITMENT": ("Recruitment", COPY, PAPER),
+    "BUSINESS_STRATEGY": ("Business decision", COPY, PAPER),
+    "FUNDING": ("Funding", COPY, PAPER),
+    "DECISION_WITHOUT_STATED_CAUSE": ("Decision, cause not stated", COPY, PAPER),
+    "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": ("Programme stopped, cause not stated", COPY, PAPER),
+    "UNSPECIFIED": ("Reason not stated", COPY, PAPER),
+    "NOT_INITIATED": ("Never started", COPY, PAPER),
 }
-FIELD_LABEL = {"overall_status": "Status", "why_stopped": "Stop reason",
-               "primary_completion_date": "Primary completion", "sponsor_group": "Sponsor"}
-NOT_A_DRUG = {"placebo", "premedication", "standard of care", "best supportive care"}
+NOT_A_DRUG = {"placebo", "premedication", "standard of care", "best supportive care", "saline", "sham"}
+
+
+def reason_of(item: dict) -> tuple[str, str, str]:
+    code = item.get("classification_primary_reason_v2") or ""
+    if item.get("classification_outcome_v2") in ("UNKNOWN", "") and not code:
+        return ("Not yet classified", MUTED, PAPER)
+    return REASON_LABEL.get(code, (code.replace("_", " ").capitalize() or "Other", COPY, PAPER))
+
+
+def biological(item: dict) -> bool:
+    return item.get("classification_outcome_v2") == "BIOLOGICAL_FAILURE"
 
 
 def when(iso: str | None, with_year: bool = True) -> str:
@@ -198,21 +252,22 @@ def when(iso: str | None, with_year: bool = True) -> str:
 
 
 def phase(value) -> str:
-    raw = value if isinstance(value, list) else str(value or "").replace(",", " ").split()
+    raw = value if isinstance(value, list) else re.split(r"[;,|\s]+", str(value or ""))
     nums = sorted({p.replace("EARLY_PHASE1", "PHASE1").replace("PHASE", "") for p in raw if "PHASE" in str(p)})
     return f"Phase {'/'.join(nums)}" if nums else ""
 
 
 def drugs(value) -> str:
+    items = value if isinstance(value, list) else str(value or "").split(";")
     names = []
-    for name in value or []:
-        if str(name).lower() in NOT_A_DRUG:
+    for name in (" ".join(str(n).split()) for n in items):
+        if not name or name.lower() in NOT_A_DRUG:
             continue
         # "tak-243" is a research code, "vibostolimab" a name: codes read in capitals.
-        pretty = str(name).upper() if any(ch.isdigit() for ch in str(name)) else str(name)[:1].upper() + str(name)[1:]
-        if pretty not in names:
-            names.append(pretty)
-    return ", ".join(names[:3])
+        pretty = name.upper() if any(ch.isdigit() for ch in name) and len(name) < 14 else name[:1].upper() + name[1:]
+        if pretty.lower() not in {n.lower() for n in names}:
+            names.append(shorten(pretty, 40))
+    return ", ".join(names[:2])
 
 
 def status_word(value) -> str:
@@ -246,11 +301,16 @@ def subject_of(added: list, changed: list, version: str) -> str:
 
 
 def order(items: list[dict]) -> list[dict]:
-    """Biological stops first, safety before efficacy, later phases before earlier ones."""
+    """Biological stops first — safety, then efficacy — later phases before earlier ones."""
     rank = {"SAFETY": 0, "EFFICACY_FUTILITY": 1, "BIOLOGICAL_UNSPECIFIED": 2}
-    return sorted(items, key=lambda i: (rank.get(i.get("failure_primary_reason"), 3),
-                                        -int((phase(i.get("phases")) or "Phase 0")[-1]),
-                                        i.get("nct_id") or ""))
+
+    def top_phase(i: dict) -> int:
+        digits = [int(c) for c in phase(i.get("phases")) if c.isdigit()]
+        return max(digits) if digits else 0
+
+    return sorted(items, key=lambda i: (0 if biological(i) else 1,
+                                        rank.get(i.get("classification_primary_reason_v2"), 3),
+                                        -top_phase(i), i.get("nct_id") or ""))
 
 
 def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
@@ -260,10 +320,13 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
     since = pending.get("since") or ""
     subject = subject_of(added, changed, version)
 
-    efficacy = sum(1 for a in added if a.get("failure_primary_reason") == "EFFICACY_FUTILITY")
-    safety = sum(1 for a in added if a.get("failure_primary_reason") == "SAFETY")
+    bio = sum(1 for a in added if biological(a))
+    areas = {}
+    for a_ in added:
+        areas[a_.get("disease_area") or "Other"] = areas.get(a_.get("disease_area") or "Other", 0) + 1
+    area_line = " · ".join(f"{k} {v}" for k, v in sorted(areas.items(), key=lambda kv: (kv[0] == "Other", -kv[1]))[:6])
     lead = added[0] if added else None
-    preheader = (f"{plural(efficacy, 'stop', 'stops')} for efficacy, {plural(safety, 'stop', 'stops')} for safety"
+    preheader = (f"{plural(bio, 'stop', 'stops')} for efficacy or safety"
                  + (f" — first up: {shorten(lead.get('brief_title'), 70)}" if lead else "")
                  if added else "No sponsor added or edited a stopped trial in this window.")
     window = (f"{when(since, with_year=False)} – {when(version)}" if since and version else when(version))
@@ -271,8 +334,8 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
     def a(href: str, text: str, color: str = ACCENT, weight: int = 600) -> str:
         return f"<a href='{e(href)}' style='color:{color};text-decoration:none;font-weight:{weight}'>{text}</a>"
 
-    def chip(reason: str | None) -> str:
-        label, fg, bg = REASON_LABEL.get(reason or "", (str(reason or "Other").replace("_", " ").capitalize(), COPY, PAPER))
+    def chip(item: dict) -> str:
+        label, fg, bg = reason_of(item)
         return (f"<span style='display:inline-block;padding:3px 8px;border-radius:4px;background:{bg};color:{fg};"
                 f"font-family:{FONT};font-size:11px;font-weight:700;letter-spacing:.02em'>{e(label)}</span>")
 
@@ -290,10 +353,11 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
 
     def added_row(item: dict) -> str:
         nct = item.get("nct_id") or ""
-        meta = " · ".join(x for x in [phase(item.get("phases")), drugs(item.get("focus_assets"))] if x)
+        meta = " · ".join(x for x in [item.get("disease_area"), phase(item.get("phases")),
+                                      drugs(item.get("intervention_names"))] if x)
         reason = shorten(item.get("why_stopped") or "", 240)
         return (f"<tr><td style='padding:14px 32px;border-top:1px solid {LINE}'>"
-                f"<div>{chip(item.get('failure_primary_reason'))}"
+                f"<div>{chip(item)}"
                 + (f"<span style='font-family:{FONT};font-size:12px;color:{MUTED};padding-left:8px'>{e(meta)}</span>" if meta else "")
                 + f"</div>"
                 f"<div style='margin-top:8px;font-family:{FONT};font-size:15px;line-height:1.4'>"
@@ -301,7 +365,7 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
                 + (f"<div style='margin-top:8px;padding:2px 0 2px 12px;border-left:3px solid {LINE};font-family:{FONT};"
                    f"font-size:13.5px;line-height:1.5;color:{COPY}'>“{e(reason)}”</div>" if reason else "")
                 + f"<div style='margin-top:8px;font-family:{FONT};font-size:12px;color:{MUTED}'>"
-                f"<span style='font-family:{MONO}'>{e(nct)}</span> · {e(item.get('sponsor_group') or '')} · "
+                f"<span style='font-family:{MONO}'>{e(nct)}</span> · {e(item.get('lead_sponsor') or '')} · "
                 f"{a(f'https://clinicaltrials.gov/study/{nct}', 'Registry record', MUTED, 500)}</div>"
                 f"</td></tr>")
 
@@ -317,7 +381,7 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
                 f"{a(f'{SITE}/trial/{nct}', e(shorten(item.get('brief_title'), 150)), INK, 650)}</div>"
                 f"<table role='presentation' cellspacing='0' cellpadding='0' border='0' style='margin-top:8px'>{moves}</table>"
                 f"<div style='margin-top:8px;font-family:{FONT};font-size:12px;color:{MUTED}'>"
-                f"<span style='font-family:{MONO}'>{e(nct)}</span> · {e(item.get('sponsor_group') or '')} · "
+                f"<span style='font-family:{MONO}'>{e(nct)}</span> · {e(item.get('lead_sponsor') or '')} · "
                 f"{a(f'https://clinicaltrials.gov/study/{nct}', 'Registry record', MUTED, 500)}</div>"
                 f"</td></tr>")
 
@@ -325,12 +389,13 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
         if len(items) <= MAX_ROWS:
             return ""
         return (f"<tr><td style='padding:12px 32px;border-top:1px solid {LINE};font-family:{FONT};font-size:13px;color:{MUTED}'>"
-                f"…and {len(items) - MAX_ROWS} more. {a(f'{SITE}/explore', 'See them all on the site')}</td></tr>")
+                f"…and {len(items) - MAX_ROWS} more. {a(f'{SITE}/explore', 'See them all in the database')}</td></tr>")
 
     sections = ""
     if added:
         sections += heading("New stopped trials", len(added),
-                            "Entered the dataset since the last issue, with the reason the sponsor recorded.")
+                            "Entered the database since the last issue, across every disease area, with the reason "
+                            "the sponsor recorded. Stops for efficacy or safety first.")
         sections += "".join(added_row(i) for i in added[:MAX_ROWS]) + more(added)
     if changed:
         sections += heading("Records sponsors changed", len(changed),
@@ -345,9 +410,12 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
     # Three zeros read like a broken mail; a quiet fortnight says so in words instead.
     stats = (f"<tr><td style='border-bottom:1px solid {LINE}'>"
              f"<table role='presentation' class='stats' width='100%' cellspacing='0' cellpadding='0' border='0'><tr>"
-             f"{stat(len(added), 'new stopped trials')}{stat(efficacy, 'stopped for efficacy or futility')}"
-             f"{stat(safety, 'stopped for safety').replace(f'border-right:1px solid {LINE}', '')}"
-             f"</tr></table></td></tr>") if added else ""
+             f"{stat(len(added), 'new stopped trials')}{stat(bio, 'stopped for efficacy or safety')}"
+             f"{stat(len(changed), 'records changed by sponsors').replace(f'border-right:1px solid {LINE}', '')}"
+             f"</tr></table>"
+             + (f"<div class='px' style='padding:10px 14px 12px;border-top:1px solid {LINE};font-family:{FONT};"
+                f"font-size:12px;color:{MUTED}'>By area: {e(area_line)}</div>" if area_line else "")
+             + "</td></tr>") if (added or changed) else ""
     title = (f"{plural(len(added), 'trial', 'trials')} stopped, {plural(len(changed), 'record', 'records')} changed"
              if added or changed else "A quiet fortnight")
     button = (f"<table role='presentation' cellspacing='0' cellpadding='0' border='0'><tr>"
@@ -379,7 +447,7 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
     <td align="right" style="font-family:{FONT};font-size:12px;color:#94a3b8">Fortnightly · {e(when(version))}</td>
   </tr></table>
   <div class="h1" style="margin-top:18px;font-family:{FONT};font-size:28px;line-height:1.15;font-weight:800;color:#ffffff">{e(title)}</div>
-  <div style="margin-top:8px;font-family:{FONT};font-size:14px;line-height:1.5;color:#cbd5e1">Stopped oncology trials, {e(window)}. Read from ClinicalTrials.gov and diffed release by release.</div>
+  <div style="margin-top:8px;font-family:{FONT};font-size:14px;line-height:1.5;color:#cbd5e1">Stopped clinical trials across every disease area, {e(window)}. Read from ClinicalTrials.gov and diffed week by week.</div>
 </td></tr>
 {stats}
 {sections.replace("<td style='padding:14px 32px", "<td class='px' style='padding:14px 32px")}
@@ -389,7 +457,7 @@ def render(pending: dict, summary: dict, stop_url: str) -> tuple[str, str]:
   stopped or missed trial that shares its target, with the reason each one ended. Free, no account.</div>
   {button}
   <div style="margin-top:12px;font-family:{FONT};font-size:13px;color:{MUTED}">Or {a(f"{SITE}/briefs", "read the free mechanism briefs")}
-  — {e(summary.get("brief_count") or "")} classes, {e(summary.get("trial_count") or "")} stopped oncology trials tracked.</div>
+  — {e(summary.get("brief_count") or "")} mechanism classes. The database holds {e(f"{summary['trial_count']:,}" if isinstance(summary.get("trial_count"), int) else summary.get("trial_count") or "")} stopped trials.</div>
 </td></tr>
 </table>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="max-width:600px">
@@ -416,17 +484,17 @@ def render_text(pending: dict, summary: dict, stop_url: str) -> str:
     if added:
         out += [f"NEW STOPPED TRIALS ({len(added)})", ""]
         for i in added[:MAX_ROWS]:
-            label = REASON_LABEL.get(i.get("failure_primary_reason") or "", (str(i.get("failure_primary_reason") or "Other"),))[0]
-            meta = " · ".join(x for x in [label, phase(i.get("phases")), drugs(i.get("focus_assets"))] if x)
+            meta = " · ".join(x for x in [reason_of(i)[0], i.get("disease_area"), phase(i.get("phases")),
+                                          drugs(i.get("intervention_names"))] if x)
             out += [f"- {shorten(i.get('brief_title'), 150)}", f"  {meta}",
                     f"  “{shorten(i.get('why_stopped') or '', 240)}”",
-                    f"  {i.get('nct_id')} · {i.get('sponsor_group') or ''} · {SITE}/trial/{i.get('nct_id')}", ""]
+                    f"  {i.get('nct_id')} · {i.get('lead_sponsor') or ''} · {SITE}/trial/{i.get('nct_id')}", ""]
     if changed:
         out += [f"RECORDS SPONSORS CHANGED ({len(changed)})", ""]
         for i in changed[:MAX_ROWS]:
             out += [f"- {shorten(i.get('brief_title'), 150)}"]
             out += [f"  {label}: {text}" for label, text in (move_text(f, m) for f, m in (i.get("changes") or {}).items())]
-            out += [f"  {i.get('nct_id')} · {i.get('sponsor_group') or ''} · {SITE}/trial/{i.get('nct_id')}", ""]
+            out += [f"  {i.get('nct_id')} · {i.get('lead_sponsor') or ''} · {SITE}/trial/{i.get('nct_id')}", ""]
     if not (added or changed):
         out += ["No sponsor added or edited a stopped trial in this window.", ""]
     out += [f"Check a molecule: {SITE}/asset-check", f"Free mechanism briefs: {SITE}/briefs", "",
@@ -435,27 +503,15 @@ def render_text(pending: dict, summary: dict, stop_url: str) -> str:
 
 
 def recent_stops(limit: int) -> list[dict]:
-    """The most recently updated stopped trials in the current release."""
-    if not SIGNALS.exists():
+    """The most recently updated stopped trials in the database, any disease area."""
+    if not DATASET.exists():
         return []
-    rows = []
-    with SIGNALS.open(encoding="utf-8") as fh:
-        for line in fh:
-            try:
-                r = json.loads(line)
-            except ValueError:
-                continue
-            if not r.get("why_stopped"):
-                continue
-            rows.append({
-                "nct_id": r.get("nct_id"),
-                "title": shorten(r.get("brief_title"), 140),
-                "sponsor": r.get("sponsor_group") or r.get("lead_sponsor_raw") or "",
-                "detail": (r.get("why_stopped") or "")[:200],
-                "updated": r.get("last_update_post_date") or "",
-            })
-    rows.sort(key=lambda r: r["updated"], reverse=True)
-    return rows[:limit]
+    rows = [r for r in json.loads(DATASET.read_text(encoding="utf-8")) if r.get("why_stopped")]
+    rows.sort(key=lambda r: (r.get("last_update_post_date") or "", r.get("nct_id") or ""), reverse=True)
+    return [{"nct_id": r.get("nct_id"), "title": shorten(r.get("brief_title"), 140),
+             "sponsor": r.get("lead_sponsor") or "", "area": r.get("disease_area") or "",
+             "detail": shorten(r.get("why_stopped"), 200), "updated": r.get("last_update_post_date") or ""}
+            for r in rows[:limit]]
 
 
 def write_preview(pending: dict, summary: dict) -> None:
@@ -466,17 +522,14 @@ def write_preview(pending: dict, summary: dict) -> None:
     itself rather than describing it.
     """
     def row(item: dict, kind: str) -> dict:
-        return {
-            "nct_id": item.get("nct_id"),
-            "title": shorten(item.get("brief_title"), 140),
-            "sponsor": item.get("sponsor_group") or "",
-            "detail": ((item.get("why_stopped") or item.get("failure_primary_reason") or "")[:200]
-                       if kind == "added"
-                       else "; ".join(f"{field}: {str(move.get('from'))[:40]} → {str(move.get('to'))[:40]}"
-                                      for field, move in (item.get("changes") or {}).items())[:200]),
-        }
+        detail = (shorten(item.get("why_stopped"), 200) if kind == "added"
+                  else "; ".join(f"{label}: {text}" for label, text in
+                                 (move_text(f, m) for f, m in (item.get("changes") or {}).items()))[:200])
+        return {"nct_id": item.get("nct_id"), "title": shorten(item.get("brief_title"), 140),
+                "sponsor": item.get("lead_sponsor") or "", "area": item.get("disease_area") or "",
+                "reason": reason_of(item)[0] if kind == "added" else "", "detail": detail}
 
-    added = list(pending.get("added", {}).values())
+    added = order(list(pending.get("added", {}).values()))
     changed = list(pending.get("changed", {}).values())
     PREVIEW.parent.mkdir(parents=True, exist_ok=True)
     # A fortnight where nothing moved is a real answer in a mail somebody already subscribed to.
@@ -484,8 +537,8 @@ def write_preview(pending: dict, summary: dict) -> None:
     # stopped trials to show instead — the same kind of row, marked as what it is.
     recent = recent_stops(PREVIEW_ROWS) if not (added or changed) else []
     PREVIEW.write_text(json.dumps({
-        "schema_version": 1,
-        "release": (pending.get("releases") or [summary.get("dataset_version") or ""])[-1],
+        "schema_version": 2,
+        "release": (pending.get("releases") or [""])[-1],
         "generated_at_utc": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "last_sent_at": pending.get("last_sent_at") or "",
         "counts": {"added": len(added), "changed": len(changed)},
@@ -539,7 +592,9 @@ def main() -> int:
         print("No change report; nothing to accumulate.")
         return 0
     report = json.loads(REPORT.read_text())
-    summary = json.loads(SUMMARY.read_text()) if SUMMARY.exists() else {}
+    product = json.loads(SUMMARY.read_text()) if SUMMARY.exists() else {}
+    summary = {"trial_count": (report.get("current") or {}).get("record_count"),
+               "brief_count": product.get("brief_count")}
 
     token = os.environ.get("CF_API_TOKEN") or ""
     base = kv_base(token) if token else None
@@ -553,7 +608,7 @@ def main() -> int:
     except Exception:  # noqa: BLE001 — an absent key is the normal first run
         pending = {}
 
-    if report.get("has_previous_release"):
+    if report.get("has_previous_snapshot"):
         pending = merge(pending, report)
 
     people = subscribers(base, token)

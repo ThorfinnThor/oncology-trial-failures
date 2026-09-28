@@ -399,21 +399,45 @@ check("an unrelated target survives", "EGFR" in _kept, True)
 # ---------------------------------------------------------------------------
 from scripts.signals import newsletter as _nl  # noqa: E402
 
-_r1 = {"dataset_version": "2026-09-07", "previous_dataset_version": "2026-08-31",
-       "added": [{"nct_id": "NCT1", "brief_title": "One"}],
-       "changed": [{"nct_id": "NCT2", "origin": "registry_event", "changes": {"overall_status": {"from": "A", "to": "B"}}},
-                   {"nct_id": "NCT3", "origin": "reclassification", "changes": {}}]}
-_r2 = {"dataset_version": "2026-09-14", "previous_dataset_version": "2026-09-07",
-       "added": [{"nct_id": "NCT4", "brief_title": "Four"}],
-       "changed": [{"nct_id": "NCT1", "origin": "registry_event", "changes": {"why_stopped": {"from": "", "to": "x"}}},
-                   {"nct_id": "NCT5", "origin": "mixed", "changes": {"overall_status": {"from": "A", "to": "C"}}}]}
+# The weekly workflow's diff of the whole stopped-trial database (scripts/ingest_changes.py), one per run.
+_r1 = {"generated_at_utc": "2026-09-07T06:30:00Z", "has_previous_snapshot": True,
+       "previous": {"max_last_update_post_date": "2026-08-31"},
+       "new_records": [{"nct_id": "NCT1", "brief_title": "One", "disease_area": "Cardiovascular"}],
+       "updated_records": [
+           {"nct_id": "NCT2", "changed_fields": ["overall_status"], "overall_status": "TERMINATED",
+            "previous": {"overall_status": "RECRUITING"}},
+           # Ours, not the sponsor's: a re-derived disease area and a reclassification.
+           {"nct_id": "NCT3", "changed_fields": ["disease_area", "classification_outcome_v2"]}],
+       "status_changes": [], "removed_records": []}
+_r2 = {"generated_at_utc": "2026-09-14T06:30:00Z", "has_previous_snapshot": True,
+       "new_records": [{"nct_id": "NCT4", "brief_title": "Four", "disease_area": "Oncology"}],
+       "updated_records": [
+           {"nct_id": "NCT1", "changed_fields": ["why_stopped"], "why_stopped": "x", "previous": {"why_stopped": ""}},
+           {"nct_id": "NCT5", "changed_fields": ["overall_status", "last_update_post_date"],
+            "overall_status": "WITHDRAWN", "previous": {"overall_status": "SUSPENDED"}},
+           {"nct_id": "NCT2", "changed_fields": ["overall_status"], "overall_status": "RECRUITING",
+            "previous": {"overall_status": "TERMINATED"}}],
+       "status_changes": [], "removed_records": []}
 
 _p = _nl.merge(_nl.merge({}, _r1), _r2)
-check("a fortnight keeps both weeks' new trials", sorted(_p["added"]), ["NCT1", "NCT4"])
+check("a fortnight keeps both weeks' new trials, from every disease area", sorted(_p["added"]), ["NCT1", "NCT4"])
 check("our own reclassifications never enter the mail", "NCT3" in _p["changed"], False)
-check("a partly-registry change does", "NCT5" in _p["changed"], True)
+check("a sponsor's status change does", _p["changed"]["NCT5"]["changes"],
+      {"overall_status": {"from": "SUSPENDED", "to": "WITHDRAWN"}})
+check("a status edited and edited back is not news", "NCT2" in _p["changed"], False)
 check("a trial that entered is not also reported as changed", "NCT1" in _p["changed"], False)
 check("every release in the window is recorded", _p["releases"], ["2026-09-07", "2026-09-14"])
+check("the window starts where the previous snapshot ended", _p["since"], "2026-08-31")
+check("a trial that leaves the stopped set again leaves the mail",
+      "NCT4" in _nl.merge(_p, {"generated_at_utc": "2026-09-15", "removed_records": [{"nct_id": "NCT4"}]})["added"], False)
+check("stops for efficacy or safety lead the list",
+      [i["nct_id"] for i in _nl.order([
+          {"nct_id": "A", "classification_outcome_v2": "NON_BIOLOGICAL", "classification_primary_reason_v2": "FUNDING",
+           "phases": "PHASE3"},
+          {"nct_id": "B", "classification_outcome_v2": "BIOLOGICAL_FAILURE",
+           "classification_primary_reason_v2": "EFFICACY_FUTILITY", "phases": "PHASE1"}])], ["B", "A"])
+check("registry phase strings read as phases", _nl.phase("PHASE1; PHASE2"), "Phase 1/2")
+check("placebo is not a drug", _nl.drugs("Placebo; Latozinemab"), "Latozinemab")
 
 check("a list that has never been mailed is due", _nl.due({}, False), True)
 check("a list mailed yesterday is not", _nl.due({"last_sent_at": _dt_now()}, False), False)
@@ -421,8 +445,9 @@ check("--force overrides the wait", _nl.due({"last_sent_at": _dt_now()}, True), 
 check("an unparseable timestamp does not block the mail forever",
       _nl.due({"last_sent_at": "not a date"}, False), True)
 
-_subject, _body = _nl.render(_p, {"trial_count": 985, "brief_count": 51}, "https://example.test/stop?k=KEY")
-check("the subject counts both kinds", _subject.startswith("2 new stopped trials, 2 records changed"), True)
+_subject, _body = _nl.render(_p, {"trial_count": 23822, "brief_count": 51}, "https://example.test/stop?k=KEY")
+check("the subject counts both kinds", _subject.startswith("2 new stopped trials, 1 record changed"), True)
+check("the mail is about the whole database, not one area", "every disease area" in _body and "23,822" in _body, True)
 check("one of a thing is not pluralised",
       _nl.render({"added": {"A": {"nct_id": "A"}}, "changed": {}, "releases": ["v"]}, {}, "u")[0]
       .startswith("1 new stopped trial, 0 records changed"), True)
@@ -444,7 +469,8 @@ check("a changed field reads as words, not a column name",
 check("a registry month is a month", _nl.when("2026-03"), "Mar 2026")
 # Gmail cuts a mail off at 102 KB and hides the rest, the unsubscribe link with it.
 _big = {"added": {f"N{i}": {"nct_id": f"N{i}", "brief_title": "T" * 150, "why_stopped": "W" * 240,
-                            "failure_primary_reason": "SAFETY", "phases": ["PHASE2"]} for i in range(200)},
+                            "classification_primary_reason_v2": "SAFETY",
+                            "classification_outcome_v2": "BIOLOGICAL_FAILURE", "phases": "PHASE2"} for i in range(200)},
         "changed": {f"C{i}": {"nct_id": f"C{i}", "brief_title": "T" * 150,
                               "changes": {"why_stopped": {"from": "a" * 90, "to": "b" * 160}}} for i in range(200)},
         "releases": ["2026-10-12"]}

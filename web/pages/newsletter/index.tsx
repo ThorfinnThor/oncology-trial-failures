@@ -171,24 +171,24 @@ export default function NewsletterPage() {
             <h2>What is in it</h2>
             <div className="grid">
               <div className="card item">
-                <div className="itemTitle">Trials that entered the dataset</div>
+                <div className="itemTitle">Trials that entered the database</div>
                 <p>
-                  Newly registered stops, with the reason the sponsor posted and a link to the record. This is the bulk
-                  of most issues and the reason to read it at all.
+                  Every newly stopped trial, from every disease area, with the reason the sponsor posted and how we
+                  classified it. Stops for efficacy or safety come first.
                 </p>
               </div>
               <div className="card item">
                 <div className="itemTitle">Records a sponsor changed</div>
                 <p>
-                  A status, a stop reason or a completion date edited after the fact. Separated from our own
+                  A status or a stop reason edited after the fact, shown as before and after. Separated from our own
                   reclassifications, which are never reported as though a sponsor had done something.
                 </p>
               </div>
               <div className="card item">
-                <div className="itemTitle">Rates that moved</div>
+                <div className="itemTitle">Every disease area</div>
                 <p>
-                  Where a mechanism class&rsquo;s discontinuation rate shifted by enough to be worth a line, with the
-                  new figure and what it is measured against.
+                  Oncology, neurology, cardiovascular and every other area in the database — around 24,000 stopped
+                  trials, each linked to its record and its page here.
                 </p>
               </div>
             </div>
@@ -244,7 +244,10 @@ export default function NewsletterPage() {
                           >
                             {row.nct_id}
                           </a>
-                          <div className="pSponsor">{row.sponsor}</div>
+                          <div className="pSponsor">
+                            {row.sponsor}
+                            {(row as { area?: string }).area ? ` · ${(row as { area?: string }).area}` : ""}
+                          </div>
                         </td>
                         <td>
                           <div className="pTitle">{row.title}</div>

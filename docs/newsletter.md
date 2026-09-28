@@ -1,14 +1,17 @@
 # Newsletter
 
-One list, one mail every second week: the trials that entered the dataset and the records a
-sponsor changed. It replaced a per-subscriber watchlist (`web/shelved/`, `docs/watchlist.md`),
+One list, one mail every second week: the trials that entered the stopped-trial database — the
+whole database, every disease area, about 24,000 records — and the records a sponsor changed. It replaced a per-subscriber watchlist (`web/shelved/`, `docs/watchlist.md`),
 because a mail written once by the workflow and sent to everyone is a thing that keeps happening,
 and that is the only property that matters for something published on a schedule.
 
 ## Why there is a pending list
 
-The data is rebuilt weekly; the mail goes out fortnightly. A change report covers exactly one
-release, so a mail that only ever carried the latest one would drop half of what happened. Each
+The data is rebuilt weekly; the mail goes out fortnightly. The source is the workflow's own diff of
+the database against the snapshot the run started from (`data/ingest_changes.json`, written by
+`scripts/ingest_changes.py`). Until 28 Sep 2026 it read the oncology signal set's change report
+instead — about 985 trials, one area — which is not what the sign-up page promises. A change report
+covers exactly one run, so a mail that only ever carried the latest one would drop half of what happened. Each
 run folds its report into `newsletter:pending` in KV, keyed by trial, and the key is cleared only
 after a send actually succeeded — a failed send is told next time rather than lost.
 
@@ -20,7 +23,7 @@ last one. "Every other run" breaks the first time a run is skipped or re-run.
 | in | out |
 | --- | --- |
 | trials that entered the dataset, with the sponsor's stop reason | our own reclassifications |
-| records a sponsor edited (`registry_event`, `mixed`) | our own mapping changes (`remapping`) |
+| records a sponsor edited: status, stop reason, as before → after | our own disease-area re-derivations |
 | a line saying nothing moved, when nothing moved | padding on a quiet fortnight |
 
 A subscriber sent an ontology update as though a sponsor had done something learns to ignore the
