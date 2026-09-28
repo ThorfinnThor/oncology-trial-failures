@@ -190,6 +190,44 @@ HEPATOLOGY_CLASSES: dict[str, list[str]] = {
     "GLP-2": ["GLP2R"],
 }
 
+# Psychiatry fails differently from oncology: trials run to the end and lose to placebo, so these
+# classes are mostly read through their missed endpoints rather than a stop rate. Kept apart from
+# the neurology lexicon even where the genes overlap — a D2 antagonist in schizophrenia and a
+# dopamine agonist in Parkinson's are not one risk class, and each area's analysts group differently.
+PSYCHIATRY_CLASSES: dict[str, list[str]] = {
+    "Serotonin 5-HT2A": ["HTR2A"],
+    "Serotonin 5-HT1A": ["HTR1A"],
+    "Dopamine D2 / D3": ["DRD2", "DRD3"],
+    "Monoamine reuptake": ["SLC6A4", "SLC6A2", "SLC6A3"],
+    "NMDA / glutamate": ["GRIN1", "GRIN2A", "GRIN2B", "GRIN2C", "GRIN2D", "GRIN3A", "GRIN3B", "GRM2", "GRM3", "GRM5"],
+    "GABA-A modulators": ["GABRA1", "GABRA2", "GABRA3", "GABRA5", "GABRB2", "GABRB3", "GABRD", "GABRG2"],
+    "Kappa opioid": ["OPRK1"],
+    "Orexin": ["HCRTR1", "HCRTR2"],
+    "Muscarinic M1 / M4": ["CHRM1", "CHRM4"],
+    "Nicotinic α7": ["CHRNA7"],
+    "TAAR1": ["TAAR1"],
+    "Vasopressin / oxytocin": ["AVPR1A", "AVPR1B", "OXTR"],
+}
+
+# Asthma, COPD, IPF and cystic fibrosis. Split the way respiratory analysts split them: the type-2
+# cytokines separately (IL-5 worked, IL-13 in asthma did not), the alarmins apart from both, and
+# the fibrosis targets by mechanism because IPF's failures cluster by pathway.
+RESPIRATORY_CLASSES: dict[str, list[str]] = {
+    "CRTH2 / PGD2 (DP2)": ["PTGDR2"],
+    "IL-13": ["IL13"],
+    "IL-4Rα": ["IL4R"],
+    "IL-5 / IL-5R": ["IL5", "IL5RA"],
+    "Alarmins (TSLP / IL-33)": ["TSLP", "IL33", "IL1RL1"],
+    "IgE": ["IGHE", "FCER1A"],
+    "CXCR1 / CXCR2": ["CXCR1", "CXCR2"],
+    "PI3Kδ": ["PIK3CD"],
+    "PDE4": ["PDE4A", "PDE4B", "PDE4C", "PDE4D"],
+    "Bronchodilators (LAMA / LABA)": ["CHRM3", "ADRB2"],
+    "CFTR modulators": ["CFTR"],
+    "Autotaxin / LPA1 (fibrosis)": ["ENPP2", "LPAR1"],
+    "CTGF / galectin-3 (fibrosis)": ["CCN2", "LGALS3"],
+}
+
 # Classes are per disease area: a gene set that means "checkpoint inhibitor" in oncology means
 # something different in autoimmune disease, and each area's analysts name different groups.
 CLASSES_BY_AREA: dict[str, dict[str, list[str]]] = {
@@ -198,6 +236,8 @@ CLASSES_BY_AREA: dict[str, dict[str, list[str]]] = {
     "Immunology & Autoimmune": IMMUNOLOGY_CLASSES,
     "Endocrine & Metabolic": METABOLIC_CLASSES,
     "Gastroenterology & Hepatology": HEPATOLOGY_CLASSES,
+    "Psychiatry & Mental Health": PSYCHIATRY_CLASSES,
+    "Respiratory": RESPIRATORY_CLASSES,
 }
 
 # Every script that walks the curated areas reads this rather than listing them again. An area

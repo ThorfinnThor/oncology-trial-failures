@@ -73,6 +73,12 @@ Three ways out, in order of how much they are worth:
   per-cohort count of completed trials that posted nothing at all.
   Next, if wanted: PubMed abstracts for trials with no posted results (same rule — only the
   paper's own sentence about this trial, matched by NCT ID).
+- ~~**Classes that fail at the end.**~~ **Built (28 Sep).** A class also earns a brief and a
+  package with ≥4 completed trials that missed, from ≥3 sponsors, and leads with them. New areas:
+  psychiatry (5-HT2A, D2/D3, monoamine reuptake, kappa opioid) and respiratory (IL-13, IL-5, the
+  alarmins); plus LAG-3 in oncology. Nine more briefs and packages on local data; the weekly run
+  sets the final count. Stricter than it could be on purpose: FcRn, FGF21, CTLA-4/CD28, NMDA and
+  CRTH2 have three misses each, or four from one sponsor, and wait for more evidence.
 - **Widen the window.** The cohorts are Phase 2/3, 2015–2024. Phase 1 and pre-2015 would roughly
   double the closed count in the young classes. It weakens comparability across eras, so it needs
   saying plainly rather than quietly.

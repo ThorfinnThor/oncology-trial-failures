@@ -355,6 +355,7 @@ def build(args) -> dict:
             "met": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MET"),
             "mixed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MIXED"),
             "from_sponsor_statement": sum(1 for v in endpoint_of.values() if v.get("basis") == "sponsor_statement"),
+            "missed_sponsors": len({r["_sponsor_group"] for r in missed}),
             "read_on": read_on(),
             **{f"results_{k}": v for k, v in disclosure_gap(completed).items()},
             "method": "Only trials the sponsor completed and posted results for. A sentence in the posted results "
@@ -522,6 +523,16 @@ def interpretation(pkg: dict) -> list[str]:
     elif review and not comparison:
         out.append(f"We could not resolve \"{review.get('query')}\" to a known molecule, so no comparison against the "
                    f"failed assets is included. Send a ChEMBL id, an INN or a research code and we will redo it.")
+    ep = pkg.get("endpoints") or {}
+    stops = h["biological_stops"]
+    # Some cohorts fail at the end rather than by being stopped. Their reading starts there, and
+    # the stop-attribution sentences below are skipped when there is nothing to attribute.
+    if ep.get("missed") and ep["missed"] > stops:
+        out.append(f"This cohort fails at the end rather than by being stopped: {ep['missed']} of {ep['readable']} "
+                   f"completed trials with a readable primary result missed it, across "
+                   f"{ep.get('missed_sponsors', '?')} sponsors, against {stops} stopped early for a biological reason. "
+                   f"They are listed under \"Ran to the end and missed\", each with the result it was read from. A missed "
+                   f"endpoint is not a verdict on the molecule — dose, population, endpoint and comparator decide it too.")
     sig = pkg["failure_signature"]
     if sig["molecules"] and sig["molecules"] < sig["stops"]:
         out.append(sig["sentence"] + " A rate counts registry records; those records are "
@@ -534,7 +545,9 @@ def interpretation(pkg: dict) -> list[str]:
     out.append(f"{h['biological_stops']} of {h['closed']} closed trials in this cohort were terminated for a "
                f"biological reason: {pct(h['rate'])} against {pct(h['comparator_rate'])} for {h['comparator_label']}"
                + (f", {ratio:.1f}× that rate." if ratio >= 1.2 else "."))
-    if a["stops_from_programme_cascade"]:
+    if not stops:
+        pass
+    elif a["stops_from_programme_cascade"]:
         out.append(f"{a['stops_from_own_data']} of those stops were the trial's own verdict; "
                    f"{a['stops_from_programme_cascade']} followed a decision taken elsewhere"
                    + (f", and {a['stops_unclear']} cannot be established from the record." if a["stops_unclear"] else ".")
@@ -544,7 +557,8 @@ def interpretation(pkg: dict) -> list[str]:
     else:
         out.append(f"All {a['stops_from_own_data']} stops we could attribute were the trial's own verdict rather than "
                    f"a consequence of a decision elsewhere, which makes the cohort unusually clean evidence for its size.")
-    out.append(f"The stops came from {c['stop_programmes']} sponsor–asset programmes across {c['stop_sponsors']} "
+    if stops:
+        out.append(f"The stops came from {c['stop_programmes']} sponsor–asset programmes across {c['stop_sponsors']} "
                f"sponsors"
                + (f"; removing the largest ({c['largest_programme']}, {c['largest_programme_stops']} stops) leaves "
                   f"{pct(c['rate_leave_one_programme_out'])}." if c["rate_leave_one_programme_out"] is not None else "."))
@@ -597,6 +611,11 @@ def evidence_html(ev: dict | None, compact: bool = False) -> str:
 
 def render_html(pkg: dict, notes: list[str]) -> str:
     h, a, c = pkg["headline"], pkg["attribution"], pkg["concentration"]
+    ep_ = pkg.get("endpoints") or {}
+    # A cohort that fails at the end leads with that, as its brief does.
+    headline_text = (f"{ep_['missed']} of {ep_['readable']} completed trials missed their primary endpoint"
+                     if ep_.get("missed") and ep_["missed"] > h["biological_stops"]
+                     else pkg["failure_signature"]["headline"])
     cif = {x["months"]: x for x in (pkg["time_to_event"].get("cif") or [])}
     base_cif = {x["months"]: x for x in (pkg["comparator_time_to_event"].get("cif") or [])}
 
@@ -776,7 +795,7 @@ a {{ color:var(--acc); }}
 
 <div class="kicker">Evidence package · {e(pkg['area'])} Phase {e('/'.join(pkg['window']['phases']))} ·
  starts {pkg['window']['start_from']}–{pkg['window']['start_to']}</div>
-<h1>{e(pkg['cohort'])}: {e(pkg['failure_signature']['headline'])}</h1>
+<h1>{e(pkg['cohort'])}: {e(headline_text)}</h1>
 <p class="sub">{e(pkg['failure_signature']['sentence'])}</p>
 
 <div class="stats" style="grid-template-columns:repeat(5,1fr)">

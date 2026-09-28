@@ -155,7 +155,8 @@ error, so the fetch can lag a release without breaking one.
 
 ## Mechanism classes and briefs
 
-Segments are grouped into 131 curated mechanism classes across five disease areas (`scripts/universe/mechanism_classes.py`) —
+Segments are grouped into curated mechanism classes across seven disease areas — oncology, neurology, immunology,
+endocrine and metabolic, gastroenterology and hepatology, psychiatry, respiratory (`scripts/universe/mechanism_classes.py`) —
 the units analysts use ("PD-(L)1", "PARP", "KRAS", "TGF-β"), each defined as a set of HGNC gene
 symbols. A trial belongs to a class when any drug in an experimental arm targets one of its genes;
 combination filters also consider drugs given as the backbone in both arms.
@@ -166,7 +167,22 @@ Each release writes:
 | --- | --- |
 | `product/discontinuation_rates/oncology_discontinuation_rates_v1.json` | Baseline plus every segment (class, class × phase, class + PD-(L)1, modality, phase, start year, sponsor class, sponsor group) with counts, rate, 95% CI and the NCT IDs behind each rate |
 | `product/discontinuation_rates/oncology_discontinuation_rates_by_*.csv` | Flat tables per dimension |
-| `product/briefs/brief_<segment>.html` + `.facts.json` | Discontinuation-rate brief per class with enough data (≥20 closed trials, ≥3 stops), and the facts behind every number |
+| `product/briefs/brief_<segment>.html` + `.facts.json` | A brief per class with enough data, and the facts behind every number (see below) |
+
+**Which classes get a brief, and what it leads with.** Two ways to qualify
+(`scripts/briefs/build_brief_catalog.py`):
+
+- **by stops** — ≥20 closed trials and ≥3 biological stops, or ≥3 stops from ≥3 independent
+  sponsor-asset programmes with an interval clear of the area baseline;
+- **by missed endpoints** — ≥4 completed trials that missed their primary endpoint on the
+  sponsor's own posted result (see *Missed endpoints*), from ≥3 sponsors. The sponsor test is the
+  same independence argument as for stops: four misses of one drug by one sponsor are one answer.
+
+A class that qualifies both ways leads with whichever way it mostly fails — more misses than stops
+leads with the misses. Psychiatry and respiratory classes, LAG-3, TIGIT, JAK/TYK2 and BTK in
+immunology lead with missed endpoints; the stop rate is still shown, second, with its interval and
+q-value. The q-value is computed over the whole stop-rate family either way, so a class that leads
+with its misses is never presented as having an unusual stop rate.
 
 `scripts/briefs/build_brief.py` generates a brief for any segment on demand:
 

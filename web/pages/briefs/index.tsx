@@ -130,28 +130,51 @@ export default function BriefsIndexPage() {
                       <span className="tileArea">{b.area}</span>
                     </div>
                     <div className="tileName">{b.segment}</div>
-                    <div className="tileLead">
-                      <b>{sig ? sig.molecules : "—"}</b>
-                      <span>{sig && sig.molecules === 1 ? "molecule" : "molecules"}</span>
-                      {sig && sig.shared_modality ? (
-                        <em>· all {pluralModality(sig.shared_modality)}</em>
-                      ) : null}
-                    </div>
-                    <div className="tileMeta">
-                      {b.biological_stops} of {n(b.closed)} closed trials stopped early — {pct(b.rate)} against{" "}
-                      {pct(b.baseline_resolved_rate ?? b.baseline_rate)}
-                    </div>
-                    {(b as any).endpoints?.readable ? (
+                    {(b as any).lead === "endpoints" ? (
+                      <>
+                        <div className="tileLead">
+                          <b>{(b as any).endpoints.missed}</b>
+                          <span>completed trials missed their primary endpoint</span>
+                        </div>
+                        <div className="tileMeta">
+                          of {(b as any).endpoints.readable} with a readable result, across{" "}
+                          {(b as any).endpoints.missed_sponsors} sponsors · {b.biological_stops} of {n(b.closed)} stopped
+                          early
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="tileLead">
+                          <b>{sig ? sig.molecules : "—"}</b>
+                          <span>{sig && sig.molecules === 1 ? "molecule" : "molecules"}</span>
+                          {sig && sig.shared_modality ? <em>· all {pluralModality(sig.shared_modality)}</em> : null}
+                        </div>
+                        <div className="tileMeta">
+                          {b.biological_stops} of {n(b.closed)} closed trials stopped early — {pct(b.rate)} against{" "}
+                          {pct(b.baseline_resolved_rate ?? b.baseline_rate)}
+                        </div>
+                      </>
+                    )}
+                    {(b as any).lead !== "endpoints" && (b as any).endpoints?.readable ? (
                       <div className="tileEndp">
                         {(b as any).endpoints.missed} of {(b as any).endpoints.readable} completed trials with a readable
                         result missed their primary endpoint
                       </div>
                     ) : null}
-                    <div className="tileFoot">
-                      <span>{b.stop_programmes ?? "—"} programmes</span>
-                      <span>95% CI {pct(b.ci95[0])}–{pct(b.ci95[1])}</span>
-                      <span>{typeof q === "number" ? `q=${q.toPrecision(2)}` : "q —"}</span>
-                    </div>
+                    {(b as any).lead === "endpoints" ? (
+                      // The stop-rate interval and q describe a number this tile does not lead with.
+                      <div className="tileFoot">
+                        <span>{(b as any).endpoints.missed_molecules} molecules</span>
+                        <span>{(b as any).endpoints.missed_sponsors} sponsors</span>
+                        <span>sponsor-posted results</span>
+                      </div>
+                    ) : (
+                      <div className="tileFoot">
+                        <span>{b.stop_programmes ?? "—"} programmes</span>
+                        <span>95% CI {pct(b.ci95[0])}–{pct(b.ci95[1])}</span>
+                        <span>{typeof q === "number" ? `q=${q.toPrecision(2)}` : "q —"}</span>
+                      </div>
+                    )}
                     {b.has_pdf ? (
                       <span
                         className="tilePdf"

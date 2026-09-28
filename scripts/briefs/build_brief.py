@@ -29,7 +29,7 @@ from scripts.signals.http_cache import SourceUnavailable  # noqa: E402
 from scripts.universe.discontinuation_rates import fmt, load, select, summarize  # noqa: E402
 from scripts.universe.cumulative_incidence import curve  # noqa: E402
 from scripts.signals.stop_attribution import attribute_all, signature, summarise  # noqa: E402
-from scripts.universe.endpoint_outcomes import disclosure_gap, load_verdicts  # noqa: E402
+from scripts.universe.endpoint_outcomes import disclosure_gap, evidence_of, load_verdicts, results_url  # noqa: E402
 
 OUT_DIR = ROOT / "product/briefs"
 COHORTS = [(2015, 2017), (2018, 2020), (2021, 2024)]
@@ -102,6 +102,10 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--area", default="Oncology")
     ap.add_argument("--out")
     ap.add_argument("--canonical-url")
+    # What the brief leads with. Most classes fail by being stopped and lead with the stop rate.
+    # Some — psychiatry, respiratory, LAG-3 — run their trials to the end and miss, and a rate over
+    # two stops says nothing about them; those lead with the completed trials that missed.
+    ap.add_argument("--lead", choices=("rate", "endpoints"), default="rate")
     args = ap.parse_args(argv)
 
     start = tuple(int(x) for x in args.start.split(":"))
@@ -219,6 +223,29 @@ def main(argv: list[str] | None = None) -> int:
         # ago and nothing posted. A gap in what can be known, never counted as a failure.
         **{f"results_{k}": v for k, v in disclosure_gap(completed).items()},
     }
+    missed_rows = sorted([r for r in completed if verdicts.get(r["nct_id"], {}).get("endpoint_verdict") == "MISSED"],
+                         key=lambda r: (r.get("start_date") or ""), reverse=True)
+    missed_molecules = sorted({d.strip() for r in missed_rows for d in drugs(r).split(",") if d.strip()})
+    endpoints.update({
+        # Independence, the same test the stop rate gets: four misses by one sponsor of one drug
+        # are one programme's answer, not four.
+        "missed_sponsors": len({r["_sponsor_group"] for r in missed_rows}),
+        "missed_molecules": len(missed_molecules),
+    })
+
+    def endpoint_trial(r):
+        ev = evidence_of(verdicts.get(r["nct_id"])) or {}
+        said = (ev.get("statement") or {}).get("text")
+        return {
+            "nct_id": r["nct_id"],
+            "phase": "3" if "3" in r["_phase"] else "2",
+            "sponsor_group": r["_sponsor_group"],
+            "drugs": drugs(r),
+            "started": (r.get("start_date") or "")[:7],
+            "evidence": f"“{said}”" if said else ((ev.get("lines") or [""])[0]),
+            "results_url": results_url(r["nct_id"]),
+        }
+    endpoint_trials = [endpoint_trial(r) for r in missed_rows]
 
     facts = {
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -231,6 +258,8 @@ def main(argv: list[str] | None = None) -> int:
         "stop_attribution": attribution,
         "segment_composition": composition,
         "endpoints": endpoints,
+        "lead": args.lead,
+        "endpoint_trials": endpoint_trials[:25],
         "multiplicity": {"q_value_by": args.q_value, "family_size": args.family_size,
                          "method": "Benjamini-Yekutieli over a one-sided exact binomial test against the "
                                    "target-resolved baseline, valid under arbitrary dependence because the "
@@ -338,7 +367,61 @@ def main(argv: list[str] | None = None) -> int:
             + '</span></div>')
 
     canonical_link = f"<link rel='canonical' href='{e(args.canonical_url)}'>" if args.canonical_url else ""
-    doc = f"""<!doctype html><html><head><meta charset="utf-8">{canonical_link}<title>{e(name)} — discontinuation rate</title><style>
+
+    miss_rows_html = "".join(
+        f'<tr><td class="mono">{e(t["nct_id"])}</td><td>{e(t["phase"])}</td><td>{e(t["sponsor_group"])}</td>'
+        f'<td>{e(t["drugs"])}</td><td>{e(t["started"])}</td><td class="reason">{e(t["evidence"])}</td></tr>'
+        for t in endpoint_trials[:MAX_ROWS])
+    miss_table = (
+        f'<h2>The completed trials that missed</h2><table class="stops"><thead><tr><th>Trial</th><th>Ph</th>'
+        f'<th>Sponsor</th><th>Experimental drugs</th><th>Started</th><th>What the posted result says</th></tr></thead>'
+        f'<tbody>{miss_rows_html}</tbody></table>'
+        + (f'<p style="font-size:7.4pt;color:var(--muted)">The {MAX_ROWS} most recently started of {len(endpoint_trials)} '
+           f'completed trials that missed. The evidence package lists every one, with the numbers or the sentence each '
+           f'verdict was read from.</p>' if len(endpoint_trials) > MAX_ROWS else "")) if endpoint_trials else ""
+    rate_dek = f"""<p class="dek"><b>{e(sig['sentence'])}</b> {attribution_line} Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
+The rate counts trials that stopped early for efficacy, safety or benefit–risk reasons. Trials that ran to completion and missed their primary endpoint are counted separately below, never in the rate.</p>"""
+    rate_stats = f"""<div class="stats">
+ <div class="stat"><b>{pct(segment['rate'])}</b><span>{segment['biological_stops']} of {segment['closed']} closed trials (95% CI {pct(segment['ci95'][0])}–{pct(segment['ci95'][1])})</span></div>
+ <div class="stat"><b>{segment['stops_efficacy_only']} / {segment['stops_safety_only']} / {segment['stops_efficacy_and_safety']}</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to {segment['biological_stops']})</span></div>
+ <div class="stat"><b>{pct(segment['closed_share'])}</b><span>of {segment['trials']} trials have closed · {segment['open_or_other']} still open or unresolved</span></div>
+ <div class="stat"><b>{cif36_value}</b><span>{cif36_note}</span></div>
+</div>"""
+    if args.lead == "endpoints":
+        kicker_kind = "Missed endpoints"
+        doc_title = f"{name} — missed endpoints"
+        headline_html = (f'{e(name)}: {endpoints["missed"]} of {endpoints["readable"]} completed trials missed their '
+                         f'primary endpoint')
+        dek_html = (f'<b>{endpoints["missed"]} completed trials across {endpoints["missed_sponsors"]} sponsors and '
+                    f'{endpoints["missed_molecules"]} molecules ran to the end and missed their primary endpoint on the '
+                    f'sponsor&#39;s own posted result; {endpoints["met"]} met it.</b> Only {segment["biological_stops"]} of '
+                    f'{segment["closed"]} closed trials were stopped early for efficacy or safety, which is why this class is '
+                    f'read through its completed trials rather than a stop rate. Most completed trials post nothing '
+                    f'readable, so the count is a floor.')
+        stats_html = (
+            f'<div class="stat"><b>{endpoints["missed"]} of {endpoints["readable"]}</b><span>completed trials with a '
+            f'readable primary result missed it · {endpoints["met"]} met it</span></div>'
+            f'<div class="stat"><b>{endpoints["missed_sponsors"]} / {endpoints["missed_molecules"]}</b><span>sponsors / '
+            f'molecules behind the misses</span></div>'
+            f'<div class="stat"><b>{pct(segment["rate"])}</b><span>stopped early: {segment["biological_stops"]} of '
+            f'{segment["closed"]} closed trials (95% CI {pct(segment["ci95"][0])}–{pct(segment["ci95"][1])})</span></div>'
+            f'<div class="stat"><b>{pct(segment["closed_share"])}</b><span>of {segment["trials"]} trials have closed · '
+            f'{segment["open_or_other"]} still open or unresolved</span></div>')
+        lead_block = miss_table
+    else:
+        kicker_kind = "Discontinuation rate"
+        doc_title = f"{name} — discontinuation rate"
+        headline_html = f"{e(name)}: {e(sig['headline'])}"
+        dek_html = None
+        stats_html = None
+        lead_block = ""
+    stops_section = ("" if not stops else
+                     '<h2>The stopped trials</h2><table class="stops"><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th>'
+                     '<th>Experimental drugs</th><th>Stopped</th><th>Type</th><th>Registry stop reason</th></tr></thead>'
+                     f'<tbody>{rows_html}</tbody></table>')
+    dek_block = f'<p class="dek">{dek_html}</p>' if dek_html else rate_dek
+    stats_block = f'<div class="stats">{stats_html}</div>' if stats_html else rate_stats
+    doc = f"""<!doctype html><html><head><meta charset="utf-8">{canonical_link}<title>{e(doc_title)}</title><style>
 @page {{ size:A4; margin:14mm 13mm; }}
 :root {{ --ink:#0b0b0b; --ink2:#52514e; --muted:#7a7974; --rule:#e4e3de; --accent:#1f3a5f; --bar:#2a78d6; --bar2:#b9c6d6; }}
 body {{ font-family:"Inter","Helvetica Neue",Arial,sans-serif; color:var(--ink); font-size:9pt; line-height:1.38; margin:0; }}
@@ -385,17 +468,10 @@ h2 {{ page-break-after:avoid; break-after:avoid; }}
 .foot {{ margin-top:8px; font-size:7.2pt; color:var(--muted); border-top:1px solid var(--rule); padding-top:5px; }}
 </style></head><body>
 <div class="sheet">
-<div class="kicker">Clinical Trial Failures · Discontinuation rate · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
-<h1>{e(name)}: {e(sig['headline'])}</h1>
-<p class="dek"><b>{e(sig['sentence'])}</b> {attribution_line} Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
-The rate counts trials that stopped early for efficacy, safety or benefit–risk reasons. Trials that ran to completion and missed their primary endpoint are counted separately below, never in the rate.</p>
-<div class="stats">
- <div class="stat"><b>{pct(segment['rate'])}</b><span>{segment['biological_stops']} of {segment['closed']} closed trials (95% CI {pct(segment['ci95'][0])}–{pct(segment['ci95'][1])})</span></div>
- <div class="stat"><b>{segment['stops_efficacy_only']} / {segment['stops_safety_only']} / {segment['stops_efficacy_and_safety']}</b><span>efficacy&nbsp;/ safety&nbsp;/ both (adds to {segment['biological_stops']})</span></div>
- <div class="stat"><b>{pct(segment['closed_share'])}</b><span>of {segment['trials']} trials have closed · {segment['open_or_other']} still open or unresolved</span></div>
- <div class="stat"><b>{cif36_value}</b><span>{cif36_note}</span></div>
-</div>
-{endpoint_html}
+<div class="kicker">Clinical Trial Failures · {kicker_kind} · {e(args.area)} Phase {e(args.phases)} · starts {start[0]}–{start[1]}</div>
+<h1>{headline_html}</h1>
+{dek_block}{stats_block}{endpoint_html}
+{lead_block}
 <div class="cols">
 <div>
 <h2>How this compares</h2>
@@ -415,8 +491,7 @@ underlying trials.</p>
 Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 </div>
 </div>
-<h2>The stopped trials</h2>
-<table class="stops"><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th><th>Stopped</th><th>Type</th><th>Registry stop reason</th></tr></thead><tbody>{rows_html}</tbody></table>
+{stops_section}
 {f'<p style="font-size:7.4pt;color:var(--muted)">The {MAX_ROWS} most recent of {len(stops)} stopped trials. Every molecule behind all {len(stops)} is named above; the complete trial list, the trials still running and the terminations with no readable cause ship with the dataset and the evidence package.</p>' if len(stops) > MAX_ROWS else ''}
 <div class="cols" style="margin-top:10px">
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase {e(args.phases)} {e(args.area.lower())} trials started {start[0]}–{start[1]} that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; {linked_pct}% of industry {e(args.area.lower())} trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>

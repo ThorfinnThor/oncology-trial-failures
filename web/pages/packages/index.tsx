@@ -177,14 +177,28 @@ export default function PackagesIndexPage() {
                   <Link key={p.slug} href={`/packages/${p.slug}`} className="pkg">
                     <div className="pkgArea">{p.area}</div>
                     <div className="pkgName">{p.cohort}</div>
-                    <div className="pkgRate">
-                      <b className={above ? "up" : ""}>{pct(p.headline.rate)}</b>
-                      <span>
-                        of {n(c.closed)} closed trials stopped early
-                        <br />
-                        {pct(p.headline.comparator_rate)} for {p.area.toLowerCase()} as a whole
-                      </span>
-                    </div>
+                    {/* A cohort that fails at the end rather than by stopping leads with that, as its brief does. */}
+                    {(c as any).endpoint_missed > c.stopped ? (
+                      <div className="pkgRate">
+                        <b className="up">
+                          {n((c as any).endpoint_missed)} of {n((c as any).endpoint_readable)}
+                        </b>
+                        <span>
+                          completed trials missed their primary endpoint
+                          <br />
+                          {pct(p.headline.rate)} stopped early
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="pkgRate">
+                        <b className={above ? "up" : ""}>{pct(p.headline.rate)}</b>
+                        <span>
+                          of {n(c.closed)} closed trials stopped early
+                          <br />
+                          {pct(p.headline.comparator_rate)} for {p.area.toLowerCase()} as a whole
+                        </span>
+                      </div>
+                    )}
                     <div className="pkgNums">
                       <div>
                         <b>{n(c.total_in_cohort)}</b>

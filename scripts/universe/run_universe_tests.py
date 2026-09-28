@@ -355,6 +355,22 @@ _gap = disclosure_gap([
 check("the gap counts only completed trials past the deadline", (_gap["due"], _gap["not_posted"]), (2, 1))
 check("and says how much of it is industry", _gap["not_posted_industry"], 1)
 
+# The second way a class earns a brief: completed trials that missed, from independent sponsors.
+from scripts.briefs.build_brief_catalog import MIN_MISSED, MIN_MISSED_SPONSORS, missed_endpoints  # noqa: E402
+from scripts.universe.mechanism_classes import CURATED_AREAS  # noqa: E402
+
+_v = {"A": {"endpoint_verdict": "MISSED"}, "B": {"endpoint_verdict": "MISSED"}, "C": {"endpoint_verdict": "MET"},
+      "D": {"endpoint_verdict": "MISSED"}}
+_rows = [{"nct_id": "A", "overall_status": "COMPLETED", "_sponsor_group": "X"},
+         {"nct_id": "B", "overall_status": "COMPLETED", "_sponsor_group": "X"},
+         {"nct_id": "C", "overall_status": "COMPLETED", "_sponsor_group": "Y"},
+         # A terminated trial's posted result is not a completed trial's miss.
+         {"nct_id": "D", "overall_status": "TERMINATED", "_sponsor_group": "Z"}]
+check("misses are counted among completed trials only, with their sponsors", missed_endpoints(_rows, _v), (2, 1))
+check("the endpoint rule needs more than one sponsor's answer", (MIN_MISSED, MIN_MISSED_SPONSORS), (4, 3))
+check("psychiatry and respiratory are curated areas",
+      {"Psychiatry & Mental Health", "Respiratory"} <= set(CURATED_AREAS), True)
+
 # Nothing may be called unusual on the site that the correction does not support.
 _index = json.loads((Path(__file__).resolve().parents[2] / "web/data/briefs_index.json").read_text())
 for _b in _index["briefs"]:

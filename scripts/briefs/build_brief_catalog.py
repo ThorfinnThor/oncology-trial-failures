@@ -17,6 +17,7 @@ sys.path.insert(0, str(ROOT))
 
 from scripts.briefs.build_brief import main as build_one  # noqa: E402
 from scripts.universe.discontinuation_rates import load, select, summarize  # noqa: E402
+from scripts.universe.endpoint_outcomes import load_verdicts  # noqa: E402
 from scripts.universe.mechanism_classes import COMBINATION_PARTNER, classes_of  # noqa: E402
 from scripts.universe.multiplicity import benjamini_yekutieli, binom_sf  # noqa: E402
 
@@ -63,6 +64,19 @@ MIN_STOPS = 3
 # raw stop threshold drops the second.
 SMALL_BUT_CERTAIN_STOPS = 3
 SMALL_BUT_CERTAIN_PROGRAMMES = 3
+# The other way a class earns a brief: its trials ran to the end and missed. Psychiatry loses to
+# placebo at week six rather than stopping at an interim, and a stop rate over two stops says
+# nothing about it. Four completed trials that missed their primary endpoint on the sponsor's own
+# posted result, from at least three sponsors — the same independence test the small-but-certain
+# rule applies to stops, because four misses of one drug by one sponsor are one answer.
+MIN_MISSED = 4
+MIN_MISSED_SPONSORS = 3
+
+
+def missed_endpoints(rows: list[dict], verdicts: dict) -> tuple[int, int]:
+    missed = [r for r in rows if r.get("overall_status") == "COMPLETED"
+              and (verdicts.get(r["nct_id"]) or {}).get("endpoint_verdict") == "MISSED"]
+    return len(missed), len({r["_sponsor_group"] for r in missed})
 
 
 def main() -> int:
@@ -90,12 +104,18 @@ def main() -> int:
     # happened to clear the publication threshold — otherwise the correction would be applied
     # to a set already filtered for being extreme, which is the selection effect it exists to
     # measure. Yekutieli because a class and that class combined with a partner share trials.
+    verdicts = load_verdicts()
     candidates: list[tuple[str, list[str], dict]] = []
+    misses: dict[str, tuple[int, int]] = {}
     for name in classes_of(args.area):
-        candidates.append((name, ["--class", name, *window], summarize(select(base, klass=name))))
+        seg = select(base, klass=name)
+        candidates.append((name, ["--class", name, *window], summarize(seg)))
+        misses[name] = missed_endpoints(seg, verdicts)
         if partner and name != partner:
-            candidates.append((f"{name} + {partner}", ["--class", name, "--with-class", partner, *window],
-                               summarize(select(base, klass=name, with_class=partner))))
+            label = f"{name} + {partner}"
+            seg = select(base, klass=name, with_class=partner)
+            candidates.append((label, ["--class", name, "--with-class", partner, *window], summarize(seg)))
+            misses[label] = missed_endpoints(seg, verdicts)
     ps = [binom_sf(c[2]["biological_stops"], c[2]["closed"], baseline_rate) if c[2]["closed"] else 1.0
           for c in candidates]
     qs = benjamini_yekutieli(ps)
@@ -103,8 +123,16 @@ def main() -> int:
 
     jobs: list[tuple[str, list[str]]] = []
     for (label, job_args, stats), q in zip(candidates, qs):
-        if worth_a_brief(stats):
+        by_endpoints = misses[label][0] >= MIN_MISSED and misses[label][1] >= MIN_MISSED_SPONSORS
+        # Where both qualify, the brief leads with whichever way this class mostly fails: TIGIT
+        # has three stops and six completed trials that missed, and its story is the six.
+        if worth_a_brief(stats) and not (by_endpoints and misses[label][0] > stats["biological_stops"]):
             jobs.append((label, [*job_args, "--q-value", f"{q:.6g}", "--family-size", str(family_size)]))
+        elif by_endpoints:
+            # Not scored in the stop-rate family's terms as a finding — it is not a rate claim —
+            # but the q is still printed, so nobody reads the small stop rate as unusual.
+            jobs.append((label, [*job_args, "--lead", "endpoints",
+                                 "--q-value", f"{q:.6g}", "--family-size", str(family_size)]))
 
     # One process, one universe load: building 40+ briefs as subprocesses re-read the
     # whole universe each time and exhausted memory when run in parallel.

@@ -32,13 +32,37 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 export default function BriefPage({ brief }: Props) {
 
   const area = brief.area.toLowerCase();
-  const areaLabel = brief.area === "Immunology & Autoimmune" ? "immunology and autoimmune disease" : area;
+  const AREA_LABEL: Record<string, string> = {
+    "Immunology & Autoimmune": "immunology and autoimmune disease",
+    "Psychiatry & Mental Health": "psychiatry",
+    "Gastroenterology & Hepatology": "gastroenterology and hepatology",
+    "Endocrine & Metabolic": "endocrine and metabolic disease",
+  };
+  const areaLabel = AREA_LABEL[brief.area] ?? area;
   const phases = brief.phases.join("/");
-  const title = `${brief.segment} trial stops in ${areaLabel}`;
-  const description =
-    `${brief.biological_stops} of ${brief.closed} closed Phase ${phases} ${areaLabel} trials of ${brief.segment} were ` +
-    `terminated for an efficacy, safety or benefit–risk reason, against ${pct(brief.baseline_rate)} across ${area}. ` +
-    `Trials, sponsors and registry stop reasons included.`;
+  // Some classes fail by running to the end and missing, not by stopping. Their brief leads with
+  // the completed trials that missed; the stop rate is still shown, second.
+  const endpointLed = (brief as any).lead === "endpoints";
+  const epLead = (brief as any).endpoints || {};
+  const endpointTrials = ((brief as any).endpoint_trials || []) as {
+    nct_id: string;
+    phase: string;
+    sponsor_group: string;
+    drugs: string;
+    started: string;
+    evidence: string;
+    results_url: string;
+  }[];
+  const title = endpointLed
+    ? `${brief.segment}: completed trials that missed their endpoint in ${areaLabel}`
+    : `${brief.segment} trial stops in ${areaLabel}`;
+  const description = endpointLed
+    ? `${epLead.missed} of ${epLead.readable} completed Phase ${phases} ${areaLabel} trials of ${brief.segment} with a ` +
+      `readable result missed their primary endpoint, across ${epLead.missed_sponsors} sponsors. Trials, sponsors and ` +
+      `the posted results included.`
+    : `${brief.biological_stops} of ${brief.closed} closed Phase ${phases} ${areaLabel} trials of ${brief.segment} were ` +
+      `terminated for an efficacy, safety or benefit–risk reason, against ${pct(brief.baseline_rate)} across ${area}. ` +
+      `Trials, sponsors and registry stop reasons included.`;
   const hasReference = Math.abs(brief.reference_rate - brief.baseline_rate) > 1e-9;
   const maxRate = Math.max(brief.rate, brief.reference_rate, brief.baseline_rate) || 1;
   const width = (rate: number) => `${(rate / maxRate) * 100}%`;
@@ -114,10 +138,23 @@ export default function BriefPage({ brief }: Props) {
             <span className="muted">{brief.area}</span>
           </nav>
 
-          <h1>
-            {brief.segment} trial stops in {areaLabel}
-          </h1>
-          {sig ? <p className="lead strongLead">{sig.sentence}</p> : null}
+          <h1>{title}</h1>
+          {endpointLed ? (
+            <>
+              <p className="lead strongLead">
+                {epLead.missed} of {epLead.readable} completed trials with a readable primary result missed it — across{" "}
+                {epLead.missed_sponsors} sponsors and {epLead.missed_molecules} molecules. {epLead.met} met it.
+              </p>
+              <p className="lead">
+                This class fails at the end rather than being stopped: only {brief.biological_stops} of {n(brief.closed)}{" "}
+                closed trials were terminated for efficacy or safety ({pct(brief.rate)}), too few for a stop rate to say
+                much. So it is read through the sponsors&rsquo; own posted results, each held to the threshold the sponsor
+                wrote down. Most completed trials post nothing readable, so the count is a floor, not a rate.
+              </p>
+            </>
+          ) : null}
+          {!endpointLed && sig ? <p className="lead strongLead">{sig.sentence}</p> : null}
+          {endpointLed ? null : (
           <p className="lead">
             {attr && attr.stops_from_programme_cascade ? (
               <>
@@ -131,8 +168,18 @@ export default function BriefPage({ brief }: Props) {
             {ratio >= 1.5 ? `, ${ratio.toFixed(1)}× that rate` : ""}. A rate counts registry records, and records are not
             experiments: read it together with the molecule count above.
           </p>
+          )}
 
           <div className="stats">
+            {endpointLed ? (
+              <div className="stat">
+                <b>
+                  {epLead.missed} of {epLead.readable}
+                </b>
+                <span>completed trials with a readable primary result missed it</span>
+              </div>
+            ) : null}
+            {endpointLed ? null : (
             <div className="stat">
               <b>{sig ? sig.molecules : "—"}</b>
               <span>
@@ -140,6 +187,7 @@ export default function BriefPage({ brief }: Props) {
                 {sig && sig.shared_modality ? `, all ${pluralModality(sig.shared_modality)}` : ""}
               </span>
             </div>
+            )}
             <div className="stat">
               <b>{pct(brief.rate)}</b>
               <span>
@@ -259,7 +307,7 @@ export default function BriefPage({ brief }: Props) {
             </p>
           </section>
 
-          {sig && sig.assets && sig.assets.length ? (
+          {!endpointLed && sig && sig.assets && sig.assets.length ? (
             <section className="section">
               <h2>The molecules behind the number</h2>
               <p className="sectionSub">
@@ -421,6 +469,53 @@ export default function BriefPage({ brief }: Props) {
             </section>
           ) : null}
 
+          {endpointLed && endpointTrials.length ? (
+            <section className="section">
+              <h2>The completed trials that missed</h2>
+              <p className="sectionSub">
+                Each ran to the end. The right-hand column is what the verdict was read from: the sponsor&rsquo;s own
+                sentence, or the posted comparison with the threshold it was held to.
+              </p>
+              <div className="tableWrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Trial</th>
+                      <th>Ph</th>
+                      <th>Sponsor</th>
+                      <th>Experimental drugs</th>
+                      <th>Started</th>
+                      <th>What the posted result says</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {endpointTrials.map((t) => (
+                      <tr key={t.nct_id}>
+                        <td className="mono">
+                          <a className="link" href={t.results_url} target="_blank" rel="noopener noreferrer">
+                            {t.nct_id}
+                          </a>
+                        </td>
+                        <td>{t.phase}</td>
+                        <td>{t.sponsor_group}</td>
+                        <td>{t.drugs}</td>
+                        <td className="num">{t.started}</td>
+                        <td className="reason">{t.evidence}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {epLead.missed > endpointTrials.length ? (
+                <p className="fine">
+                  Showing {endpointTrials.length} of {epLead.missed}. The evidence package lists every one, with the numbers
+                  or the sentence each verdict was read from.
+                </p>
+              ) : null}
+            </section>
+          ) : null}
+
+          {brief.trials_preview.length ? (
           <section className="section">
             <h2>The stopped trials</h2>
             <p className="sectionSub">
@@ -468,6 +563,7 @@ export default function BriefPage({ brief }: Props) {
               </p>
             ) : null}
           </section>
+          ) : null}
 
           <section className="section" id="pdf">
             <div className="pdfBox">

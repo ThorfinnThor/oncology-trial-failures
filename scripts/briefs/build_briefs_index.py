@@ -124,6 +124,10 @@ def main() -> int:
             # Completed trials that missed their primary endpoint: a second number, never part of
             # the rate above. None when the verdicts were not available to this build.
             "endpoints": f.get("endpoints"),
+            # What the brief leads with: the stop rate, or — for a class whose trials run to the end
+            # and miss — the completed trials that missed, listed here for the page to show.
+            "lead": f.get("lead") or "rate",
+            "endpoint_trials": (f.get("endpoint_trials") or [])[:6],
             # Records are not experiments: lead with molecules.
             "failure_signature": f.get("failure_signature"),
             "stop_attribution": f.get("stop_attribution"),
