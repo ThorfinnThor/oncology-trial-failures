@@ -32,6 +32,12 @@ def main() -> int:
     if not verdicts:
         print("no endpoint outcomes read yet; leaving", OUT.name, "as it is")
         return 0
+    stale = sum(1 for row in verdicts.values() if row.get("reader_version") != READER_VERSION)
+    if stale:
+        # A re-read that ran out of time leaves the previous reader's file in place. Publishing from
+        # it would replace good evidence with thinner evidence; the next complete run publishes.
+        print(f"{stale} rows are from an older reader; leaving {OUT.name} as it is until the re-read completes")
+        return 0
     stopped = {str(r.get("nct_id") or "").strip().upper() for r in json.loads(SOURCE.read_text())}
     trials = {}
     for nct in sorted(stopped):

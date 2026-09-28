@@ -582,7 +582,9 @@ def fetch_slice(start: str, end: str, max_pages: int = 200):
            "AND AREA[ResultsFirstPostDate]RANGE[MIN,MAX]")
     token, pages = None, 0
     while pages < max_pages:
-        params = {"filter.advanced": adv, "fields": FIELDS, "pageSize": 100, "format": "json"}
+        # 1,000 a page: a full re-read after a reader change is ~27 pages a year slice instead of
+        # ~270, which is what keeps it inside one weekly run's time budget.
+        params = {"filter.advanced": adv, "fields": FIELDS, "pageSize": 1000, "format": "json"}
         if token:
             params["pageToken"] = token
         body = get_json("ctgov", API, params, cache=False, timeout=120, retries=5) or {}
