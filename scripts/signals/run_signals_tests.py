@@ -433,6 +433,26 @@ check("a registry title cannot smuggle markup",
       "<script>" not in _nl.render({"added": {"A": {"nct_id": "A", "brief_title": "<script>x</script>"}},
                                     "changed": {}, "releases": ["v"]}, {}, "u")[1], True)
 
+check("the plain-text part carries the trials and the way out",
+      all(x in _nl.render_text(_p, {}, "https://example.test/stop?k=KEY") for x in ("NCT4", "stop?k=KEY")), True)
+check("every mail offers one-click unsubscribe to the mail client",
+      _nl.unsubscribe_headers("KEY"), {"List-Unsubscribe": "<https://clinicaltrialfailures.com/api/newsletter?stop=KEY>",
+                                      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click"})
+check("a changed field reads as words, not a column name",
+      _nl.move_text("overall_status", {"from": "ACTIVE_NOT_RECRUITING", "to": "TERMINATED"}),
+      ("Status", "Active not recruiting → Terminated"))
+check("a registry month is a month", _nl.when("2026-03"), "Mar 2026")
+# Gmail cuts a mail off at 102 KB and hides the rest, the unsubscribe link with it.
+_big = {"added": {f"N{i}": {"nct_id": f"N{i}", "brief_title": "T" * 150, "why_stopped": "W" * 240,
+                            "failure_primary_reason": "SAFETY", "phases": ["PHASE2"]} for i in range(200)},
+        "changed": {f"C{i}": {"nct_id": f"C{i}", "brief_title": "T" * 150,
+                              "changes": {"why_stopped": {"from": "a" * 90, "to": "b" * 160}}} for i in range(200)},
+        "releases": ["2026-10-12"]}
+check("even a huge fortnight stays under Gmail's clipping limit",
+      len(_nl.render(_big, {}, "u")[1].encode()) < 100_000, True)
+check("a quiet fortnight shows no row of zeros",
+      "new stopped trials</div>" in _nl.render({"added": {}, "changed": {}, "releases": ["v"]}, {}, "u")[1], False)
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

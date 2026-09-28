@@ -66,6 +66,27 @@ nothing. The form must not become a way to find out whether somebody is on the l
 | `web/lib/server/mail.ts` | the one place the site sends a mail from |
 | `scripts/signals/newsletter.py` | accumulates, composes, sends, at the end of the weekly workflow |
 
+## What the mail looks like, and why
+
+One 600px table with inline styles (Outlook reads `bgcolor`, Gmail reads CSS, so both are set), no
+images (nothing blocked, nothing fetched on open), colour scheme pinned to light so Apple Mail does
+not invert the dark header. Dark header with the issue's headline numbers, then new stops as cards
+— reason chip, phase, drug, the sponsor's own stop reason quoted — then sponsor edits in words
+("Status: Active not recruiting → Terminated"), then one call to action. Titles link to the trial's
+page on the site; the registry record is one click further.
+
+Every mail also carries:
+
+- a **plain-text part** (`render_text`), for readers who see nothing else and for spam scoring;
+- **one-click unsubscribe headers** (`List-Unsubscribe` + `List-Unsubscribe-Post`, RFC 8058), which
+  Gmail and Yahoo expect from anybody sending a list. The mail client POSTs to
+  `/api/newsletter?stop=<key>`, which ends the subscription with no confirmation step;
+- at most 15 rows per section: Gmail clips a mail over 102 KB and hides the rest — the unsubscribe
+  link with it. A test keeps a 400-row fortnight under 100 KB.
+
+`product/newsletter/next.html` and `next.txt` are written on every run that does not send, so the
+next issue can be looked at before it goes.
+
 ## Running it without a sending account
 
 With no `BREVO_API_KEY` — or no subscribers — nothing is sent and the mail that would have gone

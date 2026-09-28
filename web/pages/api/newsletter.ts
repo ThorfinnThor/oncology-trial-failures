@@ -65,29 +65,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const confirming = clean(req.query.confirm, 120);
     if (confirming) return confirm(store, confirming, res);
 
-    const key = clean(req.query.stop, 120);
-    if (!key) return res.status(400).json({ ok: false, error: "Nothing to stop." });
-    try {
-      const raw = await store.get(`news:${key}`);
-      if (!raw) return res.status(200).json({ ok: true, message: "This address is no longer subscribed." });
-      if (store.delete) await store.delete(`news:${key}`);
-      else await store.put(`news:${key}`, JSON.stringify({ stopped_at: new Date().toISOString() }));
-      // The index goes too. Leaving it behind would point at a subscription that no longer
-      // exists, and the same person could never sign up again.
-      const email = (JSON.parse(raw) as { email?: string }).email;
-      if (email && store.delete) await store.delete(await addressKey(email));
-    } catch (error) {
-      console.error(JSON.stringify({ event: "newsletter_stop_failed", message: String(error) }));
-      return res.status(503).json({ ok: false, error: "Could not stop it. Please reply to the mail." });
-    }
-    console.log(JSON.stringify({ event: "newsletter_stopped", key }));
-    return res.status(200).json({ ok: true, message: "You have been unsubscribed and will not receive further emails." });
+    return stop(store, clean(req.query.stop, 120), res);
   }
 
   if (req.method !== "POST") {
     res.setHeader("Allow", "GET, POST");
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
+
+  // One-click unsubscribe from the mail client: POST to the List-Unsubscribe address, body
+  // "List-Unsubscribe=One-Click". It carries the key in the query, and nothing else is needed.
+  const oneClick = clean(req.query.stop, 120);
+  if (oneClick) return stop(store, oneClick, res);
 
   const body = typeof req.body === "string" ? safeParse(req.body) : req.body || {};
   if (clean(body.website)) return res.status(200).json({ ok: true }); // honeypot
@@ -189,6 +178,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     ok: true,
     message: "Please check your inbox to confirm your subscription.",
   });
+}
+
+/** Ends a subscription. Reached two ways: the unsubscribe page (GET, after a button click), and
+ *  a mail client's own "Unsubscribe" button, which POSTs to the List-Unsubscribe address with no
+ *  confirmation step (RFC 8058). Both land here, so the two cannot drift apart. */
+export async function stop(store: KvBinding, key: string, res: NextApiResponse) {
+  if (!key) return res.status(400).json({ ok: false, error: "Nothing to stop." });
+  try {
+    const raw = await store.get(`news:${key}`);
+    if (!raw) return res.status(200).json({ ok: true, message: "This address is no longer subscribed." });
+    if (store.delete) await store.delete(`news:${key}`);
+    else await store.put(`news:${key}`, JSON.stringify({ stopped_at: new Date().toISOString() }));
+    // The index goes too. Leaving it behind would point at a subscription that no longer
+    // exists, and the same person could never sign up again.
+    const email = (JSON.parse(raw) as { email?: string }).email;
+    if (email && store.delete) await store.delete(await addressKey(email));
+  } catch (error) {
+    console.error(JSON.stringify({ event: "newsletter_stop_failed", message: String(error) }));
+    return res.status(503).json({ ok: false, error: "Could not stop it. Please reply to the mail." });
+  }
+  console.log(JSON.stringify({ event: "newsletter_stopped", key }));
+  return res.status(200).json({ ok: true, message: "You have been unsubscribed and will not receive further emails." });
 }
 
 /** Turns a pending signup into a subscription. Idempotent: the same link twice is not an error.

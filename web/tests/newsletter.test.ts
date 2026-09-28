@@ -7,7 +7,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { confirm, notifyOwner } from "../pages/api/newsletter";
+import { confirm, notifyOwner, stop } from "../pages/api/newsletter";
 
 type Json = { status: number; body: any };
 
@@ -130,4 +130,19 @@ test("a confirmation tells the owner who joined, once, at the address the Worker
     if (saved.key === undefined) delete process.env.BREVO_API_KEY; else process.env.BREVO_API_KEY = saved.key;
     if (saved.to === undefined) delete process.env.NEWSLETTER_NOTIFY_TO; else process.env.NEWSLETTER_NOTIFY_TO = saved.to;
   }
+});
+
+test("the mail client's one-click unsubscribe ends the subscription and frees the address", async () => {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("gone@example.com"));
+  const index = `sub:${[...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, "0")).join("")}`;
+  const store = fakeStore({ "news:k1": JSON.stringify({ email: "gone@example.com" }), [index]: "k1" });
+  const first = fakeRes();
+  await stop(store as any, "k1", first.res);
+  assert.equal(first.out.status, 200);
+  assert.ok(!store.data.has("news:k1"));
+  assert.ok(!store.data.has(index), "the address must be able to sign up again");
+  // A second click, or the client retrying, is not an error.
+  const second = fakeRes();
+  await stop(store as any, "k1", second.res);
+  assert.equal(second.out.status, 200);
 });
