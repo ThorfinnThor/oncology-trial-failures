@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_trials": 985,
+  "source_trials": 988,
   "groups": [
     {
       "key": "assets",
@@ -15,11 +15,11 @@
           "trials": 22
         },
         {
-          "term": "docetaxel anhydrous",
-          "trials": 17
+          "term": "pembrolizumab",
+          "trials": 20
         },
         {
-          "term": "pembrolizumab",
+          "term": "docetaxel anhydrous",
           "trials": 17
         },
         {
@@ -74,7 +74,7 @@
         },
         {
           "term": "PDCD1",
-          "trials": 44
+          "trials": 47
         },
         {
           "term": "CD274",
@@ -139,15 +139,15 @@
           "trials": 36
         },
         {
+          "term": "Programmed cell death protein 1 inhibitor",
+          "trials": 35
+        },
+        {
           "term": "RNA inhibitor",
           "trials": 33
         },
         {
           "term": "Thymidylate synthase inhibitor",
-          "trials": 32
-        },
-        {
-          "term": "Programmed cell death protein 1 inhibitor",
           "trials": 32
         },
         {
@@ -245,8 +245,8 @@
           "trials": 12
         },
         {
-          "term": "Takeda",
-          "trials": 9
+          "term": "Merck & Co.",
+          "trials": 11
         }
       ]
     }

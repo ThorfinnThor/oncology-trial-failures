@@ -386,6 +386,134 @@
      "rate_if_all_unresolved_were_biological": 0.040584415584415584
     }
    }
+  },
+  {
+   "area": "Psychiatry & Mental Health",
+   "terminations": 166,
+   "unreadable": 31,
+   "by_sponsor_class": [
+    {
+     "group": "INDUSTRY",
+     "terminations": 96,
+     "unreadable": 23,
+     "unreadable_share": 0.23958333333333334
+    },
+    {
+     "group": "OTHER",
+     "terminations": 63,
+     "unreadable": 7,
+     "unreadable_share": 0.1111111111111111
+    }
+   ],
+   "by_start_era": [
+    {
+     "group": "2015–2019",
+     "terminations": 94,
+     "unreadable": 15,
+     "unreadable_share": 0.1595744680851064
+    },
+    {
+     "group": "2020–2024",
+     "terminations": 72,
+     "unreadable": 16,
+     "unreadable_share": 0.2222222222222222
+    }
+   ],
+   "by_phase": [
+    {
+     "group": "Phase 2",
+     "terminations": 89,
+     "unreadable": 13,
+     "unreadable_share": 0.14606741573033707
+    },
+    {
+     "group": "Phase 3",
+     "terminations": 77,
+     "unreadable": 18,
+     "unreadable_share": 0.23376623376623376
+    }
+   ],
+   "by_sponsor_group": [],
+   "consequence": {
+    "industry": {
+     "closed": 503,
+     "biological_stops": 24,
+     "rate": 0.04771371769383698,
+     "unresolved_terminations": 23,
+     "rate_if_all_unresolved_were_biological": 0.09343936381709742
+    },
+    "non_industry": {
+     "closed": 518,
+     "biological_stops": 6,
+     "rate": 0.011583011583011582,
+     "unresolved_terminations": 8,
+     "rate_if_all_unresolved_were_biological": 0.02702702702702703
+    }
+   }
+  },
+  {
+   "area": "Respiratory",
+   "terminations": 415,
+   "unreadable": 98,
+   "by_sponsor_class": [
+    {
+     "group": "INDUSTRY",
+     "terminations": 241,
+     "unreadable": 72,
+     "unreadable_share": 0.2987551867219917
+    },
+    {
+     "group": "OTHER",
+     "terminations": 161,
+     "unreadable": 24,
+     "unreadable_share": 0.14906832298136646
+    }
+   ],
+   "by_start_era": [
+    {
+     "group": "2020–2024",
+     "terminations": 233,
+     "unreadable": 47,
+     "unreadable_share": 0.2017167381974249
+    },
+    {
+     "group": "2015–2019",
+     "terminations": 182,
+     "unreadable": 51,
+     "unreadable_share": 0.2802197802197802
+    }
+   ],
+   "by_phase": [
+    {
+     "group": "Phase 2",
+     "terminations": 250,
+     "unreadable": 58,
+     "unreadable_share": 0.232
+    },
+    {
+     "group": "Phase 3",
+     "terminations": 165,
+     "unreadable": 40,
+     "unreadable_share": 0.24242424242424243
+    }
+   ],
+   "by_sponsor_group": [],
+   "consequence": {
+    "industry": {
+     "closed": 1162,
+     "biological_stops": 57,
+     "rate": 0.04905335628227195,
+     "unresolved_terminations": 72,
+     "rate_if_all_unresolved_were_biological": 0.11101549053356283
+    },
+    "non_industry": {
+     "closed": 803,
+     "biological_stops": 26,
+     "rate": 0.0323785803237858,
+     "unresolved_terminations": 26,
+     "rate_if_all_unresolved_were_biological": 0.0647571606475716
+    }
+   }
   }
  ]
 }
