@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "classifier_version": "2.7.0",
+  "classifier_version": "2.7.1",
   "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
   "entry_count": 2503,
   "manual_entry_count": 130,
@@ -4083,10 +4083,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02663518"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -14467,10 +14465,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04747470"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44260,10 +44256,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01324635"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44280,10 +44274,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01163942"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44301,10 +44293,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01428219"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44321,10 +44311,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00748579"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44342,10 +44330,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00300573"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44362,10 +44348,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02372240"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44383,10 +44367,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00388388"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44401,10 +44383,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01636609"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44421,10 +44401,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03330119"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44439,10 +44417,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00913913"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44457,10 +44433,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00546611"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44475,109 +44449,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 100,
-      "nct_ids": [
-        "NCT06995144",
-        "NCT07614828",
-        "NCT06842589",
-        "NCT04023825",
-        "NCT05799612",
-        "NCT06866951",
-        "NCT07196306",
-        "NCT00545194",
-        "NCT02470650",
-        "NCT05634525",
-        "NCT03021395",
-        "NCT04797949",
-        "NCT05937152",
-        "NCT06408714",
-        "NCT05882305",
-        "NCT01063010",
-        "NCT05972122",
-        "NCT05180318",
-        "NCT03338764",
-        "NCT05518422",
-        "NCT03671720",
-        "NCT04220008",
-        "NCT02416128",
-        "NCT05646602",
-        "NCT02824354",
-        "NCT05431582",
-        "NCT05512182",
-        "NCT05411575",
-        "NCT04954196",
-        "NCT01769027",
-        "NCT05730673",
-        "NCT05505123",
-        "NCT04355676",
-        "NCT04178642",
-        "NCT05633758",
-        "NCT00667472",
-        "NCT04450654",
-        "NCT03513445",
-        "NCT04711226",
-        "NCT04189640",
-        "NCT05010096",
-        "NCT05022394",
-        "NCT04920331",
-        "NCT03251911",
-        "NCT03677115",
-        "NCT02965911",
-        "NCT04482842",
-        "NCT01915472",
-        "NCT04330144",
-        "NCT03972683",
-        "NCT04433078",
-        "NCT02281799",
-        "NCT04280588",
-        "NCT03509298",
-        "NCT04388189",
-        "NCT03554395",
-        "NCT03484962",
-        "NCT03524261",
-        "NCT04388202",
-        "NCT03524274",
-        "NCT03501056",
-        "NCT04532554",
-        "NCT04541719",
-        "NCT01826864",
-        "NCT03506802",
-        "NCT03729310",
-        "NCT03342300",
-        "NCT02463812",
-        "NCT03302221",
-        "NCT01923909",
-        "NCT01733654",
-        "NCT02329379",
-        "NCT03919383",
-        "NCT03532204",
-        "NCT03803254",
-        "NCT03780634",
-        "NCT03791918",
-        "NCT03782831",
-        "NCT03746249",
-        "NCT02047552",
-        "NCT02611908",
-        "NCT01198379",
-        "NCT03021590",
-        "NCT02724150",
-        "NCT00003512",
-        "NCT02520505",
-        "NCT00702793",
-        "NCT02726867",
-        "NCT01833767",
-        "NCT02540512",
-        "NCT02951117",
-        "NCT01037335",
-        "NCT00278590",
-        "NCT01653522",
-        "NCT02126527",
-        "NCT02042027",
-        "NCT02222623",
-        "NCT02218359",
-        "NCT01948232",
-        "NCT01775605"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44592,18 +44465,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 9,
-      "nct_ids": [
-        "NCT05495815",
-        "NCT04521946",
-        "NCT06460194",
-        "NCT05375825",
-        "NCT03644589",
-        "NCT01942187",
-        "NCT00003534",
-        "NCT02031211",
-        "NCT01795430"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44618,10 +44481,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00985998"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44636,14 +44497,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 5,
-      "nct_ids": [
-        "NCT04898348",
-        "NCT04067102",
-        "NCT02395952",
-        "NCT01810237",
-        "NCT00981591"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44658,10 +44513,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02215876"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44676,19 +44529,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 10,
-      "nct_ids": [
-        "NCT05312645",
-        "NCT00792662",
-        "NCT03925675",
-        "NCT01510561",
-        "NCT01101581",
-        "NCT03090919",
-        "NCT04443868",
-        "NCT00346502",
-        "NCT01240304",
-        "NCT00732108"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44703,13 +44545,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 4,
-      "nct_ids": [
-        "NCT04054752",
-        "NCT03779295",
-        "NCT02250794",
-        "NCT01352611"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44724,12 +44561,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 3,
-      "nct_ids": [
-        "NCT02086240",
-        "NCT01191177",
-        "NCT01577199"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44744,10 +44577,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00396487"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44762,10 +44593,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01675141"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44784,10 +44613,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00218036"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44802,10 +44629,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04019769"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44823,10 +44648,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00337259"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44843,10 +44666,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00958412"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44861,10 +44682,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00346151"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44881,10 +44700,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02289482"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44901,10 +44718,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00978146"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44919,10 +44734,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00372905"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44939,10 +44752,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03333746"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44959,10 +44770,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03349346"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44979,10 +44788,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02382523"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45001,10 +44808,8 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00251589"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45019,10 +44824,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03471117"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45037,10 +44840,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04417257"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45055,10 +44856,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03060473"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45073,10 +44872,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01135199"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45091,10 +44888,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03237182"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45109,10 +44904,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05668936"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45127,10 +44920,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00270257"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45145,10 +44936,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00240227"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45163,10 +44952,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02289989"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45181,10 +44968,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00833053"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45199,10 +44984,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02354014"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45217,10 +45000,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT06441682"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45235,10 +45016,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT07500987"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45253,10 +45032,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05267535"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45271,10 +45048,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT06250036"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45289,11 +45064,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 2,
-      "nct_ids": [
-        "NCT06916702",
-        "NCT07656792"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45308,10 +45080,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT07235150"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45329,10 +45099,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05900427"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45347,10 +45115,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT06158100"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45368,10 +45134,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT06267001"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45386,10 +45150,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03895437"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45404,10 +45166,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05639543"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45422,10 +45182,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05887882"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45440,10 +45198,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05534165"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45458,10 +45214,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT06488716"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45479,10 +45233,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03769181"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45497,10 +45249,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04478266"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45518,10 +45268,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03456817"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45536,10 +45284,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04217447"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45554,10 +45300,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05256134"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45572,10 +45316,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04586270"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45590,10 +45332,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT06424236"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45608,10 +45348,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03478956"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45629,10 +45367,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04282668"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45647,10 +45383,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT06610279"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45665,10 +45399,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04390152"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45683,10 +45415,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05228821"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45701,10 +45431,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05609656"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45719,12 +45447,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 3,
-      "nct_ids": [
-        "NCT04374253",
-        "NCT04592341",
-        "NCT03444870"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45739,10 +45463,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04984759"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45757,10 +45479,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04645966"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45775,11 +45495,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 2,
-      "nct_ids": [
-        "NCT04339413",
-        "NCT03443973"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45794,10 +45511,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04634825"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45812,10 +45527,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05435053"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45830,10 +45543,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04556383"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45848,10 +45559,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03254927"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45866,10 +45575,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05725343"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45884,11 +45591,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 2,
-      "nct_ids": [
-        "NCT03758443",
-        "NCT03920254"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45903,10 +45607,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05475821"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45921,10 +45623,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01099761"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45942,10 +45642,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03723915"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45963,10 +45661,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04341441"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -45984,10 +45680,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00314353"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46002,10 +45696,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03720574"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46023,10 +45715,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT04335552"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46041,10 +45731,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02322021"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46059,10 +45747,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03669549"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46077,10 +45763,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03696212"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46098,10 +45782,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01770340"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46119,10 +45801,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02943473"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46137,10 +45817,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01916187"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46155,10 +45833,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02899156"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46176,10 +45852,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01141075"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46194,10 +45868,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03106753"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46215,10 +45887,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02066311"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46233,10 +45903,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03119467"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46254,10 +45922,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02689219"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46272,10 +45938,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00975806"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46293,10 +45957,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02444793"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46311,10 +45973,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01633060"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46332,10 +45992,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01086332"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46350,10 +46008,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02992860"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46368,10 +46024,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT03399435"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46386,10 +46040,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01121536"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46407,10 +46059,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01732640"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46428,10 +46078,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00824538"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46449,10 +46097,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02200848"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46471,10 +46117,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01495988"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46492,10 +46136,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00216047"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46513,12 +46155,8 @@
       ],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 3,
-      "nct_ids": [
-        "NCT01384162",
-        "NCT01999803",
-        "NCT02269436"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46533,10 +46171,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00356265"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46551,10 +46187,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01921829"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46569,10 +46203,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02720926"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46587,10 +46219,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02243787"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46605,10 +46235,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01175330"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46623,10 +46251,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00788606"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46641,10 +46267,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02336425"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46659,10 +46283,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00381810"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46677,11 +46299,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 2,
-      "nct_ids": [
-        "NCT02137343",
-        "NCT01697072"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46696,10 +46315,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02977689"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46714,10 +46331,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02016534"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46732,10 +46347,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT01134497"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46750,10 +46363,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02894515"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46768,10 +46379,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT00676559"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -46786,11 +46395,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 2,
-      "nct_ids": [
-        "NCT01668173",
-        "NCT02414555"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
