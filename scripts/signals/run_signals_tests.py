@@ -147,6 +147,32 @@ for _nct, _text, _want in _cases:
     _got = attribute({"nct_id": _nct, "why_stopped": _text})["attribution"]
     check(f"attribution: {_text[:46]}…", _got, _want)
 
+# A stop reason that names safety only to rule it out is not a safety stop. NCT03860844 read
+# "safety in this trial" off "…(stage 2 efficacy criteria not met); not due to safety concerns".
+_neg = attribute({"nct_id": "NCT03860844", "why_stopped": "Study was prematurely stopped due to sponsor decision "
+                  "(stage 2 efficacy criteria not met); not due to safety concerns."})
+check("a denied safety concern is not the evidence", "safety in this trial" in _neg["own_data_evidence"], False)
+check("the efficacy criterion is", _neg["own_data_evidence"], ["efficacy criteria not met in this trial"])
+check("'No safety concern' alone says nothing about this trial's data",
+      attribute({"nct_id": "NCT1", "why_stopped": "Sponsor decision (No safety concern)"})["attribution"], "unclear")
+check("a negation ends at 'but'",
+      attribute({"nct_id": "NCT1", "why_stopped": "Terminated not based on safety concerns, but due to insufficient efficacy."})["attribution"],
+      "own_data")
+check("an affirmed safety concern still counts",
+      attribute({"nct_id": "NCT1", "why_stopped": "Terminated due to safety concerns."})["own_data_evidence"],
+      ["safety in this trial"])
+check("other studies' results are somebody else's",
+      attribute({"nct_id": "NCT1", "why_stopped": "The study was terminated because 2 large Phase 3 studies showed no "
+                 "clinical benefit. This decision was not based on any new safety concerns."})["attribution"],
+      "programme_cascade")
+check("a study named as the subject is this one",
+      attribute({"nct_id": "NCT1", "why_stopped": "Study SPR001-203 did not meet its primary and secondary endpoints "
+                 "therefore the sponsor has decided to terminate the study"})["attribution"],
+      "own_data")
+check("'lack of efficacy' is this trial's own finding",
+      attribute({"nct_id": "NCT1", "why_stopped": "Trial was terminated by sponsor due to lack of efficacy."})["attribution"],
+      "own_data")
+
 # "futility" belongs to whoever ran the trial it happened in.
 check("an upstream study's futility is not this trial's",
       attribute({"nct_id": "NCT1", "why_stopped": "The parent study was stopped for futility."})["attribution"],

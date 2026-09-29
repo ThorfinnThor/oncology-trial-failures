@@ -235,6 +235,23 @@ asserts that the mail describes the whole database.
 
 ---
 
+## 15. "Not due to safety concerns" was read as a safety stop
+
+The stop attribution matched the phrase "safety concerns" wherever it appeared, including where
+the sponsor wrote it to rule safety out. NCT03860844 — "stopped due to sponsor decision (stage 2
+efficacy criteria not met); not due to safety concerns" — went into a paid report as "This
+trial's own data — safety in this trial". Across the database 443 stops carried that evidence
+from a sentence that denied it; "No safety concern", "not related to safety", "there were no
+safety concerns contributing to this decision". The same pattern had been hiding a gap: "lack of
+efficacy" was never matched at all, because the efficacy pattern did not allow the word "of".
+
+**What stops it.** Negated phrases ("not due to …", "no safety concerns", "unrelated to …") are cut
+out before any pattern is read, up to the next comma or "but". The before/after diff over all
+21,667 stop reasons was read by hand, not only the one that was reported. Tests pin the reported
+sentence and the negation boundary.
+
+---
+
 ## What I would tell myself at the start
 
 1. **Write the claim from the data, not the data from the claim.** Every number in the copy should

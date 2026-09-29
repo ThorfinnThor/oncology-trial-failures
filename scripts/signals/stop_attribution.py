@@ -45,7 +45,16 @@ CASCADE_PATTERNS = [
      "a treatment halt issued elsewhere"),
     # Handled separately in attribute(): a trial quoting its own NCT id points at itself.
     (r"\bNCT\d{8}\b", "names another registry record"),
-    (r"\bstrategic\s+(?:business\s+)?(?:decision|reasons?|review|prioriti[sz]ation)\b", "a portfolio decision"),
+    (r"\b(?:halt|discontinu|terminat|stop|end)\w*\s+(?:the\s+)?(?:further\s+)?(?:\S+\s+){0,2}?(?:clinical\s+)?"
+     r"development\s+(?:of\b|program|programme)", "the development programme ended"),
+    (r"\b(?:\d+|two|three|four|several|both)\s+(?:large\s+|other\s+)?(?:phase\s+(?:\d|i{1,3}|iv)\w*\s+)?"
+     r"(?:studies|trials)\s+(?:showed|show|have\s+shown|demonstrated|failed|did\s+not)\b", "cites results from other studies"),
+    # "due to study A8241021 showing …": a study named as the cause is not this one. A study named as
+    # the subject ("Study SPR001-203 did not meet its endpoints") usually is, so the cause word is required.
+    (r"\b(?:due\s+to|because(?:\s+of)?|after|following)\s+(?:the\s+)?(?:core\s+|parent\s+|pivotal\s+)?"
+     r"(?:stud(?:y|ies)|trials?)\s+(?:[A-Z]{1,6}\d{3,}[\w-]*|\d{3,}[\w-]*)\s+(?:showing|showed|shows|demonstrat\w+|indicat\w+|did\s+not|failed)\b",
+     "cites another study"),
+    (r"\bstrategic\s+(?:business\s+|portfolio\s+)?(?:decision|reasons?|review|prioriti[sz]ation)\b", "a portfolio decision"),
     # A named upstream trial. "As the feeder study was stopped for futility" describes somebody
     # else's futility, and without this the word "futility" would claim it for this trial.
     (r"\b(?:feeder|parent|preceding|lead[- ]?in|companion|source|pivotal|main)\s+(?:stud(?:y|ies)|trials?|protocols?)\b",
@@ -59,18 +68,54 @@ OWN_PATTERNS = [
     (r"\b(?:interim|planned)\s+analysis\b", "its own interim analysis"),
     (r"\b(?:I?DMC|DSMB|data\s+(?:and\s+safety\s+)?monitoring\s+(?:committee|board))\b", "its own monitoring committee"),
     (r"\bfutility\b", "futility in this trial"),
-    (r"\b(?:did\s+not|failed\s+to)\s+meet\s+(?:its\s+)?(?:primary\s+)?(?:endpoint|objective)\b", "missed its endpoint"),
+    (r"\b(?:did\s+not|failed\s+to|does\s+not)\s+meet\s+(?:[\w/-]+\s+){0,6}?(?:end\s?points?|objectives?|criteri(?:a|on))\b",
+     "missed its endpoint"),
+    (r"\bend\s?points?\s+(?:(?:was|were|had)\s+)?(?:not|never)\s+(?:been\s+)?(?:met|achieved|reached)\b", "missed its endpoint"),
+    (r"\b(?:very\s+)?low\s+probability\b", "this trial's probability of success"),
+    (r"\befficacy\s+(?:was\s+|were\s+)?not\s+(?:met|shown|demonstrated|established)\b", "efficacy observed in this trial"),
+    (r"\b(?:did\s+not|failed\s+to)\s+(?:improve|show)\b", "a result in this trial"),
     (r"\b(?:treatment[- ]related|serious\s+adverse)\b", "an event in this trial"),
     (r"\b(?:observed|seen|reported|occurred)\s+in\s+(?:this|the)\s+(?:stud|trial|patients?)", "an observation in this trial"),
     (r"\b(?:risk[:\s/-]*benefit|benefit[:\s/-]*risk)\b", "this trial's benefit-risk assessment"),
-    (r"\b(?:lack|insufficient|limited|no)\s+(?:evidence\s+of\s+)?(?:efficacy|activity|benefit|response)\b",
+    (r"\b(?:lack|insufficient|limited|no)\s+(?:of\s+)?(?:evidence\s+of\s+)?(?:clinical\s+|robust\s+|sufficient\s+)?"
+     r"(?:efficacy|activity|benefit|response)\b",
      "efficacy observed in this trial"),
     (r"\bprobability\s+of\s+success\b", "this trial's probability of success"),
     (r"\b(?:did\s+not|failed\s+to)\s+(?:achieve|reach|demonstrate)\b", "a result in this trial"),
     # Generic safety language counts as this trial's own only because any outward reference
     # would already have matched a cascade pattern, and cascade wins.
     (r"\bsafety\s+(?:concerns?|signals?|findings?|issues?|reasons?)\b", "safety in this trial"),
+    # "stage 2 efficacy criteria not met", "the futility boundary was crossed" in other words.
+    (r"\b(?:efficacy|response|activity|go)\s+(?:criteri(?:a|on)|thresholds?|boundar(?:y|ies)|endpoints?|rules?)\s+"
+     r"(?:(?:was|were|had)\s+)?(?:not|never)\s+(?:been\s+)?(?:met|reached|achieved|fulfilled)\b",
+     "efficacy criteria not met in this trial"),
 ]
+
+# What a stop reason says it was NOT. "Stopped due to sponsor decision (efficacy criteria not
+# met); not due to safety concerns" names safety only to rule it out, and matching the word would
+# attribute the stop to a safety finding the sponsor explicitly denies. Negated phrases are cut
+# out before either list is read.
+NEGATED_PATTERNS = [
+    # "not due to / not because of / not related to / not for / not based on ... <up to the next clause>".
+    # The span stops at a comma or at "but": "not based on safety concerns, but due to insufficient
+    # efficacy" rules out safety and still says efficacy.
+    r"\b(?:not|nor|never)\s+(?:(?:primarily|directly|in\s+any\s+way)\s+)?"
+    r"(?:due\s+to|because\s+of|related\s+to|linked\s+to|associated\s+with|for|as\s+a\s+result\s+of|"
+    r"based\s+on|driven\s+by|caused\s+by|in\s+response\s+to|the\s+result\s+of|a\s+result\s+of)\b(?:(?!\bbut\b)[^.;:(),])*",
+    r"\bunrelated\s+to\b(?:(?!\bbut\b)[^.;:(),])*",
+    r"\b(?:without|with\s+no)\s+(?:any\s+)?(?:new\s+)?(?:safety|efficacy)\s+(?:concerns?|signals?|issues?|findings?)\b",
+    r"\bno\s+(?:new\s+)?(?:unexpected\s+)?safety\s+(?:concerns?|signals?|issues?|findings?|reasons?)\b"
+    r"(?:\s+(?:were|was|have\s+been|has\s+been)\s+(?:identified|observed|seen|raised|reported))?",
+    r"\b(?:there\s+(?:were|was|are|is)\s+)?no\s+(?:new\s+)?(?:serious\s+adverse|treatment[- ]related)\b(?:(?!\bbut\b)[^.;:(),])*",
+]
+NEGATED_RE = [re.compile(p, re.I) for p in NEGATED_PATTERNS]
+
+
+def affirmed(text: str) -> str:
+    """The stop reason with everything it rules out removed."""
+    for rx in NEGATED_RE:
+        text = rx.sub(" ", text)
+    return text
 
 CASCADE_RE = [(re.compile(p, re.I), why) for p, why in CASCADE_PATTERNS]
 OWN_RE = [(re.compile(p, re.I), why) for p, why in OWN_PATTERNS]
@@ -127,7 +172,7 @@ def attribute(record: dict, sibling_ncts: list[str] | None = None) -> dict:
     text = " ".join((record.get("why_stopped") or "").split())
     # A trial that quotes its own registry id is pointing at itself, not elsewhere.
     own_nct = record.get("nct_id") or ""
-    scan = text.replace(own_nct, "") if own_nct else text
+    scan = affirmed(text.replace(own_nct, "") if own_nct else text)
     cascade_hits = [why for rx, why in CASCADE_RE if rx.search(scan)]
     own_hits = [why for rx, why in OWN_RE if rx.search(scan)]
     sibling_ncts = sibling_ncts or []
