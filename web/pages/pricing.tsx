@@ -63,8 +63,8 @@ const PRICING = [
     unit: "one molecule",
     for: "A molecule on the table now — diligence, an in-licensing decision, a trial you are designing.",
     includes: [
-      "Every cohort where a drug that failed shares your molecule's target",
-      "Each one in full: all trials, the cohort rules, the time-to-event curve",
+      "One report per molecule, with a chapter for every cohort where a drug that failed shares its target",
+      "Each chapter in full: all trials, the cohort rules, the time-to-event curve",
       "Your molecule placed against every molecule that failed — same target, same pathway, same modality",
       "Which stops were that trial's own result and which were a programme decision",
       "A link that keeps working, and keeps up to date, for a year",
@@ -546,7 +546,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <div className="faq">
                 <h3>What do I actually get for €99?</h3>
                 <p>
-                  Every cohort where a drug that failed acts on your molecule&rsquo;s target, each as a document: the
+                  One report on your molecule, with a chapter for every cohort where a drug that failed acts on its
+                  target. Each chapter gives the
                   trials, what the sponsor said stopped each one, whether that was the trial&rsquo;s own result or a
                   decision taken elsewhere, the time-to-event curve, and your molecule placed against each failed one.
                   One link, opened immediately, current for a year.{" "}

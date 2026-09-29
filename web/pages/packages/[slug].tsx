@@ -112,9 +112,9 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
               <div>
                 <h2>Get this report — {PACKAGE_PRICE}</h2>
                 <p className="lead">
-                  Reports are bought for a molecule or a target rather than one cohort at a time. You receive every
-                  cohort in which a drug that failed shares that target — this one included — each opening with your
-                  molecule compared against the molecules that failed there.
+                  One diligence report per molecule or target. It covers this cohort and, as further chapters, any
+                  other cohort in which a drug that failed shares the same target — each with your molecule compared
+                  against the molecules that failed there.
                 </p>
                 <ul className="list">
                   <li>One payment, delivered immediately, and a link that stays current for a year</li>

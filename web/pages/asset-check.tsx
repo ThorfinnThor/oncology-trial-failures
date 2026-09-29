@@ -390,24 +390,26 @@ export default function AssetCheckPage() {
                     <div className="buy">
                       <div>
                         <div className="buyTitle">
-                          Get the {withTarget.length} {withTarget.length === 1 ? "report" : "reports"} that share its
-                          target — {PACKAGE_PRICE}
+                          The diligence report for {resolved.asset.name} — {PACKAGE_PRICE}
                         </div>
                         <p className="buySub">
-                          Every cohort above where a molecule that failed acts on the same target, each in full: all
-                          trials, the cohort rules, the attribution, the time-to-event curve — and each one opening
-                          with {resolved.asset.name} already compared against the molecules that failed there. One
-                          payment, one link, current for a year.
+                          One report, with{" "}
+                          {withTarget.length === 1
+                            ? "the cohort above where a molecule that failed acts on the same target"
+                            : `a chapter for each of the ${withTarget.length} cohorts above where a molecule that failed acts on the same target`}
+                          : all trials, the cohort rules, the attribution, the time-to-event curve, and{" "}
+                          {resolved.asset.name} compared against every molecule that failed there. One payment, one
+                          link, current for a year.
                         </p>
                       </div>
                       <div className="buySide">
                         <BuyButton
                           asset={resolved.asset.name}
                           className="buyNow"
-                          label={`Buy ${withTarget.length === 1 ? "the report" : `all ${withTarget.length}`} — ${PACKAGE_PRICE}`}
+                          label={`Buy the report — ${PACKAGE_PRICE}`}
                         />
                         <p className="buyNote">
-                          Secure checkout by Stripe. The reports open straight after payment.{" "}
+                          Secure checkout by Stripe. The report opens straight after payment.{" "}
                           <Link className="link" href="/packages/sample">
                             View a sample report
                           </Link>

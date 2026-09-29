@@ -129,12 +129,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     message: pay
       ? (slugs.length === 1
         ? "One step left. After payment the report opens straight away and the link stays current for a year."
-        : `${slugs.length} reports, one payment. They open straight away afterwards and the link stays current for `
-          + "a year.")
+        : `One report with ${slugs.length} cohort chapters. It opens straight away after payment and the link `
+          + "stays current for a year.")
       : (slugs.length === 1
         ? "Your report is ready. The link works from any device and stays current for a year."
-        : `${slugs.length} reports are ready — every cohort where something that failed shares your target. The `
-          + "link works from any device and stays current for a year."),
+        : `Your report is ready — ${slugs.length} cohort chapters, one for every cohort where something that `
+          + "failed shares your target. The link works from any device and stays current for a year."),
   });
 }
 
