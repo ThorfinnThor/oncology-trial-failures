@@ -9,7 +9,7 @@ import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import test from "node:test";
 
-import { checkoutUrl, settlesOrder, verifySignature } from "../lib/server/payment";
+import { checkoutUrl, isSettled, settlesOrder, verifySignature } from "../lib/server/payment";
 import { grantCovers, isUnlocked } from "../lib/server/grants";
 
 const SECRET = "whsec_testsecret";
@@ -118,4 +118,12 @@ test("a delayed payment settles on async_payment_succeeded, not only on complete
   assert.equal(settlesOrder("checkout.session.async_payment_failed"), false);
   assert.equal(settlesOrder("checkout.session.expired"), false);
   assert.equal(settlesOrder(undefined), false);
+});
+
+test("a zero-total checkout (100% promotion code) settles; an unpaid one does not", () => {
+  assert.equal(isSettled("paid"), true);
+  assert.equal(isSettled("no_payment_required"), true);
+  assert.equal(isSettled("unpaid"), false);
+  assert.equal(isSettled(""), false);
+  assert.equal(isSettled(undefined), false);
 });

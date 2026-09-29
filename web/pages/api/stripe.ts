@@ -13,7 +13,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { settlesOrder, verifySignature, webhookSecret } from "@/lib/server/payment";
+import { isSettled, settlesOrder, verifySignature, webhookSecret } from "@/lib/server/payment";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -76,7 +76,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error(JSON.stringify({ event: "stripe_session_without_token", id: payload.id }));
     return res.status(200).json({ ok: true, ignored: "no client_reference_id" });
   }
-  if (paidStatus !== "paid") {
+  if (!isSettled(paidStatus)) {
     // A session can complete without being paid — a bank transfer awaiting settlement, say.
     console.log(JSON.stringify({ event: "stripe_session_not_paid", payment_status: paidStatus }));
     return res.status(200).json({ ok: true, ignored: paidStatus });

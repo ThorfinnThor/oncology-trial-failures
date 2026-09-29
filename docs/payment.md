@@ -101,7 +101,12 @@ goes back to being free. Secrets survive deploys. That is the whole reason.
 They take effect immediately, without a deploy. `payment.ts` reads the Cloudflare context env at
 request time.
 
-**4. Check it once.** Order a package for a molecule you know resolves, pay with Stripe's test
+**4. Check it once — without money moving.** Stripe → Product catalogue → Coupons → create a
+100 % coupon, add a promotion code (e.g. `CTFTEST`, max. 1 redemption), and switch on "Allow
+promotion codes" on the €99 Payment Link. A checkout brought to €0 completes with
+`payment_status: no_payment_required`, which settles the grant exactly like `paid`
+(`isSettled()` in `payment.ts`). The same mechanism serves complimentary reports. The older route:
+ Order a package for a molecule you know resolves, pay with Stripe's test
 card `4242 4242 4242 4242` in test mode, and confirm `/access` opens by itself. In the Stripe
 dashboard the webhook attempt should show 200.
 

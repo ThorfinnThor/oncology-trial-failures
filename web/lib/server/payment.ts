@@ -55,6 +55,18 @@ export function settlesOrder(type: unknown): boolean {
   return (SETTLING_EVENTS as readonly string[]).includes(String(type || ""));
 }
 
+/**
+ * Whether a completed session means the order is settled. `paid` is the normal case.
+ * `no_payment_required` is a checkout whose total a 100% promotion code brought to zero — only
+ * codes created in our own Stripe dashboard can do that, so it is a decision, not a leak; it is
+ * how a test purchase or a complimentary report goes through the real link without money moving.
+ * Anything else (`unpaid`: a bank transfer still on its way) waits for async_payment_succeeded.
+ */
+export function isSettled(paymentStatus: unknown): boolean {
+  const status = String(paymentStatus || "");
+  return status === "paid" || status === "no_payment_required";
+}
+
 export function webhookSecret(): string {
   return env().STRIPE_WEBHOOK_SECRET || "";
 }
