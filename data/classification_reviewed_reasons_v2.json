@@ -2,8 +2,8 @@
   "schema_version": 1,
   "classifier_version": "2.7.0",
   "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
-  "entry_count": 2408,
-  "manual_entry_count": 33,
+  "entry_count": 2503,
+  "manual_entry_count": 130,
   "review_rows_excluded": 346,
   "conflict_count": 9,
   "conflicts": [
@@ -4078,23 +4078,20 @@
     "15ae2b41d207eedb4f5b": {
       "normalized_text": "pfizer decided terminating study for administrative reasons on 22mar2022 (stopping enrollment as of 15apr2022). the decision wasn't due to safety concerns or requests from regulatory authorities.",
       "example_text": "Pfizer decided terminating study for administrative reasons on 22Mar2022 (stopping enrollment as of 15Apr2022). The decision wasn't due to safety concerns or requests from regulatory authorities.",
-      "outcome": "MIXED_CAUSES",
-      "primary_reason": "MULTIPLE",
-      "secondary_reasons": [
-        "SAFETY",
-        "OPERATIONAL_OTHER"
-      ],
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "OPERATIONAL_OTHER",
+      "secondary_reasons": [],
       "needs_review": false,
-      "v2_derivation": "V2_RULE_WITH_AUDIT_CONFIRMATION",
-      "legacy_label": "UNCLEAR",
-      "legacy_reason": "OTHER/UNKNOWN",
+      "v2_derivation": "MANUAL_V2_DECISION",
       "reviewed_record_count": 1,
       "nct_ids": [
         "NCT02663518"
       ],
       "provenance": {
-        "MISCLASSIFIED": 1
-      }
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Administrative reasons with safety denied; no biological cause.",
+      "reviewed_at": "2026-09-29"
     },
     "15b1d113397bc483b321": {
       "normalized_text": "study terminated 7/23/2019 due to limited participation and testing challenges.",
@@ -14465,20 +14462,20 @@
     "56bf3bed70ea760fdca0": {
       "normalized_text": "sponsor decision to prematurely discontinue the study, following an internal safety assessment of the molecule, gs-3583.",
       "example_text": "Sponsor decision to prematurely discontinue the study, following an internal safety assessment of the molecule, GS-3583.",
-      "outcome": "CAUSE_NOT_STATED",
-      "primary_reason": "DECISION_WITHOUT_STATED_CAUSE",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
       "secondary_reasons": [],
       "needs_review": false,
-      "v2_derivation": "V2_RULE_WITH_AUDIT_CONFIRMATION",
-      "legacy_label": "UNCLEAR",
-      "legacy_reason": "OTHER/UNKNOWN",
+      "v2_derivation": "MANUAL_V2_DECISION",
       "reviewed_record_count": 1,
       "nct_ids": [
         "NCT04747470"
       ],
       "provenance": {
-        "MISCLASSIFIED": 1
-      }
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Discontinued following an internal safety assessment of the molecule.",
+      "reviewed_at": "2026-09-29"
     },
     "56c7254fe3a256353d7c": {
       "normalized_text": "novartis decided to terminate the study based on a business consideration and not related with any safety concerns. randomized part was not initiated",
@@ -44263,8 +44260,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01324635"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44281,8 +44280,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01163942"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44300,8 +44301,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01428219"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44318,8 +44321,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00748579"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44337,8 +44342,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00300573"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44355,8 +44362,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02372240"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44374,8 +44383,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00388388"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44390,8 +44401,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01636609"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44408,8 +44421,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03330119"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44424,8 +44439,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00913913"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44440,8 +44457,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00546611"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44456,8 +44475,109 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 100,
+      "nct_ids": [
+        "NCT06995144",
+        "NCT07614828",
+        "NCT06842589",
+        "NCT04023825",
+        "NCT05799612",
+        "NCT06866951",
+        "NCT07196306",
+        "NCT00545194",
+        "NCT02470650",
+        "NCT05634525",
+        "NCT03021395",
+        "NCT04797949",
+        "NCT05937152",
+        "NCT06408714",
+        "NCT05882305",
+        "NCT01063010",
+        "NCT05972122",
+        "NCT05180318",
+        "NCT03338764",
+        "NCT05518422",
+        "NCT03671720",
+        "NCT04220008",
+        "NCT02416128",
+        "NCT05646602",
+        "NCT02824354",
+        "NCT05431582",
+        "NCT05512182",
+        "NCT05411575",
+        "NCT04954196",
+        "NCT01769027",
+        "NCT05730673",
+        "NCT05505123",
+        "NCT04355676",
+        "NCT04178642",
+        "NCT05633758",
+        "NCT00667472",
+        "NCT04450654",
+        "NCT03513445",
+        "NCT04711226",
+        "NCT04189640",
+        "NCT05010096",
+        "NCT05022394",
+        "NCT04920331",
+        "NCT03251911",
+        "NCT03677115",
+        "NCT02965911",
+        "NCT04482842",
+        "NCT01915472",
+        "NCT04330144",
+        "NCT03972683",
+        "NCT04433078",
+        "NCT02281799",
+        "NCT04280588",
+        "NCT03509298",
+        "NCT04388189",
+        "NCT03554395",
+        "NCT03484962",
+        "NCT03524261",
+        "NCT04388202",
+        "NCT03524274",
+        "NCT03501056",
+        "NCT04532554",
+        "NCT04541719",
+        "NCT01826864",
+        "NCT03506802",
+        "NCT03729310",
+        "NCT03342300",
+        "NCT02463812",
+        "NCT03302221",
+        "NCT01923909",
+        "NCT01733654",
+        "NCT02329379",
+        "NCT03919383",
+        "NCT03532204",
+        "NCT03803254",
+        "NCT03780634",
+        "NCT03791918",
+        "NCT03782831",
+        "NCT03746249",
+        "NCT02047552",
+        "NCT02611908",
+        "NCT01198379",
+        "NCT03021590",
+        "NCT02724150",
+        "NCT00003512",
+        "NCT02520505",
+        "NCT00702793",
+        "NCT02726867",
+        "NCT01833767",
+        "NCT02540512",
+        "NCT02951117",
+        "NCT01037335",
+        "NCT00278590",
+        "NCT01653522",
+        "NCT02126527",
+        "NCT02042027",
+        "NCT02222623",
+        "NCT02218359",
+        "NCT01948232",
+        "NCT01775605"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44472,8 +44592,18 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 9,
+      "nct_ids": [
+        "NCT05495815",
+        "NCT04521946",
+        "NCT06460194",
+        "NCT05375825",
+        "NCT03644589",
+        "NCT01942187",
+        "NCT00003534",
+        "NCT02031211",
+        "NCT01795430"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44488,8 +44618,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00985998"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44504,8 +44636,14 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 5,
+      "nct_ids": [
+        "NCT04898348",
+        "NCT04067102",
+        "NCT02395952",
+        "NCT01810237",
+        "NCT00981591"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44520,8 +44658,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02215876"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44536,8 +44676,19 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 10,
+      "nct_ids": [
+        "NCT05312645",
+        "NCT00792662",
+        "NCT03925675",
+        "NCT01510561",
+        "NCT01101581",
+        "NCT03090919",
+        "NCT04443868",
+        "NCT00346502",
+        "NCT01240304",
+        "NCT00732108"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44552,8 +44703,13 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 4,
+      "nct_ids": [
+        "NCT04054752",
+        "NCT03779295",
+        "NCT02250794",
+        "NCT01352611"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44568,8 +44724,12 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 3,
+      "nct_ids": [
+        "NCT02086240",
+        "NCT01191177",
+        "NCT01577199"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44584,8 +44744,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00396487"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44600,8 +44762,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01675141"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44620,8 +44784,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00218036"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44636,8 +44802,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04019769"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44655,8 +44823,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00337259"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44673,8 +44843,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00958412"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44689,8 +44861,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00346151"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44707,8 +44881,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02289482"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44725,8 +44901,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00978146"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44741,8 +44919,10 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00372905"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44759,8 +44939,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03333746"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44777,8 +44959,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03349346"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44795,8 +44979,10 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02382523"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -44815,13 +45001,1801 @@
       ],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 0,
-      "nct_ids": [],
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00251589"
+      ],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
       "reviewer_notes": "Open Targets full adjudication 498dc2cb33800d187511: The text explicitly combines slow accrual, lack of efficacy and tolerability concerns.",
       "reviewed_at": "2026-08-26"
+    },
+    "4b05dd8c4eca45575e57": {
+      "normalized_text": "ckd participants we recruited do not have elevated adma, which is the main premise for this intervention. we noticed this with first cohort studied and collected blood from our other ongoing ckd studies, which further solidified and why terminated.",
+      "example_text": "CKD participants we recruited do not have elevated ADMA, which is the main premise for this intervention. We noticed this with first cohort studied and collected blood from our other ongoing CKD studies, which further solidified and why terminated.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "PROTOCOL_FEASIBILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03471117"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Enrolled population lacked the target biomarker (flawed premise/design), not a drug effect.",
+      "reviewed_at": "2026-09-29"
+    },
+    "84510a1fdef767a3314a": {
+      "normalized_text": "phase 2 completed normally, phase 3 terminated for futility due to lack of aggravation events.",
+      "example_text": "Phase 2 completed normally, Phase 3 terminated for futility due to lack of aggravation events.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "PROTOCOL_FEASIBILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04417257"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Futility due to too few outcome events (event-rate/design problem), not drug effect.",
+      "reviewed_at": "2026-09-29"
+    },
+    "066c6bfaa0e8a0e6c74e": {
+      "normalized_text": "patient population that meets study criteria is insufficient to continue project in a reasonable amount of time. to continue is futile in resources, staff time, and effort.",
+      "example_text": "Patient population that meets study criteria is insufficient to continue project in a reasonable amount of time. To continue is futile in resources, staff time, and effort.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03060473"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Insufficient eligible patient population; 'futile' refers to resources, not efficacy.",
+      "reviewed_at": "2026-09-29"
+    },
+    "bf608194b0e7be79b5a3": {
+      "normalized_text": "fda did not accept sponsor's animal toxicology data to support proposed dosing.",
+      "example_text": "FDA did not accept sponsor's animal toxicology data to support proposed dosing.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "REGULATORY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01135199"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): FDA did not accept the tox data package to support dosing (regulatory), no adverse finding stated.",
+      "reviewed_at": "2026-09-29"
+    },
+    "20617e183a48fe9903fb": {
+      "normalized_text": "who 2022 guidelines for dr-tb treatment are set to change. these guidelines recommend the use of an all-oral short course bpal regimen.therefore ongoing implementation of the study is considered futile.",
+      "example_text": "WHO 2022 guidelines for DR-TB treatment are set to change. These guidelines recommend the use of an all-oral short course BPAL regimen.Therefore ongoing implementation of the study is considered futile.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "EXTERNAL_DISRUPTION",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03237182"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Changed WHO guidelines/standard of care made the study pointless; no efficacy/safety finding.",
+      "reviewed_at": "2026-09-29"
+    },
+    "c068ad63df35ccdcf40d": {
+      "normalized_text": "discontinuing the development of cotadutide, a daily injectable glp-1/glucagon co-agonist, is based on strategic pipeline considerations. the premature closure is not due to any newly observed safety signals or a change in the risk/benefit profile.",
+      "example_text": "Discontinuing the development of cotadutide, a daily injectable GLP-1/glucagon co-agonist, is based on strategic pipeline considerations. The premature closure is not due to any newly observed safety signals or a change in the risk/benefit profile.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "BUSINESS_STRATEGY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05668936"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Strategic pipeline decision; text explicitly denies safety or benefit-risk change.",
+      "reviewed_at": "2026-09-29"
+    },
+    "d57d1e593b99dec20c42": {
+      "normalized_text": "dsmb halted the study due to futility as a result of lower than anticipated hiv incidence rates",
+      "example_text": "DSMB halted the study due to futility as a result of lower than anticipated HIV incidence rates",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "PROTOCOL_FEASIBILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00270257"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Futility driven by low background HIV incidence (event rate), not the intervention's effect.",
+      "reviewed_at": "2026-09-29"
+    },
+    "85f6862238eeeb4bd97e": {
+      "normalized_text": "experimental procedure did not induce sufficient craving to determine any possible effect of medication.",
+      "example_text": "Experimental procedure did not induce sufficient craving to determine any possible effect of medication.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "PROTOCOL_FEASIBILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00240227"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Experimental procedure/design failed to induce craving; not a drug effect.",
+      "reviewed_at": "2026-09-29"
+    },
+    "7450429e33545f7e2fce": {
+      "normalized_text": "lack of response to recruitment",
+      "example_text": "Lack of response to recruitment",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02289989"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): 'Lack of response to recruitment' is a recruitment problem, not treatment response.",
+      "reviewed_at": "2026-09-29"
+    },
+    "6d3d1a9cbf2de113275c": {
+      "normalized_text": "in amendment 1 of p05319 \\[ <nct> \\], the option to enroll into this study, was discontinued due to low numbers of participants with suboptimal response.",
+      "example_text": "In Amendment 1 of P05319 \\[NCT 00779675\\], the option to enroll into this study, was discontinued due to low numbers of participants with suboptimal response.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00833053"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Enrolment option dropped because too few patients qualified; an enrolment issue, not drug failure.",
+      "reviewed_at": "2026-09-29"
+    },
+    "f528f50530a2f2667095": {
+      "normalized_text": "as part of the protocol-specified interim pharmacokinetic (pk) evaluation in study tmc207-c211, pk data demonstrated lower-than-anticipated bedaquiline exposure",
+      "example_text": "As part of the protocol-specified interim pharmacokinetic (PK) evaluation in Study TMC207-C211, PK data demonstrated lower-than-anticipated bedaquiline exposure",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02354014"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Interim PK showed lower-than-anticipated drug exposure in humans, a pharmacological failure.",
+      "reviewed_at": "2026-09-29"
+    },
+    "541a79c1ec68a25cc338": {
+      "normalized_text": "the study was terminated following review of interim data indicating that continuation was unlikely to demonstrate a clinically meaningful treatment effect. the decision was made to minimize unnecessary participant burden.",
+      "example_text": "The study was terminated following review of interim data indicating that continuation was unlikely to demonstrate a clinically meaningful treatment effect. The decision was made to minimize unnecessary participant burden.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT06441682"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Interim data showed continuation unlikely to demonstrate a meaningful treatment effect (futility).",
+      "reviewed_at": "2026-09-29"
+    },
+    "6a02865be56f7d08a9b5": {
+      "normalized_text": "early termination was due to insufficient tumor uptake thought to be limited by the binding affinity of egfr, the termination is not related to any safety or quality concerns.",
+      "example_text": "Early termination was due to insufficient tumor uptake thought to be limited by the binding affinity of EGFR, The termination is not related to any safety or quality concerns.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT07500987"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped for insufficient tumor uptake of the agent, an efficacy failure; safety denial is separate.",
+      "reviewed_at": "2026-09-29"
+    },
+    "d1a8a938344fee2fb6c0": {
+      "normalized_text": "treatment with 20 mg piromelatine did not demonstrate efficacy over treatment with placebo based on analysis with the adas-cog 14 subscale and with other cognitive and neuropsychiatric parameters.",
+      "example_text": "Treatment with 20 mg piromelatine did not demonstrate efficacy over treatment with placebo based on analysis with the ADAS-Cog 14 subscale and with other cognitive and neuropsychiatric parameters.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05267535"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Drug did not demonstrate efficacy over placebo.",
+      "reviewed_at": "2026-09-29"
+    },
+    "ecae88388357106e0e9b": {
+      "normalized_text": "gilead's ongoing evaluation of the wider zimberelimab and domvanalimab programme, following the outcomes of the star-221 study and the discontinuation of edge-gastric studies. no safety concerns have been identified in relation to zodiac.",
+      "example_text": "Gilead's ongoing evaluation of the wider Zimberelimab and Domvanalimab programme, following the outcomes of the STAR-221 study and the discontinuation of EDGE-Gastric studies. No safety concerns have been identified in relation to ZODIAC.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT06250036"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Program re-evaluated following negative outcomes of STAR-221 for the same drugs (efficacy evidence from another trial).",
+      "reviewed_at": "2026-09-29"
+    },
+    "0ee3826525a8ff126790": {
+      "normalized_text": "sponsor decision - hold following the evaluation of a safety event. no current sites in the us.",
+      "example_text": "Sponsor decision - hold following the evaluation of a safety event. No current sites in the US.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 2,
+      "nct_ids": [
+        "NCT06916702",
+        "NCT07656792"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Hold following evaluation of a safety event.",
+      "reviewed_at": "2026-09-29"
+    },
+    "80d124aca8e6b2e701ef": {
+      "normalized_text": "the estimated benefit-risk profile of pf-07985631 is not anticipated to be favorable in the expected population to be treated",
+      "example_text": "The estimated benefit-risk profile of PF-07985631 is not anticipated to be favorable in the expected population to be treated",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT07235150"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Benefit-risk profile of the drug not anticipated to be favorable.",
+      "reviewed_at": "2026-09-29"
+    },
+    "b1c09ef4364fdb16de4b": {
+      "normalized_text": "due to resource limitations and the lack of difference observed between study groups after the interim analysis, the study was halted prematurely.",
+      "example_text": "Due to resource limitations and the lack of difference observed between study groups after the interim analysis, the study was halted prematurely.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "STAFFING_RESOURCES",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05900427"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Resource limitations plus lack of difference between groups at interim analysis.",
+      "reviewed_at": "2026-09-29"
+    },
+    "a4b9b26bb237c289a1c9": {
+      "normalized_text": "funding sponsor decision due to review of efficacy data from other trials involving investigational product.",
+      "example_text": "Funding Sponsor decision due to review of efficacy data from other trials involving investigational product.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT06158100"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped after review of efficacy data from other trials of the same product.",
+      "reviewed_at": "2026-09-29"
+    },
+    "7d58f42cc7eb844fdfd0": {
+      "normalized_text": "decision to terminate study was driven by results from preceding tiragolumab study (skyscraper-06; <nct> ) & sponsor's strategic priorities, not due to safety risks or quality reasons for any of molecules/combinations investigated in this study.",
+      "example_text": "Decision to terminate study was driven by results from preceding tiragolumab study (SKYSCRAPER-06;NCT04619797) \\& sponsor's strategic priorities, not due to safety risks or quality reasons for any of molecules/combinations investigated in this study.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "EFFICACY_FUTILITY",
+        "BUSINESS_STRATEGY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT06267001"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Driven by negative results of SKYSCRAPER-06 for tiragolumab plus strategic priorities.",
+      "reviewed_at": "2026-09-29"
+    },
+    "36f6f59fa7db540ebc70": {
+      "normalized_text": "the dsmb concluded that there was a low probability the study would meet it is primary endpoint as designed.",
+      "example_text": "The DSMB concluded that there was a low probability the study would meet it is primary endpoint as designed.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03895437"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): DSMB found low probability of meeting the primary endpoint (futility).",
+      "reviewed_at": "2026-09-29"
+    },
+    "87ec6521e8ea84a4e8dd": {
+      "normalized_text": "intercept made the business decision to terminate the study on 31 mar 2026 as there was no clear evidence of potential benefit of int-787 in sah. this decision was not based on a safety concern.",
+      "example_text": "Intercept made the business decision to terminate the study on 31 Mar 2026 as there was no clear evidence of potential benefit of INT-787 in sAH. This decision was not based on a safety concern.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05639543"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Business decision was explicitly driven by no clear evidence of benefit (lack of efficacy).",
+      "reviewed_at": "2026-09-29"
+    },
+    "a6c03fa853e0210a7410": {
+      "normalized_text": "enrollment on hold while reviewing a sae.",
+      "example_text": "Enrollment on hold while reviewing a SAE.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05887882"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Enrollment on hold to review a serious adverse event.",
+      "reviewed_at": "2026-09-29"
+    },
+    "056ebfbcb423fbddac53": {
+      "normalized_text": "the recommendations of the data safety monitoring committee, based on the results of the stomp study ( <nct> ).",
+      "example_text": "The recommendations of the Data Safety Monitoring Committee, based on the results of the STOMP Study (NCT05534984).",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05534165"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): DSMC recommendation based on results of the STOMP trial of the same drug, which showed no efficacy.",
+      "reviewed_at": "2026-09-29"
+    },
+    "eaf727ee95124012b8a4": {
+      "normalized_text": "following a thorough review of safety data, preliminary efficacy data and an evaluation of overall risk-benefit, sponsor made the decision to end the study.",
+      "example_text": "Following a thorough review of safety data, preliminary efficacy data and an evaluation of overall risk-benefit, Sponsor made the decision to end the study.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT06488716"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Ended after review of safety, preliminary efficacy and overall risk-benefit, implying an unfavourable assessment.",
+      "reviewed_at": "2026-09-29"
+    },
+    "328cb73319c80e29151e": {
+      "normalized_text": "study was stopped after interim analysis for all 4 cohorts with results either not fulfilling the pre-planned interim analysis criteria or fulfilling the criteria but as per sponsor decision. it was not due to any safety concern",
+      "example_text": "Study was stopped after interim analysis for all 4 cohorts with results either not fulfilling the pre-planned interim analysis criteria or fulfilling the criteria but as per sponsor decision. It was not due to any safety concern",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "EFFICACY_FUTILITY",
+        "BUSINESS_STRATEGY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03769181"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Cohorts stopped for failing interim criteria (futility) or by sponsor decision.",
+      "reviewed_at": "2026-09-29"
+    },
+    "03ed649c7ed0f89dab5e": {
+      "normalized_text": "the study was terminated based on the review by an independent data monitoring committee of the prespecified interim analysis of the phase 3 ameera-5 efficacy data. no new safety signals were observed.",
+      "example_text": "The study was terminated based on the review by an independent data monitoring committee of the prespecified interim analysis of the Phase 3 AMEERA-5 efficacy data. No new safety signals were observed.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04478266"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated after IDMC review of AMEERA-5 interim efficacy data for the same drug.",
+      "reviewed_at": "2026-09-29"
+    },
+    "fb2c3b61428bf37e8cba": {
+      "normalized_text": "slow patient accrual and appearance of a toxicity",
+      "example_text": "Slow patient accrual and appearance of a toxicity",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "SAFETY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03456817"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Slow accrual plus appearance of a toxicity.",
+      "reviewed_at": "2026-09-29"
+    },
+    "d56dd7ad4dda777be069": {
+      "normalized_text": "the sponsor's decision to stop the study follows the dsmb's recommendations (end of enrolment and experimental treatment, post-treatment/end-of-study visit within 3 months of stopping treatment), regarding the benefit-risk balance.",
+      "example_text": "The sponsor's decision to stop the study follows the DSMB's recommendations (end of enrolment and experimental treatment, post-treatment/end-of-study visit within 3 months of stopping treatment), regarding the benefit-risk balance.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04217447"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): DSMB recommended stopping enrollment and treatment because of the benefit-risk balance.",
+      "reviewed_at": "2026-09-29"
+    },
+    "56d4a854b854423c84b3": {
+      "normalized_text": "decision to terminate development of gantenerumab for treatment of people at risk for or at earliest stages of alzheimer disease (ad) following results of a pre-planned analysis of safety & efficacy of gantenerumab in graduate i&ii (wn29922/wn39658).",
+      "example_text": "Decision to terminate development of gantenerumab for treatment of people at risk for or at earliest stages of Alzheimer disease (AD) following results of a pre-planned analysis of safety \\& efficacy of gantenerumab in Graduate I\\&II (WN29922/WN39658).",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05256134"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Development ended after safety and efficacy analysis of the GRADUATE trials of the same drug.",
+      "reviewed_at": "2026-09-29"
+    },
+    "8fa9510acc67fdb054e1": {
+      "normalized_text": "taiho oncology as the sponsor of study tas0612-101, has made a strategic decision to terminate the tas0612-101 study, taking into consideration the safety profile of tas0612 and the absence of encouraging anti-tumor activity.",
+      "example_text": "Taiho Oncology as the sponsor of study TAS0612-101, has made a strategic decision to terminate the TAS0612-101 study, taking into consideration the safety profile of TAS0612 and the absence of encouraging anti-tumor activity.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04586270"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated considering the safety profile and absence of anti-tumor activity.",
+      "reviewed_at": "2026-09-29"
+    },
+    "9f1fdab77f3d41a9b4c9": {
+      "normalized_text": "dian-tu announced the discontinuation of the dian-tu-001 ole based on the status of the drug program and findings from an interim efficacy analysis and.",
+      "example_text": "DIAN-TU announced the discontinuation of the DIAN-TU-001 OLE based on the status of the drug program and findings from an interim efficacy analysis and.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT06424236"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Discontinued based on findings from an interim efficacy analysis and drug program status.",
+      "reviewed_at": "2026-09-29"
+    },
+    "be4fb4806e8fc8995a71": {
+      "normalized_text": "the study was terminated due to program discontinuation, based on mixed efficacy results in the adult ulcerative colitis and crohn's disease studies. there were no safety concerns.",
+      "example_text": "The study was terminated due to program discontinuation, based on mixed efficacy results in the adult ulcerative colitis and Crohn's disease studies. There were no safety concerns.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03478956"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Program discontinued due to mixed efficacy results in other trials of the same drug.",
+      "reviewed_at": "2026-09-29"
+    },
+    "d8d3798b5865704ba8ce": {
+      "normalized_text": "the study was terminated due to the changing treatment landscape, difficulty in enrolling eligible participants, and little likelihood of providing meaningful clinical benefit for the participants.",
+      "example_text": "The study was terminated due to the changing treatment landscape, difficulty in enrolling eligible participants, and little likelihood of providing meaningful clinical benefit for the participants.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04282668"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Recruitment difficulty plus little likelihood of meaningful clinical benefit.",
+      "reviewed_at": "2026-09-29"
+    },
+    "ac21b39b614637c04615": {
+      "normalized_text": "the study was terminated based on the sponsor's decision attributed to the benefit-risk profile derived from the part 1 data of this study.",
+      "example_text": "The study was terminated based on the Sponsor's decision attributed to the benefit-risk profile derived from the Part 1 data of this study.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT06610279"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped due to benefit-risk profile derived from Part 1 data.",
+      "reviewed_at": "2026-09-29"
+    },
+    "d22e3d0a4b274228545a": {
+      "normalized_text": "stopped by the ip, because the first 6 patients recruited had died and it was unknown if it represented any safety risk or if the sample was insufficient to evaluate the study hypotesis.",
+      "example_text": "Stopped by the IP, because the first 6 patients recruited had died and it was unknown if it represented any safety risk or if the sample was insufficient to evaluate the study hypotesis.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04390152"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped because the first 6 patients died, a potential safety signal.",
+      "reviewed_at": "2026-09-29"
+    },
+    "f96e2042a659ee5e9854": {
+      "normalized_text": "the study has been stopped due to sponsor's business reasons. the termination is not a result of any safety concerns or change in the benefit-risk ratio.",
+      "example_text": "The study has been stopped due to Sponsor's business reasons. The termination is not a result of any safety concerns or change in the benefit-risk ratio.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "BUSINESS_STRATEGY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05228821"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Business reasons with safety explicitly denied; no biological cause.",
+      "reviewed_at": "2026-09-29"
+    },
+    "bba65e420e08db854497": {
+      "normalized_text": "the study was terminated on the basis on an evaluation of the efficacy and safety of the 4 included and treated patients.",
+      "example_text": "The study was terminated on the basis on an evaluation of the efficacy and safety of the 4 included and treated patients.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05609656"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated on the basis of an efficacy and safety evaluation of treated patients.",
+      "reviewed_at": "2026-09-29"
+    },
+    "35ad77bd836e36976a91": {
+      "normalized_text": "decision to terminate development of gantenerumab for treatment of prodromal/mild/early-stage alzheimer's disease following results of a pre-planned analysis of the safety and efficacy of gant in graduate i&ii (wn29922/wn39658).",
+      "example_text": "Decision to terminate development of Gantenerumab for treatment of prodromal/mild/early-stage Alzheimer's disease following results of a pre-planned analysis of the safety and efficacy of Gant in Graduate I\\&II (WN29922/WN39658).",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 3,
+      "nct_ids": [
+        "NCT04374253",
+        "NCT04592341",
+        "NCT03444870"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Program ended after safety/efficacy analysis of gantenerumab in GRADUATE I/II.",
+      "reviewed_at": "2026-09-29"
+    },
+    "a8d68572f8e9965bcc66": {
+      "normalized_text": "local ec requested that the arms of study be submitted as separate protocols so they could respond to the different risk of each arm. in response investigators have withdrawn this protocol and begun separate submissions, starting with <nct> .",
+      "example_text": "Local EC requested that the arms of study be submitted as separate protocols so they could respond to the different risk of each arm. In response investigators have withdrawn this protocol and begun separate submissions, starting with NCT06191458.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "REGULATORY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04984759"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Ethics committee requested protocol resubmission; administrative only.",
+      "reviewed_at": "2026-09-29"
+    },
+    "860dc02de33ee11fb248": {
+      "normalized_text": "the sponsor decided to discontinue the study based on sponsor's careful review of available safety data in concert with the recommendation of an independent data monitoring committee.",
+      "example_text": "The Sponsor decided to discontinue the study based on Sponsor's careful review of available safety data in concert with the recommendation of an independent Data Monitoring Committee.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04645966"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Discontinued based on review of safety data and DMC recommendation.",
+      "reviewed_at": "2026-09-29"
+    },
+    "0fc6adfac1167fabeeca": {
+      "normalized_text": "decision to terminate development of gantenerumab for treatment of prodromal/mild/early stage alzheimer's disease following results of a pre-planned analysis of the safety and efficacy of gant in graduate i&ii (wn29922/wn39658).",
+      "example_text": "Decision to terminate development of Gantenerumab for treatment of prodromal/mild/early stage Alzheimer's disease following results of a pre-planned analysis of the safety and efficacy of Gant in Graduate I\\&II (WN29922/WN39658).",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 2,
+      "nct_ids": [
+        "NCT04339413",
+        "NCT03443973"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Program ended after safety/efficacy analysis of gantenerumab in GRADUATE I/II.",
+      "reviewed_at": "2026-09-29"
+    },
+    "3f1fda6ded79e81e5f72": {
+      "normalized_text": "based on internal review of safety data",
+      "example_text": "Based on internal review of safety data",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04634825"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped based on internal review of safety data.",
+      "reviewed_at": "2026-09-29"
+    },
+    "25da2f07cae2cc6507e4": {
+      "normalized_text": "the study was terminated on the basis on an evaluation of the safety and efficacy of the 9 included patients of which 2 of the patients were excluded before receiving any study treatments, thus 7 patients were treated in the study.",
+      "example_text": "The study was terminated on the basis on an evaluation of the safety and efficacy of the 9 included patients of which 2 of the patients were excluded before receiving any study treatments, thus 7 patients were treated in the study.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05435053"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated on the basis of a safety and efficacy evaluation of treated patients.",
+      "reviewed_at": "2026-09-29"
+    },
+    "4d3cb28a7a1a6ae41666": {
+      "normalized_text": "study terminated due to lack of treatment benefit.",
+      "example_text": "Study terminated due to lack of treatment benefit.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04556383"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated due to lack of treatment benefit.",
+      "reviewed_at": "2026-09-29"
+    },
+    "ebb137ea7fbb3c8dbb35": {
+      "normalized_text": "sponsor decision based on emerging risk-benefit profile",
+      "example_text": "Sponsor decision based on emerging risk-benefit profile",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03254927"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped based on emerging risk-benefit profile.",
+      "reviewed_at": "2026-09-29"
+    },
+    "4052da51c1b910b445e6": {
+      "normalized_text": "novartis has decided to terminate the trial due to the recent results made available from the novartis canopy a study (cacz885t2301), this decision is not related to any safety data for canakinumab",
+      "example_text": "Novartis has decided to terminate the trial due to the recent results made available from the Novartis CANOPY A study (CACZ885T2301), this decision is not related to any safety data for Canakinumab",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05725343"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated due to CANOPY-A results of the same drug (canakinumab).",
+      "reviewed_at": "2026-09-29"
+    },
+    "640fa25de0c0bdc0c959": {
+      "normalized_text": "stopped early due to company decision. company decision based on interim analysis results in td-1473-0157.",
+      "example_text": "Stopped early due to company decision. Company decision based on interim analysis results in TD-1473-0157.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 2,
+      "nct_ids": [
+        "NCT03758443",
+        "NCT03920254"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped based on interim analysis results of another trial of the same drug.",
+      "reviewed_at": "2026-09-29"
+    },
+    "dad483223b6e93077c96": {
+      "normalized_text": "company decision: re-evaluation of risk vs benefit (based on animal data)",
+      "example_text": "Company decision: re-evaluation of risk vs benefit (based on animal data)",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT05475821"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Risk-benefit re-evaluation based on animal data (preclinical findings).",
+      "reviewed_at": "2026-09-29"
+    },
+    "b4a3dd71f32da10bbcef": {
+      "normalized_text": "based on preliminary safety data.",
+      "example_text": "Based on preliminary safety data.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01099761"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped based on preliminary safety data, implying a safety concern.",
+      "reviewed_at": "2026-09-29"
+    },
+    "3b77b16db8af06330d42": {
+      "normalized_text": "the total accrual goal of 34 patients was not met. stage 1 of the study did not meet the interim analysis criteria to move onto stage 2 of the simon 2 stage design.",
+      "example_text": "The total accrual goal of 34 patients was not met. Stage 1 of the study did not meet the interim analysis criteria to move onto Stage 2 of the Simon 2 stage design.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03723915"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stage 1 failed the Simon two-stage interim efficacy criterion, in addition to accrual shortfall.",
+      "reviewed_at": "2026-09-29"
+    },
+    "58dbbebec1d476b5f51a": {
+      "normalized_text": "interim analysis did not reveal any safety concerns by the dsmb, but unblinded data did not provide support to continue. event rate did not meet projected magnitude; given low recruitment potential, it is unlikely that a positive result will occur.",
+      "example_text": "Interim analysis did not reveal any safety concerns by the DSMB, but unblinded data did not provide support to continue. Event rate did not meet projected magnitude; given low recruitment potential, it is unlikely that a positive result will occur.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04341441"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Unblinded interim data did not support continuation (futility) plus low recruitment potential.",
+      "reviewed_at": "2026-09-29"
+    },
+    "f6920aad3401db28a7a6": {
+      "normalized_text": "the study was closed early due to low enrollment and new information regarding the benefit of the study regimen.",
+      "example_text": "The study was closed early due to low enrollment and new information regarding the benefit of the study regimen.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00314353"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Low enrollment plus new information regarding the benefit of the study regimen.",
+      "reviewed_at": "2026-09-29"
+    },
+    "f9d455eaea31e0fb0d3f": {
+      "normalized_text": "reassess safety risks and benefits",
+      "example_text": "Reassess safety risks and benefits",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03720574"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Halted to reassess safety risks and benefits, indicating a safety concern.",
+      "reviewed_at": "2026-09-29"
+    },
+    "9056bea44bd9f1764bc1": {
+      "normalized_text": "poor recruitment, strong evidence from larger trials of no therapeutic benefit",
+      "example_text": "Poor recruitment, strong evidence from larger trials of no therapeutic benefit",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT04335552"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Poor recruitment plus strong external evidence of no therapeutic benefit.",
+      "reviewed_at": "2026-09-29"
+    },
+    "c7ef00367f081ba140c5": {
+      "normalized_text": "this study was terminated early by the sponsor on the recommendation of an independent data safety monitoring board following review of unblinded data from the phase 3 studies e2609-g000-301 ( <nct> ) and e2609-g000-302 ( <nct> ).",
+      "example_text": "This study was terminated early by the sponsor on the recommendation of an independent data safety monitoring board following review of unblinded data from the Phase 3 studies E2609-G000-301 (NCT02956486) and E2609-G000-302 (NCT03036280).",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02322021"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped on DSMB recommendation after unblinded Phase 3 E2609 data (unfavourable benefit-risk in another trial of same drug).",
+      "reviewed_at": "2026-09-29"
+    },
+    "bcb69456792900e6a62f": {
+      "normalized_text": "following an interim data review, further investment in nevanimibe has been discontinued",
+      "example_text": "Following an interim data review, further investment in nevanimibe has been discontinued",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03669549"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Investment discontinued following interim data review, implying unfavourable data.",
+      "reviewed_at": "2026-09-29"
+    },
+    "816ab9ddf433db8c9a0b": {
+      "normalized_text": "based on the totality of the generated combined safety and efficacy data in the interim period, the company decided to terminate the combination study in nsclc patients. there are no subjects on study drug at this time or in the eot follow-up period.",
+      "example_text": "Based on the totality of the generated combined safety and efficacy data in the interim period, the company decided to terminate the combination study in NSCLC patients. There are no subjects on study drug at this time or in the EOT Follow-up period.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03696212"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated based on totality of interim safety and efficacy data.",
+      "reviewed_at": "2026-09-29"
+    },
+    "6e71b71bd5b2a7b526c4": {
+      "normalized_text": "poor recruitment, interim analysis: the rates of pts who reached primary and secondary endpoints were lower than expected.",
+      "example_text": "Poor recruitment, Interim analysis: The rates of pts who reached primary and secondary endpoints were lower than expected.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01770340"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Poor recruitment plus interim endpoint achievement rates lower than expected.",
+      "reviewed_at": "2026-09-29"
+    },
+    "1040d16b1f20430221a8": {
+      "normalized_text": "poor accrual and risk/benefit ratio.",
+      "example_text": "Poor accrual and risk/benefit ratio.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "BIOLOGICAL_UNSPECIFIED"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02943473"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Poor accrual plus unfavourable risk/benefit ratio.",
+      "reviewed_at": "2026-09-29"
+    },
+    "01c11ba8b7a964323463": {
+      "normalized_text": "drug company withdrew support following re-examination of benefit-risk assessment for the investigational use of imetelstat in this population",
+      "example_text": "drug company withdrew support following re-examination of benefit-risk assessment for the investigational use of imetelstat in this population",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01916187"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Support withdrawn after re-examination of imetelstat benefit-risk.",
+      "reviewed_at": "2026-09-29"
+    },
+    "5bdefb37f507c36c95c7": {
+      "normalized_text": "a planned interim analysis led to the trial being stopped early based on the observed size effect and power analysis.",
+      "example_text": "A planned interim analysis led to the trial being stopped early based on the observed size effect and power analysis.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02899156"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Interim analysis stopped trial based on observed effect size and power, i.e. futility.",
+      "reviewed_at": "2026-09-29"
+    },
+    "aea68e3e6410b7dbafe8": {
+      "normalized_text": "terminated due to low enrollment and unclear pharmacologic effect in available pharmacodynamic data (not due to any safety concerns).",
+      "example_text": "Terminated due to low enrollment and unclear pharmacologic effect in available pharmacodynamic data (not due to any safety concerns).",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01141075"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Low enrollment plus unclear pharmacologic effect in PD data.",
+      "reviewed_at": "2026-09-29"
+    },
+    "237912c8c4452bff0811": {
+      "normalized_text": "interim analysis to assess concern for spinal anesthesia and increased cesarean delivery rate.",
+      "example_text": "Interim analysis to assess concern for spinal anesthesia and increased cesarean delivery rate.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03106753"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped over concern for increased cesarean delivery rate, a safety signal.",
+      "reviewed_at": "2026-09-29"
+    },
+    "9a368055c41b6ef2efc6": {
+      "normalized_text": "stage 1 terminated 6/1/18 prior to completion of stage 1 due to low enrollment and efficacy",
+      "example_text": "Stage 1 terminated 6/1/18 prior to completion of Stage 1 due to low enrollment and efficacy",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02066311"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated for low enrollment and efficacy.",
+      "reviewed_at": "2026-09-29"
+    },
+    "dd9ab3fcf18e2232b6c9": {
+      "normalized_text": "study has been stopped after reviewing pk and safety results",
+      "example_text": "Study has been stopped after reviewing PK and safety results",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03119467"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped after reviewing PK and safety results.",
+      "reviewed_at": "2026-09-29"
+    },
+    "baeb666bdb022a3ea7af": {
+      "normalized_text": "lack of funding/ benefit",
+      "example_text": "lack of funding/ benefit",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "FUNDING",
+        "EFFICACY_FUTILITY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02689219"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Lack of funding and lack of benefit.",
+      "reviewed_at": "2026-09-29"
+    },
+    "e9017ccf13b450eb2de9": {
+      "normalized_text": "mtd determined sub-optimal as efficacious treatment for renal cell carcinoma.",
+      "example_text": "MTD determined sub-optimal as efficacious treatment for renal cell carcinoma.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00975806"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): MTD found sub-optimal for efficacy in renal cell carcinoma.",
+      "reviewed_at": "2026-09-29"
+    },
+    "938e9ecee08d1e390e14": {
+      "normalized_text": "the study was terminated due to marginal efficacy and change in sponsor prioritization. the combination had a manageable safety profile.",
+      "example_text": "The study was terminated due to marginal efficacy and change in sponsor prioritization. The combination had a manageable safety profile.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "EFFICACY_FUTILITY",
+        "BUSINESS_STRATEGY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02444793"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Marginal efficacy plus change in sponsor prioritization.",
+      "reviewed_at": "2026-09-29"
+    },
+    "6c4db30ce91cb23ac009": {
+      "normalized_text": "novartis decided not to pursue further development of buparlisib program (assessment of moderate pfs benefit with know, but manageable, buparlisib profile).",
+      "example_text": "Novartis decided not to pursue further development of buparlisib program (assessment of moderate PFS benefit with know, but manageable, buparlisib profile).",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01633060"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Buparlisib program dropped due to only moderate PFS benefit given its toxicity profile.",
+      "reviewed_at": "2026-09-29"
+    },
+    "7aa86424d7c814f32076": {
+      "normalized_text": "toxicities, lack of funding",
+      "example_text": "Toxicities, lack of funding",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "SAFETY",
+        "FUNDING"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01086332"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Toxicities plus lack of funding.",
+      "reviewed_at": "2026-09-29"
+    },
+    "b3136132588e172945db": {
+      "normalized_text": "enrollement was stopped due to a recommendation by the idmc/fda for a parallel clinical trial with tala, where potentielly no efficancy could be determined.",
+      "example_text": "Enrollement was stopped due to a recommendation by the IDMC/FDA for a parallel clinical trial with TALA, where potentielly no efficancy could be determined.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02992860"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped on IDMC/FDA recommendation from a parallel trial showing potentially no efficacy.",
+      "reviewed_at": "2026-09-29"
+    },
+    "4f403400c92764e2af21": {
+      "normalized_text": "the sponsor decided to stop further dosing of healthy volunteers after reviewing the obtained efficacy data. the decision is not related to any safety concern.",
+      "example_text": "The sponsor decided to stop further dosing of healthy volunteers after reviewing the obtained efficacy data. The decision is not related to any safety concern.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT03399435"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Dosing stopped after reviewing efficacy data, implying insufficient efficacy.",
+      "reviewed_at": "2026-09-29"
+    },
+    "f54e2fcede4b9ac35ad2": {
+      "normalized_text": "business decision related to efficacy rather than tolerability limitations, not stopped for any safety reasons.",
+      "example_text": "Business decision related to efficacy rather than tolerability limitations, not stopped for any safety reasons.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01121536"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Business decision explicitly driven by efficacy.",
+      "reviewed_at": "2026-09-29"
+    },
+    "57bb75f7288f22e7b328": {
+      "normalized_text": "slow accrual and high levels of toxicity lead to early termination.",
+      "example_text": "Slow accrual and high levels of toxicity lead to early termination.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "SAFETY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01732640"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Slow accrual plus high levels of toxicity both stated.",
+      "reviewed_at": "2026-09-29"
+    },
+    "c6fc2b4d04c7e986f59c": {
+      "normalized_text": "closed prematurely due to emerging data on toxicity and competing trials.",
+      "example_text": "Closed prematurely due to emerging data on toxicity and competing trials.",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "SAFETY",
+        "RECRUITMENT"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00824538"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Emerging toxicity data plus competing trials both stated.",
+      "reviewed_at": "2026-09-29"
+    },
+    "76dba1ffec7fdf6969ab": {
+      "normalized_text": "recruitment difficulties and toxicity",
+      "example_text": "Recruitment difficulties and toxicity",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "SAFETY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02200848"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Recruitment difficulties and toxicity both stated.",
+      "reviewed_at": "2026-09-29"
+    },
+    "4eb132eb77e4bfc4e986": {
+      "normalized_text": "slow accrual; toxicity; change in priorities",
+      "example_text": "Slow accrual; toxicity; change in priorities",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "SAFETY",
+        "BUSINESS_STRATEGY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01495988"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Toxicity listed alongside slow accrual and priority change.",
+      "reviewed_at": "2026-09-29"
+    },
+    "078ce81e720fbf4a7bfd": {
+      "normalized_text": "low patient enrollment; toxicities",
+      "example_text": "Low patient enrollment; toxicities",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "RECRUITMENT",
+        "SAFETY"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00216047"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Low enrollment and toxicities both stated.",
+      "reviewed_at": "2026-09-29"
+    },
+    "ccbfd1e3ce688abd0cdd": {
+      "normalized_text": "issues with development and supply of infusion system for delivery of imp. lack of favorable benefit risk ratio in snn0029-003 study (review of interim data).",
+      "example_text": "Issues with development and supply of infusion system for delivery of IMP. Lack of favorable benefit risk ratio in sNN0029-003 study (review of interim data).",
+      "outcome": "MIXED_CAUSES",
+      "primary_reason": "MULTIPLE",
+      "secondary_reasons": [
+        "SUPPLY_MANUFACTURING",
+        "BIOLOGICAL_UNSPECIFIED"
+      ],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 3,
+      "nct_ids": [
+        "NCT01384162",
+        "NCT01999803",
+        "NCT02269436"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Supply issues plus unfavourable benefit-risk in another study of the same IMP.",
+      "reviewed_at": "2026-09-29"
+    },
+    "10f10240c5742dfe9eb8": {
+      "normalized_text": "futility: impossible to recruit enough hypertensive participants to match chronic kidney disease (ckd) participants on needed parameters.",
+      "example_text": "Futility: Impossible to recruit enough hypertensive participants to match Chronic Kidney Disease (CKD) participants on needed parameters.",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00356265"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Futility refers only to inability to recruit matched participants.",
+      "reviewed_at": "2026-09-29"
+    },
+    "1fca7660d982fb42aa70": {
+      "normalized_text": "due to futility due to lower than expected recruitment",
+      "example_text": "Due to futility due to lower than expected recruitment",
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01921829"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Futility explicitly due to low recruitment.",
+      "reviewed_at": "2026-09-29"
+    },
+    "0e5fb60c544667b028d4": {
+      "normalized_text": "unafavourable toxicity profile",
+      "example_text": "Unafavourable toxicity profile",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02720926"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Unfavourable toxicity profile is a safety failure.",
+      "reviewed_at": "2026-09-29"
+    },
+    "e731abd67ee7482ec560": {
+      "normalized_text": "based on the observed safety profile of cova322, the sponsor decided to stop the clinical study.",
+      "example_text": "Based on the observed safety profile of COVA322, the sponsor decided to stop the clinical study.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02243787"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped based on the observed safety profile of the drug.",
+      "reviewed_at": "2026-09-29"
+    },
+    "e1186e88080c86c6f66a": {
+      "normalized_text": "interim analysis did not reveal of anticipated benefits of intervention",
+      "example_text": "Interim analysis did not reveal of anticipated benefits of intervention",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01175330"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Interim analysis did not show anticipated benefit (futility).",
+      "reviewed_at": "2026-09-29"
+    },
+    "3bfbecbed756a96eb986": {
+      "normalized_text": "toxicity and efficacy data from another trial",
+      "example_text": "Toxicity and efficacy data from another trial",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00788606"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stopped due to toxicity and efficacy data from another trial.",
+      "reviewed_at": "2026-09-29"
+    },
+    "dcf91839daff229607cf": {
+      "normalized_text": "this study was terminated due to the efficacy results from an interim analysis (at the end of treatment epoch) of the phase ii study cqge031b2201 ( <nct> ).",
+      "example_text": "This study was terminated due to the efficacy results from an interim analysis (at the end of treatment epoch) of the Phase II study CQGE031B2201 (NCT01716754).",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02336425"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Terminated due to efficacy results of interim analysis of another study of the same drug.",
+      "reviewed_at": "2026-09-29"
+    },
+    "40b163c2b925e068aaec": {
+      "normalized_text": "during a safety review of studies u2970g and u2971g, the data monitoring committee recommended that enrollment in this extension trial be terminated.",
+      "example_text": "During a safety review of studies U2970g and U2971g, the Data Monitoring Committee recommended that enrollment in this extension trial be terminated.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00381810"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): DMC stopped enrollment following a safety review of parent studies.",
+      "reviewed_at": "2026-09-29"
+    },
+    "f29b992283e1b644ea3d": {
+      "normalized_text": "all amgen sponsored amg102 clinical studies were terminated following a pre-planned data monitoring committee safety review of study 20070622.",
+      "example_text": "All Amgen sponsored AMG102 clinical studies were terminated following a pre-planned Data Monitoring Committee safety review of study 20070622.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 2,
+      "nct_ids": [
+        "NCT02137343",
+        "NCT01697072"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): All AMG102 studies terminated following a DMC safety review of another study.",
+      "reviewed_at": "2026-09-29"
+    },
+    "d117e33bfa91b9dcd3b8": {
+      "normalized_text": "novartis paused all study start-up activities due to safety evaluation of idh305 compound.",
+      "example_text": "Novartis paused all study start-up activities due to safety evaluation of IDH305 compound.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02977689"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Paused due to safety evaluation of the IDH305 compound.",
+      "reviewed_at": "2026-09-29"
+    },
+    "b1045e8ffb30f3a3e993": {
+      "normalized_text": "amgen decision following interim review of efficacy and safety data from the amg 337 program.",
+      "example_text": "Amgen decision following interim review of efficacy and safety data from the AMG 337 program.",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02016534"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Decision followed interim review of program efficacy and safety data.",
+      "reviewed_at": "2026-09-29"
+    },
+    "342f13278cf1b6f6791d": {
+      "normalized_text": "new information on imp affected the cost/benefit ratio",
+      "example_text": "New information on IMP affected the cost/benefit ratio",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+      "secondary_reasons": [],
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT01134497"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): New IMP information worsened the benefit-risk ratio.",
+      "reviewed_at": "2026-09-29"
+    },
+    "0ff427744fb8e09f37dc": {
+      "normalized_text": "the study was withdrawn based on new efficacy data from another study",
+      "example_text": "The study was withdrawn based on new efficacy data from another study",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT02894515"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Withdrawn based on new efficacy data from another study of the drug.",
+      "reviewed_at": "2026-09-29"
+    },
+    "3a5ba96a23d2667f4447": {
+      "normalized_text": "unrelated serious adverse events involving one of the proposed medications",
+      "example_text": "Unrelated serious adverse events involving one of the proposed medications",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 1,
+      "nct_ids": [
+        "NCT00676559"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Serious adverse events involving one of the study medications.",
+      "reviewed_at": "2026-09-29"
+    },
+    "de8ddf00ebfe27ff0227": {
+      "normalized_text": "patient safety",
+      "example_text": "patient safety",
+      "outcome": "BIOLOGICAL_FAILURE",
+      "primary_reason": "SAFETY",
+      "secondary_reasons": [],
+      "needs_review": false,
+      "v2_derivation": "MANUAL_V2_DECISION",
+      "reviewed_record_count": 2,
+      "nct_ids": [
+        "NCT01668173",
+        "NCT02414555"
+      ],
+      "provenance": {
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Independent review 2026-09-29 (12 parallel readers, adjudicated): Stop reason given as patient safety.",
+      "reviewed_at": "2026-09-29"
     }
   }
 }

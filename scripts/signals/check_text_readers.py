@@ -14,7 +14,8 @@ Four checks, each catching a different way MISTAKES.md #15 could happen again:
 3. Determinism. The same text read by the same rules gives the same verdict as last time. A
    verdict that changes although neither the text nor RULES_VERSION changed means the rules
    changed without anyone saying so — the silent kind of change that produced #15.
-4. Declared changes are shown. When RULES_VERSION was bumped, every changed verdict is written to
+4. Declared changes are shown. When RULES_VERSION was bumped or the reviewed verdicts
+   (data/attribution_reviewed.json) changed, every changed verdict is written to
    data/attribution_changes.md, so the effect of a rule change is read before it ships.
 
     python scripts/signals/check_text_readers.py                 # check
@@ -32,7 +33,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
-from scripts.signals.stop_attribution import RULES_VERSION, attribute  # noqa: E402
+from scripts.signals.stop_attribution import RULES_VERSION, attribute, effective_version  # noqa: E402
 from scripts.signals.text_guards import affirms_safety  # noqa: E402
 
 GOLDEN = ROOT / "scripts/signals/fixtures/attribution_golden.json"
@@ -93,8 +94,8 @@ def check_drift(current: dict[str, dict]) -> tuple[list[str], list[tuple[str, di
     before = snap.get("rows", {})
     changed = [(nct, before[nct], now) for nct, now in current.items()
                if nct in before and before[nct]["h"] == now["h"] and (before[nct]["v"], before[nct]["e"]) != (now["v"], now["e"])]
-    if snap.get("rules_version") == RULES_VERSION and changed:
-        lines = [f"{len(changed)} verdicts changed on unchanged text while RULES_VERSION stayed {RULES_VERSION}. "
+    if snap.get("rules_version") == effective_version() and changed:
+        lines = [f"{len(changed)} verdicts changed on unchanged text while the rules stayed {effective_version()}. "
                  "Either a rule changed without being declared (bump RULES_VERSION in stop_attribution.py and read "
                  "data/attribution_changes.md), or something non-deterministic crept in."]
         lines += [f"  {nct}: {b['v']} {b['e']} -> {n['v']} {n['e']}" for nct, b, n in changed[:20]]
@@ -104,7 +105,7 @@ def check_drift(current: dict[str, dict]) -> tuple[list[str], list[tuple[str, di
 
 def write_changes(changed, records_by_id, old_version: str) -> None:
     tally = Counter((b["v"], n["v"]) for _, b, n in changed)
-    lines = [f"# Attribution changes: rules {old_version} -> {RULES_VERSION}", "",
+    lines = [f"# Attribution changes: rules {old_version} -> {effective_version()}", "",
              f"{len(changed)} stop reasons read differently on unchanged text.", "",
              "| from | to | count |", "|---|---|---|"]
     lines += [f"| {a} | {b} | {c} |" for (a, b), c in tally.most_common()]
@@ -130,17 +131,17 @@ def main() -> int:
     if changed and not drift:
         old = json.loads(SNAPSHOT.read_text()).get("rules_version", "?")
         write_changes(changed, {r["nct_id"]: r for r in records}, old)
-        print(f"rules {old} -> {RULES_VERSION}: {len(changed)} declared verdict changes written to {CHANGES.relative_to(ROOT)}")
+        print(f"rules {old} -> {effective_version()}: {len(changed)} declared verdict changes written to {CHANGES.relative_to(ROOT)}")
 
     if problems:
         print("TEXT-READER GATE FAILED — nothing downstream should be published:\n" + "\n".join(problems))
         return 1
 
     print(f"text-reader gate passed: {len(json.loads(GOLDEN.read_text())['cases'])} golden cases, "
-          f"{len(records)} stop reasons checked for denied safety claims, rules {RULES_VERSION}")
+          f"{len(records)} stop reasons checked for denied safety claims, rules {effective_version()}")
     if args.write_snapshot and current:
         SNAPSHOT.parent.mkdir(parents=True, exist_ok=True)
-        SNAPSHOT.write_text(json.dumps({"rules_version": RULES_VERSION, "rows": current}, separators=(",", ":")) + "\n")
+        SNAPSHOT.write_text(json.dumps({"rules_version": effective_version(), "rows": current}, separators=(",", ":")) + "\n")
         print(f"snapshot written: {len(current)} verdicts")
     return 0
 

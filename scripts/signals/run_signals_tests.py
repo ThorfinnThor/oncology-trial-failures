@@ -192,6 +192,14 @@ for _text, _want in [
 ]:
     check(f"affirms safety: {_text[:50]}…", affirms_safety(_text), _want)
 
+# A reviewed verdict (data/attribution_reviewed.json) takes precedence over the patterns, and only
+# for the exact sentence it was given for.
+_rev = attribute({"nct_id": "NCT01127633", "why_stopped": "Solanezumab did not meet the primary endpoint in study H8A-MC-LZAX."})
+check("a reviewed verdict overrides the patterns", (_rev["attribution"], _rev["basis"]), ("programme_cascade", "reviewed"))
+check("the pattern verdict is kept alongside for audit", _rev["rule_attribution"], "own_data")
+_other = attribute({"nct_id": "NCT1", "why_stopped": "Solanezumab did not meet the primary endpoint."})
+check("a different sentence is not covered by it", _other["basis"], "textual")
+
 # "futility" belongs to whoever ran the trial it happened in.
 check("an upstream study's futility is not this trial's",
       attribute({"nct_id": "NCT1", "why_stopped": "The parent study was stopped for futility."})["attribution"],

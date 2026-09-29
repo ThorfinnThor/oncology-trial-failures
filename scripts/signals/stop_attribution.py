@@ -26,12 +26,51 @@ import re
 from collections import defaultdict
 from datetime import date, datetime
 
+import hashlib
+import json
+from pathlib import Path
+
 from scripts.signals.text_guards import denied
 
 # Bump whenever a pattern below changes. The weekly run compares every stop's verdict with last
 # week's: the same text read by the same rules must give the same verdict, and a change of rules
 # must be declared here, where the diff is then printed for review. See check_text_readers.py.
 RULES_VERSION = "2026-09-29.2"
+
+# Verdicts read by a person or by the independent review model, keyed by the stop reason's text.
+# They take precedence over the patterns: a reviewed verdict is the answer, the patterns are the
+# fallback for text nobody has reviewed yet. A changed stop reason has a new key, so a verdict
+# never outlives the sentence it was given for. See scripts/review/llm_review.py.
+REVIEWED_PATH = Path(__file__).resolve().parents[2] / "data" / "attribution_reviewed.json"
+
+REVIEWED_EVIDENCE = {
+    "own_data": "the stop reason describes this trial's own result",
+    "programme_cascade": "the stop reason points to another trial, a programme decision or outside evidence",
+}
+
+
+def reviewed_key(text: str) -> str:
+    return hashlib.sha1(" ".join((text or "").lower().split()).encode("utf-8")).hexdigest()[:16]
+
+
+def _load_reviewed() -> dict:
+    try:
+        return json.loads(REVIEWED_PATH.read_text(encoding="utf-8")).get("entries", {})
+    except (FileNotFoundError, ValueError):
+        return {}
+
+
+REVIEWED = _load_reviewed()
+
+
+def effective_version() -> str:
+    """RULES_VERSION plus a fingerprint of the reviewed verdicts: both decide what a text reads as."""
+    try:
+        digest = hashlib.sha1(REVIEWED_PATH.read_bytes()).hexdigest()[:10]
+    except FileNotFoundError:
+        digest = "none"
+    return f"{RULES_VERSION}+reviewed:{digest}"
+
 
 OWN_DATA = "own_data"
 CASCADE = "programme_cascade"
@@ -243,9 +282,21 @@ def attribute(record: dict, sibling_ncts: list[str] | None = None) -> dict:
     else:
         verdict, basis = UNCLEAR, None
 
+    rule_verdict = verdict
+    reviewed = REVIEWED.get(reviewed_key(text))
+    if reviewed and reviewed.get("attribution") in (OWN_DATA, CASCADE, UNCLEAR):
+        verdict, basis = reviewed["attribution"], "reviewed"
+        label = REVIEWED_EVIDENCE.get(verdict)
+        own_hits = [label] if verdict == OWN_DATA else []
+        cascade_hits = [label] if verdict == CASCADE else []
+        if verdict == UNCLEAR:
+            own_hits, cascade_hits = [], []
+
     return {
         "nct_id": record.get("nct_id"),
         "attribution": verdict,
+        "rule_attribution": rule_verdict,
+        "reviewed_by": (reviewed or {}).get("source") if basis == "reviewed" else None,
         "basis": basis,
         "cascade_evidence": cascade_hits,
         "own_data_evidence": own_hits,
