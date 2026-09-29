@@ -4,3 +4,4 @@ __pycache__/
 /product/*
 !/product/README.md
 .DS_Store
+.review/
