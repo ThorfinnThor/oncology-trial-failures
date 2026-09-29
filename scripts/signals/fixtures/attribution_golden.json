@@ -1,0 +1,159 @@
+{
+ "_about": "Real registry stop reasons, each verdict judged by hand. check_text_readers.py fails the build if any of them changes. Add every stop reason that was ever shown wrongly, with the verdict it should have had.",
+ "cases": [
+  {
+   "nct_id": "NCT03860844",
+   "why_stopped": "Study was prematurely stopped due to sponsor decision (stage 2 efficacy criteria not met); not due to safety concerns.",
+   "attribution": "own_data",
+   "evidence_includes": "efficacy criteria not met in this trial",
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT05660967",
+   "why_stopped": "The study was terminated because sufficient data had been collected to meet the objectives of the development program. No new or unexpected safety findings were identified, and the decision to terminate was not related to participant safety.",
+   "attribution": "unclear",
+   "evidence_includes": null,
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT05381909",
+   "why_stopped": "The research was terminated voluntarily due to changes in the company's business strategy regarding the development of BGB-24714, rather than any safety issues.",
+   "attribution": "unclear",
+   "evidence_includes": null,
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT03349645",
+   "why_stopped": "Study terminated by Sponsor due to absence of significant safety findings.",
+   "attribution": "unclear",
+   "evidence_includes": null,
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT00765102",
+   "why_stopped": "There was a change in the Sponsor's research strategy; safety concerns were not a factor.",
+   "attribution": "unclear",
+   "evidence_includes": null,
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT04790903",
+   "why_stopped": "Decision to discontinue the study based on broader development and strategic prioritisation. The Sponsor concludes there is no benefit-risk impact on the BO42203 study.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "a portfolio decision",
+   "evidence_excludes": "this trial's benefit-risk assessment"
+  },
+  {
+   "nct_id": "NCT00916617",
+   "why_stopped": "The study was terminated on August 6, 2012, because 2 large Phase 3 studies showed no clinical benefit. This decision was not based on any new safety concerns.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "cites results from other studies",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT02342548",
+   "why_stopped": "Study terminated on 15DEC2016 due to study A8241021 showing no significant difference on primary endpoint between PF-02545920 \\& placebo. No safety concerns.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "cites another study",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT00460317",
+   "why_stopped": "Amgen discontinued the development of AMG706 because 20050201 did not meet its primary objective.",
+   "attribution": "programme_cascade",
+   "evidence_includes": null,
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT04266301",
+   "why_stopped": "In December 2023, Novartis decided to terminate the sabatolimab clinical development program early after Phase II (MDS1) and Phase III (MDS2) studies failed to meet their primary objectives. The termination was not due to safety concerns.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "the development programme ended",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT06243835",
+   "why_stopped": "Terminated by sponsor due to low drug bioavailability; no safety concerns were noted.",
+   "attribution": "unclear",
+   "evidence_includes": null,
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT04864392",
+   "why_stopped": "Study early terminated due to lack of effect (did not meet primary/ secondary endpoints). This decision was not linked to safety concerns",
+   "attribution": "own_data",
+   "evidence_includes": "missed its endpoint",
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT03690141",
+   "why_stopped": "Terminated early due to a lack of efficacy.",
+   "attribution": "own_data",
+   "evidence_includes": "efficacy observed in this trial",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT02633800",
+   "why_stopped": "Trial was terminated by sponsor due to lack of efficacy.",
+   "attribution": "own_data",
+   "evidence_includes": "efficacy observed in this trial",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT03263091",
+   "why_stopped": "Study did not meet its primary efficacy endpoint.",
+   "attribution": "own_data",
+   "evidence_includes": "missed its endpoint",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT04457336",
+   "why_stopped": "Study SPR001-203 did not meet its primary and secondary endpoints therefore Spruce Biosciences has decided to terminate the study",
+   "attribution": "own_data",
+   "evidence_includes": "missed its endpoint",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT04396535",
+   "why_stopped": "EMD Serono recommendation based on three other studies that failed to show benefit for bintrafusp alfa",
+   "attribution": "programme_cascade",
+   "evidence_includes": null,
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT04952753",
+   "why_stopped": "The study was terminated early due to the halt of NIS793 treatment and urgent safety measures issued in July and August 2023, respectively, as continued evaluation of Standard of Care alone will not support the trial's purpose.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "a treatment halt issued elsewhere",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT03451773",
+   "why_stopped": "Study was closed after one treatment related death.",
+   "attribution": "own_data",
+   "evidence_includes": "an event in this trial",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT03840902",
+   "why_stopped": "Based on recommendations by an external Independent data Monitoring Committee (IDMC), Sponsor decided to discontinue this clinical study due to a low likelihood of achieving superiority in the efficacy endpoints versus standard of care.",
+   "attribution": "own_data",
+   "evidence_includes": "its own monitoring committee",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT04327986",
+   "why_stopped": "Study closed to accrual due to the worsening risk: benefit ratio for participants receiving bintrafusp alfa (M7824).",
+   "attribution": "own_data",
+   "evidence_includes": "this trial's benefit-risk assessment",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT04489940",
+   "why_stopped": "The study was prematurely discontinued by the sponsor due to probability of success which was too low to justify the continuation of recruitment.",
+   "attribution": "own_data",
+   "evidence_includes": "this trial's probability of success",
+   "evidence_excludes": null
+  }
+ ]
+}

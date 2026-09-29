@@ -26,6 +26,13 @@ import re
 from collections import defaultdict
 from datetime import date, datetime
 
+from scripts.signals.text_guards import denied
+
+# Bump whenever a pattern below changes. The weekly run compares every stop's verdict with last
+# week's: the same text read by the same rules must give the same verdict, and a change of rules
+# must be declared here, where the diff is then printed for review. See check_text_readers.py.
+RULES_VERSION = "2026-09-29.1"
+
 OWN_DATA = "own_data"
 CASCADE = "programme_cascade"
 UNCLEAR = "unclear"
@@ -78,7 +85,7 @@ OWN_PATTERNS = [
     (r"\b(?:observed|seen|reported|occurred)\s+in\s+(?:this|the)\s+(?:stud|trial|patients?)", "an observation in this trial"),
     (r"\b(?:risk[:\s/-]*benefit|benefit[:\s/-]*risk)\b", "this trial's benefit-risk assessment"),
     (r"\b(?:lack|insufficient|limited|no)\s+(?:of\s+)?(?:evidence\s+of\s+)?(?:clinical\s+|robust\s+|sufficient\s+)?"
-     r"(?:efficacy|activity|benefit|response)\b",
+     r"(?:efficacy|activity|benefit(?![-/:\s]*risk)|response)\b",
      "efficacy observed in this trial"),
     (r"\bprobability\s+of\s+success\b", "this trial's probability of success"),
     (r"\b(?:did\s+not|failed\s+to)\s+(?:achieve|reach|demonstrate)\b", "a result in this trial"),
@@ -173,8 +180,16 @@ def attribute(record: dict, sibling_ncts: list[str] | None = None) -> dict:
     # A trial that quotes its own registry id is pointing at itself, not elsewhere.
     own_nct = record.get("nct_id") or ""
     scan = affirmed(text.replace(own_nct, "") if own_nct else text)
-    cascade_hits = [why for rx, why in CASCADE_RE if rx.search(scan)]
-    own_hits = [why for rx, why in OWN_RE if rx.search(scan)]
+    # Two independent readers must agree that a match is affirmed: affirmed() has already cut the
+    # negated phrases out of `scan`, and denied() looks at the words around each match in the
+    # original text. A hit counts only when it survives both.
+    raw = text.replace(own_nct, "") if own_nct else text
+
+    def affirmed_hit(rx) -> bool:
+        return bool(rx.search(scan)) and any(not denied(raw, m.start(), m.end()) for m in rx.finditer(raw))
+
+    cascade_hits = [why for rx, why in CASCADE_RE if affirmed_hit(rx)]
+    own_hits = [why for rx, why in OWN_RE if affirmed_hit(rx)]
     sibling_ncts = sibling_ncts or []
 
     if cascade_hits:

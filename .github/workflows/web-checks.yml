@@ -30,3 +30,16 @@ jobs:
       - run: npm run check:private
       - run: npm test
       - run: npm run build:cloudflare
+
+  # The rules that read free text (why a trial stopped, whose data stopped it) are checked on every
+  # push, before the weekly run would publish anything built with them. MISTAKES.md #15.
+  text-readers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+      - run: python scripts/signals/check_text_readers.py
+      - run: python scripts/signals/run_signals_tests.py

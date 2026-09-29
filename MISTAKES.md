@@ -245,10 +245,31 @@ from a sentence that denied it; "No safety concern", "not related to safety", "t
 safety concerns contributing to this decision". The same pattern had been hiding a gap: "lack of
 efficacy" was never matched at all, because the efficacy pattern did not allow the word "of".
 
-**What stops it.** Negated phrases ("not due to …", "no safety concerns", "unrelated to …") are cut
-out before any pattern is read, up to the next comma or "but". The before/after diff over all
-21,667 stop reasons was read by hand, not only the one that was reported. Tests pin the reported
-sentence and the negation boundary.
+**Why it got through.** The patterns were written against sentences that state a cause, and tested
+against sentences that state a cause. Nobody ran them over the real corpus looking for the ways a
+sponsor says what the cause was *not*, and nothing compared this week's verdicts with last week's,
+so a rule change that moved hundreds of verdicts looked exactly like a quiet week.
+
+**What stops it now — four layers, all automatic:**
+
+1. *Two independent readers.* `affirmed()` cuts negated phrases out before matching;
+   `text_guards.denied()` then checks the words around every match in the original text. A hit
+   counts only if both accept it. The second reader alone caught five denials the first missed
+   ("rather than any safety concern", "safety concerns were not a factor").
+2. *Whole-corpus invariant.* `check_text_readers.py` reads all ~22,000 stop reasons and fails if any
+   verdict says "safety in this trial" where the text only denies safety. The old rules fail it
+   560 times; the current ones pass it.
+3. *Golden cases.* Real stop reasons judged by hand, including every one ever shown wrongly
+   (`scripts/signals/fixtures/attribution_golden.json`). Add to it whenever a customer or the owner
+   finds a wrong verdict.
+4. *Determinism and declared change.* The same text under the same `RULES_VERSION` must give the
+   same verdict as last week (`data/attribution_snapshot.json`). A rule change without a version
+   bump fails the build; with one, every changed verdict is written to
+   `data/attribution_changes.md` to be read before it ships.
+
+The gate runs on every push (web-checks.yml) and in the weekly run before any report is rebuilt
+(update-data.yml, not continue-on-error): if it fails, nothing is republished and GitHub emails
+the owner.
 
 ---
 

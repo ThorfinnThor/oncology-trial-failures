@@ -103,6 +103,14 @@ jobs:
           git commit -m "Update trial failure dataset"
           git push
 
+      # The gate between the text-reading rules and anything a customer sees (MISTAKES.md #15:
+      # "not due to safety concerns" was shown as a safety stop). Deliberately NOT
+      # continue-on-error: if it fails, no report, brief or newsletter is rebuilt this week, the
+      # published ones stay as they were, and GitHub emails the owner that the run failed.
+      - name: Text-reader gate
+        run: |
+          python scripts/signals/check_text_readers.py
+
       # ---------------------------------------------------------------------------
       # Oncology Failure Signals enrichment (commercial dataset). Runs after the
       # classified dataset has been committed, so an outage of an external source
@@ -222,6 +230,11 @@ jobs:
       - name: Commit public product summary and sample
         if: steps.signals.outcome == 'success'
         run: |
+          # Last week's verdicts, for next week's determinism check; and the reviewed diff when the
+          # rules were changed on purpose.
+          python scripts/signals/check_text_readers.py --write-snapshot
+          git add data/attribution_snapshot.json
+          [ -f data/attribution_changes.md ] && git add data/attribution_changes.md
           git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/data/cohort_flow.json web/data/reporting_quality.json web/data/event_ascertainment.json web/data/evidence_catalogue.json web/data/watch_terms.json web/data/private web/public/samples web/public/briefs web/public/trial_endpoints.json web/data/home_outcomes.json
           git diff --cached --quiet && echo "No product summary changes" && exit 0
           git commit -m "Update product summary, sample and briefs"

@@ -173,6 +173,25 @@ check("'lack of efficacy' is this trial's own finding",
       attribute({"nct_id": "NCT1", "why_stopped": "Trial was terminated by sponsor due to lack of efficacy."})["attribution"],
       "own_data")
 
+# The independent second reader: is a safety statement affirmed, or only denied?
+from scripts.signals.text_guards import affirms_safety  # noqa: E402
+for _text, _want in [
+    ("Study was prematurely stopped due to sponsor decision (stage 2 efficacy criteria not met); not due to safety concerns.", False),
+    ("Sponsor decision (No safety concern)", False),
+    ("Safety concerns were not identified; stopped for business reasons.", False),
+    ("There were no safety concerns contributing to this decision.", False),
+    ("This decision was not driven by any new or unexpected safety findings.", False),
+    ("The research was terminated due to changes in business strategy, rather than any safety concern.", False),
+    ("Study terminated by Sponsor due to absence of significant safety findings.", False),
+    ("There was a change in the Sponsor's research strategy; safety concerns were not a factor.", False),
+    ("The study was not continued due to safety concerns.", True),
+    ("Terminated due to safety concerns.", True),
+    ("Terminated after two treatment-related deaths.", True),
+    ("Stopped for lack of efficacy and unexpected toxicity.", True),
+    ("DSMB recommended stopping due to safety.", True),
+]:
+    check(f"affirms safety: {_text[:50]}…", affirms_safety(_text), _want)
+
 # "futility" belongs to whoever ran the trial it happened in.
 check("an upstream study's futility is not this trial's",
       attribute({"nct_id": "NCT1", "why_stopped": "The parent study was stopped for futility."})["attribution"],
