@@ -133,7 +133,7 @@ export default function BriefVsPackage({
               </div>
               <p className="bvpSample">
                 <Link className="bvpInline" href="/packages/sample">
-                  See a complete report first — free, nothing blurred →
+                  View a complete sample report →
                 </Link>
               </p>
               <ul>

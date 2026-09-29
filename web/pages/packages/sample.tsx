@@ -12,7 +12,7 @@ import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
 import { SAMPLE_PACKAGE } from "@/lib/sample";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "A complete diligence report, unlocked — Clinical Trial Failures";
+const TITLE = "Sample diligence report — Clinical Trial Failures";
 const DESCRIPTION =
   "See exactly what a diligence report contains before buying one: a full report for one cohort, published without a paywall, with a real molecule in the comparison.";
 
@@ -85,19 +85,18 @@ export default function SamplePackagePage() {
           </nav>
 
           <section className="intro">
-            <div className="eyebrow">What {PACKAGE_PRICE} buys</div>
-            <h1>A complete diligence report, unlocked</h1>
+            <div className="eyebrow">Sample report · {PACKAGE_PRICE}</div>
+            <h1>Sample diligence report</h1>
             <p className="lead">
-              This is one report exactly as a buyer receives it — the <b>{s.cohort}</b> cohort, with{" "}
-              <b>{s.asset}</b> in the place where your own molecule goes. Nothing is removed or blurred. Every other
-              report has the same sections for its own cohort.
+              Full sample for the <b>{s.cohort}</b> cohort, with <b>{s.asset}</b> as the example molecule. All
+              sections are shown in full; each report follows the same structure for its own cohort.
             </p>
             <div className="actions">
               <a className="btn btn-primary" href={s.path} target="_blank" rel="noopener">
                 Open the full sample ↗
               </a>
               <Link className="btn" href="/asset-check">
-                Get one for your molecule — {PACKAGE_PRICE}
+                Request a report for your molecule — {PACKAGE_PRICE}
               </Link>
             </div>
           </section>

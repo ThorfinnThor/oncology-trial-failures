@@ -137,9 +137,9 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                   ones that failed.
                 </p>
                 <p className="fine">
-                  Want to see what you get first?{" "}
+                  See the full structure first:{" "}
                   <Link className="link" href="/packages/sample">
-                    A complete report, unlocked
+                    sample report
                   </Link>
                   .
                 </p>

@@ -12,7 +12,7 @@ type Step = { key: string; label: string; detail: string; href: string; price: s
 
 const STEPS: Step[] = [
   { key: "brief", label: "Read the brief", detail: "The finding and the trials behind it", href: "/briefs", price: "Free" },
-  { key: "sample", label: "See a complete report", detail: "One report, unlocked, every section", href: "/packages/sample", price: "Free" },
+  { key: "sample", label: "View a sample report", detail: "One complete report, all sections", href: "/packages/sample", price: "Free" },
   { key: "check", label: "Check your molecule", detail: "Which failed molecules share its target", href: "/asset-check", price: "Free" },
   { key: "buy", label: "Get your report", detail: "Every matching cohort, your molecule placed in each", href: "/asset-check", price: PACKAGE_PRICE },
 ];

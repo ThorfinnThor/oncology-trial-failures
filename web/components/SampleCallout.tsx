@@ -23,11 +23,11 @@ export default function SampleCallout({ compact = false }: { compact?: boolean }
       <div className="scBody">
         <div className="scTags">
           <span className="scFree">Free</span>
-          <span className="scNo">No sign-up · nothing blurred</span>
+          <span className="scNo">No sign-up required</span>
         </div>
-        <div className="scTitle">See a complete {PACKAGE_PRICE} report before you buy one</div>
+        <div className="scTitle">View a complete {PACKAGE_PRICE} report</div>
         <p className="scText">
-          The {s.cohort} report exactly as a buyer receives it, with {s.asset} in the place of your own molecule.
+          Full sample for the {s.cohort} cohort, with {s.asset} as the example molecule.
         </p>
         <div className="scActions">
           <Link className="scButton" href="/packages/sample">

@@ -93,13 +93,13 @@ def slugify(value: str) -> str:
 
 
 def sample_banner(cohort: str, asset: str) -> str:
-    return ("<div style='background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;color:#78350f;padding:12px 18px;margin:0 0 22px;"
-            "font:14px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif'>"
-            f"<b>Sample — a complete diligence report, published in full.</b> This is exactly what a buyer receives "
-            f"for the {cohort} cohort, with {asset} in the place of the buyer's own molecule. Every other report has "
-            f"the same sections for its own cohort. <a href='https://clinicaltrialfailures.com/packages' "
-            f"style='color:#78350f;font-weight:700'>All diligence reports</a> · <a href='https://clinicaltrialfailures.com/asset-check' "
-            f"style='color:#78350f;font-weight:700'>Get one for your molecule — €99</a></div>")
+    link = "color:#1e3a8a;font-weight:600;text-decoration:none;white-space:nowrap"
+    return ("<div style='display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;align-items:center;"
+            "background:#f8fafc;border:1px solid #e2e8f0;border-left:3px solid #1e3a8a;border-radius:6px;color:#334155;"
+            "padding:10px 16px;max-width:1000px;box-sizing:border-box;margin:0 auto 22px;font:13px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif'>"
+            f"<span><b style='color:#0f172a'>Sample report</b> · {cohort} · Example molecule: {asset}</span>"
+            f"<span><a href='https://clinicaltrialfailures.com/packages' style='{link}'>All diligence reports</a>"
+            f" · <a href='https://clinicaltrialfailures.com/asset-check' style='{link}'>Request a report — €99</a></span></div>")
 
 
 def write_sample(built: dict, job) -> dict | None:

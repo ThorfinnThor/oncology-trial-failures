@@ -71,7 +71,7 @@ const PRICING = [
     ],
     cta: "Check your molecule",
     href: "/asset-check",
-    sample: { label: "See a complete report, unlocked", href: "/packages/sample" },
+    sample: { label: "View a sample report", href: "/packages/sample" },
     highlight: true,
     badge: "Most buyers",
   },

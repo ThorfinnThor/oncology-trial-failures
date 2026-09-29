@@ -490,7 +490,7 @@ export default function AssetCheckPage() {
                     the report, at {PACKAGE_PRICE}, and it opens with this comparison already run for your molecule.
                     The brief for each class is free either way.{" "}
                     <Link className="link" href="/packages/sample">
-                      See a complete report, unlocked
+                      View a sample report
                     </Link>
                     .
                   </p>
