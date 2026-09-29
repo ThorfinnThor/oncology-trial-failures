@@ -560,7 +560,7 @@ def interpretation(pkg: dict) -> list[str]:
     if stops:
         out.append(f"The stops came from {c['stop_programmes']} sponsor–asset programmes across {c['stop_sponsors']} "
                f"sponsors"
-               + (f"; removing the largest ({c['largest_programme']}, {c['largest_programme_stops']} stops) leaves "
+               + (f"; removing the largest ({c['largest_programme']}, {c['largest_programme_stops']} {'stop' if c['largest_programme_stops'] == 1 else 'stops'}) leaves "
                   f"{pct(c['rate_leave_one_programme_out'])}." if c["rate_leave_one_programme_out"] is not None else "."))
     if pkg["ambiguity"]["unresolved_terminations"]:
         out.append(f"{pkg['ambiguity']['unresolved_terminations']} further closed trials were terminated with no cause "

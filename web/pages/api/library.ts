@@ -12,6 +12,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import briefsIndex from "@/data/briefs_index.json";
 import productSummary from "@/data/product_summary.json";
 import { grantedSlugs, grantScope, isUnlocked, PACKAGES, type Grant } from "@/lib/server/grants";
+import { chaptersFor } from "@/lib/server/reportDocument";
 
 type KvBinding = { get(key: string): Promise<string | null> };
 type CloudflareGlobal = typeof globalThis & {
@@ -80,26 +81,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
   }
 
-  const packages = slugs
-    .map((slug) => {
-      const pkg = PACKAGES[slug];
-      const brief = (briefsIndex.briefs as { slug: string; file_stem: string }[]).find(
-        (b) => b.file_stem === (pkg as unknown as { brief_stem?: string }).brief_stem,
-      );
-      return {
-        slug,
-        cohort: pkg.cohort,
-        area: pkg.area,
-        rate: pkg.headline.rate,
-        comparator_rate: pkg.headline.comparator_rate,
-        counts: pkg.counts,
-        generated_at_utc: pkg.generated_at_utc,
-        brief_slug: brief ? brief.slug : null,
-        url: `/api/report?slug=${encodeURIComponent(slug)}&token=${encodeURIComponent(token)}`
-          + (grant.asset ? `&asset=${encodeURIComponent(grant.asset)}` : ""),
-      };
-    })
-    .sort((a, b) => b.counts.total_in_cohort - a.counts.total_in_cohort);
+  const scope = grantScope(grant);
+  const tokenParam = encodeURIComponent(token);
+  const assetParam = grant.asset ? `&asset=${encodeURIComponent(grant.asset)}` : "";
+  // A report's chapters, main chapter first, each with the reason it is in the report. For
+  // everything-access there is no subject, so the order is simply the largest cohort first.
+  const packages = chaptersFor(slugs, scope === "all" ? "" : grant.asset || "").map((chapter) => {
+    const pkg = PACKAGES[chapter.slug];
+    const brief = (briefsIndex.briefs as { slug: string; file_stem: string }[]).find(
+      (b) => b.file_stem === (pkg as unknown as { brief_stem?: string }).brief_stem,
+    );
+    return {
+      ...chapter,
+      generated_at_utc: pkg.generated_at_utc,
+      brief_slug: brief ? brief.slug : null,
+      url: `/api/report?slug=${encodeURIComponent(chapter.slug)}&token=${tokenParam}${assetParam}`,
+    };
+  });
 
   console.log(JSON.stringify({ event: "library_opened", scope: grant.scope, cohorts: packages.length }));
 
@@ -108,20 +106,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Handed back so the page can replace the checkout id in the address bar with the link that
     // keeps working. A buyer who bookmarks this page should not be bookmarking a dead session.
     token,
-    scope: grantScope(grant),
+    scope,
     asset: grant.asset || "",
     company: grant.company || "",
-    issued_at: grant.issued_at || "",
+    email: grant.email || "",
+    issued_at: (grant as Grant & { paid_at?: string }).paid_at || grant.issued_at || "",
+    // The whole report as one file, and the same file opened for printing to PDF.
+    document: scope === "all" ? null : {
+      html: `/api/report-document?token=${tokenParam}&format=html`,
+      print: `/api/report-document?token=${tokenParam}&format=print`,
+    },
     dataset_version: productSummary.dataset_version,
     packages,
-    // Public files, listed here so everything a buyer paid for is reachable from one page rather
-    // than from an email they have to find again.
-    files: [
-      { label: "Free sample of the signals dataset (CSV)", href: productSummary.sample_file },
-      { label: "What every column means", href: productSummary.sample_readme_file },
-      { label: "Stopped trials, full export (CSV)", href: "/all_stopped_trials.csv" },
-      { label: "Trials stopped for a biological reason (CSV)", href: "/biological_failure_trials.csv" },
-      { label: "Release metadata", href: "/dataset_meta.json" },
-    ],
+    // The raw exports belong to everything-access, where they are part of what was bought. A buyer
+    // of one report gets the report; handing them the site's public CSVs as if they were part of
+    // it only raised the question of what they were for.
+    files: scope === "all" ? [
+      { label: "Stopped trials — full export", format: "CSV", href: "/all_stopped_trials.csv",
+        detail: "Every stopped trial in the database, one row per trial, with the stop reason and its classification." },
+      { label: "Trials stopped for a biological reason", format: "CSV", href: "/biological_failure_trials.csv",
+        detail: "The subset stopped for efficacy, safety or benefit–risk — the trials the rates in every report are built on." },
+      { label: "Release metadata", format: "JSON", href: "/dataset_meta.json",
+        detail: "Release date, source (ClinicalTrials.gov API v2) and record counts of the current data." },
+    ] : [],
   });
 }

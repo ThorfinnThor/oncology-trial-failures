@@ -15,13 +15,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { grantedSlugs, isUnlocked, type Grant } from "@/lib/server/grants";
 import bundle from "@/data/private/evidence_packages.json";
-import {
-  compareAsset,
-  renderComparison,
-  renderUnresolved,
-  resolveSubject,
-  type FailedAsset,
-} from "@/lib/server/assetComparison";
+import { renderChapter } from "@/lib/server/reportDocument";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -31,19 +25,9 @@ type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: { LEADS?: KvBinding } } | undefined;
 };
 
-type Pkg = {
-  cohort: string;
-  area: string;
-  html: string;
-  generated_at_utc: string;
-  counts: Record<string, number>;
-  failed_assets?: FailedAsset[];
-};
+type Pkg = { cohort: string };
 
-// The prebuilt document leaves this slot empty; the comparison against the buyer's own molecule
-// is the one section that cannot exist before there is a buyer.
-const SLOT = "<!--ASSET_COMPARISON-->";
-const PACKAGES = (bundle as { packages: Record<string, Pkg> }).packages;
+const PACKAGES = (bundle as unknown as { packages: Record<string, Pkg> }).packages;
 
 function kv(): KvBinding | undefined {
   return (globalThis as CloudflareGlobal)[Symbol.for("__cloudflare-context__")]?.env?.LEADS;
@@ -94,18 +78,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // The asset under review comes from the order, unless this request names another one — a buyer
   // evaluating a second molecule should not have to order the cohort twice.
   const asset = clean(req.query.asset, 200) || clean(grant.asset, 200);
-  let section = "";
-  let resolution: "none" | "resolved" | "unresolved" = "none";
-  if (asset) {
-    const resolved = resolveSubject(asset);
-    if (resolved) {
-      section = renderComparison(resolved, compareAsset(resolved, pkg.failed_assets || [], pkg.area));
-      resolution = "resolved";
-    } else {
-      section = renderUnresolved(asset);
-      resolution = "unresolved";
-    }
-  }
+  const { html, resolution } = renderChapter(slug, asset);
 
   console.log(JSON.stringify({
     event: "report_delivered", slug, email: grant.email, asset_resolution: resolution,
@@ -116,5 +89,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   // A paid document should not sit in a shared cache.
   res.setHeader("Cache-Control", "private, no-store");
   res.setHeader("Content-Disposition", `inline; filename="${slug}.html"`);
-  return res.status(200).send(pkg.html.replace(SLOT, section));
+  return res.status(200).send(html);
 }

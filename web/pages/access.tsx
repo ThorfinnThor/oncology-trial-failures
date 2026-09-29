@@ -22,10 +22,11 @@ type Entry = {
   slug: string;
   cohort: string;
   area: string;
+  role: "main" | "further";
+  reason: string;
   rate: number;
   comparator_rate: number;
   counts: { closed: number; stopped: number; still_open: number; total_in_cohort: number };
-  brief_slug: string | null;
   url: string;
 };
 
@@ -36,10 +37,18 @@ type Library = {
   scope: "molecule" | "cohort" | "all";
   asset: string;
   company: string;
+  email: string;
+  issued_at: string;
+  document: { html: string; print: string } | null;
   dataset_version: string;
   packages: Entry[];
-  files: { label: string; href: string }[];
+  files: { label: string; format: string; detail: string; href: string }[];
 };
+
+function date(iso: string, plusDays = 0): string {
+  const d = new Date(new Date(iso).getTime() + plusDays * 86400000);
+  return Number.isNaN(d.getTime()) ? "" : d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+}
 
 export default function AccessPage() {
   const router = useRouter();
@@ -115,7 +124,7 @@ export default function AccessPage() {
   return (
     <>
       <Head>
-        <title>Your access — Clinical trial failures</title>
+        <title>Your diligence report — Clinical trial failures</title>
         <meta name="robots" content="noindex,nofollow" />
       </Head>
 
@@ -132,7 +141,7 @@ export default function AccessPage() {
 
       <main className="page">
         <div className="wrap">
-          {state === "loading" || state === "idle" ? <p className="muted">Opening your access…</p> : null}
+          {state === "loading" || state === "idle" ? <p className="muted">Opening your report…</p> : null}
 
           {state === "awaiting" ? (
             <div className="card note">
@@ -165,86 +174,134 @@ export default function AccessPage() {
           {state === "ready" && library ? (
             <>
               <section className="head">
-                <div className="eyebrow">Your access</div>
+                <div className="eyebrow">{library.scope === "all" ? "Full access" : "Diligence report"}</div>
                 <h1>
                   {library.scope === "all"
-                    ? "Everything, rebuilt every week"
-                    : library.asset
-                      ? `Diligence report: ${library.asset}`
-                      : "Your diligence report"}
+                    ? "Every diligence report, rebuilt every week"
+                    : library.asset || library.packages[0]?.cohort || "Your diligence report"}
                 </h1>
-                <p className="lead">
-                  {library.scope === "all"
-                    ? `${library.packages.length} reports covering `
-                    : library.packages.length === 1
-                      ? "One cohort, covering "
-                      : `${library.packages.length} cohort chapters, covering `}
-                  {n(total)} trials. Release {library.dataset_version}. This page is rebuilt with the data, so the link
-                  you saved always opens the current version — there is nothing to download and keep up to date.
-                </p>
-                {library.asset ? (
-                  <p className="fine">
-                    Each chapter opens with <b>{library.asset}</b> already compared against every molecule that failed
-                    in that cohort. To compare a different one, add <code>&amp;asset=</code> and its name to any link
-                    below.
-                  </p>
+                <dl className="meta">
+                  {library.company || library.email ? (
+                    <>
+                      <dt>Prepared for</dt>
+                      <dd>{library.company || library.email}</dd>
+                    </>
+                  ) : null}
+                  {library.issued_at ? (
+                    <>
+                      <dt>Issued</dt>
+                      <dd>{date(library.issued_at)}</dd>
+                      <dt>Online until</dt>
+                      <dd>{date(library.issued_at, 365)}</dd>
+                    </>
+                  ) : null}
+                  <dt>Data release</dt>
+                  <dd>{library.dataset_version} · ClinicalTrials.gov</dd>
+                </dl>
+
+                {library.document ? (
+                  <div className="download">
+                    <div className="downloadText">
+                      <div className="downloadTitle">The complete report</div>
+                      <p>
+                        Cover, contents and all {library.packages.length}{" "}
+                        {library.packages.length === 1 ? "chapter" : "chapters"} in one document.
+                      </p>
+                    </div>
+                    <div className="downloadActions">
+                      <a className="primary" href={library.document.html}>
+                        Download (HTML)
+                      </a>
+                      <a className="secondary" href={library.document.print} target="_blank" rel="noopener">
+                        Save as PDF
+                      </a>
+                    </div>
+                    <p className="downloadFine">
+                      The HTML file opens in any browser and works offline. &ldquo;Save as PDF&rdquo; opens the report
+                      with your browser&rsquo;s print dialog — choose &ldquo;Save as PDF&rdquo; as the destination.
+                    </p>
+                  </div>
                 ) : null}
               </section>
 
               <section className="section">
                 <div className="sectionHead">
-                  <h2>{library.scope === "all" ? "Reports" : "Chapters"}</h2>
-                  <span className="count">largest cohort first</span>
+                  <h2>{library.scope === "all" ? "Reports" : "Contents"}</h2>
+                  <span className="count">
+                    {library.packages.length} {library.packages.length === 1 ? "chapter" : "chapters"} ·{" "}
+                    {n(total)} trials
+                  </span>
                 </div>
-                <div className="rows">
-                  {library.packages.map((entry) => (
-                    <div className="row" key={entry.slug}>
+                {library.scope !== "all" && library.packages.some((p) => p.role === "further") ? (
+                  <p className="intro">
+                    The main chapter is the cohort defined by <b>{library.asset}</b> itself. Further chapters are
+                    cohorts in which a failed drug acting on {library.asset} also appears; each says why it is there.
+                  </p>
+                ) : null}
+                <ol className="rows">
+                  {library.packages.map((entry, i) => (
+                    <li className="row" key={entry.slug}>
+                      <div className="rowNum">{i + 1}</div>
                       <div className="rowMain">
-                        <div className="rowArea">{entry.area}</div>
+                        {library.scope !== "all" ? (
+                          <div className={entry.role === "main" ? "rowRole rowRoleMain" : "rowRole"}>
+                            {entry.role === "main" ? "Main chapter" : "Further chapter"} · {entry.area}
+                          </div>
+                        ) : (
+                          <div className="rowRole">{entry.area}</div>
+                        )}
                         <div className="rowName">{entry.cohort}</div>
                         <div className="rowMeta">
-                          <b>{pct(entry.rate)}</b> of {n(entry.counts.closed)} closed trials stopped early ·{" "}
-                          {pct(entry.comparator_rate)} for {entry.area.toLowerCase()} ·{" "}
-                          {n(entry.counts.total_in_cohort)} trials in the cohort · {entry.counts.stopped} stopped ·{" "}
-                          {n(entry.counts.still_open)} still running
+                          {n(entry.counts.total_in_cohort)} trials · {entry.counts.stopped} stopped early ·{" "}
+                          <b>{pct(entry.rate)}</b> of closed trials, against {pct(entry.comparator_rate)} for{" "}
+                          {entry.area.toLowerCase()}
                         </div>
+                        {entry.reason ? <div className="rowWhy">{entry.reason}</div> : null}
                       </div>
                       <div className="rowCta">
                         <a className="open" href={entry.url} target="_blank" rel="noopener noreferrer">
-                          {library.scope === "all" ? "Open the report" : "Open this chapter"}
+                          Read online
                         </a>
-                        {entry.brief_slug ? (
-                          <Link className="ghost" href={`/briefs/${entry.brief_slug}`}>
-                            Free brief
-                          </Link>
-                        ) : null}
                       </div>
-                    </div>
+                    </li>
                   ))}
-                </div>
+                </ol>
+                {library.asset ? (
+                  <p className="fine">
+                    Every chapter opens by placing each molecule that failed in that cohort against{" "}
+                    <b>{library.asset}</b>: same target and modality, same target, same pathway, or unrelated.
+                  </p>
+                ) : null}
               </section>
 
-              <section className="section">
-                <div className="sectionHead">
-                  <h2>Files</h2>
-                  <span className="count">current release</span>
-                </div>
-                <div className="files">
-                  {library.files.map((file) => (
-                    <a className="file" key={file.href} href={file.href}>
-                      {file.label}
-                    </a>
-                  ))}
-                </div>
-                <p className="fine">
-                  Keep this link. It does not expire for a year and it never points at a stale copy. If you need it on
-                  another address, or a cohort that is not here,{" "}
-                  <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Access")}`}>
-                    write to us
-                  </a>
-                  .
-                </p>
-              </section>
+              {library.files.length ? (
+                <section className="section">
+                  <div className="sectionHead">
+                    <h2>Data exports</h2>
+                    <span className="count">current release</span>
+                  </div>
+                  <div className="files">
+                    {library.files.map((file) => (
+                      <a className="file" key={file.href} href={file.href}>
+                        <span className="fileTop">
+                          <span className="fileLabel">{file.label}</span>
+                          <span className="fileFormat">{file.format}</span>
+                        </span>
+                        <span className="fileDetail">{file.detail}</span>
+                      </a>
+                    ))}
+                  </div>
+                </section>
+              ) : null}
+
+              <p className="fine keep">
+                Keep this page&rsquo;s link: it is your access for a year, and every chapter is rebuilt with each weekly
+                data release. For another address, another molecule or a question about the report,{" "}
+                <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Diligence report")}`}>
+                  write to us
+                </a>
+                .
+              </p>
             </>
           ) : null}
         </div>
@@ -325,24 +382,19 @@ export default function AccessPage() {
         .rows {
           display: grid;
           gap: 10px;
-          margin-top: 14px;
+          margin: 14px 0 0;
+          padding: 0;
+          list-style: none;
         }
         .row {
           display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
+          grid-template-columns: auto minmax(0, 1fr) auto;
           gap: 18px;
           align-items: center;
           background: var(--surface);
           border: 1px solid var(--border);
           border-radius: 14px;
           padding: 14px 16px;
-        }
-        .rowArea {
-          font-size: 10.5px;
-          font-weight: 800;
-          letter-spacing: 0.1em;
-          text-transform: uppercase;
-          color: var(--text-muted);
         }
         .rowName {
           margin-top: 3px;
@@ -366,8 +418,7 @@ export default function AccessPage() {
           flex-wrap: wrap;
           justify-content: flex-end;
         }
-        .open,
-        :global(.ghost) {
+        .open {
           border-radius: 10px;
           padding: 9px 14px;
           font-size: 13px;
@@ -379,10 +430,131 @@ export default function AccessPage() {
           background: var(--accent);
           color: #fff;
         }
-        :global(.ghost) {
+        .meta {
+          display: grid;
+          grid-template-columns: max-content 1fr;
+          gap: 4px 16px;
+          margin: 14px 0 0;
+          font-size: 13.5px;
+        }
+        .meta dt {
+          color: var(--text-muted);
+        }
+        .meta dd {
+          margin: 0;
+          font-weight: 700;
+        }
+        .download {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 8px 20px;
+          align-items: center;
+          margin-top: 22px;
+          padding: 18px 20px;
+          border: 1px solid rgba(79, 70, 229, 0.3);
+          background: rgba(79, 70, 229, 0.04);
+          border-radius: 16px;
+        }
+        .downloadTitle {
+          font-size: 16px;
+          font-weight: 900;
+        }
+        .downloadText p {
+          margin: 4px 0 0;
+          font-size: 13.5px;
+          color: var(--text-muted);
+        }
+        .downloadActions {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .primary,
+        .secondary {
+          border-radius: 12px;
+          padding: 11px 18px;
+          font-size: 14px;
+          font-weight: 800;
+          text-decoration: none;
+          white-space: nowrap;
+        }
+        .primary {
+          background: var(--accent);
+          color: #fff;
+        }
+        .secondary {
           background: #fff;
           color: inherit;
           border: 1px solid var(--border);
+        }
+        .downloadFine {
+          grid-column: 1 / -1;
+          margin: 4px 0 0;
+          font-size: 12px;
+          line-height: 1.55;
+          color: var(--text-muted);
+        }
+        .intro {
+          margin: 8px 0 0;
+          font-size: 13.5px;
+          line-height: 1.6;
+          color: var(--text-muted);
+          max-width: 90ch;
+        }
+        .intro b {
+          color: var(--text);
+        }
+        .rowNum {
+          width: 30px;
+          height: 30px;
+          border-radius: 999px;
+          background: rgba(79, 70, 229, 0.1);
+          color: var(--accent);
+          font-weight: 900;
+          font-size: 13px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .rowRole {
+          font-size: 10.5px;
+          font-weight: 800;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+          color: var(--text-muted);
+        }
+        .rowRoleMain {
+          color: var(--accent);
+        }
+        .rowWhy {
+          margin-top: 6px;
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: var(--text-muted);
+          border-left: 2px solid var(--border);
+          padding-left: 10px;
+        }
+        .fileTop {
+          display: flex;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .fileFormat {
+          font-size: 10.5px;
+          font-weight: 800;
+          letter-spacing: 0.08em;
+          color: var(--text-muted);
+        }
+        .fileDetail {
+          display: block;
+          margin-top: 4px;
+          font-size: 12.5px;
+          font-weight: 500;
+          line-height: 1.5;
+          color: var(--text-muted);
+        }
+        .keep {
+          margin-top: 30px;
         }
         .files {
           display: grid;
@@ -431,6 +603,12 @@ export default function AccessPage() {
         }
         @media (max-width: 760px) {
           .row {
+            grid-template-columns: auto minmax(0, 1fr);
+          }
+          .rowCta {
+            grid-column: 2;
+          }
+          .download {
             grid-template-columns: minmax(0, 1fr);
           }
           .rowCta {
