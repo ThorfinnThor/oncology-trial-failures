@@ -1,19 +1,19 @@
 {
-  "version": "2026-09-25",
-  "generated_at_utc": "2026-09-28T14:03:46Z",
+  "version": "2026-09-28",
+  "generated_at_utc": "2026-09-29T08:27:45Z",
   "source": "ClinicalTrials.gov API v2",
   "all": {
-    "record_count": 23822,
-    "max_last_update_post_date": "2026-09-25"
+    "record_count": 23831,
+    "max_last_update_post_date": "2026-09-28"
   },
   "biological_failure": {
-    "record_count": 2382,
-    "max_last_update_post_date": "2026-09-25"
+    "record_count": 2385,
+    "max_last_update_post_date": "2026-09-28"
   },
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 8393
+      "count": 8398
     },
     {
       "area": "Other",
@@ -29,15 +29,15 @@
     },
     {
       "area": "Cardiovascular",
-      "count": 1371
+      "count": 1372
     },
     {
       "area": "Neurology",
-      "count": 1051
+      "count": 1052
     },
     {
       "area": "Endocrine & Metabolic",
-      "count": 827
+      "count": 829
     },
     {
       "area": "Immunology & Autoimmune",
@@ -55,26 +55,26 @@
   "classification_v2": {
     "version": "2.7.0",
     "outcomes": {
-      "NON_BIOLOGICAL": 14295,
-      "UNKNOWN": 3597,
-      "BIOLOGICAL_FAILURE": 2382,
-      "CAUSE_NOT_STATED": 2023,
-      "NON_FAILURE_TRANSITION": 1288,
+      "NON_BIOLOGICAL": 14296,
+      "UNKNOWN": 3600,
+      "BIOLOGICAL_FAILURE": 2385,
+      "CAUSE_NOT_STATED": 2024,
+      "NON_FAILURE_TRANSITION": 1289,
       "MIXED_CAUSES": 237
     },
     "primary_reasons": {
-      "RECRUITMENT": 6607,
-      "UNSPECIFIED": 3597,
+      "RECRUITMENT": 6608,
+      "UNSPECIFIED": 3600,
       "BUSINESS_STRATEGY": 2247,
       "FUNDING": 1761,
-      "DECISION_WITHOUT_STATED_CAUSE": 1621,
-      "EFFICACY_FUTILITY": 1599,
+      "DECISION_WITHOUT_STATED_CAUSE": 1622,
+      "EFFICACY_FUTILITY": 1602,
       "STAFFING_RESOURCES": 811,
       "PROTOCOL_FEASIBILITY": 649,
       "SUPPLY_MANUFACTURING": 619,
       "SAFETY": 615,
+      "NOT_INITIATED": 510,
       "REGULATORY": 510,
-      "NOT_INITIATED": 509,
       "EXTERNAL_DISRUPTION": 489,
       "OPERATIONAL_OTHER": 419,
       "REPLACEMENT_TRANSITION": 415,
@@ -84,7 +84,7 @@
       "SUPPORT_WITHDRAWAL": 183,
       "BIOLOGICAL_UNSPECIFIED": 168
     },
-    "needs_review": 3597,
+    "needs_review": 3600,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,
