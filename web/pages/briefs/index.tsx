@@ -137,6 +137,9 @@ export default function BriefsIndexPage() {
                   <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard">
                     <div className="tileTop">
                       <span className="tileArea">{b.area}</span>
+                      {/* In the header, not the footer: a badge in the footer's flex row squeezed the
+                          two figures beside it into three wrapped lines each. */}
+                      {(b as any).survives_fdr_10pct ? <span className="tileStandout">Rate stands out</span> : null}
                     </div>
                     <div className="tileName">{b.segment}</div>
                     {(b as any).lead === "endpoints" ? (
@@ -181,7 +184,6 @@ export default function BriefsIndexPage() {
                       <div className="tileFoot">
                         <span>{b.stop_programmes ?? "—"} programmes</span>
                         <span>95% CI {pct(b.ci95[0])}–{pct(b.ci95[1])}</span>
-                        {(b as any).survives_fdr_10pct ? <span className="tileStandout">stands out</span> : null}
                       </div>
                     )}
                     {b.has_pdf ? (
@@ -469,12 +471,15 @@ export default function BriefsIndexPage() {
           font-size: 14px;
         }
         .tileStandout {
+          margin-left: auto;
           white-space: nowrap;
-          padding: 1px 7px;
+          padding: 2px 8px;
           border-radius: 999px;
           background: #fef3c7;
           color: #92400e;
+          font-size: 10.5px;
           font-weight: 800;
+          line-height: 1.4;
         }
         .fine {
           margin: 14px 0 0;
