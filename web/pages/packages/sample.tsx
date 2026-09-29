@@ -1,6 +1,6 @@
 // web/pages/packages/sample.tsx
 //
-// What €99 buys, shown rather than described: one complete package, unlocked, with every
+// What €99 buys, shown rather than described: one complete report, unlocked, with every
 // section named and explained next to it. A feature list asks to be believed; the document
 // itself does not.
 
@@ -12,9 +12,9 @@ import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
 import { SAMPLE_PACKAGE } from "@/lib/sample";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "A complete evidence package, unlocked — Clinical Trial Failures";
+const TITLE = "A complete diligence report, unlocked — Clinical Trial Failures";
 const DESCRIPTION =
-  "See exactly what an evidence package contains before buying one: a full package for one cohort, published without a paywall, with a real molecule in the comparison.";
+  "See exactly what a diligence report contains before buying one: a full report for one cohort, published without a paywall, with a real molecule in the comparison.";
 
 const SECTIONS: { name: string; what: string }[] = [
   {
@@ -78,7 +78,7 @@ export default function SamplePackagePage() {
         <div className="wrap">
           <nav className="crumbs">
             <Link className="link" href="/packages">
-              Packages
+              Reports
             </Link>
             <span aria-hidden="true"> · </span>
             <span className="muted">Sample</span>
@@ -86,11 +86,11 @@ export default function SamplePackagePage() {
 
           <section className="intro">
             <div className="eyebrow">What {PACKAGE_PRICE} buys</div>
-            <h1>A complete evidence package, unlocked</h1>
+            <h1>A complete diligence report, unlocked</h1>
             <p className="lead">
-              This is one package exactly as a buyer receives it — the <b>{s.cohort}</b> cohort, with{" "}
+              This is one report exactly as a buyer receives it — the <b>{s.cohort}</b> cohort, with{" "}
               <b>{s.asset}</b> in the place where your own molecule goes. Nothing is removed or blurred. Every other
-              package has the same sections for its own cohort.
+              report has the same sections for its own cohort.
             </p>
             <div className="actions">
               <a className="btn btn-primary" href={s.path} target="_blank" rel="noopener">
@@ -103,7 +103,7 @@ export default function SamplePackagePage() {
           </section>
 
           <section className="section">
-            <h2>What is in every package, in the order it appears</h2>
+            <h2>What is in every report, in the order it appears</h2>
             <ol className="sections">
               {SECTIONS.map((sec) => (
                 <li key={sec.name}>
@@ -124,7 +124,7 @@ export default function SamplePackagePage() {
               . It is rebuilt with every weekly release, like every package.
             </p>
             <div className="frame">
-              <iframe src={s.path} title={`Sample evidence package: ${s.cohort}`} loading="lazy" />
+              <iframe src={s.path} title={`Sample diligence report: ${s.cohort}`} loading="lazy" />
             </div>
           </section>
 
@@ -134,7 +134,7 @@ export default function SamplePackagePage() {
                 <h2>Yours, for your molecule</h2>
                 <p className="sub">
                   Name a drug in the asset check. You see for free which cohorts contain molecules that share its target;
-                  the package is every one of them, each opening with your molecule placed against the ones that failed.
+                  the report is every one of them, each opening with your molecule placed against the ones that failed.
                   One payment, delivered immediately, current for a year.
                 </p>
               </div>

@@ -1,6 +1,6 @@
 // web/pages/packages/[slug].tsx
 //
-// What a package contains, and the way to buy it — through the asset check, which sells by target. The brief is the teaser: it shows
+// What a report contains, and the way to buy it — through the asset check, which sells by target. The brief is the teaser: it shows
 // the finding and the stopped trials. This shows what the brief leaves out, using real counts
 // from the cohort rather than a feature list, and hands over the document immediately.
 
@@ -24,10 +24,10 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
   // there, and buying through it always includes this cohort — checked against the catalogue.
   const buyAs = pkg.cohort.split(" + ")[0];
 
-  const title = `${pkg.cohort} — evidence package`;
+  const title = `${pkg.cohort} — diligence report`;
   const c = pkg.counts;
   // Every trial in a couple of the smallest cohorts stopped, so the free brief already lists all of
-  // them and there is nothing left for a package to hand over. Those are not for sale.
+  // them and there is nothing left for a report to hand over. Those are not for sale.
   const adds = trialsBeyondTheBrief(pkg);
 
   return (
@@ -57,7 +57,7 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
         <div className="wrap">
           <div className="crumb">
             <Link className="link" href="/packages">
-              Packages
+              Reports
             </Link>{" "}
             · {pkg.area}
           </div>
@@ -69,7 +69,7 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
           <BriefVsPackage pkg={pkg} briefSlug={briefSlug} emphasis="package" />
 
           <section className="section">
-            <h2>{adds > 0 ? "What is in it, in detail" : "What a package contains, where one is sold"}</h2>
+            <h2>{adds > 0 ? "What is in it, in detail" : "What a report contains, where one is sold"}</h2>
             <div className="grid2">
               <div className="card">
                 <div className="cardTitle">The cohort, written out</div>
@@ -112,9 +112,9 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
           <section className="section" id="get">
             <div className="box">
               <div>
-                <h2>Get this package — {PACKAGE_PRICE}</h2>
+                <h2>Get this report — {PACKAGE_PRICE}</h2>
                 <p className="lead">
-                  Packages are bought for a molecule or a target rather than one cohort at a time. You receive every
+                  Reports are bought for a molecule or a target rather than one cohort at a time. You receive every
                   cohort in which a drug that failed shares that target — this one included — each opening with your
                   molecule compared against the molecules that failed there.
                 </p>
@@ -133,13 +133,13 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                   <Link className="link" href="/asset-check">
                     Check it first
                   </Link>{" "}
-                  — the comparison is free, and the package then opens with your molecule already placed against the
+                  — the comparison is free, and the report then opens with your molecule already placed against the
                   ones that failed.
                 </p>
                 <p className="fine">
                   Want to see what you get first?{" "}
                   <Link className="link" href="/packages/sample">
-                    A complete package, unlocked
+                    A complete report, unlocked
                   </Link>
                   .
                 </p>
@@ -153,7 +153,7 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                   <h2>There is nothing here to sell you</h2>
                   <p className="lead">
                     All {n(c.total_in_cohort)} trials in this cohort have closed and all {c.stopped} of them stopped
-                    early. The free brief lists every one, so a package would be the same {c.stopped} trials with a
+                    early. The free brief lists every one, so a report would be the same {c.stopped} trials with a
                     price on them.
                   </p>
                   <ul className="list">
@@ -416,7 +416,7 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const pkg = catalogue.packages.find((p) => p.slug === params?.slug);
   if (!pkg) return { notFound: true };
-  // The brief that this package extends, so the page can send a reader to the free one first.
+  // The brief that this report extends, so the page can send a reader to the free one first.
   const brief = (briefsIndex.briefs as any[]).find((b) => b.file_stem === (pkg as any).brief_stem);
   return { props: { pkg, briefSlug: brief ? brief.slug : null } };
 };

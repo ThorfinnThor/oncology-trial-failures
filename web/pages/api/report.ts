@@ -1,10 +1,10 @@
 // web/pages/api/report.ts
 //
-// Delivers a paid evidence package. Nobody runs a command when an order arrives: every package
+// Delivers a paid diligence report. Nobody runs a command when an order arrives: every report
 // is built by the weekly workflow and sits in a private bundle, so delivery is a lookup.
 //
 // The bundle is imported here and nowhere else. It must never be imported from a page
-// component — the bundler would ship it to the browser and every package would be free.
+// component — the bundler would ship it to the browser and every report would be free.
 // scripts/web/check_private_data.py enforces that.
 //
 // Access is a token. Today a token is issued by the ordering flow; when Stripe is connected,
@@ -58,13 +58,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const token = clean(req.query.token, 120);
 
   const pkg = PACKAGES[slug];
-  if (!pkg) return res.status(404).send("No package for that cohort.");
-  if (!token) return res.status(401).send("This package needs an access token.");
+  if (!pkg) return res.status(404).send("No report for that cohort.");
+  if (!token) return res.status(401).send("This report needs an access token.");
 
   const store = kv();
   if (!store) {
     // Without the binding there is no way to tell a real token from a guess, and serving the
-    // package anyway would make the token theatre. Fail closed and say why.
+    // report anyway would make the token theatre. Fail closed and say why.
     console.error(JSON.stringify({ event: "report_store_missing", slug }));
     return res.status(503).send("Delivery is not configured. Please contact us and we will send it.");
   }

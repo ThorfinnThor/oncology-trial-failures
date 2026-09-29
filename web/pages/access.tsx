@@ -171,16 +171,16 @@ export default function AccessPage() {
                     ? "Everything, rebuilt every week"
                     : library.asset
                       ? `Every cohort that shares a target with ${library.asset}`
-                      : "Your evidence package"}
+                      : "Your diligence report"}
                 </h1>
                 <p className="lead">
-                  {library.packages.length} {library.packages.length === 1 ? "package" : "packages"} covering{" "}
+                  {library.packages.length} {library.packages.length === 1 ? "report" : "reports"} covering{" "}
                   {n(total)} trials. Release {library.dataset_version}. This page is rebuilt with the data, so the link
                   you saved always opens the current version — there is nothing to download and keep up to date.
                 </p>
                 {library.asset ? (
                   <p className="fine">
-                    Each package opens with <b>{library.asset}</b> already compared against every molecule that failed
+                    Each report opens with <b>{library.asset}</b> already compared against every molecule that failed
                     in that cohort. To compare a different one, add <code>&amp;asset=</code> and its name to any link
                     below.
                   </p>
@@ -189,7 +189,7 @@ export default function AccessPage() {
 
               <section className="section">
                 <div className="sectionHead">
-                  <h2>Packages</h2>
+                  <h2>Reports</h2>
                   <span className="count">largest cohort first</span>
                 </div>
                 <div className="rows">
@@ -207,7 +207,7 @@ export default function AccessPage() {
                       </div>
                       <div className="rowCta">
                         <a className="open" href={entry.url} target="_blank" rel="noopener noreferrer">
-                          Open the package
+                          Open the report
                         </a>
                         {entry.brief_slug ? (
                           <Link className="ghost" href={`/briefs/${entry.brief_slug}`}>

@@ -5,7 +5,7 @@
 //
 // What comes back is counts: how many of the molecules that failed in a cohort share this one's
 // target, its pathway, or only its modality, and how often trials of that class stopped early.
-// The names of those molecules are what the package is for. Anyone can tell from this whether the
+// The names of those molecules are what the report is for. Anyone can tell from this whether the
 // answer is worth a hundred euros, which is the only honest way to sell it.
 
 import Head from "next/head";
@@ -32,7 +32,7 @@ type Match = {
   area: string;
   /** Null where no rate was published for this class — too few closed trials to put one on. */
   rate: number | null;
-  /** Null where there is no package to sell for this class. */
+  /** Null where there is no report to sell for this class. */
   slug: string | null;
   counts: { total_in_cohort: number; closed: number; stopped: number; still_open: number };
   molecules: number;
@@ -94,7 +94,7 @@ export default function AssetCheckPage() {
     }
   }
 
-  // Arriving from a package page with ?q=<class>: fill the box and run the check, so the buyer
+  // Arriving from a report page with ?q=<class>: fill the box and run the check, so the buyer
   // lands on the result with the buy box already under it rather than on an empty form. Read
   // through useLinkKey for the same reason the mail pages do — the address bar, not a router flag.
   const { key: preset } = useLinkKey("q");
@@ -183,7 +183,7 @@ export default function AssetCheckPage() {
               <b>HER2 ADC</b>. We resolve what it acts on and compare it against every drug behind a trial that was
               stopped early for an efficacy, safety or benefit–risk reason, across every mechanism class we track in
               oncology, neurology, immunology and metabolic disease. You get the counts and the rates now, free. The names of
-              those molecules and the trials behind them are what a package costs {PACKAGE_PRICE}.
+              those molecules and the trials behind them are what a report costs {PACKAGE_PRICE}.
             </p>
 
             <form className="ask" onSubmit={onSubmit}>
@@ -272,7 +272,7 @@ export default function AssetCheckPage() {
                       ? ` ${modalityOnly.length} ${modalityOnly.length === 1 ? "cohort has" : "cohorts have"} failures that share only its modality, which says something about how hard the modality is and nothing about this target.`
                       : ""}{" "}
                     That is a real answer and it is worth having: there is no precedent here to argue with, and no
-                    package of ours would tell you otherwise.
+                    report of ours would tell you otherwise.
                   </p>
                 </div>
               ) : (
@@ -391,7 +391,7 @@ export default function AssetCheckPage() {
                           </Link>
                         ) : (
                           <span className="matchNone">
-                            No package for this class: {m.counts.closed < 10
+                            No report for this class: {m.counts.closed < 10
                               ? "too few closed trials to build one on"
                               : m.counts.stopped === 0
                                 ? "nothing in it stopped early, so there is nothing to itemise"
@@ -437,7 +437,7 @@ export default function AssetCheckPage() {
                       <>
                         <div>
                           <div className="buyTitle">
-                            Get the {withTarget.length} {withTarget.length === 1 ? "package" : "packages"} that share
+                            Get the {withTarget.length} {withTarget.length === 1 ? "report" : "reports"} that share
                             its target — {PACKAGE_PRICE}
                           </div>
                           <p className="buySub">
@@ -487,10 +487,10 @@ export default function AssetCheckPage() {
                   <p className="fine">
                     What is withheld here is deliberate and small: the names of the molecules, the trials behind each,
                     and whether a stop was that trial&rsquo;s own result or a programme decision taken elsewhere. That is
-                    the package, at {PACKAGE_PRICE}, and it opens with this comparison already run for your molecule.
+                    the report, at {PACKAGE_PRICE}, and it opens with this comparison already run for your molecule.
                     The brief for each class is free either way.{" "}
                     <Link className="link" href="/packages/sample">
-                      See a complete package, unlocked
+                      See a complete report, unlocked
                     </Link>
                     .
                   </p>
@@ -521,7 +521,7 @@ export default function AssetCheckPage() {
                   <h3>What it is not saying</h3>
                   <p>
                     That your asset will fail. A rate counts registry records: a sponsor abandoning one drug closes
-                    every trial of it at once. The package separates those.
+                    every trial of it at once. The report separates those.
                   </p>
                 </div>
               </div>

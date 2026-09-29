@@ -95,10 +95,10 @@ def slugify(value: str) -> str:
 def sample_banner(cohort: str, asset: str) -> str:
     return ("<div style='background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;color:#78350f;padding:12px 18px;margin:0 0 22px;"
             "font:14px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif'>"
-            f"<b>Sample — a complete evidence package, published in full.</b> This is exactly what a buyer receives "
-            f"for the {cohort} cohort, with {asset} in the place of the buyer's own molecule. Every other package has "
+            f"<b>Sample — a complete diligence report, published in full.</b> This is exactly what a buyer receives "
+            f"for the {cohort} cohort, with {asset} in the place of the buyer's own molecule. Every other report has "
             f"the same sections for its own cohort. <a href='https://clinicaltrialfailures.com/packages' "
-            f"style='color:#78350f;font-weight:700'>All packages</a> · <a href='https://clinicaltrialfailures.com/asset-check' "
+            f"style='color:#78350f;font-weight:700'>All diligence reports</a> · <a href='https://clinicaltrialfailures.com/asset-check' "
             f"style='color:#78350f;font-weight:700'>Get one for your molecule — €99</a></div>")
 
 

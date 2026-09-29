@@ -329,9 +329,15 @@ def main(argv: list[str] | None = None) -> int:
         attribution_line = ""
     robust = "; ".join(robust_bits) + "."
     if args.q_value is not None and args.family_size:
-        verdict = ("survives" if args.q_value <= 0.10 else "does not survive")
-        robust += (f" Screened alongside {args.family_size} other segments in this area, it {verdict} a 10% "
-                   f"false-discovery correction (q={args.q_value:.3g}, Benjamini-Yekutieli).")
+        # Said so that it cannot be misread as "this brief is not worth reading": the correction is
+        # about whether the RATE is unusual, and the record of what failed stands either way.
+        if args.q_value <= 0.10:
+            robust += (f" Screened alongside {args.family_size} other segments in this area, the rate stays unusual "
+                       f"after a 10% false-discovery correction (q={args.q_value:.3g}, Benjamini-Yekutieli).")
+        else:
+            robust += (f" Screened alongside {args.family_size} other segments, the rate is within what screening that "
+                       f"many classes could produce (q={args.q_value:.3g}); the molecules and trials that failed here are "
+                       f"the record either way.")
     if segment["unresolved_terminations"]:
         robust += (f" A further {segment['unresolved_terminations']} closed trials here were terminated with no cause "
                    f"recorded in the registry; if every one of them were biological the rate would be "
@@ -377,7 +383,7 @@ def main(argv: list[str] | None = None) -> int:
         f'<th>Sponsor</th><th>Experimental drugs</th><th>Started</th><th>What the posted result says</th></tr></thead>'
         f'<tbody>{miss_rows_html}</tbody></table>'
         + (f'<p style="font-size:7.4pt;color:var(--muted)">The {MAX_ROWS} most recently started of {len(endpoint_trials)} '
-           f'completed trials that missed. The evidence package lists every one, with the numbers or the sentence each '
+           f'completed trials that missed. The diligence report lists every one, with the numbers or the sentence each '
            f'verdict was read from.</p>' if len(endpoint_trials) > MAX_ROWS else "")) if endpoint_trials else ""
     rate_dek = f"""<p class="dek"><b>{e(sig['sentence'])}</b> {attribution_line} Against {pct(reference['rate'])} for {e(ref_label)}{f" and {pct(baseline['rate'])} across all {e(args.area.lower())} Phase {e(args.phases)} trials" if has_reference else ""} in the same window.
 The rate counts trials that stopped early for efficacy, safety or benefit–risk reasons. Trials that ran to completion and missed their primary endpoint are counted separately below, never in the rate.</p>"""
@@ -492,12 +498,12 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
 </div>
 </div>
 {stops_section}
-{f'<p style="font-size:7.4pt;color:var(--muted)">The {MAX_ROWS} most recent of {len(stops)} stopped trials. Every molecule behind all {len(stops)} is named above; the complete trial list, the trials still running and the terminations with no readable cause ship with the dataset and the evidence package.</p>' if len(stops) > MAX_ROWS else ''}
+{f'<p style="font-size:7.4pt;color:var(--muted)">The {MAX_ROWS} most recent of {len(stops)} stopped trials. Every molecule behind all {len(stops)} is named above; the complete trial list, the trials still running and the terminations with no readable cause ship with the dataset and the diligence report.</p>' if len(stops) > MAX_ROWS else ''}
 <div class="cols" style="margin-top:10px">
 <div class="box"><b>Method</b><br>Denominator: ClinicalTrials.gov interventional Phase {e(args.phases)} {e(args.area.lower())} trials started {start[0]}–{start[1]} that have closed (completed or terminated). Numerator: terminated trials whose registry stop reason is classified as biological (efficacy, safety or benefit–risk) by Classification V2 — held-out precision 95.5%, recall 95.3% (n=600). Drugs are linked to ChEMBL and the NCI Thesaurus; {linked_pct}% of industry {e(args.area.lower())} trials in this window carry a resolved drug target, and a trial without one cannot enter a mechanism class. Intervals are Wilson 95%.</div>
 <div class="box"><b>Limits</b><br>Not a failure rate: completed trials that missed their endpoints are not in the rate. They are counted separately where the sponsor posted a primary result that can be read — most did not, so that count is a floor — and programmes discontinued after a completed trial do not appear. Stop reasons are sponsor-reported. This is a closed-trial proportion, not a time-to-event analysis: only {pct(segment['closed_share'])} of trials in this segment have closed, and a trial that stops early enters the denominator sooner than one that runs to completion, which can inflate the rate in immature segments. Recent cohorts have fewer closed trials, so their rates are less stable. Research signals, not clinical or investment advice.</div>
 </div>
-<div class="cta"><b>The whole cohort, trial by trial.</b> The evidence package names every trial behind these figures — the ones still running and the ones that completed and missed their primary endpoint included — and places your molecule against each one that failed. €99, delivered immediately: <b>clinicaltrialfailures.com/asset-check</b></div>
+<div class="cta"><b>The whole cohort, trial by trial.</b> The diligence report names every trial behind these figures — the ones still running and the ones that completed and missed their primary endpoint included — and places your molecule against each one that failed. €99, delivered immediately: <b>clinicaltrialfailures.com/asset-check</b></div>
 <div class="foot">Sources: ClinicalTrials.gov (NLM); ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); RxNorm/RxClass (NLM); SEC EDGAR. Classification, linkage and rates by Clinical Trial Failures. Rebuilt weekly; this brief covers trials started {start[0]}–{start[1]}.</div>
 </div>
 </body></html>"""

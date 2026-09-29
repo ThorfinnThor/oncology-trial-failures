@@ -74,12 +74,16 @@ export default function BriefsIndexPage() {
           <SampleCallout />
 
           <section className="section">
-            <h2>What survives a multiplicity correction</h2>
+            <h2>Where the stop rate stands out</h2>
             <p className="lead sub">
-              {survivors.length} of {briefsIndex.brief_count} segments are still unusual once the correction for having screened
-              all of them is applied — a one-sided exact binomial test against a like-for-like baseline, with a
-              Benjamini–Yekutieli false-discovery rate valid under the heavy overlap between segments. The rest are published too,
-              and are worth reading as leads; they are not findings.
+              In {survivors.length} classes trials stop far more often than in the rest of their disease area — by more than
+              screening every class could explain. For every class, though, the brief is the record that matters in diligence:
+              which molecules have already failed against the target, how, and in which trials. That record is the same whether
+              or not the rate is unusual.
+            </p>
+            <p className="fine">
+              Tested with a one-sided exact binomial test against a like-for-like baseline and a Benjamini–Yekutieli
+              false-discovery rate of 10%, valid under the overlap between classes.
             </p>
             <div className="featured grid">
               {featured.map((b) => (
@@ -129,7 +133,6 @@ export default function BriefsIndexPage() {
             <div className="grid">
               {shown.map((b) => {
                 const sig = (b as any).failure_signature;
-                const q = (b as any).q_value_by;
                 return (
                   <Link key={b.slug} href={`/briefs/${b.slug}`} className="briefCard">
                     <div className="tileTop">
@@ -178,7 +181,7 @@ export default function BriefsIndexPage() {
                       <div className="tileFoot">
                         <span>{b.stop_programmes ?? "—"} programmes</span>
                         <span>95% CI {pct(b.ci95[0])}–{pct(b.ci95[1])}</span>
-                        <span>{typeof q === "number" ? `q=${q.toPrecision(2)}` : "q —"}</span>
+                        {(b as any).survives_fdr_10pct ? <span className="tileStandout">stands out</span> : null}
                       </div>
                     )}
                     {b.has_pdf ? (
@@ -223,7 +226,7 @@ export default function BriefsIndexPage() {
               evidence of anything unusual.
             </p>
             <p className="fine">
-              Every brief is free to read and free to download — the gate is on the evidence package, which is the thing being
+              Every brief is free to read and free to download — the gate is on the diligence report, which is the thing being
               sold. These are screens, not tests. Every segment with enough data is published here rather than only the striking ones, but
               picking the top of a ranked list is itself a selection effect and no interval on this page corrects for it. A zero is
               &ldquo;no qualifying termination observed in this cohort&rdquo; — not evidence that a mechanism is safe. Each brief
@@ -235,14 +238,14 @@ export default function BriefsIndexPage() {
             <div>
               <div className="ctaTitle">Every mechanism, sponsor and indication — updated weekly</div>
               <p className="muted">
-                A brief covers the trials that stopped. The evidence package for the same cohort adds every other trial the
+                A brief covers the trials that stopped. The diligence report for the same cohort adds every other trial the
                 rate was computed from, the rules that define it, and the time-to-event curve — delivered immediately, because
                 it is built with the weekly release.
               </p>
             </div>
             <div className="ctaActions">
               <Link className="btnPrimary" href="/pricing#evidence-package">
-                Evidence packages
+                Diligence reports
               </Link>
               <Link className="btnGhost" href="/newsletter">
                 Get the fortnightly mail
@@ -464,6 +467,14 @@ export default function BriefsIndexPage() {
         .sub {
           margin-top: 8px;
           font-size: 14px;
+        }
+        .tileStandout {
+          white-space: nowrap;
+          padding: 1px 7px;
+          border-radius: 999px;
+          background: #fef3c7;
+          color: #92400e;
+          font-weight: 800;
         }
         .fine {
           margin: 14px 0 0;

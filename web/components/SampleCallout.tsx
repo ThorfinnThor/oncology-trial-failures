@@ -1,6 +1,6 @@
 // web/components/SampleCallout.tsx
 //
-// "See a complete package, free" was a link in a paragraph and nobody saw it. It is the single
+// "See a complete report, free" was a link in a paragraph and nobody saw it. It is the single
 // strongest argument the shop has — the product itself, unlocked — so it gets a block of its own
 // that looks like nothing else on the page: dark, with the document's own section list in it.
 
@@ -19,15 +19,15 @@ const SECTIONS = [
 export default function SampleCallout({ compact = false }: { compact?: boolean }) {
   const s = SAMPLE_PACKAGE;
   return (
-    <aside className={compact ? "sc scCompact" : "sc"} aria-label="Free sample of a complete evidence package">
+    <aside className={compact ? "sc scCompact" : "sc"} aria-label="Free sample of a complete diligence report">
       <div className="scBody">
         <div className="scTags">
           <span className="scFree">Free</span>
           <span className="scNo">No sign-up · nothing blurred</span>
         </div>
-        <div className="scTitle">See a complete {PACKAGE_PRICE} package before you buy one</div>
+        <div className="scTitle">See a complete {PACKAGE_PRICE} report before you buy one</div>
         <p className="scText">
-          The {s.cohort} package exactly as a buyer receives it, with {s.asset} in the place of your own molecule.
+          The {s.cohort} report exactly as a buyer receives it, with {s.asset} in the place of your own molecule.
         </p>
         <div className="scActions">
           <Link className="scButton" href="/packages/sample">
@@ -38,7 +38,7 @@ export default function SampleCallout({ compact = false }: { compact?: boolean }
       {compact ? null : (
         <div className="scDoc" aria-hidden="true">
           {/* Upper case written out: text-transform turns "TGF-β" into "TGF-Β", which reads as a B. */}
-          <div className="scDocHead">EVIDENCE PACKAGE · {s.cohort}</div>
+          <div className="scDocHead">DILIGENCE REPORT · {s.cohort}</div>
           {SECTIONS.map((line) => (
             <div className="scDocLine" key={line}>
               <span className="scTick">✓</span>
@@ -122,7 +122,6 @@ export default function SampleCallout({ compact = false }: { compact?: boolean }
           border-radius: 10px;
           background: #ffffff;
           color: #0f172a;
-          transform: rotate(0.6deg);
           box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
         }
         .scDocHead {
@@ -148,9 +147,6 @@ export default function SampleCallout({ compact = false }: { compact?: boolean }
           .sc {
             grid-template-columns: 1fr;
             padding: 20px;
-          }
-          .scDoc {
-            transform: none;
           }
         }
       `}</style>

@@ -21,7 +21,7 @@ import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
 // cannot do cheaply is assembling a defensible cohort for one asset and showing what is and
 // is not comparable. That is what the entry tier sells, and the subscription is the version
 // of it that keeps running.
-// Not every cohort has a package worth selling: in the smallest, every trial already appears in the
+// Not every cohort has a report worth selling: in the smallest, every trial already appears in the
 // free brief. Those are counted out here rather than being advertised and then declined.
 const SELLABLE_PACKAGES = (catalogue.packages as any[]).filter((p) => trialsBeyondTheBrief(p) > 0).length;
 
@@ -57,7 +57,7 @@ const PRICING = [
     href: "/newsletter",
   },
   {
-    name: "Evidence package",
+    name: "Diligence report",
     prefix: "",
     price: "€99",
     unit: "one molecule",
@@ -71,7 +71,7 @@ const PRICING = [
     ],
     cta: "Check your molecule",
     href: "/asset-check",
-    sample: { label: "See a complete package, unlocked", href: "/packages/sample" },
+    sample: { label: "See a complete report, unlocked", href: "/packages/sample" },
     highlight: true,
     badge: "Most buyers",
   },
@@ -84,7 +84,7 @@ const PRICING = [
     unit: "",
     for: "A team that comes back: competitive intelligence, portfolio review, investment research.",
     includes: [
-      `Every package and every brief — ${SELLABLE_PACKAGES} cohorts, not the ones one molecule touches`,
+      `Every diligence report and every brief — ${SELLABLE_PACKAGES} cohorts, not the ones one molecule touches`,
       "The dataset and the fortnightly change report as files",
       "Rebuilt weekly; the same link shows the latest release",
       "Arranged by hand while we work out what it should cost",
@@ -433,7 +433,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           <section className="section" id="pricing">
             <h2>Pricing</h2>
             <p className="sectionSub">
-              Two of these are free and stay free. Prices exclude VAT; a package&rsquo;s link stays live and current for a
+              Two of these are free and stay free. Prices exclude VAT; a report&rsquo;s link stays live and current for a
               year. Academic and single-analyst rates on request.
             </p>
             <div className="tiers">
@@ -489,7 +489,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   <div className="formTitle">You are on the list</div>
                   <p className="formSub">
                     We will write once there is a price and a date, and not otherwise. In the meantime an evidence
-                    package for a specific molecule is available today.
+                    report for a specific molecule is available today.
                   </p>
                 </>
               ) : (
@@ -566,7 +566,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <div className="faq">
                 <h3>Can we train models on it, or redistribute it?</h3>
                 <p>
-                  Not under the package price, which is for one team&rsquo;s own use. Training, evaluation and
+                  Not under the report price, which is for one team&rsquo;s own use. Training, evaluation and
                   redistribution inside a product you sell need a separate licence —{" "}
                   <a className="link" href={mailto("Licence for model training or redistribution")}>
                     ask and we will quote it

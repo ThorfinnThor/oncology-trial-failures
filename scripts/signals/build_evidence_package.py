@@ -738,7 +738,7 @@ def render_html(pkg: dict, notes: list[str]) -> str:
         f"<td class='num muted'>{cif[m]['n_risk']}</td></tr>" for m in sorted(cif))
 
     return f"""<!doctype html><html><head><meta charset="utf-8">
-<title>{e(pkg['cohort'])} — evidence package</title><style>
+<title>{e(pkg['cohort'])} — diligence report</title><style>
 :root {{ --ink:#14161a; --ink2:#5b6470; --line:#e2e0da; --bg:#fbfaf7; --acc:#4f46e5; }}
 * {{ box-sizing:border-box; }}
 body {{ font:14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
@@ -793,7 +793,7 @@ a {{ color:var(--acc); }}
 .foot {{ color:var(--ink2); font-size:11.5px; margin-top:30px; border-top:1px solid var(--line); padding-top:12px; }}
 </style></head><body><div class="sheet">
 
-<div class="kicker">Evidence package · {e(pkg['area'])} Phase {e('/'.join(pkg['window']['phases']))} ·
+<div class="kicker">Diligence report · {e(pkg['area'])} Phase {e('/'.join(pkg['window']['phases']))} ·
  starts {pkg['window']['start_from']}–{pkg['window']['start_to']}</div>
 <h1>{e(pkg['cohort'])}: {e(headline_text)}</h1>
 <p class="sub">{e(pkg['failure_signature']['sentence'])}</p>

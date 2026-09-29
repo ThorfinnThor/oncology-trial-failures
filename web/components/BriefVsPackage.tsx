@@ -35,12 +35,12 @@ export const PACKAGE_PRICE = "€99";
 export const ACCESS_PRICE = "On request";
 export const ACCESS_UNIT = "";
 export const CUSTOM_COHORT_MAILTO =
-  "mailto:contact@clinicaltrialfailures.com?subject=" + encodeURIComponent("Evidence package for a custom cohort");
+  "mailto:contact@clinicaltrialfailures.com?subject=" + encodeURIComponent("Diligence report for a custom cohort");
 
 /** Trials in the cohort that the brief does not cover: closed without a biological stop, or still running.
  *
- * This is the whole of what a package adds in trials, and in a couple of very small cohorts it is zero —
- * every trial in the class stopped, so the free brief already lists all of them. Selling a package there
+ * This is the whole of what a report adds in trials, and in a couple of very small cohorts it is zero —
+ * every trial in the class stopped, so the free brief already lists all of them. Selling a report there
  * would be selling the same four trials twice, so the number decides whether one is offered at all.
  */
 export function trialsBeyondTheBrief(pkg: PackageSummary) {
@@ -119,7 +119,7 @@ export default function BriefVsPackage({
         <div className={`bvpCard${emphasis === "package" && adds > 0 ? " bvpHere" : ""}`}>
           <div className="bvpTag">
             <span className="bvpNameWrap">
-              The evidence package
+              The diligence report
               {emphasis === "package" && adds > 0 ? <span className="bvpHereTag">This page</span> : null}
             </span>
             <span className={`bvpPrice${adds > 0 ? "" : " bvpFree"}`}>{adds > 0 ? PACKAGE_PRICE : "Not sold here"}</span>
@@ -133,7 +133,7 @@ export default function BriefVsPackage({
               </div>
               <p className="bvpSample">
                 <Link className="bvpInline" href="/packages/sample">
-                  See a complete package first — free, nothing blurred →
+                  See a complete report first — free, nothing blurred →
                 </Link>
               </p>
               <ul>
@@ -178,14 +178,14 @@ export default function BriefVsPackage({
               <ul>
                 <li>
                   All {n(c.total_in_cohort)} trials have closed and all {c.stopped} of them stopped early, so there is no
-                  remainder for a package to add — the free brief is the whole cohort
+                  remainder for a report to add — the free brief is the whole cohort
                 </li>
                 <li>
                   Which means the {pct(pkg.headline.rate)} rests on {c.stopped} trials and should be read as a lead, not
                   as a finding
                 </li>
                 <li>
-                  A package is worth buying where most of the cohort is <i>not</i> in the brief — or built around your
+                  A report is worth buying where most of the cohort is <i>not</i> in the brief — or built around your
                   own asset, sponsor or indication
                 </li>
               </ul>
@@ -195,13 +195,13 @@ export default function BriefVsPackage({
           {adds === 0 ? (
             <div className="bvpFoot">
               <Link className="bvpGhost" href="/packages">
-                Cohorts where a package adds something
+                Cohorts where a report adds something
               </Link>
             </div>
           ) : emphasis !== "package" ? (
             <div className="bvpFoot">
               <Link className="bvpCta" href={`/packages/${pkg.slug}`}>
-                See the package
+                See the report
               </Link>
             </div>
           ) : null}
@@ -211,7 +211,7 @@ export default function BriefVsPackage({
       <p className="bvpWhy">
         {adds > 0 ? (
           <>
-            The brief is the finding and is meant to be read in five minutes. The package is the file underneath it: the
+            The brief is the finding and is meant to be read in five minutes. The report is the file underneath it: the
             same {pct(pkg.headline.rate)}, with every trial named, so the number can be checked rather than believed —
             which is what anyone has to do before it goes into a diligence memo.
           </>

@@ -88,7 +88,7 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
           Briefs
         </Link>
         <Link className="navlink" href="/packages" aria-current={current(active, "packages")} onClick={closeMobileNav}>
-          Packages
+          Diligence reports
         </Link>
         <Link className="navlink" href="/newsletter" aria-current={current(active, "newsletter")} onClick={closeMobileNav}>
           Newsletter

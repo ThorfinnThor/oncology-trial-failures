@@ -72,7 +72,7 @@ export default function BriefPage({ brief }: Props) {
   // random sample of the area, so the like-for-like comparator is the resolved baseline.
   const comparator: number = brief.baseline_resolved_rate ?? brief.baseline_rate;
   const ratio = comparator ? brief.rate / comparator : 0;
-  // The package that extends this brief: same cohort, the rest of the trials.
+  // The report that extends this brief: same cohort, the rest of the trials.
   const pkg = (catalogue.packages as any[]).find((p) => p.brief_stem === brief.file_stem);
   // Absent in an index built before the endpoint verdicts existed: the block is simply not shown.
   const ep = (brief as any).endpoints as
@@ -425,12 +425,22 @@ export default function BriefPage({ brief }: Props) {
             <p className="fine">
               {typeof (brief as any).q_value_by === "number" ? (
                 <>
-                  Screened alongside {(brief as any).family_size} other segments in {area}, this one{" "}
-                  <b>{(brief as any).survives_fdr_10pct ? "survives" : "does not survive"}</b> a 10% false-discovery correction
-                  (q={(brief as any).q_value_by.toPrecision(2)}, Benjamini–Yekutieli, valid under the overlap between segments).{" "}
-                  {(brief as any).survives_fdr_10pct
-                    ? "It is still a screen over registry records rather than a controlled comparison, but the size of the gap is not explained by having looked at many segments."
-                    : "That does not make it uninteresting — a small cohort cannot clear any correction — but the rate alone is not evidence of anything unusual, and it should be read as a lead to check rather than a finding."}
+                  Screened alongside {(brief as any).family_size} other segments in {area},{" "}
+                  {(brief as any).survives_fdr_10pct ? (
+                    <>
+                      the rate <b>stays unusual</b> after a 10% false-discovery correction (q=
+                      {(brief as any).q_value_by.toPrecision(2)}, Benjamini–Yekutieli). It is still a screen over registry
+                      records rather than a controlled comparison, but the gap is not explained by having looked at many
+                      classes.
+                    </>
+                  ) : (
+                    <>
+                      the rate is within what screening that many classes could produce (q=
+                      {(brief as any).q_value_by.toPrecision(2)}), so it is not by itself a claim that this class stops more
+                      often. The record is a different matter: the molecules and trials listed here failed, and for a molecule
+                      against the same target they are the precedent that matters, whatever the rate.
+                    </>
+                  )}
                 </>
               ) : (
                 <>
@@ -512,7 +522,7 @@ export default function BriefPage({ brief }: Props) {
               </div>
               {epLead.missed > endpointTrials.length ? (
                 <p className="fine">
-                  Showing {endpointTrials.length} of {epLead.missed}. The evidence package lists every one, with the numbers
+                  Showing {endpointTrials.length} of {epLead.missed}. The diligence report lists every one, with the numbers
                   or the sentence each verdict was read from.
                 </p>
               ) : null}
@@ -563,7 +573,7 @@ export default function BriefPage({ brief }: Props) {
             {brief.trial_count > brief.trials_preview.length ? (
               <p className="fine">
                 Showing {brief.trials_preview.length} of {brief.trial_count} stopped trials. The remaining{" "}
-                {brief.trial_count - brief.trials_preview.length} are available in the evidence package.
+                {brief.trial_count - brief.trials_preview.length} are available in the diligence report.
               </p>
             ) : null}
           </section>
@@ -600,7 +610,7 @@ export default function BriefPage({ brief }: Props) {
                 {pkg ? null : (
                   <a
                     className="btnGhost"
-                    href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Evidence package: ${brief.segment}`)}`}
+                    href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent(`Diligence report: ${brief.segment}`)}`}
                   >
                     Ask for this on your own asset
                   </a>

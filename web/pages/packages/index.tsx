@@ -1,6 +1,6 @@
 // web/pages/packages/index.tsx
 //
-// The shop. Until this existed the 51 packages were reachable only from the bottom of a brief
+// The shop. Until this existed the 51 reports were reachable only from the bottom of a brief
 // or from six tiles buried in the licensing page, which meant the thing being sold had no
 // address of its own — and a reader who had not already read a brief could not find it at all.
 //
@@ -19,9 +19,9 @@ import briefsIndex from "@/data/briefs_index.json";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/packages`;
-const TITLE = "Evidence packages — the whole cohort behind a discontinuation rate";
+const TITLE = "Diligence reports — the whole cohort behind a discontinuation rate";
 const DESCRIPTION =
-  "One package per mechanism class: every trial the rate was computed from, the rules that define the cohort, which stops were the trial's own result, and the time-to-event curve. Delivered immediately.";
+  "One report per mechanism class: every trial the rate was computed from, the rules that define the cohort, which stops were the trial's own result, and the time-to-event curve. Delivered immediately.";
 
 type Pkg = (typeof catalogue.packages)[number];
 
@@ -29,7 +29,7 @@ const n = (v: number) => v.toLocaleString("en-US");
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
 
 export default function PackagesIndexPage() {
-  // A cohort whose every trial is already in the free brief has no package worth selling; it is
+  // A cohort whose every trial is already in the free brief has no report worth selling; it is
   // reachable from its own brief, and saying so there is honest. Listing it in a shop is not.
   const all = (catalogue.packages as Pkg[]).filter((p) => trialsBeyondTheBrief(p) > 0);
   const areas = [...new Set(all.map((p) => p.area))].sort();
@@ -40,7 +40,7 @@ export default function PackagesIndexPage() {
   const [order, setOrder] = useState<"size" | "signal">("size");
 
   // Searching by gene matters more than searching by class name: somebody looking for the HER2
-  // package is reading a slide that says ERBB2, and a shop of 53 names is unusable without it.
+  // report is reading a slide that says ERBB2, and a shop of 53 names is unusable without it.
   const [query, setQuery] = useState("");
   const needle = query.trim().toLowerCase();
   const matches = (p: Pkg) => {
@@ -88,11 +88,11 @@ export default function PackagesIndexPage() {
       <main className="page">
         <div className="wrap">
           <section className="intro">
-            <div className="eyebrow">Evidence packages</div>
+            <div className="eyebrow">Diligence reports</div>
             <h1>The whole cohort, not only the trials that stopped</h1>
             <p className="lead">
               A <Link className="link" href="/briefs">brief</Link> is free and shows the trials in a mechanism class that
-              stopped early, and why. A package is the evidence under that finding: every trial the rate was computed
+              stopped early, and why. A report is the evidence under that finding: every trial the rate was computed
               from — the ones that closed without stopping and the ones still running — the rules that decide which trial
               belongs in the cohort, which stops were the trial&rsquo;s own result rather than a programme decision made
               elsewhere, and the probability of a stop over time against a like-for-like comparator.

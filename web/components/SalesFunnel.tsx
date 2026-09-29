@@ -1,6 +1,6 @@
 // web/components/SalesFunnel.tsx
 //
-// The four steps from a free brief to a paid package, shown on the page where the reader is at
+// The four steps from a free brief to a paid report, shown on the page where the reader is at
 // step one. Everything before the last step is free, and saying so is most of the point: the
 // reader can see where they are, what the next free step is, and what the paid one adds.
 
@@ -12,15 +12,15 @@ type Step = { key: string; label: string; detail: string; href: string; price: s
 
 const STEPS: Step[] = [
   { key: "brief", label: "Read the brief", detail: "The finding and the trials behind it", href: "/briefs", price: "Free" },
-  { key: "sample", label: "See a complete package", detail: "One package, unlocked, every section", href: "/packages/sample", price: "Free" },
+  { key: "sample", label: "See a complete report", detail: "One report, unlocked, every section", href: "/packages/sample", price: "Free" },
   { key: "check", label: "Check your molecule", detail: "Which failed molecules share its target", href: "/asset-check", price: "Free" },
-  { key: "buy", label: "Get your package", detail: "Every matching cohort, your molecule placed in each", href: "/asset-check", price: PACKAGE_PRICE },
+  { key: "buy", label: "Get your report", detail: "Every matching cohort, your molecule placed in each", href: "/asset-check", price: PACKAGE_PRICE },
 ];
 
 export default function SalesFunnel({ current = "brief", title }: { current?: string; title?: string }) {
   const at = STEPS.findIndex((s) => s.key === current);
   return (
-    <nav className="sf" aria-label="From a free brief to a package">
+    <nav className="sf" aria-label="From a free brief to a report">
       {title ? <div className="sfTitle">{title}</div> : null}
       <ol>
         {STEPS.map((s, i) => (
