@@ -58,7 +58,7 @@ Molekül-Stufe. Er existiert, damit du ihn jemandem direkt schicken kannst.
 1. `dashboard.stripe.com/webhooks` → **Add endpoint** (je nach Stand der Oberfläche unter
    **Developers → Webhooks** oder **Workbench → Webhooks**).
 2. **Endpoint URL**: `https://clinicaltrialfailures.com/api/stripe`
-3. **Select events** → nur dieses eine: **`checkout.session.completed`**
+3. **Select events** → genau diese zwei: **`checkout.session.completed`** und **`checkout.session.async_payment_succeeded`**
 4. **Add endpoint**
 5. Auf der Detailseite bei **Signing secret** auf **Reveal** klicken → `whsec_…` kopieren.
 

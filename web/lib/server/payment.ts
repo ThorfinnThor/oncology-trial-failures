@@ -42,6 +42,19 @@ export function checkoutUrl(tier: Tier, token: string, email: string): string {
   return url.toString();
 }
 
+/**
+ * The Stripe events that can settle an order. A card payment settles in `checkout.session.completed`
+ * itself. A delayed method — SEPA Direct Debit, a bank transfer — completes the session unpaid and
+ * settles days later in `checkout.session.async_payment_succeeded`; ignoring that event would leave a
+ * customer who has paid without access. Both carry the same session object and the same
+ * client_reference_id, and settling is idempotent, so both go through one path.
+ */
+export const SETTLING_EVENTS = ["checkout.session.completed", "checkout.session.async_payment_succeeded"] as const;
+
+export function settlesOrder(type: unknown): boolean {
+  return (SETTLING_EVENTS as readonly string[]).includes(String(type || ""));
+}
+
 export function webhookSecret(): string {
   return env().STRIPE_WEBHOOK_SECRET || "";
 }

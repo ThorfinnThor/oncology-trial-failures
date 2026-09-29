@@ -13,7 +13,7 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { verifySignature, webhookSecret } from "@/lib/server/payment";
+import { settlesOrder, verifySignature, webhookSecret } from "@/lib/server/payment";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -65,7 +65,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   // Everything else Stripe sends is acknowledged and ignored; a 200 stops it retrying.
-  if (payload.type !== "checkout.session.completed") {
+  if (!settlesOrder(payload.type)) {
     return res.status(200).json({ ok: true, ignored: payload.type });
   }
 

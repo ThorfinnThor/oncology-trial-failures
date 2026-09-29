@@ -77,7 +77,9 @@ Copy each link's URL (`https://buy.stripe.com/…`).
 **2. The webhook** — dashboard.stripe.com → Developers → Webhooks → Add endpoint.
 
 - Endpoint URL: `https://clinicaltrialfailures.com/api/stripe`
-- Events: **`checkout.session.completed`** only.
+- Events: **`checkout.session.completed`** and **`checkout.session.async_payment_succeeded`**. The
+  second is how a delayed method (SEPA Direct Debit, bank transfer) settles days later; without it
+  such a customer pays and never gets access.
 - After creating it, click "Reveal" under Signing secret and copy the `whsec_…` value.
 
 **3. Three secrets — in Cloudflare, not in GitHub.** The site is deployed by Cloudflare Workers
@@ -112,7 +114,7 @@ dashboard the webhook attempt should show 200.
 | KV unreachable | 500, so Stripe retries. The payment is real and the grant must eventually settle. |
 | Unknown token | 200 with `ignored: "unknown grant"` — retrying will not help. |
 | Duplicate delivery | 200 with `already: true`. Stripe retries by design; settling is idempotent. |
-| Session completed but unpaid (e.g. bank transfer pending) | 200, nothing granted, logged. The webhook fires again when it settles. |
+| Session completed but unpaid (e.g. bank transfer pending) | 200, nothing granted, logged. Stripe sends `checkout.session.async_payment_succeeded` when it settles, and that grants access. |
 
 ## What is still by hand
 

@@ -9,7 +9,7 @@ import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import test from "node:test";
 
-import { checkoutUrl, verifySignature } from "../lib/server/payment";
+import { checkoutUrl, settlesOrder, verifySignature } from "../lib/server/payment";
 import { grantCovers, isUnlocked } from "../lib/server/grants";
 
 const SECRET = "whsec_testsecret";
@@ -110,4 +110,12 @@ test("full access is a separate link, so one tier cannot be bought at the other'
   } finally {
     process.env = before;
   }
+});
+
+test("a delayed payment settles on async_payment_succeeded, not only on completed", () => {
+  assert.equal(settlesOrder("checkout.session.completed"), true);
+  assert.equal(settlesOrder("checkout.session.async_payment_succeeded"), true);
+  assert.equal(settlesOrder("checkout.session.async_payment_failed"), false);
+  assert.equal(settlesOrder("checkout.session.expired"), false);
+  assert.equal(settlesOrder(undefined), false);
 });
