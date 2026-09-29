@@ -111,6 +111,33 @@ jobs:
         run: |
           python scripts/signals/check_text_readers.py
 
+      # A second, independent reader: a language model reads every new stop reason each week and,
+      # once a month, every stop reason that feeds a rate or a report (scripts/review/llm_review.py).
+      # Runs only when the repository secret ANTHROPIC_API_KEY exists; without it nothing is sent.
+      # The model may fill in or dispute "whose data stopped this trial"; it never changes a rate by
+      # itself — outcome disagreements are listed in data/llm_review/outcome_disagreements.md.
+      # Model: repository variable REVIEW_MODEL (default claude-sonnet-5-5). Cost cap per run:
+      # REVIEW_MAX_USD (default 15). continue-on-error: an API outage must not stop the weekly data.
+      - name: Independent review of stop reasons
+        id: llm_review
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REVIEW_MODEL: ${{ vars.REVIEW_MODEL }}
+          REVIEW_MAX_USD: ${{ vars.REVIEW_MAX_USD }}
+        run: |
+          python scripts/review/llm_review.py run --wait-minutes 45
+
+      # Readings are paid for: committed straight away, so a later failing step cannot lose them.
+      - name: Commit review readings
+        if: always()
+        run: |
+          git add data/llm_review data/attribution_reviewed.json
+          git diff --cached --quiet && echo "No review changes" && exit 0
+          git commit -m "Independent review of stop reasons"
+          git pull --rebase --autostash origin main || true
+          git push
+
       # ---------------------------------------------------------------------------
       # Oncology Failure Signals enrichment (commercial dataset). Runs after the
       # classified dataset has been committed, so an outage of an external source

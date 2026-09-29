@@ -18,3 +18,8 @@ the classification rules, the endpoint reader — follows these rules. MISTAKES.
    the rule until it passes.
 5. **When unsure, say "not established".** A conservative "unclear" costs nothing; a confident wrong
    verdict in a paid report costs the business.
+6. **Reviewed verdicts beat patterns.** `data/attribution_reviewed.json` and the APPROVED rows in
+   `data/classification_manual_decisions_v2.csv` are decisions, not suggestions. The review model
+   (`docs/llm_review.md`) may add to the first where the rules are silent or disputed; it never
+   changes an outcome and never overwrites a person's decision.
+
