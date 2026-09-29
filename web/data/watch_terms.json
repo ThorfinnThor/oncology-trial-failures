@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_trials": 988,
+  "source_trials": 1025,
   "groups": [
     {
       "key": "assets",
@@ -8,19 +8,27 @@
       "terms": [
         {
           "term": "gemcitabine",
-          "trials": 22
+          "trials": 23
         },
         {
           "term": "carboplatin",
-          "trials": 22
+          "trials": 23
         },
         {
           "term": "pembrolizumab",
-          "trials": 20
+          "trials": 22
         },
         {
           "term": "docetaxel anhydrous",
           "trials": 17
+        },
+        {
+          "term": "bevacizumab",
+          "trials": 16
+        },
+        {
+          "term": "paclitaxel",
+          "trials": 15
         },
         {
           "term": "cyclophosphamide anhydrous",
@@ -35,12 +43,8 @@
           "trials": 14
         },
         {
-          "term": "paclitaxel",
+          "term": "lenalidomide",
           "trials": 14
-        },
-        {
-          "term": "bevacizumab",
-          "trials": 13
         },
         {
           "term": "vorinostat",
@@ -51,15 +55,11 @@
           "trials": 13
         },
         {
-          "term": "fluorouracil",
-          "trials": 12
-        },
-        {
-          "term": "lenalidomide",
-          "trials": 12
-        },
-        {
           "term": "nivolumab",
+          "trials": 13
+        },
+        {
+          "term": "capecitabine",
           "trials": 12
         }
       ]
@@ -69,12 +69,12 @@
       "label": "Targets",
       "terms": [
         {
-          "term": "TUBB",
-          "trials": 49
+          "term": "PDCD1",
+          "trials": 52
         },
         {
-          "term": "PDCD1",
-          "trials": 47
+          "term": "TUBB",
+          "trials": 51
         },
         {
           "term": "CD274",
@@ -82,7 +82,7 @@
         },
         {
           "term": "TYMS",
-          "trials": 32
+          "trials": 33
         },
         {
           "term": "EGFR",
@@ -90,27 +90,27 @@
         },
         {
           "term": "KIT",
-          "trials": 23
+          "trials": 27
         },
         {
           "term": "KDR",
-          "trials": 22
-        },
-        {
-          "term": "PIK3CD",
-          "trials": 22
+          "trials": 26
         },
         {
           "term": "FLT3",
-          "trials": 21
+          "trials": 24
+        },
+        {
+          "term": "PIK3CD",
+          "trials": 23
+        },
+        {
+          "term": "VEGFA",
+          "trials": 20
         },
         {
           "term": "NR3C1",
           "trials": 18
-        },
-        {
-          "term": "VEGFA",
-          "trials": 17
         },
         {
           "term": "ERBB2",
@@ -132,42 +132,42 @@
       "terms": [
         {
           "term": "DNA inhibitor",
-          "trials": 79
-        },
-        {
-          "term": "Nucleic Acid Synthesis Inhibitors",
-          "trials": 36
+          "trials": 80
         },
         {
           "term": "Programmed cell death protein 1 inhibitor",
-          "trials": 35
+          "trials": 40
+        },
+        {
+          "term": "Nucleic Acid Synthesis Inhibitors",
+          "trials": 38
         },
         {
           "term": "RNA inhibitor",
-          "trials": 33
+          "trials": 34
         },
         {
           "term": "Thymidylate synthase inhibitor",
-          "trials": 32
+          "trials": 33
         },
         {
           "term": "Tubulin inhibitor",
-          "trials": 29
+          "trials": 31
+        },
+        {
+          "term": "Stem cell growth factor receptor inhibitor",
+          "trials": 27
         },
         {
           "term": "Programmed cell death 1 ligand 1 inhibitor",
           "trials": 25
         },
         {
-          "term": "Stem cell growth factor receptor inhibitor",
-          "trials": 23
+          "term": "Tyrosine-protein kinase receptor FLT3 inhibitor",
+          "trials": 24
         },
         {
           "term": "Epidermal growth factor receptor erbB1 inhibitor",
-          "trials": 21
-        },
-        {
-          "term": "Tyrosine-protein kinase receptor FLT3 inhibitor",
           "trials": 21
         },
         {
@@ -175,16 +175,16 @@
           "trials": 20
         },
         {
+          "term": "Vascular endothelial growth factor A inhibitor",
+          "trials": 20
+        },
+        {
           "term": "Alkylating Activity",
           "trials": 18
         },
         {
-          "term": "Vascular endothelial growth factor A inhibitor",
-          "trials": 17
-        },
-        {
-          "term": "Glucocorticoid receptor agonist",
-          "trials": 17
+          "term": "PI3-kinase class I inhibitor",
+          "trials": 18
         }
       ]
     },
@@ -202,11 +202,11 @@
         },
         {
           "term": "Novartis",
-          "trials": 27
+          "trials": 28
         },
         {
           "term": "Roche",
-          "trials": 23
+          "trials": 25
         },
         {
           "term": "Eli Lilly",
@@ -221,24 +221,24 @@
           "trials": 18
         },
         {
+          "term": "Gilead Sciences",
+          "trials": 17
+        },
+        {
           "term": "Dana-Farber Cancer Institute",
           "trials": 16
         },
         {
-          "term": "Gilead Sciences",
-          "trials": 16
+          "term": "Bristol Myers Squibb",
+          "trials": 15
         },
         {
-          "term": "Bristol Myers Squibb",
+          "term": "Sanofi",
           "trials": 14
         },
         {
           "term": "Washington University School of Medicine",
           "trials": 14
-        },
-        {
-          "term": "Sanofi",
-          "trials": 12
         },
         {
           "term": "Merck KGaA",

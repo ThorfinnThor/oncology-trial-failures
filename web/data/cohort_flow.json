@@ -357,12 +357,12 @@
   }
  ],
  "signals_reconciliation": {
-  "dataset_rows": 988,
+  "dataset_rows": 1025,
   "note": "The two products count different things and both counts are correct.",
   "steps": [
    {
     "step": "Oncology trials in the stopped-trial dataset",
-    "trials": 988,
+    "trials": 1025,
     "note": "Every phase, every start year — the dataset is a catalogue of stopped trials."
    },
    {
