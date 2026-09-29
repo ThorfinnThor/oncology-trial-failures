@@ -273,6 +273,38 @@ the owner.
 
 ---
 
+## 16. The audit after #15: what else read words instead of meaning
+
+A full pass over every rule that turns text into something a customer reads, after #15.
+
+**Classification (the rates).** Nine stops were counted as the drug failing when they were not:
+"Futile Enrollment", "Futility for enrollment", "Recruitment futile" and two more read as efficacy
+futility; "operational futility" likewise; and three trials stopped because visiting the clinic
+during the pandemic, or working in a region "considered too dangerous", put participants at risk
+were counted as safety failures of the drug. All nine are golden cases now; the classifier is 2.7.1.
+The negation handling of the classifier itself held up: no stop was counted as a safety failure
+from a sentence that only denies one.
+
+**Attribution.** Beyond #15: "preclinical/animal findings" were read as this trial's own data;
+"a sister trial", "a related study", "external evidence", "published data" and "a Phase 3 study
+reported" were not recognised as someone else's result; "patients did not meet inclusion criteria"
+was read as a missed endpoint; and plain statements ("Toxicity", "Adverse events", "lack of
+efficacy", "not meeting primary endpoints") were left "unclear". Every one of 251 changed verdicts
+was read before the change shipped (data/attribution_changes.md). Two over-broad first attempts —
+"prior to study start" read as another study, "compared to placebo" stripped as a comparison —
+were caught by the golden cases and by that read-through, which is what they are for.
+
+**Generated text.** "1 stops" in 48 reports, "All 1 stops … unusually clean evidence", "None of the
+0 completed trials", "1 are related". Fixed at the source, and scripts/check_generated_text.py now
+reads every report, brief and sample before it is committed.
+
+**Consistency.** In twelve combination cohorts the free brief compared with the partner's other
+combinations and the paid report with the whole area, so the two documents gave different
+reference rates for one question. The report now uses the brief's comparator, and the check above
+fails if brief and report ever disagree on a number again.
+
+---
+
 ## What I would tell myself at the start
 
 1. **Write the claim from the data, not the data from the claim.** Every number in the copy should

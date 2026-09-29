@@ -31,7 +31,7 @@ from scripts.signals.text_guards import denied
 # Bump whenever a pattern below changes. The weekly run compares every stop's verdict with last
 # week's: the same text read by the same rules must give the same verdict, and a change of rules
 # must be declared here, where the diff is then printed for review. See check_text_readers.py.
-RULES_VERSION = "2026-09-29.1"
+RULES_VERSION = "2026-09-29.2"
 
 OWN_DATA = "own_data"
 CASCADE = "programme_cascade"
@@ -54,6 +54,20 @@ CASCADE_PATTERNS = [
     (r"\bNCT\d{8}\b", "names another registry record"),
     (r"\b(?:halt|discontinu|terminat|stop|end)\w*\s+(?:the\s+)?(?:further\s+)?(?:\S+\s+){0,2}?(?:clinical\s+)?"
      r"development\s+(?:of\b|program|programme)", "the development programme ended"),
+    # A sister, related, similar or unrelated trial, or evidence from outside: somebody else's data.
+    # Only descriptive words may sit between the qualifier and "study": "prior to study start" and
+    # "related to study drug supply" are not references to another trial.
+    (r"\b(?:an?other|sister|related|affiliated|similar|companion|unrelated|recent|published|previous|prior|parallel)\s+"
+     r"(?:(?:clinical|phase\s+(?:\d|i{1,3}|iv)\w*|ongoing|completed|multicent(?:er|re)|randomi[sz]ed|placebo[- ]controlled|"
+     r"efficacy|pivotal|large|hepatocellular|\w+-\w+)\s+){0,2}(?:stud(?:y|ies)|trials?)\b", "refers to another study"),
+    (r"\b(?:external|published)\s+(?:evidence|data(?!\s+(?:and\s+safety\s+)?monitoring)|results?|literature)\b|"
+     r"\bevidence\s+(?:from\s+(?:other|another|larger|published|recent|similar)|showed|shows|has\s+shown)\b",
+     "cites evidence from outside this trial"),
+    (r"\ba\s+phase\s+(?:\d|i{1,3}|iv)\w*\s+(?:stud(?:y|ies)|trials?)\s+(?:recently\s+)?(?:reported|showed|demonstrated|found)\b",
+     "cites results from other studies"),
+    # Preclinical or animal findings are not this trial's data, however much they matter.
+    (r"\b(?:pre-?clinical|non-?clinical|animal)\s+(?:[\w-]+\s+){0,3}?(?:findings?|data|toxicit\w*|toxicolog\w*|stud(?:y|ies)|results?|signals?)\b",
+     "preclinical findings outside this trial"),
     (r"\b(?:\d+|two|three|four|several|both)\s+(?:large\s+|other\s+)?(?:phase\s+(?:\d|i{1,3}|iv)\w*\s+)?"
      r"(?:studies|trials)\s+(?:showed|show|have\s+shown|demonstrated|failed|did\s+not)\b", "cites results from other studies"),
     # "due to study A8241021 showing …": a study named as the cause is not this one. A study named as
@@ -75,10 +89,24 @@ OWN_PATTERNS = [
     (r"\b(?:interim|planned)\s+analysis\b", "its own interim analysis"),
     (r"\b(?:I?DMC|DSMB|data\s+(?:and\s+safety\s+)?monitoring\s+(?:committee|board))\b", "its own monitoring committee"),
     (r"\bfutility\b", "futility in this trial"),
-    (r"\b(?:did\s+not|failed\s+to|does\s+not)\s+meet\s+(?:[\w/-]+\s+){0,6}?(?:end\s?points?|objectives?|criteri(?:a|on))\b",
+    # Eligibility criteria are not an endpoint: "patients not meeting inclusion criteria" is recruitment.
+    (r"\b(?:did\s+not|failed\s+to|does\s+not)\s+meet\s+(?:(?!inclusion|exclusion|eligib|entry|enrol|screening|admission)[\w/-]+\s+){0,6}?(?:end\s?points?|objectives?|criteri(?:a|on))\b",
      "missed its endpoint"),
     (r"\bend\s?points?\s+(?:(?:was|were|had)\s+)?(?:not|never)\s+(?:been\s+)?(?:met|achieved|reached)\b", "missed its endpoint"),
     (r"\b(?:very\s+)?low\s+probability\b", "this trial's probability of success"),
+    (r"\bnot\s+meeting\s+(?:(?!inclusion|exclusion|eligib|entry|enrol|screening|admission)[\w/-]+\s+){0,6}?(?:end\s?points?|objectives?|criteri(?:a|on))\b", "missed its endpoint"),
+    (r"\b(?:occurrence|incidence|number|rate|frequency)\s+of\s+(?:[\w-]+\s+){0,3}?(?:adverse\s+(?:events?|reactions?)|AEs?|SAEs?|toxicit(?:y|ies))\b",
+     "an event in this trial"),
+    (r"\b(?:due\s+to|because\s+of)\s+(?:the\s+|an?\s+)?(?:[\w-]+\s+){0,3}?(?:adverse\s+(?:events?|reactions?)|AEs?|SAEs?|toxicit(?:y|ies)|"
+     r"dose[- ]limiting\s+toxicit\w*|intolerab\w*|lack\s+of\s+tolerability)\b", "an event in this trial"),
+    (r"^\s*(?:toxicity|toxicities|adverse\s+events?|AEs?|SAEs?)\.?\s*$", "an event in this trial"),
+    (r"\b(?:low|poor|insufficient|inadequate|disappointing|limited)\s+(?:overall\s+)?(?:response\s+rates?|responses?|clinical\s+benefit|therapeutic\s+effects?)\b",
+     "efficacy observed in this trial"),
+    (r"\babsence\s+of\s+(?:demonstration\s+of\s+|evidence\s+of\s+)?(?:efficacy|benefit|activity|response|therapeutic\s+effect)\b",
+     "efficacy observed in this trial"),
+    (r"\bno\s+(?:apparent\s+|clear\s+|significant\s+|meaningful\s+)?(?:therapeutic|clinical|treatment)\s+(?:effects?|benefit|efficacy)\b",
+     "efficacy observed in this trial"),
+    (r"\b(?:was|were|is|proved|found)\s+(?:to\s+be\s+)?(?:not\s+(?:effective|efficacious)|ineffective)\b", "efficacy observed in this trial"),
     (r"\befficacy\s+(?:was\s+|were\s+)?not\s+(?:met|shown|demonstrated|established)\b", "efficacy observed in this trial"),
     (r"\b(?:did\s+not|failed\s+to)\s+(?:improve|show)\b", "a result in this trial"),
     (r"\b(?:treatment[- ]related|serious\s+adverse)\b", "an event in this trial"),
@@ -114,6 +142,14 @@ NEGATED_PATTERNS = [
     r"\bno\s+(?:new\s+)?(?:unexpected\s+)?safety\s+(?:concerns?|signals?|issues?|findings?|reasons?)\b"
     r"(?:\s+(?:were|was|have\s+been|has\s+been)\s+(?:identified|observed|seen|raised|reported))?",
     r"\b(?:there\s+(?:were|was|are|is)\s+)?no\s+(?:new\s+)?(?:serious\s+adverse|treatment[- ]related)\b(?:(?!\bbut\b)[^.;:(),])*",
+]
+# A comparison names another study without making it the cause: "the safety profile was consistent
+# with previous studies", "deviated from results of previous clinical trials".
+NEGATED_PATTERNS += [
+    r"\b(?:(?:consistent|in\s+keeping|comparable)\s+with|similar\s+to)\s+(?:the\s+|that\s+(?:of|in|seen\s+in)\s+)?(?:previous|prior|past|other|earlier|published|\w+)\s+"
+    r"(?:(?!\bbut\b)[^.;:(),])*",
+    r"\b(?:deviat\w*|differ\w*)\s+(?:\w+\s+){0,2}?from\s+(?:the\s+)?(?:results?\s+of\s+)?(?:previous|prior|past|other|earlier|published)"
+    r"(?:(?!\bbut\b)[^.;:(),])*",
 ]
 NEGATED_RE = [re.compile(p, re.I) for p in NEGATED_PATTERNS]
 
@@ -188,8 +224,8 @@ def attribute(record: dict, sibling_ncts: list[str] | None = None) -> dict:
     def affirmed_hit(rx) -> bool:
         return bool(rx.search(scan)) and any(not denied(raw, m.start(), m.end()) for m in rx.finditer(raw))
 
-    cascade_hits = [why for rx, why in CASCADE_RE if affirmed_hit(rx)]
-    own_hits = [why for rx, why in OWN_RE if affirmed_hit(rx)]
+    cascade_hits = list(dict.fromkeys(why for rx, why in CASCADE_RE if affirmed_hit(rx)))
+    own_hits = list(dict.fromkeys(why for rx, why in OWN_RE if affirmed_hit(rx)))
     sibling_ncts = sibling_ncts or []
 
     if cascade_hits:

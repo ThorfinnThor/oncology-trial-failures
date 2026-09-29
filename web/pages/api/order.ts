@@ -46,6 +46,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
+  // The buy button no longer asks for an email, so nothing on the form stops a script from minting
+  // grants. Only the site's own pages may place an order; a browser always sends Origin on a POST.
+  if (!sameSite(req)) {
+    console.log(JSON.stringify({ event: "order_rejected_origin", origin: clean(req.headers.origin, 120) }));
+    return res.status(403).json({ ok: false, error: "Please order from clinicaltrialfailures.com." });
+  }
+
   const body = typeof req.body === "string" ? safeParse(req.body) : req.body || {};
   if (clean(body.website)) return res.status(200).json({ ok: true }); // honeypot
 
@@ -136,6 +143,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         : `Your report is ready — ${slugs.length} cohort chapters, one for every cohort where something that `
           + "failed shares your target. The link works from any device and stays current for a year."),
   });
+}
+
+export function sameSite(req: Pick<NextApiRequest, "headers">): boolean {
+  const origin = String(req.headers.origin || req.headers.referer || "");
+  if (!origin) return false;
+  try {
+    const host = new URL(origin).hostname;
+    return host === "clinicaltrialfailures.com" || host.endsWith(".clinicaltrialfailures.com")
+      || host === "localhost" || host === "127.0.0.1" || host.endsWith(".workers.dev");
+  } catch {
+    return false;
+  }
 }
 
 function safeParse(value: string): Record<string, unknown> {

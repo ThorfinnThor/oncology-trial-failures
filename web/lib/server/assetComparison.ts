@@ -328,13 +328,16 @@ export function comparisonLead(subject: Subject, rows: ComparisonRow[]): string 
       + (subject.target_genes.length ? ` against ${subject.target_genes.slice(0, 4).join(", ")}` : "")
     : `${subject.label}${subject.modality ? `, ${MODALITY_WORD[subject.modality] || subject.modality}` : ""}`;
 
+  if (!rows.length) {
+    return `${head}. No molecule that failed in this cohort could be compared with it.`;
+  }
   if (closest.length) {
     return `${head}. ${closest.length} of the ${rows.length} molecules that failed here share its target and its `
       + `modality (${closest.map((r) => r.asset).join(", ")}) — that history is the one to be able to answer for.`;
   }
   if (related.length) {
     return `${head}. None of the ${rows.length} molecules that failed here share both its target and its modality; `
-      + `${related.length} are related on one of the two.`;
+      + `${related.length} ${related.length === 1 ? "is" : "are"} related on one of the two.`;
   }
   if (weak.length) {
     return `${head}. None of the ${rows.length} molecules that failed here share its target. They share only its `

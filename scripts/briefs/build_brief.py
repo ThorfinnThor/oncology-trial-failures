@@ -367,10 +367,12 @@ def main(argv: list[str] | None = None) -> int:
             + '. Counted separately and never in the rate above; a floor, not a rate.' + gap_line + '</span></div>')
     else:
         endpoint_html = (
-            f'<div class="endp"><b>—</b><span><b>Completed and missed the primary endpoint.</b> None of the '
-            f'{endpoints["completed"]} completed trials in this segment posted a primary result on '
-            f'ClinicalTrials.gov that can be read, so nothing can be said here either way.' + gap_line
-            + '</span></div>')
+            f'<div class="endp"><b>—</b><span><b>Completed and missed the primary endpoint.</b> '
+            + (f'None of the {endpoints["completed"]} completed trials in this segment posted a primary result on '
+               f'ClinicalTrials.gov that can be read, so nothing can be said here either way.'
+               if endpoints["completed"] else
+               'No trial in this segment has completed yet, so there is no posted result to read either way.')
+            + gap_line + '</span></div>')
 
     canonical_link = f"<link rel='canonical' href='{e(args.canonical_url)}'>" if args.canonical_url else ""
 

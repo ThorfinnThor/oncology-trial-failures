@@ -1404,3 +1404,13 @@
 {"why_stopped":"The closure was not based on a business decision.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The study did not terminate due to safety concerns.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Study was not terminated for safety reasons but due to low enrollment.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped": "Futile Enrollment", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
+{"why_stopped": "Futility in patient enrollment", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
+{"why_stopped": "Recruitment futile", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
+{"why_stopped": "Futility for enrollment", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
+{"why_stopped": "The study was terminated. The data analysis was futile with only 3 accruals. PI opted to terminate with IRB and withdraw FDA IND.", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
+{"why_stopped": "Permanently closed to screening and accrual due to futility", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "needs_review": false}
+{"why_stopped": "Exposure of these high-risk patients to clinic or in-person visits during the pandemic presented an unacceptable risk to their health", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "needs_review": false}
+{"why_stopped": "Termination due to operational futility", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "needs_review": false}
+{"why_stopped": "Due to safety reasons. The region was considered too dangerous.", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "needs_review": false}
+{"why_stopped": "Attendance at study sites carries risk of COVID-19 infection. Non-attendance at planned study site visits has unacceptable study related patient safety risk.", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "needs_review": false}

@@ -230,6 +230,11 @@ jobs:
       - name: Commit public product summary and sample
         if: steps.signals.outcome == 'success'
         run: |
+          # Every report, brief and sample is read as a customer would before it is committed: no
+          # "1 stops", "NaN", "None of the 0", unfilled placeholders, and the free brief and the paid
+          # report on one cohort must state the same numbers. A failure here stops the commit, so the
+          # previous, checked versions stay online, and GitHub emails the owner.
+          python scripts/check_generated_text.py
           # Last week's verdicts, for next week's determinism check; and the reviewed diff when the
           # rules were changed on purpose.
           python scripts/signals/check_text_readers.py --write-snapshot

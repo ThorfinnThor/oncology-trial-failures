@@ -154,6 +154,90 @@
    "attribution": "own_data",
    "evidence_includes": "this trial's probability of success",
    "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT04650451",
+   "why_stopped": "Due to a Dose Limiting Toxicity in another sister trial with same technology.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "refers to another study",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT00867789",
+   "why_stopped": "Slow enrollment due to subjects not meeting inclusion/exclusion criteria",
+   "attribution": "unclear",
+   "evidence_includes": null,
+   "evidence_excludes": "missed its endpoint"
+  },
+  {
+   "nct_id": "NCT03890120",
+   "why_stopped": "Following recommendation of the external Data Monitoring Committee, after it reviewed the results of a planned interim futility analysis.",
+   "attribution": "own_data",
+   "evidence_includes": "its own monitoring committee",
+   "evidence_excludes": "cites evidence from outside this trial"
+  },
+  {
+   "nct_id": "NCT05978063",
+   "why_stopped": "In Part A of CR845-310601, oral difelikefalin did not demonstrate a meaningful clinical benefit at any dose compared to placebo. The drug was generally well tolerated with a safety profile similar to prior trials.",
+   "attribution": "own_data",
+   "evidence_includes": "a result in this trial",
+   "evidence_excludes": "refers to another study"
+  },
+  {
+   "nct_id": "NCT00642902",
+   "why_stopped": "Sponsor voluntarily decided to terminate trial due to increased MS disease activity in atacicept arms as compared to placebo during a routine IDMC review.",
+   "attribution": "own_data",
+   "evidence_includes": null,
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT05338450",
+   "why_stopped": "In line with the study protocol, due to slow recruitment, a futility analysis has been performed in the first quarter of 2025 by an independent statistician. The result of the analysis was restricted to a \"no-go\".",
+   "attribution": "own_data",
+   "evidence_includes": "futility in this trial",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT02555085",
+   "why_stopped": "Clinical study terminated due to preclinical safety findings in non-human primates.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "preclinical findings outside this trial",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT05085366",
+   "why_stopped": "The Sponsor decided to terminate the study after it did not meet the primary efficacy endpoint at final analysis. The safety profile was consistent with prior studies, and no safety concerns were raised by the Data and Safety Monitoring Board.",
+   "attribution": "own_data",
+   "evidence_includes": "missed its endpoint",
+   "evidence_excludes": "refers to another study"
+  },
+  {
+   "nct_id": "NCT06961370",
+   "why_stopped": "The study was terminated prematurely by the Sponsor due to observation of dose-limiting adverse events meeting the protocol-defined stopping criteria.",
+   "attribution": "own_data",
+   "evidence_includes": "an event in this trial",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT03203447",
+   "why_stopped": "The early termination is due to the results obtained from the sister study, SAPPHIRE (CLS1003-301), which did not meet the 8-week primary efficacy endpoint.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "refers to another study",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT02119663",
+   "why_stopped": "The safety committee found no safety issues but recommended halting the study based on a lack of efficacy in a similar trial. The sponsor terminated the trial.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "refers to another study",
+   "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT01222078",
+   "why_stopped": "A Phase 3 study recently reported and demonstrated that the dose of otelixizumab in OTX113390 is not effective.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "cites results from other studies",
+   "evidence_excludes": null
   }
  ]
 }

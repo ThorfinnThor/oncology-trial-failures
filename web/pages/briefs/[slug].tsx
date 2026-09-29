@@ -241,8 +241,9 @@ export default function BriefPage({ brief }: Props) {
                   </>
                 ) : (
                   <>
-                    None of the {n(ep.completed)} completed trials in this segment posted a primary result that can be
-                    read, so nothing can be said here either way.
+                    {ep.completed
+                      ? `None of the ${n(ep.completed)} completed trials in this segment posted a primary result that can be read, so nothing can be said here either way.`
+                      : "No trial in this segment has completed yet, so there is no posted result to read either way."}
                   </>
                 )}
                 {ep.results_due ? (

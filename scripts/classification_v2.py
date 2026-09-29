@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.0"
+CLASSIFIER_VERSION = "2.7.1"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -870,6 +870,12 @@ RULES: Tuple[Rule, ...] = (
         r"\bproblems? (?:including|enrolling|recruiting) (?:patients|participants|subjects)\b",
         r"\b(?:accrual|enrolment|enrollment|recruitment) futility\b",
         r"\bfutility (?:in|of) (?:accrual|enrolment|enrollment|recruitment)\b",
+        # "Futile Enrollment", "Futility for enrollment", "Futility in patient enrollment",
+        # "Recruitment futile": the enrolment was hopeless, not the drug (MISTAKES.md #16).
+        r"\bfutil(?:e|ity) (?:for|in|of|with) (?:patient |participant |subject )?(?:accrual|enrolment|enrollment|recruitment)\b",
+        r"\bfutile (?:accrual|enrolment|enrollment|recruitment)\b",
+        r"\b(?:accrual|enrolment|enrollment|recruitment) (?:was |is |were |became )?futile\b",
+        r"\bfutile with only \d+ (?:accruals?|patients?|participants?|subjects?|enrolled)\b",
         r"\b(?:lack of|insufficient) (?:the )?(?:eligible )?patient population\b",
         r"\black of (?:eligible )?volunteers?\b",
         r"\b(?:accrual|enrolment|enrollment|recruitment) (?:goal|target) (?:was )?not (?:met|reached|achieved)\b",
@@ -1885,6 +1891,13 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:study |trial )?site (?:was |has been )?closed down\b",
         r"\bsite that administered .{0,100}\bclosed\b[^.;:]{0,120}\balternative site could not be identified\b",
         r"\blogistical (?:issue|issues|problem|problems|constraints|challenges)\b",
+        # Not the drug: the trial could not be run, or running it put people at risk for reasons
+        # outside the intervention (MISTAKES.md #16).
+        r"\b(?:operational|logistic(?:al)?|administrative) futility\b",
+        r"\b(?:during|in) the (?:covid[- ]?19 |covid |coronavirus )?pandemic\b[^.;:]{0,120}\b(?:risk|exposure|unsafe)\b",
+        r"\brisk of (?:sars[- ]?cov[- ]?2|covid[- ]?19|covid|coronavirus) (?:infection|exposure|transmission)\b",
+        r"\b(?:exposure|attendance)\b[^.;:]{0,100}\b(?:pandemic|covid[- ]?19|covid|coronavirus)\b",
+        r"\b(?:region|area|country|city) (?:was |is |became )?(?:considered |deemed )?(?:too )?(?:dangerous|unsafe|insecure)\b",
         r"^(?:due to )?(?:covid[- ]?19|covid|covid 19|covid[- ]?19 pandemic|covid[- ]?19 epidemic|pandemic)(?: outbreak| epidemic| situation)?\.?$",
         r"\b(?:coronavirus|covid[- ]?19|covid) outbreak\b",
         r"\bcoronavirus\s*\(covid[- ]?19\) outbreak\b",
@@ -10504,6 +10517,10 @@ def _find_rule_evidence(text: str, rule: Rule) -> List[Evidence]:
             if rule.rule_id == "eff.futility" and re.search(
                 r"\b(?:(?:accrual|enrolment|enrollment|recruitment) futility|"
                 r"futility (?:in|of) (?:accrual|enrolment|enrollment|recruitment)|"
+                r"futil(?:e|ity) (?:for|in|of|with) (?:patient |participant |subject )?(?:accrual|enrolment|enrollment|recruitment)|"
+                r"futile (?:accrual|enrolment|enrollment|recruitment)|"
+                r"(?:accrual|enrolment|enrollment|recruitment) (?:was |is |were |became )?futile|"
+                r"futile with only \d+ (?:accruals?|patients?|participants?|subjects?|enrolled)|"
                 r"financial futility)\b",
                 text,
             ):
@@ -10585,6 +10602,20 @@ def _find_rule_evidence(text: str, rule: Rule) -> List[Evidence]:
             ) and not re.search(
                 r"\bdid not result in (?:a )?statistically significant improvement\b",
                 match.group(0),
+            ):
+                continue
+            # Safety of the people in the trial from something other than the intervention — a
+            # pandemic at the clinic door, a region at war — is not a safety finding about the drug.
+            if (rule.rule_id.startswith("saf.") or rule.reason == REASON_SAFETY) and re.search(
+                r"\b(?:during|in) the (?:covid[- ]?19 |covid |coronavirus )?pandemic\b[^.;:]{0,120}\b(?:risk|exposure|unsafe)\b|"
+                r"\brisk of (?:sars[- ]?cov[- ]?2|covid[- ]?19|covid|coronavirus) (?:infection|exposure|transmission)\b|"
+                r"\b(?:exposure|attendance)\b[^.;:]{0,100}\b(?:pandemic|covid[- ]?19|covid|coronavirus)\b|"
+                r"\b(?:region|area|country|city) (?:was |is |became )?(?:considered |deemed )?(?:too )?(?:dangerous|unsafe|insecure)\b",
+                text,
+            ):
+                continue
+            if rule.rule_id == "eff.futility" and re.search(
+                r"\b(?:operational|logistic(?:al)?|administrative) futility\b", text
             ):
                 continue
             if rule.rule_id == "saf.adverse_events" and re.search(

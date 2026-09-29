@@ -224,9 +224,19 @@ def build(args) -> dict:
     seg = summarize(cohort)
     base_rows = select(rows, **common)
     resolved = [r for r in base_rows if r["_genes"]]
-    comparator = summarize(resolved if (args.klass or genes) else base_rows)
-    comparator_label = (f"all {args.area.lower()} trials with a resolved drug target"
-                        if (args.klass or genes) else f"all {args.area.lower()} Phase {args.phases} trials")
+    # The same comparator as the free brief for this cohort (build_brief.py). A combination cohort is
+    # compared with the partner's other combinations, not with the whole area: the brief did that
+    # and the paid report did not, so a buyer reading both saw two different reference rates.
+    if args.with_class:
+        comparator_rows = select(rows, with_class=args.with_class, exclude_class=args.klass, **common)
+        comparator_label = f"{args.with_class} combinations without {args.klass or args.genes or args.modality}"
+    elif args.klass or genes:
+        comparator_rows = resolved
+        comparator_label = f"all {args.area.lower()} trials with a resolved drug target"
+    else:
+        comparator_rows = base_rows
+        comparator_label = f"all {args.area.lower()} Phase {args.phases} trials"
+    comparator = summarize(comparator_rows)
 
     stops = sorted([r for r in cohort if r["_bio"]], key=lambda r: (r.get("stop_date_estimate") or ""), reverse=True)
     attribution = attribute_all(stops)
@@ -327,7 +337,7 @@ def build(args) -> dict:
             "rate_if_all_unresolved_were_biological": seg["rate_if_all_unresolved_were_biological"],
         },
         "time_to_event": curve(cohort),
-        "comparator_time_to_event": curve(resolved if (args.klass or genes) else base_rows),
+        "comparator_time_to_event": curve(comparator_rows),
         "trials": ([trial_row(r, "biological_stop") for r in stops]
                    + [trial_row(r, "endpoint_miss") for r in missed[:MAX_CONTEXT_ROWS]]
                    + [trial_row(r, "terminated_cause_not_readable") for r in unreadable[:MAX_CONTEXT_ROWS]]
@@ -554,6 +564,10 @@ def interpretation(pkg: dict) -> list[str]:
                    + " The cohort is weaker evidence about the mechanism than the count of records suggests: the "
                      "question to take into a diligence meeting is whether the asset under review shares the "
                      "molecule, the population or the endpoint of the programmes that failed.")
+    elif a["stops_from_own_data"] == 1:
+        # One stop is one observation: calling it "clean evidence" would oversell it.
+        out.append("The one stop we could attribute was the trial's own verdict rather than a consequence of a "
+                   "decision elsewhere; a single stop is a lead, not a pattern.")
     else:
         out.append(f"All {a['stops_from_own_data']} stops we could attribute were the trial's own verdict rather than "
                    f"a consequence of a decision elsewhere, which makes the cohort unusually clean evidence for its size.")
