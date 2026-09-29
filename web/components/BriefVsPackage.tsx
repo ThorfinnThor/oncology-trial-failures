@@ -10,6 +10,8 @@
 
 import Link from "next/link";
 
+import { useCheckout } from "@/lib/checkout";
+
 export type PackageSummary = {
   slug: string;
   cohort: string;
@@ -63,14 +65,27 @@ export default function BriefVsPackage({
   pkg,
   briefSlug,
   emphasis = "package",
+  buyAs,
 }: {
   pkg: PackageSummary;
   briefSlug: string | null;
   /** Which of the two the reader is already looking at; the other one gets the button. */
   emphasis?: "brief" | "package";
+  /** On the report's own page: the target the report is bought for. The whole card then buys it. */
+  buyAs?: string;
 }) {
   const c = pkg.counts;
   const adds = trialsBeyondTheBrief(pkg);
+  const briefListsAll = c.brief_lists_stops >= c.stopped;
+  const buyable = emphasis === "package" && adds > 0 && Boolean(buyAs);
+  const checkout = useCheckout(buyAs || "");
+  // The card is the product, so clicking anywhere on it buys it — except on a link inside it,
+  // which keeps doing what it says.
+  function onCardClick(event: React.MouseEvent<HTMLDivElement>) {
+    if (!buyable) return;
+    if ((event.target as HTMLElement).closest("a, button")) return;
+    void checkout.go();
+  }
 
   return (
     <section className="bvp">
@@ -94,8 +109,9 @@ export default function BriefVsPackage({
             <span className="bvpPrice bvpFree">Free</span>
           </div>
           <div className="bvpOne">
-            The finding, and the {Math.min(c.brief_lists_stops, c.stopped)} most recent of the {c.stopped} stopped
-            trials.
+            {briefListsAll
+              ? `The finding, and all ${c.stopped} stopped ${c.stopped === 1 ? "trial" : "trials"}.`
+              : `The finding, and the ${c.brief_lists_stops} most recent of the ${c.stopped} stopped trials.`}
           </div>
           <ul>
             <li>The rate, the comparison, and whether it survives a correction for having screened every class</li>
@@ -116,7 +132,10 @@ export default function BriefVsPackage({
           ) : null}
         </div>
 
-        <div className={`bvpCard${emphasis === "package" && adds > 0 ? " bvpHere" : ""}`}>
+        <div
+          className={`bvpCard${emphasis === "package" && adds > 0 ? " bvpHere" : ""}${buyable ? " bvpBuy" : ""}`}
+          onClick={onCardClick}
+        >
           <div className="bvpTag">
             <span className="bvpNameWrap">
               The diligence report
@@ -146,15 +165,18 @@ export default function BriefVsPackage({
                   </Link>
                 </li>
                 <li>
-                  All {c.stopped} stopped trials, not the {Math.min(c.brief_lists_stops, c.stopped)} the brief has room
-                  for — and each one attributed to its own result or to a decision taken elsewhere, with the words that
-                  produced the verdict
+                  {briefListsAll
+                    ? `Each of the ${c.stopped} stopped trials attributed to its own result or to a decision taken elsewhere, with the words that produced the verdict`
+                    : `All ${c.stopped} stopped trials, not only the ${c.brief_lists_stops} the brief lists — each attributed to its own result or to a decision taken elsewhere, with the words that produced the verdict`}
                 </li>
-                <li>
-                  The {c.unreadable_terminations} terminations with no readable cause{" "}
-                  {c.unreadable_terminations > c.listed_unreadable ? `(${c.listed_unreadable} most recent) ` : ""}
-                  with their registry records — the brief gives only the count and the worst case
-                </li>
+                {c.unreadable_terminations > 0 ? (
+                  <li>
+                    The {c.unreadable_terminations} {c.unreadable_terminations === 1 ? "termination" : "terminations"}{" "}
+                    with no readable cause{" "}
+                    {c.unreadable_terminations > c.listed_unreadable ? `(${c.listed_unreadable} most recent) ` : ""}
+                    with their registry records — the brief gives only the count and the worst case
+                  </li>
+                ) : null}
                 <li>
                   {c.still_open > 0
                     ? `${n(Math.min(c.listed_open, c.still_open))} of the ${n(c.still_open)} trials still running, named, so you can see what is about to move the rate`
@@ -203,6 +225,14 @@ export default function BriefVsPackage({
               <Link className="bvpCta" href={`/packages/${pkg.slug}`}>
                 See the report
               </Link>
+            </div>
+          ) : buyable ? (
+            <div className="bvpFoot">
+              <button type="button" className="bvpCta bvpBuyBtn" onClick={checkout.go} disabled={checkout.state === "sending"}>
+                {checkout.state === "sending" ? "Opening checkout…" : `Buy this report — ${PACKAGE_PRICE}`}
+              </button>
+              <span className="bvpSecure">Secure checkout by Stripe · opens straight after payment</span>
+              {checkout.state === "error" ? <div className="bvpError" role="alert">{checkout.error}</div> : null}
             </div>
           ) : null}
         </div>
@@ -266,6 +296,37 @@ export default function BriefVsPackage({
         .bvpHere {
           background: rgba(79, 70, 229, 0.04);
           border-color: rgba(79, 70, 229, 0.28);
+        }
+        .bvpBuy {
+          cursor: pointer;
+          transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .bvpBuy:hover {
+          border-color: var(--accent);
+          box-shadow: 0 6px 22px rgba(79, 70, 229, 0.14);
+        }
+        .bvpBuyBtn {
+          border: 0;
+          cursor: pointer;
+          font: inherit;
+          font-size: 14px;
+          font-weight: 850;
+          padding: 12px 18px;
+        }
+        .bvpBuyBtn:disabled {
+          opacity: 0.7;
+          cursor: progress;
+        }
+        .bvpSecure {
+          display: block;
+          margin-top: 8px;
+          font-size: 12px;
+          color: var(--text-muted);
+        }
+        .bvpError {
+          margin-top: 8px;
+          font-size: 12.5px;
+          color: #b91c1c;
         }
         .bvpTag {
           display: flex;

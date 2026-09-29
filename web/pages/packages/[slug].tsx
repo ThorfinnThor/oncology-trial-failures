@@ -1,6 +1,6 @@
 // web/pages/packages/[slug].tsx
 //
-// What a report contains, and the way to buy it — through the asset check, which sells by target. The brief is the teaser: it shows
+// What a report contains, and the way to buy it — one click to Stripe, sold by target. The brief is the teaser: it shows
 // the finding and the stopped trials. This shows what the brief leaves out, using real counts
 // from the cohort rather than a feature list, and hands over the document immediately.
 
@@ -10,7 +10,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 
 import BriefVsPackage, { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
-import SampleCallout from "@/components/SampleCallout";
+import BuyButton from "@/components/BuyButton";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
 
@@ -66,7 +66,7 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
               ? `${pkg.cohort}: the whole cohort, not just the stops`
               : `${pkg.cohort}: the brief already is the whole cohort`}
           </h1>
-          <BriefVsPackage pkg={pkg} briefSlug={briefSlug} emphasis="package" />
+          <BriefVsPackage pkg={pkg} briefSlug={briefSlug} emphasis="package" buyAs={buyAs} />
 
           <section className="section">
             <h2>{adds > 0 ? "What is in it, in detail" : "What a report contains, where one is sold"}</h2>
@@ -106,8 +106,6 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
             </div>
           </section>
 
-          {adds > 0 ? <SampleCallout /> : null}
-
           {adds > 0 ? (
           <section className="section" id="get">
             <div className="box">
@@ -125,9 +123,8 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                 </ul>
               </div>
               <div className="buySide">
-                <Link className="btnPrimary buyMain" href={`/asset-check?q=${encodeURIComponent(buyAs)}`}>
-                  Buy for {buyAs}
-                </Link>
+                <BuyButton asset={buyAs} className="btnPrimary buyMain" label={`Buy this report — ${PACKAGE_PRICE}`} />
+                <p className="fine">Secure checkout by Stripe. The report opens straight after payment.</p>
                 <p className="fine">
                   Evaluating a specific molecule?{" "}
                   <Link className="link" href="/asset-check">
@@ -293,6 +290,10 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
         .buySide :global(.buyMain) {
           display: block;
           width: 100%;
+          border: 0;
+          cursor: pointer;
+          font-family: inherit;
+          font-weight: 800;
           text-align: center;
           padding: 14px 18px;
           font-size: 15px;

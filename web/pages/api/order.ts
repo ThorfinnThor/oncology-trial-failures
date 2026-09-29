@@ -55,8 +55,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const company = clean(body.company, 160);
   const marketing = body.marketing === true || body.marketing === "true" || body.marketing === "on";
 
-  if (!EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
-  if (!company) return res.status(400).json({ ok: false, error: "Please enter your company or institution." });
+  // Email and company are optional: the buy button goes straight to Stripe, whose checkout
+  // collects both, and the webhook copies them onto the grant. An address that is given still has
+  // to look like one.
+  if (email && !EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
   if (!asset && !slug) return res.status(400).json({ ok: false, error: "Name the molecule or target you are evaluating." });
 
   let scope: Grant["scope"] = "cohort";
@@ -104,7 +106,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // A grant lasts a year: long enough that a bookmark still works, short enough that a link
     // pasted into a public channel does not stay open forever.
     await store.put(`grant:${value}`, JSON.stringify(record), { expirationTtl: YEAR_SECONDS });
-    await store.put(`order:${record.issued_at}:${email}`, JSON.stringify(record));
+    await store.put(`order:${record.issued_at}:${email || value.slice(0, 8)}`, JSON.stringify(record));
   } catch (error) {
     console.error(JSON.stringify({ event: "order_store_failed", message: String(error) }));
     return res.status(503).json({ ok: false, error: "Could not complete the order. Please try again." });

@@ -104,6 +104,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     grant.stripe_session = String(session.id || "");
     grant.amount_total = session.amount_total ?? null;
     grant.currency = session.currency ?? null;
+    // The order no longer asks for these on our page; Stripe's checkout does.
+    const customer = (session.customer_details || {}) as Record<string, unknown>;
+    const collected = (session.collected_information || {}) as Record<string, unknown>;
+    if (!grant.email && customer.email) grant.email = String(customer.email).toLowerCase();
+    if (!grant.name && customer.name) grant.name = String(customer.name);
+    if (!grant.company && (collected.business_name || customer.business_name)) {
+      grant.company = String(collected.business_name || customer.business_name);
+    }
     await store.put(`grant:${token}`, JSON.stringify(grant), { expirationTtl: YEAR_SECONDS });
     await store.put(`payment:${grant.paid_at}:${grant.email || "unknown"}`, JSON.stringify(grant));
     // A Payment Link redirects to one fixed URL, so the customer comes back from Stripe carrying

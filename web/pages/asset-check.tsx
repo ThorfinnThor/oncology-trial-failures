@@ -13,7 +13,7 @@ import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
-import SampleCallout from "@/components/SampleCallout";
+import BuyButton from "@/components/BuyButton";
 import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
@@ -73,10 +73,6 @@ export default function AssetCheckPage() {
   const [message, setMessage] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [value, setValue] = useState("");
-  const [order, setOrder] = useState<"idle" | "sending" | "done" | "error">("idle");
-  const [orderMessage, setOrderMessage] = useState("");
-  const [accessUrl, setAccessUrl] = useState("");
-  const [paying, setPaying] = useState(false);
 
   async function check(asset: string) {
     if (!asset.trim()) return;
@@ -108,32 +104,7 @@ export default function AssetCheckPage() {
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setOrder("idle");
-    setAccessUrl("");
     void check(value);
-  }
-
-  async function placeOrder(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const form = new FormData(event.currentTarget);
-    setOrder("sending");
-    setOrderMessage("");
-    try {
-      const response = await fetch("/api/order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...Object.fromEntries(form.entries()), asset: resolved?.asset.name || value }),
-      });
-      const data = await response.json();
-      if (!data.ok) throw new Error(data.error || "Could not complete the order.");
-      setAccessUrl(data.url || "");
-      setPaying(Boolean(data.payment));
-      setOrderMessage(data.message || "");
-      setOrder("done");
-    } catch (error: any) {
-      setOrder("error");
-      setOrderMessage(error?.message || "Could not complete the order. Please try again.");
-    }
   }
 
   const resolved = result && result.resolved ? result : null;
@@ -415,73 +386,34 @@ export default function AssetCheckPage() {
                     </p>
                   ) : null}
 
-                  {withTarget.length && order !== "done" ? <SampleCallout compact /> : null}
-
                   {withTarget.length ? (
-                  <div className="buy">
-                    {order === "done" ? (
+                    <div className="buy">
                       <div>
-                        <div className="buyTitle">{paying ? "One step left" : "Ready"}</div>
-                        <p className="buySub">{orderMessage}</p>
-                        {paying ? (
-                          <a className="buyCta" href={accessUrl}>
-                            Pay {PACKAGE_PRICE} and open it
-                          </a>
-                        ) : (
-                          <Link className="buyCta" href={accessUrl}>
-                            Open your access
-                          </Link>
-                        )}
-                      </div>
-                    ) : (
-                      <>
-                        <div>
-                          <div className="buyTitle">
-                            Get the {withTarget.length} {withTarget.length === 1 ? "report" : "reports"} that share
-                            its target — {PACKAGE_PRICE}
-                          </div>
-                          <p className="buySub">
-                            Every cohort above where a molecule that failed acts on the same target, each in full: all
-                            trials, the cohort rules, the attribution, the time-to-event curve — and each one opening
-                            with {resolved.asset.name} already compared against the molecules that failed there. One
-                            link, current for a year.
-                          </p>
+                        <div className="buyTitle">
+                          Get the {withTarget.length} {withTarget.length === 1 ? "report" : "reports"} that share its
+                          target — {PACKAGE_PRICE}
                         </div>
-                        <form className="buyForm" onSubmit={placeOrder}>
-                          <input
-                            className="input"
-                            name="email"
-                            type="email"
-                            required
-                            placeholder="Work email"
-                            aria-label="Work email"
-                            autoComplete="email"
-                          />
-                          <input
-                            className="input"
-                            name="company"
-                            type="text"
-                            required
-                            placeholder="Company or institution"
-                            aria-label="Company or institution"
-                            autoComplete="organization"
-                          />
-                          <input
-                            name="website"
-                            type="text"
-                            tabIndex={-1}
-                            autoComplete="off"
-                            aria-hidden="true"
-                            style={{ position: "absolute", left: "-9999px" }}
-                          />
-                          <button className="submit" type="submit" disabled={order === "sending"}>
-                            {order === "sending" ? "Preparing…" : "Get them"}
-                          </button>
-                          {order === "error" ? <div className="buyError">{orderMessage}</div> : null}
-                        </form>
-                      </>
-                    )}
-                  </div>
+                        <p className="buySub">
+                          Every cohort above where a molecule that failed acts on the same target, each in full: all
+                          trials, the cohort rules, the attribution, the time-to-event curve — and each one opening
+                          with {resolved.asset.name} already compared against the molecules that failed there. One
+                          payment, one link, current for a year.
+                        </p>
+                      </div>
+                      <div className="buySide">
+                        <BuyButton
+                          asset={resolved.asset.name}
+                          className="buyNow"
+                          label={`Buy ${withTarget.length === 1 ? "the report" : `all ${withTarget.length}`} — ${PACKAGE_PRICE}`}
+                        />
+                        <p className="buyNote">
+                          Secure checkout by Stripe. The reports open straight after payment.{" "}
+                          <Link className="link" href="/packages/sample">
+                            View a sample report
+                          </Link>
+                        </p>
+                      </div>
+                    </div>
                   ) : null}
 
                   <p className="fine">
@@ -861,25 +793,34 @@ export default function AssetCheckPage() {
           line-height: 1.6;
           color: var(--text-muted);
         }
-        .buyForm {
+        .buySide {
           display: grid;
-          gap: 9px;
+          gap: 10px;
         }
-        .buyError {
-          font-size: 12.5px;
-          line-height: 1.5;
-          color: #b91c1c;
-        }
-        :global(.buyCta) {
-          display: inline-block;
-          margin-top: 12px;
+        :global(.buyNow) {
+          width: 100%;
+          border: 0;
+          cursor: pointer;
           background: var(--accent);
           color: #fff;
           border-radius: 12px;
-          padding: 11px 18px;
-          font-size: 14px;
-          font-weight: 800;
-          text-decoration: none;
+          padding: 14px 18px;
+          font: inherit;
+          font-size: 15px;
+          font-weight: 850;
+        }
+        :global(.buyNow:hover) {
+          filter: brightness(1.08);
+        }
+        :global(.buyNow:disabled) {
+          opacity: 0.7;
+          cursor: progress;
+        }
+        .buyNote {
+          margin: 0;
+          font-size: 12.5px;
+          line-height: 1.55;
+          color: var(--text-muted);
         }
         @media (max-width: 860px) {
           .buy {
