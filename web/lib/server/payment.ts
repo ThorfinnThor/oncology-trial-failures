@@ -67,6 +67,77 @@ export function isSettled(paymentStatus: unknown): boolean {
   return status === "paid" || status === "no_payment_required";
 }
 
+/**
+ * A restricted Stripe key with one permission — Checkout Sessions: Read — and nothing else.
+ *
+ * Without it, the customer returning from checkout waits for the webhook, and then for Workers KV
+ * to carry the webhook's write to the edge they are reading from, which can take up to a minute:
+ * a buyer who has just paid looking at "waiting for your payment". With it, the return itself asks
+ * Stripe whether the checkout is paid and opens the report at once. The key can read checkouts and
+ * do nothing else — it cannot charge, refund or change anything — so the reason for keeping secret
+ * keys out of this site still holds. Optional: unset, everything works as before, only slower.
+ */
+export function readKey(): string {
+  return env().STRIPE_READ_KEY || "";
+}
+
+/** Stripe checkout ids. Anything else is refused before it is put into a URL to Stripe's API. */
+export function isCheckoutId(id: string): boolean {
+  return /^cs_(live|test)_[A-Za-z0-9]{10,250}$/.test(id);
+}
+
+export type CheckoutSession = Record<string, unknown>;
+
+/** The checkout as Stripe has it now, or null when no read key is set or Stripe does not answer. */
+export async function retrieveCheckoutSession(
+  id: string,
+  fetcher: typeof fetch = fetch,
+): Promise<CheckoutSession | null> {
+  const key = readKey();
+  if (!key || !isCheckoutId(id)) return null;
+  try {
+    const response = await fetcher(`https://api.stripe.com/v1/checkout/sessions/${id}`, {
+      headers: { Authorization: `Bearer ${key}` },
+    });
+    if (!response.ok) {
+      console.error(JSON.stringify({ event: "stripe_session_read_failed", status: response.status }));
+      return null;
+    }
+    return (await response.json()) as CheckoutSession;
+  } catch (error) {
+    console.error(JSON.stringify({ event: "stripe_session_read_failed", message: String(error) }));
+    return null;
+  }
+}
+
+/** Whether this checkout, as Stripe reports it, pays for the order behind `token`. */
+export function checkoutPays(session: CheckoutSession | null, token: string): boolean {
+  if (!session || !token) return false;
+  return String(session.client_reference_id || "").trim() === token && isSettled(session.payment_status);
+}
+
+/**
+ * The one place a grant is marked paid, whether the webhook or the customer's return got there
+ * first. Mutates and returns the grant.
+ */
+export function settleGrant<G extends Record<string, unknown>>(grant: G, session: CheckoutSession): G {
+  const g = grant as Record<string, unknown>;
+  g.paid = true;
+  g.paid_at = g.paid_at || new Date().toISOString();
+  g.stripe_session = String(session.id || "");
+  g.amount_total = session.amount_total ?? null;
+  g.currency = session.currency ?? null;
+  // The order no longer asks for these on our page; Stripe's checkout does.
+  const customer = (session.customer_details || {}) as Record<string, unknown>;
+  const collected = (session.collected_information || {}) as Record<string, unknown>;
+  if (!g.email && customer.email) g.email = String(customer.email).toLowerCase();
+  if (!g.name && customer.name) g.name = String(customer.name);
+  if (!g.company && (collected.business_name || customer.business_name)) {
+    g.company = String(collected.business_name || customer.business_name);
+  }
+  return grant;
+}
+
 export function webhookSecret(): string {
   return env().STRIPE_WEBHOOK_SECRET || "";
 }

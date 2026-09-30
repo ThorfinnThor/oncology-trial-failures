@@ -13,14 +13,12 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
+import { loadGrant, type KvStore } from "@/lib/server/access";
 import { grantedSlugs, isUnlocked, type Grant } from "@/lib/server/grants";
 import bundle from "@/data/private/evidence_packages.json";
 import { renderChapter } from "@/lib/server/reportDocument";
 
-type KvBinding = {
-  get(key: string): Promise<string | null>;
-  put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
-};
+type KvBinding = KvStore;
 type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: { LEADS?: KvBinding } } | undefined;
 };
@@ -55,8 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   let grant: (Grant & { email?: string }) | null = null;
   try {
-    const raw = await store.get(`grant:${token}`);
-    grant = raw ? JSON.parse(raw) : null;
+    grant = await loadGrant(store, token, clean(req.query.session, 260));
   } catch (error) {
     console.error(JSON.stringify({ event: "report_grant_read_failed", message: String(error) }));
     return res.status(503).send("Could not verify the token. Please try again.");
@@ -71,8 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(403).send("That token is not valid for this package.");
   }
   if (!isUnlocked(grant)) {
-    return res.status(402).send("This order has not been paid yet. If you have just paid, give it "
-      + "a moment and reload — confirmation usually takes a few seconds.");
+    return res.status(402).send("This order has not been paid yet. Please open it again from your access page.");
   }
 
   // The asset under review comes from the order, unless this request names another one — a buyer

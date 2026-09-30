@@ -9,10 +9,11 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import productSummary from "@/data/product_summary.json";
+import { loadGrant, type KvStore } from "@/lib/server/access";
 import { grantedSlugs, isUnlocked, type Grant } from "@/lib/server/grants";
 import { renderReportDocument } from "@/lib/server/reportDocument";
 
-type KvBinding = { get(key: string): Promise<string | null> };
+type KvBinding = KvStore;
 type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: { LEADS?: KvBinding } } | undefined;
 };
@@ -38,8 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   let grant: Grant | null = null;
   try {
-    const raw = await store.get(`grant:${token}`);
-    grant = raw ? (JSON.parse(raw) as Grant) : null;
+    grant = await loadGrant(store, token, clean(req.query.session, 260));
   } catch (error) {
     console.error(JSON.stringify({ event: "report_document_grant_read_failed", message: String(error) }));
     return res.status(503).send("Could not verify the link. Please try again.");
@@ -48,7 +48,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const slugs = grantedSlugs(grant);
   if (!grant || !slugs.length) return res.status(403).send("That link is not valid, or it has expired.");
   if (!isUnlocked(grant)) {
-    return res.status(402).send("This order has not been paid yet. If you have just paid, give it a moment and reload.");
+    return res.status(402).send("This order has not been paid yet. Please open it again from your access page.");
   }
   // Everything at once is sixty chapters; that is a library, not a document to download.
   if (grant.scope === "all") return res.status(400).send("Open the chapters one at a time from your access page.");

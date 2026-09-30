@@ -13,12 +13,10 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { isSettled, settlesOrder, verifySignature, webhookSecret } from "@/lib/server/payment";
+import { persistSettled, type KvStore } from "@/lib/server/access";
+import { isSettled, settleGrant, settlesOrder, verifySignature, webhookSecret } from "@/lib/server/payment";
 
-type KvBinding = {
-  get(key: string): Promise<string | null>;
-  put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
-};
+type KvBinding = KvStore;
 type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: { LEADS?: KvBinding } } | undefined;
 };
@@ -27,7 +25,6 @@ type CloudflareGlobal = typeof globalThis & {
 // JSON parser — changes them, and the signature stops matching.
 export const config = { api: { bodyParser: false } };
 
-const YEAR_SECONDS = 60 * 60 * 24 * 365;
 
 async function rawBody(req: NextApiRequest): Promise<string> {
   const chunks: Buffer[] = [];
@@ -99,27 +96,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const grant = JSON.parse(raw);
     if (grant.paid) return res.status(200).json({ ok: true, already: true }); // Stripe retries; this is fine.
 
-    grant.paid = true;
-    grant.paid_at = new Date().toISOString();
-    grant.stripe_session = String(session.id || "");
-    grant.amount_total = session.amount_total ?? null;
-    grant.currency = session.currency ?? null;
-    // The order no longer asks for these on our page; Stripe's checkout does.
-    const customer = (session.customer_details || {}) as Record<string, unknown>;
-    const collected = (session.collected_information || {}) as Record<string, unknown>;
-    if (!grant.email && customer.email) grant.email = String(customer.email).toLowerCase();
-    if (!grant.name && customer.name) grant.name = String(customer.name);
-    if (!grant.company && (collected.business_name || customer.business_name)) {
-      grant.company = String(collected.business_name || customer.business_name);
-    }
-    await store.put(`grant:${token}`, JSON.stringify(grant), { expirationTtl: YEAR_SECONDS });
-    await store.put(`payment:${grant.paid_at}:${grant.email || "unknown"}`, JSON.stringify(grant));
-    // A Payment Link redirects to one fixed URL, so the customer comes back from Stripe carrying
-    // the checkout id and nothing else — the token they left with is in a tab they may have
-    // closed. This is how that id finds its way back to the grant.
-    if (grant.stripe_session) {
-      await store.put(`session:${grant.stripe_session}`, token, { expirationTtl: YEAR_SECONDS });
-    }
+    settleGrant(grant, session);
+    await persistSettled(store, token, grant);
   } catch (error) {
     console.error(JSON.stringify({ event: "stripe_settle_failed", message: String(error) }));
     return res.status(500).json({ ok: false, error: "Could not settle." });

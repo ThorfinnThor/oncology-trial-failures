@@ -92,6 +92,7 @@ Variables and Secrets → Add.
 | `STRIPE_LINK_PACKAGE` | Secret | the €99 link |
 | `STRIPE_LINK_ACCESS` | Secret | the €999 link |
 | `STRIPE_WEBHOOK_SECRET` | Secret | the `whsec_…` value |
+| `STRIPE_READ_KEY` | Secret | optional: a **restricted** key with only *Checkout Sessions: Read* (`rk_live_…`) |
 
 All three as **Secret**, including the two links, which are not secret at all. A deploy replaces
 the Worker's plaintext variables with whatever `wrangler.jsonc` declares — and it declares none —
@@ -129,3 +130,16 @@ Full access (€999) is sold in a conversation, not self-serve: `/api/order` alw
 do not justify a second funnel.
 
 Refunds are manual as well — refund in Stripe, then delete `grant:{token}` in KV.
+
+
+## Instant access on return (`STRIPE_READ_KEY`)
+
+Without it, a buyer returning from checkout waits for the webhook and then for Workers KV to carry
+that write to their edge — up to a minute of "confirming your payment". With it, the return asks
+Stripe directly (`GET /v1/checkout/sessions/{id}`), and a checkout whose `client_reference_id` is
+the order's token and whose `payment_status` is `paid` or `no_payment_required` settles the grant
+on the spot (`web/lib/server/access.ts`). The webhook still runs and writes the same records.
+
+The key is restricted to one permission, *Checkout Sessions: Read*: it cannot charge, refund or
+change anything. Create it in Stripe → Developers → API keys → Create restricted key, and store it
+in Cloudflare as a **Secret** named `STRIPE_READ_KEY`. Unset, everything works as before.

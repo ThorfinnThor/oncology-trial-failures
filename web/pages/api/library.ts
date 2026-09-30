@@ -12,9 +12,10 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import briefsIndex from "@/data/briefs_index.json";
 import productSummary from "@/data/product_summary.json";
 import { grantedSlugs, grantScope, isUnlocked, PACKAGES, type Grant } from "@/lib/server/grants";
+import { loadGrant, tokenForCheckout, type KvStore } from "@/lib/server/access";
 import { chaptersFor } from "@/lib/server/reportDocument";
 
-type KvBinding = { get(key: string): Promise<string | null> };
+type KvBinding = KvStore;
 type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: { LEADS?: KvBinding } } | undefined;
 };
@@ -24,7 +25,7 @@ function clean(value: unknown, max = 200): string {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const session = clean(req.query.session, 120);
+  const session = clean(req.query.session, 260);
   let token = clean(req.query.token, 120);
   if (!token && !session) {
     return res.status(400).json({ ok: false, error: "This page needs the link from your order." });
@@ -36,30 +37,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(503).json({ ok: false, error: "Access is not configured. Please contact us." });
   }
 
-  // Coming back from Stripe. The webhook writes this index when it settles the payment, so its
-  // absence means the webhook has not arrived yet — a few seconds, normally — and not that the
-  // checkout was invalid. The page waits rather than showing a dead end.
+  // Coming back from Stripe. With a read key the checkout is asked directly and a paid order opens
+  // at once; without one, the webhook's index is read, and its absence means the webhook has not
+  // arrived yet — not that the checkout was invalid. The page waits rather than showing a dead end.
+  let checkout = null;
   if (!token && session) {
     try {
-      token = (await store.get(`session:${session}`)) || "";
+      ({ token, checkout } = await tokenForCheckout(store, session));
     } catch (error) {
       console.error(JSON.stringify({ event: "library_session_read_failed", message: String(error) }));
       return res.status(503).json({ ok: false, error: "Could not check that payment. Please try again." });
     }
     if (!token) {
       console.log(JSON.stringify({ event: "library_session_not_settled" }));
-      return res.status(402).json({
-        ok: false,
-        awaiting_payment: true,
-        error: "Your payment is still confirming. This usually takes a few seconds.",
-      });
+      return res.status(402).json({ ok: false, awaiting_payment: true, error: "" });
     }
   }
 
   let grant: Grant | null = null;
   try {
-    const raw = await store.get(`grant:${token}`);
-    grant = raw ? (JSON.parse(raw) as Grant) : null;
+    grant = await loadGrant(store, token, session, checkout);
   } catch (error) {
     console.error(JSON.stringify({ event: "library_grant_read_failed", message: String(error) }));
     return res.status(503).json({ ok: false, error: "Could not check that link. Please try again." });
@@ -76,13 +73,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(402).json({
       ok: false,
       awaiting_payment: true,
-      error: "This order has not been paid yet. If you have just paid, give it a moment and reload — "
-        + "confirmation usually takes a few seconds.",
+      error: "",
     });
   }
 
   const scope = grantScope(grant);
-  const tokenParam = encodeURIComponent(token);
+  // The checkout id rides along on this visit's links: if an edge still holds the unpaid copy of
+  // the grant, the route can ask Stripe instead of refusing a customer who has paid.
+  const tokenParam = encodeURIComponent(token) + (session ? `&session=${encodeURIComponent(session)}` : "");
   const assetParam = grant.asset ? `&asset=${encodeURIComponent(grant.asset)}` : "";
   // A report's chapters, main chapter first, each with the reason it is in the report. For
   // everything-access there is no subject, so the order is simply the largest cohort first.

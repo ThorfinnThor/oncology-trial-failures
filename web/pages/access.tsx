@@ -17,6 +17,10 @@ import { LICENSING_EMAIL } from "@/lib/licensing";
 
 const n = (v: number) => v.toLocaleString("en-US");
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
+// Arriving from checkout, the page asks every two seconds for three minutes before it says anything
+// is slow. With STRIPE_READ_KEY set, the first request already answers.
+const RETRY_MS = 2000;
+const MAX_RETRIES = 90;
 
 type Entry = {
   slug: string;
@@ -57,6 +61,7 @@ export default function AccessPage() {
   const [message, setMessage] = useState("");
   const loadedFor = useRef("");
   const retries = useRef(0);
+  const [slow, setSlow] = useState(false);
   const [tick, setTick] = useState(0);
 
   // The token is read from the address bar as well as from the router. Waiting only on
@@ -96,11 +101,14 @@ export default function AccessPage() {
           loadedFor.current = "";
           setMessage(data.error || "");
           setState("awaiting");
-          // Arriving from the checkout, the webhook is usually seconds behind the redirect, so
-          // the page tries again by itself before asking anyone to press a button.
-          if (session && retries.current < 8) {
+          // The page keeps asking by itself — every two seconds for three minutes — so nobody who
+          // has just paid is left to work out that they should reload. Only after that does it
+          // say that this is slower than usual, and even then it keeps the button working.
+          if (retries.current < MAX_RETRIES) {
             retries.current += 1;
-            window.setTimeout(() => setTick((n) => n + 1), 2500);
+            window.setTimeout(() => setTick((n) => n + 1), RETRY_MS);
+          } else {
+            setSlow(true);
           }
           return;
         }
@@ -109,8 +117,14 @@ export default function AccessPage() {
         setState("ready");
         // Leave the customer with a link that keeps working: the checkout id is spent, the token
         // opens this page for a year.
+        // The checkout id stays for this visit, so a reload in the first minute cannot land on an
+        // edge that has not yet heard about the payment.
         if (!token && data.token && typeof window !== "undefined") {
-          window.history.replaceState({}, "", `/access?token=${encodeURIComponent(data.token)}`);
+          window.history.replaceState(
+            {},
+            "",
+            `/access?token=${encodeURIComponent(data.token)}&session=${encodeURIComponent(session)}`,
+          );
         }
       })
       .catch((error: Error) => {
@@ -145,15 +159,45 @@ export default function AccessPage() {
 
           {state === "awaiting" ? (
             <div className="card note">
-              <h1>Waiting for your payment to confirm</h1>
-              <p>{message}</p>
-              <button className="again" type="button" onClick={() => router.replace(router.asPath)}>
-                Check again
-              </button>
-              <p className="fine">
-                Nothing is lost if you close this page — the link keeps working, and everything opens as soon as the
-                payment lands.
-              </p>
+              {slow ? (
+                <>
+                  <h1>Your payment is taking longer to confirm</h1>
+                  <p>
+                    Some payment methods, such as bank transfers and SEPA direct debit, are confirmed by the bank rather
+                    than at checkout. Your report opens from this link as soon as the confirmation arrives.
+                  </p>
+                  <button
+                    className="again"
+                    type="button"
+                    onClick={() => {
+                      retries.current = 0;
+                      setSlow(false);
+                      setTick((n) => n + 1);
+                    }}
+                  >
+                    Check again
+                  </button>
+                  <p className="fine">
+                    Paid by card and still seeing this? Write to{" "}
+                    <a className="link" href={`mailto:${LICENSING_EMAIL}?subject=${encodeURIComponent("Payment confirmation")}`}>
+                      {LICENSING_EMAIL}
+                    </a>{" "}
+                    and we will open it for you.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="confirming">
+                    <span className="spinner" aria-hidden="true" />
+                    <h1>Confirming your payment</h1>
+                  </div>
+                  <p>
+                    Stripe is confirming your payment. Your report opens on this page automatically, usually within a
+                    few seconds — there is no need to reload.
+                  </p>
+                  <p className="fine">You can bookmark this page; the link stays valid.</p>
+                </>
+              )}
             </div>
           ) : null}
 
@@ -575,6 +619,33 @@ export default function AccessPage() {
         }
         .file:hover {
           border-color: rgba(79, 70, 229, 0.45);
+        }
+        .confirming {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+        .confirming h1 {
+          margin: 0;
+        }
+        .spinner {
+          width: 22px;
+          height: 22px;
+          flex: none;
+          border-radius: 50%;
+          border: 3px solid var(--line, #e5e7eb);
+          border-top-color: var(--accent, #4f46e5);
+          animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .spinner {
+            animation: none;
+          }
         }
         .again {
           margin-top: 16px;
