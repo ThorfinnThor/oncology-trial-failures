@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from scripts.universe.discontinuation_rates import is_bio_stop, load, phase_groups, select, summarize, wilson  # noqa: E402
 from scripts.universe.endpoint_outcomes import (disclosure_gap, evidence_line, evidence_of, parse_p,  # noqa: E402
                                                read_analyses, row_for, significant, stated_threshold,
-                                               statement_in, verdict_of)
+                                               statement_in, verdict_of, _NOT_EFFICACY)
 from scripts.universe.chembl_index import norm  # noqa: E402
 from scripts.universe.mechanism_classes import CLASSES  # noqa: E402
 from scripts.universe.resolve import expand_regimen, modality  # noqa: E402
@@ -26,6 +26,12 @@ def check(label, got, expected):
         print(f"FAIL {label}: expected {expected!r}, got {got!r}")
 
 
+# A safety endpoint is not a test of efficacy (NCT04623775: "TRAEs Leading to Discontinuation").
+for _t in ["Number of Participants With TRAEs Leading to Discontinuation", "Incidence of irAEs",
+           "Percentage of participants with TEAEs", "Participants with AEs leading to treatment discontinuation"]:
+    check(f"safety endpoint not read as efficacy: {_t}", bool(_NOT_EFFICACY.search(_t)), True)
+for _t in ["Overall Response Rate (ORR)", "Progression-free survival", "Time to treatment discontinuation"]:
+    check(f"efficacy endpoint still read: {_t}", bool(_NOT_EFFICACY.search(_t)), False)
 check("phase 1/2 counts as phase 2", phase_groups(["PHASE1", "PHASE2"]), {"2"})
 check("phase 2/3 counts as phase 3", phase_groups(["PHASE2", "PHASE3"]), {"3"})
 check("bio stop", is_bio_stop({"overall_status": "TERMINATED", "classification_outcome_v2": "BIOLOGICAL_FAILURE"}), True)

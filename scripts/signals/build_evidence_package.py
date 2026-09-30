@@ -128,6 +128,11 @@ MODALITY_WORD = {"Antibody": "a monoclonal antibody", "Small molecule": "a small
                  "Protein": "an engineered protein", "Peptide": "a peptide",
                  "Oligonucleotide": "an oligonucleotide", "Cell therapy": "a cell therapy",
                  "Gene therapy": "a gene therapy", "Vaccine": "a vaccine"}
+def verdict_label(row: dict) -> str:
+    """A target asked about without a molecule has no modality: sharing the target is the whole match."""
+    return "Same target" if row["verdict"] == "closest" and not row["same_modality"] else VERDICT_LABEL[row["verdict"]]
+
+
 VERDICT_LABEL = {"closest": "Same target, same modality", "related": "Related",
                  "weak": "Same modality only", "distant": "Different hypothesis",
                  "unknown": "Cannot be compared"}
@@ -165,6 +170,11 @@ def months_between(start: str | None, end: str | None) -> int | None:
 
 def e(x) -> str:
     return html.escape(str(x if x is not None else ""))
+
+
+def count(n: int, noun: str) -> str:
+    """'1 stop', '3 stops' — the lint in scripts/check_generated_text.py rejects '1 stops'."""
+    return f"{n} {noun}" + ("" if n == 1 else "s")
 
 
 def pct(x, digits=1) -> str:
@@ -564,13 +574,25 @@ def interpretation(pkg: dict) -> list[str]:
                    + " The cohort is weaker evidence about the mechanism than the count of records suggests: the "
                      "question to take into a diligence meeting is whether the asset under review shares the "
                      "molecule, the population or the endpoint of the programmes that failed.")
+    elif not a["stops_from_own_data"]:
+        # Nothing could be attributed: say so, and never render "All 0 stops".
+        out.append(("For the one stop, the record does not say" if len(stops) == 1 else
+                    f"For none of the {len(stops)} stops does the record say")
+                   + " whether the trial's own data or a decision taken elsewhere ended it. The rate therefore rests "
+                     "on the stated reasons alone; the individual cases below are where to judge them.")
     elif a["stops_from_own_data"] == 1:
         # One stop is one observation: calling it "clean evidence" would oversell it.
         out.append("The one stop we could attribute was the trial's own verdict rather than a consequence of a "
-                   "decision elsewhere; a single stop is a lead, not a pattern.")
+                   "decision elsewhere"
+                   + (f"; {count(a['stops_unclear'], 'further stop')} cannot be established from the record"
+                      if a["stops_unclear"] else "")
+                   + ". A single stop is a lead, not a pattern.")
     else:
+        # Never "unusually clean": with a handful of stops that claim is stronger than the data.
         out.append(f"All {a['stops_from_own_data']} stops we could attribute were the trial's own verdict rather than "
-                   f"a consequence of a decision elsewhere, which makes the cohort unusually clean evidence for its size.")
+                   "a consequence of a decision elsewhere"
+                   + (f"; {count(a['stops_unclear'], 'further stop')} cannot be established from the record."
+                      if a["stops_unclear"] else "."))
     if stops:
         out.append(f"The stops came from {c['stop_programmes']} sponsor–asset programmes across {c['stop_sponsors']} "
                f"sponsors"
@@ -716,7 +738,7 @@ def render_html(pkg: dict, notes: list[str]) -> str:
     if comparison and review:
         rows = "".join(
             f"<tr><td class='strong'>{e(c['asset'])}</td>"
-            f"<td><span class='verdict v-{c['verdict']}'>{e(VERDICT_LABEL[c['verdict']])}</span></td>"
+            f"<td><span class='verdict v-{c['verdict']}'>{e(verdict_label(c))}</span></td>"
             f"<td class='muted'>{e(c['why'])}"
             + (f"<br>shared targets: {e(', '.join(c['shared_target_genes']))}" if c["shared_target_genes"] else "")
             + f"</td><td class='muted'>{e(', '.join(c['modalities']) or '—')}</td>"

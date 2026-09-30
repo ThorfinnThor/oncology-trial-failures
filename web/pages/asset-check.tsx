@@ -278,7 +278,7 @@ export default function AssetCheckPage() {
                             ) : null}
                           </div>
                           <span className={`verdict v-${m.best || "tracked"}`}>
-                          {m.best ? BEST_LABEL[m.best] : "Covers your target"}
+                          {m.best ? (m.best === "closest" && !resolved.asset.modality ? "Same target" : BEST_LABEL[m.best]) : "Covers your target"}
                         </span>
                         </div>
 

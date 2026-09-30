@@ -67,6 +67,11 @@ const VERDICT_LABEL: Record<Verdict, string> = {
   unknown: "Cannot be compared",
 };
 
+/** A target asked about without a molecule has no modality: sharing the target is the whole match. */
+export function verdictLabel(r: { verdict: Verdict; same_modality: boolean }): string {
+  return r.verdict === "closest" && !r.same_modality ? "Same target" : VERDICT_LABEL[r.verdict];
+}
+
 const MODALITY_WORD: Record<string, string> = {
   Antibody: "a monoclonal antibody",
   Protein: "an engineered protein",
@@ -354,7 +359,7 @@ export function renderComparison(subject: Subject, rows: ComparisonRow[]): strin
     .map(
       (r) =>
         `<tr><td class='strong'>${e(r.asset)}</td>`
-        + `<td><span class='verdict v-${r.verdict}'>${e(VERDICT_LABEL[r.verdict])}</span></td>`
+        + `<td><span class='verdict v-${r.verdict}'>${e(verdictLabel(r))}</span></td>`
         + `<td class='muted'>${e(r.why)}`
         + (r.shared_target_genes.length
           ? `<br>shared targets: ${e(r.shared_target_genes.join(", "))}`

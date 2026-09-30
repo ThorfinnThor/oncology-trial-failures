@@ -234,7 +234,7 @@ def judge_p(value: float, op: str, rule: dict) -> tuple[bool | None, float | Non
 # the drug worked. "No difference in adverse events" is not a missed endpoint, and a prevention
 # trial whose endpoint is an adverse event is left unread rather than guessed at.
 _NOT_EFFICACY = re.compile(
-    r"adverse (?:event|effect|reaction)|\b(?:T?EAEs?|SAEs?)\b|safety|tolerab|toxicit|dose[- ]limiting|\bDLTs?\b|"
+    r"adverse (?:event|effect|reaction)|\b(?:TE|TR|ir|imm?)?AEs?\b|\bSAEs?\b|\bAESIs?\b|leading to (?:treatment |study (?:drug )?)?discontinuation|safety|tolerab|toxicit|dose[- ]limiting|\bDLTs?\b|"
     r"laboratory abnormal|vital sign|\bC ?max\b|pharmacokinetic|\bT ?max\b|half[- ]life|trough concentration|"
     r"bioavailab", re.I)
 

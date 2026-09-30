@@ -25,6 +25,7 @@ import {
   suggest,
   summariseCohort,
   type FailedAsset,
+  verdictLabel,
 } from "../lib/server/assetComparison";
 
 // The same slot string pages/api/report.ts splices into.
@@ -129,6 +130,10 @@ test("the delivered document really gets the section, and never keeps the empty 
   assert.ok(!delivered.includes(SLOT), "the slot must not survive into the delivered document");
   assert.ok(delivered.includes("OSIMERTINIB against the molecules that failed"));
   assert.ok(delivered.includes("Same target, same modality"));
+
+  // A target asked about without a molecule has no modality; its label must not claim one.
+  assert.equal(verdictLabel({ verdict: "closest", same_modality: false }), "Same target");
+  assert.equal(verdictLabel({ verdict: "closest", same_modality: true }), "Same target, same modality");
   assert.ok(delivered.includes("ChEMBL CHEMBL3353410"));
 
   // An unordered package is delivered without the section rather than with a stray comment.

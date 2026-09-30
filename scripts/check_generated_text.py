@@ -29,6 +29,8 @@ CHECKS = [
      "singular with plural noun"),
     (r"\bof 0 (?:completed|closed) trials\b|\bNone of the 0\b|\b0 of 0\b", "zero rendered as a finding"),
     (r"\{[a-z_]{2,}\}", "unfilled placeholder"),
+    (r"\bAll [01] (?:stops?|trials?|molecules?|programmes?)\b", "'All' over zero or one"),
+    (r"unusually clean evidence", "overstated strength of evidence"),
     (r"\bthe the\b|\ba a\b|\bof of\b|\bto to\b", "doubled word"),
     (r"\(\s*\)", "empty parentheses"),
     (r"%%", "doubled percent sign"),
