@@ -303,6 +303,35 @@ combinations and the paid report with the whole area, so the two documents gave 
 reference rates for one question. The report now uses the brief's comparator, and the check above
 fails if brief and report ever disagree on a number again.
 
+## 17. An assumed 0.05, a shared backbone and "other studies" (external review of the PD-(L)1 report)
+
+**Thresholds.** Where a sponsor posted a p-value without stating its threshold, the endpoint reader
+held it to 0.05. COMBI-i (NCT02967692) posted p = 0.042, one-sided, beside a 95% interval across 1:
+the trial missed, and the report said met. CO.26 (NCT02870920) was designed at two-sided 0.10 and
+posted a 90% interval with p = 0.07: the trial met, and the report said missed. Two errors in
+opposite directions from one assumption. Now no threshold is assumed (CLAUDE.md rule 7): an interval
+at another level names the alpha, a p its interval contradicts is not read, only results every
+conventional threshold agrees on are called, and the rest are listed as not assessable with the
+reason. Rows read under the old rule are re-judged on load, so a slow weekly re-read cannot leave
+them standing. 706 trials across the database moved from a verdict to "not assessable";
+`check_text_readers.py` now fails if any verdict rests on an assumed 0.05 or contradicts its own
+interval.
+
+**Background therapy.** CANOPY-1 (NCT03631199) gave pembrolizumab and chemotherapy in both arms and
+tested canakinumab. Its control arm was typed OTHER, so pembrolizumab counted as tested and the trial
+sat in the PD-(L)1 cohort. Now a drug the control arm also receives is background (CLAUDE.md rule 8);
+187 trials changed what they are counted as testing. Reports show background and comparator drugs
+beside the drugs tested.
+
+**Other studies.** "Lack of clinical activity in other CRS-207 studies" was read as this trial's
+own finding, because a product code sat between "other" and "studies". The sweep for the same
+shape found "not terminated due to safety reasons" read as a safety finding in eleven stop reasons
+— the negation only covered "not due to", not "not <stopped> due to". 46 declared changes, each
+read (data/attribution_changes.md); six new golden cases.
+
+**Completeness.** The report listed the 25 most recent missed endpoints of 60. It now lists every
+one, and each chapter has a CSV of the whole cohort on the access page.
+
 ---
 
 ## What I would tell myself at the start

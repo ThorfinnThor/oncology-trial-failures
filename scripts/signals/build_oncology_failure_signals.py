@@ -200,8 +200,48 @@ def intervention_roles(design: dict) -> list[dict]:
             "type": iv.get("type", ""),
             "other_names": sorted({p.strip() for n in iv.get("otherNames") or [] for p in re.split(r"[;,]", n or "") if p.strip()}),
             "arm_types": types,
+            "arm_labels": sorted({label for label in iv.get("armGroupLabels") or [] if label}),
         })
     return rows
+
+
+CONTROL_ARM_TYPES = {"ACTIVE_COMPARATOR", "PLACEBO_COMPARATOR", "SHAM_COMPARATOR", "NO_INTERVENTION", "OTHER"}
+
+
+def shared_backbone(design: dict, rows: list[dict], roles: list[str]) -> set[int]:
+    """Indexes of interventions that the control arm received too, in a controlled add-on design.
+
+    CANOPY-1 (NCT03631199) gave pembrolizumab and chemotherapy in both randomised arms and tested
+    canakinumab against placebo on top. Its control arm is typed OTHER, not PLACEBO_COMPARATOR, so
+    the arm types alone called pembrolizumab experimental and the trial entered the PD-(L)1 cohort
+    as if it had tested PD-1. The design says otherwise: what the control arm also got is the
+    background the hypothesis was tested on.
+
+    Control arms are comparator, placebo, sham, no-intervention and "other" arms, and any arm that
+    receives a placebo. A drug is background when it is in every control arm and in at least one
+    other arm — and only when some other active drug is kept out of the control arms, i.e. there is
+    something being tested on top. In a crossover or delayed-start design ("placebo, then
+    upadacitinib") the drug under test reaches the control arm too, and nothing is kept out, so
+    nothing is re-labelled. A non-randomised trial with no control arm is left alone.
+    """
+    aim = ((design or {}).get("protocolSection") or {}).get("armsInterventionsModule") or {}
+    arm_type = {a.get("label"): (a.get("type") or "UNKNOWN") for a in aim.get("armGroups") or [] if a.get("label")}
+    arms = set(arm_type)
+    if len(arms) < 2:
+        return set()
+    control = {label for label, t in arm_type.items() if t in CONTROL_ARM_TYPES}
+    control |= {label for row, role in zip(rows, roles) if role == "PLACEBO" for label in row["arm_labels"]}
+    control &= arms
+    if not control or control == arms:
+        return set()
+    tested = any(role == "EXPERIMENTAL_ARM" and row["arm_labels"] and not (set(row["arm_labels"]) & control)
+                 for row, role in zip(rows, roles))
+    if not tested:
+        return set()
+    placebo_names = " ".join(row["name"].lower() for row, role in zip(rows, roles) if role == "PLACEBO")
+    return {i for i, (row, role) in enumerate(zip(rows, roles))
+            if role == "EXPERIMENTAL_ARM" and control <= set(row["arm_labels"]) and set(row["arm_labels"]) - control
+            and not (row["name"] and row["name"].lower().split()[0] in placebo_names)}
 
 
 def assign_role(iv: dict, asset: dict | None) -> tuple[str, str]:
@@ -432,8 +472,14 @@ def main() -> int:
         ivs = []
         focus_components = []
         exp_components = []
-        for iv in intervention_roles(design) or [{"name": n, "type": "", "other_names": [], "arm_types": []} for n in split_semicolon(rec.get("intervention_names"))]:
-            role, basis = assign_role(iv, None)
+        iv_rows = intervention_roles(design) or [{"name": n, "type": "", "other_names": [], "arm_types": [], "arm_labels": []}
+                                                  for n in split_semicolon(rec.get("intervention_names"))]
+        iv_roles = [assign_role(iv, None) for iv in iv_rows]
+        backbone = shared_backbone(design, iv_rows, [r for r, _ in iv_roles])
+        for index, iv in enumerate(iv_rows):
+            role, basis = iv_roles[index]
+            if index in backbone:
+                role, basis = "BACKGROUND_OR_BACKBONE", "given in every arm of a controlled design"
             is_drug = role not in ("PLACEBO", "NON_DRUG")
             comps = components_for(iv) if is_drug else []
             for c in comps:

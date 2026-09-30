@@ -22,4 +22,11 @@ the classification rules, the endpoint reader — follows these rules. MISTAKES.
    `data/classification_manual_decisions_v2.csv` are decisions, not suggestions. The review model
    (`docs/llm_review.md`) may add to the first where the rules are silent or disputed; it never
    changes an outcome and never overwrites a person's decision.
+7. **Never assume a threshold.** A posted result is called met or missed only against a threshold the
+   record states, one its posted interval implies, or where every conventional threshold agrees
+   (`endpoint_outcomes.judge_unstated`). A p-value its own interval contradicts is not read. Everything
+   else is "not assessable" and listed with the reason. MISTAKES.md #17.
+8. **The drug tested is the difference between the arms.** What the control arm also received is
+   background (`shared_backbone`), and background never puts a trial into a mechanism cohort. Show it
+   next to the drugs tested, never inside them.
 

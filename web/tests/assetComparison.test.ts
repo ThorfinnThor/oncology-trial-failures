@@ -17,6 +17,7 @@ import test from "node:test";
 import {
   classesFor,
   compareAsset,
+  comparisonLead,
   rankMatches,
   renderComparison,
   renderUnresolved,
@@ -296,4 +297,17 @@ test("the combination cohorts are not lost when classes take over", async () => 
     matches.some((m) => m.cohort.includes("+") && m.slug),
     "a combination cohort is sold but is not a plain class; it must still appear",
   );
+});
+
+test("a target bought without a molecule is never said to share a modality", () => {
+  const subject = resolveSubject("BCMA");
+  assert.ok(subject, "BCMA should resolve as a target");
+  assert.equal(subject!.modality || "", "", "a bare target carries no modality");
+  const rows = [
+    { asset: "BELANTAMAB MAFODOTIN", modalities: ["Antibody"], trial_count: 3, shared_target_genes: ["TNFRSF17"],
+      shared_mechanisms: [], shared_classes: [], same_modality: false, verdict: "closest" as const, why: "same target" },
+  ];
+  const lead = comparisonLead(subject!, rows as never);
+  assert.ok(!/share its target and its modality/.test(lead), lead);
+  assert.ok(/act on the same target/.test(lead), lead);
 });

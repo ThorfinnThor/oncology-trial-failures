@@ -116,6 +116,38 @@ def write_changes(changed, records_by_id, old_version: str) -> None:
     CHANGES.write_text("\n".join(lines) + "\n")
 
 
+def check_endpoints() -> tuple[list[str], int]:
+    """Every posted-result verdict, against the rules MISTAKES.md #17 is about.
+
+    1. No verdict rests on a threshold nobody stated (the old 0.05 default): COMBI-i was called met
+       on a one-sided p, CO.26 missed on a design tested at 0.10.
+    2. No verdict contradicts its own posted two-sided interval at the level the verdict used.
+    Runs wherever the endpoint cache exists (the weekly data run); skipped elsewhere.
+    """
+    from scripts.universe.endpoint_outcomes import OUT, _interval, load_verdicts
+    if not OUT.exists():
+        return [], 0
+    problems, checked = [], 0
+    for nct, row in load_verdicts().items():
+        for a in row.get("analyses") or []:
+            checked += 1
+            if a.get("threshold_basis") == "default":
+                problems.append(f"{nct}: '{a.get('outcome')}' judged against an assumed 0.05")
+                continue
+            est = a.get("estimate") or {}
+            ci = _interval({"paramType": est.get("type"), "paramValue": est.get("value"),
+                            "ciPctValue": est.get("ci_pct"), "ciNumSides": est.get("ci_sides"),
+                            "ciLowerLimit": est.get("lower"), "ciUpperLimit": est.get("upper")})
+            level_matches = ci and a.get("threshold") and abs((1 - ci["level"] / 100) - a["threshold"]) < 1e-6
+            two_sided_stated = a.get("threshold_basis") == "stated" and not a.get("one_sided")
+            if level_matches and (a.get("threshold_basis") in ("unstated", "interval", "ci") or two_sided_stated) \
+                    and ci["excludes_null"] != a.get("significant"):
+                problems.append(f"{nct}: '{a.get('outcome')}' called "
+                                f"{'significant' if a.get('significant') else 'not significant'} against its own "
+                                f"{ci['level']:g}% interval")
+    return problems, checked
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--write-snapshot", action="store_true")
@@ -127,6 +159,8 @@ def main() -> int:
     problems += check_denials(records, current)
     drift, changed = check_drift(current)
     problems += drift
+    endpoint_problems, endpoints_checked = check_endpoints()
+    problems += endpoint_problems[:50] + ([f"… and {len(endpoint_problems) - 50} more"] if len(endpoint_problems) > 50 else [])
 
     if changed and not drift:
         old = json.loads(SNAPSHOT.read_text()).get("rules_version", "?")
@@ -138,7 +172,9 @@ def main() -> int:
         return 1
 
     print(f"text-reader gate passed: {len(json.loads(GOLDEN.read_text())['cases'])} golden cases, "
-          f"{len(records)} stop reasons checked for denied safety claims, rules {effective_version()}")
+          f"{len(records)} stop reasons checked for denied safety claims, "
+          f"{endpoints_checked} posted-result verdicts checked against their stated thresholds and intervals, "
+          f"rules {effective_version()}")
     if args.write_snapshot and current:
         SNAPSHOT.parent.mkdir(parents=True, exist_ok=True)
         SNAPSHOT.write_text(json.dumps({"rules_version": effective_version(), "rows": current}, separators=(",", ":")) + "\n")

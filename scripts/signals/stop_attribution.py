@@ -35,7 +35,7 @@ from scripts.signals.text_guards import denied
 # Bump whenever a pattern below changes. The weekly run compares every stop's verdict with last
 # week's: the same text read by the same rules must give the same verdict, and a change of rules
 # must be declared here, where the diff is then printed for review. See check_text_readers.py.
-RULES_VERSION = "2026-09-29.2"
+RULES_VERSION = "2026-09-30.1"
 
 # Verdicts read by a person or by the independent review model, keyed by the stop reason's text.
 # They take precedence over the patterns: a reviewed verdict is the answer, the patterns are the
@@ -79,7 +79,15 @@ UNCLEAR = "unclear"
 # The text points somewhere other than this trial.
 CASCADE_PATTERNS = [
     (r"\b(?:an|the)?other\s+(?:stud(?:y|ies)|trials?|arms?)\b", "refers to another study"),
-    (r"\bin\s+other\s+(?:stud(?:y|ies)|trials?)\b", "refers to other studies"),
+    # "lack of clinical activity in other CRS-207 studies" (NCT03122548): a product code or a few
+    # descriptive words may sit between "other" and "studies"; the finding is still somebody else's.
+    # Not "enrolled in other islet transplant trials": patients leaving is not evidence arriving.
+    (r"(?<!enrolled\s)(?<!enrolling\s)(?<!enroll\s)(?<!enrol\s)(?<!participate\s)(?<!participating\s)"
+     r"(?<!recruited\s)(?<!transferred\s)(?<!moved\s)(?<!included\s)"
+     r"\b(?:in|from|of|with|across|into)\s+(?:the\s+|several\s+|two\s+|multiple\s+|all\s+)?other\s+(?:[\w/-]+\s+){0,3}?"
+     r"(?:stud(?:y|ies)|trials?|programs?|programmes?|indications?|cohorts?\s+of\s+the\s+program(?:me)?)\b"
+     r"(?!\s+(?:drugs?|medications?|treatments?|products?|sites?|staff|personnel|procedures?|visits?|assessments?|"
+     r"participation|enrol\w*|entry))", "refers to other studies"),
     (r"\bbased\s+on\s+(?:the\s+)?(?:results?|data|findings?|recommendations?)\s+(?:of|from)\s+"
      r"(?!this\b|the\s+interim|the\s+planned|an\s+interim)", "cites results from elsewhere"),
     (r"\bfollowing\s+(?:the\s+)?(?:results?|halt|discontinuation|termination|decision|information)\b",
@@ -127,7 +135,11 @@ CASCADE_PATTERNS = [
 OWN_PATTERNS = [
     (r"\b(?:interim|planned)\s+analysis\b", "its own interim analysis"),
     (r"\b(?:I?DMC|DSMB|data\s+(?:and\s+safety\s+)?monitoring\s+(?:committee|board))\b", "its own monitoring committee"),
-    (r"\bfutility\b", "futility in this trial"),
+    (r"\bfutility\b|\b(?:determined|deemed|considered|found|judged|declared|shown)\s+(?:to\s+be\s+)?futile\b",
+     "futility in this trial"),
+    # "there was no signal of efficacy" (NCT06417697).
+    (r"\bno\s+(?:clear\s+|meaningful\s+|relevant\s+)?(?:signal|sign|evidence)\s+of\s+(?:efficacy|benefit|activity|response)\b",
+     "efficacy observed in this trial"),
     # Eligibility criteria are not an endpoint: "patients not meeting inclusion criteria" is recruitment.
     (r"\b(?:did\s+not|failed\s+to|does\s+not)\s+meet\s+(?:(?!inclusion|exclusion|eligib|entry|enrol|screening|admission)[\w/-]+\s+){0,6}?(?:end\s?points?|objectives?|criteri(?:a|on))\b",
      "missed its endpoint"),
@@ -180,6 +192,19 @@ NEGATED_PATTERNS = [
     r"\b(?:without|with\s+no)\s+(?:any\s+)?(?:new\s+)?(?:safety|efficacy)\s+(?:concerns?|signals?|issues?|findings?)\b",
     r"\bno\s+(?:new\s+)?(?:unexpected\s+)?safety\s+(?:concerns?|signals?|issues?|findings?|reasons?)\b"
     r"(?:\s+(?:were|was|have\s+been|has\s+been)\s+(?:identified|observed|seen|raised|reported))?",
+    # "not stopped for any safety reasons" (NCT01121536). Only verbs of stopping: "was not continued
+    # due to safety concerns" affirms safety as the reason and must stay.
+    r"\b(?:not|never)\s+(?:been\s+)?(?:stopped|terminated|halted|discontinued|ended|closed|suspended)\s+"
+    r"(?:early\s+)?(?:for|due\s+to|because\s+of|on\s+the\s+basis\s+of|based\s+on)\b(?:(?!\bbut\b)[^.;:(),])*",
+    # "no new emergent safety findings" (NCT02641392): several qualifiers may stand before "safety".
+    r"\bno\s+(?:(?:new|emergent|emerging|unexpected|additional|significant|major|relevant|further|particular)\s+){1,3}"
+    r"(?:safety|tolerability)\s+(?:concerns?|signals?|issues?|findings?|reasons?|problems?)\b",
+    # "Safety findings were consistent with previously published data" (NCT03843125): a comparison,
+    # not a safety problem.
+    r"\b(?:the\s+)?(?:safety|tolerability)\s+(?:findings?|profile|data|results?|signals?)\s+(?:was|were|is|are|remained?)\s+"
+    r"(?:generally\s+)?(?:consistent|in\s+keeping|comparable|similar|in\s+line)\b(?:(?!\bbut\b)[^.;:()])*",
+    r"\bthere\s+(?:were|was|are|is|have\s+been|has\s+been)\s+(?:not|never)\s+(?:any\s+)?(?:new\s+)?"
+    r"(?:safety|tolerability|toxicity)\s+(?:concerns?|signals?|issues?|findings?|reasons?|problems?)\b",
     r"\b(?:there\s+(?:were|was|are|is)\s+)?no\s+(?:new\s+)?(?:serious\s+adverse|treatment[- ]related)\b(?:(?!\bbut\b)[^.;:(),])*",
 ]
 # A comparison names another study without making it the cause: "the safety profile was consistent

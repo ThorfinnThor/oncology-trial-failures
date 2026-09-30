@@ -32,6 +32,7 @@ type Entry = {
   comparator_rate: number;
   counts: { closed: number; stopped: number; still_open: number; total_in_cohort: number };
   url: string;
+  export_url?: string;
 };
 
 type Library = {
@@ -306,10 +307,22 @@ export default function AccessPage() {
                         <a className="open" href={entry.url} target="_blank" rel="noopener noreferrer">
                           Read online
                         </a>
+                        {entry.export_url ? (
+                          <a className="csv" href={entry.export_url}>
+                            All {n(entry.counts.total_in_cohort)} trials (CSV)
+                          </a>
+                        ) : null}
                       </div>
                     </li>
                   ))}
                 </ol>
+                <p className="fine">
+                  Each chapter&rsquo;s CSV lists every trial in its cohort, one row per trial: phase, status, dates,
+                  sponsor, the drugs tested, the background therapy every arm received and the comparator, how the
+                  stop was classified and by what (rule or manual review), whether it was the trial&rsquo;s own
+                  finding or a decision taken elsewhere, and the posted primary result — met, missed, split, or not
+                  assessable without the protocol. Every count in the report can be recounted from it.
+                </p>
                 {library.asset ? (
                   <p className="fine">
                     Every chapter opens by placing each molecule that failed in that cohort against{" "}
@@ -473,6 +486,16 @@ export default function AccessPage() {
         .open {
           background: var(--accent);
           color: #fff;
+        }
+        .csv {
+          border: 1px solid var(--line, #e5e7eb);
+          border-radius: 10px;
+          padding: 8px 13px;
+          font-size: 13px;
+          font-weight: 700;
+          color: var(--accent);
+          text-decoration: none;
+          white-space: nowrap;
         }
         .meta {
           display: grid;

@@ -336,6 +336,13 @@ export function comparisonLead(subject: Subject, rows: ComparisonRow[]): string 
   if (!rows.length) {
     return `${head}. No molecule that failed in this cohort could be compared with it.`;
   }
+  if (closest.length && !subject.modality) {
+    // A target was bought, not a molecule: there is no modality to share, and saying the failures
+    // "share its target and its modality" claimed a comparison that was never made.
+    return `${head}. ${closest.length} of the ${rows.length} molecules that failed here act on the same target `
+      + `(${closest.map((r) => r.asset).join(", ")}). No molecule was named, so modalities are not compared; the `
+      + `table gives each molecule's own modality — that history is the one to be able to answer for.`;
+  }
   if (closest.length) {
     return `${head}. ${closest.length} of the ${rows.length} molecules that failed here share its target and its `
       + `modality (${closest.map((r) => r.asset).join(", ")}) — that history is the one to be able to answer for.`;

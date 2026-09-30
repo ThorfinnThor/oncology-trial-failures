@@ -238,6 +238,44 @@
    "attribution": "programme_cascade",
    "evidence_includes": "cites results from other studies",
    "evidence_excludes": null
+  },
+  {
+   "nct_id": "NCT03122548",
+   "why_stopped": "Low enrollment and lack of clinical activity in other CRS-207 studies.",
+   "attribution": "programme_cascade",
+   "evidence_includes": "refers to other studies"
+  },
+  {
+   "nct_id": "NCT00315614",
+   "why_stopped": "We did not achieve a tolerogenic profile. Subjects withdrew from protocol and enrolled in other islet transplant trials.",
+   "attribution": "own_data",
+   "evidence_includes": "a result in this trial"
+  },
+  {
+   "nct_id": "NCT01745692",
+   "why_stopped": "IDMC decision - recommended on basis of results from other relevant clinical trials, there were not safety concerns",
+   "attribution": "programme_cascade",
+   "evidence_includes": "refers to other studies",
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT04470622",
+   "why_stopped": "Study was terminated early by Heron, and was not terminated for safety reasons.",
+   "attribution": "unclear",
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT06417697",
+   "why_stopped": "Study not stopped for safety reasons. Data were reviewed after the first 23 patients had completed scheduled dosing and there was no signal of efficacy for change in body weight. This clinical trial has been determined to be futile.",
+   "attribution": "own_data",
+   "evidence_includes": "futility in this trial",
+   "evidence_excludes": "safety in this trial"
+  },
+  {
+   "nct_id": "NCT02641392",
+   "why_stopped": "Study terminated by Sponsor following a recommendation from external DMC based on lack of emerging benefit; there were no new emergent safety findings",
+   "attribution": "own_data",
+   "evidence_excludes": "safety in this trial"
   }
  ]
 }

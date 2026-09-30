@@ -93,6 +93,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       ...chapter,
       generated_at_utc: pkg.generated_at_utc,
       brief_slug: brief ? brief.slug : null,
+      // The whole cohort, one row per trial, for recounting any number in the chapter.
+      export_url: `/api/report-export?slug=${encodeURIComponent(chapter.slug)}&token=${tokenParam}`,
       url: `/api/report?slug=${encodeURIComponent(chapter.slug)}&token=${tokenParam}${assetParam}`,
     };
   });

@@ -55,6 +55,28 @@ check("plain names match", _same_legal_entity("Pfizer", "PFIZER INC"), True)
 iv = lambda name, typ, arms: {"name": name, "type": typ, "other_names": [], "arm_types": arms}
 check("placebo", assign_role(iv("Matching placebo", "DRUG", ["PLACEBO_COMPARATOR"]), None)[0], "PLACEBO")
 check("backbone", assign_role(iv("Cisplatin", "DRUG", ["EXPERIMENTAL", "PLACEBO_COMPARATOR"]), None)[0], "BACKGROUND_OR_BACKBONE")
+# CANOPY-1 (NCT03631199): pembrolizumab + chemotherapy in both arms, canakinumab vs placebo on top, the
+# control arm typed OTHER. Pembrolizumab is the background, not what was tested.
+from scripts.signals.build_oncology_failure_signals import intervention_roles, shared_backbone  # noqa: E402
+_canopy = {"protocolSection": {"armsInterventionsModule": {
+    "armGroups": [{"label": "Canakinumab", "type": "EXPERIMENTAL"}, {"label": "Placebo", "type": "OTHER"}],
+    "interventions": [
+        {"name": "canakinumab", "type": "BIOLOGICAL", "armGroupLabels": ["Canakinumab"]},
+        {"name": "canakinumab-matching placebo", "type": "OTHER", "armGroupLabels": ["Placebo"]},
+        {"name": "pembrolizumab", "type": "BIOLOGICAL", "armGroupLabels": ["Canakinumab", "Placebo"]}]}}}
+_rows = intervention_roles(_canopy)
+_roles = [assign_role(r, None)[0] for r in _rows]
+check("CANOPY-1: pembrolizumab in every arm of a controlled add-on is the backbone",
+      [(_rows[i]["name"]) for i in sorted(shared_backbone(_canopy, _rows, _roles))], ["pembrolizumab"])
+_cohorts = {"protocolSection": {"armsInterventionsModule": {
+    "armGroups": [{"label": "A", "type": "EXPERIMENTAL"}, {"label": "B", "type": "EXPERIMENTAL"}],
+    "interventions": [
+        {"name": "drug A", "type": "DRUG", "armGroupLabels": ["A"]},
+        {"name": "drug B", "type": "DRUG", "armGroupLabels": ["B"]},
+        {"name": "pembrolizumab", "type": "BIOLOGICAL", "armGroupLabels": ["A", "B"]}]}}}
+_rows = intervention_roles(_cohorts)
+check("uncontrolled cohorts: pembrolizumab stays part of what is tested",
+      shared_backbone(_cohorts, _rows, [assign_role(r, None)[0] for r in _rows]), set())
 check("comparator", assign_role(iv("Docetaxel", "DRUG", ["ACTIVE_COMPARATOR"]), None)[0], "COMPARATOR")
 check("experimental", assign_role(iv("AUY922", "DRUG", ["EXPERIMENTAL"]), None)[0], "EXPERIMENTAL_ARM")
 check("procedure", assign_role(iv("IMRT", "RADIATION", ["EXPERIMENTAL"]), None)[0], "NON_DRUG")

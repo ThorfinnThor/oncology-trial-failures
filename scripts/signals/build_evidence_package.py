@@ -141,6 +141,10 @@ VERDICT_LABEL = {"closest": "Same target, same modality", "related": "Related",
 # them is a data dump rather than a report. They are counted in full, listed in part, and the
 # complete cohort ships as the CSV beside this document.
 MAX_CONTEXT_ROWS = 25
+EXPORT_COLUMNS = ["nct_id", "title", "phase", "status", "start", "stopped", "sponsor", "experimental_drugs",
+                  "background_drugs", "comparator_drugs", "enrollment", "closed", "biological_stop",
+                  "stop_classification", "stop_primary_reason", "stop_classified_by", "why_stopped",
+                  "stop_attribution", "attribution_basis", "primary_endpoint", "endpoint_basis"]
 # The brief's own cap on the stop table (scripts/briefs/build_brief.py MAX_ROWS).
 BRIEF_MAX_ROWS = 6
 
@@ -271,6 +275,11 @@ def build(args) -> dict:
                    if verdicts.get(r["nct_id"], {}).get("endpoint_verdict") in ("MISSED", "MET", "MIXED")}
     missed = sorted([r for r in completed if endpoint_of.get(r["nct_id"], {}).get("endpoint_verdict") == "MISSED"],
                     key=lambda r: (r.get("start_date") or ""), reverse=True)
+    # Posted a result that cannot be called met or missed without guessing the threshold (COMBI-i:
+    # a one-sided p beside a 95% interval across 1). Listed with the reason, never counted either way.
+    undecided = sorted([r for r in completed if r["nct_id"] not in endpoint_of
+                        and (verdicts.get(r["nct_id"]) or {}).get("undecided")],
+                       key=lambda r: (r.get("start_date") or ""), reverse=True)
     # A trial whose sponsor stopped updating is not running; it is unaccounted for. It stays in the
     # count because it is still in the cohort, but a reader asking "how much is still to come"
     # deserves to know how much of the answer is registry rot.
@@ -278,14 +287,21 @@ def build(args) -> dict:
 
     def trial_row(r, kind):
         a = attr_by_nct.get(r["nct_id"], {})
-        drugs = sorted({c.get("name") or c.get("label") for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM"
-                        for c in i["components"] if c.get("name") or c.get("label")})
+        def names(roles):
+            return sorted({c.get("name") or c.get("label") for i in r["interventions"] if i["role"] in roles
+                           for c in i["components"] if c.get("name") or c.get("label")})
+        drugs = names({"EXPERIMENTAL_ARM"})
+        v = verdicts.get(r["nct_id"]) or {}
         return {
             "nct_id": r["nct_id"], "kind": kind,
             "title": r.get("brief_title"), "phase": "3" if "3" in r["_phase"] else "2",
             "status": r.get("overall_status"),
             "sponsor": r["_sponsor_group"], "sponsor_class": r.get("lead_sponsor_class"),
             "experimental_drugs": drugs[:6],
+            # What was given in every arm, and what the control arm got: the hypothesis tested is the
+            # difference, and a class drug that is only the shared background did not qualify the trial.
+            "background_drugs": names({"BACKGROUND_OR_BACKBONE"})[:6],
+            "comparator_drugs": names({"COMPARATOR"})[:6],
             "start": (r.get("start_date") or "")[:7],
             "stopped": (r.get("stop_date_estimate") or "")[:7],
             "enrollment": r.get("enrollment_count"),
@@ -300,7 +316,11 @@ def build(args) -> dict:
             # primary comparison has its evidence next to the word.
             "endpoint_evidence": evidence_of(verdicts.get(r["nct_id"])),
             "results_url": results_url(r["nct_id"]),
+            "endpoint_undecided": v.get("undecided") or [] if r["nct_id"] not in endpoint_of else [],
+            "endpoint_basis": v.get("basis"),
+            "classification_source": r.get("classification_source"),
             "attribution": a.get("attribution"), "attribution_basis": a.get("basis"),
+            "attribution_reviewed_by": a.get("reviewed_by"),
             "attribution_evidence": a.get("cascade_evidence") or a.get("own_data_evidence") or [],
             "sibling_stops": a.get("sibling_stops") or [],
             "registry_url": f"https://clinicaltrials.gov/study/{r['nct_id']}",
@@ -310,7 +330,35 @@ def build(args) -> dict:
                                 f"+ {args.with_class}" if args.with_class else ""] if x).strip()
     p_value = binom_sf(seg["biological_stops"], seg["closed"], comparator["rate"] or 0.0)
 
+    # The whole cohort, one row per trial, for the buyer's own spreadsheet: every number in the
+    # report can be recounted from it. Delivered as CSV by /api/report-export.
+    def export_row(r):
+        a = attr_by_nct.get(r["nct_id"], {})
+        v = verdicts.get(r["nct_id"]) or {}
+
+        def names(roles):
+            return "; ".join(sorted({c.get("name") or c.get("label") for i in r["interventions"] if i["role"] in roles
+                                     for c in i["components"] if c.get("name") or c.get("label")})[:6])
+        verdict = v.get("endpoint_verdict") if r.get("overall_status") == "COMPLETED" else None
+        return [r["nct_id"], " ".join((r.get("brief_title") or "").split())[:200], "3" if "3" in r["_phase"] else "2", r.get("overall_status") or "",
+                (r.get("start_date") or "")[:7], (r.get("stop_date_estimate") or "")[:7] if r["_closed"] else "",
+                r["_sponsor_group"], names({"EXPERIMENTAL_ARM"}), names({"BACKGROUND_OR_BACKBONE"}),
+                names({"COMPARATOR"}), r.get("enrollment_count") if isinstance(r.get("enrollment_count"), int) else "",
+                "yes" if r["_closed"] else "no", "yes" if r["_bio"] else "no",
+                r.get("classification_outcome_v2") or "", r.get("classification_primary_reason_v2") or "",
+                "manual review" if (r.get("classification_source") or "").startswith("REVIEWED") else
+                ("rule" if r.get("classification_source") else ""),
+                " ".join((r.get("why_stopped") or "").split())[:400] if r.get("overall_status") != "COMPLETED" else "",
+                a.get("attribution") or "", a.get("basis") or "",
+                ("NOT_ASSESSABLE" if verdict == "UNREADABLE" and v.get("undecided") else
+                 "" if verdict in (None, "UNREADABLE") else verdict),
+                (v.get("basis") or "") if verdict in ("MET", "MISSED", "MIXED") else ""]
+
+    export = {"columns": EXPORT_COLUMNS, "rows": [export_row(r) for r in
+                                                  sorted(cohort, key=lambda r: r.get("start_date") or "", reverse=True)]}
+
     return {
+        "export": export,
         "schema_version": 1,
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "cohort": name,
@@ -349,7 +397,9 @@ def build(args) -> dict:
         "time_to_event": curve(cohort),
         "comparator_time_to_event": curve(comparator_rows),
         "trials": ([trial_row(r, "biological_stop") for r in stops]
-                   + [trial_row(r, "endpoint_miss") for r in missed[:MAX_CONTEXT_ROWS]]
+                   # Every miss, not the most recent 25: each one is a finding the buyer may need to check.
+                   + [trial_row(r, "endpoint_miss") for r in missed]
+                   + [trial_row(r, "endpoint_undecided") for r in undecided]
                    + [trial_row(r, "terminated_cause_not_readable") for r in unreadable[:MAX_CONTEXT_ROWS]]
                    + [trial_row(r, "still_open") for r in
                       sorted(open_trials, key=lambda r: (r.get("start_date") or ""), reverse=True)[:MAX_CONTEXT_ROWS]]),
@@ -366,7 +416,8 @@ def build(args) -> dict:
                    "brief_lists_stops": min(len(stops), BRIEF_MAX_ROWS),
                    "endpoint_missed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MISSED"),
                    "endpoint_readable": len(endpoint_of),
-                   "listed_endpoint_misses": len(missed[:MAX_CONTEXT_ROWS])},
+                   "listed_endpoint_misses": len(missed),
+                   "endpoint_undecided": len(undecided)},
         "endpoints": {
             "read": bool(verdicts),
             "completed": len(completed),
@@ -374,6 +425,7 @@ def build(args) -> dict:
             "missed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MISSED"),
             "met": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MET"),
             "mixed": sum(1 for v in endpoint_of.values() if v["endpoint_verdict"] == "MIXED"),
+            "undecided": len(undecided),
             "from_sponsor_statement": sum(1 for v in endpoint_of.values() if v.get("basis") == "sponsor_statement"),
             "missed_sponsors": len({r["_sponsor_group"] for r in missed}),
             "read_on": read_on(),
@@ -381,10 +433,13 @@ def build(args) -> dict:
             "method": "Only trials the sponsor completed and posted results for. A sentence in the posted results "
                       "saying this trial did not meet its primary endpoint decides it. Otherwise: only outcome "
                       "measures typed PRIMARY that measure efficacy, only between-group comparisons that are not "
-                      "non-inferiority or equivalence tests, and only a p-value held to the threshold the sponsor "
-                      "wrote down — 0.05 where it wrote none — or, with no p-value, a two-sided 95% interval "
-                      "against no effect. A failed non-inferiority test is a different event and is never counted "
-                      "here.",
+                      "non-inferiority or equivalence tests, and each p-value held to the threshold the sponsor "
+                      "wrote down. Where the record states none, no threshold is assumed: a posted interval at a "
+                      "level other than 95% names the design's two-sided alpha (a 90% interval, 0.10); otherwise a "
+                      "result is read only where every conventional threshold agrees — p below 0.01 as met, p of "
+                      "0.10 or more (phase 3) or 0.20 or more (phase 2) as missed — and a p-value its own interval "
+                      "contradicts is not read at all. Everything in between is listed as not assessable, with the "
+                      "reason. A failed non-inferiority test is a different event and is never counted here.",
             "why_it_matters": "A discontinuation rate only sees trials that were stopped. A drug that runs its "
                               "trial to the end and misses is the more common failure in several fields, and the "
                               "registry records it.",
@@ -517,7 +572,12 @@ def interpretation(pkg: dict) -> list[str]:
         distant = [c for c in comparison if c["verdict"] in ("weak", "distant")]
         head = f"{review['asset']} is {MODALITY_WORD.get(review.get('modality'), review.get('modality') or 'of unknown modality')}"
         head += (f" against {', '.join(review['target_genes'][:4])}" if review.get("target_genes") else "")
-        if close:
+        if close and not review.get("modality"):
+            head += (f". {len(close)} of the {len(comparison)} molecules that failed here act on the same target "
+                     f"({', '.join(c['asset'] for c in close)}). No molecule was named, so modalities are not "
+                     f"compared; the table gives each molecule's own modality — that history is the one to be able "
+                     f"to answer for.")
+        elif close:
             head += (f". {len(close)} of the {len(comparison)} molecules that failed here share its target and its "
                      f"modality ({', '.join(c['asset'] for c in close)}) — that history is the one to be able to "
                      f"answer for.")
@@ -594,14 +654,17 @@ def interpretation(pkg: dict) -> list[str]:
                    + (f"; {count(a['stops_unclear'], 'further stop')} cannot be established from the record."
                       if a["stops_unclear"] else "."))
     if stops:
-        out.append(f"The stops came from {c['stop_programmes']} sponsor–asset programmes across {c['stop_sponsors']} "
-               f"sponsors"
+        out.append(f"The stops came from {count(c['stop_programmes'], 'sponsor–asset programme')} across "
+               f"{count(c['stop_sponsors'], 'sponsor')}"
                + (f"; removing the largest ({c['largest_programme']}, {c['largest_programme_stops']} {'stop' if c['largest_programme_stops'] == 1 else 'stops'}) leaves "
                   f"{pct(c['rate_leave_one_programme_out'])}." if c["rate_leave_one_programme_out"] is not None else "."))
     if pkg["ambiguity"]["unresolved_terminations"]:
-        out.append(f"{pkg['ambiguity']['unresolved_terminations']} further closed trials were terminated with no cause "
-                   f"we can read. They are listed below rather than dropped; if every one were biological the rate "
-                   f"would be {pct(pkg['ambiguity']['rate_if_all_unresolved_were_biological'])}, which is the upper "
+        n_unres = pkg['ambiguity']['unresolved_terminations']
+        out.append((f"1 further closed trial was terminated with no cause we can read. It is listed below rather "
+                    f"than dropped; if it were biological the rate " if n_unres == 1 else
+                    f"{n_unres} further closed trials were terminated with no cause "
+                    f"we can read. They are listed below rather than dropped; if every one were biological the rate ")
+                   + f"would be {pct(pkg['ambiguity']['rate_if_all_unresolved_were_biological'])}, which is the upper "
                    f"edge of the honest band.")
     if h["closed_share"] is not None and h["closed_share"] < 0.5:
         out.append(f"Only {pct(h['closed_share'], 0)} of the cohort has closed. Trials that stop early close sooner "
@@ -645,6 +708,43 @@ def evidence_html(ev: dict | None, compact: bool = False) -> str:
     return "".join(parts)
 
 
+def drugs_cell(t: dict) -> str:
+    """The drugs tested, and — set apart — what every arm received and what the control arm got."""
+    out = e(", ".join(t["experimental_drugs"]) or "—")
+    if t.get("background_drugs"):
+        out += f"<div class='muted small'>on background: {e(', '.join(t['background_drugs']))}</div>"
+    if t.get("comparator_drugs"):
+        out += f"<div class='muted small'>vs {e(', '.join(t['comparator_drugs']))}</div>"
+    return out
+
+
+def review_source(source: str) -> str:
+    """The reviewed store names its source in words ("independent review 2026-09-29, adjudicated")."""
+    source = (source or "").strip()
+    if source.lower().startswith("llm"):
+        return "language-model review"
+    return source or "manual review"
+
+
+def established(t: dict) -> str:
+    """How each statement in a row was arrived at: read by rule, checked in a review, or inferred."""
+    parts = []
+    src = t.get("classification_source") or ""
+    if t["kind"] == "biological_stop":
+        parts.append("stop reason: " + ("manual review" if src.startswith("REVIEWED") else "rule"))
+    basis = t.get("attribution_basis")
+    if t.get("attribution"):
+        parts.append("attribution: " + {"reviewed": review_source(t.get("attribution_reviewed_by") or ""),
+                                        "structural": "inferred from the programme's other stops",
+                                        "textual": "rule"}.get(basis, "rule"))
+    if t.get("endpoint_evidence"):
+        parts.append("posted result: " + ("sponsor's sentence" if t.get("endpoint_basis") == "sponsor_statement"
+                                          else "rule"))
+    if not parts:
+        return ""
+    return f"<div class='how muted small'>Basis — {e(' · '.join(parts))} · not clinically reviewed</div>"
+
+
 def render_html(pkg: dict, notes: list[str]) -> str:
     h, a, c = pkg["headline"], pkg["attribution"], pkg["concentration"]
     ep_ = pkg.get("endpoints") or {}
@@ -684,12 +784,13 @@ def render_html(pkg: dict, notes: list[str]) -> str:
             evidence = evidence_html(ev, compact=True) if ev else ""
             body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a></td>"
                      f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td>"
-                     f"<td>{e(', '.join(t['experimental_drugs']) or '—')}</td>"
+                     f"<td>{drugs_cell(t)}</td>"
                      f"<td class='num'>{size}</td>"
                      f"<td class='num'>{ran}</td>"
                      f"<td class='num muted'>{posted}</td>"
                      f"<td class='num'>{e(t['stopped'] or t['start'])}</td>"
-                     f"<td>{e(t['why_stopped']) or '<span class=muted>no reason recorded</span>'}{attr}{evidence}</td></tr>")
+                     f"<td>{e(t['why_stopped']) or '<span class=muted>no reason recorded</span>'}{attr}{evidence}"
+                     f"{established(t)}</td></tr>")
         return (f"<h2>{e(heading)} <span class='count'>{len(rows)}</span></h2><p class='sub'>{e(blurb)}</p>"
                 f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
                 f"<th class='num'>Enrolled</th><th class='num'>Ran for</th><th class='num'>Results</th>"
@@ -706,15 +807,14 @@ def render_html(pkg: dict, notes: list[str]) -> str:
             body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a>"
                      f"<div class='muted small'><a href='{e(t['results_url'])}'>results tab</a></div></td>"
                      f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td>"
-                     f"<td>{e(', '.join(t['experimental_drugs']) or '—')}</td>"
+                     f"<td>{drugs_cell(t)}</td>"
                      f"<td class='num'>{size}</td><td class='num'>{e(t['start'])}</td>"
-                     f"<td>{evidence_html(t.get('endpoint_evidence'))}</td></tr>")
+                     f"<td>{evidence_html(t.get('endpoint_evidence'))}{established(t)}</td></tr>")
         table = (f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
                  f"<th class='num'>Enrolled</th><th class='num'>Started</th>"
                  f"<th>What the posted results say</th></tr></thead><tbody>{body}</tbody></table>"
                  if body else "")
-        more = (f" The {MAX_CONTEXT_ROWS} most recently started are listed."
-                if ep["missed"] > MAX_CONTEXT_ROWS else "")
+        more = " Every one is listed below." if ep["missed"] else ""
         gap = (f" {ep['results_not_posted']} of the {ep['results_due']} completed trials that finished more than a "
                f"year ago have posted no results at all — a gap in what can be known, not a sign of failure."
                if ep.get("results_due") else "")
@@ -731,7 +831,35 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                   "posted comparison with the threshold it was held to — and a link to the trial's results tab, so a "
                   "row can be checked without being reconstructed. A missed endpoint is not a verdict on the "
                   "molecule: dose, population, endpoint and comparator all decide it too.</p>"
-                + table)
+                + table + undecided_block())
+
+    def undecided_block():
+        rows = [t for t in pkg["trials"] if t["kind"] == "endpoint_undecided"]
+        if not rows:
+            return ""
+        body = ""
+        for t in rows:
+            items = []
+            for u in t.get("endpoint_undecided") or []:
+                est = u.get("estimate") or {}
+                num = (f"p {u['p']}" if u.get("p") else "no p-value")
+                if est.get("type") and est.get("value") is not None and est.get("lower") is not None:
+                    num += (f"; {est['type']} {est['value']:g} ({(est.get('ci_pct') or 95):g}% CI "
+                            f"{est['lower']:g} to {est['upper']:g})")
+                items.append(f"<div class='evline'>{e(u.get('outcome') or 'Primary outcome')} — {e(num)}. "
+                             f"<span class='muted'>Not assessed: {e(u.get('why') or '')}.</span></div>")
+            body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a>"
+                     f"<div class='muted small'><a href='{e(t['results_url'])}'>results tab</a></div></td>"
+                     f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td><td>{drugs_cell(t)}</td>"
+                     f"<td>{''.join(items[:3])}</td></tr>")
+        return (f"<h3>Posted a result that cannot be called without the protocol "
+                f"<span class='count'>{len(rows)}</span></h3>"
+                "<p class='sub'>These trials posted a primary comparison, but the registry does not say what it had "
+                "to clear, and the number lies where the threshold decides — or the posted p-value and interval "
+                "disagree. They are counted neither as met nor as missed. The protocol or the publication settles "
+                "each one.</p>"
+                f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
+                f"<th>Posted primary comparison</th></tr></thead><tbody>{body}</tbody></table>")
 
     review = pkg.get("asset_under_review")
     comparison = pkg.get("asset_comparison") or []
@@ -816,6 +944,8 @@ a {{ color:var(--acc); }}
 .attr {{ margin-top:4px; font-size:12px; font-weight:700; }}
 .evid {{ margin-top:4px; font-size:12px; color:var(--ink2); }}
 .evline {{ font-size:12.5px; margin-bottom:3px; }}
+h3 {{ font-size:15px; margin:22px 0 4px; }}
+.how {{ margin-top:4px; font-size:11.5px; }}
 .quote {{ font-size:12.5px; font-style:italic; margin-bottom:4px; }}
 .small {{ font-size:11.5px; }}
 .attr.own {{ color:#166534; }} .attr.casc {{ color:#9a3412; }} .attr.unk {{ color:var(--ink2); }}
@@ -872,7 +1002,8 @@ rate above, this does not move with how mature the cohort is.</p>
 {trial_block("terminated_cause_not_readable", f"Terminated, cause not readable ({pkg['counts']['unreadable_terminations']} in the cohort)",
              "Listed rather than dropped. These sit in the denominator and never in the numerator; if every one were "
              "biological the rate would be " + pct(pkg["ambiguity"]["rate_if_all_unresolved_were_biological"])
-             + (f". Every one is counted in the rate above; the {MAX_CONTEXT_ROWS} most recent are listed here."
+             + (f". Every one is counted in the rate above; the {MAX_CONTEXT_ROWS} most recent are listed here, and "
+                f"all {pkg['counts']['unreadable_terminations']} are in the chapter's CSV on your access page."
                 if pkg['counts']['unreadable_terminations'] > MAX_CONTEXT_ROWS else "."))}
 
 {trial_block("still_open", f"Still open ({pkg['counts']['still_open']} in the cohort)",
@@ -881,7 +1012,7 @@ rate above, this does not move with how mature the cohort is.</p>
                 f"stopped updating the registry, so they are unaccounted for rather than running."
                 if pkg['counts'].get('open_status_not_updated') else "")
              + (f" All {pkg['counts']['still_open']} are in the time-to-event curve; the {MAX_CONTEXT_ROWS} most "
-                f"recently started are listed here."
+                f"recently started are listed here, and every one is in the chapter's CSV on your access page."
                 if pkg['counts']['still_open'] > MAX_CONTEXT_ROWS else ""))}
 
 <h2>Limits</h2>

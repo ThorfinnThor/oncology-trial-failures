@@ -302,9 +302,41 @@ check("a hazard ratio interval across 1 is a miss",
 check("a difference interval clear of 0 is met",
       _verdict(_one_analysis(paramType="LS Mean Difference", paramValue="-3", ciLowerLimit="-5", ciUpperLimit="-1", **_ci)),
       "MET")
-check("a 90% interval is not a 0.05 test",
+check("a 90% interval is a two-sided 0.10 test, and across 1 it is a miss",
       _verdict(_one_analysis(paramType="Hazard Ratio (HR)", paramValue="1.02", ciLowerLimit="0.8", ciUpperLimit="1.3",
-                             ciNumSides="TWO_SIDED", ciPctValue="90")), "UNREADABLE")
+                             ciNumSides="TWO_SIDED", ciPctValue="90")), "MISSED")
+
+# ---------------------------------------------------------------------------
+# No stated threshold: 0.05 is an assumption and may not decide a verdict (MISTAKES #17).
+# COMBI-i (NCT02967692, phase 3) posted p = 0.042 — one-sided, the trial missed — beside a 95% interval
+# across 1. Read against an assumed 0.05 it was reported as met.
+_combi_i = _one_analysis(title="Progression-Free Survival", pValue="0.042", statisticalMethod="Log Rank",
+                         paramType="Hazard Ratio (HR)", paramValue="0.82", ciLowerLimit="0.655",
+                         ciUpperLimit="1.027", ciNumSides="TWO_SIDED", ciPctValue="95")
+check("COMBI-i: a p the interval contradicts is not read",
+      verdict_of(read_analyses(_combi_i, ["PHASE3"])["considered"]), "UNREADABLE")
+check("COMBI-i: and the reason is kept for the report",
+      "disagree" in read_analyses(_combi_i, ["PHASE3"])["undecided"][0]["why"], True)
+# CO.26 (NCT02870920) was tested at two-sided 0.10 and posted a 90% interval; p = 0.07 met it.
+_co26 = _one_analysis(title="Overall Survival", pValue="0.07", statisticalMethod="Log Rank",
+                      paramType="Hazard Ratio (HR)", paramValue="0.72", ciLowerLimit="0.54", ciUpperLimit="0.97",
+                      ciNumSides="TWO_SIDED", ciPctValue="90")
+check("CO.26: the posted 90% interval names the threshold, and 0.07 meets it",
+      verdict_of(read_analyses(_co26, ["PHASE2"])["considered"]), "MET")
+check("CO.26: the basis says where the threshold came from",
+      read_analyses(_co26, ["PHASE2"])["considered"][0]["threshold_basis"], "interval")
+# Between 0.01 and the robust miss line, the threshold decides: unread, with the reason.
+check("p = 0.03, no threshold stated, is not guessed",
+      _verdict(_one_analysis(pValue="0.03")), "UNREADABLE")
+check("p = 0.004, no threshold stated, is significant under any design",
+      _verdict(_one_analysis(pValue="0.004")), "MET")
+check("p = 0.15 in a phase 3 is a miss",
+      verdict_of(read_analyses(_one_analysis(pValue="0.15"), ["PHASE3"])["considered"]), "MISSED")
+check("p = 0.15 in a phase 2 may have met a screening design, so unread",
+      verdict_of(read_analyses(_one_analysis(pValue="0.15"), ["PHASE2"])["considered"]), "UNREADABLE")
+check("no evidence line claims an assumed 0.05 as the sponsor's bar",
+      all("against 0.05" not in evidence_line(a) for a in
+          read_analyses(_one_analysis(pValue="0.004") + _co26, ["PHASE2"])["considered"]), True)
 check("an interval ending on no effect is unread",
       _verdict(_one_analysis(paramType="Odds Ratio (OR)", paramValue="2", ciLowerLimit="1.00", ciUpperLimit="4", **_ci)),
       "UNREADABLE")

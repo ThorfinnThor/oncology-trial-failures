@@ -5,3 +5,6 @@ __pycache__/
 !/product/README.md
 .DS_Store
 .review/
+
+# Full cohort exports: uploaded to Workers KV by scripts/signals/upload_exports.py, never committed
+web/data/private/evidence_exports.json

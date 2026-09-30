@@ -57,9 +57,11 @@ from __future__ import annotations
 import argparse
 import gzip
 import json
+import math
 import re
 import sys
 import time
+from statistics import NormalDist
 from datetime import date
 from pathlib import Path
 
@@ -72,15 +74,24 @@ API = "https://clinicaltrials.gov/api/v2/studies"
 OUT = ROOT / ".cache/universe/endpoint_outcomes.jsonl.gz"
 # The year slices hold rows already read, not raw registry records, so a change to the reading
 # has to invalidate them: the version is in the directory name.
-READER_VERSION = 2
+READER_VERSION = 3
 YEAR_DIR = ROOT / f".cache/universe/results_years_v{READER_VERSION}"
 REFRESH_DAYS = 6
 START_YEAR = 2010
 ALPHA = 0.05
 ONE_SIDED_SURE = 0.025   # significant at any one-sided threshold a sponsor would use
 ONE_SIDED_NEVER = 0.2    # not significant at any one-sided threshold a sponsor would use
+# Where the record states no threshold, 0.05 is an assumption, and an assumption must not decide a
+# verdict. COMBI-i posted p = 0.042 without saying it was one-sided (the trial missed); CO.26 posted
+# p = 0.07 for a design tested at two-sided 0.10 (the trial met). So without a stated bar, a result
+# is read only where every threshold a sponsor would plausibly have used agrees:
+UNSTATED_MET = 0.01              # below this, significant under any conventional design
+UNSTATED_MISSED_PHASE3 = 0.10    # confirmatory trials test at two-sided 0.05 or one-sided 0.025
+UNSTATED_MISSED_OTHER = 0.20     # randomised phase 2 screening designs go up to one-sided 0.10
+# Between the two, the threshold decides, and the trial is left unread as "threshold not stated".
 FIELDS = ",".join([
     "protocolSection.identificationModule.nctId",
+    "protocolSection.designModule.phases",
     "protocolSection.statusModule.overallStatus",
     "resultsSection.outcomeMeasuresModule",
     "resultsSection.moreInfoModule.limitationsAndCaveats",
@@ -204,7 +215,8 @@ def _sentence_around(text: str, start: int, end: int, limit: int = 220) -> str:
     return sentence
 
 
-def judge_p(value: float, op: str, rule: dict) -> tuple[bool | None, float | None, str]:
+def judge_p(value: float, op: str, rule: dict, analysis: dict | None = None,
+            confirmatory: bool = False) -> tuple[bool | None, float | None, str]:
     """(significant, threshold used, basis). None where the record does not settle it."""
     if rule["values"]:
         lo, hi = min(rule["values"]), max(rule["values"])
@@ -212,18 +224,19 @@ def judge_p(value: float, op: str, rule: dict) -> tuple[bool | None, float | Non
             # "p = 0.0167" against "0.0167 significance level" is decided by rounding.
             return None, None, "stated"
         below, above = significant(value, op, lo), significant(value, op, hi)
-        if below is True:
-            return True, lo, "stated"
-        if above is False:
-            return False, hi, "stated"
-        return None, None, "stated"
+        verdict, bar = (True, lo) if below is True else (False, hi) if above is False else (None, None)
+        if verdict is None:
+            return None, None, "stated"
+        if not rule["one_sided"] and _contradicted(verdict, bar, analysis):
+            return None, None, "inconsistent"
+        return verdict, bar, "stated"
     if rule["one_sided"]:
         if significant(value, op, ONE_SIDED_SURE) is True:
             return True, ONE_SIDED_SURE, "one_sided"
         if significant(value, op, ONE_SIDED_NEVER) is False:
             return False, ONE_SIDED_NEVER, "one_sided"
         return None, None, "one_sided"
-    return significant(value, op, ALPHA), ALPHA, "default"
+    return judge_unstated(value, op, analysis or {}, confirmatory)
 
 
 # ---------------------------------------------------------------------------
@@ -259,28 +272,77 @@ def estimate_of(analysis: dict) -> dict | None:
             "lower": _num(analysis.get("ciLowerLimit")), "upper": _num(analysis.get("ciUpperLimit"))}
 
 
-def judge_ci(analysis: dict) -> bool | None:
-    """A two-sided 95% interval against no effect. None for anything else."""
+def _interval(analysis: dict) -> dict | None:
+    """A usable two-sided interval: its level, its null, and whether it excludes the null."""
     est = estimate_of(analysis)
-    if not est or est["ci_sides"] != "TWO_SIDED" or est["ci_pct"] != 95:
+    if not est or est["ci_sides"] != "TWO_SIDED" or est["ci_pct"] is None or not (50 <= est["ci_pct"] < 100):
         return None
     if est["lower"] is None or est["upper"] is None or est["lower"] > est["upper"]:
         return None
     kind = est["type"] or ""
     if _RATIO.search(kind) and not _DIFFERENCE.search(kind):
-        null = 1.0
+        null, log = 1.0, True
     elif _DIFFERENCE.search(kind) and not _RATIO.search(kind):
-        null = 0.0
+        null, log = 0.0, False
     else:
         return None
     if est["lower"] == null or est["upper"] == null:
         return None  # on the boundary: the rounding decides, not the data
-    return not (est["lower"] < null < est["upper"])
+    out = {"level": est["ci_pct"], "excludes_null": not (est["lower"] < null < est["upper"]), "p": None}
+    # The two-sided p the interval implies, for a record that posted no p at all.
+    value, lo, hi = est["value"], est["lower"], est["upper"]
+    if value is not None and lo < hi and (not log or (lo > 0 and value > 0)):
+        z = NormalDist().inv_cdf(1 - (1 - est["ci_pct"] / 100) / 2)
+        se = ((math.log(hi) - math.log(lo)) if log else (hi - lo)) / (2 * z)
+        centre = math.log(value) if log else value
+        if se > 0:
+            out["p"] = math.erfc(abs(centre / se) / math.sqrt(2))
+    return out
 
 
-def read_analyses(outcomes: list[dict]) -> dict:
+def judge_ci(analysis: dict) -> bool | None:
+    """A two-sided 95% interval against no effect. None for anything else."""
+    ci = _interval(analysis)
+    return ci["excludes_null"] if ci and ci["level"] == 95 else None
+
+
+def _contradicted(verdict: bool, bar: float, analysis: dict | None) -> bool:
+    """A two-sided interval at the level of the bar that says the opposite of the p-value."""
+    ci = _interval(analysis or {})
+    return bool(ci and abs((1 - ci["level"] / 100) - bar) < 1e-6 and ci["excludes_null"] != verdict)
+
+
+def judge_unstated(value: float, op: str, analysis: dict, confirmatory: bool) -> tuple[bool | None, float | None, str]:
+    """A result whose threshold the record does not state. (significant, threshold, basis).
+
+    1. A posted interval at a level other than 95% names the design's two-sided alpha: CO.26 posted
+       a 90% interval, i.e. two-sided 0.10. The p-value is judged against that, and must agree
+       with the interval.
+    2. Otherwise only what every plausible threshold agrees on is read (UNSTATED_* above).
+    3. A p-value the posted 95% interval contradicts — p = 0.042 with an interval across 1, as in
+       COMBI-i — is a one-sided p or a different test; it is left unread.
+    """
+    ci = _interval(analysis)
+    if ci and ci["level"] != 95:
+        alpha = round(1 - ci["level"] / 100, 4)
+        verdict = significant(value, op, alpha)
+        if verdict is None or verdict != ci["excludes_null"]:
+            return None, None, "interval"
+        return verdict, alpha, "interval"
+    if ci and significant(value, op, ALPHA) is not None and significant(value, op, ALPHA) != ci["excludes_null"]:
+        return None, None, "inconsistent"
+    if significant(value, op, UNSTATED_MET) is True:
+        return True, UNSTATED_MET, "unstated"
+    missed_from = UNSTATED_MISSED_PHASE3 if confirmatory else UNSTATED_MISSED_OTHER
+    if significant(value, op, missed_from) is False:
+        return False, missed_from, "unstated"
+    return None, None, "unstated"
+
+
+def read_analyses(outcomes: list[dict], phases: list[str] | None = None) -> dict:
     """Every primary between-group comparison in one trial, what each one says, and why."""
-    considered = []
+    confirmatory = "PHASE3" in (phases or [])
+    considered, undecided = [], []
     skipped = {"non_inferiority": 0, "one_group": 0, "unparsable_p": 0, "no_p": 0, "bayesian": 0,
                "threshold_unclear": 0, "safety_or_pk_outcome": 0}
     for outcome in outcomes:
@@ -307,18 +369,31 @@ def read_analyses(outcomes: list[dict]) -> dict:
             raw = analysis.get("pValue")
             value, op = parse_p(raw) if raw is not None else (None, None)
             if value is not None:
-                verdict, threshold, basis = judge_p(value, op, rule)
-                if verdict is None:
-                    skipped["threshold_unclear" if basis != "default" else "unparsable_p"] += 1
-                    continue
+                verdict, threshold, basis = judge_p(value, op, rule, analysis, confirmatory)
                 shown_p = f"{op}{value:g}" if op != "=" else f"{value:g}"
-            else:
-                # Only a 95% interval stands in for 0.05: against any other stated bar it does not.
-                verdict = judge_ci(analysis) if not rule["values"] or rule["values"] == [ALPHA] else None
                 if verdict is None:
+                    skipped["threshold_unclear"] += 1
+                    undecided.append({"outcome": (outcome.get("title") or "")[:200], "p": shown_p,
+                                      "why": UNDECIDED_WHY.get(basis, UNDECIDED_WHY["stated"]),
+                                      "estimate": estimate_of(analysis)})
+                    continue
+            else:
+                # No p-value: the interval, judged by the same rule as a p-value would be. Against
+                # a stated bar other than 0.05 an interval is not read at all.
+                ci = _interval(analysis) if not rule["values"] or rule["values"] == [ALPHA] else None
+                if not ci or ci["p"] is None:
                     skipped["no_p" if raw is None else "unparsable_p"] += 1
                     continue
-                threshold, basis, shown_p = ALPHA, "ci", None
+                if ci["level"] != 95:
+                    verdict, threshold = ci["excludes_null"], round(1 - ci["level"] / 100, 4)
+                else:
+                    verdict, threshold, _ = judge_unstated(ci["p"], "=", {}, confirmatory)
+                if verdict is None:
+                    skipped["threshold_unclear"] += 1
+                    undecided.append({"outcome": (outcome.get("title") or "")[:200], "p": None,
+                                      "why": UNDECIDED_WHY["unstated"], "estimate": estimate_of(analysis)})
+                    continue
+                basis, shown_p = "ci", None
             considered.append({
                 "outcome": (outcome.get("title") or "")[:200],
                 "p": shown_p,
@@ -335,8 +410,17 @@ def read_analyses(outcomes: list[dict]) -> dict:
         # step of the hierarchy ("…and then superiority, p = 1.00"). Reading those alone turns a
         # trial that met its primary aim into a miss, so the whole trial is left unread.
         skipped["non_inferiority_design"] = len(considered)
-        considered = []
-    return {"considered": considered, "skipped": skipped}
+        considered, undecided = [], []
+    return {"considered": considered, "skipped": skipped, "undecided": undecided}
+
+
+UNDECIDED_WHY = {
+    "unstated": "the registry states no significance threshold, and this result lies where the threshold decides",
+    "inconsistent": "the posted p-value and confidence interval disagree (a one-sided p, or a different test)",
+    "interval": "the p-value and the posted interval disagree about the design's threshold",
+    "stated": "the result sits on the stated threshold, or between the thresholds the record names",
+    "one_sided": "one-sided test with no stated threshold, and the result lies where the threshold decides",
+}
 
 
 def verdict_of(considered: list[dict]) -> str:
@@ -432,7 +516,8 @@ def row_for(study: dict) -> dict | None:
     outcomes = ((study.get("resultsSection") or {}).get("outcomeMeasuresModule") or {}).get("outcomeMeasures") or []
     if not outcomes:
         return None
-    read = read_analyses(outcomes)
+    phases = (protocol.get("designModule") or {}).get("phases") or []
+    read = read_analyses(outcomes, phases)
     statistical = verdict_of(read["considered"])
     said = sponsor_statement(study, nct)
     return {
@@ -447,6 +532,9 @@ def row_for(study: dict) -> dict | None:
         "sponsor_statement": said,
         "analyses": read["considered"],
         "not_read": read["skipped"],
+        # Results that were posted but cannot be called met or missed without guessing a threshold.
+        "undecided": read["undecided"],
+        "phases": phases,
         "alpha": ALPHA,
         "reader_version": READER_VERSION,
     }
@@ -461,11 +549,70 @@ def load_verdicts() -> dict[str, dict]:
     if not OUT.exists():
         return {}
     out: dict[str, dict] = {}
+    phases: dict[str, list[str]] | None = None
     with gzip.open(OUT, "rt", encoding="utf-8") as fh:
         for line in fh:
             row = json.loads(line)
+            if (row.get("reader_version") or 0) < READER_VERSION:
+                # A row read under an older rule is re-judged here rather than trusted: the weekly
+                # re-read can run out of time, and a stale verdict must not outlive the rule change.
+                if phases is None:
+                    phases = _universe_phases()
+                row = upgrade_row(row, phases.get(row["nct_id"], []))
             out[row["nct_id"]] = row
     return out
+
+
+def _universe_phases() -> dict[str, list[str]]:
+    path = ROOT / ".cache/universe/universe_resolved_v1.jsonl.gz"
+    if not path.exists():
+        return {}
+    with gzip.open(path, "rt", encoding="utf-8") as fh:
+        return {r["nct_id"]: r.get("phases") or [] for r in map(json.loads, fh)}
+
+
+def upgrade_row(row: dict, phases: list[str]) -> dict:
+    """Re-judge a row read before reader version 3 from what it kept: the p-value and the interval.
+
+    Version 2 held every result without a stated threshold to 0.05. Stated and one-sided rules are
+    unchanged and kept as they are.
+    """
+    confirmatory = "PHASE3" in phases
+    considered, undecided = [], list(row.get("undecided") or [])
+    for a in row.get("analyses") or []:
+        est = a.get("estimate") or {}
+        shaped = {"paramType": est.get("type"), "paramValue": est.get("value"), "ciPctValue": est.get("ci_pct"),
+                  "ciNumSides": est.get("ci_sides"), "ciLowerLimit": est.get("lower"), "ciUpperLimit": est.get("upper")}
+        if a.get("threshold_basis") not in ("default", "ci"):
+            if a.get("threshold_basis") == "stated" and not a.get("one_sided") and a.get("threshold") \
+                    and _contradicted(a["significant"], a["threshold"], shaped):
+                undecided.append({"outcome": a.get("outcome"), "p": a.get("p"), "estimate": est,
+                                  "why": UNDECIDED_WHY["inconsistent"]})
+                continue
+            considered.append(a)
+            continue
+        if a.get("p") is not None:
+            value, op = parse_p(a["p"])
+            if value is None:
+                continue
+            verdict, threshold, basis = judge_unstated(value, op, shaped, confirmatory)
+        else:
+            ci = _interval(shaped)
+            if not ci or ci["p"] is None:
+                continue
+            verdict, threshold, _ = judge_unstated(ci["p"], "=", {}, confirmatory)
+            basis = "ci"
+        if verdict is None:
+            undecided.append({"outcome": a.get("outcome"), "p": a.get("p"), "estimate": est,
+                              "why": UNDECIDED_WHY.get(basis, UNDECIDED_WHY["unstated"])})
+            continue
+        considered.append({**a, "significant": verdict, "threshold": threshold, "threshold_basis": basis})
+    statistical = verdict_of(considered)
+    said = row.get("sponsor_statement")
+    return {**row, "analyses": considered, "undecided": undecided, "statistical_verdict": statistical,
+            "endpoint_verdict": "MISSED" if said else statistical,
+            "basis": "sponsor_statement" if said else ("posted_analysis" if considered else None),
+            "phases": phases, "reader_version": READER_VERSION, "upgraded_from": row.get("reader_version")}
 
 
 # ---------------------------------------------------------------------------
@@ -489,9 +636,13 @@ def evidence_line(analysis: dict) -> str:
     outcome = (analysis.get("outcome") or "Primary outcome").strip()
     verdict = "significant" if analysis.get("significant") else "not significant"
     if analysis.get("threshold_basis") == "ci":
+        level = _fmt(est.get("ci_pct") or 95)
         return (f"{outcome} — {est.get('type') or 'estimate'} {_fmt(est.get('value'))} "
-                f"(95% CI {_fmt(est.get('lower'))} to {_fmt(est.get('upper'))}): the interval "
-                + ("excludes" if analysis.get("significant") else "includes") + " no effect, so " + verdict + ".")
+                f"({level}% CI {_fmt(est.get('lower'))} to {_fmt(est.get('upper'))}), no p-value posted and no "
+                "threshold stated: " + ("the interval excludes no effect by a margin no conventional threshold would "
+                                        "overturn, so significant." if analysis.get("significant") else
+                                        "the interval is consistent with no effect under any conventional "
+                                        "threshold, so not significant."))
     bar = analysis.get("threshold")
     basis = analysis.get("threshold_basis")
     p = analysis.get("p")
@@ -501,8 +652,17 @@ def evidence_line(analysis: dict) -> str:
         head = (f"{outcome} — one-sided p {p}, no threshold stated; "
                 + ("below 0.025, so significant at any one-sided threshold in use." if analysis.get("significant")
                    else "0.2 or above, so not significant at any one-sided threshold in use."))
+    elif basis == "interval":
+        head = (f"{outcome} — p {p}, no threshold stated; the sponsor posted a {_fmt(100 - 100 * bar)}% interval, "
+                f"i.e. a design tested at two-sided {_fmt(bar)}: {verdict}.")
+    elif basis == "unstated":
+        head = (f"{outcome} — p {p}, no threshold stated; "
+                + (f"below {_fmt(bar)}, so significant under any conventional threshold." if analysis.get("significant")
+                   else f"{_fmt(bar)} or above, so not significant under any conventional threshold."))
     else:
-        head = f"{outcome} — p {p} against 0.05: {verdict}."
+        # Rows read before reader version 3 assumed 0.05. They are replaced at the next weekly read;
+        # until then the assumption is said out loud rather than presented as the sponsor's bar.
+        head = f"{outcome} — p {p} against an assumed 0.05 (no threshold stated): {verdict}."
     parts = [head]
     if est.get("type") and est.get("value") is not None and est.get("lower") is not None:
         parts.append(f"{est['type']} {_fmt(est['value'])} ({_fmt(est.get('ci_pct'))}% CI "

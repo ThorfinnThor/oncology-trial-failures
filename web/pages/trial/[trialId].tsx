@@ -431,7 +431,7 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
                     <p className="trialCaution">
                       Read automatically from the sponsor&apos;s posted results{er.read_on ? ` on ${er.read_on}` : ""}: only
                       primary efficacy outcomes, only between-group comparisons that are not non-inferiority tests, each held to the
-                      threshold the sponsor wrote down (0.05 where it wrote none). A missed primary endpoint is not a verdict on the
+                      threshold the sponsor wrote down; where none is stated, only a result every conventional threshold agrees on is read. A missed primary endpoint is not a verdict on the
                       drug — dose, population, endpoint and comparator decide it too.
                     </p>
                   </section>

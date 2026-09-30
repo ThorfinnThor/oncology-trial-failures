@@ -200,11 +200,25 @@ jobs:
           pip install playwright
           playwright install --with-deps chromium
           python -u scripts/briefs/render_brief_pdfs.py --workers 4
-          # The website serves the PDFs behind the lead form on /briefs/<slug>.
+
+      # Separate from rendering, so a failed PDF render cannot leave last week's briefs online —
+      # and a brief whose cohort no longer qualifies is removed rather than left standing with text
+      # built under old rules (check_generated_text.py reads every file here before the commit).
+      - name: Publish briefs
+        if: steps.discontinuation_rates.outcome == 'success'
+        run: |
           mkdir -p web/public/briefs
-          cp product/briefs/*.pdf web/public/briefs/ 2>/dev/null || true
-          # The web version is published too: a brief is marketing, not a gated asset.
-          cp product/briefs/brief_*.html web/public/briefs/ 2>/dev/null || true
+          if ls product/briefs/brief_*.html >/dev/null 2>&1; then
+            rm -f web/public/briefs/brief_*.html
+            # The web version is published too: a brief is marketing, not a gated asset.
+            cp product/briefs/brief_*.html web/public/briefs/
+          fi
+          # The website serves the PDFs behind the lead form on /briefs/<slug>. Replaced only when
+          # this run rendered them; otherwise last week's stay rather than none.
+          if ls product/briefs/*.pdf >/dev/null 2>&1; then
+            rm -f web/public/briefs/*.pdf
+            cp product/briefs/*.pdf web/public/briefs/
+          fi
 
       # The public summary reads the rate pack and counts the briefs, so it is built after
       # those steps. Run inside the signals step it wrote a summary with no rate figures,
@@ -271,6 +285,17 @@ jobs:
           git diff --cached --quiet && echo "No product summary changes" && exit 0
           git commit -m "Update product summary, sample and briefs"
           git push
+
+      # Each report's whole cohort as CSV, read by /api/report-export for buyers. Only after the
+      # checks above passed (an implicit success() guards this step), so an export never runs
+      # ahead of the report it belongs to. Kept in Workers KV, not in this public repository.
+      - name: Upload full cohort exports
+        if: steps.signals.outcome == 'success'
+        continue-on-error: true
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+        run: |
+          python scripts/signals/upload_exports.py
 
       # ---------------------------------------------------------------------------
       # The fortnightly newsletter. Last, because it tells people about a release

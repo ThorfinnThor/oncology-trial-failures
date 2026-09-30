@@ -24,8 +24,12 @@ _GOVERNS = re.compile(
     r"(?:\b(?:not|nor|never)\s+(?:(?:primarily|directly|solely|in\s+any\s+way|any\s+more)\s+)?"
     r"(?:due\s+to|because\s+of|related\s+to|linked\s+to|associated\s+with|attributable\s+to|for|as\s+a\s+result\s+of|"
     r"based\s+on|driven\s+by|caused\s+by|in\s+response\s+to|the\s+result\s+of|a\s+result\s+of|prompted\s+by|motivated\s+by)"
+    # "there were not safety concerns" (NCT01745692): "not" governs when "there were" introduces it.
+    r"|\bthere\s+(?:were|was|are|is|have\s+been|has\s+been)\s+(?:not|never)"
+    r"|\b(?:not|never)\s+(?:been\s+)?(?:stopped|terminated|halted|discontinued|ended|closed|suspended)\s+(?:early\s+)?"
+    r"(?:for|due\s+to|because\s+of|based\s+on)"
     r"|\b(?:no|without|with\s+no|unrelated\s+to|irrespective\s+of|neither|nor|absence\s+of|free\s+of|rather\s+than|instead\s+of))"
-    r"(?:\s+(?:any|new|further|unexpected|major|significant|emerging|particular|specific|human|serious|other|"
+    r"(?:\s+(?:any|new|further|unexpected|major|significant|emerging|emergent|additional|relevant|particular|specific|human|serious|other|"
     r"the|a|an|of|or|and|reasons?|concerns?|issues?|related|study|drug|product|patient|participant)\b)*\s*$",
     re.I,
 )
@@ -36,7 +40,10 @@ _DENIED_AFTER = re.compile(
     r"(?:(?:were|was|are|is|has\s+been|have\s+been|had\s+been)\s+)?(?:not|never)\s+(?:been\s+)?"
     r"(?:identified|observed|seen|raised|reported|noted|found|detected|a\s+factor|the\s+reason|a\s+reason|a\s+concern|"
     r"involved|contributing|relevant|an\s+issue|the\s+cause|a\s+cause)\b"
-    r"|^\s*(?:(?:were|was)\s+)?(?:none|absent)\b",
+    r"|^\s*(?:(?:were|was)\s+)?(?:none|absent)\b"
+    # "Safety findings were consistent with previously published data": a comparison, not a finding.
+    r"|^\s*(?:(?:findings?|profile|data|results?|signals?)\s+)?(?:was|were|is|are|remained?)\s+(?:generally\s+)?"
+    r"(?:consistent|in\s+keeping|comparable|similar|in\s+line)\b",
     re.I,
 )
 

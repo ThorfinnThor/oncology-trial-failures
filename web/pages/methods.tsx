@@ -173,8 +173,12 @@ export default function MethodsPage() {
               discontinuation rate. A sentence in the posted results saying this trial did not meet its primary endpoint
               decides it. Otherwise only primary outcomes that measure efficacy are read, only comparisons between at least
               two groups that are not non-inferiority or equivalence tests, and each p-value is held to the threshold the
-              sponsor wrote down — 0.05 where it wrote none. With no p-value, a two-sided 95% confidence interval that includes
-              no effect counts as not significant. Anything the record does not settle is left unread.
+              sponsor wrote down. Where the record states no threshold, none is assumed: a posted interval at a level other
+              than 95% names the design&apos;s two-sided alpha (a 90% interval means 0.10); otherwise a result is read only
+              where every conventional threshold agrees — p below 0.01 as met, p of 0.10 or more in a phase 3 trial (0.20 or
+              more in phase 2) as missed. A p-value that its own confidence interval contradicts — typically a one-sided p
+              posted without saying so — is not read. With no p-value, the interval is judged by the same rule. Everything
+              in between is shown as not assessable, with the reason, and counted neither way.
             </p>
             <p className="muted">
               Every verdict is shown with what it was read from — the sponsor&apos;s sentence, or the comparison with its

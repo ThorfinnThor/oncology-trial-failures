@@ -34,6 +34,7 @@ BRIEFS = ROOT / "product/briefs"
 MANIFEST = BRIEFS / "manifest.json"
 OUT_DIR = ROOT / "product/evidence_packages"
 PRIVATE = ROOT / "web/data/private/evidence_packages.json"
+EXPORTS = ROOT / "web/data/private/evidence_exports.json"
 # What the site may say about a package before anyone has paid for it: the cohort, how much is
 # in it, and which brief it extends. Never the contents.
 PUBLIC = ROOT / "web/data/evidence_catalogue.json"
@@ -138,7 +139,7 @@ def main() -> int:
         jobs = jobs[: args.limit]
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    bundle, failed, started = {}, [], time.time()
+    bundle, exports, failed, started = {}, {}, [], time.time()
     sample = None
     for stem, job in jobs:
         try:
@@ -183,7 +184,12 @@ def main() -> int:
                          "comparator_label": built["headline"]["comparator_label"]},
             "html": html,
         }
+        exports[slug] = built["export"]
 
+    # Kept out of the report bundle so only the export route carries it.
+    EXPORTS.parent.mkdir(parents=True, exist_ok=True)
+    EXPORTS.write_text(json.dumps({"schema_version": 1, "note": PRIVATE_NOTE, "packages": exports},
+                                  ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
     PRIVATE.parent.mkdir(parents=True, exist_ok=True)
     PRIVATE.write_text(json.dumps({
         "schema_version": 1,

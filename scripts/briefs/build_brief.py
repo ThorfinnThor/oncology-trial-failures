@@ -339,9 +339,11 @@ def main(argv: list[str] | None = None) -> int:
                        f"many classes could produce (q={args.q_value:.3g}); the molecules and trials that failed here are "
                        f"the record either way.")
     if segment["unresolved_terminations"]:
-        robust += (f" A further {segment['unresolved_terminations']} closed trials here were terminated with no cause "
-                   f"recorded in the registry; if every one of them were biological the rate would be "
-                   f"{pct(segment['rate_if_all_unresolved_were_biological'])}.")
+        robust += ((" One further closed trial here was terminated with no cause recorded in the registry; if it "
+                    "were biological the rate would be " if segment["unresolved_terminations"] == 1 else
+                    f" A further {segment['unresolved_terminations']} closed trials here were terminated with no cause "
+                    f"recorded in the registry; if every one of them were biological the rate would be ")
+                   + f"{pct(segment['rate_if_all_unresolved_were_biological'])}.")
 
     mod_bits = ", ".join(f"{k.lower()} {v}" for k, v in list(modality_mix.most_common())[:4]) or "not resolved"
     asset_bits = ", ".join(f"{e(a)} ({n})" for a, n in asset_trials.most_common(5))

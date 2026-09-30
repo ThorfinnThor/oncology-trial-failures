@@ -28,7 +28,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.signals.build_oncology_failure_signals import (  # noqa: E402
-    assign_role, clean_drug_name, component_groups, intervention_roles, name_candidates, research_codes)
+    assign_role, clean_drug_name, component_groups, intervention_roles, name_candidates, research_codes,
+    shared_backbone)
 from scripts.universe.chembl_index import load as load_chembl, norm  # noqa: E402
 from scripts.universe.ncit_index import load as load_ncit  # noqa: E402
 from scripts.universe.targets_lexicon import genes_from_definition  # noqa: E402
@@ -245,8 +246,12 @@ def expand_regimen(group: dict, ncit: dict | None = None) -> list[dict]:
 def resolve_trial(rec: dict, resolver: Resolver) -> dict:
     design = {"protocolSection": {"armsInterventionsModule": rec.pop("arms_interventions", {}) or {}}}
     ivs = []
-    for iv in intervention_roles(design):
-        role, _ = assign_role(iv, None)
+    rows = intervention_roles(design)
+    roles = [assign_role(iv, None)[0] for iv in rows]
+    backbone = shared_backbone(design, rows, roles)
+    for index, (iv, role) in enumerate(zip(rows, roles)):
+        if index in backbone:
+            role = "BACKGROUND_OR_BACKBONE"
         comps = []
         if role not in ("PLACEBO", "NON_DRUG"):
             for g in component_groups(iv):
