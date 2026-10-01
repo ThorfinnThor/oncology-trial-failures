@@ -48,7 +48,7 @@
    "biological_stops": 338,
    "rate": 0.04317281900625878,
    "aside": {
-    "closed_with_resolved_target": 5698,
+    "closed_with_resolved_target": 5691,
     "closed_with_resolved_target_stops": 284,
     "terminated_any_reason": 2436,
     "terminated_with_no_readable_cause": 484,
@@ -98,7 +98,7 @@
    "biological_stops": 92,
    "rate": 0.05939315687540349,
    "aside": {
-    "closed_with_resolved_target": 674,
+    "closed_with_resolved_target": 673,
     "closed_with_resolved_target_stops": 57,
     "terminated_any_reason": 330,
     "terminated_with_no_readable_cause": 87,
@@ -348,7 +348,7 @@
    "biological_stops": 83,
    "rate": 0.042239185750636135,
    "aside": {
-    "closed_with_resolved_target": 869,
+    "closed_with_resolved_target": 868,
     "closed_with_resolved_target_stops": 37,
     "terminated_any_reason": 415,
     "terminated_with_no_readable_cause": 98,

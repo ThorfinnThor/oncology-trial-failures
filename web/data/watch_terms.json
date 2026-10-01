@@ -7,28 +7,24 @@
       "label": "Molecules",
       "terms": [
         {
-          "term": "gemcitabine",
-          "trials": 23
-        },
-        {
           "term": "carboplatin",
-          "trials": 23
-        },
-        {
-          "term": "pembrolizumab",
           "trials": 22
         },
         {
-          "term": "docetaxel anhydrous",
-          "trials": 17
+          "term": "gemcitabine",
+          "trials": 21
+        },
+        {
+          "term": "pembrolizumab",
+          "trials": 21
         },
         {
           "term": "bevacizumab",
           "trials": 16
         },
         {
-          "term": "paclitaxel",
-          "trials": 15
+          "term": "docetaxel anhydrous",
+          "trials": 16
         },
         {
           "term": "cyclophosphamide anhydrous",
@@ -39,12 +35,12 @@
           "trials": 15
         },
         {
-          "term": "cisplatin",
+          "term": "lenalidomide",
           "trials": 14
         },
         {
-          "term": "lenalidomide",
-          "trials": 14
+          "term": "cisplatin",
+          "trials": 13
         },
         {
           "term": "vorinostat",
@@ -52,6 +48,10 @@
         },
         {
           "term": "cetuximab",
+          "trials": 13
+        },
+        {
+          "term": "paclitaxel",
           "trials": 13
         },
         {
@@ -70,11 +70,11 @@
       "terms": [
         {
           "term": "PDCD1",
-          "trials": 52
+          "trials": 51
         },
         {
           "term": "TUBB",
-          "trials": 51
+          "trials": 48
         },
         {
           "term": "CD274",
@@ -82,7 +82,7 @@
         },
         {
           "term": "TYMS",
-          "trials": 33
+          "trials": 32
         },
         {
           "term": "EGFR",
@@ -132,15 +132,15 @@
       "terms": [
         {
           "term": "DNA inhibitor",
-          "trials": 80
+          "trials": 79
         },
         {
           "term": "Programmed cell death protein 1 inhibitor",
-          "trials": 40
+          "trials": 39
         },
         {
           "term": "Nucleic Acid Synthesis Inhibitors",
-          "trials": 38
+          "trials": 36
         },
         {
           "term": "RNA inhibitor",
@@ -148,11 +148,11 @@
         },
         {
           "term": "Thymidylate synthase inhibitor",
-          "trials": 33
+          "trials": 32
         },
         {
           "term": "Tubulin inhibitor",
-          "trials": 31
+          "trials": 29
         },
         {
           "term": "Stem cell growth factor receptor inhibitor",
@@ -171,12 +171,12 @@
           "trials": 21
         },
         {
-          "term": "Tubulin stabiliser",
+          "term": "Vascular endothelial growth factor A inhibitor",
           "trials": 20
         },
         {
-          "term": "Vascular endothelial growth factor A inhibitor",
-          "trials": 20
+          "term": "Tubulin stabiliser",
+          "trials": 19
         },
         {
           "term": "Alkylating Activity",
