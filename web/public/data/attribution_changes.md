@@ -56,10 +56,10 @@
   cfDNA screening data found that the prevalence of POLE/POLD1 mutations was lower than expected. It was determined that there are no feasible options to amend this study in a fashion that would not be duplicative of other currently accruing trials.
 - **NCT00643604** programme_cascade ['refers to another study'] → **programme_cascade** ['refers to another study', 'refers to other studies']  
   Due to availability of eligible subjects at center and enrollment competition with other studies.
-- **NCT03224819** unclear [] → **programme_cascade** ['refers to other studies']  
-  Priortization of other Programs
 - **NCT03237182** unclear [] → **own_data** ['futility in this trial']  
   WHO 2022 guidelines for DR-TB treatment are set to change. These guidelines recommend the use of an all-oral short course BPAL regimen.Therefore ongoing implementation of the study is considered futile.
+- **NCT03224819** unclear [] → **programme_cascade** ['refers to other studies']  
+  Priortization of other Programs
 - **NCT03843125** own_data ["this trial's benefit-risk assessment", 'safety in this trial'] → **own_data** ["this trial's benefit-risk assessment"]  
   Study terminated due to insufficient evidence to support a positive benefit: risk profile. Safety findings were consistent with previously published OLUMIANT data
 - **NCT03998709** programme_cascade ['refers to another study'] → **programme_cascade** ['refers to another study', 'refers to other studies']  
