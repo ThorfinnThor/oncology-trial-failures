@@ -77,6 +77,11 @@ _cohorts = {"protocolSection": {"armsInterventionsModule": {
 _rows = intervention_roles(_cohorts)
 check("uncontrolled cohorts: pembrolizumab stays part of what is tested",
       shared_backbone(_cohorts, _rows, [assign_role(r, None)[0] for r in _rows]), set())
+# A count of 1 in this week's data must not be able to block a release (run #98: "The 1 stops came from").
+from scripts.grammar import singular_ones  # noqa: E402
+check("one stop, one programme", singular_ones("The 1 stops came from 1 sponsor–asset programmes across 1 sponsors"),
+      "The 1 stop came from 1 sponsor–asset programme across 1 sponsor")
+check("larger counts untouched", singular_ones("11 trials, 0.1 trials, 2021 trials"), "11 trials, 0.1 trials, 2021 trials")
 check("comparator", assign_role(iv("Docetaxel", "DRUG", ["ACTIVE_COMPARATOR"]), None)[0], "COMPARATOR")
 check("experimental", assign_role(iv("AUY922", "DRUG", ["EXPERIMENTAL"]), None)[0], "EXPERIMENTAL_ARM")
 check("procedure", assign_role(iv("IMRT", "RADIATION", ["EXPERIMENTAL"]), None)[0], "NON_DRUG")

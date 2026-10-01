@@ -25,7 +25,8 @@ CHECKS = [
     (r"\bNone\b(?!\s+of\s+the\s+[1-9])", "Python None"),
     (r"\bnull\b", "null"),
     (r"\binf%|\bInfinity\b", "infinity"),
-    (r"\b1 (?:further |closed |completed |other |more )*(?:stops|trials|molecules|sponsors|programmes|cohorts|studies|terminations|chapters|drugs|events|patients|reports)\b",
+    (r"\b1 (?:further |closed |completed |other |more |stopped |distinct |experimental |terminated |independent |"
+     r"sponsor[–-]asset )*(?:stops|trials|molecules|sponsors|programmes|cohorts|studies|terminations|chapters|drugs|events|patients|reports)\b",
      "singular with plural noun"),
     (r"\bof 0 (?:completed|closed) trials\b|\bNone of the 0\b|\b0 of 0\b", "zero rendered as a finding"),
     (r"\{[a-z_]{2,}\}", "unfilled placeholder"),

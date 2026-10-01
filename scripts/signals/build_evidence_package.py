@@ -263,6 +263,9 @@ def build(args) -> dict:
     unreadable = [r for r in cohort
                   if r.get("overall_status") == "TERMINATED"
                   and r.get("classification_outcome_v2") in ("CAUSE_NOT_STATED", "UNKNOWN")]
+    # All of them, newest stop first: each sits in the denominator, and a buyer checking one
+    # (COMBI-i was looked for and not found) must find it in the document, not only in the CSV.
+    unreadable.sort(key=lambda r: (r.get("stop_date_estimate") or ""), reverse=True)
     open_trials = [r for r in cohort if not r["_closed"] and r.get("overall_status") != "WITHDRAWN"]
 
     # The other way a drug fails: it finishes the trial and misses. A discontinuation rate cannot
@@ -275,6 +278,11 @@ def build(args) -> dict:
                    if verdicts.get(r["nct_id"], {}).get("endpoint_verdict") in ("MISSED", "MET", "MIXED")}
     missed = sorted([r for r in completed if endpoint_of.get(r["nct_id"], {}).get("endpoint_verdict") == "MISSED"],
                     key=lambda r: (r.get("start_date") or ""), reverse=True)
+    # The other side of the ledger, listed so every verdict can be checked: CO.26 met its endpoint
+    # at the prespecified two-sided 0.10, and a reader looking for it should find it here.
+    met_or_split = sorted([r for r in completed
+                           if endpoint_of.get(r["nct_id"], {}).get("endpoint_verdict") in ("MET", "MIXED")],
+                          key=lambda r: (r.get("start_date") or ""), reverse=True)
     # Posted a result that cannot be called met or missed without guessing the threshold (COMBI-i:
     # a one-sided p beside a 95% interval across 1). Listed with the reason, never counted either way.
     undecided = sorted([r for r in completed if r["nct_id"] not in endpoint_of
@@ -400,7 +408,8 @@ def build(args) -> dict:
                    # Every miss, not the most recent 25: each one is a finding the buyer may need to check.
                    + [trial_row(r, "endpoint_miss") for r in missed]
                    + [trial_row(r, "endpoint_undecided") for r in undecided]
-                   + [trial_row(r, "terminated_cause_not_readable") for r in unreadable[:MAX_CONTEXT_ROWS]]
+                   + [trial_row(r, "endpoint_met") for r in met_or_split]
+                   + [trial_row(r, "terminated_cause_not_readable") for r in unreadable]
                    + [trial_row(r, "still_open") for r in
                       sorted(open_trials, key=lambda r: (r.get("start_date") or ""), reverse=True)[:MAX_CONTEXT_ROWS]]),
         "counts": {"stopped": len(stops), "unreadable_terminations": len(unreadable),
@@ -409,7 +418,7 @@ def build(args) -> dict:
                    # trial by trial, are not the same number: every stop is listed, the other two
                    # groups are capped so one huge cohort cannot bloat the delivery.
                    "open_status_not_updated": len(stale_open),
-                   "listed_unreadable": len(unreadable[:MAX_CONTEXT_ROWS]),
+                   "listed_unreadable": len(unreadable),
                    "listed_open": len(open_trials[:MAX_CONTEXT_ROWS]),
                    # What the free brief shows of the same cohort. The difference between the two
                    # documents is worth stating as a number, and a number nobody computes drifts.
@@ -610,7 +619,7 @@ def interpretation(pkg: dict) -> list[str]:
     if ep.get("missed") and ep["missed"] > stops:
         out.append(f"This cohort fails at the end rather than by being stopped: {ep['missed']} of {ep['readable']} "
                    f"completed trials with a readable primary result missed it, across "
-                   f"{ep.get('missed_sponsors', '?')} sponsors, against {stops} stopped early for a biological reason. "
+                   f"{count(ep.get('missed_sponsors', 0), 'sponsor')}, against {stops} stopped early for a biological reason. "
                    f"They are listed under \"Ran to the end and missed\", each with the result it was read from. A missed "
                    f"endpoint is not a verdict on the molecule — dose, population, endpoint and comparator decide it too.")
     sig = pkg["failure_signature"]
@@ -746,6 +755,11 @@ def established(t: dict) -> str:
 
 
 def render_html(pkg: dict, notes: list[str]) -> str:
+    from scripts.grammar import singular_ones
+    return singular_ones(_render_html(pkg, notes))
+
+
+def _render_html(pkg: dict, notes: list[str]) -> str:
     h, a, c = pkg["headline"], pkg["attribution"], pkg["concentration"]
     ep_ = pkg.get("endpoints") or {}
     # A cohort that fails at the end leads with that, as its brief does.
@@ -782,6 +796,12 @@ def render_html(pkg: dict, notes: list[str]) -> str:
             if ev:
                 posted = (f"<a href='{e(t['results_url'])}'>{e(ENDPOINT_LABEL[ev['verdict']])}</a>")
             evidence = evidence_html(ev, compact=True) if ev else ""
+            if not ev and t.get("endpoint_undecided"):
+                # COMBI-i: a posted p that its own interval contradicts. Say so rather than say nothing.
+                u = t["endpoint_undecided"][0]
+                evidence = (f"<div class='evid'><b>Posted primary result: not assessable.</b> "
+                            f"{e(u.get('outcome') or 'Primary outcome')} — "
+                            f"{e('p ' + u['p'] if u.get('p') else 'no p-value')}: {e(u.get('why') or '')}.</div>")
             body += (f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a></td>"
                      f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td>"
                      f"<td>{drugs_cell(t)}</td>"
@@ -831,7 +851,22 @@ def render_html(pkg: dict, notes: list[str]) -> str:
                   "posted comparison with the threshold it was held to — and a link to the trial's results tab, so a "
                   "row can be checked without being reconstructed. A missed endpoint is not a verdict on the "
                   "molecule: dose, population, endpoint and comparator all decide it too.</p>"
-                + table + undecided_block())
+                + table + met_block() + undecided_block())
+
+    def met_block():
+        rows = [t for t in pkg["trials"] if t["kind"] == "endpoint_met"]
+        if not rows:
+            return ""
+        body = "".join(
+            f"<tr><td class='mono'><a href='{e(t['registry_url'])}'>{e(t['nct_id'])}</a>"
+            f"<div class='muted small'><a href='{e(t['results_url'])}'>results tab</a></div></td>"
+            f"<td>{e(t['phase'])}</td><td>{e(t['sponsor'])}</td><td>{drugs_cell(t)}</td>"
+            f"<td>{evidence_html(t.get('endpoint_evidence'), compact=True)}</td></tr>" for t in rows)
+        return (f"<h3>Ran to the end and met, or split across co-primaries <span class='count'>{len(rows)}</span></h3>"
+                "<p class='sub'>The same reading, the other way. Listed so every verdict in this chapter can be "
+                "checked against the registry, not only the misses.</p>"
+                f"<table><thead><tr><th>Trial</th><th>Ph</th><th>Sponsor</th><th>Experimental drugs</th>"
+                f"<th>Posted primary result</th></tr></thead><tbody>{body}</tbody></table>")
 
     def undecided_block():
         rows = [t for t in pkg["trials"] if t["kind"] == "endpoint_undecided"]
@@ -965,14 +1000,14 @@ h3 {{ font-size:15px; margin:22px 0 4px; }}
 <p class="sub">{e(pkg['failure_signature']['sentence'])}</p>
 
 <div class="stats" style="grid-template-columns:repeat(5,1fr)">
- <div class="stat"><b>{pkg['failure_signature']['molecules']}</b><span>distinct molecules behind
-  {h['biological_stops']} stopped trials</span></div>
+ <div class="stat"><b>{pkg['failure_signature']['molecules']}</b><span>distinct {'molecule' if pkg['failure_signature']['molecules'] == 1 else 'molecules'} behind
+  {count(h['biological_stops'], 'stopped trial')}</span></div>
  <div class="stat"><b>{pct(h['rate'])}</b><span>{h['biological_stops']} of {h['closed']} closed trials
   (95% CI {pct(h['ci95'][0])}–{pct(h['ci95'][1])})</span></div>
  <div class="stat"><b>{pct(h['comparator_rate'])}</b><span>{e(h['comparator_label'])}</span></div>
  <div class="stat"><b>{a['stops_from_own_data']} / {a['stops_from_programme_cascade']}</b>
   <span>own data / decided elsewhere{f" ({a['stops_unclear']} not established)" if a['stops_unclear'] else ""}</span></div>
- <div class="stat"><b>{c['stop_programmes']}</b><span>independent sponsor–asset programmes behind the stops</span></div>
+ <div class="stat"><b>{c['stop_programmes']}</b><span>independent sponsor–asset {'programme' if c['stop_programmes'] == 1 else 'programmes'} behind the {'stop' if h['biological_stops'] == 1 else 'stops'}</span></div>
 </div>
 
 <h2>What we read from this</h2>
@@ -1002,9 +1037,7 @@ rate above, this does not move with how mature the cohort is.</p>
 {trial_block("terminated_cause_not_readable", f"Terminated, cause not readable ({pkg['counts']['unreadable_terminations']} in the cohort)",
              "Listed rather than dropped. These sit in the denominator and never in the numerator; if every one were "
              "biological the rate would be " + pct(pkg["ambiguity"]["rate_if_all_unresolved_were_biological"])
-             + (f". Every one is counted in the rate above; the {MAX_CONTEXT_ROWS} most recent are listed here, and "
-                f"all {pkg['counts']['unreadable_terminations']} are in the chapter's CSV on your access page."
-                if pkg['counts']['unreadable_terminations'] > MAX_CONTEXT_ROWS else "."))}
+             + ". Every one is counted in the rate's denominator and listed here, newest first.")}
 
 {trial_block("still_open", f"Still open ({pkg['counts']['still_open']} in the cohort)",
              "Not counted either way. Their outcomes will move this cohort's rate in both directions."

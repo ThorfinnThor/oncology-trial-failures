@@ -35,6 +35,11 @@ OUT_DIR = ROOT / "product/briefs"
 COHORTS = [(2015, 2017), (2018, 2020), (2021, 2024)]
 
 
+def plural(n, noun: str) -> str:
+    """'1 sponsor', '3 sponsors' — check_generated_text.py rejects '1 sponsors'."""
+    return f"{n} {noun}" + ("" if n == 1 else "s")
+
+
 def e(x) -> str:
     return html.escape(str(x if x is not None else ""))
 
@@ -312,7 +317,8 @@ def main(argv: list[str] | None = None) -> int:
 
     lopo = segment.get("rate_leave_one_programme_out")
     robust_bits = [
-        f"The {segment['biological_stops']} stops came from {segment['stop_programmes']} sponsor-asset "
+        ("The one stop came from " if segment['biological_stops'] == 1 else
+         f"The {segment['biological_stops']} stops came from ") + f"{segment['stop_programmes']} sponsor-asset "
         f"programme{'s' if segment['stop_programmes'] != 1 else ''} across {segment['stop_sponsors']} "
         f"sponsor{'s' if segment['stop_sponsors'] != 1 else ''}"]
     if segment["largest_programme"]:
@@ -347,7 +353,7 @@ def main(argv: list[str] | None = None) -> int:
 
     mod_bits = ", ".join(f"{k.lower()} {v}" for k, v in list(modality_mix.most_common())[:4]) or "not resolved"
     asset_bits = ", ".join(f"{e(a)} ({n})" for a, n in asset_trials.most_common(5))
-    composition_line = (f"<b>What is in this class:</b> {composition['distinct_assets']} distinct experimental drugs "
+    composition_line = (f"<b>What is in this class:</b> {plural(composition['distinct_assets'], 'distinct experimental drug')} "
                         f"across {segment['trials']} trials ({mod_bits})."
                         + (f" Most tested: {asset_bits}." if asset_bits else "")
                         + " A class groups drugs by what they act on; check that the grouping is one you would make"
@@ -402,8 +408,9 @@ The rate counts trials that stopped early for efficacy, safety or benefit–risk
         doc_title = f"{name} — missed endpoints"
         headline_html = (f'{e(name)}: {endpoints["missed"]} of {endpoints["readable"]} completed trials missed their '
                          f'primary endpoint')
-        dek_html = (f'<b>{endpoints["missed"]} completed trials across {endpoints["missed_sponsors"]} sponsors and '
-                    f'{endpoints["missed_molecules"]} molecules ran to the end and missed their primary endpoint on the '
+        dek_html = (f'<b>{plural(endpoints["missed"], "completed trial")} across '
+                    f'{plural(endpoints["missed_sponsors"], "sponsor")} and '
+                    f'{plural(endpoints["missed_molecules"], "molecule")} ran to the end and missed their primary endpoint on the '
                     f'sponsor&#39;s own posted result; {endpoints["met"]} met it.</b> Only {segment["biological_stops"]} of '
                     f'{segment["closed"]} closed trials were stopped early for efficacy or safety, which is why this class is '
                     f'read through its completed trials rather than a stop rate. Most completed trials post nothing '
@@ -518,6 +525,8 @@ Sponsors with most stops: {e(", ".join(f"{s} ({n})" for s, n in sponsors))}.</p>
     area_slug = re.sub(r"[^a-z0-9]+", "-", (args.area or "").lower()).strip("-")
     out = Path(args.out) if args.out else OUT_DIR / f"brief_{area_slug}_{slug}_{start[0]}-{start[1]}.html"
     out.parent.mkdir(parents=True, exist_ok=True)
+    from scripts.grammar import singular_ones
+    doc = singular_ones(doc)
     out.write_text(doc, encoding="utf-8")
     out.with_suffix(".facts.json").write_text(json.dumps(facts, indent=1))
     print(f"wrote {out}")
