@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "decisionVersion": "luna-approval-v1",
+  "source": "docs/seo/approved-decisions.csv",
+  "defaultMode": "report",
+  "decisions": [
+    {
+      "urlId": "url_b5a55b627239",
+      "url": "https://clinicaltrialfailures.com/failures/ophthalmology",
+      "pageType": "failure_hub",
+      "role": "pilot",
+      "decision": "KEEP_INDEX",
+      "reason": "Existing recovery pilot has a distinct cohort analysis, self-canonical indexable output, crawlable evidence links, and explicit automated guardrails",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_3a0305eca2b6",
+      "url": "https://clinicaltrialfailures.com/failures/cardiovascular",
+      "pageType": "failure_hub",
+      "role": "control",
+      "decision": "REVIEW_HOLD",
+      "reason": "Fixed comparison page; preserve the last valid behavior and do not apply the Ophthalmology template change",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_b538ebe97260",
+      "url": "https://clinicaltrialfailures.com/failures/dermatology",
+      "pageType": "failure_hub",
+      "role": "control",
+      "decision": "REVIEW_HOLD",
+      "reason": "Fixed comparison page; preserve the last valid behavior and do not apply the Ophthalmology template change",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_c7f8a25cd1b3",
+      "url": "https://clinicaltrialfailures.com/failures/neurology",
+      "pageType": "failure_hub",
+      "role": "control",
+      "decision": "REVIEW_HOLD",
+      "reason": "Fixed comparison page; preserve the last valid behavior and do not apply the Ophthalmology template change",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_68747df4b6f0",
+      "url": "https://clinicaltrialfailures.com/failures/gastroenterology-and-hepatology",
+      "pageType": "failure_hub",
+      "role": "control",
+      "decision": "REVIEW_HOLD",
+      "reason": "Fixed comparison page; preserve the last valid behavior and do not apply the Ophthalmology template change",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_237188ec809c",
+      "url": "https://clinicaltrialfailures.com/failures/infectious-disease",
+      "pageType": "failure_hub",
+      "role": "control",
+      "decision": "REVIEW_HOLD",
+      "reason": "Fixed comparison page; preserve the last valid behavior and do not apply the Ophthalmology template change",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_e29524f5a7fc",
+      "url": "https://clinicaltrialfailures.com/failures/hematology-non-onc",
+      "pageType": "failure_hub",
+      "role": "watch",
+      "decision": "REVIEW_HOLD",
+      "reason": "Potential later recovery candidate with 776 measured impressions; no change until a dedicated content review is complete",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_19971b907d8d",
+      "url": "https://clinicaltrialfailures.com/failures/respiratory",
+      "pageType": "failure_hub",
+      "role": "watch",
+      "decision": "REVIEW_HOLD",
+      "reason": "Potential later recovery candidate with 400 measured impressions and 2 clicks; no change until a dedicated content review is complete",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_aa3aee033e8f",
+      "url": "https://clinicaltrialfailures.com/",
+      "pageType": "home",
+      "role": "protected",
+      "decision": "REVIEW_HOLD",
+      "reason": "Protected entry point with measured clicks; no indexability change is in scope for the pilot",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_49541cd9486a",
+      "url": "https://clinicaltrialfailures.com/trial/NCT03940690-interest-of-intravitreal-injections-of-anti-vegf-as-initial-and-adjuvant-treatme",
+      "pageType": "trial",
+      "role": "protected_reference",
+      "decision": "REVIEW_HOLD",
+      "reason": "High-impression reference trial; preserve current behavior pending URL inspection and a complete protection-data review",
+      "protected": true,
+      "reviewer": "Luna",
+      "reviewedAt": "2026-10-06",
+      "replacementUrl": null
+    }
+  ]
+}

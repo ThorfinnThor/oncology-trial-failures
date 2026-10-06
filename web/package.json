@@ -6,8 +6,8 @@
     "predev": "npm run data:optimize",
     "dev": "next dev",
     "data:optimize": "node scripts/generate-data-shards.mjs",
-    "build": "npm run data:optimize && next build && npm run check:seo-pilot",
-    "build:cloudflare": "npm run data:optimize && next build --webpack && npm run check:seo-pilot",
+    "build": "npm run data:optimize && npm run check:seo-policy && next build && npm run check:seo-pilot",
+    "build:cloudflare": "npm run data:optimize && npm run check:seo-policy && next build --webpack && npm run check:seo-pilot",
     "cloudflare:build": "opennextjs-cloudflare build && node scripts/prepare-cloudflare-assets.mjs",
     "cloudflare:preview": "npm run cloudflare:build && opennextjs-cloudflare preview",
     "cloudflare:deploy": "npm run cloudflare:build && opennextjs-cloudflare deploy",
@@ -18,7 +18,8 @@
     "test": "tsx --test tests/*.test.ts",
     "check:styles": "python3 ../scripts/web/check_styled_jsx.py",
     "check:private": "python3 ../scripts/web/check_private_data.py",
-    "check:seo-pilot": "node scripts/check-seo-pilot-output.mjs"
+    "check:seo-pilot": "node scripts/check-seo-pilot-output.mjs",
+    "check:seo-policy": "node ../scripts/seo/generate-indexing-policy.mjs --check"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.11.2",
