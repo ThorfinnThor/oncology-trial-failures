@@ -1,0 +1,11 @@
+url,page_type,role,measurement_status,protection_reason,review_status
+https://clinicaltrialfailures.com/,home,protected,available,existing site entry point,reviewed
+https://clinicaltrialfailures.com/failures/ophthalmology,disease_hub,pilot,available,active recovery pilot,reviewed
+https://clinicaltrialfailures.com/failures/cardiovascular,disease_hub,control,available,unchanged control,reviewed
+https://clinicaltrialfailures.com/failures/dermatology,disease_hub,control,available,unchanged control,reviewed
+https://clinicaltrialfailures.com/failures/neurology,disease_hub,control,available,unchanged control,reviewed
+https://clinicaltrialfailures.com/failures/gastroenterology-and-hepatology,disease_hub,control,available,unchanged control,reviewed
+https://clinicaltrialfailures.com/failures/infectious-disease,disease_hub,control,available,unchanged control,reviewed
+https://clinicaltrialfailures.com/failures/hematology-non-onc,disease_hub,watch,available,possible later recovery candidate,reviewed
+https://clinicaltrialfailures.com/failures/respiratory,disease_hub,watch,available,possible later recovery candidate,reviewed
+https://clinicaltrialfailures.com/trial/NCT03940690,trial,reference,available,previously inspected valuable URL,reviewed
