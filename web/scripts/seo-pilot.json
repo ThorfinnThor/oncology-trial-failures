@@ -4,9 +4,9 @@
   "controlPaths": [
     "/failures/cardiovascular",
     "/failures/dermatology",
-    "/failures/musculoskeletal",
-    "/failures/renal-and-urology",
-    "/failures/endocrine-and-metabolic"
+    "/failures/neurology",
+    "/failures/gastroenterology-and-hepatology",
+    "/failures/infectious-disease"
   ],
   "watchPaths": [
     "/failures/hematology-non-onc",
@@ -18,5 +18,41 @@
     "structuredTrialItems": 20,
     "editorialEvidenceLinks": 3,
     "maximumHtmlBytes": 200000
+  },
+  "baseline": {
+    "current": {
+      "start": "2026-09-27",
+      "end": "2026-10-03"
+    },
+    "comparison": {
+      "start": "2026-09-20",
+      "end": "2026-09-26"
+    },
+    "pages": {
+      "/failures/ophthalmology": {
+        "current": { "clicks": 0, "impressions": 22, "ctrPercent": 0, "position": 7 },
+        "comparison": { "clicks": 0, "impressions": 357, "ctrPercent": 0, "position": 5.3 }
+      },
+      "/failures/cardiovascular": {
+        "current": { "clicks": 1, "impressions": 7, "ctrPercent": 14.3, "position": 5.6 },
+        "comparison": { "clicks": 0, "impressions": 14, "ctrPercent": 0, "position": 4.7 }
+      },
+      "/failures/dermatology": {
+        "current": { "clicks": 0, "impressions": 19, "ctrPercent": 0, "position": 6.8 },
+        "comparison": { "clicks": 0, "impressions": 40, "ctrPercent": 0, "position": 4.6 }
+      },
+      "/failures/neurology": {
+        "current": { "clicks": 1, "impressions": 56, "ctrPercent": 1.8, "position": 4.4 },
+        "comparison": { "clicks": 0, "impressions": 59, "ctrPercent": 0, "position": 4.2 }
+      },
+      "/failures/gastroenterology-and-hepatology": {
+        "current": { "clicks": 0, "impressions": 6, "ctrPercent": 0, "position": 3.8 },
+        "comparison": { "clicks": 0, "impressions": 18, "ctrPercent": 0, "position": 4.3 }
+      },
+      "/failures/infectious-disease": {
+        "current": { "clicks": 0, "impressions": 3, "ctrPercent": 0, "position": 6 },
+        "comparison": { "clicks": 0, "impressions": 12, "ctrPercent": 0, "position": 6.1 }
+      }
+    }
   }
 }

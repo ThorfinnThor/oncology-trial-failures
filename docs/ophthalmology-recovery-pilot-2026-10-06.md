@@ -14,9 +14,9 @@ The fixed control group contains five unchanged disease-area hubs with the same 
 
 - `/failures/cardiovascular`
 - `/failures/dermatology`
-- `/failures/musculoskeletal`
-- `/failures/renal-and-urology`
-- `/failures/endocrine-and-metabolic`
+- `/failures/neurology`
+- `/failures/gastroenterology-and-hepatology`
+- `/failures/infectious-disease`
 
 These pages must not receive editorial, metadata, canonical, robots, or structured-data changes during the first evaluation window.
 
@@ -39,7 +39,18 @@ For 2026-09-27 through 2026-10-03 compared with 2026-09-20 through 2026-09-26:
 
 Desktop accounted for 1,933 of the 1,987 lost impressions. The United States accounted for 1,131. These segments must be reported separately in later comparisons. Operator-heavy NCT query variants must also remain a separate segment rather than being treated as normal demand.
 
-Exact control-page performance values must be exported from Search Console before the production release. Unknown or privacy-suppressed query values must not be converted to zero.
+The page-level Search Console baseline is:
+
+| Page | Clicks current / comparison | Impressions current / comparison | CTR current / comparison | Position current / comparison |
+| --- | ---: | ---: | ---: | ---: |
+| Ophthalmology pilot | 0 / 0 | 22 / 357 | 0% / 0% | 7.0 / 5.3 |
+| Cardiovascular control | 1 / 0 | 7 / 14 | 14.3% / 0% | 5.6 / 4.7 |
+| Dermatology control | 0 / 0 | 19 / 40 | 0% / 0% | 6.8 / 4.6 |
+| Neurology control | 1 / 0 | 56 / 59 | 1.8% / 0% | 4.4 / 4.2 |
+| Gastroenterology & Hepatology control | 0 / 0 | 6 / 18 | 0% / 0% | 3.8 / 4.3 |
+| Infectious Disease control | 0 / 0 | 3 / 12 | 0% / 0% | 6.0 / 6.1 |
+
+The original candidates Musculoskeletal, Renal & Urology, and Endocrine & Metabolic did not appear in the page report for either comparison window. They were replaced rather than treating absent or privacy-suppressed values as zero. The exact values above are also stored in `web/scripts/seo-pilot.json`, and the build guard verifies that its baseline page set stays aligned with the experiment boundary.
 
 ## Automated release contract
 
@@ -66,9 +77,8 @@ npm run check:seo-pilot
 
 Before deployment:
 
-1. Export the pilot and control URLs from Search Console for the fixed baseline windows.
-2. Run the complete repository checks and `npm run cloudflare:build`.
-3. Confirm no other disease-area hub changed.
+1. Run the complete repository checks and `npm run cloudflare:build`.
+2. Confirm no other disease-area hub changed.
 
 At the final deployment:
 

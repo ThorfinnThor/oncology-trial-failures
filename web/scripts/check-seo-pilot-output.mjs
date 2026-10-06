@@ -8,6 +8,12 @@ const config = JSON.parse(
   await readFile(new URL("./seo-pilot.json", import.meta.url), "utf8")
 );
 
+assert.deepEqual(
+  Object.keys(config.baseline.pages).sort(),
+  [config.pilotPath, ...config.controlPaths].sort(),
+  "Search Console baseline pages must match the pilot and fixed control group"
+);
+
 function pageFile(route) {
   const relative = route === "/" ? "index" : route.replace(/^\//, "");
   return path.join(pagesDirectory, `${relative}.html`);
