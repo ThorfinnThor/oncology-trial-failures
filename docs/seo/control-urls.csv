@@ -1,0 +1,6 @@
+url_id,url,page_type,control_role,approved_decision,expected_change,approval_version
+url_3a0305eca2b6,https://clinicaltrialfailures.com/failures/cardiovascular,failure_hub,unchanged_control,REVIEW_HOLD,none,luna-approval-v1
+url_b538ebe97260,https://clinicaltrialfailures.com/failures/dermatology,failure_hub,unchanged_control,REVIEW_HOLD,none,luna-approval-v1
+url_c7f8a25cd1b3,https://clinicaltrialfailures.com/failures/neurology,failure_hub,unchanged_control,REVIEW_HOLD,none,luna-approval-v1
+url_68747df4b6f0,https://clinicaltrialfailures.com/failures/gastroenterology-and-hepatology,failure_hub,unchanged_control,REVIEW_HOLD,none,luna-approval-v1
+url_237188ec809c,https://clinicaltrialfailures.com/failures/infectious-disease,failure_hub,unchanged_control,REVIEW_HOLD,none,luna-approval-v1

@@ -1,0 +1,2 @@
+url_id,url,page_type,pilot_role,approved_decision,allowed_change,release_gate,approval_version
+url_b5a55b627239,https://clinicaltrialfailures.com/failures/ophthalmology,failure_hub,recovery_pilot,KEEP_INDEX,"Ophthalmology-specific content and internal-link improvements only","Existing pilot output tests pass; canonical and robots remain index,follow; no control URL changes",luna-approval-v1
