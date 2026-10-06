@@ -1,11 +1,20 @@
 import type { GetStaticPaths, GetStaticProps } from "next";
 
 import SeoHubPage from "@/components/SeoHubPage";
-import { displayHubRows, findFailureHub, buildFailureHubs, hubStats, type HubStats } from "@/lib/seoHubs";
+import {
+  buildFailureHubs,
+  buildHubEditorialInsight,
+  displayHubRows,
+  findFailureHub,
+  hubStats,
+  type HubEditorialInsight,
+  type HubStats,
+} from "@/lib/seoHubs";
 import type { DatasetMeta, TrialIndexRow } from "@/lib/types";
 
 type FailureHubPageProps = {
   hub: {
+    slug: string;
     title: string;
     h1: string;
     description: string;
@@ -17,15 +26,17 @@ type FailureHubPageProps = {
   };
   rows: TrialIndexRow[];
   stats: HubStats;
+  editorial: HubEditorialInsight | null;
   datasetMeta: DatasetMeta;
 };
 
-export default function FailureHubPage({ hub, rows, stats, datasetMeta }: FailureHubPageProps) {
+export default function FailureHubPage({ hub, rows, stats, editorial, datasetMeta }: FailureHubPageProps) {
   return (
     <SeoHubPage
       hub={hub}
       rows={rows}
       stats={stats}
+      editorial={editorial}
       datasetMeta={datasetMeta}
       parentHref="/failures"
       parentLabel="Failure hubs"
@@ -49,10 +60,12 @@ export const getStaticProps: GetStaticProps<FailureHubPageProps> = async (ctx) =
   const hub = findFailureHub(rows, slug);
 
   if (!hub) return { notFound: true };
+  const stats = hubStats(hub.rows);
 
   return {
     props: {
       hub: {
+        slug: hub.slug,
         title: hub.title,
         h1: hub.h1,
         description: hub.description,
@@ -68,7 +81,8 @@ export const getStaticProps: GetStaticProps<FailureHubPageProps> = async (ctx) =
               : "Stop-reason hub",
       },
       rows: displayHubRows(hub.rows, 60),
-      stats: hubStats(hub.rows),
+      stats,
+      editorial: buildHubEditorialInsight(hub, stats),
       datasetMeta,
     },
   };

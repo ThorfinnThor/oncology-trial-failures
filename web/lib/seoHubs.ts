@@ -50,6 +50,20 @@ export type HubStats = {
   latestRegistryUpdate: string;
 };
 
+export type HubEditorialInsight = {
+  title: string;
+  intro: string;
+  observations: Array<{ title: string; body: string }>;
+  evidence: Array<{
+    label: string;
+    href: string;
+    nctId: string;
+    title: string;
+    reason: string;
+    why: string;
+  }>;
+};
+
 export type SponsorEvidenceStats = {
   total: number;
   biologicalCount: number;
@@ -195,6 +209,74 @@ export function hubStats(rows: TrialIndexRow[]): HubStats {
   };
 }
 
+function outcomeCountLabel(count: number, total: number): string {
+  const share = total ? ((count / total) * 100).toFixed(1) : "0.0";
+  return `${count.toLocaleString("en-US")} of ${total.toLocaleString("en-US")} (${share}%)`;
+}
+
+function editorialEvidenceRow(
+  rows: TrialIndexRow[],
+  label: string,
+  predicate: (row: TrialIndexRow) => boolean
+): HubEditorialInsight["evidence"][number] | null {
+  const row = sortRows(rows.filter(predicate), "date_desc")[0];
+  if (!row) return null;
+  const item = trialListItem(row);
+  return {
+    label,
+    href: item.href,
+    nctId: item.id,
+    title: item.title,
+    reason: titleCaseTaxonomy(resolvedReason(row) || resolvedOutcome(row)),
+    why: item.why,
+  };
+}
+
+export function buildHubEditorialInsight(hub: SeoHub, stats: HubStats): HubEditorialInsight | null {
+  if (hub.kind !== "area" || hub.slug !== "ophthalmology") return null;
+
+  const reasonCount = (reason: string) => hub.rows.filter((row) => resolvedReason(row) === reason).length;
+  const phaseTwoCount = stats.topPhases.find((item) => item.label === "Phase II")?.count || 0;
+  const evidence = [
+    editorialEvidenceRow(
+      hub.rows,
+      "Efficacy / futility example",
+      (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "EFFICACY_FUTILITY"
+    ),
+    editorialEvidenceRow(
+      hub.rows,
+      "Safety example",
+      (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "SAFETY"
+    ),
+    editorialEvidenceRow(
+      hub.rows,
+      "Unresolved example",
+      (row) => resolvedOutcome(row) === "UNRESOLVED"
+    ),
+  ].filter((item): item is HubEditorialInsight["evidence"][number] => Boolean(item));
+
+  return {
+    title: "What the ophthalmology evidence slice actually shows",
+    intro:
+      "This hub separates biological signals from operational and unresolved stops, then links the summary back to individual registry records. The figures describe this stopped-trial dataset only; they are not an ophthalmology success or failure rate.",
+    observations: [
+      {
+        title: "Biological signals are the minority",
+        body: `${outcomeCountLabel(stats.biologicalCount, stats.total)} stopped records are classified as likely biological failures. ${stats.nonBiologicalCount.toLocaleString("en-US")} are non-biological and ${stats.unresolvedCount.toLocaleString("en-US")} remain unresolved.`,
+      },
+      {
+        title: "Recruitment is more common than efficacy or safety",
+        body: `Recruitment is the resolved primary reason for ${reasonCount("RECRUITMENT").toLocaleString("en-US")} records, compared with ${reasonCount("EFFICACY_FUTILITY").toLocaleString("en-US")} efficacy/futility and ${reasonCount("SAFETY").toLocaleString("en-US")} safety records.`,
+      },
+      {
+        title: "Phase II is the largest development slice",
+        body: `${phaseTwoCount.toLocaleString("en-US")} stopped records are mapped to Phase II. This is a count within stopped studies, not a phase-specific probability of failure.`,
+      },
+    ],
+    evidence,
+  };
+}
+
 export function sponsorEvidenceStats(rows: TrialIndexRow[]): SponsorEvidenceStats {
   const outcomes = countBy(rows, (row) => titleCaseTaxonomy(resolvedOutcome(row)));
   const outcomeCount = (outcome: string) => rows.filter((row) => resolvedOutcome(row) === outcome).length;
@@ -269,7 +351,11 @@ export function buildFailureHubs(rows: TrialIndexRow[]): SeoHub[] {
       label: area.label,
       title: compactSeoTitle(`${area.label} clinical trial failures`, `${area.count.toLocaleString("en-US")} stopped studies`),
       h1: `${area.label} clinical trial failures`,
-      description: compactSeoDescription(`Review ${area.count.toLocaleString("en-US")} stopped ${area.label.toLowerCase()} trials, including ${stats.scientificCount.toLocaleString("en-US")} likely biological failure signals, sponsors, phases, and source reasons.`),
+      description: compactSeoDescription(
+        slug === "ophthalmology"
+          ? `Review ${area.count.toLocaleString("en-US")} stopped ophthalmology trials by outcome, stop reason and phase. Follow source-linked evidence across biological, non-biological and unresolved signals.`
+          : `Review ${area.count.toLocaleString("en-US")} stopped ${area.label.toLowerCase()} trials, including ${stats.scientificCount.toLocaleString("en-US")} likely biological failure signals, sponsors, phases, and source reasons.`
+      ),
       path: `/failures/${slug}`,
       total: area.count,
       rows: memberRows,
