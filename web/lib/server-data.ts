@@ -62,6 +62,12 @@ export async function loadMetaServer(): Promise<DatasetMeta> {
     _meta = {
       version: m.version || m.generated_at_utc || "Dataset",
       source: m.source || "ClinicalTrials.gov",
+      ...(m.generated_at_utc ? { generated_at_utc: m.generated_at_utc } : {}),
+      ...(m.imported_at_utc ? { imported_at_utc: m.imported_at_utc } : {}),
+      ...(m.source_verified_at ? { source_verified_at: m.source_verified_at } : {}),
+      ...(m.latest_source_update_at ? { latest_source_update_at: m.latest_source_update_at } : {}),
+      ...(m.content_changed_at ? { content_changed_at: m.content_changed_at } : {}),
+      ...(m.source_snapshot_id ? { source_snapshot_id: m.source_snapshot_id } : {}),
     };
     return _meta;
   } catch {
@@ -87,10 +93,12 @@ export async function loadIndexServer(): Promise<TrialIndexRow[]> {
       )
     );
     _index = shards.flat().filter((row) => row.nct_id);
+    if (!_index.length) throw new Error("Generated trial index shards are empty");
   } catch {
     _index = (await readJsonServerAsset<TrialIndexRow[]>("public/trials-index.json")).filter(
       (row) => row.nct_id
     );
+    if (!_index.length) throw new Error("Generated trial index is empty");
   }
   return _index;
 }

@@ -75,6 +75,7 @@ function normalizeIndexRow(row) {
     overall_status: asString(row.overall_status || row.status || "").trim(),
     phases: asString(phasesRaw).trim(),
     disease_area: asString(diseaseArea).trim(),
+    disease_areas_matched: asString(row.disease_areas_matched || "").trim(),
     lead_sponsor: asString(row.lead_sponsor || row.sponsor || row.organization || "").trim(),
     collaborators: asString(row.collaborators || row.collab || "").trim(),
     condition_first: firstFromSemicolon(asString(conditionsRaw)),
@@ -129,16 +130,27 @@ async function main() {
   if (!Array.isArray(sourceRows)) {
     throw new Error(`${SOURCE_FILE} must contain a JSON array`);
   }
+  if (sourceRows.length === 0) {
+    throw new Error(`${SOURCE_FILE} is empty; refusing to replace existing trial shards`);
+  }
 
   const endpoints = await loadEndpoints();
   let withResult = 0;
   const indexRows = [];
+  const seenNctIds = new Set();
   const indexShards = Array.from({ length: INDEX_SHARD_COUNT }, () => []);
   const shards = Array.from({ length: SHARD_COUNT }, () => []);
 
-  for (const sourceRow of sourceRows) {
+  for (const [rowIndex, sourceRow] of sourceRows.entries()) {
     const indexRow = normalizeIndexRow(sourceRow);
-    if (!indexRow.nct_id) continue;
+    if (!indexRow.nct_id) {
+      throw new Error(`${SOURCE_FILE} row ${rowIndex + 1} is missing nct_id; refusing to replace existing trial shards`);
+    }
+    const normalizedNctId = indexRow.nct_id.toUpperCase();
+    if (seenNctIds.has(normalizedNctId)) {
+      throw new Error(`${SOURCE_FILE} contains duplicate nct_id ${indexRow.nct_id}; refusing to replace existing trial shards`);
+    }
+    seenNctIds.add(normalizedNctId);
 
     indexRows.push(indexRow);
     const result = endpoints.trials[indexRow.nct_id.toUpperCase()];
@@ -154,6 +166,10 @@ async function main() {
     const key = shardKey(indexRow.nct_id);
     indexShards[Number.parseInt(key[0], 16)].push(indexRow);
     shards[Number.parseInt(key, 16)].push(detailRow);
+  }
+
+  if (indexRows.length === 0) {
+    throw new Error(`${SOURCE_FILE} produced no valid trial rows; refusing to replace existing trial shards`);
   }
 
   await fs.rm(INDEX_FILE, { force: true });

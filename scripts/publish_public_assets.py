@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import hashlib
 import os
 import shutil
 from collections import Counter
@@ -38,6 +39,25 @@ def _load_json(path: str):
         return json.load(f)
 
 
+def _validate_rows(rows, path: str):
+    if not isinstance(rows, list) or not rows:
+        raise ValueError(f"{path} must contain a non-empty JSON array")
+    ids = [str(row.get("nct_id") or "").strip().upper() for row in rows]
+    if "" in ids:
+        raise ValueError(f"{path} contains a row without nct_id")
+    if len(ids) != len(set(ids)):
+        raise ValueError(f"{path} contains duplicate nct_id values")
+    return set(ids)
+
+
+def _sha256(path: str) -> str:
+    digest = hashlib.sha256()
+    with open(path, "rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def main() -> None:
     for p in [ROOT_ALL_JSON, ROOT_BIO_JSON]:
         if not os.path.exists(p):
@@ -47,6 +67,10 @@ def main() -> None:
 
     all_rows = _load_json(ROOT_ALL_JSON)
     bio_rows = _load_json(ROOT_BIO_JSON)
+    all_ids = _validate_rows(all_rows, ROOT_ALL_JSON)
+    bio_ids = _validate_rows(bio_rows, ROOT_BIO_JSON)
+    if not bio_ids.issubset(all_ids):
+        raise ValueError(f"{ROOT_BIO_JSON} contains records absent from {ROOT_ALL_JSON}")
 
     def max_date(rows):
         m = ""
@@ -60,6 +84,20 @@ def main() -> None:
     bio_max = max_date(bio_rows)
 
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    source_snapshot_id = f"sha256:{_sha256(ROOT_ALL_JSON)}"
+    changes = _load_json(ROOT_CHANGES_JSON) if os.path.exists(ROOT_CHANGES_JSON) else {}
+    change_summary = changes.get("summary", {}) if isinstance(changes, dict) else {}
+    has_content_changes = any(
+        int(change_summary.get(field) or 0) > 0
+        for field in (
+            "new_records",
+            "updated_records",
+            "status_changes",
+            "classification_changes",
+            "removed_records",
+        )
+    )
+    content_changed_at = changes.get("generated_at_utc") if has_content_changes else None
 
     version = all_max or generated_at
 
@@ -104,6 +142,11 @@ def main() -> None:
     meta = {
         "version": version,
         "generated_at_utc": generated_at,
+        "imported_at_utc": generated_at,
+        "source_verified_at": generated_at,
+        "latest_source_update_at": all_max,
+        "content_changed_at": content_changed_at,
+        "source_snapshot_id": source_snapshot_id,
         "source": "ClinicalTrials.gov API v2",
         "all": {
             "record_count": len(all_rows),

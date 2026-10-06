@@ -10,6 +10,7 @@ import { useEffect, useMemo, useState } from "react";
 import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, EndpointResult, TrialDetail } from "@/lib/types";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { resolveClassification } from "@/lib/classificationResolution";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
 import { areaHubPath, isIndexableTrial, phaseHubPath, reasonHubPath } from "@/lib/seoHubs";
 import { buildTrialSeoMetadata } from "@/lib/seoMetadata";
@@ -85,24 +86,6 @@ const REASON_LABELS: Record<string, string> = {
   UNSPECIFIED: "Unspecified",
   OTHER_UNKNOWN: "Other / unknown",
 };
-
-function normalizedCode(value: string | undefined): string {
-  return (value || "").replace(/[\s/-]+/g, "_").toUpperCase().trim();
-}
-
-function trialOutcomeCode(trial: TrialDetail): string {
-  const finalOutcome = normalizedCode(trial.classification_final_outcome);
-  if (finalOutcome && finalOutcome !== "UNRESOLVED") return finalOutcome;
-  return normalizedCode(trial.classification_outcome_v2 || trial.classification_label) || "UNKNOWN";
-}
-
-function trialReasonCode(trial: TrialDetail, fallbackBucket: string): string {
-  const finalReason = normalizedCode(
-    trial.classification_final_category || trial.classification_primary_reason_v2
-  );
-  if (finalReason && !finalReason.startsWith("UNRESOLVED_")) return finalReason;
-  return normalizedCode(trial.classification_reason || fallbackBucket) || "UNSPECIFIED";
-}
 
 function classificationInterpretation(outcome: string, reason: string): string {
   if (outcome === "BIOLOGICAL_FAILURE" && reason === "EFFICACY_FUTILITY") {
@@ -186,11 +169,12 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
     [trial]
   );
   const bucket = useMemo(() => (trial ? reasonBucket(trial) : "OTHER/UNKNOWN"), [trial]);
-  const outcomeCode = useMemo(() => (trial ? trialOutcomeCode(trial) : "UNKNOWN"), [trial]);
-  const reasonCode = useMemo(
-    () => (trial ? trialReasonCode(trial, bucket) : "UNSPECIFIED"),
-    [trial, bucket]
+  const classification = useMemo(
+    () => (trial ? resolveClassification(trial) : null),
+    [trial]
   );
+  const outcomeCode = classification?.outcome || "UNKNOWN";
+  const reasonCode = classification?.reason || "UNSPECIFIED";
 
   const conditionText = trial?.condition_first || trial?.conditions || "stopped clinical trial";
   const { title, description } = buildTrialSeoMetadata(trial, trialId);
@@ -205,9 +189,9 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
   const reasonHubHref = ["DECISION ONLY", "PROGRAM STOP ONLY"].includes(bucket)
     ? null
     : reasonHubPath(bucket);
-  const classificationStatus = trial?.classification_needs_review
+  const classificationStatus = classification?.reviewRequired
     ? "Review required"
-    : trial?.classification_resolution_status === "RESOLVED"
+    : classification?.resolutionStatus === "RESOLVED"
       ? "Resolved"
       : "Source review advised";
 

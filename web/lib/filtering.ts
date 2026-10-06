@@ -1,4 +1,5 @@
 import { TrialIndexRow, UrlState, SortKey } from "./types";
+import { classificationReasonBucket, isResolvedBiologicalFailure } from "./classificationResolution";
 
 /** Split phases like "PHASE1; PHASE2" into normalized tokens */
 export function parsePhases(phasesRaw: string): string[] {
@@ -23,24 +24,7 @@ export function phaseLabel(phaseKey: string): string {
 }
 
 export function reasonBucket(r: TrialIndexRow): string {
-  const primaryV2 = (r.classification_primary_reason_v2 || "").toUpperCase().trim();
-  if (primaryV2 === "DECISION_WITHOUT_STATED_CAUSE") return "DECISION ONLY";
-  if (primaryV2 === "PROGRAM_ACTION_WITHOUT_STATED_CAUSE") return "PROGRAM STOP ONLY";
-
-  // Prefer explicit field from pipeline if present:
-  const base = (r.classification_reason || "").toUpperCase().trim();
-  if (base) return base;
-
-  // Fallback heuristic:
-  const why = (r.why_stopped_short || "").toUpperCase();
-  if (why.includes("EFFICACY") || why.includes("FUTILITY") || why.includes("INSUFFICIENT")) return "EFFICACY/FUTILITY";
-  if (why.includes("SAFETY") || why.includes("TOXIC") || why.includes("ADVERSE")) return "SAFETY";
-  if (why.includes("ENROLL") || why.includes("RECRUIT")) return "ENROLLMENT";
-  if (why.includes("FUND")) return "FUNDING";
-  if (why.includes("REGULAT") || why.includes("FDA") || why.includes("AUTHORITY")) return "REGULATORY";
-  if (why.includes("STRATEG")) return "STRATEGIC";
-  if (why.includes("OPERATION") || why.includes("LOGISTIC") || why.includes("SUPPLY")) return "OPERATIONAL";
-  return "OTHER/UNKNOWN";
+  return classificationReasonBucket(r);
 }
 
 function textIncludes(hay: string, needle: string): boolean {
@@ -57,26 +41,7 @@ function matchesEntityList(value: string | undefined, selected: string[]): boole
 }
 
 export function isLikelyScientificFailure(r: TrialIndexRow): boolean {
-  const finalOutcome = (r.classification_final_outcome || "").toUpperCase().trim();
-  if (finalOutcome && finalOutcome !== "UNRESOLVED") {
-    return finalOutcome === "BIOLOGICAL_FAILURE";
-  }
-
-  const v2Outcome = (r.classification_outcome_v2 || "").toUpperCase().trim();
-  if (v2Outcome) {
-    return v2Outcome === "BIOLOGICAL_FAILURE";
-  }
-
-  // Use pipeline labels if available:
-  const label = (r.failure_label || r.classification_label || r.failure_type || "").toUpperCase();
-
-  if (label.includes("BIOLOGICAL_FAILURE") || label.includes("SCIENTIFIC_FAILURE")) return true;
-
-  // Legacy fallback for older datasets that do not contain V2 outcome fields.
-  const bucket = reasonBucket(r);
-  if (bucket === "EFFICACY/FUTILITY" || bucket === "SAFETY") return true;
-
-  return false;
+  return isResolvedBiologicalFailure(r);
 }
 
 export function filterRows(rows: TrialIndexRow[], state: UrlState): TrialIndexRow[] {

@@ -6,6 +6,11 @@ export type DatasetMeta = {
 
   // Optional metadata shown on /methods
   generated_at_utc?: string;
+  imported_at_utc?: string;
+  source_verified_at?: string;
+  latest_source_update_at?: string;
+  content_changed_at?: string;
+  source_snapshot_id?: string;
   source?: string;
 };
 
@@ -73,6 +78,7 @@ export type TrialIndexRow = {
   // Phase / therapeutic area
   phases?: string;
   disease_area?: string;
+  disease_areas_matched?: string;
 
   // Sponsor info
   lead_sponsor?: string;

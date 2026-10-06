@@ -53,6 +53,7 @@ function normalizeIndexRows(raw: any[]): TrialIndexRow[] {
         overall_status: asString(r.overall_status || r.status || "").trim(),
         phases: asString(phasesRaw).trim(),
         disease_area: asString(diseaseArea).trim(),
+        disease_areas_matched: asString(r.disease_areas_matched || "").trim(),
         lead_sponsor: asString(r.lead_sponsor || r.sponsor || r.organization || "").trim(),
         collaborators: asString(r.collaborators || r.collab || "").trim(),
         condition_first: firstFromSemicolon(asString(conditionsRaw)),
@@ -90,6 +91,12 @@ export async function loadMeta(): Promise<DatasetMeta> {
     _meta = {
       version: m.version || m.generated_at_utc || "Dataset",
       source: m.source || "ClinicalTrials.gov",
+      ...(m.generated_at_utc ? { generated_at_utc: m.generated_at_utc } : {}),
+      ...(m.imported_at_utc ? { imported_at_utc: m.imported_at_utc } : {}),
+      ...(m.source_verified_at ? { source_verified_at: m.source_verified_at } : {}),
+      ...(m.latest_source_update_at ? { latest_source_update_at: m.latest_source_update_at } : {}),
+      ...(m.content_changed_at ? { content_changed_at: m.content_changed_at } : {}),
+      ...(m.source_snapshot_id ? { source_snapshot_id: m.source_snapshot_id } : {}),
     };
     return _meta;
   }
@@ -108,21 +115,28 @@ export async function loadIndex(): Promise<TrialIndexRow[]> {
     INDEX_SHARD_KEYS.map((key) => tryFetchJSON<TrialIndexRow[]>(`/trials-index-shards/${key}.json`))
   );
   if (indexShards.every((rows): rows is TrialIndexRow[] => rows !== null)) {
-    _index = indexShards.flat().filter((row) => row.nct_id);
-    return _index;
+    const rows = indexShards.flat().filter((row) => row.nct_id);
+    if (rows.length) {
+      _index = rows;
+      return _index;
+    }
   }
 
   // Keep the single-file fallback for deployments created before index sharding.
   const compactIndex = await tryFetchJSON<TrialIndexRow[]>("/trials-index.json");
   if (compactIndex) {
-    _index = compactIndex.filter((row) => row.nct_id);
-    return _index;
+    const rows = compactIndex.filter((row) => row.nct_id);
+    if (rows.length) {
+      _index = rows;
+      return _index;
+    }
   }
 
   const legacyRaw =
     (await tryFetchJSON<any[]>("/all_stopped_trials.json")) ??
     (await fetchJSON<any[]>("/data/all_stopped_trials.json"));
   _index = normalizeIndexRows(legacyRaw);
+  if (!_index.length) throw new Error("Trial dataset is empty");
   return _index;
 }
 

@@ -1,5 +1,6 @@
 import type { TrialIndexRow } from "./types";
-import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket, sortRows } from "./filtering";
+import { parsePhases, phaseLabel, reasonBucket, sortRows } from "./filtering";
+import { isLegacyIndexableBiologicalSignal, resolveClassification } from "./classificationResolution";
 import { compactSeoDescription, compactSeoTitle } from "./seoMetadata";
 import { slugify, trialPath } from "./seoUrls";
 
@@ -114,15 +115,11 @@ function titleCaseTaxonomy(value: string): string {
 }
 
 function resolvedOutcome(row: TrialIndexRow): string {
-  const finalOutcome = norm(row.classification_final_outcome).toUpperCase();
-  if (finalOutcome) return finalOutcome;
-  const v2Outcome = norm(row.classification_outcome_v2).toUpperCase();
-  if (v2Outcome) return v2Outcome;
-  return isLikelyScientificFailure(row) ? "BIOLOGICAL_FAILURE" : "UNRESOLVED";
+  return resolveClassification(row).outcome;
 }
 
 function resolvedReason(row: TrialIndexRow): string {
-  return norm(row.classification_final_category || row.classification_primary_reason_v2).toUpperCase();
+  return resolveClassification(row).reason;
 }
 
 function countBy(rows: TrialIndexRow[], getValue: (row: TrialIndexRow) => string): Array<{ label: string; count: number }> {
@@ -192,7 +189,7 @@ export function reasonHubPath(bucket: string): string {
 }
 
 export function isIndexableTrial(row: TrialIndexRow): boolean {
-  return isLikelyScientificFailure(row);
+  return isLegacyIndexableBiologicalSignal(row);
 }
 
 export function indexableTrialRows(rows: TrialIndexRow[]): TrialIndexRow[] {
