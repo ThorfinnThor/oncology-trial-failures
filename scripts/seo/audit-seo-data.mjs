@@ -226,8 +226,8 @@ async function main() {
     luna_review: {
       candidate_count: lunaReviewCandidates.length,
       recommended_decisions: countBy(lunaReviewCandidates, (item) => item.reasons.includes("missing_stop_reason") ? "NOINDEX_THIN_CONTENT" : "IMPROVE_INDEX"),
-      status: "RECOMMENDATION_NOT_APPROVED",
-      note: "The current registry accepts NOINDEX_UTILITY but not NOINDEX_THIN_CONTENT. Sol must add and test the new decision type before any production activation.",
+      status: "APPROVED_FOR_REPORT_MODE",
+      note: "Luna approved these URL-level decisions for registry report mode. Production activation remains a separate Sol release step.",
     },
     low_information_candidates: {
       total: candidates.length,
@@ -340,7 +340,7 @@ async function main() {
         : "Keep indexable: the page has a specific registry stop statement, study identity, conditions, interventions, and source link. Improve copy so unresolved benefit-risk evidence is not presented as a confirmed biological failure.",
       "Luna",
       "2026-10-07",
-      "RECOMMENDATION_NOT_APPROVED",
+      "APPROVED_FOR_REPORT_MODE",
     ].map(csvCell).join(",");
   });
 

@@ -14,6 +14,7 @@ import { resolveClassification } from "@/lib/classificationResolution";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
 import { areaHubPath, isIndexableTrial, phaseHubPath, reasonHubPath } from "@/lib/seoHubs";
 import { buildTrialSeoMetadata } from "@/lib/seoMetadata";
+import type { SeoIndexingState } from "@/lib/seoIndexingPolicy";
 import EvidenceStandard from "@/components/EvidenceStandard";
 import PrimaryNav from "@/components/PrimaryNav";
 
@@ -23,6 +24,7 @@ const OG_IMAGE = `${SITE_URL}/og-image.png`;
 type TrialPageProps = {
   initialMeta: DatasetMeta | null;
   initialTrial: TrialDetail | null;
+  initialSeoState: SeoIndexingState | null;
 };
 
 function phaseChipClass(phaseKey: string) {
@@ -129,7 +131,7 @@ const ENDPOINT_HEADING: Record<EndpointResult["verdict"], string> = {
   MIXED: "The primary comparisons split",
 };
 
-export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps) {
+export default function TrialPage({ initialMeta, initialTrial, initialSeoState }: TrialPageProps) {
   const router = useRouter();
 
   const trialParam = useMemo(
@@ -178,8 +180,11 @@ export default function TrialPage({ initialMeta, initialTrial }: TrialPageProps)
 
   const conditionText = trial?.condition_first || trial?.conditions || "stopped clinical trial";
   const { title, description } = buildTrialSeoMetadata(trial, trialId);
-  const canonicalUrl = trial ? `${SITE_URL}${trialPath(trial)}` : trialId ? `${SITE_URL}/trial/${encodeURIComponent(trialId)}` : `${SITE_URL}/explore`;
-  const indexable = trial ? isIndexableTrial(trial) : false;
+  const currentCanonicalUrl = trial ? `${SITE_URL}${trialPath(trial)}` : trialId ? `${SITE_URL}/trial/${encodeURIComponent(trialId)}` : `${SITE_URL}/explore`;
+  const canonicalUrl = initialSeoState?.canonical || currentCanonicalUrl;
+  const indexable = initialSeoState
+    ? initialSeoState.robots === "index,follow"
+    : trial ? isIndexableTrial(trial) : false;
   const outcomeLabel = OUTCOME_LABELS[outcomeCode] || "Review required";
   const reasonLabel = REASON_LABELS[reasonCode] || reasonCode.replace(/_/g, " ").toLowerCase();
   const sourceReason = (trial?.why_stopped || trial?.why_stopped_short || "").trim();
@@ -822,16 +827,33 @@ export const getStaticProps: GetStaticProps<TrialPageProps> = async (ctx) => {
   if (!trialId) return { notFound: true };
 
   const { loadMetaServer, loadDetailServer } = await import("@/lib/server-data");
+  const { readSeoIndexingFeatures, resolveSeoIndexingPolicy } = await import("@/lib/seoIndexingPolicy");
   const [meta, trial] = await Promise.all([loadMetaServer(), loadDetailServer(trialId)]);
 
   if (!trial) {
     return { notFound: true, revalidate: 3600 };
   }
 
+  const canonicalUrl = `${SITE_URL}${trialPath(trial)}`;
+  const currentIndexable = isIndexableTrial(trial);
+  const seoPolicy = resolveSeoIndexingPolicy(
+    canonicalUrl,
+    {
+      httpStatus: 200,
+      robots: currentIndexable ? "index,follow" : "noindex,follow",
+      canonical: canonicalUrl,
+      sitemap: currentIndexable,
+      redirectTo: null,
+      editorialStatus: currentIndexable ? "ready" : "hold",
+    },
+    readSeoIndexingFeatures(process.env)
+  );
+
   return {
     props: {
       initialMeta: meta,
       initialTrial: trial,
+      initialSeoState: seoPolicy.effective,
     },
     // ISR: refresh the static HTML occasionally without changing UX/design.
     revalidate: 24 * 60 * 60,

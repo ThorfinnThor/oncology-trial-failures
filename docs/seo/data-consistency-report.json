@@ -50,8 +50,8 @@
       "IMPROVE_INDEX": 20,
       "NOINDEX_THIN_CONTENT": 1
     },
-    "status": "RECOMMENDATION_NOT_APPROVED",
-    "note": "The current registry accepts NOINDEX_UTILITY but not NOINDEX_THIN_CONTENT. Sol must add and test the new decision type before any production activation."
+    "status": "APPROVED_FOR_REPORT_MODE",
+    "note": "Luna approved these URL-level decisions for registry report mode. Production activation remains a separate Sol release step."
   },
   "low_information_candidates": {
     "total": 2164,

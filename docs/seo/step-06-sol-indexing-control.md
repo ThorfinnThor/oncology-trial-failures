@@ -30,4 +30,6 @@ Any directive, exclusion, canonical, redirect, or removal activation requires th
 
 ## Current release effect
 
-None. The committed default is report mode and every mutating switch is off. This step does not yet connect the module to page metadata, routing, redirects, or sitemap output; that active integration remains gated until the relevant URL-level decisions and production release are approved.
+None. The committed default is report mode and every mutating switch is off. Trial-page robots/canonical output and trial sitemap membership now consume the policy's **effective** state, which is identical to the existing state in report mode. Active changes remain gated by URL-level approval plus the registry-sitemap and matching directive feature switches.
+
+Local release simulation verified that `NOINDEX_THIN_CONTENT` keeps HTTP 200, emits `noindex,follow`, and removes only the approved URL from the sitemap. A fresh default build restores `index,follow` and sitemap inclusion. Because trial pages use ISR, changing release switches must happen through a fresh deployment; toggling an existing runtime can leave an earlier page variant cached until revalidation.

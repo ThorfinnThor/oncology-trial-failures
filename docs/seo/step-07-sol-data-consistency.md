@@ -51,7 +51,7 @@ The 21 currently indexable candidates received a recommendation, but not an acti
 - **1 `NOINDEX_THIN_CONTENT`:** NCT01965600. It has no registry stop wording and relies on a description-fallback classification, so the page cannot safely explain what happened.
 - **20 `IMPROVE_INDEX`:** each has a specific registry stop statement, study identity, conditions, interventions, and source link. They should remain indexable while the page copy makes the unresolved benefit-risk status explicit.
 
-The policy now recognizes and tests `NOINDEX_THIN_CONTENT`, but there is still no approved row for it and report mode remains active. The recommendation file is `docs/seo/luna-candidate-review.csv`; its status is `RECOMMENDATION_NOT_APPROVED`.
+The policy recognizes and tests `NOINDEX_THIN_CONTENT`. Luna approved all 21 rows for report mode in `luna-approval-v2`: one `NOINDEX_THIN_CONTENT` and 20 `IMPROVE_INDEX`. Trial metadata and sitemap now consume the effective policy state, but report mode remains active and therefore preserves current output. Production activation remains a separate final release step.
 
 Artifacts:
 
