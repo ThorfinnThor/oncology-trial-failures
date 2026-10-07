@@ -135,6 +135,11 @@ def main() -> None:
     oncology_rows = load_rows(DATA / "all_oncology_stopped_trials.json")
     bio_oncology_rows = load_rows(DATA / "biological_failure_oncology_trials.json")
 
+    if not all_rows:
+        failures.append("Canonical data is empty")
+    if not bio_rows:
+        failures.append("Biological subset is empty")
+
     all_ids = ids(all_rows)
     if len(all_ids) != len(all_rows) or "" in all_ids:
         failures.append("Canonical data contains a missing or duplicate NCT ID")

@@ -19,6 +19,7 @@ test("detail shards preserve every condition and intervention from the registry"
       intervention_names: "Mirdametinib; Sirolimus; Drug A, extended release",
       countries: "United States; Germany; Korea, Republic of",
       why_stopped: "Sponsor decision",
+      disease_areas_matched: "Oncology; Rare disease",
     };
     await writeFile(path.join(dir, "public/all_stopped_trials.json"), JSON.stringify([record]));
     const generator = fileURLToPath(new URL("../scripts/generate-data-shards.mjs", import.meta.url));
@@ -34,6 +35,8 @@ test("detail shards preserve every condition and intervention from the registry"
     assert.equal(index.intervention_names, record.intervention_names);
     assert.equal(index.countries, record.countries);
     assert.equal(detail.countries, record.countries);
+    assert.equal(index.disease_areas_matched, record.disease_areas_matched);
+    assert.equal(detail.disease_areas_matched, record.disease_areas_matched);
     assert.equal(detail.endpoint_result, undefined, "no results file, no results panel");
 
     assert.deepEqual(filterRows([index], { country: ["germany"] }), [index]);
@@ -53,6 +56,32 @@ test("detail shards preserve every condition and intervention from the registry"
     assert.deepEqual(filterRows([index], { country: ["Republic of"] }), []);
   } finally {
     await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test("the shard generator refuses empty, missing-ID, and duplicate snapshots before deleting outputs", async () => {
+  const generator = fileURLToPath(new URL("../scripts/generate-data-shards.mjs", import.meta.url));
+  const invalidSnapshots = [
+    [],
+    [{ brief_title: "Missing ID" }],
+    [{ nct_id: "NCT00000007" }, { nct_id: "nct00000007" }],
+  ];
+
+  for (const snapshot of invalidSnapshots) {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "trial-shards-invalid-"));
+    try {
+      await mkdir(path.join(dir, "public/trials-index-shards"), { recursive: true });
+      const marker = path.join(dir, "public/trials-index-shards/keep.json");
+      await writeFile(marker, "existing-output");
+      await writeFile(path.join(dir, "public/all_stopped_trials.json"), JSON.stringify(snapshot));
+      assert.throws(
+        () => execFileSync(process.execPath, [generator], { cwd: dir, stdio: "pipe" }),
+        /Command failed/
+      );
+      assert.equal(await readFile(marker, "utf8"), "existing-output");
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   }
 });
 

@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "generated_from": "data/all_stopped_trials.json",
+  "mode": "report_only",
+  "guardrail": "No URL is deindexed by this report. Every index change requires URL-level Luna approval.",
+  "records": {
+    "total": 23868,
+    "unique_nct_ids": 23868,
+    "duplicate_or_missing_nct_ids": []
+  },
+  "classification": {
+    "final_outcomes": {
+      "NON_BIOLOGICAL": 14308,
+      "UNRESOLVED": 3621,
+      "BIOLOGICAL_FAILURE": 2414,
+      "CAUSE_NOT_STATED": 2004,
+      "NON_FAILURE_TRANSITION": 1288,
+      "MIXED_CAUSES": 233
+    },
+    "current_legacy_indexable_records": 2434,
+    "resolved_biological_records": 2414,
+    "indexability_migration_candidate_count": 20,
+    "indexability_migration_candidate_nct_ids": [
+      "NCT02354014",
+      "NCT07235150",
+      "NCT05534165",
+      "NCT06488716",
+      "NCT04217447",
+      "NCT06610279",
+      "NCT05609656",
+      "NCT05435053",
+      "NCT03254927",
+      "NCT03758443",
+      "NCT03920254",
+      "NCT03720574",
+      "NCT02322021",
+      "NCT03669549",
+      "NCT03696212",
+      "NCT01916187",
+      "NCT03119467",
+      "NCT01134497",
+      "NCT02016534",
+      "NCT00788606"
+    ],
+    "migration_policy": "Keep legacy SEO eligibility until each changed URL receives Luna approval in the decision registry."
+  },
+  "luna_review": {
+    "candidate_count": 21,
+    "recommended_decisions": {
+      "IMPROVE_INDEX": 20,
+      "NOINDEX_THIN_CONTENT": 1
+    },
+    "status": "APPROVED_FOR_REPORT_MODE",
+    "note": "Luna approved these URL-level decisions for registry report mode. Production activation remains a separate Sol release step."
+  },
+  "low_information_candidates": {
+    "total": 2164,
+    "signal_counts": {
+      "missing_stop_reason": 2164
+    },
+    "final_outcomes": {
+      "UNRESOLVED": 2152,
+      "NON_BIOLOGICAL": 8,
+      "BIOLOGICAL_FAILURE": 1,
+      "CAUSE_NOT_STATED": 1,
+      "MIXED_CAUSES": 1,
+      "NON_FAILURE_TRANSITION": 1
+    },
+    "currently_indexable": 1,
+    "currently_indexable_nct_ids": [
+      "NCT01965600"
+    ],
+    "in_current_sitemap": 1,
+    "missing_stop_reason_total": 2164,
+    "missing_stop_reason_outcomes": {
+      "UNRESOLVED": 2152,
+      "NON_BIOLOGICAL": 8,
+      "BIOLOGICAL_FAILURE": 1,
+      "CAUSE_NOT_STATED": 1,
+      "MIXED_CAUSES": 1,
+      "NON_FAILURE_TRANSITION": 1
+    }
+  },
+  "taxonomy": {
+    "records_with_multiple_matched_areas": 6393,
+    "primary_area_missing_from_matched_count": 0,
+    "primary_area_missing_from_matched_sample": [],
+    "hub_membership_policy": "Disease-area hubs continue to use disease_area as the single primary denominator; disease_areas_matched is retained for audit and future reviewed expansion.",
+    "sponsor_policy": "Sponsor hubs continue to use exact lead_sponsor labels. Alias consolidation requires a separate reviewed canonical map.",
+    "sponsor_slug_collision_count": 1,
+    "sponsor_slug_collisions": [
+      {
+        "slug": "alberto-dominguez-rodriguez",
+        "labels": [
+          "Alberto Dominguez-Rodriguez",
+          "Alberto Domínguez Rodríguez"
+        ]
+      }
+    ]
+  }
+}

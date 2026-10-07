@@ -1,0 +1,54 @@
+{
+  "snapshotDate": "2026-10-06",
+  "sourceFiles": {
+    "trial": "web/pages/trial/[trialId].tsx",
+    "trialPredicate": "web/lib/seoHubs.ts:isIndexableTrial",
+    "failureHub": "web/components/SeoHubPage.tsx",
+    "sponsorHub": "web/components/SponsorEvidencePage.tsx",
+    "sitemap": "web/pages/sitemap.xml.tsx",
+    "robots": "web/pages/robots.txt.tsx",
+    "redirects": "web/next.config.ts"
+  },
+  "directives": [
+    {
+      "pattern": "/failures/[slug]",
+      "robots": "index,follow",
+      "canonical": "https://clinicaltrialfailures.com/failures/{slug}",
+      "sitemap": "included when buildFailureHubs() produces the hub",
+      "decisionOwner": "template; no registry override"
+    },
+    {
+      "pattern": "/sponsor/[slug]",
+      "robots": "index,follow",
+      "canonical": "https://clinicaltrialfailures.com/sponsor/{slug}",
+      "sitemap": "included when buildSponsorHubs() produces the sponsor",
+      "decisionOwner": "template; no registry override"
+    },
+    {
+      "pattern": "/trial/[trialId]",
+      "robots": "index,follow when isIndexableTrial(row); otherwise noindex,follow",
+      "canonical": "generated trialPath(row)",
+      "sitemap": "included when indexableTrialRows(rows) contains the row",
+      "decisionOwner": "classification predicate; no registry override"
+    },
+    {
+      "pattern": "/compare",
+      "robots": "noindex,follow",
+      "canonical": "self",
+      "sitemap": "excluded",
+      "decisionOwner": "page template"
+    },
+    {
+      "pattern": "/access and newsletter confirmation/stop flows",
+      "robots": "noindex or noindex,nofollow",
+      "canonical": "page-specific",
+      "sitemap": "excluded",
+      "decisionOwner": "transaction/account templates"
+    }
+  ],
+  "limitations": [
+    "This is an observed source snapshot, not an approved URL registry.",
+    "Google-selected canonicals and actual index status are separate measurement fields.",
+    "No mass directive change is authorized by this file."
+  ]
+}

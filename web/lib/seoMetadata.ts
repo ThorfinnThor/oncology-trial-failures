@@ -1,4 +1,5 @@
 import { parsePhases, phaseLabel } from "./filtering";
+import { resolveClassification } from "./classificationResolution";
 import type { TrialDetail } from "./types";
 
 const MAX_TITLE_LENGTH = 75;
@@ -84,11 +85,7 @@ function statusLabel(value: string | undefined): string {
 }
 
 function reasonLabel(trial: TrialDetail): string {
-  const primary = normalizeCode(
-    trial.classification_final_category ||
-      trial.classification_primary_reason_v2 ||
-      trial.classification_reason
-  );
+  const primary = resolveClassification(trial).reason;
 
   // These records state that a decision occurred, but do not state why.
   if (
@@ -106,10 +103,7 @@ function reasonLabel(trial: TrialDetail): string {
 }
 
 function outcomeLabel(trial: TrialDetail): string {
-  const finalOutcome = normalizeCode(trial.classification_final_outcome);
-  const outcome = finalOutcome && finalOutcome !== "UNRESOLVED"
-    ? finalOutcome
-    : normalizeCode(trial.classification_outcome_v2 || trial.classification_label);
+  const outcome = resolveClassification(trial).outcome;
   return OUTCOME_LABELS[outcome] || "";
 }
 

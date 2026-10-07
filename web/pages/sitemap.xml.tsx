@@ -7,6 +7,7 @@ import briefsIndex from "@/data/briefs_index.json";
 import { latestBriefSitemapLastmod, selectBriefSitemapEntries } from "@/lib/briefSitemap";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "@/lib/seoHubs";
 import { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } from "@/lib/insights";
+import { readSeoIndexingFeatures, resolveSeoIndexingPolicy } from "@/lib/seoIndexingPolicy";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 
@@ -80,6 +81,29 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
 
   const briefEntries = selectBriefSitemapEntries(briefsIndex.briefs);
   const latestBriefLastmod = latestBriefSitemapLastmod(briefEntries) || lastmod;
+  const seoFeatures = readSeoIndexingFeatures(process.env);
+  const trialEntries = indexableTrialRows(rows)
+    .map((row) => {
+      const loc = `${SITE_URL}${trialPath(row)}`;
+      const policy = resolveSeoIndexingPolicy(
+        loc,
+        {
+          httpStatus: 200,
+          robots: "index,follow",
+          canonical: loc,
+          sitemap: true,
+          redirectTo: null,
+          editorialStatus: "ready",
+        },
+        seoFeatures
+      );
+      return {
+        loc,
+        lastmod: toIsoDate(row.last_update_post_date, lastmod),
+        include: policy.effective.sitemap,
+      };
+    })
+    .filter((entry) => entry.include);
 
   const urls = [
     ...dataDrivenPaths.map((path) => ({
@@ -106,10 +130,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       loc: `${SITE_URL}${insightPath(article)}`,
       lastmod: new Date(article.datePublished).toISOString(),
     })),
-    ...indexableTrialRows(rows).map((row) => ({
-      loc: `${SITE_URL}${trialPath(row)}`,
-      lastmod: toIsoDate(row.last_update_post_date, lastmod),
-    })),
+    ...trialEntries,
   ];
 
   const seen = new Set<string>();
