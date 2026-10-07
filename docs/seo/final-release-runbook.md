@@ -54,11 +54,11 @@ SEO_INDEXING_REDIRECT_LIST=false
 SEO_INDEXING_REMOVAL_LIST=false
 ```
 
-Do not commit the active production values to `wrangler.jsonc`: the safe repository default is report-only. Configure the values in the Cloudflare production environment immediately before the final fresh deployment.
+Do not commit the active production values to `wrangler.jsonc`: the safe repository default is report-only. Configure the values in the Cloudflare production environment immediately before the final fresh deployment. The committed `keep_vars: true` setting is required so that `wrangler deploy` preserves those reviewed dashboard variables instead of silently replacing them with the report defaults.
 
 ## Deployment rule
 
-Use a fresh build and deployment after the variables are set. Do not only change variables on the existing Worker. Trial pages are generated on demand and cached with a 24-hour ISR lifetime, so an existing cached HTML variant can retain the previous robots directive.
+Use a fresh build and deployment after the variables are set. Do not only change variables on the existing Worker. Trial pages are generated on demand and cached with a 24-hour ISR lifetime, so an existing cached HTML variant can retain the previous robots directive. After deployment, re-open the runtime-variable table and verify that all eight SEO variables still exist; their disappearance means the deployment did not preserve the release profile.
 
 No Google URL-removal request is part of this release. `noindex,follow` plus sitemap exclusion is the deliberate removal signal.
 

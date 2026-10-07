@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const configPath = path.resolve(root, "web/config/seo-approved-decisions.json");
+const wranglerPath = path.resolve(root, "web/wrangler.jsonc");
 const profileArgument = process.argv.find((argument) => argument.startsWith("--profile="));
 const profileName = profileArgument?.slice("--profile=".length) || "report";
 
@@ -48,6 +49,9 @@ if (!Object.hasOwn(profiles, profileName)) {
 }
 if (!fs.existsSync(configPath)) {
   fail("generated approval config is missing; run the SEO policy generator first");
+}
+if (!fs.existsSync(wranglerPath) || !/"keep_vars"\s*:\s*true\b/.test(fs.readFileSync(wranglerPath, "utf8"))) {
+  fail("wrangler.jsonc must preserve reviewed dashboard variables with keep_vars=true");
 }
 
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
