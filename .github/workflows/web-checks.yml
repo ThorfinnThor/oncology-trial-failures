@@ -28,6 +28,8 @@ jobs:
       - run: npm run check:styles
       # A page importing the paid packages would give them away with no visible symptom.
       - run: npm run check:private
+      # Keep the committed default report-only and fail if the reviewed URL scope expands accidentally.
+      - run: npm run check:seo-release
       - run: npm test
       - run: npm run build:cloudflare
 

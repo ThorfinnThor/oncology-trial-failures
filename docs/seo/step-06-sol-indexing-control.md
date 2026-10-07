@@ -2,7 +2,7 @@
 
 **Status:** report-mode implementation complete  
 **Decision source:** `docs/seo/approved-decisions.csv`  
-**Decision version:** `luna-approval-v1`
+**Decision version:** `luna-approval-v2`
 
 ## What is implemented
 
@@ -33,3 +33,5 @@ Any directive, exclusion, canonical, redirect, or removal activation requires th
 None. The committed default is report mode and every mutating switch is off. Trial-page robots/canonical output and trial sitemap membership now consume the policy's **effective** state, which is identical to the existing state in report mode. Active changes remain gated by URL-level approval plus the registry-sitemap and matching directive feature switches.
 
 Local release simulation verified that `NOINDEX_THIN_CONTENT` keeps HTTP 200, emits `noindex,follow`, and removes only the approved URL from the sitemap. A fresh default build restores `index,follow` and sitemap inclusion. Because trial pages use ISR, changing release switches must happen through a fresh deployment; toggling an existing runtime can leave an earlier page variant cached until revalidation.
+
+`npm run check:seo-release` now guards the report-only default in CI. Before the final deployment, `npm run check:seo-release:thin-content` verifies the exact narrow release profile and aborts if the reviewed decision set expands beyond the single approved thin-content URL or introduces canonical, redirect, removal, or utility-noindex actions.

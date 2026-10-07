@@ -19,7 +19,9 @@
     "check:styles": "python3 ../scripts/web/check_styled_jsx.py",
     "check:private": "python3 ../scripts/web/check_private_data.py",
     "check:seo-pilot": "node scripts/check-seo-pilot-output.mjs",
-    "check:seo-policy": "node ../scripts/seo/generate-indexing-policy.mjs --check"
+    "check:seo-policy": "node ../scripts/seo/generate-indexing-policy.mjs --check",
+    "check:seo-release": "npm run check:seo-policy && node ../scripts/seo/check-release-readiness.mjs --profile=report",
+    "check:seo-release:thin-content": "npm run check:seo-policy && node ../scripts/seo/check-release-readiness.mjs --profile=thin-content-release"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.11.2",
