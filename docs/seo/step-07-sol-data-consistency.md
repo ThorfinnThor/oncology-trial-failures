@@ -40,6 +40,8 @@ The report-only audit found **2,164** records without a registry stop reason:
 
 Only **NCT01965600** is both low-information and currently indexable/in the sitemap. Its final safety classification comes from `DESCRIPTION_FALLBACK`, while the registry `why_stopped` field is empty. It remains `REVIEW_HOLD` and should be reviewed by Luna for either source-backed enrichment or a URL-level `NOINDEX` approval.
 
+> Superseded on 7 October 2026 by the deeper source review in `step-08-sol-trial-page-quality.md`: ClinicalTrials.gov's detailed description explicitly states the termination reasons, so the active noindex decision is scheduled to be corrected to `IMPROVE_INDEX` in the final deployment.
+
 The other 2,163 candidates are not currently indexable under the shared biological-failure rule. They still need a final exclusion verification, but there is no reason to issue a broad new deindexing directive for them.
 
 Separately, the audit found **20 compatibility migrations**: the old SEO rule treats them as biological because it falls back to V2, while their final reviewed outcome is `UNRESOLVED`. Their current eligibility is deliberately preserved in this step. They require their own Luna-reviewed URL decisions before the compatibility rule can be retired.

@@ -90,7 +90,7 @@ test("thin-content noindex is reportable and uses the same safe 200/noindex plan
   assert.equal(planned.editorialStatus, "improve");
 });
 
-test("approved thin-content trial stays unchanged in report mode and can activate atomically", () => {
+test("recovered-evidence trial is approved to return to indexable output", () => {
   const url = "/trial/NCT01965600-a-study-to-evaluate-the-safety-and-effects-on-the-body-of-an-investigational-dru";
   const current: SeoIndexingState = {
     httpStatus: 200,
@@ -101,19 +101,19 @@ test("approved thin-content trial stays unchanged in report mode and can activat
     editorialStatus: "ready",
   };
   const report = resolveSeoIndexingPolicy(url, current);
-  assert.equal(report.approvedDecision, "NOINDEX_THIN_CONTENT");
-  assert.equal(report.approval?.reviewer, "Luna");
-  assert.equal(report.planned.robots, "noindex,follow");
-  assert.equal(report.planned.sitemap, false);
+  assert.equal(report.approvedDecision, "IMPROVE_INDEX");
+  assert.equal(report.approval?.reviewer, "Sol");
+  assert.equal(report.planned.robots, "index,follow");
+  assert.equal(report.planned.sitemap, true);
   assert.deepEqual(report.effective, current);
 
   const active = resolveSeoIndexingPolicy(url, current, readSeoIndexingFeatures({
     SEO_INDEXING_REPORT_MODE: "false",
     SEO_INDEXING_REGISTRY_SITEMAP: "true",
-    SEO_INDEXING_NOINDEX_LIST: "true",
+    SEO_INDEXING_NOINDEX_LIST: "false",
   }));
   assert.equal(active.effective.httpStatus, 200);
-  assert.equal(active.effective.robots, "noindex,follow");
-  assert.equal(active.effective.sitemap, false);
-  assert.equal(active.applied, true);
+  assert.equal(active.effective.robots, "index,follow");
+  assert.equal(active.effective.sitemap, true);
+  assert.equal(active.applied, false);
 });

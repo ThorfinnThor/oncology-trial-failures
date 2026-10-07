@@ -15,6 +15,7 @@ import { extractNctId, trialPath } from "@/lib/seoUrls";
 import { areaHubPath, isIndexableTrial, phaseHubPath, reasonHubPath } from "@/lib/seoHubs";
 import { buildTrialSeoMetadata } from "@/lib/seoMetadata";
 import type { SeoIndexingState } from "@/lib/seoIndexingPolicy";
+import { resolveTrialStopEvidence } from "@/lib/trialEvidence";
 import EvidenceStandard from "@/components/EvidenceStandard";
 import PrimaryNav from "@/components/PrimaryNav";
 
@@ -187,7 +188,8 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
     : trial ? isIndexableTrial(trial) : false;
   const outcomeLabel = OUTCOME_LABELS[outcomeCode] || "Review required";
   const reasonLabel = REASON_LABELS[reasonCode] || reasonCode.replace(/_/g, " ").toLowerCase();
-  const sourceReason = (trial?.why_stopped || trial?.why_stopped_short || "").trim();
+  const stopEvidence = trial ? resolveTrialStopEvidence(trial) : null;
+  const sourceReason = stopEvidence?.text || "";
   const er = trial?.endpoint_result || null;
   const sourceUrl = trial?.url || (trialId ? `https://clinicaltrials.gov/study/${trialId}` : SITE_URL);
   const interpretation = classificationInterpretation(outcomeCode, reasonCode);
@@ -353,7 +355,11 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
 
                 <div className="trialEvidenceGrid">
                   <section className="card trialPanel trialReasonPanel">
-                    <div className="trialEyebrow">Official ClinicalTrials.gov stop reason</div>
+                    <div className="trialEyebrow">
+                      {stopEvidence?.source === "registry_detailed_description"
+                        ? "ClinicalTrials.gov detailed-description evidence"
+                        : "Official ClinicalTrials.gov stop reason"}
+                    </div>
                     <h2>Why {trial.nct_id} was stopped</h2>
                     {sourceReason ? (
                       <blockquote>{sourceReason}</blockquote>
@@ -362,6 +368,12 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
                         The registry record does not provide a usable stop-reason statement.
                       </p>
                     )}
+                    {stopEvidence?.source === "registry_detailed_description" ? (
+                      <p className="trialEvidenceNote">
+                        The registry stop-reason field points to the study&apos;s detailed description. The source
+                        sentence above is the detailed-description evidence used by Classification V2.
+                      </p>
+                    ) : null}
                     <a className="trialSourceLink" href={sourceUrl} target="_blank" rel="noreferrer">
                       Verify the primary registry record <span aria-hidden="true">↗</span>
                     </a>
@@ -635,6 +647,12 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
           color: var(--accent);
           font-size: 13px;
           font-weight: 750;
+        }
+        .trialEvidenceNote {
+          margin: -5px 0 14px;
+          color: var(--text-muted);
+          font-size: 13px;
+          line-height: 1.55;
         }
         .trialSourceLink:hover,
         .trialRelated a:hover {

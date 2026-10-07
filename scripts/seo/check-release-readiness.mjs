@@ -10,7 +10,7 @@ const wranglerPath = path.resolve(root, "web/wrangler.jsonc");
 const profileArgument = process.argv.find((argument) => argument.startsWith("--profile="));
 const profileName = profileArgument?.slice("--profile=".length) || "report";
 
-const TARGET_THIN_CONTENT_URL =
+const RECOVERED_EVIDENCE_URL =
   "https://clinicaltrialfailures.com/trial/NCT01965600-a-study-to-evaluate-the-safety-and-effects-on-the-body-of-an-investigational-dru";
 
 const profiles = {
@@ -24,12 +24,12 @@ const profiles = {
     SEO_INDEXING_REDIRECT_LIST: "false",
     SEO_INDEXING_REMOVAL_LIST: "false",
   },
-  "thin-content-release": {
+  "trial-quality-release": {
     SEO_INDEXING_REPORT_MODE: "false",
     SEO_INDEXING_PILOT_TEMPLATES: "false",
     SEO_INDEXING_REGISTRY_SITEMAP: "true",
     SEO_INDEXING_INDEX_DIRECTIVES: "false",
-    SEO_INDEXING_NOINDEX_LIST: "true",
+    SEO_INDEXING_NOINDEX_LIST: "false",
     SEO_INDEXING_CANONICAL_DUPLICATES: "false",
     SEO_INDEXING_REDIRECT_LIST: "false",
     SEO_INDEXING_REMOVAL_LIST: "false",
@@ -77,18 +77,16 @@ for (const decision of decisions) {
 }
 
 const noindexThin = decisions.filter((decision) => decision.decision === "NOINDEX_THIN_CONTENT");
-if (noindexThin.length !== 1) fail(`expected exactly one thin-content noindex decision, found ${noindexThin.length}`);
-if (noindexThin[0].url !== TARGET_THIN_CONTENT_URL) {
-  fail(`unexpected thin-content target ${noindexThin[0].url}`);
-}
-if (noindexThin[0].role !== "thin_content_candidate" || noindexThin[0].protected) {
-  fail("the thin-content target must be an unprotected thin_content_candidate");
-}
+if (noindexThin.length !== 0) fail(`expected no thin-content noindex decisions after evidence recovery, found ${noindexThin.length}`);
 
 const improveIndex = decisions.filter((decision) => decision.decision === "IMPROVE_INDEX");
-if (improveIndex.length !== 20) fail(`expected 20 IMPROVE_INDEX decisions, found ${improveIndex.length}`);
-if (improveIndex.some((decision) => decision.role !== "classification_migration")) {
-  fail("every IMPROVE_INDEX decision must remain in the classification_migration role");
+if (improveIndex.length !== 21) fail(`expected 21 IMPROVE_INDEX decisions, found ${improveIndex.length}`);
+if (improveIndex.filter((decision) => decision.role === "classification_migration").length !== 20) {
+  fail("expected exactly 20 classification-migration IMPROVE_INDEX decisions");
+}
+const recoveredEvidence = improveIndex.find((decision) => decision.url === RECOVERED_EVIDENCE_URL);
+if (recoveredEvidence?.role !== "evidence_recovery" || recoveredEvidence.protected) {
+  fail("NCT01965600 must be an unprotected evidence_recovery IMPROVE_INDEX decision");
 }
 
 for (const disallowed of ["NOINDEX_UTILITY", "CANONICAL_DUPLICATE", "MERGE_REDIRECT", "REMOVE"]) {
@@ -102,15 +100,15 @@ const enabled = Object.entries(profile)
   .filter(([, value]) => value === "true")
   .map(([name]) => name);
 
-if (profileName === "thin-content-release") {
-  const expectedEnabled = ["SEO_INDEXING_REGISTRY_SITEMAP", "SEO_INDEXING_NOINDEX_LIST"];
+if (profileName === "trial-quality-release") {
+  const expectedEnabled = ["SEO_INDEXING_REGISTRY_SITEMAP"];
   if (JSON.stringify(enabled) !== JSON.stringify(expectedEnabled)) {
-    fail(`thin-content release enables an unexpected switch: ${enabled.join(", ") || "none"}`);
+    fail(`trial-quality release enables an unexpected switch: ${enabled.join(", ") || "none"}`);
   }
 }
 
 console.log(`SEO release profile '${profileName}' is ready.`);
-console.log(`Decision scope: ${decisions.length} reviewed URLs; 1 thin-content noindex; 20 improve-only URLs.`);
-console.log(`Only noindex target: ${TARGET_THIN_CONTENT_URL}`);
+console.log(`Decision scope: ${decisions.length} reviewed URLs; 0 thin-content noindex; 21 improve-only URLs.`);
+console.log(`Recovered evidence URL: ${RECOVERED_EVIDENCE_URL}`);
 console.log("Exact feature settings:");
 for (const [name, value] of Object.entries(profile)) console.log(`  ${name}=${value}`);
