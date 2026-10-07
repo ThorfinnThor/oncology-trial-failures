@@ -29,6 +29,7 @@ Each reviewed URL receives one of:
 - `IMPROVE_INDEX`: keep indexable while improving evidence or presentation;
 - `REVIEW_HOLD`: insufficient evidence for a change;
 - `NOINDEX_UTILITY`: genuine utility page without an independent search destination;
+- `NOINDEX_THIN_CONTENT`: page has a valid 200 resource but lacks enough source-backed information for an independent search destination;
 - `CANONICAL_DUPLICATE`: equivalent variant with a suitable main URL;
 - `MERGE_REDIRECT`: content has been merged into a genuinely equivalent destination;
 - `REMOVE`: no valid resource and no suitable replacement.

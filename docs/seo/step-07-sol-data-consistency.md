@@ -44,11 +44,21 @@ The other 2,163 candidates are not currently indexable under the shared biologic
 
 Separately, the audit found **20 compatibility migrations**: the old SEO rule treats them as biological because it falls back to V2, while their final reviewed outcome is `UNRESOLVED`. Their current eligibility is deliberately preserved in this step. They require their own Luna-reviewed URL decisions before the compatibility rule can be retired.
 
+## Luna review recommendation — 7 October 2026
+
+The 21 currently indexable candidates received a recommendation, but not an active registry approval:
+
+- **1 `NOINDEX_THIN_CONTENT`:** NCT01965600. It has no registry stop wording and relies on a description-fallback classification, so the page cannot safely explain what happened.
+- **20 `IMPROVE_INDEX`:** each has a specific registry stop statement, study identity, conditions, interventions, and source link. They should remain indexable while the page copy makes the unresolved benefit-risk status explicit.
+
+The policy now recognizes and tests `NOINDEX_THIN_CONTENT`, but there is still no approved row for it and report mode remains active. The recommendation file is `docs/seo/luna-candidate-review.csv`; its status is `RECOMMENDATION_NOT_APPROVED`.
+
 Artifacts:
 
 - `docs/seo/data-consistency-report.json`
 - `docs/seo/low-information-candidates.csv`
 - `docs/seo/indexability-migration-candidates.csv`
+- `docs/seo/luna-candidate-review.csv`
 - `scripts/seo/audit-seo-data.mjs`
 
 ## Taxonomy findings

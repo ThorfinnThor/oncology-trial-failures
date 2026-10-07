@@ -4,6 +4,7 @@ import test from "node:test";
 import {
   REPORT_ONLY_FEATURES,
   approvedDecisionForUrl,
+  planSeoIndexingState,
   readSeoIndexingFeatures,
   resolveSeoIndexingPolicy,
   type SeoIndexingState,
@@ -79,4 +80,12 @@ test("the pilot template switch is independent and URL-scoped", () => {
   assert.equal(pilot.templateVariant, "pilot");
   assert.equal(control.templateVariant, "current");
   assert.deepEqual(control.effective, currentHub);
+});
+
+test("thin-content noindex is reportable and uses the same safe 200/noindex plan", () => {
+  const planned = planSeoIndexingState("NOINDEX_THIN_CONTENT", currentHub, currentHub.canonical || "https://clinicaltrialfailures.com/not-reviewed", null);
+  assert.equal(planned.httpStatus, 200);
+  assert.equal(planned.robots, "noindex,follow");
+  assert.equal(planned.sitemap, false);
+  assert.equal(planned.editorialStatus, "improve");
 });

@@ -4,9 +4,11 @@ import path from "node:path";
 const ROOT = process.cwd();
 const DATA_FILE = path.join(ROOT, "data/all_stopped_trials.json");
 const INVENTORY_FILE = path.join(ROOT, "docs/seo/url-inventory.csv");
+const REGISTRY_FILE = path.join(ROOT, "docs/seo/url-registry.csv");
 const REPORT_FILE = path.join(ROOT, "docs/seo/data-consistency-report.json");
 const CANDIDATE_FILE = path.join(ROOT, "docs/seo/low-information-candidates.csv");
 const MIGRATION_FILE = path.join(ROOT, "docs/seo/indexability-migration-candidates.csv");
+const LUNA_REVIEW_FILE = path.join(ROOT, "docs/seo/luna-candidate-review.csv");
 
 function clean(value) {
   return String(value ?? "").replace(/\s+/g, " ").trim();
@@ -53,6 +55,14 @@ function inventoryTrialUrls(csvText) {
     if (match) urls.set(match[1].toUpperCase(), url);
   }
   return urls;
+}
+
+function registryRows(csvText) {
+  const lines = csvText.trim().split(/\r?\n/);
+  const headers = parseCsvLine(lines.shift() || "");
+  return lines.map((line) => Object.fromEntries(
+    parseCsvLine(line).map((value, index) => [headers[index], value])
+  ));
 }
 
 function resolvedClassification(row) {
@@ -111,14 +121,16 @@ function countBy(items, getter) {
 }
 
 async function main() {
-  const [dataText, inventoryText] = await Promise.all([
+  const [dataText, inventoryText, registryText] = await Promise.all([
     fs.readFile(DATA_FILE, "utf8"),
     fs.readFile(INVENTORY_FILE, "utf8"),
+    fs.readFile(REGISTRY_FILE, "utf8"),
   ]);
   const rows = JSON.parse(dataText);
   if (!Array.isArray(rows) || rows.length === 0) throw new Error(`${DATA_FILE} must contain a non-empty JSON array`);
 
   const sitemapUrls = inventoryTrialUrls(inventoryText);
+  const registryByUrl = new Map(registryRows(registryText).map((row) => [row.url, row]));
   const seen = new Set();
   const duplicateNctIds = [];
   const primaryAreaMissingFromMatched = [];
@@ -171,6 +183,24 @@ async function main() {
     const resolvedIndexable = !classification.reviewRequired && classification.outcome === "BIOLOGICAL_FAILURE";
     return currentLegacyIndexable(row) !== resolvedIndexable;
   });
+  const lunaReviewCandidates = [
+    ...indexableCandidates,
+    ...indexabilityMigrationCandidates.map((row) => {
+      const nctId = clean(row.nct_id).toUpperCase();
+      const classification = resolvedClassification(row);
+      const inventoryUrl = sitemapUrls.get(nctId) || "";
+      return {
+        nctId,
+        url: inventoryUrl || `https://clinicaltrialfailures.com/trial/${encodeURIComponent(nctId)}`,
+        inSitemap: Boolean(inventoryUrl),
+        currentIndexable: currentLegacyIndexable(row),
+        reasons: ["final_unresolved_legacy_fallback"],
+        finalOutcome: classification.outcome,
+        finalCategory: classification.reason,
+        classificationSource: clean(row.classification_source) || classification.source,
+      };
+    }),
+  ].filter((item, index, items) => items.findIndex((candidate) => candidate.nctId === item.nctId) === index);
 
   const report = {
     schema_version: 1,
@@ -192,6 +222,12 @@ async function main() {
       indexability_migration_candidate_count: indexabilityMigrationCandidates.length,
       indexability_migration_candidate_nct_ids: indexabilityMigrationCandidates.map((row) => clean(row.nct_id).toUpperCase()),
       migration_policy: "Keep legacy SEO eligibility until each changed URL receives Luna approval in the decision registry.",
+    },
+    luna_review: {
+      candidate_count: lunaReviewCandidates.length,
+      recommended_decisions: countBy(lunaReviewCandidates, (item) => item.reasons.includes("missing_stop_reason") ? "NOINDEX_THIN_CONTENT" : "IMPROVE_INDEX"),
+      status: "RECOMMENDATION_NOT_APPROVED",
+      note: "The current registry accepts NOINDEX_UTILITY but not NOINDEX_THIN_CONTENT. Sol must add and test the new decision type before any production activation.",
     },
     low_information_candidates: {
       total: candidates.length,
@@ -271,11 +307,48 @@ async function main() {
       "Final outcome is unresolved; preserve current SEO eligibility until Luna approves a URL-level migration.",
     ].map(csvCell).join(",");
   });
+  const lunaHeaders = [
+    "url_id",
+    "nct_id",
+    "url",
+    "in_sitemap",
+    "current_indexable",
+    "final_outcome",
+    "final_category",
+    "classification_source",
+    "recommended_decision",
+    "decision_reason",
+    "reviewer",
+    "reviewed_at",
+    "approval_status",
+  ];
+  const lunaRows = lunaReviewCandidates.map((item) => {
+    const registry = registryByUrl.get(item.url) || {};
+    const thinContent = item.reasons.includes("missing_stop_reason");
+    return [
+      registry.url_id || "",
+      item.nctId,
+      item.url,
+      item.inSitemap,
+      item.currentIndexable,
+      item.finalOutcome,
+      item.finalCategory,
+      item.classificationSource,
+      thinContent ? "NOINDEX_THIN_CONTENT" : "IMPROVE_INDEX",
+      thinContent
+        ? "Missing registry stop wording; description-fallback classification is not enough for a defensible failure page. Keep 200 but remove from sitemap and apply noindex only after Sol activates this reviewed decision type."
+        : "Keep indexable: the page has a specific registry stop statement, study identity, conditions, interventions, and source link. Improve copy so unresolved benefit-risk evidence is not presented as a confirmed biological failure.",
+      "Luna",
+      "2026-10-07",
+      "RECOMMENDATION_NOT_APPROVED",
+    ].map(csvCell).join(",");
+  });
 
   await Promise.all([
     fs.writeFile(REPORT_FILE, `${JSON.stringify(report, null, 2)}\n`, "utf8"),
     fs.writeFile(CANDIDATE_FILE, `${headers.map(csvCell).join(",")}\n${csvRows.join("\n")}\n`, "utf8"),
     fs.writeFile(MIGRATION_FILE, `${migrationHeaders.map(csvCell).join(",")}\n${migrationRows.join("\n")}\n`, "utf8"),
+    fs.writeFile(LUNA_REVIEW_FILE, `${lunaHeaders.map(csvCell).join(",")}\n${lunaRows.join("\n")}\n`, "utf8"),
   ]);
 
   console.log(`Audited ${rows.length.toLocaleString()} records; wrote ${candidates.length.toLocaleString()} low-information candidates.`);

@@ -13,6 +13,7 @@ const allowedDecisions = new Set([
   "IMPROVE_INDEX",
   "REVIEW_HOLD",
   "NOINDEX_UTILITY",
+  "NOINDEX_THIN_CONTENT",
   "CANONICAL_DUPLICATE",
   "MERGE_REDIRECT",
   "REMOVE",

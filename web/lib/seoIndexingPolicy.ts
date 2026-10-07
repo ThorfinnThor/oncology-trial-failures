@@ -5,6 +5,7 @@ export type SeoDecision =
   | "IMPROVE_INDEX"
   | "REVIEW_HOLD"
   | "NOINDEX_UTILITY"
+  | "NOINDEX_THIN_CONTENT"
   | "CANONICAL_DUPLICATE"
   | "MERGE_REDIRECT"
   | "REMOVE";
@@ -100,7 +101,12 @@ export function approvedDecisionForUrl(input: string): ApprovedDecision | null {
   return approvals.get(normalizeUrl(input)) ?? null;
 }
 
-function planState(decision: SeoDecision, current: SeoIndexingState, canonicalUrl: string, replacementUrl: string | null): SeoIndexingState {
+export function planSeoIndexingState(
+  decision: SeoDecision,
+  current: SeoIndexingState,
+  canonicalUrl: string,
+  replacementUrl: string | null
+): SeoIndexingState {
   if (decision === "KEEP_INDEX" || decision === "IMPROVE_INDEX") {
     return {
       ...current,
@@ -112,8 +118,15 @@ function planState(decision: SeoDecision, current: SeoIndexingState, canonicalUr
       editorialStatus: decision === "IMPROVE_INDEX" ? "improve" : "ready",
     };
   }
-  if (decision === "NOINDEX_UTILITY") {
-    return { ...current, httpStatus: 200, robots: "noindex,follow", sitemap: false, redirectTo: null, editorialStatus: "utility" };
+  if (decision === "NOINDEX_UTILITY" || decision === "NOINDEX_THIN_CONTENT") {
+    return {
+      ...current,
+      httpStatus: 200,
+      robots: "noindex,follow",
+      sitemap: false,
+      redirectTo: null,
+      editorialStatus: decision === "NOINDEX_THIN_CONTENT" ? "improve" : "utility",
+    };
   }
   if (decision === "CANONICAL_DUPLICATE") {
     if (!replacementUrl) throw new Error(`CANONICAL_DUPLICATE requires replacement URL: ${canonicalUrl}`);
@@ -148,7 +161,7 @@ function effectiveState(
     effective.canonical = planned.canonical;
     effective.redirectTo = planned.redirectTo;
   }
-  if (features.noindexList && decision === "NOINDEX_UTILITY") {
+  if (features.noindexList && (decision === "NOINDEX_UTILITY" || decision === "NOINDEX_THIN_CONTENT")) {
     effective.httpStatus = planned.httpStatus;
     effective.robots = planned.robots;
     effective.editorialStatus = planned.editorialStatus;
@@ -188,7 +201,7 @@ export function resolveSeoIndexingPolicy(
     return { url, approvedDecision: decision, approval, current, planned: current, effective: current, applied: false, reportOnly: features.reportMode, templateVariant: "current", notes };
   }
 
-  const planned = planState(decision, current, url, approval?.replacementUrl ?? null);
+  const planned = planSeoIndexingState(decision, current, url, approval?.replacementUrl ?? null);
   const effective = effectiveState(decision, current, planned, features);
   const applied = JSON.stringify(effective) !== JSON.stringify(current);
   if (!applied && JSON.stringify(planned) !== JSON.stringify(current)) {

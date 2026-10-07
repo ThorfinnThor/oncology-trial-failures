@@ -21,7 +21,7 @@
 | `SEO_INDEXING_PILOT_TEMPLATES` | `false` | Select an approved pilot template only for URLs with the pilot role |
 | `SEO_INDEXING_REGISTRY_SITEMAP` | `false` | Allow registry decisions to affect sitemap inclusion |
 | `SEO_INDEXING_INDEX_DIRECTIVES` | `false` | Allow approved `KEEP_INDEX`/`IMPROVE_INDEX` directives |
-| `SEO_INDEXING_NOINDEX_LIST` | `false` | Allow approved utility noindex decisions |
+| `SEO_INDEXING_NOINDEX_LIST` | `false` | Allow approved utility or thin-content noindex decisions |
 | `SEO_INDEXING_CANONICAL_DUPLICATES` | `false` | Allow approved canonical-duplicate targets |
 | `SEO_INDEXING_REDIRECT_LIST` | `false` | Allow approved merge redirects |
 | `SEO_INDEXING_REMOVAL_LIST` | `false` | Allow approved removals |
