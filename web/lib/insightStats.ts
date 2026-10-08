@@ -1,8 +1,14 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
 import type { InsightStats } from "./insights";
-import { trialPath } from "./seoUrls";
+import { slugify, trialPath } from "./seoUrls";
 import { loadIndexServer, readJsonServerAsset } from "./server-data";
-import type { TrialIndexRow } from "./types";
+import type { EndpointResult, TrialIndexRow } from "./types";
+
+type EndpointResultsAsset = {
+  read_on?: string | null;
+  reader_version?: number;
+  trials?: Record<string, Omit<EndpointResult, "read_on">>;
+};
 
 function countBy(rows: TrialIndexRow[], getValue: (row: TrialIndexRow) => string): Record<string, number> {
   const counts: Record<string, number> = {};
@@ -64,6 +70,63 @@ function v2Outcome(row: TrialIndexRow): string {
   const finalOutcome = (row.classification_final_outcome || "").toUpperCase().trim();
   if (finalOutcome && finalOutcome !== "UNRESOLVED") return finalOutcome;
   return (row.classification_outcome_v2 || "UNKNOWN").toUpperCase().trim() || "UNKNOWN";
+}
+
+function finalOutcome(row: TrialIndexRow): string {
+  return (row.classification_final_outcome || v2Outcome(row)).toUpperCase().trim() || "UNRESOLVED";
+}
+
+function countryCount(row: TrialIndexRow): number {
+  return (row.countries || "")
+    .split(";")
+    .map((country) => country.trim())
+    .filter(Boolean).length;
+}
+
+function countryBand(row: TrialIndexRow): string {
+  const total = countryCount(row);
+  if (!total) return "missing";
+  if (total === 1) return "single";
+  if (total < 5) return "twoToFour";
+  return "fivePlus";
+}
+
+function countrySignalSlice(rows: TrialIndexRow[], label: string) {
+  const biologicalCount = rows.filter((row) => finalOutcome(row) === "BIOLOGICAL_FAILURE").length;
+  return {
+    label,
+    total: rows.length,
+    biologicalCount,
+    biologicalShare: pct(biologicalCount, rows.length),
+  };
+}
+
+function wilsonInterval(successes: number, total: number): [number, number] {
+  if (!total) return [0, 0];
+  const z = 1.96;
+  const share = successes / total;
+  const denominator = 1 + (z * z) / total;
+  const center = (share + (z * z) / (2 * total)) / denominator;
+  const margin = z * Math.sqrt((share * (1 - share) + (z * z) / (4 * total)) / total) / denominator;
+  return [Math.max(0, center - margin), Math.min(1, center + margin)];
+}
+
+function pearsonCorrelation(left: number[], right: number[]): number {
+  if (left.length !== right.length || left.length < 2) return 0;
+  const leftMean = left.reduce((sum, value) => sum + value, 0) / left.length;
+  const rightMean = right.reduce((sum, value) => sum + value, 0) / right.length;
+  let numerator = 0;
+  let leftSquares = 0;
+  let rightSquares = 0;
+  for (let index = 0; index < left.length; index += 1) {
+    const leftDelta = left[index] - leftMean;
+    const rightDelta = right[index] - rightMean;
+    numerator += leftDelta * rightDelta;
+    leftSquares += leftDelta * leftDelta;
+    rightSquares += rightDelta * rightDelta;
+  }
+  const denominator = Math.sqrt(leftSquares * rightSquares);
+  return denominator ? numerator / denominator : 0;
 }
 
 function v2PrimaryReason(row: TrialIndexRow): string {
@@ -207,14 +270,225 @@ function latestUpdateSlice(rows: TrialIndexRow[]) {
   };
 }
 
+const ENDPOINT_EXAMPLE_IDS = ["NCT02193074", "NCT01496430", "NCT01278745"];
+
+export function postedEndpointResultSlice(rows: TrialIndexRow[], asset: EndpointResultsAsset) {
+  const trials = asset.trials || {};
+  const rowById = new Map(rows.map((row) => [row.nct_id, row]));
+  const verdicts = { missed: 0, met: 0, mixed: 0 };
+  const basis = { postedAnalysis: 0, sponsorStatement: 0 };
+  const outcomesByVerdict: Record<string, Record<string, number>> = {};
+
+  for (const [nctId, result] of Object.entries(trials)) {
+    const verdict = result.verdict.toUpperCase();
+    if (verdict === "MISSED") verdicts.missed += 1;
+    if (verdict === "MET") verdicts.met += 1;
+    if (verdict === "MIXED") verdicts.mixed += 1;
+    if (result.basis === "posted_analysis") basis.postedAnalysis += 1;
+    if (result.basis === "sponsor_statement") basis.sponsorStatement += 1;
+
+    const row = rowById.get(nctId);
+    const outcome = row ? finalOutcome(row) : "UNRESOLVED";
+    outcomesByVerdict[verdict] ||= {};
+    outcomesByVerdict[verdict][outcome] = (outcomesByVerdict[verdict][outcome] || 0) + 1;
+  }
+
+  const examples = ENDPOINT_EXAMPLE_IDS.flatMap((nctId) => {
+    const row = rowById.get(nctId);
+    const result = trials[nctId];
+    if (!row || !result) return [];
+    return [{
+      nctId,
+      title: row.brief_title || nctId,
+      why: row.why_stopped_short || "No short stop-reason text is available.",
+      outcome: finalOutcome(row),
+      category: v2FinalCategory(row),
+      verdict: result.verdict,
+      evidence: result.lines[0] || result.statement?.text || "See the posted results record.",
+      href: trialPath(row),
+      resultsUrl: result.results_url,
+    }];
+  });
+
+  return {
+    readOn: asset.read_on || "",
+    readerVersion: asset.reader_version || 0,
+    total: Object.keys(trials).length,
+    verdicts,
+    basis,
+    outcomesByVerdict,
+    examples,
+  };
+}
+
+const COUNTRY_BANDS = [
+  { key: "missing", label: "Country data missing" },
+  { key: "single", label: "1 country" },
+  { key: "twoToFour", label: "2–4 countries" },
+  { key: "fivePlus", label: "5+ countries" },
+];
+
+const COUNTRY_EXAMPLE_IDS = ["NCT04191096", "NCT01555710", "NCT06470451"];
+
+export function countryScaleSignalSlice(rows: TrialIndexRow[]) {
+  const bandRows = (key: string, source = rows) => source.filter((row) => countryBand(row) === key);
+  const bands = COUNTRY_BANDS.map(({ key, label }) => ({
+    key,
+    ...countrySignalSlice(bandRows(key), label),
+  }));
+  const phaseComparisons = [
+    { key: "PHASE1", label: "Phase I" },
+    { key: "PHASE2", label: "Phase II" },
+    { key: "PHASE3", label: "Phase III" },
+    { key: "PHASE4", label: "Phase IV" },
+  ].map(({ key, label }) => {
+    const phaseRows = rows.filter((row) => (row.phases || "") === key);
+    return {
+      key,
+      label,
+      bands: COUNTRY_BANDS.slice(1).map((band) => ({
+        key: band.key,
+        ...countrySignalSlice(bandRows(band.key, phaseRows), band.label),
+      })),
+    };
+  });
+
+  const areaGroups = new Map<string, TrialIndexRow[]>();
+  for (const row of rows) {
+    const label = row.disease_area || "Other";
+    const group = areaGroups.get(label) || [];
+    group.push(row);
+    areaGroups.set(label, group);
+  }
+  const areaComparisons = [...areaGroups.entries()]
+    .map(([label, areaRows]) => ({
+      label,
+      total: areaRows.length,
+      single: countrySignalSlice(bandRows("single", areaRows), "1 country"),
+      fivePlus: countrySignalSlice(bandRows("fivePlus", areaRows), "5+ countries"),
+    }))
+    .filter((item) => item.single.total >= 100 && item.fivePlus.total >= 50)
+    .sort((a, b) => b.total - a.total || a.label.localeCompare(b.label))
+    .slice(0, 6)
+    .map(({ label, single, fivePlus }) => ({ label, single, fivePlus }));
+
+  const matchedComparisons = phaseComparisons.flatMap((phase) =>
+    [...areaGroups.entries()].flatMap(([area, areaRows]) => {
+      const matchedRows = areaRows.filter((row) => (row.phases || "") === phase.key);
+      const single = countrySignalSlice(bandRows("single", matchedRows), "1 country");
+      const fivePlus = countrySignalSlice(bandRows("fivePlus", matchedRows), "5+ countries");
+      if (single.total < 50 || fivePlus.total < 30) return [];
+      return [{ phase: phase.label, area, single, fivePlus }];
+    })
+  ).sort((a, b) =>
+    (b.single.total + b.fivePlus.total) - (a.single.total + a.fivePlus.total) ||
+    a.phase.localeCompare(b.phase) ||
+    a.area.localeCompare(b.area)
+  );
+
+  const rowById = new Map(rows.map((row) => [row.nct_id, row]));
+  const examples = COUNTRY_EXAMPLE_IDS.flatMap((nctId) => {
+    const row = rowById.get(nctId);
+    if (!row) return [];
+    return [{
+      nctId,
+      title: row.brief_title || nctId,
+      countries: countryCount(row),
+      phase: phaseGroup(row),
+      area: row.disease_area || "Other",
+      outcome: finalOutcome(row),
+      category: v2FinalCategory(row),
+      why: row.why_stopped_short || "No short stop-reason text is available.",
+      href: trialPath(row),
+    }];
+  });
+
+  return { bands, phaseComparisons, areaComparisons, matchedComparisons, examples };
+}
+
+export function sponsorPortfolioSignalSlice(rows: TrialIndexRow[], minimumRecords = 100) {
+  const stratumCounts = new Map<string, { total: number; biological: number }>();
+  const stratumKey = (row: TrialIndexRow) => `${row.phases || "Unknown"}\u0000${row.disease_area || "Other"}`;
+  for (const row of rows) {
+    const key = stratumKey(row);
+    const stratum = stratumCounts.get(key) || { total: 0, biological: 0 };
+    stratum.total += 1;
+    if (finalOutcome(row) === "BIOLOGICAL_FAILURE") stratum.biological += 1;
+    stratumCounts.set(key, stratum);
+  }
+
+  const sponsorRows = new Map<string, TrialIndexRow[]>();
+  for (const row of rows) {
+    const sponsor = (row.lead_sponsor || "").trim();
+    if (!sponsor) continue;
+    const group = sponsorRows.get(sponsor) || [];
+    group.push(row);
+    sponsorRows.set(sponsor, group);
+  }
+
+  const profiles = [...sponsorRows.entries()]
+    .filter(([, sponsorTrials]) => sponsorTrials.length >= minimumRecords)
+    .map(([sponsor, sponsorTrials]) => {
+      const biologicalCount = sponsorTrials.filter(
+        (row) => finalOutcome(row) === "BIOLOGICAL_FAILURE"
+      ).length;
+      const [confidenceLow, confidenceHigh] = wilsonInterval(biologicalCount, sponsorTrials.length);
+      const expectedBiologicalCount = sponsorTrials.reduce((sum, row) => {
+        const stratum = stratumCounts.get(stratumKey(row));
+        return sum + (stratum?.total ? stratum.biological / stratum.total : 0);
+      }, 0);
+      const phaseThreeCount = sponsorTrials.filter((row) => (row.phases || "") === "PHASE3").length;
+      const oncologyCount = sponsorTrials.filter((row) => (row.disease_area || "Other") === "Oncology").length;
+      return {
+        sponsor,
+        total: sponsorTrials.length,
+        biologicalCount,
+        biologicalShare: pct(biologicalCount, sponsorTrials.length),
+        biologicalShareRatio: biologicalCount / sponsorTrials.length,
+        confidenceLow: pct(confidenceLow, 1),
+        confidenceHigh: pct(confidenceHigh, 1),
+        expectedBiologicalCount,
+        observedExpectedRatio: expectedBiologicalCount
+          ? (biologicalCount / expectedBiologicalCount).toFixed(2)
+          : "0.00",
+        phaseThreeShare: pct(phaseThreeCount, sponsorTrials.length),
+        oncologyShare: pct(oncologyCount, sponsorTrials.length),
+        href: `/sponsor/${slugify(sponsor)}`,
+      };
+    })
+    .sort((a, b) => b.total - a.total || a.sponsor.localeCompare(b.sponsor));
+
+  const shares = profiles.map((profile) => profile.biologicalShareRatio).sort((a, b) => a - b);
+  const median = shares.length
+    ? shares.length % 2
+      ? shares[Math.floor(shares.length / 2)]
+      : (shares[shares.length / 2 - 1] + shares[shares.length / 2]) / 2
+    : 0;
+
+  return {
+    minimumRecords,
+    eligibleSponsors: profiles.length,
+    volumeShareCorrelation: pearsonCorrelation(
+      profiles.map((profile) => profile.total),
+      profiles.map((profile) => profile.biologicalShareRatio),
+    ),
+    medianBiologicalShare: pct(median, 1),
+    profiles: profiles.map(({ biologicalShareRatio, ...profile }) => {
+      void biologicalShareRatio;
+      return profile;
+    }),
+  };
+}
+
 export function bucketCount(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
 
 export async function buildInsightStats(): Promise<InsightStats> {
-  const [rows, meta] = await Promise.all([
+  const [rows, meta, endpointResults] = await Promise.all([
     loadIndexServer(),
     readJsonServerAsset<any>("public/dataset_meta.json"),
+    readJsonServerAsset<EndpointResultsAsset>("public/trial_endpoints.json"),
   ]);
   const statuses = countBy(rows, (row) => (row.overall_status || "").toUpperCase());
   const buckets = countBy(rows, (row) => reasonBucket(row).toUpperCase());
@@ -310,6 +584,9 @@ export async function buildInsightStats(): Promise<InsightStats> {
     diseaseAreaSignalShares: diseaseAreaSignalShares(rows),
     phaseSignalComparison: phaseSignalComparison(rows),
     latestUpdates,
+    postedEndpointResults: postedEndpointResultSlice(rows, endpointResults),
+    countryScaleSignals: countryScaleSignalSlice(rows),
+    sponsorPortfolioSignals: sponsorPortfolioSignalSlice(rows),
     classificationV2: {
       version: classificationV2.version || "2.7.0",
       resolved: Math.max(0, rows.length - reviewGated),

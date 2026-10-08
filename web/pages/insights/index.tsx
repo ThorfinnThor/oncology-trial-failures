@@ -13,16 +13,27 @@ const DESCRIPTION =
 const CANONICAL_URL = `${INSIGHTS_BASE_URL}/insights`;
 const OG_IMAGE = `${INSIGHTS_BASE_URL}/og-image.png`;
 
+type InsightArticleCard = Pick<
+  InsightArticle,
+  "slug" | "title" | "eyebrow" | "dek" | "datePublished" | "readingTime"
+>;
+
 type InsightsIndexPageProps = {
-  articles: InsightArticle[];
+  articles: InsightArticleCard[];
 };
 
 export const getStaticProps: GetStaticProps<InsightsIndexPageProps> = async () => {
   const stats = await buildInsightStats();
+  const articles = hydrateInsightArticles(stats).map((article) => ({
+    slug: article.slug,
+    title: article.title,
+    eyebrow: article.eyebrow,
+    dek: article.dek,
+    datePublished: article.datePublished,
+    readingTime: article.readingTime,
+  }));
   return {
-    props: {
-      articles: hydrateInsightArticles(stats),
-    },
+    props: { articles },
   };
 };
 

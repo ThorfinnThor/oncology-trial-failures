@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "source": "ClinicalTrials.gov API v2",
+  "verified_on": "2026-10-07",
+  "trials": {
+    "NCT00584779": {
+      "source_url": "https://clinicaltrials.gov/study/NCT00584779",
+      "text": "The study was terminated on September 30, 2008 at the current study site due to reported adverse events in the study subjects (n=8). While the adverse events reported were generally consistent with the known profile of gabapentin, it was decided that the study should continue at a different study site. The pharmacokinetics of gabapentin in the subjects with renal impairment will be evaluated in a separate study with a different study number at a different site. The study will be entitled: \"The Pharmacokinetic Study of Gabapentin in Japanese Epileptic Subjects with Renal Impairment\"."
+    },
+    "NCT00823979": {
+      "source_url": "https://clinicaltrials.gov/study/NCT00823979",
+      "text": "The trial was terminated on 12 April, 2012 due to lack of efficacy at the Week 24 analysis. The decision to terminate the trial was not based on any safety concerns."
+    },
+    "NCT01098240": {
+      "source_url": "https://clinicaltrials.gov/study/NCT01098240",
+      "text": "The study was stopped at interim analysis in August 2011, as stopping criteria for futility were met. There was no statistically significant change on the primary efficacy scale in favor of the drug. There was a very small chance that any additional data could change the study overall outcome. There were no concerns regarding subject safety."
+    },
+    "NCT01145417": {
+      "source_url": "https://clinicaltrials.gov/study/NCT01145417",
+      "text": "The parent double blind study was stopped at interim analysis due to lack of efficacy and therefore this open label extension study was also terminated simultaneously on April 2, 2012; the termination was unrelated to any safety findings that could impact patient health."
+    },
+    "NCT01420081": {
+      "source_url": "https://clinicaltrials.gov/study/NCT01420081",
+      "text": "The study was prematurely discontinued due to lack confidence in the Stathmin assay as a patient selection criteria and subsequent lack of confidence in the efficacy signal that was observed. The decision to terminate the study was made on January 23, 2014. It should be noted that safety concerns have not been seen in this study and have not factored into this decision."
+    },
+    "NCT01965600": {
+      "source_url": "https://clinicaltrials.gov/study/NCT01965600",
+      "text": "The trial was terminated on 25 March 2015 due to safety concerns regarding the administration of endotoxin and because of the uncertain availability of future endotoxin lots."
+    }
+  }
+}

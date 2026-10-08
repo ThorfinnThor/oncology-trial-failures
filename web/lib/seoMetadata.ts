@@ -1,5 +1,6 @@
 import { parsePhases, phaseLabel } from "./filtering";
 import { resolveClassification } from "./classificationResolution";
+import { resolveTrialStopEvidence } from "./trialEvidence";
 import type { TrialDetail } from "./types";
 
 const MAX_TITLE_LENGTH = 75;
@@ -138,7 +139,7 @@ export function buildTrialSeoMetadata(trial: TrialDetail | null, fallbackId: str
   const phaseKey = parsePhases(trial.phases || "")[0] || "UNKNOWN";
   const phase = phaseLabel(phaseKey);
   const phaseText = phase === "Unknown" ? "" : `${phase} `;
-  const sourceReason = cleanText(trial.why_stopped || trial.why_stopped_short);
+  const sourceReason = resolveTrialStopEvidence(trial).text;
   const descriptionSignal = outcome
     ? ` V2: ${outcome}${reason ? ` - ${reason}` : ""}.`
     : reason

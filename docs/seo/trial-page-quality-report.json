@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "generated_from": "data/all_stopped_trials.json",
+  "review_scope": {
+    "total_records": 23868,
+    "current_legacy_indexable_trials": 2434,
+    "short_reason_max_characters": 20,
+    "short_reason_trials": 272,
+    "placeholder_trials": 5,
+    "detailed_description_recovery_trials": 6,
+    "reviewed_unique_trials": 277
+  },
+  "outcomes": {
+    "decisions": {
+      "KEEP_INDEX": 271,
+      "IMPROVE_INDEX": 6
+    },
+    "actions": {
+      "SHORT_BUT_SOURCE_BACKED": 271,
+      "SURFACE_DESCRIPTION_FALLBACK": 6
+    },
+    "additional_noindex_count": 0,
+    "additional_noindex_nct_ids": []
+  },
+  "conclusion": "No reviewed trial URL lacks recoverable source evidence. Five placeholder pages and NCT01965600 must surface verified detailed-description evidence; no trial remains approved for thin-content noindex."
+}
