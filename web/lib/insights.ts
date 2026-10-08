@@ -99,6 +99,32 @@ export type InsightStats = {
       href: string;
     }>;
   };
+  postedEndpointResults: {
+    readOn: string;
+    readerVersion: number;
+    total: number;
+    verdicts: {
+      missed: number;
+      met: number;
+      mixed: number;
+    };
+    basis: {
+      postedAnalysis: number;
+      sponsorStatement: number;
+    };
+    outcomesByVerdict: Record<string, Record<string, number>>;
+    examples: Array<{
+      nctId: string;
+      title: string;
+      why: string;
+      outcome: string;
+      category: string;
+      verdict: string;
+      evidence: string;
+      href: string;
+      resultsUrl: string;
+    }>;
+  };
   classificationV2: {
     version: string;
     resolved: number;
@@ -164,6 +190,24 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "stopped-clinical-trial-can-meet-primary-endpoint",
+    title: "A stopped clinical trial can still meet its primary endpoint",
+    metaDescription:
+      "Some stopped clinical trials met their posted primary endpoint. See why endpoint results and trial stop reasons must be read as separate evidence.",
+    eyebrow: "Results versus stop reasons",
+    dek:
+      "A stopped status describes what happened to the study. A posted primary result describes what happened in an analysis. Our data shows why those two answers should never be collapsed into one label.",
+    datePublished: "2026-10-08",
+    readingTime: "8 min read",
+    keyword: "stopped clinical trial met primary endpoint",
+    factsHeading: "Two questions, two kinds of evidence",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [],
+  },
   {
     slug: "business-reasons-clinical-trial-termination",
     title: "When a clinical trial stops for business reasons, the drug has not necessarily failed",
@@ -2127,6 +2171,154 @@ export function sortInsightArticlesByDate<T extends Pick<InsightArticle, "datePu
   return [...articles].sort((a, b) => insightDateTime(b) - insightDateTime(a) || a.slug.localeCompare(b.slug));
 }
 
+function hydratePostedEndpointArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const endpoint = stats.postedEndpointResults;
+  const metOutcomes = endpoint.outcomesByVerdict.MET || {};
+  const missedOutcomes = endpoint.outcomesByVerdict.MISSED || {};
+  const metShare = pctFromCounts(endpoint.verdicts.met, endpoint.total);
+  const missedShare = pctFromCounts(endpoint.verdicts.missed, endpoint.total);
+  const mixedShare = pctFromCounts(endpoint.verdicts.mixed, endpoint.total);
+  const metNonBiological = metOutcomes.NON_BIOLOGICAL || 0;
+  const metTransition = metOutcomes.NON_FAILURE_TRANSITION || 0;
+  const metBiological = metOutcomes.BIOLOGICAL_FAILURE || 0;
+  const missedBiological = missedOutcomes.BIOLOGICAL_FAILURE || 0;
+  const missedNonBiological = missedOutcomes.NON_BIOLOGICAL || 0;
+  const missedOther = Math.max(0, endpoint.verdicts.missed - missedBiological - missedNonBiological);
+  const readOn = endpoint.readOn || "the current data snapshot";
+  const examples = new Map(endpoint.examples.map((example) => [example.nctId, example]));
+  const nusinersen = examples.get("NCT02193074");
+  const business = examples.get("NCT01496430");
+  const recruitment = examples.get("NCT01278745");
+
+  return {
+    ...article,
+    metaDescription: `${n(endpoint.verdicts.met)} of ${n(endpoint.total)} stopped trials with readable posted primary results met the analyzed endpoint. See why result and stop reason are separate evidence.`,
+    dek: `Among ${n(endpoint.total)} stopped trials with readable posted primary results, ${n(endpoint.verdicts.met)} met the analyzed endpoint. The apparent contradiction disappears when result and stop reason are treated as two separate axes.`,
+    facts: [
+      `${n(endpoint.verdicts.met)} of ${n(endpoint.total)} readable records were classified as MET (${metShare}).`,
+      `${n(endpoint.verdicts.missed)} were MISSED (${missedShare}) and ${n(endpoint.verdicts.mixed)} were MIXED (${mixedShare}).`,
+      `${n(metNonBiological)} MET records had a non-biological stop classification; another ${n(metTransition)} were non-failure transitions.`,
+      `Only ${n(missedBiological)} of the ${n(endpoint.verdicts.missed)} MISSED records carried a biological-failure stop classification.`,
+      `The posted-results snapshot was read on ${readOn}; records without a readable result are not included in this comparison.`,
+    ],
+    sections: [
+      {
+        heading: "The apparent contradiction is real",
+        body: [
+          `A clinical trial can be marked terminated and still have a statistically positive posted primary result. In this dataset, that happened in ${n(endpoint.verdicts.met)} of the ${n(endpoint.total)} stopped trials for which the posted primary result could be read.`,
+          "That does not mean every one of those trials was an overall success. It means the stopped status and the analyzed result answer different questions. One describes the study's continuation. The other describes a specified comparison in the results record.",
+        ],
+      },
+      {
+        heading: "Status, cause, and result are three separate fields",
+        body: [
+          "Status tells us that a study ended early or paused. The stop reason tells us why the sponsor or investigator says that happened. The posted result tells us what an analyzed endpoint showed. None of those fields can safely replace the other two.",
+          `The separation is visible in the MET group: ${n(metNonBiological)} records were stopped for non-biological reasons, ${n(metTransition)} reflected a non-failure transition, and ${n(metBiological)} still carried a biological-failure classification. The last group is a warning that one positive endpoint does not settle the safety profile, co-primary logic, or the totality of evidence.`,
+        ],
+      },
+      {
+        heading: "Three records show three different stories",
+        body: [
+          nusinersen
+            ? `${nusinersen.nctId} stopped after a positive interim analysis so participants could enter an open-label study. Its posted primary result reads MET, while the stop classification is a planned milestone rather than failure.`
+            : "One record stopped after a positive interim analysis so participants could move into an open-label study.",
+          business
+            ? `${business.nctId} reported a business decision with no safety or efficacy concerns. The readable posted primary result was MET, so the operational decision and the efficacy result point in different directions without contradicting each other.`
+            : "Another record paired a MET result with an explicitly commercial stop decision.",
+          recruitment
+            ? `${recruitment.nctId} ended because accrual goals could not be met within the funding period, yet its posted comparison was MET. A recruitment constraint can stop a study without turning the observed analysis into an efficacy miss.`
+            : "A third record stopped because recruitment goals could not be met despite a positive posted comparison.",
+        ],
+      },
+      {
+        heading: "The reverse shortcut is also wrong",
+        body: [
+          `A missed posted result does not prove that efficacy was the reason a trial stopped. Of ${n(endpoint.verdicts.missed)} MISSED records, ${n(missedBiological)} had a biological-failure stop classification, ${n(missedNonBiological)} had a non-biological classification, and ${n(missedOther)} belonged to unresolved, unstated, transition, or mixed-cause groups.`,
+          "The result may support an efficacy interpretation, but the causal claim still needs the stop-reason evidence. This distinction is especially important when a study has several endpoints, stops for safety, or closes for operational reasons after collecting some analyzable data.",
+        ],
+      },
+      {
+        heading: "What the reader does—and does not claim",
+        body: [
+          `For ${n(endpoint.basis.postedAnalysis)} records, the verdict comes from readable posted analyses. For ${n(endpoint.basis.sponsorStatement)} records, an explicit sponsor statement about the primary endpoint takes precedence because it can reflect multiplicity and co-primary rules that isolated numbers do not carry.`,
+          "The system does not label an unposted or unreadable result as a miss. MET means the available primary comparison cleared the stated or defensible statistical threshold used by the reader; it is not a declaration of regulatory approval, clinical importance, or overall program success.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Readable posted primary results in stopped trials",
+        columns: ["Verdict", "Records"],
+        rows: [
+          ["MISSED", `${n(endpoint.verdicts.missed)} (${missedShare})`],
+          ["MET", `${n(endpoint.verdicts.met)} (${metShare})`],
+          ["MIXED", `${n(endpoint.verdicts.mixed)} (${mixedShare})`],
+        ],
+      },
+      {
+        heading: "Stop classifications among MET records",
+        columns: ["Stop classification", "Records"],
+        rows: [
+          ["Non-biological", n(metNonBiological)],
+          ["Non-failure transition", n(metTransition)],
+          ["Biological failure", n(metBiological)],
+          ["Cause not stated", n(metOutcomes.CAUSE_NOT_STATED || 0)],
+          ["Unresolved", n(metOutcomes.UNRESOLVED || 0)],
+          ["Mixed causes", n(metOutcomes.MIXED_CAUSES || 0)],
+        ],
+      },
+      {
+        heading: "How the verdict was read",
+        columns: ["Evidence basis", "Records"],
+        rows: [
+          ["Posted statistical analysis", n(endpoint.basis.postedAnalysis)],
+          ["Explicit sponsor statement", n(endpoint.basis.sponsorStatement)],
+        ],
+      },
+    ],
+    links: [
+      ...(nusinersen ? [{
+        href: nusinersen.href,
+        label: `${nusinersen.nctId}: positive interim transition`,
+        text: "Inspect the stop reason and posted primary-result evidence together.",
+      }] : []),
+      ...(business ? [{
+        href: business.href,
+        label: `${business.nctId}: business decision`,
+        text: "See a MET result beside an explicitly non-safety, non-efficacy stop reason.",
+      }] : []),
+      ...(recruitment ? [{
+        href: recruitment.href,
+        label: `${recruitment.nctId}: accrual constraint`,
+        text: "Review a recruitment-limited study with a readable positive comparison.",
+      }] : []),
+      {
+        href: "/methods",
+        label: "Read the methodology",
+        text: "See how stopped-trial causes and evidence are classified conservatively.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Can a terminated trial meet its primary endpoint?",
+        answer: `Yes. In this snapshot, ${n(endpoint.verdicts.met)} stopped trials had a readable posted primary result classified as MET. Termination status alone does not say whether an endpoint was met.`,
+      },
+      {
+        question: "Does MET mean the drug or trial was successful?",
+        answer: "No. MET describes the readable posted primary comparison. It does not by itself establish clinical importance, acceptable safety, success across every endpoint, regulatory approval, or a successful development program.",
+      },
+      {
+        question: "Does MISSED prove efficacy failure caused the stop?",
+        answer: `No. Only ${n(missedBiological)} of the ${n(endpoint.verdicts.missed)} MISSED records had a biological-failure stop classification. Stop-cause evidence must be reviewed separately.`,
+      },
+      {
+        question: "Are trials without readable posted results counted as failures?",
+        answer: "No. They are excluded from this result comparison. Missing or unreadable evidence is not converted into a negative verdict.",
+      },
+    ],
+  };
+}
+
 function hydrateBusinessStrategyArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const strategy = stats.businessStrategySignals;
   const biological = stats.classificationV2.outcomes.BIOLOGICAL_FAILURE || 0;
@@ -3492,6 +3684,9 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "stopped-clinical-trial-can-meet-primary-endpoint") {
+    return hydratePostedEndpointArticle(article, stats);
+  }
   if (article.slug === "business-reasons-clinical-trial-termination") {
     return hydrateBusinessStrategyArticle(article, stats);
   }

@@ -2,7 +2,13 @@ import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from
 import type { InsightStats } from "./insights";
 import { trialPath } from "./seoUrls";
 import { loadIndexServer, readJsonServerAsset } from "./server-data";
-import type { TrialIndexRow } from "./types";
+import type { EndpointResult, TrialIndexRow } from "./types";
+
+type EndpointResultsAsset = {
+  read_on?: string | null;
+  reader_version?: number;
+  trials?: Record<string, Omit<EndpointResult, "read_on">>;
+};
 
 function countBy(rows: TrialIndexRow[], getValue: (row: TrialIndexRow) => string): Record<string, number> {
   const counts: Record<string, number> = {};
@@ -64,6 +70,10 @@ function v2Outcome(row: TrialIndexRow): string {
   const finalOutcome = (row.classification_final_outcome || "").toUpperCase().trim();
   if (finalOutcome && finalOutcome !== "UNRESOLVED") return finalOutcome;
   return (row.classification_outcome_v2 || "UNKNOWN").toUpperCase().trim() || "UNKNOWN";
+}
+
+function finalOutcome(row: TrialIndexRow): string {
+  return (row.classification_final_outcome || v2Outcome(row)).toUpperCase().trim() || "UNRESOLVED";
 }
 
 function v2PrimaryReason(row: TrialIndexRow): string {
@@ -207,14 +217,66 @@ function latestUpdateSlice(rows: TrialIndexRow[]) {
   };
 }
 
+const ENDPOINT_EXAMPLE_IDS = ["NCT02193074", "NCT01496430", "NCT01278745"];
+
+export function postedEndpointResultSlice(rows: TrialIndexRow[], asset: EndpointResultsAsset) {
+  const trials = asset.trials || {};
+  const rowById = new Map(rows.map((row) => [row.nct_id, row]));
+  const verdicts = { missed: 0, met: 0, mixed: 0 };
+  const basis = { postedAnalysis: 0, sponsorStatement: 0 };
+  const outcomesByVerdict: Record<string, Record<string, number>> = {};
+
+  for (const [nctId, result] of Object.entries(trials)) {
+    const verdict = result.verdict.toUpperCase();
+    if (verdict === "MISSED") verdicts.missed += 1;
+    if (verdict === "MET") verdicts.met += 1;
+    if (verdict === "MIXED") verdicts.mixed += 1;
+    if (result.basis === "posted_analysis") basis.postedAnalysis += 1;
+    if (result.basis === "sponsor_statement") basis.sponsorStatement += 1;
+
+    const row = rowById.get(nctId);
+    const outcome = row ? finalOutcome(row) : "UNRESOLVED";
+    outcomesByVerdict[verdict] ||= {};
+    outcomesByVerdict[verdict][outcome] = (outcomesByVerdict[verdict][outcome] || 0) + 1;
+  }
+
+  const examples = ENDPOINT_EXAMPLE_IDS.flatMap((nctId) => {
+    const row = rowById.get(nctId);
+    const result = trials[nctId];
+    if (!row || !result) return [];
+    return [{
+      nctId,
+      title: row.brief_title || nctId,
+      why: row.why_stopped_short || "No short stop-reason text is available.",
+      outcome: finalOutcome(row),
+      category: v2FinalCategory(row),
+      verdict: result.verdict,
+      evidence: result.lines[0] || result.statement?.text || "See the posted results record.",
+      href: trialPath(row),
+      resultsUrl: result.results_url,
+    }];
+  });
+
+  return {
+    readOn: asset.read_on || "",
+    readerVersion: asset.reader_version || 0,
+    total: Object.keys(trials).length,
+    verdicts,
+    basis,
+    outcomesByVerdict,
+    examples,
+  };
+}
+
 export function bucketCount(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
 
 export async function buildInsightStats(): Promise<InsightStats> {
-  const [rows, meta] = await Promise.all([
+  const [rows, meta, endpointResults] = await Promise.all([
     loadIndexServer(),
     readJsonServerAsset<any>("public/dataset_meta.json"),
+    readJsonServerAsset<EndpointResultsAsset>("public/trial_endpoints.json"),
   ]);
   const statuses = countBy(rows, (row) => (row.overall_status || "").toUpperCase());
   const buckets = countBy(rows, (row) => reasonBucket(row).toUpperCase());
@@ -310,6 +372,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
     diseaseAreaSignalShares: diseaseAreaSignalShares(rows),
     phaseSignalComparison: phaseSignalComparison(rows),
     latestUpdates,
+    postedEndpointResults: postedEndpointResultSlice(rows, endpointResults),
     classificationV2: {
       version: classificationV2.version || "2.7.0",
       resolved: Math.max(0, rows.length - reviewGated),
