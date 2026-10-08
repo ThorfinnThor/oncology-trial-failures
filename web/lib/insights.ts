@@ -125,6 +125,36 @@ export type InsightStats = {
       resultsUrl: string;
     }>;
   };
+  countryScaleSignals: {
+    bands: Array<CountrySignalSlice & { key: string }>;
+    phaseComparisons: Array<{
+      key: string;
+      label: string;
+      bands: Array<CountrySignalSlice & { key: string }>;
+    }>;
+    areaComparisons: Array<{
+      label: string;
+      single: CountrySignalSlice;
+      fivePlus: CountrySignalSlice;
+    }>;
+    matchedComparisons: Array<{
+      phase: string;
+      area: string;
+      single: CountrySignalSlice;
+      fivePlus: CountrySignalSlice;
+    }>;
+    examples: Array<{
+      nctId: string;
+      title: string;
+      countries: number;
+      phase: string;
+      area: string;
+      outcome: string;
+      category: string;
+      why: string;
+      href: string;
+    }>;
+  };
   classificationV2: {
     version: string;
     resolved: number;
@@ -150,6 +180,13 @@ export type InsightSignalSlice = {
   phases: Array<{ label: string; count: number }>;
   topAreas: Array<{ label: string; count: number }>;
   topSponsors: Array<{ label: string; count: number }>;
+};
+
+export type CountrySignalSlice = {
+  label: string;
+  total: number;
+  biologicalCount: number;
+  biologicalShare: string;
 };
 
 function formatInsightCount(value: number): string {
@@ -190,6 +227,24 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "multinational-stopped-trials-biological-failure-signals",
+    title: "Multinational stopped trials show more biological failure signals—but the pattern is not causal proof",
+    metaDescription:
+      "A stratified analysis of country count and biological failure signals in stopped clinical trials, with phase and disease-area checks.",
+    eyebrow: "Scale, phase and geography",
+    dek:
+      "The raw gradient is striking. It also needs restraint: country count is a marker of trial scale and portfolio structure, not an explanation for why a study stopped.",
+    datePublished: "2026-10-08",
+    readingTime: "9 min read",
+    keyword: "multinational clinical trial failure",
+    factsHeading: "The country-count gradient",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [],
+  },
   {
     slug: "stopped-clinical-trial-can-meet-primary-endpoint",
     title: "A stopped clinical trial can still meet its primary endpoint",
@@ -2171,6 +2226,187 @@ export function sortInsightArticlesByDate<T extends Pick<InsightArticle, "datePu
   return [...articles].sort((a, b) => insightDateTime(b) - insightDateTime(a) || a.slug.localeCompare(b.slug));
 }
 
+function hydrateCountryScaleArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const country = stats.countryScaleSignals;
+  const band = (key: string) => country.bands.find((item) => item.key === key) || {
+    key,
+    label: key,
+    total: 0,
+    biologicalCount: 0,
+    biologicalShare: "0.0%",
+  };
+  const single = band("single");
+  const twoToFour = band("twoToFour");
+  const fivePlus = band("fivePlus");
+  const missing = band("missing");
+  const phase = (key: string) => country.phaseComparisons.find((item) => item.key === key);
+  const phaseBand = (phaseKey: string, bandKey: string) => phase(phaseKey)?.bands.find((item) => item.key === bandKey);
+  const phaseThreeSingle = phaseBand("PHASE3", "single");
+  const phaseThreeMid = phaseBand("PHASE3", "twoToFour");
+  const phaseThreeLarge = phaseBand("PHASE3", "fivePlus");
+  const oncology = country.areaComparisons.find((item) => item.label === "Oncology");
+  const phaseTwoOncology = country.matchedComparisons.find(
+    (item) => item.phase === "Phase II" && item.area === "Oncology"
+  );
+  const phaseThreeOncology = country.matchedComparisons.find(
+    (item) => item.phase === "Phase III" && item.area === "Oncology"
+  );
+  const examples = new Map(country.examples.map((example) => [example.nctId, example]));
+  const multinationalBiological = examples.get("NCT04191096");
+  const multinationalBusiness = examples.get("NCT01555710");
+  const singleCountryBiological = examples.get("NCT06470451");
+
+  const phaseRows = country.phaseComparisons.flatMap((item) =>
+    item.bands.map((itemBand) => [
+      `${item.label} — ${itemBand.label}`,
+      `${n(itemBand.biologicalCount)} of ${n(itemBand.total)} (${itemBand.biologicalShare})`,
+    ] as [string, string])
+  );
+  const matchedRows = country.matchedComparisons.slice(0, 8).flatMap((item) => [
+    [
+      `${item.phase}, ${item.area} — 1 country`,
+      `${n(item.single.biologicalCount)} of ${n(item.single.total)} (${item.single.biologicalShare})`,
+    ] as [string, string],
+    [
+      `${item.phase}, ${item.area} — 5+ countries`,
+      `${n(item.fivePlus.biologicalCount)} of ${n(item.fivePlus.total)} (${item.fivePlus.biologicalShare})`,
+    ] as [string, string],
+  ]);
+
+  return {
+    ...article,
+    metaDescription: `${fivePlus.biologicalShare} of stopped trials spanning 5+ countries carry biological failure signals, versus ${single.biologicalShare} in single-country records. See the stratified analysis.`,
+    dek: `Biological failure signals appear in ${single.biologicalShare} of single-country stopped trials and ${fivePlus.biologicalShare} of records spanning at least five countries. The gradient survives basic stratification—but it is still not a causal effect of geography.`,
+    facts: [
+      `${n(single.biologicalCount)} of ${n(single.total)} single-country records carry biological failure signals (${single.biologicalShare}).`,
+      `The share rises to ${twoToFour.biologicalShare} across two to four countries and ${fivePlus.biologicalShare} across five or more.`,
+      `Within exact Phase III records, the shares are ${phaseThreeSingle?.biologicalShare || "n/a"}, ${phaseThreeMid?.biologicalShare || "n/a"}, and ${phaseThreeLarge?.biologicalShare || "n/a"}.`,
+      oncology
+        ? `Within oncology, the comparison is ${oncology.single.biologicalShare} for one country versus ${oncology.fivePlus.biologicalShare} for five or more.`
+        : "The same direction appears inside major disease areas.",
+      `${n(missing.total)} records have no usable country value and remain a separate missing-data cohort.`,
+    ],
+    sections: [
+      {
+        heading: "A pattern strong enough to distrust at first",
+        body: [
+          `The raw gradient is unusually clean: ${single.biologicalShare} for trials listing one country, ${twoToFour.biologicalShare} for two to four countries, and ${fivePlus.biologicalShare} for five or more. These are mutually exclusive groups, so the large multinational cohort is not counted again inside the middle group.`,
+          "The tempting story is that multinational trials fail biologically more often. That is not what these data establish. Country count can vary with trial phase, sponsor type, program maturity, sample size, and the likelihood that a stop reason is documented precisely.",
+        ],
+      },
+      {
+        heading: "First attempt to break the pattern: hold phase constant",
+        body: [
+          `The gap does not disappear when the comparison is restricted to exact phase labels. Within Phase III, ${phaseThreeSingle ? `${n(phaseThreeSingle.biologicalCount)} of ${n(phaseThreeSingle.total)} single-country records (${phaseThreeSingle.biologicalShare})` : "the single-country cohort"} carry a biological signal, compared with ${phaseThreeLarge ? `${n(phaseThreeLarge.biologicalCount)} of ${n(phaseThreeLarge.total)} records spanning five or more countries (${phaseThreeLarge.biologicalShare})` : "the multinational cohort"}.`,
+          "Phase I and Phase II point in the same direction. Phase IV does not: its five-plus-country group is small, and no biological signals appear there. That exception is exactly why country count should not be used as a universal failure rule.",
+        ],
+      },
+      {
+        heading: "Second attempt: compare within disease areas",
+        body: [
+          oncology
+            ? `Oncology contains ${n(oncology.single.total)} single-country and ${n(oncology.fivePlus.total)} five-plus-country stopped trials. Their biological-signal shares are ${oncology.single.biologicalShare} and ${oncology.fivePlus.biologicalShare}, respectively.`
+            : "The same comparison was repeated inside the largest disease areas.",
+          "The same direction appears in infectious disease, gastroenterology, cardiovascular disease, neurology, and the broad Other group. Disease mix explains part of the raw dataset, but it does not erase the association.",
+        ],
+      },
+      {
+        heading: "A stricter check: same phase and same disease area",
+        body: [
+          phaseTwoOncology
+            ? `Among exact Phase II oncology records, the share rises from ${phaseTwoOncology.single.biologicalShare} in single-country studies to ${phaseTwoOncology.fivePlus.biologicalShare} in studies listing at least five countries.`
+            : "The comparison was also repeated inside matched phase and disease-area cells.",
+          phaseThreeOncology
+            ? `Among exact Phase III oncology records, it rises from ${phaseThreeOncology.single.biologicalShare} to ${phaseThreeOncology.fivePlus.biologicalShare}. Similar gaps remain in several other cells large enough to compare.`
+            : "The direction remains visible in the largest matched cells.",
+          "This is a stratification check, not a fully adjusted causal model. It reduces two obvious sources of confounding but does not control sponsor strategy, sample size, intervention type, enrollment target, calendar period, or reporting quality.",
+        ],
+      },
+      {
+        heading: "Three trials prevent the wrong interpretation",
+        body: [
+          multinationalBiological
+            ? `${multinationalBiological.nctId} was a ${multinationalBiological.countries}-country Phase III study stopped for futility. It fits the aggregate multinational pattern, but one example cannot explain that pattern.`
+            : "One large multinational Phase III record was explicitly stopped for futility.",
+          multinationalBusiness
+            ? `${multinationalBusiness.nctId} covered ${multinationalBusiness.countries} countries and was also Phase III, yet it stopped after a development-plan business decision rather than for safety. Large international reach does not determine the cause.`
+            : "Another large multinational Phase III record stopped for a business decision rather than a biological reason.",
+          singleCountryBiological
+            ? `${singleCountryBiological.nctId} was a single-country Phase III study stopped for futility. Biological failure signals are less common in the single-country cohort, not absent from it.`
+            : "A single-country Phase III study can still stop for an explicit biological reason.",
+        ],
+      },
+      {
+        heading: "The useful conclusion is about triage, not causation",
+        body: [
+          "Country count can help prioritize review because it identifies a different population of stopped trials: generally larger, later, more internationally coordinated programs with richer evidence trails. It should be treated as context for the stop record, not as a risk score for an active trial.",
+          "For any individual study, the stop-reason language, endpoint evidence, safety record, and protocol history remain more informative than the number of countries listed in the registry.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Biological signals by number of listed countries",
+        columns: ["Country cohort", "Biological signals"],
+        rows: country.bands.map((item) => [
+          item.label,
+          `${n(item.biologicalCount)} of ${n(item.total)} (${item.biologicalShare})`,
+        ]),
+      },
+      {
+        heading: "Phase-stratified comparison",
+        columns: ["Exact phase and country cohort", "Biological signals"],
+        rows: phaseRows,
+      },
+      {
+        heading: "Largest matched phase and disease-area cells",
+        columns: ["Matched cohort", "Biological signals"],
+        rows: matchedRows,
+      },
+    ],
+    links: [
+      ...(multinationalBiological ? [{
+        href: multinationalBiological.href,
+        label: `${multinationalBiological.nctId}: multinational futility stop`,
+        text: "Inspect a large Phase III record with an explicit biological failure signal.",
+      }] : []),
+      ...(multinationalBusiness ? [{
+        href: multinationalBusiness.href,
+        label: `${multinationalBusiness.nctId}: multinational business stop`,
+        text: "Compare a similarly international Phase III program stopped for a non-biological reason.",
+      }] : []),
+      ...(singleCountryBiological ? [{
+        href: singleCountryBiological.href,
+        label: `${singleCountryBiological.nctId}: single-country futility stop`,
+        text: "See why the lower-share cohort still contains clear biological signals.",
+      }] : []),
+      {
+        href: "/methods",
+        label: "Review the classification method",
+        text: "Understand what qualifies as a biological failure signal and where uncertainty remains.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Do multinational clinical trials fail more often?",
+        answer: "Not necessarily. This analysis covers already-stopped trials and measures the share with biological stop signals. It does not calculate the failure rate among all multinational trials.",
+      },
+      {
+        question: "Does running a trial in more countries cause biological failure?",
+        answer: "No causal claim can be made from this dataset. Country count is associated with phase, sponsor, program scale, evidence maturity, and reporting patterns.",
+      },
+      {
+        question: "Does the pattern remain within the same phase?",
+        answer: `Yes for the largest Phase I–III cohorts. For exact Phase III records, the biological-signal share is ${phaseThreeSingle?.biologicalShare || "lower"} for one country and ${phaseThreeLarge?.biologicalShare || "higher"} for five or more. Phase IV is a small counterexample.`,
+      },
+      {
+        question: "Are missing country values treated as single-country trials?",
+        answer: `No. All ${n(missing.total)} records without usable country data are reported separately and excluded from the one-country comparison.`,
+      },
+    ],
+  };
+}
+
 function hydratePostedEndpointArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const endpoint = stats.postedEndpointResults;
   const metOutcomes = endpoint.outcomesByVerdict.MET || {};
@@ -3684,6 +3920,9 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "multinational-stopped-trials-biological-failure-signals") {
+    return hydrateCountryScaleArticle(article, stats);
+  }
   if (article.slug === "stopped-clinical-trial-can-meet-primary-endpoint") {
     return hydratePostedEndpointArticle(article, stats);
   }

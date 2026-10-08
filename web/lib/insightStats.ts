@@ -76,6 +76,31 @@ function finalOutcome(row: TrialIndexRow): string {
   return (row.classification_final_outcome || v2Outcome(row)).toUpperCase().trim() || "UNRESOLVED";
 }
 
+function countryCount(row: TrialIndexRow): number {
+  return (row.countries || "")
+    .split(";")
+    .map((country) => country.trim())
+    .filter(Boolean).length;
+}
+
+function countryBand(row: TrialIndexRow): string {
+  const total = countryCount(row);
+  if (!total) return "missing";
+  if (total === 1) return "single";
+  if (total < 5) return "twoToFour";
+  return "fivePlus";
+}
+
+function countrySignalSlice(rows: TrialIndexRow[], label: string) {
+  const biologicalCount = rows.filter((row) => finalOutcome(row) === "BIOLOGICAL_FAILURE").length;
+  return {
+    label,
+    total: rows.length,
+    biologicalCount,
+    biologicalShare: pct(biologicalCount, rows.length),
+  };
+}
+
 function v2PrimaryReason(row: TrialIndexRow): string {
   const reason = (
     row.classification_final_category ||
@@ -268,6 +293,91 @@ export function postedEndpointResultSlice(rows: TrialIndexRow[], asset: Endpoint
   };
 }
 
+const COUNTRY_BANDS = [
+  { key: "missing", label: "Country data missing" },
+  { key: "single", label: "1 country" },
+  { key: "twoToFour", label: "2–4 countries" },
+  { key: "fivePlus", label: "5+ countries" },
+];
+
+const COUNTRY_EXAMPLE_IDS = ["NCT04191096", "NCT01555710", "NCT06470451"];
+
+export function countryScaleSignalSlice(rows: TrialIndexRow[]) {
+  const bandRows = (key: string, source = rows) => source.filter((row) => countryBand(row) === key);
+  const bands = COUNTRY_BANDS.map(({ key, label }) => ({
+    key,
+    ...countrySignalSlice(bandRows(key), label),
+  }));
+  const phaseComparisons = [
+    { key: "PHASE1", label: "Phase I" },
+    { key: "PHASE2", label: "Phase II" },
+    { key: "PHASE3", label: "Phase III" },
+    { key: "PHASE4", label: "Phase IV" },
+  ].map(({ key, label }) => {
+    const phaseRows = rows.filter((row) => (row.phases || "") === key);
+    return {
+      key,
+      label,
+      bands: COUNTRY_BANDS.slice(1).map((band) => ({
+        key: band.key,
+        ...countrySignalSlice(bandRows(band.key, phaseRows), band.label),
+      })),
+    };
+  });
+
+  const areaGroups = new Map<string, TrialIndexRow[]>();
+  for (const row of rows) {
+    const label = row.disease_area || "Other";
+    const group = areaGroups.get(label) || [];
+    group.push(row);
+    areaGroups.set(label, group);
+  }
+  const areaComparisons = [...areaGroups.entries()]
+    .map(([label, areaRows]) => ({
+      label,
+      total: areaRows.length,
+      single: countrySignalSlice(bandRows("single", areaRows), "1 country"),
+      fivePlus: countrySignalSlice(bandRows("fivePlus", areaRows), "5+ countries"),
+    }))
+    .filter((item) => item.single.total >= 100 && item.fivePlus.total >= 50)
+    .sort((a, b) => b.total - a.total || a.label.localeCompare(b.label))
+    .slice(0, 6)
+    .map(({ label, single, fivePlus }) => ({ label, single, fivePlus }));
+
+  const matchedComparisons = phaseComparisons.flatMap((phase) =>
+    [...areaGroups.entries()].flatMap(([area, areaRows]) => {
+      const matchedRows = areaRows.filter((row) => (row.phases || "") === phase.key);
+      const single = countrySignalSlice(bandRows("single", matchedRows), "1 country");
+      const fivePlus = countrySignalSlice(bandRows("fivePlus", matchedRows), "5+ countries");
+      if (single.total < 50 || fivePlus.total < 30) return [];
+      return [{ phase: phase.label, area, single, fivePlus }];
+    })
+  ).sort((a, b) =>
+    (b.single.total + b.fivePlus.total) - (a.single.total + a.fivePlus.total) ||
+    a.phase.localeCompare(b.phase) ||
+    a.area.localeCompare(b.area)
+  );
+
+  const rowById = new Map(rows.map((row) => [row.nct_id, row]));
+  const examples = COUNTRY_EXAMPLE_IDS.flatMap((nctId) => {
+    const row = rowById.get(nctId);
+    if (!row) return [];
+    return [{
+      nctId,
+      title: row.brief_title || nctId,
+      countries: countryCount(row),
+      phase: phaseGroup(row),
+      area: row.disease_area || "Other",
+      outcome: finalOutcome(row),
+      category: v2FinalCategory(row),
+      why: row.why_stopped_short || "No short stop-reason text is available.",
+      href: trialPath(row),
+    }];
+  });
+
+  return { bands, phaseComparisons, areaComparisons, matchedComparisons, examples };
+}
+
 export function bucketCount(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
@@ -373,6 +483,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
     phaseSignalComparison: phaseSignalComparison(rows),
     latestUpdates,
     postedEndpointResults: postedEndpointResultSlice(rows, endpointResults),
+    countryScaleSignals: countryScaleSignalSlice(rows),
     classificationV2: {
       version: classificationV2.version || "2.7.0",
       resolved: Math.max(0, rows.length - reviewGated),
