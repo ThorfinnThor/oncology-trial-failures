@@ -1,6 +1,6 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
 import type { InsightStats } from "./insights";
-import { trialPath } from "./seoUrls";
+import { slugify, trialPath } from "./seoUrls";
 import { loadIndexServer, readJsonServerAsset } from "./server-data";
 import type { EndpointResult, TrialIndexRow } from "./types";
 
@@ -99,6 +99,34 @@ function countrySignalSlice(rows: TrialIndexRow[], label: string) {
     biologicalCount,
     biologicalShare: pct(biologicalCount, rows.length),
   };
+}
+
+function wilsonInterval(successes: number, total: number): [number, number] {
+  if (!total) return [0, 0];
+  const z = 1.96;
+  const share = successes / total;
+  const denominator = 1 + (z * z) / total;
+  const center = (share + (z * z) / (2 * total)) / denominator;
+  const margin = z * Math.sqrt((share * (1 - share) + (z * z) / (4 * total)) / total) / denominator;
+  return [Math.max(0, center - margin), Math.min(1, center + margin)];
+}
+
+function pearsonCorrelation(left: number[], right: number[]): number {
+  if (left.length !== right.length || left.length < 2) return 0;
+  const leftMean = left.reduce((sum, value) => sum + value, 0) / left.length;
+  const rightMean = right.reduce((sum, value) => sum + value, 0) / right.length;
+  let numerator = 0;
+  let leftSquares = 0;
+  let rightSquares = 0;
+  for (let index = 0; index < left.length; index += 1) {
+    const leftDelta = left[index] - leftMean;
+    const rightDelta = right[index] - rightMean;
+    numerator += leftDelta * rightDelta;
+    leftSquares += leftDelta * leftDelta;
+    rightSquares += rightDelta * rightDelta;
+  }
+  const denominator = Math.sqrt(leftSquares * rightSquares);
+  return denominator ? numerator / denominator : 0;
 }
 
 function v2PrimaryReason(row: TrialIndexRow): string {
@@ -378,6 +406,80 @@ export function countryScaleSignalSlice(rows: TrialIndexRow[]) {
   return { bands, phaseComparisons, areaComparisons, matchedComparisons, examples };
 }
 
+export function sponsorPortfolioSignalSlice(rows: TrialIndexRow[], minimumRecords = 100) {
+  const stratumCounts = new Map<string, { total: number; biological: number }>();
+  const stratumKey = (row: TrialIndexRow) => `${row.phases || "Unknown"}\u0000${row.disease_area || "Other"}`;
+  for (const row of rows) {
+    const key = stratumKey(row);
+    const stratum = stratumCounts.get(key) || { total: 0, biological: 0 };
+    stratum.total += 1;
+    if (finalOutcome(row) === "BIOLOGICAL_FAILURE") stratum.biological += 1;
+    stratumCounts.set(key, stratum);
+  }
+
+  const sponsorRows = new Map<string, TrialIndexRow[]>();
+  for (const row of rows) {
+    const sponsor = (row.lead_sponsor || "").trim();
+    if (!sponsor) continue;
+    const group = sponsorRows.get(sponsor) || [];
+    group.push(row);
+    sponsorRows.set(sponsor, group);
+  }
+
+  const profiles = [...sponsorRows.entries()]
+    .filter(([, sponsorTrials]) => sponsorTrials.length >= minimumRecords)
+    .map(([sponsor, sponsorTrials]) => {
+      const biologicalCount = sponsorTrials.filter(
+        (row) => finalOutcome(row) === "BIOLOGICAL_FAILURE"
+      ).length;
+      const [confidenceLow, confidenceHigh] = wilsonInterval(biologicalCount, sponsorTrials.length);
+      const expectedBiologicalCount = sponsorTrials.reduce((sum, row) => {
+        const stratum = stratumCounts.get(stratumKey(row));
+        return sum + (stratum?.total ? stratum.biological / stratum.total : 0);
+      }, 0);
+      const phaseThreeCount = sponsorTrials.filter((row) => (row.phases || "") === "PHASE3").length;
+      const oncologyCount = sponsorTrials.filter((row) => (row.disease_area || "Other") === "Oncology").length;
+      return {
+        sponsor,
+        total: sponsorTrials.length,
+        biologicalCount,
+        biologicalShare: pct(biologicalCount, sponsorTrials.length),
+        biologicalShareRatio: biologicalCount / sponsorTrials.length,
+        confidenceLow: pct(confidenceLow, 1),
+        confidenceHigh: pct(confidenceHigh, 1),
+        expectedBiologicalCount,
+        observedExpectedRatio: expectedBiologicalCount
+          ? (biologicalCount / expectedBiologicalCount).toFixed(2)
+          : "0.00",
+        phaseThreeShare: pct(phaseThreeCount, sponsorTrials.length),
+        oncologyShare: pct(oncologyCount, sponsorTrials.length),
+        href: `/sponsor/${slugify(sponsor)}`,
+      };
+    })
+    .sort((a, b) => b.total - a.total || a.sponsor.localeCompare(b.sponsor));
+
+  const shares = profiles.map((profile) => profile.biologicalShareRatio).sort((a, b) => a - b);
+  const median = shares.length
+    ? shares.length % 2
+      ? shares[Math.floor(shares.length / 2)]
+      : (shares[shares.length / 2 - 1] + shares[shares.length / 2]) / 2
+    : 0;
+
+  return {
+    minimumRecords,
+    eligibleSponsors: profiles.length,
+    volumeShareCorrelation: pearsonCorrelation(
+      profiles.map((profile) => profile.total),
+      profiles.map((profile) => profile.biologicalShareRatio),
+    ),
+    medianBiologicalShare: pct(median, 1),
+    profiles: profiles.map(({ biologicalShareRatio, ...profile }) => {
+      void biologicalShareRatio;
+      return profile;
+    }),
+  };
+}
+
 export function bucketCount(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
 }
@@ -484,6 +586,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
     latestUpdates,
     postedEndpointResults: postedEndpointResultSlice(rows, endpointResults),
     countryScaleSignals: countryScaleSignalSlice(rows),
+    sponsorPortfolioSignals: sponsorPortfolioSignalSlice(rows),
     classificationV2: {
       version: classificationV2.version || "2.7.0",
       resolved: Math.max(0, rows.length - reviewGated),

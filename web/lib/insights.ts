@@ -155,6 +155,25 @@ export type InsightStats = {
       href: string;
     }>;
   };
+  sponsorPortfolioSignals: {
+    minimumRecords: number;
+    eligibleSponsors: number;
+    volumeShareCorrelation: number;
+    medianBiologicalShare: string;
+    profiles: Array<{
+      sponsor: string;
+      total: number;
+      biologicalCount: number;
+      biologicalShare: string;
+      confidenceLow: string;
+      confidenceHigh: string;
+      expectedBiologicalCount: number;
+      observedExpectedRatio: string;
+      phaseThreeShare: string;
+      oncologyShare: string;
+      href: string;
+    }>;
+  };
   classificationV2: {
     version: string;
     resolved: number;
@@ -227,6 +246,24 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "stopped-trial-volume-not-sponsor-failure-rate",
+    title: "Stopped-trial volume is not a sponsor failure rate",
+    metaDescription:
+      "Why sponsor counts in a stopped-trial database cannot be read as company failure rates, even after minimum cohorts and portfolio-mix adjustment.",
+    eyebrow: "How not to rank sponsors",
+    dek:
+      "A sponsor with many records may simply run more studies, disclose more history, or work in a different portfolio. The denominator changes the ordering—and still does not create a performance score.",
+    datePublished: "2026-10-08",
+    readingTime: "9 min read",
+    keyword: "clinical trial failure rate by sponsor",
+    factsHeading: "What a sponsor table can and cannot say",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [],
+  },
   {
     slug: "multinational-stopped-trials-biological-failure-signals",
     title: "Multinational stopped trials show more biological failure signals—but the pattern is not causal proof",
@@ -2226,6 +2263,151 @@ export function sortInsightArticlesByDate<T extends Pick<InsightArticle, "datePu
   return [...articles].sort((a, b) => insightDateTime(b) - insightDateTime(a) || a.slug.localeCompare(b.slug));
 }
 
+function hydrateSponsorPortfolioArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const sponsorStats = stats.sponsorPortfolioSignals;
+  const topVolume = sponsorStats.profiles.slice(0, 6);
+  const first = topVolume[0];
+  const comparison = topVolume[2];
+  const otherComparison = topVolume[5];
+  const shares = topVolume.map((profile) => Number.parseFloat(profile.biologicalShare));
+  const topVolumeLow = shares.length ? Math.min(...shares).toFixed(1) : "0.0";
+  const topVolumeHigh = shares.length ? Math.max(...shares).toFixed(1) : "0.0";
+  const correlation = sponsorStats.volumeShareCorrelation.toFixed(2);
+
+  return {
+    ...article,
+    metaDescription: `Among ${n(sponsorStats.eligibleSponsors)} sponsors with at least ${n(sponsorStats.minimumRecords)} stopped records, volume and biological-signal share barely move together. See why neither is a sponsor failure rate.`,
+    dek: `Among sponsors with at least ${n(sponsorStats.minimumRecords)} stopped records, stopped-trial volume has only a ${correlation} linear correlation with biological-signal share. That is a warning against leaderboards—not a new sponsor score.`,
+    facts: [
+      `${n(sponsorStats.eligibleSponsors)} sponsor labels meet the minimum cohort of ${n(sponsorStats.minimumRecords)} stopped records.`,
+      `Across those sponsors, the linear correlation between stopped-record volume and biological-signal share is ${correlation}.`,
+      `The six largest stopped-record portfolios span biological-signal shares from ${topVolumeLow}% to ${topVolumeHigh}%.`,
+      `The median biological-signal share in the minimum-cohort group is ${sponsorStats.medianBiologicalShare}.`,
+      "These denominators contain only stopped trials—not every trial a sponsor started—so none of the shares is a sponsor failure rate.",
+    ],
+    sections: [
+      {
+        heading: "Start by building the wrong leaderboard",
+        body: [
+          first
+            ? `${first.sponsor} has the largest sponsor-specific stopped-trial set in this snapshot, with ${n(first.total)} records. That says it has a large visible history inside this stopped-trial database. It does not say ${first.sponsor} has the highest probability of trial failure.`
+            : "A count of stopped trials measures records in this database, not a sponsor's probability of failure.",
+          "Raw volume is affected by how many studies an organization runs, how long it has operated, which entities appear under its registry name, what phases it sponsors, and how often its programs produce a record that enters this dataset.",
+        ],
+      },
+      {
+        heading: "Add a denominator and the ordering changes",
+        body: [
+          `Dividing biological signals by all stopped records under each sponsor label produces a very different picture. Among the six largest portfolios, the share ranges from ${topVolumeLow}% to ${topVolumeHigh}%, even though every sponsor in that table has at least ${n(otherComparison?.total || sponsorStats.minimumRecords)} stopped records.`,
+          comparison && first
+            ? `${first.sponsor} has ${n(first.total)} stopped records and a ${first.biologicalShare} biological-signal share. ${comparison.sponsor} has ${n(comparison.total)} records and a ${comparison.biologicalShare} share. Similar volume does not produce a similar composition.`
+            : "Similar stopped-record volumes do not produce similar biological-signal shares.",
+          "But the denominator is still conditional on being stopped. To estimate a genuine sponsor failure rate, we would need the sponsor's complete eligible trial universe, consistent observation windows, success definitions, and treatment of ongoing and completed studies.",
+        ],
+      },
+      {
+        heading: "The 100-record rule reduces noise, not bias",
+        body: [
+          `Only sponsor labels with at least ${n(sponsorStats.minimumRecords)} stopped records enter this comparison. That leaves ${n(sponsorStats.eligibleSponsors)} profiles and prevents a sponsor with one biological signal in two records from appearing as a dramatic 50% result.`,
+          "The confidence intervals still matter. They describe uncertainty around the observed share in this stopped-only sample. They cannot repair selection bias, combine renamed corporate entities, or make unlike portfolios directly comparable.",
+        ],
+      },
+      {
+        heading: "A portfolio-mix adjustment changes the context again",
+        body: [
+          "For each sponsor, I calculated an expected biological-signal count by assigning every stopped record the overall signal rate for its exact phase and disease-area stratum, then summing those expectations. This asks what the count would look like if the sponsor matched the dataset average within that coarse portfolio mix.",
+          comparison
+            ? `${comparison.sponsor}, for example, has ${n(comparison.biologicalCount)} observed biological signals versus ${comparison.expectedBiologicalCount.toFixed(1)} expected from its phase-and-area mix. The observed/expected ratio is ${comparison.observedExpectedRatio}.`
+            : "The resulting observed/expected ratio shows how much basic portfolio composition changes the context.",
+          "This is descriptive standardization, not risk adjustment. It does not control intervention novelty, target difficulty, trial size, sponsor strategy, calendar period, acquisitions, reporting behavior, or the amount of missing stop-reason evidence.",
+        ],
+      },
+      {
+        heading: "Why the adjusted number is still not a score",
+        body: [
+          "A high biological-signal share can coexist with an ambitious or late-stage portfolio. A low share can coexist with many recruitment, funding, business, or not-initiated stops. Neither pattern alone measures scientific judgment, operational quality, patient benefit, or company performance.",
+          "Registry sponsor names are also labels, not a fully consolidated corporate genealogy. Subsidiaries, acquired companies, academic centers, government institutes, and commercial sponsors can appear as separate entities with fundamentally different mandates.",
+        ],
+      },
+      {
+        heading: "The responsible use is profile comparison",
+        body: [
+          "Sponsor pages are useful for asking narrower questions: Which stop reasons dominate? Which phases and disease areas contribute the records? Are the source reasons explicit? Which individual NCT records should be reviewed?",
+          "They are not suitable for a single best-to-worst ranking. The defensible output is a transparent portfolio profile with links back to source evidence—not a league table labeled failure rate.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Largest sponsor portfolios in the stopped-trial dataset",
+        columns: ["Sponsor label", "Stopped records"],
+        rows: topVolume.map((profile) => [profile.sponsor, n(profile.total)]),
+      },
+      {
+        heading: "The denominator changes the comparison",
+        columns: ["Sponsor label", "Biological signals among stopped records"],
+        rows: topVolume.map((profile) => [
+          profile.sponsor,
+          `${n(profile.biologicalCount)} of ${n(profile.total)} (${profile.biologicalShare}); 95% CI ${profile.confidenceLow}–${profile.confidenceHigh}`,
+        ]),
+      },
+      {
+        heading: "Phase-and-disease-area portfolio context",
+        columns: ["Sponsor label", "Observed versus expected signals"],
+        rows: topVolume.map((profile) => [
+          profile.sponsor,
+          `${n(profile.biologicalCount)} observed; ${profile.expectedBiologicalCount.toFixed(1)} expected; ratio ${profile.observedExpectedRatio}`,
+        ]),
+      },
+    ],
+    links: [
+      {
+        href: "/sponsors",
+        label: "Browse sponsor evidence profiles",
+        text: "Compare stop reasons, phases, disease areas, and source-linked trial records without reducing them to one score.",
+      },
+      ...(first ? [{
+        href: first.href,
+        label: `${first.sponsor} profile`,
+        text: "Inspect the largest stopped-record portfolio in the current sponsor cohort.",
+      }] : []),
+      ...(comparison ? [{
+        href: comparison.href,
+        label: `${comparison.sponsor} profile`,
+        text: "Review a similarly large portfolio with a different biological-signal composition.",
+      }] : []),
+      ...(otherComparison ? [{
+        href: otherComparison.href,
+        label: `${otherComparison.sponsor} profile`,
+        text: "See how stop-reason and portfolio mix differ within another high-volume sponsor label.",
+      }] : []),
+      {
+        href: "/methods",
+        label: "Read the classification method",
+        text: "Understand the evidence policy behind biological, non-biological, transition, and unresolved outcomes.",
+      },
+    ],
+    faqs: [
+      {
+        question: "Which sponsor has the highest clinical trial failure rate?",
+        answer: "This stopped-trial dataset cannot answer that question. A failure rate requires a complete denominator of eligible trials, including studies that completed, succeeded, remain ongoing, or fall outside this dataset.",
+      },
+      {
+        question: "Does the sponsor with the most stopped trials perform worst?",
+        answer: `No. Among the minimum-cohort sponsors, stopped-record volume and biological-signal share have a linear correlation of only ${correlation}. Volume mainly describes database exposure and portfolio size.`,
+      },
+      {
+        question: `Why require at least ${n(sponsorStats.minimumRecords)} records?`,
+        answer: "The threshold reduces extreme percentages caused by tiny denominators and makes confidence intervals more useful. It does not remove selection bias or make unlike sponsors directly comparable.",
+      },
+      {
+        question: "What does the observed/expected ratio mean?",
+        answer: "It compares observed biological signals with a coarse expectation based on the dataset-wide rate for each exact phase and disease-area combination in that sponsor's stopped records. It is a context measure, not a quality score.",
+      },
+    ],
+  };
+}
+
 function hydrateCountryScaleArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const country = stats.countryScaleSignals;
   const band = (key: string) => country.bands.find((item) => item.key === key) || {
@@ -3920,6 +4102,9 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "stopped-trial-volume-not-sponsor-failure-rate") {
+    return hydrateSponsorPortfolioArticle(article, stats);
+  }
   if (article.slug === "multinational-stopped-trials-biological-failure-signals") {
     return hydrateCountryScaleArticle(article, stats);
   }
