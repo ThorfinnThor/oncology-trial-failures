@@ -3,6 +3,7 @@ import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import { staticRobotsForPath } from "@/lib/seoStaticPolicy";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "Contact | Clinical Trial Failures";
@@ -45,7 +46,7 @@ export default function ContactPage() {
       <Head>
         <title>{TITLE}</title>
         <meta name="description" content={DESCRIPTION} />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content={staticRobotsForPath("/contact")} />
         <link rel="canonical" href={CANONICAL_URL} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />

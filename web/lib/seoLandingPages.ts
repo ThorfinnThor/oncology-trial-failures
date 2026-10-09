@@ -1147,6 +1147,55 @@ function hydrateEnrollmentFailurePage(page: SeoLandingPageConfig, stats: Insight
   };
 }
 
+function hydrateClinicalTrialFutilityPage(page: SeoLandingPageConfig, stats: InsightStats): SeoLandingPageConfig {
+  const efficacy = stats.signalComparison.efficacy;
+  const leadingPhase = efficacy.phases[0];
+  const leadingArea = efficacy.topAreas[0];
+
+  return {
+    ...page,
+    title: `Clinical Trial Futility: ${fmt(efficacy.total)} Source-Linked Signals`,
+    metaDescription: `Understand clinical trial futility through ${fmt(efficacy.total)} current efficacy and futility records, with phase, status, disease-area, and source-linked NCT evidence.`,
+    h1: "Clinical trial futility: a decision under uncertainty",
+    lede:
+      "Futility can stop a study when accumulating evidence suggests that continuing is unlikely to achieve its planned objective. The important question is not whether a record contains the word futility, but what evidence and decision rule the source actually describes.",
+    quickAnswer: `The current evidence slice contains ${fmt(efficacy.total)} efficacy/futility-classified stopped records. Most are terminated, but the underlying language ranges from explicit interim futility decisions to insufficient activity or a failed endpoint, so the NCT source still determines what can be inferred.`,
+    keyPoints: [
+      "Explicit statistical futility is stronger evidence than a broad program decision with no endpoint detail.",
+      "A futility decision applies to a trial's design, endpoint, population, dose, and information available at the analysis.",
+      "The registry statement is a screening source; protocols, results, and sponsor disclosures provide the deeper context.",
+    ],
+    dataInsights: page.dataInsights
+      ? {
+          ...page.dataInsights,
+          heading: "Where efficacy and futility signals appear",
+          intro: `The current classifier identifies ${fmt(efficacy.total)} stopped records with efficacy or futility evidence. The distributions locate those records; they do not estimate a phase-wide or disease-wide probability of failure.`,
+          sourceNote:
+            "Counts are generated from the current ClinicalTrials.gov-derived dataset. Each example reproduces the current compact registry stop language and links to the site's source-backed NCT record.",
+          metrics: [
+            { label: "Efficacy / futility records", value: fmt(efficacy.total), detail: "Current records classified from efficacy, endpoint, insufficient-activity, or futility evidence." },
+            { label: "Terminated", value: fmt(efficacy.statuses.TERMINATED || 0), detail: `${share(efficacy.statuses.TERMINATED || 0, efficacy.total)} of this evidence slice.` },
+            { label: "Largest phase slice", value: `${fmt(leadingPhase?.count || 0)} ${leadingPhase?.label || "Phase II"}`, detail: "A count among stopped records, not a clinical development failure rate." },
+          ],
+          distributions: [
+            {
+              heading: "Registry status",
+              items: [
+                { label: "Terminated", value: fmt(efficacy.statuses.TERMINATED || 0) },
+                { label: "Withdrawn", value: fmt(efficacy.statuses.WITHDRAWN || 0) },
+                { label: "Suspended", value: fmt(efficacy.statuses.SUSPENDED || 0) },
+              ],
+            },
+            {
+              heading: `Leading disease areas · ${leadingArea?.label || "current data"}`,
+              items: efficacy.topAreas.slice(0, 5).map((item) => ({ label: item.label, value: fmt(item.count) })),
+            },
+          ],
+        }
+      : page.dataInsights,
+  };
+}
+
 const V2_OUTCOME_LABELS: Record<string, string> = {
   NON_BIOLOGICAL: "Non-biological stop",
   UNKNOWN: "Review-gated / unknown",
@@ -1340,6 +1389,9 @@ export function hydrateSeoLandingPage(page: SeoLandingPageConfig, stats: Insight
   }
   if (page.slug === "/clinical-trial-enrollment-failure") {
     return hydrateEnrollmentFailurePage(hydrated, stats);
+  }
+  if (page.slug === "/clinical-trial-futility") {
+    return hydrateClinicalTrialFutilityPage(hydrated, stats);
   }
   return hydrated;
 }

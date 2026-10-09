@@ -90,6 +90,23 @@ test("thin-content noindex is reportable and uses the same safe 200/noindex plan
   assert.equal(planned.editorialStatus, "improve");
 });
 
+test("the reviewed static pruning decisions are registered and unprotected", () => {
+  const decisions = [
+    ["/explore", "NOINDEX_UTILITY"],
+    ["/asset-check", "NOINDEX_UTILITY"],
+    ["/newsletter", "NOINDEX_UTILITY"],
+    ["/contact", "NOINDEX_UTILITY"],
+    ["/sponsor-insights", "NOINDEX_THIN_CONTENT"],
+  ];
+
+  for (const [url, decision] of decisions) {
+    const approval = approvedDecisionForUrl(url);
+    assert.equal(approval?.decision, decision);
+    assert.equal(approval?.protected, false);
+    assert.equal(approval?.reviewer, "Sol");
+  }
+});
+
 test("recovered-evidence trial is approved to return to indexable output", () => {
   const url = "/trial/NCT01965600-a-study-to-evaluate-the-safety-and-effects-on-the-body-of-an-investigational-dru";
   const current: SeoIndexingState = {

@@ -74,3 +74,21 @@ export function resolveTrialStopEvidence(
 
   return { text: "", source: "missing", placeholder };
 }
+
+/**
+ * A trial page should only remain eligible for search when it has both a usable
+ * source-backed stop explanation and enough study identity to stand alone.
+ * This is deliberately independent from outcome classification: a biological
+ * label cannot make an otherwise empty template index-worthy.
+ */
+export function hasIndexableTrialSearchEvidence(trial: TrialIndexRow): boolean {
+  const stopEvidence = resolveTrialStopEvidence(trial);
+  return Boolean(
+    stopEvidence.text &&
+      clean(trial.brief_title) &&
+      clean(trial.url) &&
+      clean(trial.condition_first || trial.conditions) &&
+      clean(trial.intervention_first || trial.intervention_names) &&
+      clean(trial.classification_final_explanation)
+  );
+}

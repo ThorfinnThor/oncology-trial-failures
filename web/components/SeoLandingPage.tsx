@@ -11,6 +11,7 @@ type SeoLandingPageProps = {
 
 export default function SeoLandingPage({ page }: SeoLandingPageProps) {
   const canonicalUrl = `${SITE_URL}${page.slug}`;
+  const isFutilityGuide = page.slug === "/clinical-trial-futility";
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -146,6 +147,35 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
             </div>
           </section>
 
+          {isFutilityGuide ? (
+            <section className="seoSection futilityStory" aria-labelledby="futility-story-title">
+              <div className="seoContainer">
+                <div className="futilityStoryHeader">
+                  <p className="seoEyebrow">From wording to interpretation</p>
+                  <h2 id="futility-story-title">Three questions make a futility record useful</h2>
+                  <p>Futility is not one uniform event. Read the registered wording, identify the decision it supports, and only then compare the record with the wider dataset.</p>
+                </div>
+                <ol className="futilitySteps">
+                  <li>
+                    <span>01</span>
+                    <div><h3>What does the source actually say?</h3><p>Explicit statistical futility, limited activity, and failure to meet an endpoint carry different levels of detail. Preserve that wording instead of flattening all three into “the drug failed.”</p></div>
+                  </li>
+                  <li>
+                    <span>02</span>
+                    <div><h3>What decision followed?</h3><p>An interim analysis may support stopping the current study, while a program-level decision may also reflect dose, population, competition, or development strategy.</p></div>
+                  </li>
+                  <li>
+                    <span>03</span>
+                    <div><h3>What remains uncertain?</h3><p>A futility stop is specific to the design and information available at that moment. It does not automatically invalidate a mechanism in every indication or regimen.</p></div>
+                  </li>
+                </ol>
+                <div className="futilityBoundary">
+                  <strong>Interpretation boundary</strong>
+                  <p>The database identifies evidence-bearing records. It does not replace the protocol, statistical analysis plan, results publication, or sponsor and regulatory disclosures.</p>
+                </div>
+              </div>
+            </section>
+          ) : (
           <section className="seoSection">
             <div className="seoContainer seoContentGrid">
               <article className="seoArticle">
@@ -179,6 +209,7 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
               </aside>
             </div>
           </section>
+          )}
 
           {page.dataInsights ? (
             <section className="seoSection seoDataSection">
@@ -216,7 +247,7 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
                 </div>
 
                 <div className="seoExamples">
-                  <h3>Example records to verify</h3>
+                  <h3>{isFutilityGuide ? "Three different evidence statements" : "Example records to verify"}</h3>
                   <div className="seoExampleGrid">
                     {page.dataInsights.examples.map((example) => (
                       <article className="seoExampleCard" key={example.nctId}>
@@ -640,6 +671,82 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
         :global(.seoPage .navlink:focus-visible) {
           text-decoration: underline;
         }
+        .futilityStory {
+          background: #fff;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        .futilityStoryHeader {
+          display: grid;
+          grid-template-columns: minmax(240px, 0.72fr) minmax(0, 1.28fr);
+          gap: 14px 34px;
+          align-items: end;
+        }
+        .futilityStoryHeader .seoEyebrow {
+          grid-column: 1 / -1;
+          margin-bottom: 0;
+        }
+        .futilityStoryHeader h2 {
+          margin: 0;
+        }
+        .futilityStoryHeader > p:last-child {
+          margin: 0;
+          color: #475569;
+        }
+        .futilitySteps {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 1px;
+          margin: 24px 0 0;
+          padding: 0;
+          border: 1px solid #d8e2f1;
+          border-radius: 13px;
+          overflow: hidden;
+          background: #d8e2f1;
+          list-style: none;
+        }
+        .futilitySteps li {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 12px;
+          align-items: start;
+          background: #f8fafc;
+          padding: 20px;
+        }
+        .futilitySteps li > span {
+          display: grid;
+          width: 34px;
+          height: 34px;
+          place-items: center;
+          border-radius: 50%;
+          background: #0f172a;
+          color: #fff;
+          font-size: 11px;
+          font-weight: 900;
+        }
+        .futilitySteps h3 {
+          margin: 3px 0 7px;
+          color: #0f172a;
+        }
+        .futilitySteps p {
+          color: #475569;
+          font-size: 14px;
+          line-height: 1.62;
+        }
+        .futilityBoundary {
+          display: grid;
+          grid-template-columns: minmax(160px, 0.35fr) minmax(0, 1.65fr);
+          gap: 20px;
+          margin-top: 18px;
+          border-left: 4px solid #b7791f;
+          padding: 10px 0 10px 16px;
+        }
+        .futilityBoundary strong {
+          color: #8a5613;
+          text-transform: uppercase;
+        }
+        .futilityBoundary p {
+          color: #475569;
+        }
         @media (max-width: 900px) {
           .seoHeroGrid,
           .seoContentGrid,
@@ -649,6 +756,14 @@ export default function SeoLandingPage({ page }: SeoLandingPageProps) {
           .seoRelatedGrid,
           .seoFaqGrid {
             grid-template-columns: 1fr;
+          }
+          .futilityStoryHeader,
+          .futilitySteps {
+            grid-template-columns: 1fr;
+          }
+          .futilityBoundary {
+            grid-template-columns: 1fr;
+            gap: 6px;
           }
           .seoAside {
             position: static;

@@ -11,6 +11,7 @@ import {
   phaseHubPathFromLabel,
   SITE_URL,
   trialListItem,
+  type SponsorEditorialInsight,
   type SponsorEvidenceStats,
 } from "@/lib/seoHubs";
 import type { DatasetMeta, TrialIndexRow } from "@/lib/types";
@@ -27,6 +28,7 @@ type SponsorEvidencePageProps = {
   hub: SponsorMeta;
   rows: TrialIndexRow[];
   stats: SponsorEvidenceStats;
+  editorial?: SponsorEditorialInsight | null;
   datasetMeta: DatasetMeta;
 };
 
@@ -36,7 +38,7 @@ function percent(part: number, total: number): string {
   return `${value < 10 ? value.toFixed(1) : value.toFixed(0)}%`;
 }
 
-export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: SponsorEvidencePageProps) {
+export default function SponsorEvidencePage({ hub, rows, stats, editorial, datasetMeta }: SponsorEvidencePageProps) {
   const canonicalUrl = `${SITE_URL}${hub.path}`;
   const items = displayHubRows(rows).map(trialListItem);
   const exploreHref = `/explore?sponsor=${encodeURIComponent(hub.label)}`;
@@ -194,6 +196,27 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
               </p>
             </section>
 
+            {editorial ? (
+              <section className="portfolioStory" aria-labelledby="portfolio-story-title">
+                <div className="portfolioStoryIntro">
+                  <p className="facet-title">Portfolio evidence, not a league table</p>
+                  <h2 id="portfolio-story-title">{editorial.title}</h2>
+                  <p>{editorial.intro}</p>
+                </div>
+                <div className="portfolioLenses">
+                  {editorial.lenses.map((lens, index) => (
+                    <article key={lens.nctId}>
+                      <div className="portfolioLensMeta"><span>Lens {index + 1}</span><strong>{lens.label}</strong></div>
+                      <h3><Link className="portfolioLensLink" href={lens.href}>{lens.nctId}: {lens.title}</Link></h3>
+                      <p className="portfolioInterpretation">{lens.interpretation}</p>
+                      <blockquote>{lens.reason}</blockquote>
+                    </article>
+                  ))}
+                </div>
+                <p className="portfolioLimitation"><strong>Limit:</strong> {editorial.limitation}</p>
+              </section>
+            ) : null}
+
             <EvidenceStandard datasetVersion={datasetMeta.version} latestRegistryUpdate={stats.latestRegistryUpdate} source={datasetMeta.source} />
 
             <section className="evidenceGrid">
@@ -308,6 +331,21 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
         .interpretationBand { display: grid; grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr); gap: 34px; align-items: start; margin: 28px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 2px; }
         .interpretationBand h2 { margin: 5px 0 0; font-size: 24px; line-height: 1.2; }
         .interpretationBand > p { margin: 0; color: var(--text-muted); line-height: 1.72; }
+        .portfolioStory { margin: 0 0 14px; border: 1px solid #d8e2f1; border-radius: 12px; background: linear-gradient(145deg, #ffffff 0%, #f6f8fc 100%); padding: 26px; }
+        .portfolioStoryIntro { max-width: 800px; }
+        .portfolioStoryIntro h2 { margin: 5px 0 10px; font-size: 27px; line-height: 1.18; }
+        .portfolioStoryIntro > p:last-child { margin: 0; color: var(--text-muted); line-height: 1.7; }
+        .portfolioLenses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 22px; }
+        .portfolioLenses article { display: flex; min-width: 0; flex-direction: column; border: 1px solid var(--border); border-top: 4px solid #496da8; border-radius: 10px; background: #fff; padding: 17px; }
+        .portfolioLenses article:nth-child(2) { border-top-color: #c18124; }
+        .portfolioLenses article:nth-child(3) { border-top-color: #a34d60; }
+        .portfolioLensMeta { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; color: var(--text-muted); font-size: 11px; text-transform: uppercase; }
+        .portfolioLensMeta strong { color: var(--text); }
+        .portfolioLenses h3 { margin: 13px 0 0; font-size: 16px; line-height: 1.38; }
+        :global(.portfolioLensLink) { color: var(--accent); }
+        .portfolioInterpretation { margin: 10px 0 0; color: var(--text-muted); line-height: 1.58; }
+        .portfolioLenses blockquote { margin: 14px 0 0; border-left: 3px solid #d7dfeb; padding-left: 12px; color: #39485d; font-size: 13px; line-height: 1.55; }
+        .portfolioLimitation { margin: 20px 0 0; border-top: 1px solid var(--border); padding-top: 14px; color: var(--text-muted); font-size: 13px; line-height: 1.55; }
         .evidenceGrid, .contextGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
         .contextGrid { margin-top: 14px; }
         .evidenceCard { padding: 22px; }
@@ -332,6 +370,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
         @media (max-width: 900px) {
           .heroSection { grid-template-columns: 1fr; padding: 24px; }
           .metricGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .portfolioLenses { grid-template-columns: 1fr; }
         }
         @media (max-width: 640px) {
           .sponsorPage { padding-top: 18px; padding-bottom: 34px; }
@@ -344,6 +383,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, datasetMeta }: S
           .metricGrid, .evidenceGrid, .contextGrid, .interpretationBand { grid-template-columns: 1fr; }
           .metricCard { min-height: 128px; }
           .interpretationBand { gap: 12px; margin: 22px 0; }
+          .portfolioStory { padding: 19px; }
           .recordsSection { padding: 19px; }
           .sectionHeader { align-items: stretch; flex-direction: column; }
           .sectionHeader :global(.sevBtn) { justify-content: center; }

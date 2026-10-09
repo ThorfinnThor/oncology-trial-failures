@@ -12,6 +12,13 @@ const profileName = profileArgument?.slice("--profile=".length) || "report";
 
 const RECOVERED_EVIDENCE_URL =
   "https://clinicaltrialfailures.com/trial/NCT01965600-a-study-to-evaluate-the-safety-and-effects-on-the-body-of-an-investigational-dru";
+const STATIC_UTILITY_NOINDEX_URLS = new Set([
+  "https://clinicaltrialfailures.com/explore",
+  "https://clinicaltrialfailures.com/asset-check",
+  "https://clinicaltrialfailures.com/newsletter",
+  "https://clinicaltrialfailures.com/contact",
+]);
+const STATIC_THIN_NOINDEX_URL = "https://clinicaltrialfailures.com/sponsor-insights";
 
 const profiles = {
   report: {
@@ -62,7 +69,7 @@ if (config.decisionVersion !== "luna-approval-v2") {
   fail(`expected decision version luna-approval-v2, found ${config.decisionVersion}`);
 }
 if (config.defaultMode !== "report") fail(`expected report default, found ${config.defaultMode}`);
-if (decisions.length !== 31) fail(`expected 31 reviewed decisions, found ${decisions.length}`);
+if (decisions.length !== 36) fail(`expected 36 reviewed decisions, found ${decisions.length}`);
 
 const urls = new Set();
 for (const decision of decisions) {
@@ -77,7 +84,27 @@ for (const decision of decisions) {
 }
 
 const noindexThin = decisions.filter((decision) => decision.decision === "NOINDEX_THIN_CONTENT");
-if (noindexThin.length !== 0) fail(`expected no thin-content noindex decisions after evidence recovery, found ${noindexThin.length}`);
+if (
+  noindexThin.length !== 1 ||
+  noindexThin[0].url !== STATIC_THIN_NOINDEX_URL ||
+  noindexThin[0].pageType !== "static_reference" ||
+  noindexThin[0].protected
+) {
+  fail("expected exactly the reviewed sponsor-insights thin-content noindex decision");
+}
+
+const noindexUtility = decisions.filter((decision) => decision.decision === "NOINDEX_UTILITY");
+if (
+  noindexUtility.length !== STATIC_UTILITY_NOINDEX_URLS.size ||
+  noindexUtility.some(
+    (decision) =>
+      !STATIC_UTILITY_NOINDEX_URLS.has(decision.url) ||
+      decision.pageType !== "static_reference" ||
+      decision.protected
+  )
+) {
+  fail("expected exactly the four reviewed static utility noindex decisions");
+}
 
 const improveIndex = decisions.filter((decision) => decision.decision === "IMPROVE_INDEX");
 if (improveIndex.length !== 21) fail(`expected 21 IMPROVE_INDEX decisions, found ${improveIndex.length}`);
@@ -89,7 +116,7 @@ if (recoveredEvidence?.role !== "evidence_recovery" || recoveredEvidence.protect
   fail("NCT01965600 must be an unprotected evidence_recovery IMPROVE_INDEX decision");
 }
 
-for (const disallowed of ["NOINDEX_UTILITY", "CANONICAL_DUPLICATE", "MERGE_REDIRECT", "REMOVE"]) {
+for (const disallowed of ["CANONICAL_DUPLICATE", "MERGE_REDIRECT", "REMOVE"]) {
   if (countBy(decisions, disallowed) !== 0) {
     fail(`${disallowed} is outside this release scope`);
   }
@@ -108,7 +135,7 @@ if (profileName === "trial-quality-release") {
 }
 
 console.log(`SEO release profile '${profileName}' is ready.`);
-console.log(`Decision scope: ${decisions.length} reviewed URLs; 0 thin-content noindex; 21 improve-only URLs.`);
+console.log(`Decision scope: ${decisions.length} reviewed URLs; 1 thin-content noindex; 4 utility noindex; 21 improve-only URLs.`);
 console.log(`Recovered evidence URL: ${RECOVERED_EVIDENCE_URL}`);
 console.log("Exact feature settings:");
 for (const [name, value] of Object.entries(profile)) console.log(`  ${name}=${value}`);

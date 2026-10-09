@@ -116,6 +116,33 @@ export default function DataReferencePage(props: ReferencePageProps) {
               </div>
             </header>
 
+            {props.statusGuide ? (
+              <section className="statusReading" aria-labelledby="status-reading-title">
+                <div className="statusReadingIntro">
+                  <p className="facet-title">A two-step reading rule</p>
+                  <h2 id="status-reading-title">Status tells you what happened; evidence helps explain why.</h2>
+                </div>
+                <ol className="statusSteps">
+                  {props.statusGuide.steps.map((step) => (
+                    <li key={step.label}>
+                      <span>{step.label}</span>
+                      <h3>{step.heading}</h3>
+                      <p>{step.body}</p>
+                    </li>
+                  ))}
+                </ol>
+                <div className="statusCaseStrip" aria-label="Contrasting stopped-trial status examples">
+                  {props.statusGuide.examples.map((example) => (
+                    <article key={example.nctId}>
+                      <span>{example.category}</span>
+                      <Link href={example.href}>{example.nctId}</Link>
+                      <p>{compactReason(example.reason)}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
             <section className="referenceTableSection" aria-labelledby="reference-table-title">
               <div className="referenceSectionHeading">
                 <div>
@@ -256,6 +283,22 @@ export default function DataReferencePage(props: ReferencePageProps) {
         .referenceAnswer { margin-top: 21px; border-left: 4px solid var(--accent); padding: 3px 0 3px 16px; }
         .referenceAnswer strong { font-size: 13px; text-transform: uppercase; }
         .referenceAnswer p { margin: 6px 0 0; line-height: 1.6; }
+        .statusReading { margin-top: 24px; border: 1px solid #d6deea; border-radius: 12px; background: #17202d; color: #fff; padding: 26px; }
+        .statusReadingIntro { display: grid; grid-template-columns: minmax(220px, .65fr) minmax(0, 1.35fr); gap: 28px; align-items: end; }
+        .statusReadingIntro .facet-title { color: #9fb1ca; }
+        .statusReadingIntro h2 { margin: 0; color: #fff; font-size: clamp(1.6rem, 3vw, 2.35rem); line-height: 1.12; }
+        .statusSteps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 24px 0 0; padding: 0; background: #435064; list-style: none; }
+        .statusSteps li { background: #202b3a; padding: 20px; }
+        .statusSteps span { color: #aebdd0; font-size: 11px; font-weight: 850; text-transform: uppercase; }
+        .statusSteps h3 { margin: 9px 0 0; color: #fff; font-size: 18px; }
+        .statusSteps p { margin: 8px 0 0; color: #c8d3e2; line-height: 1.6; }
+        .statusCaseStrip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 18px; }
+        .statusCaseStrip article { border-top: 3px solid #d39a35; background: #f8fafc; padding: 15px; color: var(--text); }
+        .statusCaseStrip article:nth-child(2) { border-top-color: #5d7f9f; }
+        .statusCaseStrip article:nth-child(3) { border-top-color: #a85d70; }
+        .statusCaseStrip span { display: block; color: var(--text-muted); font-size: 10px; font-weight: 850; text-transform: uppercase; }
+        .statusCaseStrip a { display: inline-block; margin-top: 8px; color: var(--accent); font-weight: 900; }
+        .statusCaseStrip p { margin: 8px 0 0; color: var(--text-muted); font-size: 13px; line-height: 1.5; }
         .referenceSummary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-content: stretch; }
         .referenceSummary div { display: flex; min-width: 0; flex-direction: column; justify-content: flex-start; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); padding: 14px; }
         .referenceSummary span { color: var(--text-muted); font-size: 11px; font-weight: 900; text-transform: uppercase; }
@@ -303,6 +346,7 @@ export default function DataReferencePage(props: ReferencePageProps) {
         @media (max-width: 900px) {
           .referenceHero { grid-template-columns: 1fr; }
           .referenceSectionHeading, .referenceMethod { grid-template-columns: 1fr; gap: 10px; }
+          .statusReadingIntro, .statusSteps, .statusCaseStrip { grid-template-columns: 1fr; }
           .referenceExampleGrid, .referenceFaqGrid, .referenceRelated > div { grid-template-columns: 1fr; }
           .referenceExampleGrid article { min-height: 0; }
         }

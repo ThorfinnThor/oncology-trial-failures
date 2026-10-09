@@ -60,12 +60,12 @@ test("ophthalmology editorial insight uses the current hub data", () => {
   );
 });
 
-test("editorial insight remains isolated to the ophthalmology area hub", () => {
+test("editorial insight remains limited to the reviewed recovery hubs", () => {
   const rows = [row("NCT00000001", "BIOLOGICAL_FAILURE", "SAFETY", "2026-01-01")];
   const stats = hubStats(rows);
   const otherArea = { ...ophthalmologyHub(rows), slug: "oncology", label: "Oncology" };
   const phaseHub = { ...ophthalmologyHub(rows), kind: "phase" as const, slug: "phase-2" };
 
   assert.equal(buildHubEditorialInsight(otherArea, stats), null);
-  assert.equal(buildHubEditorialInsight(phaseHub, stats), null);
+  assert.equal(buildHubEditorialInsight(phaseHub, stats)?.variant, "phase-two-lanes");
 });

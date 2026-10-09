@@ -34,7 +34,7 @@ test("final classification overrides conflicting V2 and legacy fields", () => {
   assert.equal(isResolvedBiologicalFailure(row), false);
 });
 
-test("an authoritative final unresolved state never falls back to an older biological label", () => {
+test("an authoritative final unresolved state never falls back to an older biological label or stays indexable without evidence", () => {
   const row: TrialDetail = {
     nct_id: "NCT00000002",
     brief_title: "Sparse stopped trial",
@@ -53,7 +53,7 @@ test("an authoritative final unresolved state never falls back to an older biolo
   assert.equal(classificationReasonBucket(row), "OTHER/UNKNOWN");
   assert.equal(reasonBucket(row), "OTHER/UNKNOWN");
   assert.equal(isLikelyScientificFailure(row), false);
-  assert.equal(isIndexableTrial(row), true, "legacy SEO eligibility remains until URL-level approval");
+  assert.equal(isIndexableTrial(row), false, "a sparse unresolved trial must not stay indexable");
   assert.match(buildTrialSeoMetadata(row, row.nct_id).description, /review required/i);
 });
 
@@ -76,12 +76,18 @@ test("cause-not-stated and legacy records resolve deterministically", () => {
   assert.equal(isResolvedBiologicalFailure(legacy), true);
 });
 
-test("resolved rows agree while unresolved SEO eligibility stays release-compatible", () => {
+test("resolved rows agree while trial SEO eligibility also requires source-backed page evidence", () => {
   const rows: TrialIndexRow[] = [
     {
       nct_id: "NCT00000005",
+      brief_title: "Evidence-backed stopped trial",
+      url: "https://clinicaltrials.gov/study/NCT00000005",
+      condition_first: "Example condition",
+      intervention_first: "Example intervention",
+      why_stopped_short: "The study did not meet its prespecified efficacy threshold.",
       classification_final_outcome: "BIOLOGICAL_FAILURE",
       classification_final_category: "SAFETY",
+      classification_final_explanation: "The registry records a biological efficacy or safety signal.",
       classification_resolution_status: "RESOLVED",
     },
     {

@@ -1,8 +1,9 @@
 {
-  "snapshotDate": "2026-10-06",
+  "snapshotDate": "2026-10-09",
   "sourceFiles": {
     "trial": "web/pages/trial/[trialId].tsx",
     "trialPredicate": "web/lib/seoHubs.ts:isIndexableTrial",
+    "staticPolicy": "web/lib/seoStaticPolicy.ts",
     "failureHub": "web/components/SeoHubPage.tsx",
     "sponsorHub": "web/components/SponsorEvidencePage.tsx",
     "sitemap": "web/pages/sitemap.xml.tsx",
@@ -26,10 +27,24 @@
     },
     {
       "pattern": "/trial/[trialId]",
-      "robots": "index,follow when isIndexableTrial(row); otherwise noindex,follow",
+      "robots": "index,follow only when the biological-signal predicate and source-backed search-evidence gate both pass; otherwise noindex,follow",
       "canonical": "generated trialPath(row)",
       "sitemap": "included when indexableTrialRows(rows) contains the row",
-      "decisionOwner": "classification predicate; no registry override"
+      "decisionOwner": "classification plus evidence predicate; reviewed URL decisions remain separate"
+    },
+    {
+      "pattern": "/explore, /asset-check, /newsletter, /contact",
+      "robots": "noindex,follow",
+      "canonical": "self",
+      "sitemap": "excluded",
+      "decisionOwner": "reviewed static utility policy"
+    },
+    {
+      "pattern": "/sponsor-insights",
+      "robots": "noindex,follow",
+      "canonical": "self",
+      "sitemap": "excluded",
+      "decisionOwner": "reviewed static thin-content policy"
     },
     {
       "pattern": "/compare",
@@ -47,8 +62,8 @@
     }
   ],
   "limitations": [
-    "This is an observed source snapshot, not an approved URL registry.",
+    "The static policy is deliberately limited to the five reviewed paths listed above.",
     "Google-selected canonicals and actual index status are separate measurement fields.",
-    "No mass directive change is authorized by this file."
+    "No broad or pattern-based mass deindexing is authorized by this file."
   ]
 }

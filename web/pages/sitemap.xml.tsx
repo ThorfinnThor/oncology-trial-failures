@@ -8,6 +8,7 @@ import { latestBriefSitemapLastmod, selectBriefSitemapEntries } from "@/lib/brie
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "@/lib/seoHubs";
 import { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } from "@/lib/insights";
 import { readSeoIndexingFeatures, resolveSeoIndexingPolicy } from "@/lib/seoIndexingPolicy";
+import { includeStaticPathInSitemap } from "@/lib/seoStaticPolicy";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 
@@ -106,7 +107,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     .filter((entry) => entry.include);
 
   const urls = [
-    ...dataDrivenPaths.map((path) => ({
+    ...dataDrivenPaths.filter(includeStaticPathInSitemap).map((path) => ({
       loc: `${SITE_URL}${path}`,
       lastmod: path === "/briefs" ? latestBriefLastmod : lastmod,
     })),
@@ -114,7 +115,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       loc: `${SITE_URL}${entry.path}`,
       lastmod: toIsoDate(entry.lastmod, lastmod),
     })),
-    ...stableInformationPaths.map((path) => ({
+    ...stableInformationPaths.filter(includeStaticPathInSitemap).map((path) => ({
       loc: `${SITE_URL}${path}`,
       lastmod: undefined,
     })),

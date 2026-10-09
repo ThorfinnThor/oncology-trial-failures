@@ -7,6 +7,7 @@ import { loadIndex, loadMeta } from "@/lib/data";
 import { DatasetMeta, TrialIndexRow, UrlState } from "@/lib/types";
 import { encodeState } from "@/lib/urlState";
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
+import { staticRobotsForPath } from "@/lib/seoStaticPolicy";
 import PrimaryNav from "@/components/PrimaryNav";
 
 const TITLE = "Sponsor insights for stopped clinical trials | Clinical Trial Failures";
@@ -21,7 +22,7 @@ function SponsorInsightsSeoHead() {
     <Head>
       <title>{TITLE}</title>
       <meta name="description" content={DESCRIPTION} />
-      <meta name="robots" content="index,follow" />
+      <meta name="robots" content={staticRobotsForPath("/sponsor-insights")} />
       <link rel="canonical" href={CANONICAL_URL} />
       <meta property="og:title" content={TITLE} />
       <meta property="og:description" content={DESCRIPTION} />

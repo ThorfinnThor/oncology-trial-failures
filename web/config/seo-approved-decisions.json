@@ -375,6 +375,66 @@
       "reviewer": "Luna",
       "reviewedAt": "2026-10-07",
       "replacementUrl": null
+    },
+    {
+      "urlId": "url_eda4148a0f9f",
+      "url": "https://clinicaltrialfailures.com/explore",
+      "pageType": "static_reference",
+      "role": "utility_pruning",
+      "decision": "NOINDEX_UTILITY",
+      "reason": "Interactive filtering state is a product utility rather than a durable search answer; keep links crawlable and direct search traffic to the richer topic and evidence pages.",
+      "protected": false,
+      "reviewer": "Sol",
+      "reviewedAt": "2026-10-09",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_b70c1157c92e",
+      "url": "https://clinicaltrialfailures.com/asset-check",
+      "pageType": "static_reference",
+      "role": "utility_pruning",
+      "decision": "NOINDEX_UTILITY",
+      "reason": "The page is an input-driven checker whose useful result only exists after interaction; its standalone indexed text is not an independent evidence destination.",
+      "protected": false,
+      "reviewer": "Sol",
+      "reviewedAt": "2026-10-09",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_5b8be1362154",
+      "url": "https://clinicaltrialfailures.com/newsletter",
+      "pageType": "static_reference",
+      "role": "utility_pruning",
+      "decision": "NOINDEX_UTILITY",
+      "reason": "The page is a subscription conversion flow, not a stable search answer; preserve followable navigation while excluding the form landing page from search.",
+      "protected": false,
+      "reviewer": "Sol",
+      "reviewedAt": "2026-10-09",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_bc1accb719dd",
+      "url": "https://clinicaltrialfailures.com/sponsor-insights",
+      "pageType": "static_reference",
+      "role": "thin_content_pruning",
+      "decision": "NOINDEX_THIN_CONTENT",
+      "reason": "The default page exposes only a very small sponsor summary and duplicates the richer sponsor hubs and overview; keep it accessible in-product while withholding it as a standalone search result.",
+      "protected": false,
+      "reviewer": "Sol",
+      "reviewedAt": "2026-10-09",
+      "replacementUrl": null
+    },
+    {
+      "urlId": "url_0a2c88c132d7",
+      "url": "https://clinicaltrialfailures.com/contact",
+      "pageType": "static_reference",
+      "role": "utility_pruning",
+      "decision": "NOINDEX_UTILITY",
+      "reason": "The page is a support and correction contact flow rather than an independent evidence destination; keep it available to users and links crawlable while excluding it from search and the XML sitemap.",
+      "protected": false,
+      "reviewer": "Sol",
+      "reviewedAt": "2026-10-09",
+      "replacementUrl": null
     }
   ]
 }
