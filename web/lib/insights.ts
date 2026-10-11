@@ -191,6 +191,61 @@ export type InsightStats = {
     heldoutBiologicalPrecision: number;
     heldoutAssertionAgreement: number;
   };
+  registryTiming: {
+    total: number;
+    paired: number;
+    missingCompletion: number;
+    invalidCompletion: number;
+    beforeCompletion: number;
+    medianLagYears: number;
+    overOneYear: number;
+    overThreeYears: number;
+    overFiveYears: number;
+    overTenYears: number;
+    updated2026: number;
+    updated2026CompletedBefore2021: number;
+    byStatus: Array<{
+      label: string;
+      total: number;
+      medianLagYears: number;
+      overFiveYears: number;
+    }>;
+    examples: Array<{
+      nctId: string;
+      title: string;
+      status: string;
+      phase: string;
+      completed: string;
+      updated: string;
+      lagYears: number;
+      href: string;
+    }>;
+  };
+  phaseCoverage: {
+    total: number;
+    namedPhaseRecords: number;
+    singlePhase: number;
+    multiPhase: number;
+    missingPhase: number;
+    notApplicable: number;
+    membershipTotal: number;
+    encodedGroups: Array<{ label: string; count: number }>;
+    phaseMembership: Array<{
+      key: string;
+      label: string;
+      count: number;
+      biologicalCount: number;
+      biologicalShare: string;
+    }>;
+    examples: Array<{
+      nctId: string;
+      title: string;
+      phases: string;
+      status: string;
+      why: string;
+      href: string;
+    }>;
+  };
 };
 
 export type InsightSignalSlice = {
@@ -246,6 +301,148 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "registry-update-date-is-not-trial-stop-date",
+    title: "A registry update date is not the date a clinical trial stopped",
+    metaDescription:
+      "Why ClinicalTrials.gov update dates can arrive years after a stopped trial's completion, and how to read the timeline without inventing a stop date.",
+    eyebrow: "Reading registry time correctly",
+    dek:
+      "A new registry post can describe an old study. The current stopped-trial data shows why last-update dates, completion dates, and the moment a program stopped are three different facts.",
+    datePublished: "2026-10-11",
+    readingTime: "8 min read",
+    keyword: "ClinicalTrials.gov last update date",
+    factsHeading: "Three dates that answer three different questions",
+    facts: [],
+    sections: [
+      {
+        heading: "The newest date is not the newest event",
+        body: [
+          "Registry pages make the last update date easy to see, so it is tempting to use it as a proxy for when a study stopped. That shortcut fails. A record can be completed or closed, then edited years later to add results, correct a field, or satisfy a reporting obligation.",
+          "The current dataset is a snapshot of records posted through the latest ingest. It is therefore a view of when the registry was last touched, not a chronology of when each trial ended. The difference matters whenever a recent update is described as a recent clinical event.",
+        ],
+      },
+      {
+        heading: "The gap is common, not an edge case",
+        body: [
+          "A useful first check is the distance between the posted completion date and the last update date. That is not a stop-duration measure: completion is not always the same as termination, and a planned date can precede the final status change. It is a warning signal about how much time may separate the study lifecycle from the registry edit.",
+          "The distribution is broad enough that a current update should never be treated as a current trial. The long tail also tells us something about evidence retrieval: older studies can re-enter attention because their registry record changed, not because the underlying experiment just happened.",
+        ],
+      },
+      {
+        heading: "Why status and update date must stay separate",
+        body: [
+          "Terminated, withdrawn, and suspended are lifecycle statuses. Last update is a publication event in the registry. A terminated record updated this year may contain a stop decision from a much earlier period, while a withdrawn study with a recent edit may never have enrolled anyone at all.",
+          "Combining the fields creates false recency. It can make an old failure look new, make a historical portfolio decision look current, or suggest that a recent registry edit caused the stop. The responsible description is narrower: the record was last posted on a given date and carries the status and stop language shown in the snapshot.",
+        ],
+      },
+      {
+        heading: "The useful workflow is a timeline, not a single sort",
+        body: [
+          "For a research review, start with the last update to find what changed, then read the completion and primary-completion fields, the overall status, and the original stop statement. If the question is when the program ended, the registry row may still be insufficient; source documents, results, publications, and sponsor disclosures may be needed.",
+          "Sorting by last update remains useful for monitoring. It is simply a monitoring sort, not a ranking of recent clinical failures. That distinction lets the database surface fresh edits without overstating the age or meaning of the underlying event.",
+        ],
+      },
+      {
+        heading: "What the data can support",
+        body: [
+          "The snapshot supports a statement about the distance between two registry fields. It does not reconstruct the exact date of every stop, and it does not prove that a late update changed the scientific conclusion. Dates are evidence about record history, not a substitute for the source text.",
+          "That limitation is not a reason to discard the field. It is the reason to label it correctly. Treat last-update date as a freshness signal, completion date as a lifecycle field, and the stop reason as the evidence needed to interpret what happened.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      { href: "/overview", label: "Open the dataset overview", text: "See the current snapshot and its registry update window." },
+      { href: "/methods", label: "Read the data method", text: "Review the source, classification boundaries, and snapshot limitations." },
+      { href: "/explore?sort=date_desc", label: "Browse recently updated records", text: "Use recency as a monitoring route, then inspect each record's full timeline." },
+    ],
+    faqs: [
+      {
+        question: "Does the last update date show when a clinical trial stopped?",
+        answer: "No. It shows when the registry record was last posted or changed. The stop event may have occurred earlier and requires the status, completion fields, and source statement for interpretation.",
+      },
+      {
+        question: "Can a trial updated in 2026 be an old study?",
+        answer: "Yes. The current snapshot includes many records whose completion dates precede their 2026 registry update by several years.",
+      },
+      {
+        question: "Should recently updated trials be ignored?",
+        answer: "No. Recent updates are useful for monitoring what changed. They should not be presented as evidence that the clinical event itself happened recently.",
+      },
+    ],
+  },
+  {
+    slug: "clinical-trial-phase-totals-do-not-add-up",
+    title: "Why clinical trial phase totals do not add up",
+    metaDescription:
+      "A data-led explanation of single-phase, multi-phase, and not-applicable registry labels—and why phase counts can exceed the number of stopped trials.",
+    eyebrow: "How to count development phases",
+    dek:
+      "Phase I/II is not a broken Phase I count, and a not-applicable label is not missing Phase III evidence. The same stopped-trial record can belong to more than one phase membership without being duplicated.",
+    datePublished: "2026-10-11",
+    readingTime: "8 min read",
+    keyword: "clinical trial phase totals",
+    factsHeading: "One dataset, several legitimate phase counts",
+    facts: [],
+    sections: [
+      {
+        heading: "The arithmetic problem is really a definition problem",
+        body: [
+          "Phase tables look precise because their labels are familiar. But a registry record can carry one phase, a combined phase such as Phase I/II, a not-applicable label, or no usable phase value. Before comparing totals, the counting rule has to be stated.",
+          "If a Phase I/II record is assigned to both Phase I and Phase II, the membership totals will exceed the number of unique trials. That is not double-counting by accident. It is an intentional answer to the question: which phase memberships appear in the record?",
+        ],
+      },
+      {
+        heading: "The current snapshot contains all four cases",
+        body: [
+          "The stopped-trial dataset is dominated by single phase labels, but thousands of records carry combined phases. A smaller group is marked not applicable, and a very small remainder has no usable phase value. A phase comparison that silently drops the latter groups changes the denominator before any failure signal is calculated.",
+          "This is especially important when a planned phase is mistaken for completed exposure. A withdrawn Phase III record can describe the intended protocol even when no participant enrolled. The phase is still useful metadata, but it is not automatically a Phase III treatment outcome.",
+        ],
+      },
+      {
+        heading: "Three counting rules answer three different questions",
+        body: [
+          "A unique-record count assigns each row to one mutually exclusive display group, such as single phase, multi-phase, not applicable, or missing. It answers how the dataset is encoded. A phase-membership count places a combined record in every phase it names. It answers where phase labels appear.",
+          "A restricted exact-phase comparison uses only records whose phase field is exactly one target value. That can be useful for a clean subgroup, but it excludes combined phases and is not the same as the full Phase II or Phase III universe. None of the three should be presented as the only true total.",
+        ],
+      },
+      {
+        heading: "Why the choice changes the biological-signal share",
+        body: [
+          "The denominator is part of the finding. A phase membership share can include multi-phase records, while an exact-phase share cannot. Not-applicable records may also have a different stop-reason mix from named phases. Changing the counting rule can therefore move both the numerator and the denominator.",
+          "The safe comparison labels the rule beside the number: membership count, unique encoded group, or exact phase. It also keeps the classification caveat visible. These are shares among stopped records, not overall failure probabilities for every trial entering a phase.",
+        ],
+      },
+      {
+        heading: "The practical reading rule",
+        body: [
+          "When a phase total looks surprising, inspect the raw phase string before deciding that the data is inconsistent. Then ask whether the analysis needs unique records, phase membership, or a strict exact-phase cohort. The right choice depends on whether the question is about registry encoding, portfolio composition, or a comparable subgroup.",
+          "A transparent phase table is therefore more valuable than a single large number. It shows the records that belong to more than one phase, the records outside the phase system, and the denominator used for every biological-signal comparison.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      { href: "/clinical-trial-failures-by-phase", label: "Compare stopped trials by phase", text: "Open the phase evidence hub with source-linked records and denominator notes." },
+      { href: "/methods", label: "Review phase limitations", text: "See how planned phase and stopped-record status are kept separate." },
+      { href: "/overview", label: "View the full snapshot", text: "Use the overview to compare phase coverage with status and reason mix." },
+    ],
+    faqs: [
+      {
+        question: "Why can Phase I and Phase II totals add up to more than the number of trials?",
+        answer: "Because a combined Phase I/II record is a member of both phase groups. Membership counts are not mutually exclusive unique-record counts.",
+      },
+      {
+        question: "Does a Phase III label prove that a Phase III trial was completed?",
+        answer: "No. It describes the registered or planned study phase. Status and enrollment context are needed before treating it as evidence from an executed Phase III trial.",
+      },
+      {
+        question: "Should not-applicable phase records be deleted from analysis?",
+        answer: "Not automatically. They should be shown as a separate cohort or excluded with an explicit rule, because silently dropping them changes the denominator.",
+      },
+    ],
+  },
   {
     slug: "stopped-trial-volume-not-sponsor-failure-rate",
     title: "Stopped-trial volume is not a sponsor failure rate",
@@ -2263,6 +2460,212 @@ export function sortInsightArticlesByDate<T extends Pick<InsightArticle, "datePu
   return [...articles].sort((a, b) => insightDateTime(b) - insightDateTime(a) || a.slug.localeCompare(b.slug));
 }
 
+function hydrateRegistryTimingArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const timing = stats.registryTiming;
+  const years = (value: number) => `${value.toFixed(1)} years`;
+  const recentExample = timing.examples.find((example) => example.updated.startsWith("2026-"));
+  const statusRows = timing.byStatus.map((item): [string, string] => [
+    item.label,
+    `${n(item.total)} paired records; median ${years(item.medianLagYears)}; ${n(item.overFiveYears)} at least 5 years`,
+  ]);
+
+  return {
+    ...article,
+    metaDescription: `${n(timing.overFiveYears)} of ${n(timing.paired)} stopped-trial records with comparable dates were updated at least five years after completion. Learn why update date is not stop date.`,
+    dek: `Among ${n(timing.paired)} records with a usable completion reference and update date, the approximate median gap is ${years(timing.medianLagYears)}. A recent registry edit can describe an old study—not a recent clinical stop.`,
+    facts: [
+      `${n(timing.paired)} records have a non-negative, comparable completion-to-update interval; the median gap is ${years(timing.medianLagYears)}.`,
+      `${n(timing.overOneYear)} records were updated at least one year after completion, including ${n(timing.overFiveYears)} after five years and ${n(timing.overTenYears)} after ten.`,
+      `${n(timing.updated2026)} records were last updated in 2026; ${n(timing.updated2026CompletedBefore2021)} of those have a completion reference before 2021.`,
+      `${n(timing.beforeCompletion)} paired records show an update date before the recorded completion date, so the fields cannot be treated as a stop timeline.`,
+      `${n(timing.missingCompletion)} records have neither a usable completion date nor primary-completion date and are kept outside the interval calculation rather than assigned an invented lag.`,
+    ],
+    sections: [
+      {
+        heading: "The newest date is not the newest event",
+        body: [
+          `The current snapshot contains ${n(timing.updated2026)} records last updated in 2026. That sounds like a recent-study count until the other date is read: ${n(timing.updated2026CompletedBefore2021)} of those records have a recorded completion reference before 2021. The update is recent; the study is not necessarily recent.`,
+          "A registry post can add results, correct a field, or satisfy a reporting obligation long after a program has stopped. Last update is therefore a publication event in the registry, not a substitute for the date on which the clinical decision occurred.",
+        ],
+      },
+      {
+        heading: "The gap is common, not an edge case",
+        body: [
+          `Across ${n(timing.paired)} records with comparable dates, the approximate median distance from recorded completion to last update is ${years(timing.medianLagYears)}. ${n(timing.overThreeYears)} records sit at least three years apart, and ${n(timing.overFiveYears)} sit at least five years apart.`,
+          "Those counts do not measure how long a trial took to run. Completion is not always the same as termination, and a planned completion field can precede a later status change. They measure how much time may separate two registry fields—a useful warning before anyone writes a chronology from a single date.",
+        ],
+      },
+      {
+        heading: "Why status and update date must stay separate",
+        body: [
+          `The paired-date median is ${years(timing.medianLagYears)} across the comparable records, but the status mix is not identical: ${statusRows.map(([label, value]) => `${label.toLowerCase()} has ${value}`).join("; ")}. The status tells us how the study is labelled now; the update date tells us when the record was posted.`,
+          "A terminated record updated this year may carry a much older stop decision. A withdrawn study may never have enrolled. A suspended study may still have an evolving lifecycle. None of those interpretations can be recovered from the update date alone.",
+        ],
+      },
+      {
+        heading: "The useful workflow is a timeline, not a single sort",
+        body: [
+          recentExample
+            ? `${recentExample.nctId} is a concrete reminder: its record was updated on ${recentExample.updated}, while the recorded completion date is ${recentExample.completed}. The gap is ${years(recentExample.lagYears)}. That makes it useful for monitoring a changed record, not proof of a 2026 clinical event.`
+            : "A recent update should be read alongside the completion and primary-completion fields before it is used in a timeline.",
+          "For a research review, start with the last update to find what changed, then read the completion fields, overall status, and original stop statement. If the question is when a program ended, publications, results, sponsor disclosures, or other primary sources may still be required.",
+        ],
+      },
+      {
+        heading: "What the data can support",
+        body: [
+          `The snapshot supports a comparison between registry fields for ${n(timing.paired)} records. It does not reconstruct the exact stop date for every study: ${n(timing.missingCompletion)} records lack a usable completion date, and ${n(timing.beforeCompletion)} have an update date before the recorded completion date.`,
+          "For this comparison, the completion reference is the completion date when present and the primary-completion date otherwise. Some source dates contain only a month, so calculated gaps are approximate rather than exact day-level measurements.",
+          "Those limitations are a reason to label the fields correctly, not to discard them. Use last-update date as a freshness signal, the completion reference as a lifecycle field, and the stop statement as the evidence needed to explain what happened.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "How long after completion records were updated",
+        columns: ["Minimum gap", "Records"],
+        rows: [
+          ["At least 1 year", n(timing.overOneYear)],
+          ["At least 3 years", n(timing.overThreeYears)],
+          ["At least 5 years", n(timing.overFiveYears)],
+          ["At least 10 years", n(timing.overTenYears)],
+        ],
+      },
+      {
+        heading: "Comparable date gaps by current status",
+        columns: ["Status", "Timing summary"],
+        rows: statusRows,
+      },
+      {
+        heading: "Records worth opening before writing a timeline",
+        columns: ["Record", "Completion → last update"],
+        rows: timing.examples.map((example) => [
+          example.nctId,
+          `${example.completed} → ${example.updated} (${years(example.lagYears)})`,
+        ]),
+      },
+    ],
+    links: [
+      ...article.links,
+      ...timing.examples.slice(0, 2).map((example) => ({
+        href: example.href,
+        label: `${example.nctId}: inspect the timeline`,
+        text: `${example.status} · ${example.phase} · ${example.completed} completion date and ${example.updated} last update.`,
+      })),
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "Can a trial updated in 2026 be an old study?") {
+        return {
+          ...faq,
+          answer: `Yes. ${n(timing.updated2026CompletedBefore2021)} records updated in 2026 have a recorded completion reference before 2021 in this snapshot. The completion reference uses the completion date when present and the primary-completion date otherwise.`,
+        };
+      }
+      return faq;
+    }),
+  };
+}
+
+function hydratePhaseCoverageArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const coverage = stats.phaseCoverage;
+  const phase = (key: string) => coverage.phaseMembership.find((item) => item.key === key);
+  const phaseTwo = phase("PHASE2");
+  const phaseThree = phase("PHASE3");
+  const combinedShare = pctFromCounts(coverage.multiPhase, coverage.total);
+  const membershipOverhang = coverage.membershipTotal - coverage.namedPhaseRecords;
+  const examples = coverage.examples;
+
+  return {
+    ...article,
+    metaDescription: `${n(coverage.multiPhase)} of ${n(coverage.total)} stopped-trial records carry more than one phase label. See why phase membership totals can exceed unique records.`,
+    dek: `${n(coverage.namedPhaseRecords)} stopped records with a named phase produce ${n(coverage.membershipTotal)} phase memberships because ${n(coverage.multiPhase)} records name more than one phase. The arithmetic changes with the question being asked.`,
+    facts: [
+      `${n(coverage.namedPhaseRecords)} of ${n(coverage.total)} unique stopped-trial records carry a named phase; they produce ${n(coverage.membershipTotal)} named phase memberships.`,
+      `${n(coverage.multiPhase)} records carry multiple phase labels (${combinedShare}); they belong to more than one phase-membership group.`,
+      `${n(coverage.singlePhase)} records carry exactly one named phase, ${n(coverage.notApplicable)} are marked not applicable, and ${n(coverage.missingPhase)} have no usable phase value.`,
+      phaseTwo ? `Phase II appears in ${n(phaseTwo.count)} memberships, including combined-phase records; ${n(phaseTwo.biologicalCount)} of those carry biological failure signals (${phaseTwo.biologicalShare}).` : "Phase II membership is not available.",
+      phaseThree ? `Phase III appears in ${n(phaseThree.count)} memberships; its biological-signal share is ${phaseThree.biologicalShare} under the membership rule.` : "Phase III membership is not available.",
+    ],
+    sections: [
+      {
+        heading: "The arithmetic problem is really a definition problem",
+        body: [
+          `The dataset has ${n(coverage.namedPhaseRecords)} records with a named phase but ${n(coverage.membershipTotal)} named phase memberships—an overhang of ${n(membershipOverhang)}. The difference comes from records such as ${examples[0]?.phases || "combined phase labels"}, which name more than one phase. The full dataset also contains ${n(coverage.notApplicable)} not-applicable records and ${n(coverage.missingPhase)} record without a usable phase value.`,
+          "That is not a broken count. It is a choice to preserve what the registry says. A membership table answers where phase labels appear; a unique-record table answers how rows are encoded. They should not be compared as if they used the same denominator.",
+        ],
+      },
+      {
+        heading: "The current snapshot contains all four cases",
+        body: [
+          `${n(coverage.singlePhase)} records carry exactly one named phase, ${n(coverage.multiPhase)} carry multiple named phases, ${n(coverage.notApplicable)} are marked not applicable, and ${n(coverage.missingPhase)} have no usable phase value. These are mutually exclusive groups; the not-applicable group is large enough to matter in denominator design.`,
+          "A planned phase can also survive when a study was withdrawn before enrollment. The label remains useful metadata about the registered protocol, but it is not automatically evidence generated by an executed trial at that phase.",
+        ],
+      },
+      {
+        heading: "Three counting rules answer three different questions",
+        body: [
+          "A unique-record count uses mutually exclusive encoding groups such as single phase, multi-phase, not applicable, and missing. A phase-membership count places a combined record in every named phase. An exact-phase count restricts the cohort to rows whose phase field exactly equals one value.",
+          `In this snapshot, the largest encoded groups are ${coverage.encodedGroups.slice(0, 4).map((item) => `${item.label} (${n(item.count)})`).join(", ")}. None of those display choices is universally correct; the analysis needs to name the rule before presenting the number.`,
+        ],
+      },
+      {
+        heading: "Why the choice changes the biological-signal share",
+        body: [
+          phaseTwo && phaseThree
+            ? `Under the membership rule, Phase II has ${n(phaseTwo.biologicalCount)} biological signals in ${n(phaseTwo.count)} memberships (${phaseTwo.biologicalShare}), while Phase III has ${n(phaseThree.biologicalCount)} in ${n(phaseThree.count)} (${phaseThree.biologicalShare}). These are shares among stopped records carrying each label, not phase-specific failure probabilities.`
+            : "The denominator changes with the phase rule, so the biological-signal share must always carry its counting definition.",
+          "A combined-phase record can contribute to both a numerator and a denominator in a membership comparison. A strict exact-phase comparison excludes it. Not-applicable records may also have a different stop-reason mix from named phases. Changing the rule can therefore move both sides of the percentage.",
+        ],
+      },
+      {
+        heading: "The practical reading rule",
+        body: [
+          examples.length
+            ? `${examples[0].nctId} carries ${examples[0].phases}; ${examples[1] ? `${examples[1].nctId} is marked ${examples[1].phases.toLowerCase()}` : "another record carries a separate phase encoding"}. Opening the raw record makes the arithmetic understandable before a summary table turns it into a single label.`
+            : "Open the raw phase string before deciding that a phase table is inconsistent.",
+          "When a phase total looks surprising, ask whether the question is about registry encoding, portfolio membership, or a clean comparable subgroup. Then label the denominator beside the number and keep non-applicable and missing values visible.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Unique encoded phase groups",
+        columns: ["Registry encoding", "Unique records"],
+        rows: coverage.encodedGroups.slice(0, 10).map((item): [string, string] => [item.label, n(item.count)]),
+      },
+      {
+        heading: "Phase memberships (combined labels count in each phase)",
+        columns: ["Phase membership", "Records / biological signals"],
+        rows: coverage.phaseMembership.map((item): [string, string] => [
+          item.label,
+          `${n(item.count)} / ${n(item.biologicalCount)} (${item.biologicalShare})`,
+        ]),
+      },
+      {
+        heading: "Examples of different phase encodings",
+        columns: ["Record", "Phase field and stop context"],
+        rows: examples.map((example): [string, string] => [example.nctId, `${example.phases} · ${example.status}`]),
+      },
+    ],
+    links: [
+      ...article.links,
+      ...examples.slice(0, 2).map((example) => ({
+        href: example.href,
+        label: `${example.nctId}: inspect the phase field`,
+        text: `${example.phases}. The source stop statement is: ${example.why}`,
+      })),
+    ],
+    faqs: article.faqs.map((faq) => {
+      if (faq.question === "Why can Phase I and Phase II totals add up to more than the number of trials?") {
+        return {
+          ...faq,
+          answer: `Because ${n(coverage.multiPhase)} records in this snapshot carry more than one phase label. They are counted once per named phase in a membership table, while the unique-record total remains ${n(coverage.total)}.`,
+        };
+      }
+      return faq;
+    }),
+  };
+}
+
 function hydrateSponsorPortfolioArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const sponsorStats = stats.sponsorPortfolioSignals;
   const topVolume = sponsorStats.profiles.slice(0, 6);
@@ -4102,6 +4505,12 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "registry-update-date-is-not-trial-stop-date") {
+    return hydrateRegistryTimingArticle(article, stats);
+  }
+  if (article.slug === "clinical-trial-phase-totals-do-not-add-up") {
+    return hydratePhaseCoverageArticle(article, stats);
+  }
   if (article.slug === "stopped-trial-volume-not-sponsor-failure-rate") {
     return hydrateSponsorPortfolioArticle(article, stats);
   }

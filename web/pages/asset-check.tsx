@@ -18,6 +18,7 @@ import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
 import { useLinkKey } from "@/lib/linkKey";
+import { staticRobotsForPath } from "@/lib/seoStaticPolicy";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/asset-check`;
@@ -126,7 +127,7 @@ export default function AssetCheckPage() {
       <Head>
         <title>{TITLE}</title>
         <meta name="description" content={DESCRIPTION} />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content={staticRobotsForPath("/asset-check")} />
         <link rel="canonical" href={CANONICAL_URL} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />

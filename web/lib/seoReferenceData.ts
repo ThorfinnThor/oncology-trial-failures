@@ -43,6 +43,10 @@ export type ReferencePageProps = {
   examples: ReferenceExample[];
   faqs: Array<{ question: string; answer: string }>;
   related: Array<{ href: string; label: string; text: string }>;
+  statusGuide?: {
+    steps: Array<{ label: string; heading: string; body: string }>;
+    examples: ReferenceExample[];
+  };
   updated: string;
 };
 
@@ -69,7 +73,7 @@ function summarize(label: string, note: string, href: string, rows: TrialIndexRo
     efficacy,
     safety,
     operational,
-    share: rows.length ? `${Math.round((biological / rows.length) * 100)}%` : "0%",
+    share: rows.length ? `${((biological / rows.length) * 100).toFixed(1)}%` : "0.0%",
     href,
   };
 }
@@ -178,6 +182,27 @@ function examplesFor(rows: TrialIndexRow[], dimension: ReferenceDimension): Refe
     if (selected.length === 6) break;
   }
   return selected;
+}
+
+function statusExamples(rows: TrialIndexRow[]): ReferenceExample[] {
+  const definitions = [
+    { id: "NCT05256134", category: "Terminated · efficacy context" },
+    { id: "NCT05042934", category: "Withdrawn · operational context" },
+    { id: "NCT03875144", category: "Suspended · safety context" },
+  ];
+
+  return definitions.flatMap(({ id, category }) => {
+    const row = rows.find((candidate) => candidate.nct_id === id);
+    if (!row) return [];
+    return [{
+      nctId: row.nct_id,
+      title: row.brief_title || row.nct_id,
+      category,
+      sponsor: row.lead_sponsor || "Unknown sponsor",
+      reason: row.why_stopped_short || "No stop-reason text available.",
+      href: trialPath(row),
+    }];
+  });
 }
 
 function commonSummary(rows: TrialIndexRow[], groups: number, meta: DatasetMeta) {
@@ -300,7 +325,7 @@ export function buildReferencePage(
         "Reason classifications are read alongside status. A safety-classified termination is different evidence from a withdrawn study with an operational explanation, even though both appear in the stopped-trial dataset.",
         "For longitudinal work, preserve the dataset version and verify the current NCT record because registry statuses and explanations can be revised.",
       ],
-      examples: examplesFor(rows, "status"),
+      examples: statusExamples(rows),
       faqs: [
         { question: "What is the difference between terminated and withdrawn?", answer: "A terminated study started and then stopped. A withdrawn study stopped before enrollment began, according to the registry definitions used by ClinicalTrials.gov." },
         { question: "Does suspended mean the clinical trial failed?", answer: "No. Suspended means the study was temporarily halted at the registry update. It may later resume or move to another status." },
@@ -311,6 +336,21 @@ export function buildReferencePage(
         { href: "/insights/withdrawn-clinical-trials-rarely-show-biological-failure-signals", label: "Withdrawn-trial analysis", text: "See why withdrawn status is often misread." },
         { href: "/explore", label: "Explore all records", text: "Filter the database by status and stop reason." },
       ],
+      statusGuide: {
+        steps: [
+          {
+            label: "Step 1 · Registry state",
+            heading: "Read what happened to the study",
+            body: "Terminated, withdrawn, and suspended describe the study's registry state. They do not identify the scientific or operational cause by themselves.",
+          },
+          {
+            label: "Step 2 · Source evidence",
+            heading: "Then read why it happened",
+            body: "Use the stop statement and classification to separate efficacy, safety, recruitment, strategy, regulation, and unresolved language before drawing a conclusion.",
+          },
+        ],
+        examples: statusExamples(rows),
+      },
       updated: meta.version,
     };
   }

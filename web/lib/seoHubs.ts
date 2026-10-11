@@ -3,6 +3,7 @@ import { parsePhases, phaseLabel, reasonBucket, sortRows } from "./filtering";
 import { isLegacyIndexableBiologicalSignal, resolveClassification } from "./classificationResolution";
 import { compactSeoDescription, compactSeoTitle } from "./seoMetadata";
 import { slugify, trialPath } from "./seoUrls";
+import { hasIndexableTrialSearchEvidence } from "./trialEvidence";
 
 export const SITE_URL = "https://clinicaltrialfailures.com";
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -52,6 +53,8 @@ export type HubStats = {
 };
 
 export type HubEditorialInsight = {
+  variant: "ophthalmology-review" | "neurology-comparison" | "phase-two-lanes";
+  eyebrow: string;
   title: string;
   intro: string;
   observations: Array<{ title: string; body: string }>;
@@ -62,6 +65,20 @@ export type HubEditorialInsight = {
     title: string;
     reason: string;
     why: string;
+  }>;
+};
+
+export type SponsorEditorialInsight = {
+  title: string;
+  intro: string;
+  limitation: string;
+  lenses: Array<{
+    label: string;
+    interpretation: string;
+    href: string;
+    nctId: string;
+    title: string;
+    reason: string;
   }>;
 };
 
@@ -189,7 +206,7 @@ export function reasonHubPath(bucket: string): string {
 }
 
 export function isIndexableTrial(row: TrialIndexRow): boolean {
-  return isLegacyIndexableBiologicalSignal(row);
+  return isLegacyIndexableBiologicalSignal(row) && hasIndexableTrialSearchEvidence(row);
 }
 
 export function indexableTrialRows(rows: TrialIndexRow[]): TrialIndexRow[] {
@@ -229,7 +246,128 @@ function editorialEvidenceRow(
   };
 }
 
+function editorialEvidenceById(
+  rows: TrialIndexRow[],
+  nctId: string,
+  label: string,
+  fallback: (row: TrialIndexRow) => boolean
+): HubEditorialInsight["evidence"][number] | null {
+  const row = rows.find((candidate) => candidate.nct_id === nctId) || sortRows(rows.filter(fallback), "date_desc")[0];
+  if (!row) return null;
+  const item = trialListItem(row);
+  return {
+    label,
+    href: item.href,
+    nctId: item.id,
+    title: item.title,
+    reason: titleCaseTaxonomy(resolvedReason(row) || resolvedOutcome(row)),
+    why: item.why,
+  };
+}
+
 export function buildHubEditorialInsight(hub: SeoHub, stats: HubStats): HubEditorialInsight | null {
+  if (hub.kind === "area" && hub.slug === "neurology") {
+    const reasonCount = (reason: string) => hub.rows.filter((row) => resolvedReason(row) === reason).length;
+    const evidence = [
+      editorialEvidenceById(
+        hub.rows,
+        "NCT05256134",
+        "Efficacy context",
+        (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "EFFICACY_FUTILITY"
+      ),
+      editorialEvidenceById(
+        hub.rows,
+        "NCT05478031",
+        "Safety context",
+        (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "SAFETY"
+      ),
+      editorialEvidenceById(
+        hub.rows,
+        "NCT03870763",
+        "Operational context",
+        (row) => resolvedOutcome(row) === "NON_BIOLOGICAL" && resolvedReason(row) === "RECRUITMENT"
+      ),
+    ].filter((item): item is HubEditorialInsight["evidence"][number] => Boolean(item));
+
+    return {
+      variant: "neurology-comparison",
+      eyebrow: "Neurology case comparison",
+      title: "The same stopped status can describe three different events",
+      intro: `Only ${outcomeCountLabel(stats.biologicalCount, stats.total)} neurology records in this stopped-study slice carry a likely biological failure signal. Reading the reason alongside the status separates efficacy and safety evidence from recruitment, strategy, and other non-biological causes.`,
+      observations: [
+        {
+          title: "Recruitment is the largest resolved reason",
+          body: `${reasonCount("RECRUITMENT").toLocaleString("en-US")} records resolve to recruitment, compared with ${reasonCount("EFFICACY_FUTILITY").toLocaleString("en-US")} efficacy/futility records. That difference is invisible if every stop is called a drug failure.`,
+        },
+        {
+          title: "Phase II supplies the largest stopped slice",
+          body: `${(stats.topPhases.find((item) => item.label === "Phase II")?.count || 0).toLocaleString("en-US")} records include Phase II. This is a distribution within stopped trials, not a probability that a Phase II neurology program fails.`,
+        },
+        {
+          title: "Sponsor counts are discovery routes",
+          body: `${stats.topSponsors[0]?.label || "The leading sponsor"} has ${stats.topSponsors[0]?.count.toLocaleString("en-US") || "the most"} records in this slice. Volume reflects registry activity and stop records, not sponsor performance.`,
+        },
+      ],
+      evidence,
+    };
+  }
+
+  if (hub.kind === "phase" && hub.slug === "phase-2") {
+    const reasonCount = (reason: string) => hub.rows.filter((row) => resolvedReason(row) === reason).length;
+    const evidence = [
+      editorialEvidenceById(
+        hub.rows,
+        "NCT03367819",
+        "Scientific signal",
+        (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "EFFICACY_FUTILITY"
+      ),
+      editorialEvidenceById(
+        hub.rows,
+        "NCT03875144",
+        "Safety or regulation",
+        (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "SAFETY"
+      ),
+      editorialEvidenceById(
+        hub.rows,
+        "NCT05042934",
+        "Patient access",
+        (row) => resolvedOutcome(row) === "NON_BIOLOGICAL" && resolvedReason(row) === "RECRUITMENT"
+      ),
+      editorialEvidenceById(
+        hub.rows,
+        "NCT01947140",
+        "Program economics",
+        (row) => resolvedOutcome(row) === "NON_BIOLOGICAL" && resolvedReason(row) === "FUNDING"
+      ),
+    ].filter((item): item is HubEditorialInsight["evidence"][number] => Boolean(item));
+
+    return {
+      variant: "phase-two-lanes",
+      eyebrow: "Four Phase II stop pathways",
+      title: "Phase II is where scientific, operational, and portfolio risks meet",
+      intro: `${outcomeCountLabel(stats.biologicalCount, stats.total)} Phase II hub records are likely biological signals. The much larger remainder shows why this stopped-record slice cannot be converted into a Phase II failure rate.`,
+      observations: [
+        {
+          title: "Patient access",
+          body: `${reasonCount("RECRUITMENT").toLocaleString("en-US")} records resolve to recruitment. Accrual and feasibility can stop a study without answering whether the intervention works.`,
+        },
+        {
+          title: "Scientific signal",
+          body: `${reasonCount("EFFICACY_FUTILITY").toLocaleString("en-US")} records carry efficacy or futility evidence. These are the closest records in this slice to the biological question.`,
+        },
+        {
+          title: "Program economics",
+          body: `${reasonCount("BUSINESS_STRATEGY").toLocaleString("en-US")} business/strategy and ${reasonCount("FUNDING").toLocaleString("en-US")} funding records describe development decisions, not a common scientific outcome.`,
+        },
+        {
+          title: "Safety and oversight",
+          body: `${reasonCount("SAFETY").toLocaleString("en-US")} safety-classified records require close source review because precautionary holds and confirmed unfavorable risk-benefit findings are not interchangeable.`,
+        },
+      ],
+      evidence,
+    };
+  }
+
   if (hub.kind !== "area" || hub.slug !== "ophthalmology") return null;
 
   const reasonCount = (reason: string) => hub.rows.filter((row) => resolvedReason(row) === reason).length;
@@ -253,6 +391,8 @@ export function buildHubEditorialInsight(hub: SeoHub, stats: HubStats): HubEdito
   ].filter((item): item is HubEditorialInsight["evidence"][number] => Boolean(item));
 
   return {
+    variant: "ophthalmology-review",
+    eyebrow: "Ophthalmology evidence review",
     title: "What the ophthalmology evidence slice actually shows",
     intro:
       "This hub separates biological signals from operational and unresolved stops, then links the summary back to individual registry records. The figures describe this stopped-trial dataset only; they are not an ophthalmology success or failure rate.",
@@ -271,6 +411,59 @@ export function buildHubEditorialInsight(hub: SeoHub, stats: HubStats): HubEdito
       },
     ],
     evidence,
+  };
+}
+
+export function buildSponsorEditorialInsight(hub: SponsorHub): SponsorEditorialInsight | null {
+  if (hub.slug !== "pfizer") return null;
+
+  const lens = (
+    nctId: string,
+    label: string,
+    interpretation: string,
+    fallback: (row: TrialIndexRow) => boolean
+  ): SponsorEditorialInsight["lenses"][number] | null => {
+    const row = hub.rows.find((candidate) => candidate.nct_id === nctId) || sortRows(hub.rows.filter(fallback), "date_desc")[0];
+    if (!row) return null;
+    const item = trialListItem(row);
+    return {
+      label,
+      interpretation,
+      href: item.href,
+      nctId: item.id,
+      title: item.title,
+      reason: item.why,
+    };
+  };
+
+  const lenses = [
+    lens(
+      "NCT03530683",
+      "Portfolio action",
+      "The registry attributes this stop to a Pfizer business decision and explicitly separates it from safety, regulatory, and benefit-risk concerns.",
+      (row) => resolvedOutcome(row) === "NON_BIOLOGICAL" && resolvedReason(row) === "BUSINESS_STRATEGY"
+    ),
+    lens(
+      "NCT03642132",
+      "Efficacy / futility",
+      "This record connects the decision to interim futility in a related Phase III study and a changing treatment landscape.",
+      (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "EFFICACY_FUTILITY"
+    ),
+    lens(
+      "NCT05510245",
+      "Safety",
+      "The stop language links development termination to pharmacokinetic findings and elevated transaminase measurements.",
+      (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "SAFETY"
+    ),
+  ].filter((item): item is SponsorEditorialInsight["lenses"][number] => Boolean(item));
+
+  return {
+    title: "Three lenses on Pfizer's stopped-trial portfolio",
+    intro:
+      "The aggregate count becomes useful only after the reason is separated from the registry status. These three records show a portfolio action, an efficacy-linked decision, and a safety-linked development stop.",
+    limitation:
+      "This is a profile of stopped ClinicalTrials.gov records, not a complete Pfizer pipeline history, an asset-level probability of success, or a ranking of sponsor performance.",
+    lenses,
   };
 }
 

@@ -1,20 +1,34 @@
-# Final trial-quality release runbook
+# Final trial-quality and static-pruning release runbook
 
 **Owner:** Sol  
 **Decision source:** `docs/seo/approved-decisions.csv`  
 **Decision version:** `luna-approval-v2`  
-**Deployment status:** not deployed
+**Deployment status:** deployed to production on 2026-10-09
 
 ## Scope
 
-The next indexability release corrects exactly one reviewed trial URL after recovering stronger source evidence:
+The next indexability release corrects one reviewed trial URL after recovering stronger source evidence:
 
 - `NCT01965600` remains HTTP 200 and self-canonical.
 - Its robots directive returns from `noindex,follow` to `index,follow`.
 - It returns to the XML sitemap.
 - Its page body and metadata publish the verified ClinicalTrials.gov detailed-description evidence.
 
-The other 20 `IMPROVE_INDEX` classification-migration URLs remain indexable. This release does not activate template changes, broad index directives, canonical replacements, redirects, removals, or any noindex list.
+The other 20 `IMPROVE_INDEX` classification-migration URLs remain indexable.
+
+Five reviewed static pages are removed from search while remaining HTTP 200 and crawlable through `noindex,follow`:
+
+- `/explore`, `/asset-check`, `/newsletter`, and `/contact` are input, filtering, conversion, or support utilities rather than durable search answers.
+- `/sponsor-insights` is a weak standalone landing page that duplicates the richer sponsor hubs and overview.
+- All five are excluded from the XML sitemap.
+
+The trial indexability predicate also requires usable source-backed stop evidence, study identity, a source URL, condition, intervention, and a classification explanation. The committed dataset currently has 2,434 eligible trial pages and all 2,434 pass that evidence gate, so this guard does not silently prune evidence-backed NCT pages.
+
+`/overview`, `/outliers`, and `/top-entities` also ship compact server-rendered evidence snapshots. Their initial HTML must contain the reviewed totals, baseline, and ranking sections before the existing interactive datasets hydrate in the browser.
+
+Six recovery pages also ship distinct server-rendered editorial modules based on current dataset values: `/`, `/clinical-trial-futility`, `/failures/neurology`, `/failures/phase-2`, `/sponsor/pfizer`, and `/terminated-vs-withdrawn-vs-suspended-clinical-trials`. These pages remain indexable and retain their current canonicals.
+
+This release does not activate template experiments, broad trial directives, canonical replacements, redirects, or removals.
 
 ## Preflight
 
@@ -34,7 +48,7 @@ npm run cloudflare:build
 npx wrangler whoami
 ```
 
-The release guard must report 31 reviewed URLs, zero thin-content noindex URLs, and 21 improve-only URLs. The trial-quality audit must report zero additional noindex targets and zero review holds. GitHub's `web` and `text-readers` checks must be green. Wrangler authentication must be valid before the final deployment; if `wrangler whoami` reports an expired token, authenticate again at that point without changing the release scope. A Vercel deployment failure caused by a blocked Vercel account is not a Cloudflare application check and does not authorize ignoring any GitHub test failure.
+The release guard must report 36 reviewed URLs, one static thin-content noindex URL, four static utility noindex URLs, and 21 improve-only URLs. The trial-quality audit must report zero additional trial noindex targets and zero review holds. GitHub's `web` and `text-readers` checks must be green. Wrangler authentication must be valid before the final deployment; if `wrangler whoami` reports an expired token, authenticate again at that point without changing the release scope. A Vercel deployment failure caused by a blocked Vercel account is not a Cloudflare application check and does not authorize ignoring any GitHub test failure.
 
 ## Exact production settings
 
@@ -46,6 +60,8 @@ SEO_INDEXING_REGISTRY_SITEMAP=true
 SEO_INDEXING_NOINDEX_LIST=false
 ```
 
+`SEO_INDEXING_NOINDEX_LIST` remains false because no trial-registry noindex decision is activated. The five static page decisions are explicit page-level directives and sitemap exclusions covered by automated tests.
+
 Keep all remaining mutation switches explicitly false or unset:
 
 ```text
@@ -56,7 +72,7 @@ SEO_INDEXING_REDIRECT_LIST=false
 SEO_INDEXING_REMOVAL_LIST=false
 ```
 
-Do not commit the active production values to `wrangler.jsonc`: the safe repository default is report-only. Configure the values in the Cloudflare production environment immediately before the final fresh deployment. The committed `keep_vars: true` setting is required so that `wrangler deploy` preserves those reviewed dashboard variables instead of silently replacing them with the report defaults.
+Do not commit the active production values to `wrangler.jsonc`: the safe repository default is report-only. Configure the values in the Cloudflare production environment immediately before the final fresh deployment. The committed `keep_vars: true` setting is required so that later `wrangler deploy` runs preserve the reviewed production variables instead of silently replacing them with the report defaults.
 
 ## Deployment rule
 
@@ -71,19 +87,36 @@ Check the production response, not a local or preview URL:
 1. `NCT01965600` returns HTTP 200, has `index,follow`, keeps its self-canonical, contains the verified Detailed Description evidence, and is present in `/sitemap.xml`.
 2. Control trial `NCT02354014` returns HTTP 200, has `index,follow`, keeps its self-canonical, and remains in `/sitemap.xml`.
 3. `/failures/ophthalmology` and the five frozen control hubs preserve their prior robots and canonical output.
-4. `/sitemap.xml` returns valid XML and no unrelated URL-count collapse is visible.
-5. Cloudflare Worker logs show no new exceptions while the tested pages are requested.
+4. `/explore`, `/asset-check`, `/newsletter`, `/contact`, and `/sponsor-insights` return HTTP 200 with `noindex,follow` and self-canonicals.
+5. Those five static URLs are absent from `/sitemap.xml`; protected and data-rich static pages remain present.
+6. `/overview`, `/outliers`, and `/top-entities` expose their evidence snapshot in raw response HTML without requiring JavaScript execution.
+7. The six recovery pages expose their reviewed editorial module and current figures in raw response HTML without requiring JavaScript execution.
+8. `/sitemap.xml` returns valid XML and no unrelated URL-count collapse is visible.
+9. Cloudflare Worker logs show no new exceptions while the tested pages are requested.
 
 Record the deployment commit, deployment time, response evidence, sitemap URL count, and any cache purge or revalidation performed.
+
+## Production release record
+
+- Deployment time: `2026-10-09T11:25:38Z`
+- Cloudflare Worker version: `1c83a660-c361-42b6-ad78-680d8c60723f`
+- Previous production version: `bbb21c94-b594-4989-b3c0-3f040fd0fd5c`
+- Fresh build result: 367 static pages generated; OpenNext bundle and 17 changed assets uploaded successfully.
+- Runtime verification: all eight SEO variables match the release profile and all three existing secrets remain attached.
+- Production verification: all tested pages returned HTTP 200; six recovery modules and all three server snapshots were present in raw HTML.
+- Sitemap verification: 2,688 URLs. Relative to the 2,692-URL review baseline, five static URLs left the sitemap and recovered trial `NCT01965600` returned, producing the expected net reduction of four URLs.
+- Runtime verification: an error-filtered Worker tail stayed empty while the 18 production acceptance URLs were requested again.
+- Cache handling: a fresh Worker version and asset set were deployed; no manual cache purge was required.
 
 ## Rollback
 
 If any unrelated URL changes, the sitemap loses an unexpected group, or production emits errors:
 
-1. roll the Cloudflare Worker back to the previously verified production version `47d3875b`;
+1. roll the Cloudflare Worker back to the previously verified production version `bbb21c94-b594-4989-b3c0-3f040fd0fd5c`;
 2. confirm all eight existing runtime variables were retained;
 3. keep every unrelated mutation switch false;
 4. purge or revalidate the affected ISR response if the prior HTML remains cached;
-5. confirm `NCT01965600` returned to HTTP 200 plus `noindex,follow` and is absent from the sitemap, while the controls remain unchanged.
+5. confirm `NCT01965600` returned to HTTP 200 plus `noindex,follow` and is absent from the sitemap, while the controls remain unchanged;
+6. confirm the five static pages returned to their previous `index,follow` output and sitemap membership where applicable.
 
 Google's index state can lag behind the rollback. The production HTML and sitemap are the immediate rollback acceptance criteria.

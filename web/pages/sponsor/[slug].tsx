@@ -2,11 +2,13 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 
 import SponsorEvidencePage from "@/components/SponsorEvidencePage";
 import {
+  buildSponsorEditorialInsight,
   buildSponsorHubs,
   displayHubRows,
   findSponsorHub,
   sponsorEvidenceStats,
   type SponsorEvidenceStats,
+  type SponsorEditorialInsight,
 } from "@/lib/seoHubs";
 import type { DatasetMeta, TrialIndexRow } from "@/lib/types";
 
@@ -20,11 +22,12 @@ type SponsorHubPageProps = {
   };
   rows: TrialIndexRow[];
   stats: SponsorEvidenceStats;
+  editorial: SponsorEditorialInsight | null;
   datasetMeta: DatasetMeta;
 };
 
-export default function SponsorHubPage({ hub, rows, stats, datasetMeta }: SponsorHubPageProps) {
-  return <SponsorEvidencePage hub={hub} rows={rows} stats={stats} datasetMeta={datasetMeta} />;
+export default function SponsorHubPage({ hub, rows, stats, editorial, datasetMeta }: SponsorHubPageProps) {
+  return <SponsorEvidencePage hub={hub} rows={rows} stats={stats} editorial={editorial} datasetMeta={datasetMeta} />;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
@@ -55,6 +58,7 @@ export const getStaticProps: GetStaticProps<SponsorHubPageProps> = async (ctx) =
       },
       rows: displayHubRows(hub.rows, 60),
       stats: sponsorEvidenceStats(hub.rows),
+      editorial: buildSponsorEditorialInsight(hub),
       datasetMeta,
     },
   };

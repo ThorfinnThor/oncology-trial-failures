@@ -11,6 +11,7 @@ import { DatasetMeta, TrialIndexRow, SortKey, UrlState } from "@/lib/types";
 import { decodeState, encodeState, resetExploreState } from "@/lib/urlState";
 import { computeFacets } from "@/lib/facets";
 import { filterRows, sortRows } from "@/lib/filtering";
+import { staticRobotsForPath } from "@/lib/seoStaticPolicy";
 
 import ResultsGrid from "@/components/ResultsGrid";
 import ResultsList from "@/components/ResultsList";
@@ -196,7 +197,7 @@ export default function ExplorePage({ initialMeta, initialRows, initialTotal }: 
       <Head>
         <title>{TITLE}</title>
         <meta name="description" content={DESCRIPTION} />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content={staticRobotsForPath("/explore")} />
         <link rel="canonical" href={CANONICAL_URL} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />

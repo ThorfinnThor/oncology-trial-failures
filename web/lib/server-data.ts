@@ -82,6 +82,8 @@ export async function loadMetaServer(): Promise<DatasetMeta> {
 /**
  * The compact index contains the same normalized fields the Explore UI consumed
  * previously, but excludes the many unused source fields from the 27 MB dataset.
+ * Lifecycle dates stay in the compact row because date interpretation is part of
+ * the public insight layer, not only a detail-page concern.
  */
 export async function loadIndexServer(): Promise<TrialIndexRow[]> {
   if (_index) return _index;

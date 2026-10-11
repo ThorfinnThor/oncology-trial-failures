@@ -1,6 +1,7 @@
 // web/pages/overview.tsx
 import Head from "next/head";
 import Link from "next/link";
+import type { GetStaticProps } from "next";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { loadIndex, loadMeta } from "@/lib/data";
@@ -83,6 +84,28 @@ type SponsorProfile = {
   topBuckets: { bucket: string; count: number }[];
   topPhases: { phase: string; count: number }[];
   topAreas: { area: string; count: number }[];
+};
+
+type OverviewSnapshotRow = {
+  label: string;
+  total: number;
+  bio: number;
+};
+
+type OverviewSnapshot = {
+  datasetVersion: string;
+  total: number;
+  bio: number;
+  bioShare: number;
+  minDate: string;
+  maxDate: string;
+  buckets: OverviewSnapshotRow[];
+  phases: OverviewSnapshotRow[];
+  areas: OverviewSnapshotRow[];
+};
+
+type OverviewPageProps = {
+  initialSnapshot: OverviewSnapshot;
 };
 
 function normEntity(s?: string): string {
@@ -229,7 +252,91 @@ function phasePillClass(phase: string): string {
   return "pill pillNeutral";
 }
 
-export default function OverviewPage() {
+function topSnapshotRows(
+  rows: TrialIndexRow[],
+  getLabel: (row: TrialIndexRow) => string,
+  limit: number
+): OverviewSnapshotRow[] {
+  const counts = new Map<string, { total: number; bio: number }>();
+  for (const row of rows) {
+    const label = getLabel(row) || "Other/unknown";
+    const current = counts.get(label) || { total: 0, bio: 0 };
+    current.total += 1;
+    if (isLikelyScientificFailure(row)) current.bio += 1;
+    counts.set(label, current);
+  }
+  return [...counts.entries()]
+    .map(([label, values]) => ({ label, ...values }))
+    .sort((a, b) => b.total - a.total || a.label.localeCompare(b.label))
+    .slice(0, limit);
+}
+
+function buildOverviewSnapshot(rows: TrialIndexRow[], meta: DatasetMeta): OverviewSnapshot {
+  let bio = 0;
+  let minDate = "";
+  let maxDate = "";
+  for (const row of rows) {
+    if (isLikelyScientificFailure(row)) bio += 1;
+    const date = (row.last_update_post_date || row.date || "").slice(0, 10);
+    if (!date) continue;
+    if (!minDate || date < minDate) minDate = date;
+    if (!maxDate || date > maxDate) maxDate = date;
+  }
+
+  return {
+    datasetVersion: meta.version,
+    total: rows.length,
+    bio,
+    bioShare: rows.length ? bio / rows.length : 0,
+    minDate,
+    maxDate,
+    buckets: topSnapshotRows(rows, (row) => normalizeBucketForDisplay(reasonBucket(row) || ""), 5),
+    phases: topSnapshotRows(rows, (row) => phaseLabel(representativePhase(row)), 6),
+    areas: topSnapshotRows(rows, (row) => normEntity(row.disease_area) || "Other/unknown", 8),
+  };
+}
+
+export function OverviewServerSnapshot({ snapshot }: { snapshot: OverviewSnapshot }) {
+  const number = (value: number) => value.toLocaleString("en-US");
+  return (
+    <section className="card p-4" aria-labelledby="overview-snapshot-title">
+      <p className="facet-title">Dataset overview · version {snapshot.datasetVersion}</p>
+      <h1 id="overview-snapshot-title" style={{ margin: "4px 0 10px", fontSize: 30, lineHeight: 1.12 }}>
+        Clinical trial failure overview
+      </h1>
+      <p className="muted" style={{ maxWidth: 880, margin: 0, lineHeight: 1.65 }}>
+        This source-linked snapshot covers {number(snapshot.total)} terminated, suspended, or withdrawn
+        interventional drug and biologic trials. {number(snapshot.bio)} records ({Math.round(snapshot.bioShare * 100)}%)
+        carry a likely biological efficacy or safety signal; the remaining records include operational,
+        strategic, regulatory, transitional, and unresolved stops.
+      </p>
+      <dl className="grid3" style={{ marginTop: 18 }}>
+        <div><dt className="muted small">Stopped records</dt><dd className="kpi" style={{ margin: 0 }}>{number(snapshot.total)}</dd></div>
+        <div><dt className="muted small">Likely biological signals</dt><dd className="kpi" style={{ margin: 0 }}>{number(snapshot.bio)}</dd></div>
+        <div><dt className="muted small">Registry update window</dt><dd style={{ margin: "8px 0 0", fontWeight: 800 }}>{snapshot.minDate || "—"} → {snapshot.maxDate || "—"}</dd></div>
+      </dl>
+      <div className="grid2" style={{ marginTop: 18 }}>
+        <div>
+          <h2 className="h3">Leading stop-reason groups</h2>
+          <ul>
+            {snapshot.buckets.map((row) => <li key={row.label}><strong>{row.label}</strong>: {number(row.total)} records, {number(row.bio)} biological signals</li>)}
+          </ul>
+        </div>
+        <div>
+          <h2 className="h3">Largest disease-area slices</h2>
+          <ul>
+            {snapshot.areas.map((row) => <li key={row.label}><strong>{row.label}</strong>: {number(row.total)} records</li>)}
+          </ul>
+        </div>
+      </div>
+      <p className="muted small" style={{ margin: "16px 0 0" }}>
+        Phase coverage: {snapshot.phases.map((row) => `${row.label} ${number(row.total)}`).join(" · ")}. Loading the interactive filters and full tables…
+      </p>
+    </section>
+  );
+}
+
+export default function OverviewPage({ initialSnapshot }: OverviewPageProps) {
   const [meta, setMeta] = useState<DatasetMeta | null>(null);
   const [allRows, setAllRows] = useState<TrialIndexRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -590,32 +697,7 @@ export default function OverviewPage() {
           </header>
 
           <main className="page">
-            <section className="card p-4" aria-labelledby="overview-loading-title">
-              <p className="facet-title">Dataset overview</p>
-              <h1 id="overview-loading-title" style={{ margin: "4px 0 10px", fontSize: 30, lineHeight: 1.12 }}>
-                Clinical trial failure overview
-              </h1>
-              <p className="muted" style={{ maxWidth: 820, margin: 0, lineHeight: 1.65 }}>
-                Review high-level patterns across terminated, suspended, and withdrawn interventional
-                drug and biologic trials. The overview summarizes trial status, phase, stop-reason
-                classification, disease area, sponsor, and likely biological failure signals from the
-                ClinicalTrials.gov-derived dataset.
-              </p>
-              <nav aria-label="Overview links" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 }}>
-                <Link className="ovBtn btn-primary" href="/explore">
-                  Explore the database
-                </Link>
-                <Link className="ovBtn" href="/failures">
-                  Browse failure hubs
-                </Link>
-                <Link className="ovBtn" href="/methods">
-                  How classification works
-                </Link>
-              </nav>
-              <p className="muted" style={{ margin: "16px 0 0", fontSize: 13 }} aria-live="polite">
-                Loading the current dataset summary…
-              </p>
-            </section>
+            <OverviewServerSnapshot snapshot={initialSnapshot} />
           </main>
         </div>
       </>
@@ -2002,6 +2084,7 @@ export default function OverviewPage() {
 .header {
   display: block !important;
 }
+
 .headerRight {
   width: 100%;
   margin-top: 12px;
@@ -2156,3 +2239,12 @@ export default function OverviewPage() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps<OverviewPageProps> = async () => {
+  const { loadIndexServer, loadMetaServer } = await import("@/lib/server-data");
+  const [rows, meta] = await Promise.all([loadIndexServer(), loadMetaServer()]);
+  return {
+    props: { initialSnapshot: buildOverviewSnapshot(rows, meta) },
+    revalidate: 86_400,
+  };
+};

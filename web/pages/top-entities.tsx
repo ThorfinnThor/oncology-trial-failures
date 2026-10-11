@@ -2,6 +2,7 @@
 
 import Head from "next/head";
 import Link from "next/link";
+import type { GetStaticProps } from "next";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadIndex } from "@/lib/data";
@@ -29,6 +30,18 @@ type ShareRow = {
   total: number;
   inBucket: number;
   share: number;
+};
+
+type TopEntitiesSnapshot = {
+  total: number;
+  bio: number;
+  bucketLabel: string;
+  sponsors: ShareRow[];
+  areas: ShareRow[];
+};
+
+type TopEntitiesPageProps = {
+  initialSnapshot: TopEntitiesSnapshot;
 };
 
 function normEntity(s?: string): string {
@@ -229,7 +242,84 @@ function RankTable({
   );
 }
 
-export default function TopEntitiesPage() {
+function buildTopEntitiesSnapshot(rows: TrialIndexRow[]): TopEntitiesSnapshot {
+  const bucket = BUCKETS[0];
+  const bucketSet = new Set(bucket.buckets);
+  return {
+    total: rows.length,
+    bio: rows.filter((row) => isLikelyScientificFailure(row)).length,
+    bucketLabel: bucket.label,
+    sponsors: computeShareTable({
+      rows,
+      minTrials: 10,
+      bioOnly: false,
+      bucketSet,
+      getKey: (row) => normEntity(row.lead_sponsor),
+      getLabel: (key) => key,
+      unknownLabel: "Unknown",
+    }).slice(0, 10),
+    areas: computeShareTable({
+      rows,
+      minTrials: 10,
+      bioOnly: false,
+      bucketSet,
+      getKey: (row) => normEntity(row.disease_area),
+      getLabel: (key) => key,
+      unknownLabel: "Other",
+    }).slice(0, 10),
+  };
+}
+
+function SnapshotTable({
+  title,
+  rows,
+  facet,
+  bucketLabel,
+}: {
+  title: string;
+  rows: ShareRow[];
+  facet: "sponsor" | "area";
+  bucketLabel: string;
+}) {
+  const number = (value: number) => value.toLocaleString("en-US");
+  return (
+    <div>
+      <h2 className="slPanelTitle">{title}</h2>
+      <table className="tblMini" aria-label={title}>
+        <thead><tr><th>Entity</th><th className="num">Share</th><th className="num">Signals / records</th></tr></thead>
+        <tbody>{rows.map((row) => (
+          <tr key={row.key}>
+            <td><Link className="link" href={exploreHref(false, { [facet]: [row.key], bucket: [BUCKETS[0].key] })}>{row.label}</Link></td>
+            <td className="num">{safePct(row.share)}</td>
+            <td className="num">{number(row.inBucket)} / {number(row.total)}</td>
+          </tr>
+        ))}</tbody>
+      </table>
+      <p className="muted slSmall">Share of stopped records classified as {bucketLabel.toLowerCase()}.</p>
+    </div>
+  );
+}
+
+export function TopEntitiesServerSnapshot({ snapshot }: { snapshot: TopEntitiesSnapshot }) {
+  const number = (value: number) => value.toLocaleString("en-US");
+  return (
+    <section className="card p-4 slPanel" aria-labelledby="top-entities-snapshot-title">
+      <p className="facet-title">Server-rendered evidence snapshot</p>
+      <h2 id="top-entities-snapshot-title" className="slPanelTitle">Efficacy and futility signal leaders</h2>
+      <p className="muted slSubtitle">
+        Rankings compare {number(snapshot.total)} stopped records, including {number(snapshot.bio)} likely biological
+        signals. The denominator is each entity&apos;s stopped-trial slice, not its complete clinical portfolio.
+      </p>
+      <div className="slGrid2" style={{ marginTop: 18 }}>
+        <SnapshotTable title="Leading sponsors" rows={snapshot.sponsors} facet="sponsor" bucketLabel={snapshot.bucketLabel} />
+        <SnapshotTable title="Leading disease areas" rows={snapshot.areas} facet="area" bucketLabel={snapshot.bucketLabel} />
+      </div>
+      <p className="muted slSmall" style={{ margin: "14px 0 0" }}>Loading interactive bucket and minimum-sample controls…</p>
+    </section>
+  );
+}
+
+export default function TopEntitiesPage({ initialSnapshot }: TopEntitiesPageProps) {
   const [allRows, setAllRows] = useState<TrialIndexRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -266,9 +356,10 @@ export default function TopEntitiesPage() {
   }, []);
 
   const scopedCount = useMemo(() => {
+    if (!allRows.length) return bioOnly ? initialSnapshot.bio : initialSnapshot.total;
     if (!bioOnly) return allRows.length;
     return allRows.filter((r) => isLikelyScientificFailure(r)).length;
-  }, [allRows, bioOnly]);
+  }, [allRows, bioOnly, initialSnapshot.bio, initialSnapshot.total]);
 
   const bucketSetCompany = useMemo(() => {
     const opt = BUCKETS.find((b) => b.key === bucketCompany) || BUCKETS[0];
@@ -372,7 +463,7 @@ export default function TopEntitiesPage() {
           </header>
 
           {err ? <div className="card p-4 error">{err}</div> : null}
-          {loading ? <div className="card p-4 muted">Loading…</div> : null}
+          {loading ? <TopEntitiesServerSnapshot snapshot={initialSnapshot} /> : null}
 
           {!loading && !err ? (
             <section className="slGrid1" aria-label="Top entities">
@@ -820,3 +911,12 @@ export default function TopEntitiesPage() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps<TopEntitiesPageProps> = async () => {
+  const { loadIndexServer } = await import("@/lib/server-data");
+  const rows = await loadIndexServer();
+  return {
+    props: { initialSnapshot: buildTopEntitiesSnapshot(rows) },
+    revalidate: 86_400,
+  };
+};

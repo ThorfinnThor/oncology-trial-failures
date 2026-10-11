@@ -2,6 +2,7 @@
 
 import Head from "next/head";
 import Link from "next/link";
+import type { GetStaticProps } from "next";
 import { useEffect, useMemo, useState } from "react";
 
 import { loadSpecialness } from "@/lib/data";
@@ -54,6 +55,16 @@ type SpecialnessIndex = {
   bucket_order?: string[];
   results: Record<ScopeKey, Record<GroupByKey, Record<PhaseKey, OutlierCountRow[]>>>;
   notes?: string;
+};
+
+type OutliersSnapshot = {
+  generatedAt: string;
+  baseline: Baseline | null;
+  rows: OutlierRow[];
+};
+
+type OutliersPageProps = {
+  initialSnapshot: OutliersSnapshot;
 };
 
 function safePct(x: number): string {
@@ -245,7 +256,90 @@ function Table({
   );
 }
 
-export default function OutliersPage() {
+function computeOutlierRows(
+  data: SpecialnessIndex,
+  scope: ScopeKey,
+  groupBy: GroupByKey,
+  phase: PhaseKey,
+  bucket: BucketKey,
+  minTrials: number,
+  minHits: number
+): OutlierRow[] {
+  const baseline = data.baselines?.[scope]?.[phase]?.[bucket] || null;
+  const raw: OutlierCountRow[] = data.results?.[scope]?.[groupBy]?.[phase] || [];
+  const p0 = baseline?.rate ?? 0;
+  const priorA = data.prior?.a ?? 1;
+  const priorB = data.prior?.b ?? 1;
+  const order = (data.bucket_order || BUCKET_OPTS.map((option) => option.key)).map((value) => String(value).toUpperCase());
+  const bucketIndex = Math.max(0, order.indexOf(String(bucket).toUpperCase()));
+  const computed: OutlierRow[] = [];
+
+  for (const row of raw) {
+    const n = row?.n || 0;
+    const k = (row?.k && row.k.length > bucketIndex ? row.k[bucketIndex] : 0) || 0;
+    if (n < Math.max(1, minTrials || 1) || k < Math.max(0, minHits || 0)) continue;
+    const alpha = priorA + k;
+    const beta = priorB + (n - k);
+    const { mean, lo, hi } = betaMeanCi90(alpha, beta);
+    computed.push({
+      group: row.group,
+      n,
+      k,
+      raw_rate: n > 0 ? k / n : 0,
+      posterior_mean: mean,
+      ci90_low: lo,
+      ci90_high: hi,
+      baseline_rate: p0,
+      lift: p0 > 0 ? mean / p0 : null,
+      prob_gt_baseline: probBetaGtBaseline(alpha, beta, p0),
+    });
+  }
+
+  return computed.sort((a, b) => {
+    if (b.prob_gt_baseline !== a.prob_gt_baseline) return b.prob_gt_baseline - a.prob_gt_baseline;
+    const bLift = b.lift ?? -Infinity;
+    const aLift = a.lift ?? -Infinity;
+    if (bLift !== aLift) return bLift - aLift;
+    if (b.n !== a.n) return b.n - a.n;
+    return a.group.localeCompare(b.group);
+  });
+}
+
+function buildOutliersSnapshot(data: SpecialnessIndex): OutliersSnapshot {
+  return {
+    generatedAt: data.generated_at_utc || "current dataset",
+    baseline: data.baselines?.all?.phase2?.SAFETY || null,
+    rows: computeOutlierRows(data, "all", "company", "phase2", "SAFETY", 10, 3).slice(0, 8),
+  };
+}
+
+export function OutliersServerSnapshot({ snapshot }: { snapshot: OutliersSnapshot }) {
+  const number = (value: number) => value.toLocaleString("en-US");
+  return (
+    <section className="card p-4 olPanel" aria-labelledby="outliers-snapshot-title">
+      <p className="facet-title">Server-rendered evidence snapshot</p>
+      <h2 id="outliers-snapshot-title" className="h2">Phase II sponsor safety outliers</h2>
+      <p className="muted olSubtitle">
+        This default comparison uses shrinkage-adjusted estimates for sponsors with at least 10 stopped Phase II
+        records and at least three safety-classified stops. It is a screening signal, not a sponsor failure rate.
+      </p>
+      {snapshot.baseline ? (
+        <p><strong>Comparison baseline:</strong> {safePct(snapshot.baseline.rate)} ({number(snapshot.baseline.k)} of {number(snapshot.baseline.n)} records).</p>
+      ) : null}
+      <div className="hScroll" role="region" aria-label="Phase II sponsor safety snapshot" tabIndex={0}>
+        <table className="tblMini tblOutliers">
+          <thead><tr><th>Sponsor</th><th className="num">P(&gt;baseline)</th><th className="num">Lift</th><th className="num">Trials</th><th className="num">Safety stops</th></tr></thead>
+          <tbody>{snapshot.rows.map((row) => (
+            <tr key={row.group}><td>{row.group}</td><td className="num">{safeProb(row.prob_gt_baseline)}</td><td className="num">{safeLift(row.lift)}</td><td className="num">{number(row.n)}</td><td className="num">{number(row.k)}</td></tr>
+          ))}</tbody>
+        </table>
+      </div>
+      <p className="muted olSmall" style={{ margin: "12px 0 0" }}>Snapshot generated from {snapshot.generatedAt}. Loading the interactive cohort controls…</p>
+    </section>
+  );
+}
+
+export default function OutliersPage({ initialSnapshot }: OutliersPageProps) {
   const [data, setData] = useState<SpecialnessIndex | null>(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState<string | null>(null);
@@ -296,55 +390,8 @@ export default function OutliersPage() {
 
   const rows = useMemo(() => {
     if (!data) return [] as OutlierRow[];
-    const raw: OutlierCountRow[] = data.results?.[scope]?.[groupBy]?.[phase] || [];
-    const minN = Math.max(1, minTrials || 1);
-    const minK = Math.max(0, minHits || 0);
-
-    const p0 = baseline?.rate ?? 0;
-    const priorA = data.prior?.a ?? 1;
-    const priorB = data.prior?.b ?? 1;
-
-    const order = (data.bucket_order || BUCKET_OPTS.map((b) => b.key)).map((x) => String(x).toUpperCase());
-    const idx = Math.max(0, order.indexOf(String(bucket).toUpperCase()));
-
-    const computed: OutlierRow[] = [];
-    for (const r of raw) {
-      const n = r?.n || 0;
-      const k = (r?.k && r.k.length > idx ? r.k[idx] : 0) || 0;
-      if (n < minN) continue;
-      if (k < minK) continue;
-
-      const alpha = priorA + k;
-      const beta = priorB + (n - k);
-      const { mean, lo, hi } = betaMeanCi90(alpha, beta);
-      const prob = probBetaGtBaseline(alpha, beta, p0);
-      const lift = p0 > 0 ? mean / p0 : null;
-
-      computed.push({
-        group: r.group,
-        n,
-        k,
-        raw_rate: n > 0 ? k / n : 0,
-        posterior_mean: mean,
-        ci90_low: lo,
-        ci90_high: hi,
-        baseline_rate: p0,
-        lift,
-        prob_gt_baseline: prob
-      });
-    }
-
-    computed.sort((a, b) => {
-      if (b.prob_gt_baseline !== a.prob_gt_baseline) return b.prob_gt_baseline - a.prob_gt_baseline;
-      const bl = b.lift ?? -Infinity;
-      const al = a.lift ?? -Infinity;
-      if (bl !== al) return bl - al;
-      if (b.n !== a.n) return b.n - a.n;
-      return a.group.localeCompare(b.group);
-    });
-
-    return computed;
-  }, [data, scope, groupBy, phase, bucket, minTrials, minHits, baseline?.rate]);
+    return computeOutlierRows(data, scope, groupBy, phase, bucket, minTrials, minHits);
+  }, [data, scope, groupBy, phase, bucket, minTrials, minHits]);
 
   const topPick = rows[0];
 
@@ -438,7 +485,7 @@ export default function OutliersPage() {
           </header>
 
           {err ? <div className="card p-4 error">{err}</div> : null}
-          {loading ? <div className="card p-4 muted">Loading…</div> : null}
+          {loading ? <OutliersServerSnapshot snapshot={initialSnapshot} /> : null}
 
           {!loading && !err && data ? (
             <section className="card p-4 olPanel" aria-label="Outlier controls and table">
@@ -712,3 +759,12 @@ export default function OutliersPage() {
     </>
   );
 }
+
+export const getStaticProps: GetStaticProps<OutliersPageProps> = async () => {
+  const { readJsonServerAsset } = await import("@/lib/server-data");
+  const data = await readJsonServerAsset<SpecialnessIndex>("public/specialness_index.json");
+  return {
+    props: { initialSnapshot: buildOutliersSnapshot(data) },
+    revalidate: 86_400,
+  };
+};

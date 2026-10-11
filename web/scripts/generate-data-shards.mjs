@@ -98,6 +98,9 @@ function normalizeIndexRow(row) {
     classification_final_outcome: asString(row.classification_final_outcome || "").trim(),
     classification_final_category: asString(row.classification_final_category || "").trim(),
     classification_final_explanation: asString(row.classification_final_explanation || "").trim(),
+    start_date: asString(row.start_date || "").trim(),
+    primary_completion_date: asString(row.primary_completion_date || "").trim(),
+    completion_date: asString(row.completion_date || "").trim(),
     last_update_post_date: asString(row.last_update_post_date || row.last_update || row.updated || "").trim(),
     url,
   });

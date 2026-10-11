@@ -15,6 +15,7 @@ import productSummary from "@/data/product_summary.json";
 import briefsIndex from "@/data/briefs_index.json";
 import preview from "@/data/newsletter_preview.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
+import { staticRobotsForPath } from "@/lib/seoStaticPolicy";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/newsletter`;
@@ -74,7 +75,7 @@ export default function NewsletterPage() {
       <Head>
         <title>{TITLE}</title>
         <meta name="description" content={DESCRIPTION} />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content={staticRobotsForPath("/newsletter")} />
         <link rel="canonical" href={CANONICAL_URL} />
         <meta property="og:title" content={TITLE} />
         <meta property="og:description" content={DESCRIPTION} />
