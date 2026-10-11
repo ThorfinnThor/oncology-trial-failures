@@ -332,7 +332,10 @@ export function registryTimingSlice(rows: TrialIndexRow[]) {
     .filter((item) => item.lagYears >= 5 && item.lagYears <= 20)
     .sort((a, b) => b.lagYears - a.lagYears || a.row.nct_id.localeCompare(b.row.nct_id));
   const recentExample = paired
-    .filter((item) => item.updated.startsWith("2026-") && item.completed < "2021-01-01")
+    .filter((item) => {
+      const completedAt = parseDateValue(item.completed);
+      return item.updated.startsWith("2026-") && completedAt !== null && completedAt < Date.UTC(2021, 0, 1);
+    })
     .sort((a, b) => b.lagYears - a.lagYears || a.row.nct_id.localeCompare(b.row.nct_id))[0];
   const exampleItems = [recentExample, ...exampleCandidates].filter(
     (item, index, all): item is (typeof paired)[number] => Boolean(item) && all.indexOf(item) === index,
@@ -350,9 +353,14 @@ export function registryTimingSlice(rows: TrialIndexRow[]) {
     overFiveYears: countOver(5),
     overTenYears: countOver(10),
     updated2026: rows.filter((row) => (row.last_update_post_date || "").startsWith("2026-")).length,
-    updated2026CompletedBefore2021: rows.filter((row) =>
-      (row.last_update_post_date || "").startsWith("2026-") && completionDate(row) < "2021-01-01" && Boolean(completionDate(row)),
-    ).length,
+    updated2026CompletedBefore2021: rows.filter((row) => {
+      const completedAt = parseDateValue(completionDate(row));
+      return (
+        (row.last_update_post_date || "").startsWith("2026-") &&
+        completedAt !== null &&
+        completedAt < Date.UTC(2021, 0, 1)
+      );
+    }).length,
     byStatus,
     examples: exampleItems.map((item) => ({
       nctId: item.row.nct_id,
@@ -385,7 +393,7 @@ export function phaseCoverageSlice(rows: TrialIndexRow[]) {
     }))
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 
-  const phaseKeys = ["EARLY_PHASE1", "PHASE1", "PHASE2", "PHASE3", "PHASE4", "NA"];
+  const phaseKeys = ["EARLY_PHASE1", "PHASE1", "PHASE2", "PHASE3", "PHASE4"];
   const phaseMembership = phaseKeys.map((key) => {
     const phaseRows = rows.filter((row) => parsePhases(row.phases || "").includes(key));
     const biologicalCount = phaseRows.filter((row) => finalOutcome(row) === "BIOLOGICAL_FAILURE").length;
@@ -402,11 +410,15 @@ export function phaseCoverageSlice(rows: TrialIndexRow[]) {
     rows.find((row) => parsePhases(row.phases || "").includes("NA")),
     rows.find((row) => (row.phases || "") === "PHASE3" && finalOutcome(row) === "BIOLOGICAL_FAILURE"),
   ].filter((row, index, all): row is TrialIndexRow => Boolean(row) && all.indexOf(row) === index);
+  const namedPhaseGroups = rows.map((row) => parsePhases(row.phases || "").filter((phase) => phase !== "NA"));
+  const singlePhase = namedPhaseGroups.filter((phases) => phases.length === 1).length;
+  const multiPhase = namedPhaseGroups.filter((phases) => phases.length > 1).length;
 
   return {
     total: rows.length,
-    singlePhase: rows.filter((row) => parsePhases(row.phases || "").length === 1).length,
-    multiPhase: rows.filter((row) => parsePhases(row.phases || "").length > 1).length,
+    namedPhaseRecords: singlePhase + multiPhase,
+    singlePhase,
+    multiPhase,
     missingPhase: rows.filter((row) => !parsePhases(row.phases || "").length).length,
     notApplicable: rows.filter((row) => parsePhases(row.phases || "").includes("NA")).length,
     membershipTotal: phaseMembership.reduce((sum, item) => sum + item.count, 0),

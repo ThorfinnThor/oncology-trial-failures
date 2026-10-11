@@ -72,11 +72,13 @@ test("phase coverage exposes unique encoding and overlapping memberships", () =>
   const memberships = new Map(summary.phaseMembership.map((item) => [item.key, item]));
 
   assert.equal(summary.total, 5);
-  assert.equal(summary.singlePhase, 2);
+  assert.equal(summary.namedPhaseRecords, 3);
+  assert.equal(summary.singlePhase, 1);
   assert.equal(summary.multiPhase, 2);
   assert.equal(summary.notApplicable, 1);
   assert.equal(summary.missingPhase, 1);
-  assert.equal(summary.membershipTotal, 6);
+  assert.equal(summary.membershipTotal, 5);
+  assert.equal(memberships.has("NA"), false);
   assert.equal(memberships.get("PHASE2")?.count, 2);
   assert.equal(memberships.get("PHASE2")?.biologicalCount, 1);
   assert.equal(summary.examples.length, 3);

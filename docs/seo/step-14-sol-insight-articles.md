@@ -19,7 +19,8 @@
 
 `/insights/clinical-trial-phase-totals-do-not-add-up` explains the difference between unique encoded groups, phase memberships, and exact-phase cohorts:
 
-- 23,868 unique records produce 26,874 named phase memberships.
+- 22,133 of 23,868 unique records carry a named phase and produce 25,140 named phase memberships.
+- 19,126 records carry exactly one named phase.
 - 3,007 records carry multiple phase labels.
 - 1,734 records are marked not applicable and one has no usable phase value.
 - Phase II has 10,861 memberships and Phase III has 4,017 under the membership rule.
@@ -35,4 +36,4 @@ The numbers are calculated at build time from compact lifecycle fields. Completi
 - `npm run lint` passed with the repository's existing warnings and zero errors.
 - Style and private-data checks passed.
 
-No production deployment or GitHub commit is included in this step.
+No production deployment is included in this step.

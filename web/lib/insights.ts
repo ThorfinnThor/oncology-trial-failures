@@ -223,6 +223,7 @@ export type InsightStats = {
   };
   phaseCoverage: {
     total: number;
+    namedPhaseRecords: number;
     singlePhase: number;
     multiPhase: number;
     missingPhase: number;
@@ -2471,26 +2472,26 @@ function hydrateRegistryTimingArticle(article: InsightArticle, stats: InsightSta
   return {
     ...article,
     metaDescription: `${n(timing.overFiveYears)} of ${n(timing.paired)} stopped-trial records with comparable dates were updated at least five years after completion. Learn why update date is not stop date.`,
-    dek: `Among ${n(timing.paired)} records with a usable completion and update date, the median gap is ${years(timing.medianLagYears)}. A recent registry edit can describe an old study—not a recent clinical stop.`,
+    dek: `Among ${n(timing.paired)} records with a usable completion reference and update date, the approximate median gap is ${years(timing.medianLagYears)}. A recent registry edit can describe an old study—not a recent clinical stop.`,
     facts: [
       `${n(timing.paired)} records have a non-negative, comparable completion-to-update interval; the median gap is ${years(timing.medianLagYears)}.`,
       `${n(timing.overOneYear)} records were updated at least one year after completion, including ${n(timing.overFiveYears)} after five years and ${n(timing.overTenYears)} after ten.`,
-      `${n(timing.updated2026)} records were last updated in 2026; ${n(timing.updated2026CompletedBefore2021)} of those have a completion date before 2021.`,
+      `${n(timing.updated2026)} records were last updated in 2026; ${n(timing.updated2026CompletedBefore2021)} of those have a completion reference before 2021.`,
       `${n(timing.beforeCompletion)} paired records show an update date before the recorded completion date, so the fields cannot be treated as a stop timeline.`,
-      `${n(timing.missingCompletion)} records have no usable completion date and are kept outside the interval calculation rather than assigned an invented lag.`,
+      `${n(timing.missingCompletion)} records have neither a usable completion date nor primary-completion date and are kept outside the interval calculation rather than assigned an invented lag.`,
     ],
     sections: [
       {
         heading: "The newest date is not the newest event",
         body: [
-          `The current snapshot contains ${n(timing.updated2026)} records last updated in 2026. That sounds like a recent-study count until the other date is read: ${n(timing.updated2026CompletedBefore2021)} of those records have a recorded completion date before 2021. The update is recent; the study is not necessarily recent.`,
+          `The current snapshot contains ${n(timing.updated2026)} records last updated in 2026. That sounds like a recent-study count until the other date is read: ${n(timing.updated2026CompletedBefore2021)} of those records have a recorded completion reference before 2021. The update is recent; the study is not necessarily recent.`,
           "A registry post can add results, correct a field, or satisfy a reporting obligation long after a program has stopped. Last update is therefore a publication event in the registry, not a substitute for the date on which the clinical decision occurred.",
         ],
       },
       {
         heading: "The gap is common, not an edge case",
         body: [
-          `Across ${n(timing.paired)} records with comparable dates, the median distance from recorded completion to last update is ${years(timing.medianLagYears)}. ${n(timing.overThreeYears)} records sit at least three years apart, and ${n(timing.overFiveYears)} sit at least five years apart.`,
+          `Across ${n(timing.paired)} records with comparable dates, the approximate median distance from recorded completion to last update is ${years(timing.medianLagYears)}. ${n(timing.overThreeYears)} records sit at least three years apart, and ${n(timing.overFiveYears)} sit at least five years apart.`,
           "Those counts do not measure how long a trial took to run. Completion is not always the same as termination, and a planned completion field can precede a later status change. They measure how much time may separate two registry fields—a useful warning before anyone writes a chronology from a single date.",
         ],
       },
@@ -2514,7 +2515,8 @@ function hydrateRegistryTimingArticle(article: InsightArticle, stats: InsightSta
         heading: "What the data can support",
         body: [
           `The snapshot supports a comparison between registry fields for ${n(timing.paired)} records. It does not reconstruct the exact stop date for every study: ${n(timing.missingCompletion)} records lack a usable completion date, and ${n(timing.beforeCompletion)} have an update date before the recorded completion date.`,
-          "That limitation is a reason to label the field correctly, not to discard it. Use last-update date as a freshness signal, completion date as a lifecycle field, and the stop statement as the evidence needed to explain what happened.",
+          "For this comparison, the completion reference is the completion date when present and the primary-completion date otherwise. Some source dates contain only a month, so calculated gaps are approximate rather than exact day-level measurements.",
+          "Those limitations are a reason to label the fields correctly, not to discard them. Use last-update date as a freshness signal, the completion reference as a lifecycle field, and the stop statement as the evidence needed to explain what happened.",
         ],
       },
     ],
@@ -2555,7 +2557,7 @@ function hydrateRegistryTimingArticle(article: InsightArticle, stats: InsightSta
       if (faq.question === "Can a trial updated in 2026 be an old study?") {
         return {
           ...faq,
-          answer: `Yes. ${n(timing.updated2026CompletedBefore2021)} records updated in 2026 have a recorded completion date before 2021 in this snapshot.`,
+          answer: `Yes. ${n(timing.updated2026CompletedBefore2021)} records updated in 2026 have a recorded completion reference before 2021 in this snapshot. The completion reference uses the completion date when present and the primary-completion date otherwise.`,
         };
       }
       return faq;
@@ -2569,17 +2571,17 @@ function hydratePhaseCoverageArticle(article: InsightArticle, stats: InsightStat
   const phaseTwo = phase("PHASE2");
   const phaseThree = phase("PHASE3");
   const combinedShare = pctFromCounts(coverage.multiPhase, coverage.total);
-  const membershipOverhang = coverage.membershipTotal - coverage.total;
+  const membershipOverhang = coverage.membershipTotal - coverage.namedPhaseRecords;
   const examples = coverage.examples;
 
   return {
     ...article,
     metaDescription: `${n(coverage.multiPhase)} of ${n(coverage.total)} stopped-trial records carry more than one phase label. See why phase membership totals can exceed unique records.`,
-    dek: `${n(coverage.total)} stopped records produce ${n(coverage.membershipTotal)} phase memberships because ${n(coverage.multiPhase)} records name more than one phase. The arithmetic changes with the question being asked.`,
+    dek: `${n(coverage.namedPhaseRecords)} stopped records with a named phase produce ${n(coverage.membershipTotal)} phase memberships because ${n(coverage.multiPhase)} records name more than one phase. The arithmetic changes with the question being asked.`,
     facts: [
-      `${n(coverage.total)} unique stopped-trial records produce ${n(coverage.membershipTotal)} named phase memberships.`,
+      `${n(coverage.namedPhaseRecords)} of ${n(coverage.total)} unique stopped-trial records carry a named phase; they produce ${n(coverage.membershipTotal)} named phase memberships.`,
       `${n(coverage.multiPhase)} records carry multiple phase labels (${combinedShare}); they belong to more than one phase-membership group.`,
-      `${n(coverage.singlePhase)} records carry one phase label, ${n(coverage.notApplicable)} are marked not applicable, and ${n(coverage.missingPhase)} have no usable phase value.`,
+      `${n(coverage.singlePhase)} records carry exactly one named phase, ${n(coverage.notApplicable)} are marked not applicable, and ${n(coverage.missingPhase)} have no usable phase value.`,
       phaseTwo ? `Phase II appears in ${n(phaseTwo.count)} memberships, including combined-phase records; ${n(phaseTwo.biologicalCount)} of those carry biological failure signals (${phaseTwo.biologicalShare}).` : "Phase II membership is not available.",
       phaseThree ? `Phase III appears in ${n(phaseThree.count)} memberships; its biological-signal share is ${phaseThree.biologicalShare} under the membership rule.` : "Phase III membership is not available.",
     ],
@@ -2587,14 +2589,14 @@ function hydratePhaseCoverageArticle(article: InsightArticle, stats: InsightStat
       {
         heading: "The arithmetic problem is really a definition problem",
         body: [
-          `The dataset has ${n(coverage.total)} unique stopped records but ${n(coverage.membershipTotal)} phase memberships—an overhang of ${n(membershipOverhang)}. The difference comes from records such as ${examples[0]?.phases || "combined phase labels"}, which name more than one phase.`,
+          `The dataset has ${n(coverage.namedPhaseRecords)} records with a named phase but ${n(coverage.membershipTotal)} named phase memberships—an overhang of ${n(membershipOverhang)}. The difference comes from records such as ${examples[0]?.phases || "combined phase labels"}, which name more than one phase. The full dataset also contains ${n(coverage.notApplicable)} not-applicable records and ${n(coverage.missingPhase)} record without a usable phase value.`,
           "That is not a broken count. It is a choice to preserve what the registry says. A membership table answers where phase labels appear; a unique-record table answers how rows are encoded. They should not be compared as if they used the same denominator.",
         ],
       },
       {
         heading: "The current snapshot contains all four cases",
         body: [
-          `${n(coverage.singlePhase)} records carry one phase label, ${n(coverage.multiPhase)} carry multiple labels, ${n(coverage.notApplicable)} are marked not applicable, and ${n(coverage.missingPhase)} have no usable phase value. The last group is tiny, but the not-applicable group is large enough to matter in denominator design.`,
+          `${n(coverage.singlePhase)} records carry exactly one named phase, ${n(coverage.multiPhase)} carry multiple named phases, ${n(coverage.notApplicable)} are marked not applicable, and ${n(coverage.missingPhase)} have no usable phase value. These are mutually exclusive groups; the not-applicable group is large enough to matter in denominator design.`,
           "A planned phase can also survive when a study was withdrawn before enrollment. The label remains useful metadata about the registered protocol, but it is not automatically evidence generated by an executed trial at that phase.",
         ],
       },
