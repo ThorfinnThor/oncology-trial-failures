@@ -117,6 +117,9 @@ export type TrialIndexRow = {
   failure_type?: string;
 
   // Dates
+  start_date?: string;
+  primary_completion_date?: string;
+  completion_date?: string;
   last_update_post_date?: string;
 
   // Some code paths refer to a generic "date" field; keep optional for compatibility

@@ -270,6 +270,159 @@ function latestUpdateSlice(rows: TrialIndexRow[]) {
   };
 }
 
+function parseDateValue(value?: string): number | null {
+  if (!value) return null;
+  const parsed = Date.parse(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function medianValue(values: number[]): number {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const middle = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+}
+
+function completionDate(row: TrialIndexRow): string {
+  return row.completion_date || row.primary_completion_date || "";
+}
+
+const DAYS_PER_YEAR = 365.25;
+
+export function registryTimingSlice(rows: TrialIndexRow[]) {
+  const paired: Array<{ row: TrialIndexRow; lagYears: number; completed: string; updated: string }> = [];
+  let missingCompletion = 0;
+  let invalidCompletion = 0;
+  let beforeCompletion = 0;
+
+  for (const row of rows) {
+    const completed = completionDate(row);
+    const completedAt = parseDateValue(completed);
+    const updated = row.last_update_post_date || "";
+    const updatedAt = parseDateValue(updated);
+    if (!completed) {
+      missingCompletion += 1;
+      continue;
+    }
+    if (completedAt === null || updatedAt === null) {
+      invalidCompletion += 1;
+      continue;
+    }
+    const lagYears = (updatedAt - completedAt) / (DAYS_PER_YEAR * 24 * 60 * 60 * 1000);
+    if (lagYears < 0) {
+      beforeCompletion += 1;
+      continue;
+    }
+    paired.push({ row, lagYears, completed, updated });
+  }
+
+  const countOver = (years: number) => paired.filter((item) => item.lagYears >= years).length;
+  const statusLabels = ["TERMINATED", "WITHDRAWN", "SUSPENDED"];
+  const byStatus = statusLabels.map((label) => {
+    const statusRows = paired.filter((item) => (item.row.overall_status || "").toUpperCase() === label);
+    return {
+      label,
+      total: statusRows.length,
+      medianLagYears: medianValue(statusRows.map((item) => item.lagYears)),
+      overFiveYears: statusRows.filter((item) => item.lagYears >= 5).length,
+    };
+  });
+
+  const exampleCandidates = paired
+    .filter((item) => item.lagYears >= 5 && item.lagYears <= 20)
+    .sort((a, b) => b.lagYears - a.lagYears || a.row.nct_id.localeCompare(b.row.nct_id));
+  const recentExample = paired
+    .filter((item) => item.updated.startsWith("2026-") && item.completed < "2021-01-01")
+    .sort((a, b) => b.lagYears - a.lagYears || a.row.nct_id.localeCompare(b.row.nct_id))[0];
+  const exampleItems = [recentExample, ...exampleCandidates].filter(
+    (item, index, all): item is (typeof paired)[number] => Boolean(item) && all.indexOf(item) === index,
+  ).slice(0, 3);
+
+  return {
+    total: rows.length,
+    paired: paired.length,
+    missingCompletion,
+    invalidCompletion,
+    beforeCompletion,
+    medianLagYears: medianValue(paired.map((item) => item.lagYears)),
+    overOneYear: countOver(1),
+    overThreeYears: countOver(3),
+    overFiveYears: countOver(5),
+    overTenYears: countOver(10),
+    updated2026: rows.filter((row) => (row.last_update_post_date || "").startsWith("2026-")).length,
+    updated2026CompletedBefore2021: rows.filter((row) =>
+      (row.last_update_post_date || "").startsWith("2026-") && completionDate(row) < "2021-01-01" && Boolean(completionDate(row)),
+    ).length,
+    byStatus,
+    examples: exampleItems.map((item) => ({
+      nctId: item.row.nct_id,
+      title: item.row.brief_title || item.row.nct_id,
+      status: item.row.overall_status || "Stopped",
+      phase: phaseGroup(item.row),
+      completed: item.completed,
+      updated: item.updated,
+      lagYears: item.lagYears,
+      href: trialPath(item.row),
+    })),
+  };
+}
+
+function phaseDisplayLabel(key: string): string {
+  if (key === "NA") return "Not applicable";
+  if (key === "MISSING") return "Missing phase";
+  return phaseLabel(key);
+}
+
+export function phaseCoverageSlice(rows: TrialIndexRow[]) {
+  const encodedGroups = Object.entries(countBy(rows, (row) => {
+    const phases = parsePhases(row.phases || "");
+    if (!phases.length) return "MISSING";
+    return phases.join("; ");
+  }))
+    .map(([label, count]) => ({
+      label: label === "MISSING" ? "Missing phase" : label.split("; ").map(phaseDisplayLabel).join(" + "),
+      count,
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+
+  const phaseKeys = ["EARLY_PHASE1", "PHASE1", "PHASE2", "PHASE3", "PHASE4", "NA"];
+  const phaseMembership = phaseKeys.map((key) => {
+    const phaseRows = rows.filter((row) => parsePhases(row.phases || "").includes(key));
+    const biologicalCount = phaseRows.filter((row) => finalOutcome(row) === "BIOLOGICAL_FAILURE").length;
+    return {
+      key,
+      label: phaseDisplayLabel(key),
+      count: phaseRows.length,
+      biologicalCount,
+      biologicalShare: pct(biologicalCount, phaseRows.length),
+    };
+  });
+  const exampleRows = [
+    rows.find((row) => parsePhases(row.phases || "").length > 1),
+    rows.find((row) => parsePhases(row.phases || "").includes("NA")),
+    rows.find((row) => (row.phases || "") === "PHASE3" && finalOutcome(row) === "BIOLOGICAL_FAILURE"),
+  ].filter((row, index, all): row is TrialIndexRow => Boolean(row) && all.indexOf(row) === index);
+
+  return {
+    total: rows.length,
+    singlePhase: rows.filter((row) => parsePhases(row.phases || "").length === 1).length,
+    multiPhase: rows.filter((row) => parsePhases(row.phases || "").length > 1).length,
+    missingPhase: rows.filter((row) => !parsePhases(row.phases || "").length).length,
+    notApplicable: rows.filter((row) => parsePhases(row.phases || "").includes("NA")).length,
+    membershipTotal: phaseMembership.reduce((sum, item) => sum + item.count, 0),
+    encodedGroups,
+    phaseMembership,
+    examples: exampleRows.map((row) => ({
+      nctId: row.nct_id,
+      title: row.brief_title || row.nct_id,
+      phases: parsePhases(row.phases || "").map(phaseDisplayLabel).join(" + ") || "Missing phase",
+      status: row.overall_status || "Stopped",
+      why: row.why_stopped_short || "No short stop-reason text is available.",
+      href: trialPath(row),
+    })),
+  };
+}
+
 const ENDPOINT_EXAMPLE_IDS = ["NCT02193074", "NCT01496430", "NCT01278745"];
 
 export function postedEndpointResultSlice(rows: TrialIndexRow[], asset: EndpointResultsAsset) {
@@ -604,5 +757,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
       heldoutBiologicalPrecision: v2Heldout.biological_precision || 0,
       heldoutAssertionAgreement: v2Heldout.assertion_no_material_disagreement || 0,
     },
+    registryTiming: registryTimingSlice(rows),
+    phaseCoverage: phaseCoverageSlice(rows),
   };
 }

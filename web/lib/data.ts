@@ -76,6 +76,9 @@ function normalizeIndexRows(raw: any[]): TrialIndexRow[] {
         classification_final_outcome: asString(r.classification_final_outcome || "").trim(),
         classification_final_category: asString(r.classification_final_category || "").trim(),
         classification_final_explanation: asString(r.classification_final_explanation || "").trim(),
+        start_date: asString(r.start_date || "").trim(),
+        primary_completion_date: asString(r.primary_completion_date || "").trim(),
+        completion_date: asString(r.completion_date || "").trim(),
         last_update_post_date: asString(r.last_update_post_date || r.last_update || r.updated || "").trim(),
         url,
       } as TrialIndexRow;
