@@ -4,6 +4,7 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import type { GetStaticProps, GetStaticPropsContext } from "next";
 
+import HomePage, { getStaticProps as getHomeStaticProps } from "../pages/index";
 import { OverviewServerSnapshot, getStaticProps as getOverviewStaticProps } from "../pages/overview";
 import { OutliersServerSnapshot, getStaticProps as getOutliersStaticProps } from "../pages/outliers";
 import { TopEntitiesServerSnapshot, getStaticProps as getTopEntitiesStaticProps } from "../pages/top-entities";
@@ -23,6 +24,16 @@ test("overview exposes a substantive dataset snapshot before client hydration", 
   assert.match(html, /Leading stop-reason groups/);
   assert.match(html, /Largest disease-area slices/);
   assert.ok(html.includes(props.initialSnapshot.total.toLocaleString("en-US")));
+});
+
+test("homepage exposes the newsletter value proposition and signup before client hydration", async () => {
+  const props = await resolveStaticProps(getHomeStaticProps);
+  const html = renderToStaticMarkup(createElement(HomePage, props));
+  assert.match(html, /Free fortnightly briefing/);
+  assert.match(html, /Newly stopped trials/);
+  assert.match(html, /Changed records/);
+  assert.match(html, /Get the fortnightly briefing/);
+  assert.match(html, /name="email"/);
 });
 
 test("outliers exposes the default statistical comparison before client hydration", async () => {

@@ -2,6 +2,7 @@ import Head from "next/head";
 import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
+import { FormEvent, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
@@ -201,6 +202,34 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
 
 export default function HomePage({ stats, sampleTrials }: HomePageProps) {
   const v2 = stats.classification;
+  const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
+  const [newsletterMessage, setNewsletterMessage] = useState("");
+  const [newsletterAddress, setNewsletterAddress] = useState("");
+
+  async function subscribeToNewsletter(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const address = String(form.get("email") || "").trim();
+    setNewsletterAddress(address);
+    setNewsletterStatus("sending");
+    setNewsletterMessage("");
+
+    try {
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(form.entries())),
+      });
+      const data = await response.json();
+      if (!response.ok || !data.ok) throw new Error(data.error || "Could not sign you up.");
+      setNewsletterMessage(data.message || "");
+      setNewsletterStatus("done");
+    } catch (error: any) {
+      setNewsletterMessage(error?.message || "Could not sign you up. Please try again.");
+      setNewsletterStatus("error");
+    }
+  }
+
   const biologicalCategories = [
     {
       label: "Efficacy / futility",
@@ -354,6 +383,86 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   ))}
                 </div>
                 <div className="v2ConsoleFooter"><span>Source-linked evidence</span><span>Free · no sign-up</span></div>
+              </div>
+            </div>
+          </section>
+
+          <section className="v2Newsletter" aria-labelledby="v2-newsletter-title">
+            <div className="v2Container">
+              <div className="v2NewsletterBox">
+                <div className="v2NewsletterCopy">
+                  <p className="v2Kicker">Free fortnightly briefing</p>
+                  <h2 id="v2-newsletter-title">The database moves every week. You do not have to keep checking it.</h2>
+                  <p className="v2NewsletterLede">
+                    Get the meaningful changes from our own ClinicalTrials.gov dataset in one concise email every two
+                    weeks — source-linked, classified, and without industry-news filler.
+                  </p>
+                  <ul className="v2NewsletterBenefits">
+                    <li><strong>Newly stopped trials</strong><span>with the reason the sponsor posted</span></li>
+                    <li><strong>Changed records</strong><span>shown as before and after</span></li>
+                    <li><strong>Movement in the data</strong><span>across mechanism classes and stop rates</span></li>
+                  </ul>
+                  <Link href="/newsletter" className="v2NewsletterExample">See what an issue looks like →</Link>
+                </div>
+
+                <div className="v2NewsletterSignup">
+                  {newsletterStatus === "done" ? (
+                    <div className="v2NewsletterSuccess" role="status">
+                      <span aria-hidden="true">✓</span>
+                      <h3>Check your inbox</h3>
+                      <p>
+                        We sent a confirmation link{newsletterAddress ? <> to <strong>{newsletterAddress}</strong></> : null}.
+                        Your subscription starts after you confirm it.
+                      </p>
+                    </div>
+                  ) : (
+                    <form onSubmit={subscribeToNewsletter}>
+                      <div className="v2NewsletterFormHead">
+                        <span>EMAIL BRIEFING</span>
+                        <strong>Join the research update</strong>
+                      </div>
+                      <div className="v2NewsletterField">
+                        <label htmlFor="home-newsletter-email">Email address</label>
+                        <input
+                          id="home-newsletter-email"
+                          name="email"
+                          type="email"
+                          autoComplete="email"
+                          placeholder="you@company.com"
+                          required
+                        />
+                      </div>
+                      <div className="v2NewsletterField">
+                        <label htmlFor="home-newsletter-company">Company or institution <span>optional</span></label>
+                        <input
+                          id="home-newsletter-company"
+                          name="company"
+                          type="text"
+                          autoComplete="organization"
+                          placeholder="Organization"
+                        />
+                      </div>
+                      <input
+                        name="website"
+                        type="text"
+                        tabIndex={-1}
+                        autoComplete="off"
+                        aria-hidden="true"
+                        className="v2NewsletterHoneypot"
+                      />
+                      <button type="submit" disabled={newsletterStatus === "sending"}>
+                        {newsletterStatus === "sending" ? "Signing you up…" : "Get the fortnightly briefing"}
+                      </button>
+                      {newsletterStatus === "error" ? (
+                        <p className="v2NewsletterError" role="alert">{newsletterMessage}</p>
+                      ) : null}
+                      <p className="v2NewsletterPrivacy">
+                        Free. No account. Confirm by email and unsubscribe with one click. See our{" "}
+                        <Link href="/privacy">privacy notice</Link>.
+                      </p>
+                    </form>
+                  )}
+                </div>
               </div>
             </div>
           </section>
@@ -575,6 +684,9 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .v2ResolutionBar{height:4px;background:#273449}.v2ResolutionBar span{display:block;height:100%;background:var(--v2-green-deep)}.v2ConsoleRows{min-height:364px}
         .v2ConsoleRow{display:grid;grid-template-columns:28px minmax(125px,.8fr) minmax(108px,auto) minmax(170px,1.3fr) 16px;gap:12px;align-items:start;min-height:91px;padding:14px;border-bottom:1px solid #343d42;color:#dce3e0}.v2ConsoleRow:hover{background:#1d2529}.v2RowIndex{color:#657177;font-family:var(--font-mono);font-size:10px}.v2TrialIdentity strong,.v2TrialIdentity small{display:block}.v2TrialIdentity strong{color:var(--v2-cyan);font-family:var(--font-mono);font-size:11px}.v2TrialIdentity small{margin-top:6px;color:#98a4a8;font-size:10px;line-height:1.35}
         .v2Tag{display:inline-flex;align-items:center;width:fit-content;min-height:22px;padding:3px 7px;border:1px solid currentColor;font-family:var(--font-mono);font-size:9px;font-weight:800;line-height:1.2}.v2TagEfficacy{color:var(--v2-green)}.v2TagSafety{color:var(--v2-coral)}.v2TagFunding{color:var(--v2-amber)}.v2TagRegulatory{color:var(--v2-cyan)}.v2TagDecision{color:#c4b5fd}.v2TagOperational{color:#cbd5e1}.v2Evidence{color:#aeb8c8;font-size:10px;line-height:1.45}.v2RowArrow{color:var(--v2-green);font-size:13px}.v2ConsoleFooter{border-top:1px solid #334155}
+        .v2Newsletter{padding:32px 0;background:#eef2ff;border-bottom:1px solid #dbe3f2}.v2NewsletterBox{display:grid;grid-template-columns:minmax(0,1.18fr) minmax(370px,.82fr);border:1px solid #cbd5e1;background:#fff;box-shadow:10px 10px 0 rgba(79,70,229,.10)}
+        .v2NewsletterCopy{padding:34px 38px}.v2NewsletterCopy h2{max-width:720px;margin-top:10px;color:var(--v2-ink);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:850;line-height:1.08}.v2NewsletterLede{max-width:730px;margin-top:16px!important;color:var(--v2-copy);font-size:15px;line-height:1.65}.v2NewsletterBenefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:24px 0 0;padding:0;border-top:1px solid var(--v2-line);border-bottom:1px solid var(--v2-line);list-style:none}.v2NewsletterBenefits li{padding:14px 15px 14px 0;border-right:1px solid var(--v2-line)}.v2NewsletterBenefits li+li{padding-left:15px}.v2NewsletterBenefits li:last-child{border-right:0}.v2NewsletterBenefits strong,.v2NewsletterBenefits span{display:block}.v2NewsletterBenefits strong{font-size:12px}.v2NewsletterBenefits span{margin-top:4px;color:var(--v2-muted);font-size:10px;line-height:1.4}.v2NewsletterExample{display:inline-block;margin-top:18px;color:var(--v2-green-deep);font-size:12px;font-weight:850;text-decoration:underline;text-underline-offset:3px}
+        .v2NewsletterSignup{display:flex;min-width:0;padding:30px;border-left:1px solid #cbd5e1;background:var(--v2-ink);color:#fff}.v2NewsletterSignup form{position:relative;display:flex;width:100%;flex-direction:column}.v2NewsletterFormHead span,.v2NewsletterFormHead strong{display:block}.v2NewsletterFormHead span{color:#a5b4fc;font-family:var(--font-mono);font-size:9px;font-weight:850;letter-spacing:.06em}.v2NewsletterFormHead strong{margin-top:6px;font-size:18px}.v2NewsletterField{margin-top:17px}.v2NewsletterField label{display:block;margin-bottom:6px;color:#cbd5e1;font-size:11px;font-weight:750}.v2NewsletterField label span{color:#7f8da3;font-weight:500}.v2NewsletterField input{width:100%;height:44px;border:1px solid #475569;border-radius:0;outline:0;padding:0 12px;background:#111827;color:#fff;font:inherit;font-size:13px}.v2NewsletterField input::placeholder{color:#64748b}.v2NewsletterField input:focus{border-color:#a5b4fc;box-shadow:0 0 0 2px rgba(165,180,252,.16)}.v2NewsletterSignup button{min-height:46px;margin-top:18px;border:0;background:var(--v2-green-deep);color:#fff;font-size:12px;font-weight:850;cursor:pointer}.v2NewsletterSignup button:hover,.v2NewsletterSignup button:focus-visible{background:#6366f1}.v2NewsletterSignup button:disabled{cursor:wait;opacity:.7}.v2NewsletterPrivacy{margin-top:11px!important;color:#94a3b8;font-size:10px;line-height:1.5}.v2NewsletterPrivacy a{color:#c7d2fe;text-decoration:underline}.v2NewsletterError{margin-top:10px!important;color:#fda4af;font-size:11px}.v2NewsletterHoneypot{position:absolute!important;left:-9999px!important}.v2NewsletterSuccess{align-self:center}.v2NewsletterSuccess>span{display:inline-flex;width:34px;height:34px;align-items:center;justify-content:center;background:var(--v2-green-deep);color:#fff;font-size:18px}.v2NewsletterSuccess h3{margin-top:18px!important;color:#fff;font-size:22px}.v2NewsletterSuccess p{margin-top:10px!important;color:#cbd5e1;font-size:13px;line-height:1.6}.v2NewsletterSuccess strong{color:#fff;overflow-wrap:anywhere}
         .v2QuestionMap{padding:68px 0;background:#fff;border-bottom:1px solid var(--v2-line)}.v2QuestionIntro{display:grid;grid-template-columns:minmax(0,.9fr) minmax(360px,.7fr);gap:12px 56px;align-items:end}.v2QuestionIntro .v2Kicker{grid-column:1/-1}.v2QuestionIntro h2{max-width:760px;color:var(--v2-ink);font-size:clamp(2rem,3.6vw,3.4rem);font-weight:850;line-height:1.04}.v2QuestionIntro>p:last-child{color:var(--v2-copy);font-size:16px;line-height:1.65}.v2QuestionGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:30px;border:1px solid var(--v2-line)}.v2QuestionCard{display:flex;min-height:285px;flex-direction:column;border-right:1px solid var(--v2-line);border-top:5px solid #b7791f;padding:24px;color:var(--v2-ink);text-decoration:none}.v2QuestionCard:last-child{border-right:0}.v2QuestionCard.operational{border-top-color:#426b82}.v2QuestionCard.uncertain{border-top-color:#737b86}.v2QuestionCard>span{color:#647078;font-family:var(--font-mono);font-size:10px;font-weight:800;text-transform:uppercase}.v2QuestionCard>strong{margin-top:20px;font-size:21px;line-height:1.28}.v2QuestionCard>p{margin-top:13px;color:var(--v2-copy);font-size:14px;line-height:1.62}.v2QuestionCard>em{margin-top:auto;padding-top:20px;color:#315b4d;font-style:normal;font-weight:850}.v2QuestionCard:hover,.v2QuestionCard:focus-visible{background:#f5f7f5}.v2Outcomes{padding:72px 0;background:var(--v2-paper);border-bottom:1px solid var(--v2-line)}.v2Outcomes h2{max-width:760px;margin-top:10px;color:var(--v2-ink);font-size:clamp(2rem,3.6vw,3.4rem);font-weight:850;line-height:1.04}
         .v2OutcomeGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:34px;border:1px solid var(--v2-line);background:#fff}
         .v2Outcome{display:flex;flex-direction:column;min-width:0;padding:22px 20px;border-right:1px solid var(--v2-line);border-top:4px solid var(--v2-green-deep)}.v2Outcome:last-child{border-right:0}
@@ -599,8 +711,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .v2Workflows{padding:76px 0;background:#fff}.v2SectionIntroCompact{grid-template-columns:1fr}.v2WorkflowGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:34px;border-top:1px solid var(--v2-line);border-bottom:1px solid var(--v2-line)}.v2Workflow{display:flex;min-height:290px;flex-direction:column;padding:24px;border-right:1px solid var(--v2-line)}.v2Workflow:last-child{border-right:0}.v2Workflow:hover{background:var(--v2-paper)}.v2Workflow>span{color:var(--v2-muted);font-family:var(--font-mono);font-size:10px;font-weight:800}.v2Workflow h3{margin-top:36px;font-size:20px;line-height:1.25}.v2Workflow p{margin-top:15px;color:var(--v2-copy);font-size:13px;line-height:1.6}.v2Workflow>strong{margin-top:auto;padding-top:24px;font-size:13px}
         .v2Trust{padding:58px 0;background:#eef2ff;border-top:1px solid #dbe3f2}.v2TrustInner{grid-template-columns:minmax(260px,.85fr) minmax(360px,1fr) auto;align-items:center}.v2Trust h2{max-width:470px;font-size:clamp(1.65rem,2.6vw,2.5rem)}.v2TrustInner>p{color:var(--v2-copy);font-size:13px;line-height:1.65}.v2TrustLinks{display:grid;gap:9px;min-width:100px}.v2TrustLinks a{color:var(--v2-green-deep);font-size:12px;font-weight:850;text-decoration:underline;text-underline-offset:3px}
         .v2Footer{padding:28px 0;background:var(--v2-ink);color:#fff}.v2FooterInner{display:flex;align-items:center;justify-content:space-between;gap:32px}.v2Footer strong{font-size:13px}.v2Footer p{margin:5px 0 0;color:#94a3b8;font-size:11px}.v2Footer nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:18px}.v2Footer a{color:#cbd5e1;font-size:11px;font-weight:750}.v2Footer a:hover{color:var(--v2-green)}
-        @media(max-width:1080px){.v2HeroGrid{grid-template-columns:1fr}.v2HeroCopy{max-width:760px}.v2Console{max-width:860px}.v2SignalLayout{grid-template-columns:1fr}.v2CauseIndex{min-height:410px}.v2TrustInner{grid-template-columns:1fr 1fr}.v2TrustLinks{grid-column:1/-1;grid-template-columns:repeat(3,auto);justify-content:start}}
-        @media(max-width:780px){.v2Container{padding:0 16px}.v2Hero{padding:42px 0 40px}.v2HeroGrid{gap:38px}.v2Hero h1{font-size:clamp(2.75rem,13vw,4rem)}.v2SectionIntro,.v2MethodHeader,.v2TrustInner,.v2QuestionIntro{grid-template-columns:1fr;gap:20px}.v2QuestionGrid{grid-template-columns:1fr}.v2QuestionCard{min-height:0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2QuestionCard:last-child{border-bottom:0}.v2QuestionCard>em{margin-top:22px}.v2MethodLink{justify-self:start}.v2BiologicalGrid{grid-template-columns:1fr}.v2BiologicalItem{min-height:210px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-bottom:0}.v2Pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:nth-child(-n+2){border-bottom:1px solid #cbd5e1}.v2WorkflowGrid{grid-template-columns:1fr}.v2Workflow{min-height:230px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2Workflow:last-child{border-bottom:0}.v2FooterInner{align-items:flex-start;flex-direction:column}.v2Footer nav{justify-content:flex-start}}
+        @media(max-width:1080px){.v2HeroGrid{grid-template-columns:1fr}.v2HeroCopy{max-width:760px}.v2Console{max-width:860px}.v2NewsletterBox{grid-template-columns:1fr}.v2NewsletterSignup{border-top:1px solid #cbd5e1;border-left:0}.v2NewsletterSignup form{max-width:620px}.v2SignalLayout{grid-template-columns:1fr}.v2CauseIndex{min-height:410px}.v2TrustInner{grid-template-columns:1fr 1fr}.v2TrustLinks{grid-column:1/-1;grid-template-columns:repeat(3,auto);justify-content:start}}
+        @media(max-width:780px){.v2Container{padding:0 16px}.v2Hero{padding:42px 0 40px}.v2HeroGrid{gap:38px}.v2Hero h1{font-size:clamp(2.75rem,13vw,4rem)}.v2Newsletter{padding:20px 0}.v2NewsletterCopy,.v2NewsletterSignup{padding:26px 24px}.v2NewsletterBenefits{grid-template-columns:1fr}.v2NewsletterBenefits li,.v2NewsletterBenefits li+li{padding:11px 0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2NewsletterBenefits li:last-child{border-bottom:0}.v2SectionIntro,.v2MethodHeader,.v2TrustInner,.v2QuestionIntro{grid-template-columns:1fr;gap:20px}.v2QuestionGrid{grid-template-columns:1fr}.v2QuestionCard{min-height:0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2QuestionCard:last-child{border-bottom:0}.v2QuestionCard>em{margin-top:22px}.v2MethodLink{justify-self:start}.v2BiologicalGrid{grid-template-columns:1fr}.v2BiologicalItem{min-height:210px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-bottom:0}.v2Pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:nth-child(-n+2){border-bottom:1px solid #cbd5e1}.v2WorkflowGrid{grid-template-columns:1fr}.v2Workflow{min-height:230px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2Workflow:last-child{border-bottom:0}.v2FooterInner{align-items:flex-start;flex-direction:column}.v2Footer nav{justify-content:flex-start}}
         @media(max-width:600px){.v2ReleaseLine{align-items:flex-start}.v2ReleaseDivider{display:none}.v2HeroLede{font-size:15px}.v2Search{grid-template-columns:auto minmax(0,1fr)}.v2Search button{grid-column:1/-1;min-height:44px;border-top:1px solid #475569;border-left:0}.v2HeroActions{align-items:stretch;flex-direction:column;gap:10px}.v2PrimaryAction,.v2SecondaryAction{width:100%}.v2HeroMetrics{grid-template-columns:1fr}.v2HeroMetrics div,.v2HeroMetrics div+div{padding:12px 0;border-right:0;border-bottom:1px solid #334155}.v2HeroMetrics div:last-child{border-bottom:0}.v2Console{box-shadow:8px 10px 0 rgba(79,70,229,.18)}.v2ConsoleSummary{grid-template-columns:1fr 1fr}.v2ConsoleSummary div:nth-child(2){border-right:0}.v2ConsoleSummary div:last-child{grid-column:1/-1;border-top:1px solid #334155}.v2ConsoleRows{min-height:0}.v2ConsoleRow{grid-template-columns:24px minmax(0,1fr) 16px;min-height:0}.v2ConsoleRow .v2Tag,.v2Evidence{grid-column:2/-1}.v2RowArrow{grid-column:3;grid-row:1}.v2ConsoleFooter{align-items:flex-start;flex-direction:column}.v2Signals,.v2Method,.v2Workflows{padding:56px 0}.v2Signals h2,.v2Method h2,.v2Workflows h2{font-size:2.15rem}.v2PanelHeading,.v2CauseIndexHeader{align-items:flex-start;flex-direction:column}.v2PanelTotal{text-align:left}.v2CauseRow{grid-template-columns:minmax(0,1fr) 58px}.v2CauseTrack{grid-column:1/-1;grid-row:2;margin-bottom:9px}.v2CauseRow strong{grid-column:2;grid-row:1}.v2Pipeline{grid-template-columns:1fr}.v2Pipeline li{min-height:180px;border-right:0;border-bottom:1px solid #cbd5e1}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:last-child{border-bottom:0}.v2AuditStrip{align-items:flex-start;flex-direction:column}.v2TrustLinks{grid-template-columns:1fr}}
       `}</style>
     </>
