@@ -43,6 +43,20 @@ test("protected control URLs stay on REVIEW_HOLD", () => {
   assert.equal(approval?.protected, true);
 });
 
+test("the explicit trial pruning list supersedes an earlier improve-index approval", () => {
+  const currentTrial = {
+    ...currentHub,
+    canonical:
+      "https://clinicaltrialfailures.com/trial/NCT02354014-pharmacokinetic-study-to-evaluate-anti-mycobacterial-activity-of-tmc207-in-combi",
+  };
+  const result = resolveSeoIndexingPolicy(currentTrial.canonical, currentTrial);
+
+  assert.equal(result.approvedDecision, "NOINDEX_THIN_CONTENT");
+  assert.equal(result.planned.robots, "noindex,follow");
+  assert.equal(result.planned.sitemap, false);
+  assert.match(result.notes.join(" "), /sol-trial-pruning-v2/);
+});
+
 test("resource validity takes priority over an indexing approval", () => {
   const missing = { ...currentHub, httpStatus: 404 };
   const result = resolveSeoIndexingPolicy("/failures/ophthalmology", missing);

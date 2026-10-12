@@ -1,4 +1,8 @@
 import approvedConfig from "@/config/seo-approved-decisions.json";
+import {
+  trialNoindexDecisionForUrl,
+  TRIAL_NOINDEX_DECISION_VERSION,
+} from "@/lib/trialNoindexPolicy";
 
 export type SeoDecision =
   | "KEEP_INDEX"
@@ -193,8 +197,16 @@ export function resolveSeoIndexingPolicy(
   assertSeoIndexingFeatures(features);
   const url = normalizeUrl(input);
   const approval = approvedDecisionForUrl(url);
-  const decision = (approval?.decision ?? "REVIEW_HOLD") as SeoDecision;
-  const notes = approval ? [`Approved by ${approval.reviewer} in ${approvedConfig.decisionVersion}`] : ["No approved URL-level decision; preserving current behavior"];
+  const explicitTrialNoindex = trialNoindexDecisionForUrl(url);
+  const decision = (explicitTrialNoindex ? "NOINDEX_THIN_CONTENT" : approval?.decision ?? "REVIEW_HOLD") as SeoDecision;
+  const notes = explicitTrialNoindex
+    ? [
+        `Explicit trial noindex decision in ${TRIAL_NOINDEX_DECISION_VERSION}`,
+        explicitTrialNoindex.reason,
+      ]
+    : approval
+      ? [`Approved by ${approval.reviewer} in ${approvedConfig.decisionVersion}`]
+      : ["No approved URL-level decision; preserving current behavior"];
 
   if ([404, 410].includes(current.httpStatus)) {
     notes.push("Resource validity takes priority over registry directives");

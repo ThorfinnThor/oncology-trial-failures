@@ -106,3 +106,20 @@ test("resolved rows agree while trial SEO eligibility also requires source-backe
   assert.equal(isIndexableTrial(rows[0]), true);
   assert.equal(isIndexableTrial(rows[1]), false);
 });
+
+test("an explicit trial noindex decision overrides otherwise complete source evidence", () => {
+  const row: TrialIndexRow = {
+    nct_id: "NCT04925960",
+    brief_title: "Evidence-backed but explicitly excluded trial",
+    url: "https://clinicaltrials.gov/study/NCT04925960",
+    condition_first: "Example condition",
+    intervention_first: "Example intervention",
+    why_stopped_short: "Due to futility",
+    classification_final_outcome: "BIOLOGICAL_FAILURE",
+    classification_final_category: "EFFICACY_FUTILITY",
+    classification_final_explanation: "The registry records a biological efficacy signal.",
+    classification_resolution_status: "RESOLVED",
+  };
+
+  assert.equal(isIndexableTrial(row), false);
+});

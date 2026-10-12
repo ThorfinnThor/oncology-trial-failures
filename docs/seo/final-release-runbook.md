@@ -1,9 +1,12 @@
 # Final trial-quality and static-pruning release runbook
 
-**Owner:** Sol  
-**Decision source:** `docs/seo/approved-decisions.csv`  
-**Decision version:** `luna-approval-v2`  
-**Deployment status:** deployed to production on 2026-10-09
+**Owner:** Sol
+
+**Decision sources:** `docs/seo/approved-decisions.csv` and `web/config/trial-noindex-decisions.json`
+
+**Decision versions:** `luna-approval-v2` and `sol-trial-pruning-v2`
+
+**Deployment status:** the 2026-10-09 baseline is live; the 791-page pruning set is pending deployment
 
 ## Scope
 
@@ -14,7 +17,13 @@ The next indexability release corrects one reviewed trial URL after recovering s
 - It returns to the XML sitemap.
 - Its page body and metadata publish the verified ClinicalTrials.gov detailed-description evidence.
 
-The other 20 `IMPROVE_INDEX` classification-migration URLs remain indexable.
+The first trial-pruning batch supersedes the earlier `IMPROVE_INDEX` recommendation for 20 unresolved legacy-classification URLs. It also excludes 17 pages with no measured clicks, at most ten measured impressions, and only a short generic stop explanation. All 37 remain available at HTTP 200 with self-canonicals, but return `noindex,follow` and are absent from the XML sitemap.
+
+The second trial-pruning batch excludes another 344 pages. These pages have a source stop explanation of at most 35 characters, no measured click, no top-10 position, fewer than 20 measured impressions or no appearance in the top-1,000 page export, and no curated use in an insight, brief, newsletter, or landing page. Forty-three otherwise matching pages remain protected because editorial content uses them as evidence.
+
+The third batch excludes 53 additional pages whose 36-to-50-character stop explanations are repeated across multiple NCT records or are purely formulaic. These pages also have no measured click, no top-10 position, fewer than 20 measured impressions or no appearance in the top-1,000 export, and no curated editorial use. Specific clinical statements in the same length range remain indexable.
+
+The fourth batch excludes 274 programme-cascade pages. Their stop explanations point to another trial, a programme decision, preclinical findings, or outside evidence rather than the indexed trial's own result. They also have no measured click, no top-10 position, fewer than 20 measured impressions or no appearance in the top-1,000 export, and no curated editorial use. The 114 programme-cascade pages with protected search or editorial signals remain indexable.
 
 Five reviewed static pages are removed from search while remaining HTTP 200 and crawlable through `noindex,follow`:
 
@@ -22,7 +31,7 @@ Five reviewed static pages are removed from search while remaining HTTP 200 and 
 - `/sponsor-insights` is a weak standalone landing page that duplicates the richer sponsor hubs and overview.
 - All five are excluded from the XML sitemap.
 
-The trial indexability predicate also requires usable source-backed stop evidence, study identity, a source URL, condition, intervention, and a classification explanation. The committed dataset currently has 2,434 eligible trial pages and all 2,434 pass that evidence gate, so this guard does not silently prune evidence-backed NCT pages.
+The trial indexability predicate also requires usable source-backed stop evidence, study identity, a source URL, condition, intervention, and a classification explanation. The committed dataset has 2,434 pages that pass that evidence gate. The explicit pruning set removes 791 of them, leaving 1,643 indexable trial pages. The final 83-page batch was manually reviewed: generic, repeated, programme-level, externally attributed, or ambiguous explanations were excluded, while 52 nearby cases with concrete own-trial results remained indexable.
 
 `/overview`, `/outliers`, and `/top-entities` also ship compact server-rendered evidence snapshots. Their initial HTML must contain the reviewed totals, baseline, and ranking sections before the existing interactive datasets hydrate in the browser.
 
@@ -48,7 +57,7 @@ npm run cloudflare:build
 npx wrangler whoami
 ```
 
-The release guard must report 36 reviewed URLs, one static thin-content noindex URL, four static utility noindex URLs, and 21 improve-only URLs. The trial-quality audit must report zero additional trial noindex targets and zero review holds. GitHub's `web` and `text-readers` checks must be green. Wrangler authentication must be valid before the final deployment; if `wrangler whoami` reports an expired token, authenticate again at that point without changing the release scope. A Vercel deployment failure caused by a blocked Vercel account is not a Cloudflare application check and does not authorize ignoring any GitHub test failure.
+The release guard must report 36 legacy reviewed URLs, 791 explicit trial noindex IDs, one static thin-content noindex URL, four static utility noindex URLs, and one non-overridden improve-only URL. Automated tests must confirm the 17/20/344/53/274/83 batch split and the 2,434-to-1,643 trial reduction. GitHub's `web` and `text-readers` checks must be green. Wrangler authentication must be valid before the final deployment; if `wrangler whoami` reports an expired token, authenticate again at that point without changing the release scope. A Vercel deployment failure caused by a blocked Vercel account is not a Cloudflare application check and does not authorize ignoring any GitHub test failure.
 
 ## Exact production settings
 
@@ -60,7 +69,7 @@ SEO_INDEXING_REGISTRY_SITEMAP=true
 SEO_INDEXING_NOINDEX_LIST=false
 ```
 
-`SEO_INDEXING_NOINDEX_LIST` remains false because no trial-registry noindex decision is activated. The five static page decisions are explicit page-level directives and sitemap exclusions covered by automated tests.
+`SEO_INDEXING_NOINDEX_LIST` remains false because the 791 NCT exclusions are enforced by the shared trial-eligibility predicate rather than the older URL registry switch. The same predicate controls both page robots output and sitemap membership. The five static page decisions remain explicit page-level directives and sitemap exclusions.
 
 Keep all remaining mutation switches explicitly false or unset:
 
@@ -85,7 +94,7 @@ No Google URL-removal or manual indexing request is part of this release. The co
 Check the production response, not a local or preview URL:
 
 1. `NCT01965600` returns HTTP 200, has `index,follow`, keeps its self-canonical, contains the verified Detailed Description evidence, and is present in `/sitemap.xml`.
-2. Control trial `NCT02354014` returns HTTP 200, has `index,follow`, keeps its self-canonical, and remains in `/sitemap.xml`.
+2. `NCT02354014` returns HTTP 200 with `noindex,follow`, keeps its self-canonical, and is absent from `/sitemap.xml`.
 3. `/failures/ophthalmology` and the five frozen control hubs preserve their prior robots and canonical output.
 4. `/explore`, `/asset-check`, `/newsletter`, `/contact`, and `/sponsor-insights` return HTTP 200 with `noindex,follow` and self-canonicals.
 5. Those five static URLs are absent from `/sitemap.xml`; protected and data-rich static pages remain present.

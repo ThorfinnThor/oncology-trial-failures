@@ -4,6 +4,7 @@ import { isLegacyIndexableBiologicalSignal, resolveClassification } from "./clas
 import { compactSeoDescription, compactSeoTitle } from "./seoMetadata";
 import { slugify, trialPath } from "./seoUrls";
 import { hasIndexableTrialSearchEvidence } from "./trialEvidence";
+import { isExplicitlyNoindexTrial } from "./trialNoindexPolicy";
 
 export const SITE_URL = "https://clinicaltrialfailures.com";
 export const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -206,7 +207,11 @@ export function reasonHubPath(bucket: string): string {
 }
 
 export function isIndexableTrial(row: TrialIndexRow): boolean {
-  return isLegacyIndexableBiologicalSignal(row) && hasIndexableTrialSearchEvidence(row);
+  return (
+    !isExplicitlyNoindexTrial(row.nct_id) &&
+    isLegacyIndexableBiologicalSignal(row) &&
+    hasIndexableTrialSearchEvidence(row)
+  );
 }
 
 export function indexableTrialRows(rows: TrialIndexRow[]): TrialIndexRow[] {

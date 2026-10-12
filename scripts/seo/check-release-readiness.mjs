@@ -6,6 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const configPath = path.resolve(root, "web/config/seo-approved-decisions.json");
+const trialNoindexPath = path.resolve(root, "web/config/trial-noindex-decisions.json");
 const wranglerPath = path.resolve(root, "web/wrangler.jsonc");
 const profileArgument = process.argv.find((argument) => argument.startsWith("--profile="));
 const profileName = profileArgument?.slice("--profile=".length) || "report";
@@ -57,12 +58,18 @@ if (!Object.hasOwn(profiles, profileName)) {
 if (!fs.existsSync(configPath)) {
   fail("generated approval config is missing; run the SEO policy generator first");
 }
+if (!fs.existsSync(trialNoindexPath)) {
+  fail("explicit trial noindex config is missing");
+}
 if (!fs.existsSync(wranglerPath) || !/"keep_vars"\s*:\s*true\b/.test(fs.readFileSync(wranglerPath, "utf8"))) {
   fail("wrangler.jsonc must preserve reviewed dashboard variables with keep_vars=true");
 }
 
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 const decisions = config.decisions ?? [];
+const trialNoindexConfig = JSON.parse(fs.readFileSync(trialNoindexPath, "utf8"));
+const trialNoindexBatches = trialNoindexConfig.batches ?? [];
+const trialNoindexIds = trialNoindexBatches.flatMap((batch) => batch.nctIds ?? []);
 
 if (config.schemaVersion !== 1) fail(`expected schemaVersion 1, found ${config.schemaVersion}`);
 if (config.decisionVersion !== "luna-approval-v2") {
@@ -70,6 +77,28 @@ if (config.decisionVersion !== "luna-approval-v2") {
 }
 if (config.defaultMode !== "report") fail(`expected report default, found ${config.defaultMode}`);
 if (decisions.length !== 36) fail(`expected 36 reviewed decisions, found ${decisions.length}`);
+if (trialNoindexConfig.schemaVersion !== 1) {
+  fail(`expected trial noindex schemaVersion 1, found ${trialNoindexConfig.schemaVersion}`);
+}
+if (trialNoindexConfig.decisionVersion !== "sol-trial-pruning-v2") {
+  fail(`expected trial noindex decision version sol-trial-pruning-v2, found ${trialNoindexConfig.decisionVersion}`);
+}
+if (trialNoindexIds.length !== 791 || new Set(trialNoindexIds).size !== 791) {
+  fail(`expected 791 unique explicit trial noindex IDs, found ${trialNoindexIds.length}`);
+}
+const trialNoindexBatchCounts = Object.fromEntries(
+  trialNoindexBatches.map((batch) => [batch.id, batch.nctIds?.length ?? 0])
+);
+if (
+  trialNoindexBatchCounts["weak-search-evidence"] !== 17 ||
+  trialNoindexBatchCounts["unresolved-legacy-classification"] !== 20 ||
+  trialNoindexBatchCounts["short-low-search-evidence"] !== 344 ||
+  trialNoindexBatchCounts["repeated-formulaic-low-search-evidence"] !== 53 ||
+  trialNoindexBatchCounts["low-search-programme-cascade"] !== 274 ||
+  trialNoindexBatchCounts["unclear-attribution-thin-content"] !== 83
+) {
+  fail("expected trial noindex batches of 17 weak-search, 20 unresolved-legacy, 344 short low-search, 53 repeated formulaic, 274 programme-cascade, and 83 unclear-attribution thin pages");
+}
 
 const urls = new Set();
 for (const decision of decisions) {
@@ -135,7 +164,7 @@ if (profileName === "trial-quality-release") {
 }
 
 console.log(`SEO release profile '${profileName}' is ready.`);
-console.log(`Decision scope: ${decisions.length} reviewed URLs; 1 thin-content noindex; 4 utility noindex; 21 improve-only URLs.`);
+console.log(`Decision scope: ${decisions.length} reviewed URLs; 791 explicit trial noindex IDs; 1 static thin-content noindex; 4 utility noindex; 1 non-overridden improve-only URL.`);
 console.log(`Recovered evidence URL: ${RECOVERED_EVIDENCE_URL}`);
 console.log("Exact feature settings:");
 for (const [name, value] of Object.entries(profile)) console.log(`  ${name}=${value}`);
