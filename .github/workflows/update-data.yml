@@ -1,8 +1,7 @@
 name: Update trial failure data
 
+# Dispatched every Monday at 08:15 Europe/Berlin by the Cloudflare scheduler.
 on:
-  schedule:
-    - cron: "15 6 * * 1"
   workflow_dispatch: {}
 
 permissions:

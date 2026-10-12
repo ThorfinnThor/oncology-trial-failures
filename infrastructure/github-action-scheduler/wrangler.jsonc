@@ -1,0 +1,20 @@
+{
+  "$schema": "../../web/node_modules/wrangler/config-schema.json",
+  "name": "clinicaltrialfailures-github-scheduler",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-12",
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": [
+      "15 6,7 * * MON"
+    ]
+  },
+  "vars": {
+    "GITHUB_OWNER": "ThorfinnThor",
+    "GITHUB_REPO": "oncology-trial-failures",
+    "GITHUB_WORKFLOW": "update-data.yml",
+    "GITHUB_REF": "main"
+  }
+}
