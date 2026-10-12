@@ -22,7 +22,7 @@ test("overview exposes a substantive dataset snapshot before client hydration", 
   assert.match(html, /Clinical trial failure overview/);
   assert.match(html, /Leading stop-reason groups/);
   assert.match(html, /Largest disease-area slices/);
-  assert.match(html, /23,868/);
+  assert.ok(html.includes(props.initialSnapshot.total.toLocaleString("en-US")));
 });
 
 test("outliers exposes the default statistical comparison before client hydration", async () => {
@@ -39,5 +39,5 @@ test("top entities exposes sponsor and disease-area rankings before client hydra
   assert.match(html, /Efficacy and futility signal leaders/);
   assert.match(html, /Leading sponsors/);
   assert.match(html, /Leading disease areas/);
-  assert.match(html, /23,868/);
+  assert.ok(html.includes(props.initialSnapshot.total.toLocaleString("en-US")));
 });
