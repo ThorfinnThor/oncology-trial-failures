@@ -391,18 +391,18 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             <div className="v2Container">
               <div className="v2NewsletterBox">
                 <div className="v2NewsletterCopy">
-                  <p className="v2Kicker">Free fortnightly briefing</p>
-                  <h2 id="v2-newsletter-title">The database moves every week. You do not have to keep checking it.</h2>
+                  <p className="v2Kicker">Free newsletter</p>
+                  <h2 id="v2-newsletter-title">Get newly stopped clinical trials in your inbox.</h2>
                   <p className="v2NewsletterLede">
-                    Get the meaningful changes from our own ClinicalTrials.gov dataset in one concise email every two
-                    weeks — source-linked, classified, and without industry-news filler.
+                    Every two weeks, we email the trials newly added to our database, the records sponsors changed,
+                    and the stop rates that moved. Every item links back to its source.
                   </p>
                   <ul className="v2NewsletterBenefits">
-                    <li><strong>Newly stopped trials</strong><span>with the reason the sponsor posted</span></li>
-                    <li><strong>Changed records</strong><span>shown as before and after</span></li>
-                    <li><strong>Movement in the data</strong><span>across mechanism classes and stop rates</span></li>
+                    <li><strong>New trial stops</strong><span>The reason the sponsor posted</span></li>
+                    <li><strong>Sponsor updates</strong><span>What changed in the registry record</span></li>
+                    <li><strong>Stop-rate changes</strong><span>Where the numbers moved</span></li>
                   </ul>
-                  <Link href="/newsletter" className="v2NewsletterExample">See what an issue looks like →</Link>
+                  <Link href="/newsletter" className="v2NewsletterExample">See the latest newsletter →</Link>
                 </div>
 
                 <div className="v2NewsletterSignup">
@@ -418,8 +418,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   ) : (
                     <form onSubmit={subscribeToNewsletter}>
                       <div className="v2NewsletterFormHead">
-                        <span>EMAIL BRIEFING</span>
-                        <strong>Join the research update</strong>
+                        <span>FREE NEWSLETTER</span>
+                        <strong>Subscribe by email</strong>
                       </div>
                       <div className="v2NewsletterField">
                         <label htmlFor="home-newsletter-email">Email address</label>
@@ -451,13 +451,13 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                         className="v2NewsletterHoneypot"
                       />
                       <button type="submit" disabled={newsletterStatus === "sending"}>
-                        {newsletterStatus === "sending" ? "Signing you up…" : "Get the fortnightly briefing"}
+                        {newsletterStatus === "sending" ? "Signing you up…" : "Subscribe to the free newsletter"}
                       </button>
                       {newsletterStatus === "error" ? (
                         <p className="v2NewsletterError" role="alert">{newsletterMessage}</p>
                       ) : null}
                       <p className="v2NewsletterPrivacy">
-                        Free. No account. Confirm by email and unsubscribe with one click. See our{" "}
+                        One email every two weeks. No account. Confirm by email. Unsubscribe with one click. See our{" "}
                         <Link href="/privacy">privacy notice</Link>.
                       </p>
                     </form>

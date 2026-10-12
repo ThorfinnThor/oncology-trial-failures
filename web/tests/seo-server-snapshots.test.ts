@@ -29,10 +29,10 @@ test("overview exposes a substantive dataset snapshot before client hydration", 
 test("homepage exposes the newsletter value proposition and signup before client hydration", async () => {
   const props = await resolveStaticProps(getHomeStaticProps);
   const html = renderToStaticMarkup(createElement(HomePage, props));
-  assert.match(html, /Free fortnightly briefing/);
-  assert.match(html, /Newly stopped trials/);
-  assert.match(html, /Changed records/);
-  assert.match(html, /Get the fortnightly briefing/);
+  assert.match(html, /Free newsletter/);
+  assert.match(html, /Get newly stopped clinical trials in your inbox/);
+  assert.match(html, /Sponsor updates/);
+  assert.match(html, /Subscribe to the free newsletter/);
   assert.match(html, /name="email"/);
 });
 
