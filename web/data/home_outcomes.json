@@ -1,12 +1,12 @@
 {
- "read_on": "2026-10-05",
- "readable_completed": 4654,
+ "read_on": "2026-10-12",
+ "readable_completed": 4667,
  "cards": [
   {
    "key": "stopped_efficacy",
    "status": "Stopped",
    "label": "Efficacy or futility",
-   "count": 1617,
+   "count": 1618,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT04757636",
@@ -42,7 +42,7 @@
    "key": "completed_missed",
    "status": "Completed",
    "label": "Primary endpoint missed",
-   "count": 1929,
+   "count": 1937,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT03867084",
@@ -60,17 +60,17 @@
    "key": "completed_met",
    "status": "Completed",
    "label": "Primary endpoint met",
-   "count": 2290,
+   "count": 2294,
    "count_label": "completed trials",
    "example": {
-    "nct_id": "NCT05872620",
+    "nct_id": "NCT06109311",
     "sponsor": "Eli Lilly and Company",
     "phase": "Phase 3",
     "drugs": "Orforglipron",
-    "evidence": "Percent Change From Baseline in Body Weight — p <0.001, no threshold stated; below 0.01, so significant under any conventional threshold. LS Mean Difference (Net) -3.28 (95% CI -4.1 to -2.47).",
+    "evidence": "Change From Baseline in Hemoglobin A1c (HbA1c) — p <0.001, no threshold stated; below 0.01, so significant under any conventional threshold. Least Square (LS) Mean Difference (Net) -0.77 (95% CI -1.01 to -0.52).",
     "evidence_source": "the sponsor's posted comparison",
     "posted": null,
-    "href": "https://clinicaltrials.gov/study/NCT05872620?tab=results",
+    "href": "https://clinicaltrials.gov/study/NCT06109311?tab=results",
     "external": true
    }
   }
