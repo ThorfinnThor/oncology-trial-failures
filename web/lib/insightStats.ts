@@ -1,5 +1,6 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
-import type { InsightStats } from "./insights";
+import briefsIndex from "../data/briefs_index.json";
+import type { InsightStats, MechanismBriefSnapshot } from "./insights";
 import { slugify, trialPath } from "./seoUrls";
 import { loadIndexServer, readJsonServerAsset } from "./server-data";
 import type { EndpointResult, TrialIndexRow } from "./types";
@@ -9,6 +10,116 @@ type EndpointResultsAsset = {
   reader_version?: number;
   trials?: Record<string, Omit<EndpointResult, "read_on">>;
 };
+
+type MechanismBriefSource = {
+  slug: string;
+  segment: string;
+  area: string;
+  phases: string[];
+  start_from: number;
+  start_to: number;
+  trials_in_segment: number;
+  closed: number;
+  biological_stops: number;
+  efficacy_stops: number;
+  safety_stops: number;
+  stops_benefit_risk_only: number;
+  rate: number;
+  ci95: [number, number];
+  reference_label: string;
+  reference_rate: number;
+  reference_closed: number;
+  reference_stops: number;
+  stop_programmes: number;
+  stop_sponsors: number;
+  largest_programme: string;
+  largest_programme_stops: number;
+  rate_leave_one_programme_out: number;
+  unresolved_terminations: number;
+  q_value_by?: number;
+  survives_fdr_10pct?: boolean;
+  failure_signature?: {
+    molecules: number;
+    shared_modality: string | null;
+    assets: Array<{ asset: string }>;
+  };
+  stop_attribution?: {
+    stops_from_own_data: number;
+    stops_from_programme_cascade: number;
+  };
+  endpoints?: {
+    completed: number;
+    readable: number;
+    missed: number;
+    met: number;
+    mixed: number;
+  };
+  trials_preview?: Array<{
+    nct_id: string;
+    phase: string;
+    sponsor_group: string;
+    drugs: string;
+    type: string;
+    why_stopped: string;
+    registry_url: string;
+  }>;
+};
+
+const mechanismBriefRows = briefsIndex.briefs as unknown as MechanismBriefSource[];
+
+function mechanismBriefSnapshot(area: string, segment: string): MechanismBriefSnapshot {
+  const brief = mechanismBriefRows.find((item) => item.area === area && item.segment === segment);
+  if (!brief) throw new Error(`Missing mechanism brief for ${area}: ${segment}`);
+
+  return {
+    slug: brief.slug,
+    segment: brief.segment,
+    area: brief.area,
+    phases: brief.phases,
+    startFrom: brief.start_from,
+    startTo: brief.start_to,
+    trialsInSegment: brief.trials_in_segment,
+    closed: brief.closed,
+    biologicalStops: brief.biological_stops,
+    efficacyStops: brief.efficacy_stops,
+    safetyStops: brief.safety_stops,
+    benefitRiskStops: brief.stops_benefit_risk_only,
+    rate: brief.rate,
+    confidenceLow: brief.ci95[0],
+    confidenceHigh: brief.ci95[1],
+    referenceLabel: brief.reference_label,
+    referenceRate: brief.reference_rate,
+    referenceClosed: brief.reference_closed,
+    referenceStops: brief.reference_stops,
+    stopProgrammes: brief.stop_programmes,
+    stopSponsors: brief.stop_sponsors,
+    largestProgramme: brief.largest_programme,
+    largestProgrammeStops: brief.largest_programme_stops,
+    rateLeaveOneProgrammeOut: brief.rate_leave_one_programme_out,
+    unresolvedTerminations: brief.unresolved_terminations,
+    qValue: typeof brief.q_value_by === "number" ? brief.q_value_by : null,
+    survivesFdr10Pct: Boolean(brief.survives_fdr_10pct),
+    molecules: brief.failure_signature?.molecules || 0,
+    sharedModality: brief.failure_signature?.shared_modality || null,
+    assets: (brief.failure_signature?.assets || []).map((asset) => asset.asset),
+    stopsFromOwnData: brief.stop_attribution?.stops_from_own_data || 0,
+    stopsFromProgrammeCascade: brief.stop_attribution?.stops_from_programme_cascade || 0,
+    endpointCompleted: brief.endpoints?.completed || 0,
+    endpointReadable: brief.endpoints?.readable || 0,
+    endpointMissed: brief.endpoints?.missed || 0,
+    endpointMet: brief.endpoints?.met || 0,
+    endpointMixed: brief.endpoints?.mixed || 0,
+    trials: (brief.trials_preview || []).map((trial) => ({
+      nctId: trial.nct_id,
+      phase: trial.phase,
+      sponsor: trial.sponsor_group,
+      drugs: trial.drugs,
+      type: trial.type,
+      why: trial.why_stopped,
+      registryUrl: trial.registry_url,
+    })),
+  };
+}
 
 function countBy(rows: TrialIndexRow[], getValue: (row: TrialIndexRow) => string): Record<string, number> {
   const counts: Record<string, number> = {};
@@ -771,5 +882,9 @@ export async function buildInsightStats(): Promise<InsightStats> {
     },
     registryTiming: registryTimingSlice(rows),
     phaseCoverage: phaseCoverageSlice(rows),
+    mechanismBriefs: {
+      tauAntibodies: mechanismBriefSnapshot("Neurology", "Tau"),
+      tgfBetaPdL1: mechanismBriefSnapshot("Oncology", "TGF-β + PD-(L)1"),
+    },
   };
 }

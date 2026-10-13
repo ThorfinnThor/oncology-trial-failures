@@ -54,7 +54,7 @@ test("the explicit trial pruning list supersedes an earlier improve-index approv
   assert.equal(result.approvedDecision, "NOINDEX_THIN_CONTENT");
   assert.equal(result.planned.robots, "noindex,follow");
   assert.equal(result.planned.sitemap, false);
-  assert.match(result.notes.join(" "), /sol-trial-pruning-v2/);
+  assert.match(result.notes.join(" "), /sol-trial-pruning-v4/);
 });
 
 test("resource validity takes priority over an indexing approval", () => {

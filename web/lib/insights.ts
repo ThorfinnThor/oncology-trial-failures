@@ -246,6 +246,59 @@ export type InsightStats = {
       href: string;
     }>;
   };
+  mechanismBriefs: {
+    tauAntibodies: MechanismBriefSnapshot;
+    tgfBetaPdL1: MechanismBriefSnapshot;
+  };
+};
+
+export type MechanismBriefSnapshot = {
+  slug: string;
+  segment: string;
+  area: string;
+  phases: string[];
+  startFrom: number;
+  startTo: number;
+  trialsInSegment: number;
+  closed: number;
+  biologicalStops: number;
+  efficacyStops: number;
+  safetyStops: number;
+  benefitRiskStops: number;
+  rate: number;
+  confidenceLow: number;
+  confidenceHigh: number;
+  referenceLabel: string;
+  referenceRate: number;
+  referenceClosed: number;
+  referenceStops: number;
+  stopProgrammes: number;
+  stopSponsors: number;
+  largestProgramme: string;
+  largestProgrammeStops: number;
+  rateLeaveOneProgrammeOut: number;
+  unresolvedTerminations: number;
+  qValue: number | null;
+  survivesFdr10Pct: boolean;
+  molecules: number;
+  sharedModality: string | null;
+  assets: string[];
+  stopsFromOwnData: number;
+  stopsFromProgrammeCascade: number;
+  endpointCompleted: number;
+  endpointReadable: number;
+  endpointMissed: number;
+  endpointMet: number;
+  endpointMixed: number;
+  trials: Array<{
+    nctId: string;
+    phase: string;
+    sponsor: string;
+    drugs: string;
+    type: string;
+    why: string;
+    registryUrl: string;
+  }>;
 };
 
 export type InsightSignalSlice = {
@@ -301,6 +354,74 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "anti-tau-antibody-clinical-trial-stop-signals",
+    title: "Seven anti-tau trial stops trace back to four antibodies",
+    metaDescription:
+      "Seven anti-tau trial stops in our Phase II/III cohort compress to four antibody programmes. See what repeated, what was correlated, and what the pattern can support.",
+    eyebrow: "Anti-tau clinical evidence",
+    dek:
+      "Trial counts can make a biological signal look more independent than it is. The anti-tau cohort shows both sides: repeated efficacy stops across four antibodies, plus programme cascades that should not be counted as new experiments.",
+    datePublished: "2026-10-13",
+    readingTime: "9 min read",
+    keyword: "anti-tau antibody clinical trial failure",
+    factsHeading: "The anti-tau signal, compressed to its independent units",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do seven stopped anti-tau trials mean seven independent failures?",
+        answer:
+          "No. Several records were stopped because a related parent or programme study had already produced an unfavorable result. Those records matter operationally, but they are correlated evidence rather than seven independent tests of tau biology.",
+      },
+      {
+        question: "Does this prove that tau is not a viable therapeutic target?",
+        answer:
+          "No. The cohort is specific to the mapped molecules, modalities, phases, populations, and study designs. It raises the prior burden for similar antibody strategies; it does not invalidate every way of modifying tau biology.",
+      },
+      {
+        question: "Why keep cascade trials in the dataset?",
+        answer:
+          "They show the clinical footprint of a programme decision and identify which studies and populations were affected. The key is to label them as programme-linked rather than count each one as independent biological replication.",
+      },
+    ],
+  },
+  {
+    slug: "tgf-beta-pd-l1-clinical-trial-stop-signals",
+    title: "TGF-β plus PD-(L)1 stop signals split between efficacy and safety",
+    metaDescription:
+      "In our Phase II/III oncology cohort, TGF-β plus PD-(L)1 stops divide between efficacy and safety. The mixed pattern changes the clinical diligence question.",
+    eyebrow: "TGF-β combination evidence",
+    dek:
+      "The signal is not just that trials stopped. Efficacy and safety contributed equally, with a separate benefit–risk stop. That points to two development constraints—but the records are concentrated in a small number of molecules.",
+    datePublished: "2026-10-13",
+    readingTime: "10 min read",
+    keyword: "TGF-beta PD-L1 clinical trial failure",
+    factsHeading: "A mixed efficacy, safety, and benefit–risk signature",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Does the stop rate prove that combining TGF-β and PD-(L)1 is ineffective?",
+        answer:
+          "No. It describes this mapped Phase II/III cohort and its registry-recorded stops. Molecule design, target coverage, dose, tumor type, biomarker selection, comparator, and programme concentration prevent a class-wide causal conclusion.",
+      },
+      {
+        question: "Why separate efficacy stops from safety stops?",
+        answer:
+          "They imply different development problems. Efficacy stops question whether the intervention produced enough benefit; safety and benefit–risk stops question whether exposure and clinical benefit justified the observed or anticipated risk.",
+      },
+      {
+        question: "Can programme cascades be counted as independent confirmation?",
+        answer:
+          "Not in the same way as separate readouts. A related study may close after an unfavorable programme-level finding. That expands the affected trial count without creating a new independent biological observation.",
+      },
+    ],
+  },
   {
     slug: "registry-update-date-is-not-trial-stop-date",
     title: "A registry update date is not the date a clinical trial stopped",
@@ -4504,7 +4625,255 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
   };
 }
 
+function hydrateAntiTauArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.tauAntibodies;
+  const rate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const interval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const directShare = pctFromCounts(brief.stopsFromOwnData, brief.biologicalStops);
+  const cascadeShare = pctFromCounts(brief.stopsFromProgrammeCascade, brief.biologicalStops);
+  const window = `Phase ${brief.phases.join("/")} trials started from ${brief.startFrom} through ${brief.startTo}`;
+  const assetList = brief.assets.length ? brief.assets.join(", ") : "the mapped anti-tau molecules";
+  const sharedModality = brief.sharedModality === "Antibody"
+    ? "antibodies"
+    : brief.sharedModality
+      ? `${brief.sharedModality.toLowerCase()}s`
+      : "";
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.biologicalStops)} anti-tau biological stops among ${n(brief.closed)} closed Phase II/III trials trace to ${n(brief.molecules)} antibodies, with ${n(brief.stopsFromProgrammeCascade)} programme-cascade records.`,
+    dek: `${n(brief.biologicalStops)} of ${n(brief.closed)} closed anti-tau Phase II/III trials (${rate}) stopped for a biological reason. But the records trace to ${n(brief.molecules)} antibodies, and ${n(brief.stopsFromProgrammeCascade)} of the ${n(brief.biologicalStops)} stops followed another programme result rather than adding an independent readout.`,
+    facts: [
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials in the cohort stopped for a biological reason: ${rate}, with a 95% Wilson interval of ${interval}.`,
+      `All ${n(brief.biologicalStops)} biological stops were classified as efficacy stops; none was classified as a safety-only stop in this cohort.`,
+      `The ${n(brief.biologicalStops)} stopped trials map to ${n(brief.molecules)} molecules—${assetList}${sharedModality ? `—all ${sharedModality}` : ""}.`,
+      `${n(brief.stopsFromOwnData)} stops (${directShare}) were attributed to evidence from that trial; ${n(brief.stopsFromProgrammeCascade)} (${cascadeShare}) followed a finding elsewhere in the programme.`,
+      `The comparison cohort—${brief.referenceLabel}—recorded ${n(brief.referenceStops)} biological stops among ${n(brief.referenceClosed)} closed trials (${referenceRate}).`,
+    ],
+    sections: [
+      {
+        heading: "Seven trial records are not seven independent experiments",
+        body: [
+          `The headline count is ${n(brief.biologicalStops)} biological stops among ${n(brief.closed)} closed anti-tau trials. At the record level, that is correct. At the biological-evidence level, it needs compression: those records map to ${n(brief.molecules)} antibodies across ${n(brief.stopProgrammes)} programmes, not ${n(brief.biologicalStops)} unrelated molecular hypotheses.`,
+          `${n(brief.stopsFromProgrammeCascade)} records were closed because evidence from a parent, feeder, or related programme had already changed the decision. Those closures show the clinical reach of an unfavorable readout, but they should not be treated as fresh replication. The useful unit is therefore both the trial and the molecule-programme that generated the decision.`,
+        ],
+      },
+      {
+        heading: "What repeated across the four antibodies",
+        body: [
+          `The repeated feature is efficacy, not a safety-dominated attrition pattern. The stopped molecules in the generated signature are ${assetList}. Across them, registry explanations refer to lack of clinical efficacy, failure to slow clinical decline, or termination after an unfavorable placebo-controlled or parent-study result.`,
+          "That recurrence matters because it crosses sponsors and molecules. It is stronger than a single failed study, yet narrower than a verdict on tau itself: the cohort is concentrated in antibody approaches, selected tau species or epitopes, particular disease stages, and the exposure achieved in those trials.",
+        ],
+      },
+      {
+        heading: "The source records show different depths of evidence",
+        body: [
+          "NCT03289143 is unusually informative: its registry explanation reports no evidence of clinical efficacy and no modulation of tau PET accumulation at the studied doses. NCT04619420 reports that posdinemab did not significantly slow clinical decline. Other records are downstream closures that cite lack of efficacy in a parent study without supplying another independent endpoint analysis.",
+          "These statements should not be flattened into one binary label. A trial-level clinical and biomarker result carries more mechanistic information than a programme cascade. Both belong in the history; only the former independently updates the biological hypothesis.",
+        ],
+      },
+      {
+        heading: "The clinical question is narrower than ‘does tau work?’",
+        body: [
+          "A responsible interpretation asks whether these extracellular antibody strategies reached the relevant tau species, compartment, disease stage, and exposure early enough to alter clinical decline. A negative clinical readout can reflect target biology, modality, epitope, pharmacology, timing, population, or endpoint sensitivity. The registry alone cannot separate them.",
+          "The pattern therefore raises the evidentiary bar for another similar anti-tau antibody programme. It does not automatically transfer to intracellular approaches, vaccines, degraders, aggregation inhibitors, earlier prevention settings, or biomarker-defined populations that were not represented here.",
+        ],
+      },
+      {
+        heading: "Posted results remain a limiting layer",
+        body: [
+          `Among ${n(brief.endpointCompleted)} completed cohort trials considered by the endpoint reader, ${n(brief.endpointReadable)} had a readable primary result: ${n(brief.endpointMissed)} missed, ${n(brief.endpointMet)} met, and ${n(brief.endpointMixed)} was mixed. That is useful evidence, but it is too small a results subset to reconstruct the whole mechanism class from posted endpoints alone.`,
+          "The stop-reason layer and the posted-results layer answer different questions. Together they support a repeated efficacy concern in this cohort; they do not support a universal claim that every anti-tau intervention or every tau hypothesis has failed.",
+        ],
+      },
+      {
+        heading: "How this changes a diligence workflow",
+        body: [
+          "Start by collapsing related trials to the molecule and programme level. Then separate direct trial evidence from cascade closures, identify the modality and epitope, and ask whether biomarker movement accompanied—or failed to accompany—the clinical result. Finally, check whether the next programme genuinely changes the failed assumptions.",
+          `For this cohort, the prior is unfavorable enough to demand a concrete differentiation argument. The evidence is also bounded enough that the argument must be about ${window.toLowerCase()}, not about tau biology in every form.`,
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "From trial records to independent units",
+        columns: ["Evidence unit", "Current cohort"],
+        rows: [
+          ["Closed trials", n(brief.closed)],
+          ["Biological stops", `${n(brief.biologicalStops)} (${rate})`],
+          ["Mapped molecules", n(brief.molecules)],
+          ["Programmes represented among stops", n(brief.stopProgrammes)],
+          ["Direct trial-attributed stops", n(brief.stopsFromOwnData)],
+          ["Programme-cascade stops", n(brief.stopsFromProgrammeCascade)],
+        ],
+      },
+      {
+        heading: "The biological stop signature",
+        columns: ["Signal", "Trials"],
+        rows: [
+          ["Efficacy", n(brief.efficacyStops)],
+          ["Safety", n(brief.safetyStops)],
+          ["Benefit–risk only", n(brief.benefitRiskStops)],
+          ["Unresolved terminations", n(brief.unresolvedTerminations)],
+        ],
+      },
+      {
+        heading: "Readable posted primary results",
+        columns: ["Result", "Completed cohort trials"],
+        rows: [
+          ["Readable", `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)}`],
+          ["Missed", n(brief.endpointMissed)],
+          ["Met", n(brief.endpointMet)],
+          ["Mixed", n(brief.endpointMixed)],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the anti-tau mechanism brief",
+        text: "Review the cohort definition, interval, molecules, programme attribution, and trial-level source records.",
+      },
+      {
+        href: "/trial/NCT03289143",
+        label: "Semorinemab: clinical and tau-PET evidence",
+        text: "Read the stopped Phase II record whose explanation addresses both clinical efficacy and tau-PET accumulation.",
+      },
+      {
+        href: "/trial/NCT04619420",
+        label: "Posdinemab: clinical decline endpoint",
+        text: "Inspect the record reporting that the programme did not significantly slow clinical decline.",
+      },
+    ],
+  };
+}
+
+function hydrateTgfBetaPdL1Article(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.tgfBetaPdL1;
+  const rate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const interval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const leaveOneOutRate = pctFromRatio(brief.rateLeaveOneProgrammeOut);
+  const assetList = brief.assets.length ? brief.assets.join(" and ") : "the mapped molecules";
+  const qValue = brief.qValue === null ? "not available" : brief.qValue.toPrecision(2);
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.biologicalStops)} of ${n(brief.closed)} closed TGF-β plus PD-(L)1 Phase II/III trials stopped biologically: ${n(brief.efficacyStops)} efficacy, ${n(brief.safetyStops)} safety, and ${n(brief.benefitRiskStops)} benefit–risk.`,
+    dek: `${n(brief.biologicalStops)} of ${n(brief.closed)} closed TGF-β plus PD-(L)1 trials (${rate}) stopped for a biological reason: ${n(brief.efficacyStops)} for efficacy, ${n(brief.safetyStops)} for safety, and ${n(brief.benefitRiskStops)} for benefit–risk. The mixed signature points to both activity and therapeutic-window questions—but it is concentrated in ${n(brief.molecules)} resolved molecules.`,
+    facts: [
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed Phase II/III trials stopped for a biological reason (${rate}; 95% CI ${interval}).`,
+      `${n(brief.efficacyStops)} stops were efficacy-related, ${n(brief.safetyStops)} were safety-related, and ${n(brief.benefitRiskStops)} was classified as benefit–risk only.`,
+      `The comparison cohort—${brief.referenceLabel}—recorded ${n(brief.referenceStops)} stops among ${n(brief.referenceClosed)} closed trials (${referenceRate}).`,
+      `${n(brief.stopsFromOwnData)} stops came from evidence in the trial itself; ${n(brief.stopsFromProgrammeCascade)} followed another programme result.`,
+      `The ${n(brief.biologicalStops)} stopped trials map to ${n(brief.molecules)} resolved molecules: ${assetList}.`,
+    ],
+    sections: [
+      {
+        heading: "The signal contains two development problems",
+        body: [
+          `The cohort does not show a single failure mode. Efficacy and safety each account for ${n(brief.efficacyStops)} of the biological stops, with another ${n(brief.benefitRiskStops)} record framed directly as an unfavorable benefit–risk decision. That balance is the clinically useful finding: development pressure appeared on both the benefit and risk sides of the equation.`,
+          "For diligence, that changes the first question. The issue is not only whether dual pathway blockade can improve antitumor activity over checkpoint therapy. It is also whether the molecule, dose, exposure, and patient selection leave enough therapeutic window to realize that benefit.",
+        ],
+      },
+      {
+        heading: "The efficacy records point to probability of benefit",
+        body: [
+          "The efficacy-side records include independent monitoring decisions that superiority or overall-survival objectives were unlikely to be achieved. NCT03840902 cites a low likelihood of superiority on efficacy endpoints; NCT04066491 cites a low likelihood of reaching its overall-survival objective. These are prospective stop decisions, not proof that every participant or tumor type lacked activity.",
+          "They nevertheless matter biologically. When a programme designed to add TGF-β blockade to checkpoint activity repeatedly crosses futility or low-probability thresholds, the next programme needs a sharper explanation of target engagement, tumor context, biomarker enrichment, and what magnitude of incremental effect is plausible.",
+        ],
+      },
+      {
+        heading: "The safety records point to therapeutic-window pressure",
+        body: [
+          "The safety-side records are not generic administrative closures. The cohort includes urgent safety measures, reports of hyperprogression and early toxicities from related studies, and a worsening risk–benefit assessment. NCT04428047 and NCT04327986 are especially useful because their source language makes the safety or benefit–risk rationale visible.",
+          "That does not establish one shared toxic mechanism across every asset. It does show that the development problem cannot be described as efficacy-only. Molecule architecture matters here: bifunctional traps, antibodies, combination partners, exposure, and tissue distribution can alter both intended biology and off-target or on-target risk.",
+        ],
+      },
+      {
+        heading: "The comparator makes the pattern notable",
+        body: [
+          `The observed biological-stop rate is ${rate}, compared with ${referenceRate} among ${brief.referenceLabel}. Its 95% interval is ${interval}. The multiplicity-adjusted analysis marks the class as standing out at a 10% false-discovery threshold${brief.qValue === null ? "" : ` (BY q=${qValue})`}.`,
+          `Removing the largest programme still leaves a ${leaveOneOutRate} stop rate. That reduces—but does not erase—the concern that one sponsor alone created the headline. The interpretation still requires restraint because the interval is wide and the mapped stop signature resolves to only ${n(brief.molecules)} molecules.`,
+        ],
+      },
+      {
+        heading: "Programme cascades are clinically relevant but correlated",
+        body: [
+          `${n(brief.stopsFromProgrammeCascade)} of the ${n(brief.biologicalStops)} stops followed evidence elsewhere in the programme, while ${n(brief.stopsFromOwnData)} were attributed to that trial's own data. A cascade can close multiple tumor cohorts after one pivotal readout or safety decision. It expands the number of affected studies without multiplying the number of independent biological observations.`,
+          "This distinction prevents two opposite errors. Ignoring cascade trials understates how far a finding changed clinical development. Counting every cascade as an independent replication overstates confidence that the same failure mode was observed repeatedly.",
+        ],
+      },
+      {
+        heading: "What a differentiated next programme would need to answer",
+        body: [
+          "A credible next programme should specify which prior constraint it changes: stronger or more localized TGF-β modulation, a different checkpoint partner, lower systemic exposure, a biomarker-defined tumor context, a dose schedule that preserves immune activity, or evidence that the selected population has the pathway dependence the earlier cohorts lacked.",
+          `The current data supports a bounded conclusion about Phase ${brief.phases.join("/")} oncology trials started from ${brief.startFrom} through ${brief.startTo}. It identifies a mixed efficacy-and-safety warning signal in ${assetList}; it does not prove that every TGF-β strategy or every PD-(L)1 combination will reproduce it.`,
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Why the trials stopped biologically",
+        columns: ["Signal", "Stopped trials"],
+        rows: [
+          ["Efficacy", n(brief.efficacyStops)],
+          ["Safety", n(brief.safetyStops)],
+          ["Benefit–risk only", n(brief.benefitRiskStops)],
+          ["Total biological stops", n(brief.biologicalStops)],
+        ],
+      },
+      {
+        heading: "Cohort versus checkpoint-combination reference",
+        columns: ["Cohort", "Biological stops among closed trials"],
+        rows: [
+          [brief.segment, `${n(brief.biologicalStops)} / ${n(brief.closed)} (${rate})`],
+          [brief.referenceLabel, `${n(brief.referenceStops)} / ${n(brief.referenceClosed)} (${referenceRate})`],
+          ["TGF-β + PD-(L)1 after removing largest programme", leaveOneOutRate],
+          ["95% interval for the focal cohort", interval],
+        ],
+      },
+      {
+        heading: "How independent is the evidence?",
+        columns: ["Evidence unit", "Count"],
+        rows: [
+          ["Stopped trial records", n(brief.biologicalStops)],
+          ["Resolved molecules", n(brief.molecules)],
+          ["Programmes", n(brief.stopProgrammes)],
+          ["Sponsors", n(brief.stopSponsors)],
+          ["Stops from own trial data", n(brief.stopsFromOwnData)],
+          ["Stops from programme cascades", n(brief.stopsFromProgrammeCascade)],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the TGF-β + PD-(L)1 brief",
+        text: "Inspect the cohort, comparator, uncertainty interval, programme attribution, and every stopped record.",
+      },
+      {
+        href: "/trial/NCT03840902",
+        label: "Bintrafusp alfa: efficacy futility",
+        text: "Read the Phase II record citing a low likelihood of superiority over standard of care.",
+      },
+      {
+        href: "/trial/NCT04428047",
+        label: "Bintrafusp alfa: safety information",
+        text: "Inspect the registry explanation referring to hyperprogression and early toxicities in other studies.",
+      },
+    ],
+  };
+}
+
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "anti-tau-antibody-clinical-trial-stop-signals") {
+    return hydrateAntiTauArticle(article, stats);
+  }
+  if (article.slug === "tgf-beta-pd-l1-clinical-trial-stop-signals") {
+    return hydrateTgfBetaPdL1Article(article, stats);
+  }
   if (article.slug === "registry-update-date-is-not-trial-stop-date") {
     return hydrateRegistryTimingArticle(article, stats);
   }

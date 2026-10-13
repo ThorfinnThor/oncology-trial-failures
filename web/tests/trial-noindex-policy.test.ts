@@ -8,7 +8,7 @@ import {
   TRIAL_NOINDEX_DECISION_COUNT,
 } from "../lib/trialNoindexPolicy";
 
-test("the reviewed pruning registry contains exactly 791 unique trial decisions", () => {
+test("the reviewed pruning registry contains exactly 1,316 unique trial decisions", () => {
   const counts = Object.fromEntries(config.batches.map((batch) => [batch.id, batch.nctIds.length]));
   const ids = config.batches.flatMap((batch) => batch.nctIds);
 
@@ -19,10 +19,12 @@ test("the reviewed pruning registry contains exactly 791 unique trial decisions"
     "repeated-formulaic-low-search-evidence": 53,
     "low-search-programme-cascade": 274,
     "unclear-attribution-thin-content": 83,
+    "short-nonspecific-no-click-unprotected": 485,
+    "manual-borderline-thin-review": 40,
   });
-  assert.equal(ids.length, 791);
-  assert.equal(new Set(ids).size, 791);
-  assert.equal(TRIAL_NOINDEX_DECISION_COUNT, 791);
+  assert.equal(ids.length, 1_316);
+  assert.equal(new Set(ids).size, 1_316);
+  assert.equal(TRIAL_NOINDEX_DECISION_COUNT, 1_316);
 });
 
 test("trial exclusions are stable by NCT identifier and canonical URL", () => {
@@ -30,11 +32,14 @@ test("trial exclusions are stable by NCT identifier and canonical URL", () => {
   assert.equal(isExplicitlyNoindexTrial("NCT02354014"), true);
   assert.equal(isExplicitlyNoindexTrial("NCT04762771"), true, "low-search programme cascades are excluded");
   assert.equal(isExplicitlyNoindexTrial("NCT00083759"), true, "manually reviewed unclear-attribution thin pages are excluded");
+  assert.equal(isExplicitlyNoindexTrial("NCT01343355"), true, "short nonspecific no-click pages are excluded");
+  assert.equal(isExplicitlyNoindexTrial("NCT02381288"), true, "manually reviewed borderline thin pages are excluded");
   assert.equal(isExplicitlyNoindexTrial("NCT00994253"), false, "manually reviewed trials with concrete own-trial data stay indexable");
+  assert.equal(isExplicitlyNoindexTrial("NCT00924287"), false, "specific treatment-related safety evidence stays indexable");
   assert.equal(isExplicitlyNoindexTrial("NCT03940690"), false);
   assert.equal(isExplicitlyNoindexTrial("NCT04191096"), false, "curated insight evidence stays indexable");
-  assert.equal(isExplicitlyNoindexTrial("NCT05153408"), false, "high-impression pages stay indexable");
-  assert.equal(isExplicitlyNoindexTrial("NCT03907072"), false, "top-10 pages stay indexable");
+  assert.equal(isExplicitlyNoindexTrial("NCT05153408"), true, "the approved aggressive no-click batch includes high-impression thin pages");
+  assert.equal(isExplicitlyNoindexTrial("NCT03907072"), true, "the approved aggressive no-click batch includes low-value top-10 NCT pages");
 
   const decision = trialNoindexDecisionForUrl(
     "https://clinicaltrialfailures.com/trial/NCT02354014-title-can-change"

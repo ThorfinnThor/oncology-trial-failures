@@ -80,11 +80,11 @@ if (decisions.length !== 36) fail(`expected 36 reviewed decisions, found ${decis
 if (trialNoindexConfig.schemaVersion !== 1) {
   fail(`expected trial noindex schemaVersion 1, found ${trialNoindexConfig.schemaVersion}`);
 }
-if (trialNoindexConfig.decisionVersion !== "sol-trial-pruning-v2") {
-  fail(`expected trial noindex decision version sol-trial-pruning-v2, found ${trialNoindexConfig.decisionVersion}`);
+if (trialNoindexConfig.decisionVersion !== "sol-trial-pruning-v4") {
+  fail(`expected trial noindex decision version sol-trial-pruning-v4, found ${trialNoindexConfig.decisionVersion}`);
 }
-if (trialNoindexIds.length !== 791 || new Set(trialNoindexIds).size !== 791) {
-  fail(`expected 791 unique explicit trial noindex IDs, found ${trialNoindexIds.length}`);
+if (trialNoindexIds.length !== 1_316 || new Set(trialNoindexIds).size !== 1_316) {
+  fail(`expected 1,316 unique explicit trial noindex IDs, found ${trialNoindexIds.length}`);
 }
 const trialNoindexBatchCounts = Object.fromEntries(
   trialNoindexBatches.map((batch) => [batch.id, batch.nctIds?.length ?? 0])
@@ -95,9 +95,11 @@ if (
   trialNoindexBatchCounts["short-low-search-evidence"] !== 344 ||
   trialNoindexBatchCounts["repeated-formulaic-low-search-evidence"] !== 53 ||
   trialNoindexBatchCounts["low-search-programme-cascade"] !== 274 ||
-  trialNoindexBatchCounts["unclear-attribution-thin-content"] !== 83
+  trialNoindexBatchCounts["unclear-attribution-thin-content"] !== 83 ||
+  trialNoindexBatchCounts["short-nonspecific-no-click-unprotected"] !== 485 ||
+  trialNoindexBatchCounts["manual-borderline-thin-review"] !== 40
 ) {
-  fail("expected trial noindex batches of 17 weak-search, 20 unresolved-legacy, 344 short low-search, 53 repeated formulaic, 274 programme-cascade, and 83 unclear-attribution thin pages");
+  fail("expected trial noindex batches of 17 weak-search, 20 unresolved-legacy, 344 short low-search, 53 repeated formulaic, 274 programme-cascade, 83 unclear-attribution thin, 485 short nonspecific no-click, and 40 manually reviewed borderline pages");
 }
 
 const urls = new Set();
@@ -164,7 +166,7 @@ if (profileName === "trial-quality-release") {
 }
 
 console.log(`SEO release profile '${profileName}' is ready.`);
-console.log(`Decision scope: ${decisions.length} reviewed URLs; 791 explicit trial noindex IDs; 1 static thin-content noindex; 4 utility noindex; 1 non-overridden improve-only URL.`);
+console.log(`Decision scope: ${decisions.length} reviewed URLs; 1,316 explicit trial noindex IDs; 1 static thin-content noindex; 4 utility noindex; 1 non-overridden improve-only URL.`);
 console.log(`Recovered evidence URL: ${RECOVERED_EVIDENCE_URL}`);
 console.log("Exact feature settings:");
 for (const [name, value] of Object.entries(profile)) console.log(`  ${name}=${value}`);

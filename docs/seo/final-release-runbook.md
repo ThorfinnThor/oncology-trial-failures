@@ -4,9 +4,9 @@
 
 **Decision sources:** `docs/seo/approved-decisions.csv` and `web/config/trial-noindex-decisions.json`
 
-**Decision versions:** `luna-approval-v2` and `sol-trial-pruning-v2`
+**Decision versions:** `luna-approval-v2` and `sol-trial-pruning-v4`
 
-**Deployment status:** the 2026-10-09 baseline is live; the 791-page pruning set is pending deployment
+**Deployment status:** the original 791-page pruning set is live; the additional 525-page pruning set is pending deployment
 
 ## Scope
 
@@ -25,13 +25,17 @@ The third batch excludes 53 additional pages whose 36-to-50-character stop expla
 
 The fourth batch excludes 274 programme-cascade pages. Their stop explanations point to another trial, a programme decision, preclinical findings, or outside evidence rather than the indexed trial's own result. They also have no measured click, no top-10 position, fewer than 20 measured impressions or no appearance in the top-1,000 export, and no curated editorial use. The 114 programme-cascade pages with protected search or editorial signals remain indexable.
 
+The additional pruning batch excludes 485 pages with no measured click in the reviewed Search Console page export, no more than 100 characters of source stop wording, no detected endpoint, interim-analysis, monitoring-board, exposure, or specific clinical-event detail, and no curated use in an insight, published brief, newsletter, landing page, or reference page. This implements the approved aggressive reduction of the remaining short, nonspecific trial pages, including low-volume exact-NCT impressions that produced no click. Two initially selected URLs remain indexable because earlier evidence review explicitly protected concrete own-trial data or recovered ClinicalTrials.gov detailed-description evidence.
+
+The final manual borderline review examined the 63 highest-risk remaining pages and excludes 40 more. Twenty-three pages remain indexable because their source records contain concrete endpoint, interim-analysis, treatment-related safety, or named clinical-event evidence. The excluded pages add little independent search value because their wording is generic, repeated, mixed, or programme-level, and they have no measured click, posted endpoint result, or curated editorial use.
+
 Five reviewed static pages are removed from search while remaining HTTP 200 and crawlable through `noindex,follow`:
 
 - `/explore`, `/asset-check`, `/newsletter`, and `/contact` are input, filtering, conversion, or support utilities rather than durable search answers.
 - `/sponsor-insights` is a weak standalone landing page that duplicates the richer sponsor hubs and overview.
 - All five are excluded from the XML sitemap.
 
-The trial indexability predicate also requires usable source-backed stop evidence, study identity, a source URL, condition, intervention, and a classification explanation. The committed dataset has 2,434 pages that pass that evidence gate. The explicit pruning set removes 791 of them, leaving 1,643 indexable trial pages. The final 83-page batch was manually reviewed: generic, repeated, programme-level, externally attributed, or ambiguous explanations were excluded, while 52 nearby cases with concrete own-trial results remained indexable.
+The trial indexability predicate also requires usable source-backed stop evidence, study identity, a source URL, condition, intervention, and a classification explanation. The current dataset has 2,435 pages that pass that evidence gate. The explicit pruning set removes 1,316 of them, leaving 1,119 indexable trial pages. The 83-page manual-review batch excludes generic, repeated, programme-level, externally attributed, or ambiguous explanations; the 485-page batch applies the stricter search and content-value threshold; and the final 40-page batch resolves the remaining highest-risk borderline set.
 
 `/overview`, `/outliers`, and `/top-entities` also ship compact server-rendered evidence snapshots. Their initial HTML must contain the reviewed totals, baseline, and ranking sections before the existing interactive datasets hydrate in the browser.
 
@@ -57,7 +61,7 @@ npm run cloudflare:build
 npx wrangler whoami
 ```
 
-The release guard must report 36 legacy reviewed URLs, 791 explicit trial noindex IDs, one static thin-content noindex URL, four static utility noindex URLs, and one non-overridden improve-only URL. Automated tests must confirm the 17/20/344/53/274/83 batch split and the 2,434-to-1,643 trial reduction. GitHub's `web` and `text-readers` checks must be green. Wrangler authentication must be valid before the final deployment; if `wrangler whoami` reports an expired token, authenticate again at that point without changing the release scope. A Vercel deployment failure caused by a blocked Vercel account is not a Cloudflare application check and does not authorize ignoring any GitHub test failure.
+The release guard must report 36 legacy reviewed URLs, 1,316 explicit trial noindex IDs, one static thin-content noindex URL, four static utility noindex URLs, and one non-overridden improve-only URL. Automated tests must confirm the 17/20/344/53/274/83/485/40 batch split and the 2,435-to-1,119 trial reduction. GitHub's `web` and `text-readers` checks must be green. Wrangler authentication must be valid before the final deployment; if `wrangler whoami` reports an expired token, authenticate again at that point without changing the release scope. A Vercel deployment failure caused by a blocked Vercel account is not a Cloudflare application check and does not authorize ignoring any GitHub test failure.
 
 ## Exact production settings
 
@@ -69,7 +73,7 @@ SEO_INDEXING_REGISTRY_SITEMAP=true
 SEO_INDEXING_NOINDEX_LIST=false
 ```
 
-`SEO_INDEXING_NOINDEX_LIST` remains false because the 791 NCT exclusions are enforced by the shared trial-eligibility predicate rather than the older URL registry switch. The same predicate controls both page robots output and sitemap membership. The five static page decisions remain explicit page-level directives and sitemap exclusions.
+`SEO_INDEXING_NOINDEX_LIST` remains false because the 1,316 NCT exclusions are enforced by the shared trial-eligibility predicate rather than the older URL registry switch. The same predicate controls both page robots output and sitemap membership. The five static page decisions remain explicit page-level directives and sitemap exclusions.
 
 Keep all remaining mutation switches explicitly false or unset:
 
