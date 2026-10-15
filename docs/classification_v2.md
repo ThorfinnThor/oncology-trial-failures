@@ -182,6 +182,31 @@ Approved decisions override audit-derived entries and are automatically reused
 for identical future registry language. Blank stop reasons remain unknown; they
 cannot be semantically resolved without another explicit primary-source field.
 
+### Keeping the reviewed-reason index current
+
+`data/classification_reviewed_reasons_v2.json` is a build artifact, not a
+hand-maintained file. It is a pure function of `tests/classification_gold_v2.jsonl`,
+`data/classification_manual_decisions_v2.csv`, and the classifier rules, and it
+does not depend on the fetched trial data at all. Changing any of those three
+without rebuilding leaves it stale, which is how it once sat at classifier 2.1.0
+against a 2.7.0 classifier, with 961 of its 2,408 entries out of date.
+
+The snapshot validation now treats a stale index as a failure, and the weekly
+workflow verifies it before fetching rather than rebuilding it, so drift can no
+longer be silently repaired and committed. Check it at any time with:
+
+```bash
+python scripts/build_reviewed_reason_index_v2.py --check
+```
+
+If that reports drift, rebuild it, rebuild the snapshot, and commit both:
+
+```bash
+python scripts/build_reviewed_reason_index_v2.py
+python scripts/reclassify_dataset_v2.py --write
+python scripts/validate_classification_v2_snapshot.py
+```
+
 Every queue group receives exactly one review disposition and a priority.
 Dispositions distinguish missing source text, placeholders, multi-domain
 causes, unspecified biological signals, negated causes, generic actor
