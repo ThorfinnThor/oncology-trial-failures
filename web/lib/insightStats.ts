@@ -46,6 +46,7 @@ type MechanismBriefSource = {
   stop_attribution?: {
     stops_from_own_data: number;
     stops_from_programme_cascade: number;
+    stops_unclear?: number;
   };
   endpoints?: {
     completed: number;
@@ -53,7 +54,17 @@ type MechanismBriefSource = {
     missed: number;
     met: number;
     mixed: number;
+    missed_sponsors?: number;
+    missed_molecules?: number;
   };
+  endpoint_trials?: Array<{
+    nct_id: string;
+    phase: string;
+    sponsor_group: string;
+    drugs: string;
+    evidence: string;
+    results_url: string;
+  }>;
   trials_preview?: Array<{
     nct_id: string;
     phase: string;
@@ -104,11 +115,22 @@ function mechanismBriefSnapshot(area: string, segment: string): MechanismBriefSn
     assets: (brief.failure_signature?.assets || []).map((asset) => asset.asset),
     stopsFromOwnData: brief.stop_attribution?.stops_from_own_data || 0,
     stopsFromProgrammeCascade: brief.stop_attribution?.stops_from_programme_cascade || 0,
+    stopsUnclear: brief.stop_attribution?.stops_unclear || 0,
     endpointCompleted: brief.endpoints?.completed || 0,
     endpointReadable: brief.endpoints?.readable || 0,
     endpointMissed: brief.endpoints?.missed || 0,
     endpointMet: brief.endpoints?.met || 0,
     endpointMixed: brief.endpoints?.mixed || 0,
+    endpointMissedSponsors: brief.endpoints?.missed_sponsors || 0,
+    endpointMissedMolecules: brief.endpoints?.missed_molecules || 0,
+    endpointTrials: (brief.endpoint_trials || []).map((trial) => ({
+      nctId: trial.nct_id,
+      phase: trial.phase,
+      sponsor: trial.sponsor_group,
+      drugs: trial.drugs,
+      evidence: trial.evidence,
+      resultsUrl: trial.results_url,
+    })),
     trials: (brief.trials_preview || []).map((trial) => ({
       nctId: trial.nct_id,
       phase: trial.phase,
@@ -885,6 +907,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
     mechanismBriefs: {
       tauAntibodies: mechanismBriefSnapshot("Neurology", "Tau"),
       tgfBetaPdL1: mechanismBriefSnapshot("Oncology", "TGF-β + PD-(L)1"),
+      amyloidBetaAntibodies: mechanismBriefSnapshot("Neurology", "Amyloid-β directed"),
+      tigitPdL1: mechanismBriefSnapshot("Oncology", "TIGIT + PD-(L)1"),
     },
   };
 }

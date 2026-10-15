@@ -249,6 +249,8 @@ export type InsightStats = {
   mechanismBriefs: {
     tauAntibodies: MechanismBriefSnapshot;
     tgfBetaPdL1: MechanismBriefSnapshot;
+    amyloidBetaAntibodies: MechanismBriefSnapshot;
+    tigitPdL1: MechanismBriefSnapshot;
   };
 };
 
@@ -285,11 +287,22 @@ export type MechanismBriefSnapshot = {
   assets: string[];
   stopsFromOwnData: number;
   stopsFromProgrammeCascade: number;
+  stopsUnclear: number;
   endpointCompleted: number;
   endpointReadable: number;
   endpointMissed: number;
   endpointMet: number;
   endpointMixed: number;
+  endpointMissedSponsors: number;
+  endpointMissedMolecules: number;
+  endpointTrials: Array<{
+    nctId: string;
+    phase: string;
+    sponsor: string;
+    drugs: string;
+    evidence: string;
+    resultsUrl: string;
+  }>;
   trials: Array<{
     nctId: string;
     phase: string;
@@ -354,6 +367,74 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "amyloid-beta-antibody-trial-stops-programme-cascades",
+    title: "Thirteen amyloid-β trial stops collapse to four antibodies",
+    metaDescription:
+      "Our Phase II/III amyloid-β cohort contains 13 efficacy stops, but nine were programme cascades and the signal resolves to four antibodies.",
+    eyebrow: "Amyloid-β clinical evidence",
+    dek:
+      "The amyloid-β stop signal is large, cross-sponsor, and statistically unusual. It is also highly correlated: most stopped records followed evidence generated elsewhere in the same programme.",
+    datePublished: "2026-10-15",
+    readingTime: "10 min read",
+    keyword: "amyloid beta antibody clinical trial failure",
+    factsHeading: "The signal at trial, programme, and molecule level",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do 13 stopped trials mean that the amyloid hypothesis failed 13 times?",
+        answer:
+          "No. The records map to four antibodies, and most were downstream programme closures rather than independent clinical readouts. They support a strong warning for similar antibody programmes, not 13 independent tests of every amyloid strategy.",
+      },
+      {
+        question: "Why do programme-cascade trials still matter?",
+        answer:
+          "They show how one unfavorable readout changed development across extension, prevention, or related studies and therefore how many clinical programmes and participants were affected. They should be retained, but not counted as fresh biological replication.",
+      },
+      {
+        question: "Does one readable posted result that met its endpoint overturn the stop signal?",
+        answer:
+          "No. It comes from a very small, selected posted-results subset and uses a different denominator from the stop-reason cohort. The apparent discordance is a reason to inspect trial design and endpoint context, not to average the two layers into one failure rate.",
+      },
+    ],
+  },
+  {
+    slug: "tigit-pd-l1-endpoints-vs-trial-stops",
+    title: "TIGIT's negative signal is larger in endpoints than in trial-stop labels",
+    metaDescription:
+      "Only four TIGIT plus PD-(L)1 trials carry biological stop labels, while 11 of 12 readable posted primary results missed. The denominators explain why both can be true.",
+    eyebrow: "TIGIT clinical evidence",
+    dek:
+      "A status-only screen finds four efficacy stops. The posted-results layer finds 11 misses among 12 readable primary outcomes. That is not one 11-of-12 failure rate for the class; it is evidence that trial status alone misses completed negative studies.",
+    datePublished: "2026-10-15",
+    readingTime: "9 min read",
+    keyword: "TIGIT PD-L1 clinical trial results",
+    factsHeading: "Two evidence layers with different denominators",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Is 11 of 12 the failure rate for TIGIT plus PD-(L)1?",
+        answer:
+          "No. It is the result among the subset of completed cohort trials whose posted primary analyses were readable by our endpoint method. It is a strong diligence signal, but not a class-wide probability estimate.",
+      },
+      {
+        question: "Why can a trial miss its endpoint without appearing as a stopped trial?",
+        answer:
+          "A study can complete as planned and report a negative primary analysis. Its status remains completed, so a dataset built only from terminated, withdrawn, or suspended records will not capture that negative result.",
+      },
+      {
+        question: "Do these data prove that TIGIT blockade cannot work?",
+        answer:
+          "No. The cohort spans different antibodies, partners, tumor settings, biomarkers, endpoints, and development stages. The pattern raises the burden of proof for undifferentiated programmes; it does not eliminate the possibility of benefit in a better-defined context.",
+      },
+    ],
+  },
   {
     slug: "anti-tau-antibody-clinical-trial-stop-signals",
     title: "Seven anti-tau trial stops trace back to four antibodies",
@@ -4625,6 +4706,231 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
   };
 }
 
+function hydrateAmyloidBetaArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.amyloidBetaAntibodies;
+  const rate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const interval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const leaveOneOutRate = pctFromRatio(brief.rateLeaveOneProgrammeOut);
+  const directShare = pctFromCounts(brief.stopsFromOwnData, brief.biologicalStops);
+  const cascadeShare = pctFromCounts(brief.stopsFromProgrammeCascade, brief.biologicalStops);
+  const readableShare = pctFromCounts(brief.endpointReadable, brief.endpointCompleted);
+  const qValue = brief.qValue === null ? "not available" : brief.qValue.toExponential(1);
+  const assetList = brief.assets.length ? brief.assets.join(", ") : "the mapped antibodies";
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.biologicalStops)} amyloid-β efficacy stops among ${n(brief.closed)} closed Phase II/III trials resolve to ${n(brief.molecules)} antibodies; ${n(brief.stopsFromProgrammeCascade)} were programme cascades.`,
+    dek: `${n(brief.biologicalStops)} of ${n(brief.closed)} closed amyloid-β Phase II/III trials (${rate}) carry an efficacy stop. The signal survives multiplicity adjustment, but ${n(brief.stopsFromProgrammeCascade)} of the ${n(brief.biologicalStops)} records followed evidence generated elsewhere in the programme and the full stop signature resolves to only ${n(brief.molecules)} antibodies.`,
+    facts: [
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials stopped for a biological reason (${rate}; 95% Wilson interval ${interval}).`,
+      `Every biological stop was efficacy-related; the cohort contains no safety-only biological stop.`,
+      `The ${n(brief.biologicalStops)} records map to ${n(brief.molecules)} antibodies: ${assetList}.`,
+      `${n(brief.stopsFromOwnData)} stops (${directShare}) were attributed to that trial's own evidence, ${n(brief.stopsFromProgrammeCascade)} (${cascadeShare}) were programme cascades, and ${n(brief.stopsUnclear)} could not be cleanly assigned.`,
+      `Only ${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed cohort trials had a readable posted primary result (${readableShare}); that one result met its endpoint.`,
+    ],
+    sections: [
+      {
+        heading: "The numerator is real; its independence is not",
+        body: [
+          `At record level, ${n(brief.biologicalStops)} amyloid-β trials stopped for efficacy. At biological-evidence level, the same records compress to ${n(brief.molecules)} antibodies across ${n(brief.stopProgrammes)} programmes and ${n(brief.stopSponsors)} sponsors. Counting the records is useful for measuring clinical-development impact. Counting them as ${n(brief.biologicalStops)} independent tests would exaggerate replication.`,
+          `The comparison remains striking: ${rate} in the focal cohort versus ${referenceRate} among ${brief.referenceLabel}. The 95% interval is wide (${interval}), but the signal survives the brief generator's multiplicity correction${brief.qValue === null ? "" : ` (BY q=${qValue})`}. Removing the largest programme leaves a ${leaveOneOutRate} rate, so one programme drives part—but not all—of the excess.`,
+        ],
+      },
+      {
+        heading: "The biology represented here is narrower than 'amyloid'",
+        body: [
+          `The stopped-molecule signature contains ${assetList}, and the shared modality is antibody. That is a coherent biological pattern, but it is not a test of every way to alter amyloid production, aggregation, clearance, or downstream neurodegeneration.`,
+          "Disease stage, antibody epitope, brain exposure, target engagement, dose, and the distance between biomarker movement and clinical benefit can all change what a negative efficacy result means. The data therefore updates the prior for similar antibody programmes more strongly than it updates every possible amyloid-directed intervention.",
+        ],
+      },
+      {
+        heading: "Nine cascade closures measure reach, not replication",
+        body: [
+          `${n(brief.stopsFromProgrammeCascade)} records were closed after an unfavorable finding elsewhere in the same development programme. Those decisions are clinically consequential: one readout can end an extension study, an open-label continuation, a prevention cohort, or a related population before it produces its own answer.`,
+          `The cascade records should not be discarded, because they reveal the footprint of the programme decision. They should be labeled as correlated evidence. The remaining ${n(brief.stopsFromOwnData)} trial-attributed stops and ${n(brief.stopsUnclear)} unclear record are the more appropriate starting point for asking how many independent efficacy observations the cohort contains.`,
+        ],
+      },
+      {
+        heading: "The source language separates direct futility from inherited decisions",
+        body: [
+          "NCT02670083 reports that an interim analysis indicated crenezumab was unlikely to meet its primary endpoint. NCT02477800 and NCT02484547 state that the aducanumab studies were discontinued after futility analysis. NCT02760602 says the available evidence was insufficient to expect a meaningful benefit from solanezumab in the protocol-defined prodromal population.",
+          "By contrast, several gantenerumab records cite analyses from the GRADUATE programme or the status of the broader drug programme. Both types of record support an efficacy concern, but only the first type supplies a trial-specific clinical readout. That difference is essential when translating a registry count into a biological conclusion.",
+        ],
+      },
+      {
+        heading: "The posted-results layer is too sparse to settle the interpretation",
+        body: [
+          `The endpoint reader found ${n(brief.endpointCompleted)} completed cohort trials but only ${n(brief.endpointReadable)} readable primary analysis. That result met its endpoint. It would be incorrect to treat one of one as a success rate for the mechanism, just as it would be incorrect to treat ${n(brief.biologicalStops)} stopped records as ${n(brief.biologicalStops)} independent failures.`,
+          "The two layers are selected differently: the stop cohort captures studies with explicit discontinuation language, while the endpoint layer requires posted, machine-readable primary analyses. Their apparent tension is itself useful. It tells the reviewer to retrieve full trial reports and programme context before making a target-level claim.",
+        ],
+      },
+      {
+        heading: "What a new programme would need to change",
+        body: [
+          "A differentiated programme should state which prior assumption it changes: the amyloid species or epitope, disease stage, biomarker-defined population, achieved central exposure, dosing window, or the link between target engagement and a clinically meaningful endpoint. Merely adding another trial record does not create differentiation.",
+          `The defensible conclusion is bounded to Phase ${brief.phases.join("/")} trials started from ${brief.startFrom} through ${brief.startTo}. Within that frame, repeated efficacy decisions across four antibodies are a material biological warning. The evidence does not justify the broader statement that all amyloid biology has been disproven.`,
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "One signal, three levels of evidence",
+        columns: ["Evidence unit", "Current cohort"],
+        rows: [
+          ["Biological stop records", `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials (${rate})`],
+          ["Resolved stopped molecules", n(brief.molecules)],
+          ["Programmes represented among stops", n(brief.stopProgrammes)],
+          ["Stops from own trial data", n(brief.stopsFromOwnData)],
+          ["Programme-cascade stops", n(brief.stopsFromProgrammeCascade)],
+          ["Unclear attribution", n(brief.stopsUnclear)],
+        ],
+      },
+      {
+        heading: "How unusual is the cohort?",
+        columns: ["Comparison", "Biological stops among closed trials"],
+        rows: [
+          [brief.segment, `${n(brief.biologicalStops)} / ${n(brief.closed)} (${rate})`],
+          [brief.referenceLabel, `${n(brief.referenceStops)} / ${n(brief.referenceClosed)} (${referenceRate})`],
+          ["After removing the largest programme", leaveOneOutRate],
+          ["95% interval for the focal cohort", interval],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the amyloid-β mechanism brief",
+        text: "Inspect the cohort definition, comparator, molecule map, programme attribution, and source records.",
+      },
+      {
+        href: "/trial/NCT02670083",
+        label: "Crenezumab: trial-specific futility",
+        text: "Read the Phase III record whose own interim analysis indicated that the primary endpoint was unlikely to be met.",
+      },
+      {
+        href: "/trial/NCT05256134",
+        label: "Gantenerumab: a programme-linked closure",
+        text: "Compare a record terminated after analyses from the wider GRADUATE programme.",
+      },
+    ],
+  };
+}
+
+function hydrateTigitPdL1Article(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.tigitPdL1;
+  const stopRate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const stopInterval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const readableShare = pctFromCounts(brief.endpointReadable, brief.endpointCompleted);
+  const missedShare = pctFromCounts(brief.endpointMissed, brief.endpointReadable);
+  const endpointById = new Map(brief.endpointTrials.map((trial) => [trial.nctId, trial]));
+  const endpointUrl = (nctId: string) =>
+    endpointById.get(nctId)?.resultsUrl || `https://clinicaltrials.gov/study/${nctId}?tab=results`;
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.biologicalStops)} of ${n(brief.closed)} closed TIGIT plus PD-(L)1 trials carry efficacy-stop labels, while ${n(brief.endpointMissed)} of ${n(brief.endpointReadable)} readable posted primary results missed.`,
+    dek: `The status layer finds ${n(brief.biologicalStops)} efficacy stops among ${n(brief.closed)} closed TIGIT plus PD-(L)1 trials (${stopRate}). The results layer finds ${n(brief.endpointMissed)} misses among ${n(brief.endpointReadable)} readable posted primary outcomes (${missedShare}). Those numbers answer different questions—and together show why trial status alone understates negative clinical evidence.`,
+    facts: [
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed Phase II/III trials carry a biological stop (${stopRate}; 95% interval ${stopInterval}); all ${n(brief.biologicalStops)} were efficacy-related.`,
+      `The comparison cohort—${brief.referenceLabel}—recorded ${n(brief.referenceStops)} stops among ${n(brief.referenceClosed)} closed trials (${referenceRate}); the stop-rate difference did not survive multiplicity adjustment.`,
+      `Among ${n(brief.endpointCompleted)} completed cohort trials, ${n(brief.endpointReadable)} had a readable posted primary result (${readableShare}).`,
+      `${n(brief.endpointMissed)} of those ${n(brief.endpointReadable)} readable primary results missed (${missedShare}); ${n(brief.endpointMet)} met and ${n(brief.endpointMixed)} were mixed.`,
+      `The stop signature spans ${n(brief.molecules)} TIGIT antibodies and ${n(brief.stopSponsors)} sponsors; ${n(brief.stopsFromOwnData)} stops came from the trial's own data and ${n(brief.stopsFromProgrammeCascade)} were programme cascades.`,
+    ],
+    sections: [
+      {
+        heading: "The status-only view looks modest",
+        body: [
+          `A screen of closed trials finds ${n(brief.biologicalStops)} biological stops among ${n(brief.closed)} records, a ${stopRate} rate. That is close to the ${referenceRate} observed in ${brief.referenceLabel}, and the difference does not survive the mechanism scan's correction for multiple comparisons. On stop labels alone, TIGIT does not emerge as an exceptional outlier.`,
+          `Even those ${n(brief.biologicalStops)} records are not fully independent. They resolve to ${n(brief.molecules)} antibodies—${brief.assets.join(", ")}—and split evenly between trial-specific evidence and programme cascades. A status-only interpretation should therefore be cautious in both directions: it neither proves a class problem nor captures the full negative evidence.`,
+        ],
+      },
+      {
+        heading: "The endpoint view is much more negative",
+        body: [
+          `The posted-results layer starts from a different denominator. Of ${n(brief.endpointCompleted)} completed trials, ${n(brief.endpointReadable)} had a primary analysis that the endpoint reader could classify. ${n(brief.endpointMissed)} missed, ${n(brief.endpointMet)} met, and ${n(brief.endpointMixed)} were mixed. The ${missedShare} miss share is the strongest clinical signal in this cohort.`,
+          "It is not a population-wide failure rate. Readable results are a selected subset, trials contribute different tumor settings and endpoints, and many records remain ongoing or lack a classifiable posted analysis. But unlike a programme status label, a missed primary endpoint directly addresses whether the study achieved its prespecified efficacy objective.",
+        ],
+      },
+      {
+        heading: "Why both views can be true",
+        body: [
+          "A negative study does not have to terminate early. It may complete enrollment, follow participants, and report a null primary analysis while retaining a completed status. Conversely, a trial may terminate because another study already changed the programme, creating a stop record without a new endpoint readout.",
+          "That is why 4 of 59 and 11 of 12 must never be merged into one ratio. The first asks how often a closed record carries an explicit biological stop reason. The second asks what happened among the completed trials with readable posted primary results. The gap between them exposes the blind spot of status-only surveillance.",
+        ],
+      },
+      {
+        heading: "The readable misses cross endpoint types and programmes",
+        body: [
+          "NCT05014815 reported progression-free survival with a hazard ratio of 0.99 and a confidence interval spanning no benefit. NCT04725188 reported a progression-free-survival hazard ratio of 1.40 with a non-significant analysis. NCT04732494 reported a non-significant objective-response-rate comparison. These are not three copies of one trial design.",
+          `The endpoint reader attributes missed analyses to ${n(brief.endpointMissedSponsors)} sponsors and ${n(brief.endpointMissedMolecules)} drug components across the combination regimens. That spread makes the signal more relevant than a single sponsor's miss, while heterogeneity in partner therapy, tumor context, biomarker strategy, and endpoint prevents a clean target-level causal claim.`,
+        ],
+      },
+      {
+        heading: "The observed problem is efficacy, not a demonstrated safety class effect",
+        body: [
+          `All ${n(brief.biologicalStops)} stopped records were classified as efficacy or futility; none was safety-only. The readable endpoint misses also concern activity measures such as progression-free survival, objective response, or pathologic response. Within this dataset, the recurring development problem is failure to demonstrate incremental clinical benefit.`,
+          "That does not establish that the class is free of safety constraints. It means safety was not the recorded reason for these biological stops. Safety requires a separate analysis of adverse events, exposure, dose, and molecule architecture rather than inference from the absence of a safety-coded termination.",
+        ],
+      },
+      {
+        heading: "What this changes in clinical diligence",
+        body: [
+          "For another TIGIT programme, a status search is only the first pass. The useful review unit is the molecule-by-indication-by-partner combination, with the actual primary analysis retrieved even when the trial completed. The key question is what changes the probability of incremental benefit beyond PD-(L)1 therapy: target engagement, antibody design, Fc biology, biomarker enrichment, tumor immune context, partner regimen, or endpoint choice.",
+          `The evidence supports a practical conclusion about Phase ${brief.phases.join("/")} trials started from ${brief.startFrom} through ${brief.startTo}: negative efficacy evidence is broader than the termination count suggests. It does not support the stronger claim that every TIGIT strategy will fail.`,
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Two lenses on the same mechanism cohort",
+        columns: ["Evidence lens", "Observed signal"],
+        rows: [
+          ["Closed-trial status", `${n(brief.biologicalStops)} biological stops / ${n(brief.closed)} closed (${stopRate})`],
+          ["Completed-trial results", `${n(brief.endpointReadable)} readable / ${n(brief.endpointCompleted)} completed (${readableShare})`],
+          ["Readable primary analyses", `${n(brief.endpointMissed)} missed, ${n(brief.endpointMet)} met, ${n(brief.endpointMixed)} mixed`],
+          ["Readable-result miss share", missedShare],
+        ],
+      },
+      {
+        heading: "What the stop records add",
+        columns: ["Signal", "Trial records"],
+        rows: [
+          ["Efficacy/futility", n(brief.efficacyStops)],
+          ["Safety", n(brief.safetyStops)],
+          ["Stops from own trial data", n(brief.stopsFromOwnData)],
+          ["Programme-cascade stops", n(brief.stopsFromProgrammeCascade)],
+          ["Unresolved terminations", n(brief.unresolvedTerminations)],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the TIGIT + PD-(L)1 brief",
+        text: "Review the full cohort, stop reasons, programme attribution, and posted endpoint evidence.",
+      },
+      {
+        href: endpointUrl("NCT05014815"),
+        label: "Ociperlimab: progression-free survival",
+        text: "Inspect the posted Phase II result with a hazard ratio of 0.99 and confidence interval spanning no effect.",
+      },
+      {
+        href: endpointUrl("NCT04725188"),
+        label: "Vibostolimab: posted primary analysis",
+        text: "Read the completed Phase II result that would be invisible in a stopped-trial-only screen.",
+      },
+      {
+        href: "/trial/NCT04746924",
+        label: "Ociperlimab: explicit Phase III efficacy stop",
+        text: "Compare a terminated trial whose registry record directly cites lack of efficacy rather than safety.",
+      },
+    ],
+  };
+}
+
 function hydrateAntiTauArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const brief = stats.mechanismBriefs.tauAntibodies;
   const rate = pctFromRatio(brief.rate);
@@ -4868,6 +5174,12 @@ function hydrateTgfBetaPdL1Article(article: InsightArticle, stats: InsightStats)
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "amyloid-beta-antibody-trial-stops-programme-cascades") {
+    return hydrateAmyloidBetaArticle(article, stats);
+  }
+  if (article.slug === "tigit-pd-l1-endpoints-vs-trial-stops") {
+    return hydrateTigitPdL1Article(article, stats);
+  }
   if (article.slug === "anti-tau-antibody-clinical-trial-stop-signals") {
     return hydrateAntiTauArticle(article, stats);
   }
