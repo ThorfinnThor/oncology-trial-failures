@@ -98,7 +98,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
     related: [
       { href: "/why-clinical-trials-fail", label: "Why clinical trials fail", text: "Understand common failure categories." },
       { href: "/failed-clinical-trials", label: "Failed clinical trials", text: "Review how failure language appears in source records." },
-      { href: "/failures/oncology", label: "Oncology trial failures", text: "Review V2 outcomes and source-linked oncology records." },
+      { href: "/failures/oncology", label: "Oncology trial failures", text: "Review classification outcomes and source-linked oncology records." },
     ],
     dataInsights: {
       heading: "What the current stopped-trial dataset shows",
@@ -711,7 +711,7 @@ export const SEO_LANDING_PAGES: Record<string, SeoLandingPageConfig> = {
     ],
     related: [
       { href: "/why-clinical-trials-fail", label: "Why trials fail", text: "Compare futility with other stop reasons." },
-      { href: "/failures/futility", label: "Futility evidence hub", text: "Review V2 outcomes and source-linked futility records." },
+      { href: "/failures/futility", label: "Futility evidence hub", text: "Review classification outcomes and source-linked futility records." },
       { href: "/outliers", label: "Outliers", text: "Find over-represented futility patterns." },
     ],
     dataInsights: {
@@ -1248,24 +1248,24 @@ function hydrateClinicalTrialFailuresPage(page: SeoLandingPageConfig, stats: Ins
   return {
     ...page,
     title: `Clinical Trial Failures Database: ${fmt(stats.total)} Stopped Trials`,
-    metaDescription: `Search ${fmt(stats.total)} terminated, withdrawn, and suspended trials with V2 evidence classifications, stated stop reasons, and ClinicalTrials.gov source links.`,
-    eyebrow: "Clinical Trial Failures V2",
+    metaDescription: `Search ${fmt(stats.total)} terminated, withdrawn, and suspended trials classified by why they stoppeds, stated stop reasons, and ClinicalTrials.gov source links.`,
+    eyebrow: "Clinical Trial Failures",
     h1: "Clinical trial failures, classified by evidence",
-    lede: `Search ${fmt(stats.total)} stopped clinical trial records through a V2 evidence layer that separates biological failure signals from recruitment, funding, business strategy, operational causes, and records that still require review.`,
-    quickAnswer: `The database contains ${fmt(stats.total)} terminated, withdrawn, and suspended trials. Classification V2 identifies ${fmt(biological)} biological failure signals and ${fmt(nonBiological)} non-biological stops, while ${fmt(reviewGated)} records remain review-gated instead of being forced into an unsupported category.`,
+    lede: `Search ${fmt(stats.total)} stopped clinical trial records through an evidence layer that separates biological failure signals from recruitment, funding, business strategy, operational causes, and records that still require review.`,
+    quickAnswer: `The database contains ${fmt(stats.total)} terminated, withdrawn, and suspended trials. The classification identifies ${fmt(biological)} biological failure signals and ${fmt(nonBiological)} non-biological stops, while ${fmt(reviewGated)} records remain review-gated instead of being forced into an unsupported category.`,
     dataInsights: page.dataInsights
       ? {
           ...page.dataInsights,
-          heading: "What Classification V2 shows across stopped trials",
+          heading: "What the classification shows across stopped trials",
           intro: `The current dataset separates registry status from interpreted outcome. Biological failure is a deliberately narrow evidence class; non-biological stops, cause-not-stated records, transitions, mixed causes, and review-gated records remain distinct.`,
-          sourceNote: `Counts are generated from the current V2-classified dataset during every build. Classifications summarize ClinicalTrials.gov stop language for screening and should be verified against the linked source record.`,
+          sourceNote: `Counts are generated from the current classified dataset during every build. Classifications summarize ClinicalTrials.gov stop language for screening and should be verified against the linked source record.`,
           metrics: [
             { label: "Stopped trial records", value: fmt(stats.total), detail: "Terminated, withdrawn, or suspended registry records." },
             { label: "Biological failure signals", value: fmt(biological), detail: `${share(biological, stats.total)} of records have supported biological failure evidence.` },
             { label: "Review-gated records", value: fmt(reviewGated), detail: "Insufficient or unresolved evidence is kept visible without forced classification." },
           ],
           distributions: [
-            { heading: "V2 outcome map", items: rankedV2Items(v2.outcomes, V2_OUTCOME_LABELS) },
+            { heading: "Outcome map", items: rankedV2Items(v2.outcomes, V2_OUTCOME_LABELS) },
             { heading: "Largest stated primary reasons", items: rankedV2Items(v2.primaryReasons, V2_REASON_LABELS, 6, ["UNSPECIFIED"]) },
           ],
         }
@@ -1282,18 +1282,18 @@ function hydrateWhyClinicalTrialsFailPage(page: SeoLandingPageConfig, stats: Ins
   return {
     ...page,
     title: `Why Clinical Trials Fail: Evidence from ${fmt(stats.total)} Stopped Trials`,
-    metaDescription: `Why do clinical trials fail? Compare V2 evidence for efficacy, futility, safety, recruitment, funding, strategy, feasibility, and other stated stop reasons.`,
+    metaDescription: `Why do clinical trials fail? Compare the evidence for efficacy, futility, safety, recruitment, funding, strategy, feasibility, and other stated stop reasons.`,
     h1: "Why clinical trials fail: evidence from stopped studies",
-    lede: `Clinical trials stop for fundamentally different reasons. Classification V2 separates biological failure from recruitment, business strategy, funding, protocol feasibility, staffing, supply, regulatory action, transitions, and cases where the source does not support a conclusion.`,
+    lede: `Clinical trials stop for fundamentally different reasons. The classification separates biological failure from recruitment, business strategy, funding, protocol feasibility, staffing, supply, regulatory action, transitions, and cases where the source does not support a conclusion.`,
     quickAnswer: `Recruitment is the largest named primary reason in the current dataset with ${fmt(recruitment)} records. The biological subset includes ${fmt(efficacy)} efficacy or futility records, ${fmt(safety)} safety records, and a smaller biological-unspecified group.`,
     dataInsights: page.dataInsights
       ? {
           ...page.dataInsights,
-          heading: "Why trials stop in the V2 classification",
+          heading: "Why trials stop in the classification",
           intro: `The primary-reason layer answers why a record stopped when the registry supplies enough evidence. The separate outcome layer prevents recruitment, funding, strategy, and other non-biological causes from being counted as failed biology.`,
           sourceNote: `Primary reasons are derived from ClinicalTrials.gov registry fields and sponsor-provided stop language. Review-gated and cause-not-stated records are not treated as hidden failures.`,
           metrics: [
-            { label: "Recruitment", value: fmt(recruitment), detail: "The largest named primary stop reason in V2." },
+            { label: "Recruitment", value: fmt(recruitment), detail: "The largest named primary stop reason." },
             { label: "Efficacy / futility", value: fmt(efficacy), detail: "Lack of benefit, failed endpoints, insufficient activity, or futility evidence." },
             { label: "Safety", value: fmt(safety), detail: "Toxicity, tolerability, adverse events, or unfavorable risk-benefit evidence." },
           ],
@@ -1316,19 +1316,19 @@ function hydrateFailedClinicalTrialsPage(page: SeoLandingPageConfig, stats: Insi
   return {
     ...page,
     title: `Failed Clinical Trials: ${fmt(biological)} Biological Failure Signals`,
-    metaDescription: `Search ${fmt(biological)} likely biological clinical trial failure signals classified as efficacy, futility, safety, or biological-unspecified evidence in V2.`,
+    metaDescription: `Search ${fmt(biological)} likely biological clinical trial failure signals classified as efficacy, futility, safety, or biological-unspecified evidence.`,
     h1: "Failed clinical trials: biological evidence, not status alone",
-    lede: `The phrase failed clinical trial should describe evidence, not merely a TERMINATED, WITHDRAWN, or SUSPENDED status. This page focuses on V2 records where the source supports efficacy or futility, safety, or an unfavorable biological signal that cannot be narrowed further.`,
-    quickAnswer: `Classification V2 identifies ${fmt(biological)} biological failure signals: ${fmt(efficacy)} efficacy or futility records, ${fmt(safety)} safety records, and ${fmt(unspecified)} biological-unspecified records. Each result remains linked to its source statement for verification.`,
+    lede: `The phrase failed clinical trial should describe evidence, not merely a TERMINATED, WITHDRAWN, or SUSPENDED status. This page focuses on records where the source supports efficacy or futility, safety, or an unfavorable biological signal that cannot be narrowed further.`,
+    quickAnswer: `The classification identifies ${fmt(biological)} biological failure signals: ${fmt(efficacy)} efficacy or futility records, ${fmt(safety)} safety records, and ${fmt(unspecified)} biological-unspecified records. Each result remains linked to its source statement for verification.`,
     dataInsights: page.dataInsights
       ? {
           ...page.dataInsights,
-          heading: "The V2 biological failure subset",
+          heading: "The biological failure subset",
           intro: `This subset excludes records whose evidence supports recruitment, funding, strategy, operations, transitions, or no stated cause. It is designed as a higher-precision starting point for reviewing possible failed biology.`,
           sourceNote: `Biological failure is an analytical screening classification, not a medical conclusion. Verify the linked registry record, endpoints, publications, and sponsor disclosures before relying on an individual result.`,
           metrics: [
             { label: "Biological failure signals", value: fmt(biological), detail: `${share(biological, stats.total)} of all stopped records in the current dataset.` },
-            { label: "Efficacy / futility", value: fmt(efficacy), detail: "The largest V2 biological primary-reason group." },
+            { label: "Efficacy / futility", value: fmt(efficacy), detail: "The largest biological primary-reason group." },
             { label: "Safety", value: fmt(safety), detail: `${fmt(unspecified)} additional records are biological but not specific enough to split further.` },
           ],
           distributions: [
@@ -1348,14 +1348,14 @@ function hydrateTerminatedClinicalTrialsPage(page: SeoLandingPageConfig, stats: 
   return {
     ...page,
     title: `Terminated Clinical Trials: ${fmt(total)} Records by Stop Reason`,
-    metaDescription: `Search ${fmt(total)} terminated clinical trial records and compare V2 outcomes and stated reasons including efficacy, safety, recruitment, funding, and strategy.`,
-    quickAnswer: `A terminated trial ended before planned completion, but termination is not itself a failure reason. In the current dataset, ${fmt(total)} records are terminated and ${fmt(biological)} have V2 evidence supporting a biological failure signal.`,
+    metaDescription: `Search ${fmt(total)} terminated clinical trial records and compare outcomes and stated reasons including efficacy, safety, recruitment, funding, and strategy.`,
+    quickAnswer: `A terminated trial ended before planned completion, but termination is not itself a failure reason. In the current dataset, ${fmt(total)} records are terminated and ${fmt(biological)} have evidence supporting a biological failure signal.`,
     dataInsights: page.dataInsights
       ? {
           ...page.dataInsights,
-          heading: "Terminated trials by V2 outcome and reason",
+          heading: "Terminated trials by outcome and reason",
           intro: `Termination is the largest stopped-study status, but its records span biological failures, non-biological causes, transitions, mixed causes, cause-not-stated cases, and unresolved evidence.`,
-          sourceNote: `Termination comes from the ClinicalTrials.gov overall-status field. V2 outcomes and primary reasons summarize the available stop language and remain subject to source verification.`,
+          sourceNote: `Termination comes from the ClinicalTrials.gov overall-status field. Outcomes and primary reasons summarize the available stop language and remain subject to source verification.`,
           metrics: [
             { label: "Terminated records", value: fmt(total), detail: "Records with overall status TERMINATED." },
             { label: "Biological failure signals", value: fmt(biological), detail: `${share(biological, total)} of terminated records.` },

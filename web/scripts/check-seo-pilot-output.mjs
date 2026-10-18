@@ -72,7 +72,8 @@ assert.ok(
 );
 
 const editorialStart = pilotHtml.indexOf("What the ophthalmology evidence slice actually shows");
-const editorialEnd = pilotHtml.indexOf("Evidence standard", editorialStart);
+// The source-and-limits note (components/EvidenceStandard.tsx) closes the editorial block.
+const editorialEnd = pilotHtml.indexOf('aria-label="Source and limits"', editorialStart);
 assert.ok(editorialStart >= 0 && editorialEnd > editorialStart, "Pilot editorial block is incomplete");
 const editorialHtml = pilotHtml.slice(editorialStart, editorialEnd);
 for (const label of ["Efficacy / futility example", "Safety example", "Unresolved example"]) {

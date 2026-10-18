@@ -68,7 +68,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
       creator: { "@type": "Organization", name: "Clinical Trial Failures" },
       dateModified: datasetMeta.version,
       citation: "https://clinicaltrials.gov/",
-      measurementTechnique: "Classification V2 analysis of ClinicalTrials.gov stopped-study source language",
+      measurementTechnique: "Classification analysis of ClinicalTrials.gov stopped-study source language",
       temporalCoverage: `../${stats.latestRegistryUpdate}`,
       variableMeasured: [
         "Stopped clinical trial records",
@@ -139,7 +139,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
                 <h1>{hub.h1}</h1>
                 <p className="heroDescription">
                   Review {stats.total.toLocaleString()} stopped ClinicalTrials.gov records attributed to {hub.label}.
-                  V2 separates likely biological failure signals from non-biological stops and records that still
+                  The classification separates likely biological failure signals from non-biological stops and records that still
                   require review.
                 </p>
                 <div className="heroActions">
@@ -160,7 +160,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
               </aside>
             </section>
 
-            <section className="metricGrid" aria-label="V2 classification outcomes">
+            <section className="metricGrid" aria-label="Classification outcomes">
               <div className="metricCard biological">
                 <span>Likely biological</span>
                 <strong>{stats.biologicalCount.toLocaleString()}</strong>
@@ -191,7 +191,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
               <p>
                 The denominator contains only terminated, withdrawn, or suspended records attributed to this
                 sponsor in the current dataset. It does not include every active or completed study, and it does
-                not measure the sponsor&apos;s overall research performance. V2 preserves unresolved cases instead
+                not measure the sponsor&apos;s overall research performance. The classification preserves unresolved cases instead
                 of turning ambiguous source language into a biological conclusion.
               </p>
             </section>
@@ -221,7 +221,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
 
             <section className="evidenceGrid">
               <div className="card evidenceCard">
-                <p className="facet-title">V2 outcomes</p>
+                <p className="facet-title">Classification outcomes</p>
                 <h2>How the stopped records resolve</h2>
                 <dl className="rankedList">
                   {stats.outcomeBreakdown.map((item) => (
@@ -276,13 +276,13 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
               <div className="sectionHeader">
                 <div>
                   <p className="facet-title">Source-level evidence</p>
-                  <h2>Crawlable stopped-trial records</h2>
+                  <h2>{hub.label}: the stopped trials behind these numbers</h2>
                 </div>
                 <Link className="sevBtn" href={exploreHref}>View all in Explore</Link>
               </div>
               <p className="muted recordsIntro">
                 Showing up to {items.length.toLocaleString()} recent records from this sponsor slice. Open any NCT
-                page to inspect the source statement, V2 interpretation, confidence, and ClinicalTrials.gov link.
+                page to inspect the source statement, classification, confidence, and ClinicalTrials.gov link.
               </p>
 
               <div className="trialList">

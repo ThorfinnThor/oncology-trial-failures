@@ -33,9 +33,9 @@ type OutcomeCard = {
 
 const SITE_NAME = "Clinical Trial Failures";
 const SITE_URL = "https://clinicaltrialfailures.com";
-const TITLE = "Clinical Trial Failures V2 | Evidence-classified trial stops";
+const TITLE = "Clinical Trial Failures: why clinical trials stop";
 const DESCRIPTION =
-  "Search 23,000+ stopped clinical trials with V2 evidence classification. Find efficacy, futility, safety, recruitment, business, funding, and regulatory stop signals linked to ClinicalTrials.gov.";
+  "Search 23,000+ stopped clinical trials classified by why they stopped. Find efficacy, futility, safety, recruitment, business, funding, and regulatory stop signals linked to ClinicalTrials.gov.";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
 
 type SampleTrial = {
@@ -279,7 +279,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
-      name: "Clinical Trial Failures V2 Database",
+      name: "Clinical Trial Failures Database",
       description: "Evidence-classified terminated, suspended, and withdrawn clinical trials derived from ClinicalTrials.gov.",
       url: `${SITE_URL}/explore`,
       isBasedOn: "https://clinicaltrials.gov",
@@ -306,7 +306,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         <meta property="og:image" content={OG_IMAGE} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Clinical Trial Failures V2 database" />
+        <meta property="og:image:alt" content="Clinical Trial Failures database" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESCRIPTION} />
@@ -348,17 +348,17 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
 
                 <div className="v2HeroActions">
                   <Link href="/explore" className="v2PrimaryAction">Open database <span aria-hidden="true">→</span></Link>
-                  <Link href="/methods" className="v2SecondaryAction">Read the V2 method</Link>
+                  <Link href="/methods" className="v2SecondaryAction">Read the method</Link>
                 </div>
 
-                <dl className="v2HeroMetrics" aria-label="V2 dataset metrics">
+                <dl className="v2HeroMetrics" aria-label="Dataset metrics">
                   <div><dt>Registry records</dt><dd>{compactNumber(stats.trialCount)}</dd></div>
                   <div><dt>Biological signals</dt><dd>{compactNumber(v2.biological)}</dd></div>
                   <div><dt>Biological precision (held-out)</dt><dd>{qualityPercent(v2.heldoutBiologicalPrecision)}</dd></div>
                 </dl>
               </div>
 
-              <div className="v2Console" aria-label="Live sample of V2 classified trial records">
+              <div className="v2Console" aria-label="Live sample of classified trial records">
                 <div className="v2ConsoleHeader">
                   <div><span className="v2ConsoleDot" aria-hidden="true" /><span>CLASSIFICATION_FEED</span></div>
                   <span>SNAPSHOT {stats.updated}</span>
@@ -559,7 +559,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             <div className="v2Container">
               <div className="v2SectionIntro">
                 <div><p className="v2Kicker">Signal architecture</p><h2 id="biological-signals-title">Start with the biological question.</h2></div>
-                <p>V2 separates a likely scientific stop signal from the much larger set of trials that stopped for operational, strategic, financial, regulatory, or unspecified reasons.</p>
+                <p>The classification separates a likely scientific stop signal from the much larger set of trials that stopped for operational, strategic, financial, regulatory, or unspecified reasons.</p>
               </div>
 
               <div className="v2SignalLayout">
@@ -612,7 +612,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
           <section className="v2Method" aria-labelledby="v2-method-title">
             <div className="v2Container">
               <div className="v2MethodHeader">
-                <div><p className="v2Kicker">V2 classification engine</p><h2 id="v2-method-title">Evidence in. Auditable signal out.</h2></div>
+                <div><p className="v2Kicker">Classification engine</p><h2 id="v2-method-title">Evidence in. Auditable signal out.</h2></div>
                 <Link href="/methods" className="v2MethodLink">Full methodology →</Link>
               </div>
               <ol className="v2Pipeline">

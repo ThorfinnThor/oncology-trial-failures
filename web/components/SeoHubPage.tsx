@@ -66,13 +66,13 @@ function interpretation(hub: HubMeta): { title: string; body: string } {
   if (hub.kind === "area") {
     return {
       title: "This is a disease-area evidence slice, not a drug failure rate.",
-      body: `The denominator contains stopped records mapped to ${hub.label}. A termination does not by itself prove that an intervention failed biologically. V2 separates likely efficacy or safety signals from operational, strategic, regulatory, transitional, and unresolved source language.`,
+      body: `The denominator contains stopped records mapped to ${hub.label}. A termination does not by itself prove that an intervention failed biologically. The classification separates likely efficacy or safety signals from operational, strategic, regulatory, transitional, and unresolved source language.`,
     };
   }
   if (hub.kind === "phase") {
     return {
       title: "Phase context changes what a stopped record can tell you.",
-      body: `${hub.label} records are grouped by the phase reported in ClinicalTrials.gov. The denominator excludes active and completed studies, so it must not be read as a phase-wide probability of success or failure. V2 preserves ambiguous records for review instead of forcing a causal conclusion.`,
+      body: `${hub.label} records are grouped by the phase reported in ClinicalTrials.gov. The denominator excludes active and completed studies, so it must not be read as a phase-wide probability of success or failure. The classification preserves ambiguous records for review instead of forcing a causal conclusion.`,
     };
   }
   return {
@@ -118,7 +118,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, editorial,
       creator: { "@type": "Organization", name: "Clinical Trial Failures" },
       dateModified: datasetMeta.version,
       citation: "https://clinicaltrials.gov/",
-      measurementTechnique: "Classification V2 analysis of ClinicalTrials.gov stopped-study source language",
+      measurementTechnique: "Classification analysis of ClinicalTrials.gov stopped-study source language",
       temporalCoverage: `../${stats.latestRegistryUpdate}`,
       variableMeasured: ["Stopped clinical trial records", "Likely biological failure signals", "Non-biological stop reasons", "Unresolved stop reasons"],
       mainEntity: {
@@ -173,7 +173,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, editorial,
               <div className="heroActions"><Link className="seoBtn btn-primary" href={filteredExploreHref}>Explore this data slice</Link><Link className="seoBtn" href="/methods">How classification works</Link></div>
             </div>
             <aside className="scopePanel" data-ai-summary="true" aria-label="Evidence summary">
-              <p className="facet-title">V2 evidence summary</p>
+              <p className="facet-title">Evidence summary</p>
               <dl>
                 <div><dt>Data slice</dt><dd>{hub.label}</dd></div><div><dt>Stopped records</dt><dd>{stats.total.toLocaleString()}</dd></div>
                 <div><dt>Likely biological signals</dt><dd>{stats.biologicalCount.toLocaleString()}</dd></div><div><dt>Biological share</dt><dd>{percent(stats.biologicalCount, stats.total)}</dd></div>
@@ -182,7 +182,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, editorial,
             </aside>
           </section>
 
-          <section className="metricGrid" aria-label="V2 classification outcomes">
+          <section className="metricGrid" aria-label="Classification outcomes">
             <div className="metricCard biological"><span>Likely biological</span><strong>{stats.biologicalCount.toLocaleString()}</strong><p>{percent(stats.biologicalCount, stats.total)} of stopped records</p></div>
             <div className="metricCard"><span>Non-biological</span><strong>{stats.nonBiologicalCount.toLocaleString()}</strong><p>{percent(stats.nonBiologicalCount, stats.total)} of stopped records</p></div>
             <div className="metricCard"><span>Other outcomes</span><strong>{otherCount.toLocaleString()}</strong><p>Mixed, transition, or cause not stated</p></div>
@@ -203,7 +203,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, editorial,
           <EvidenceStandard datasetVersion={datasetMeta.version} latestRegistryUpdate={stats.latestRegistryUpdate} source={datasetMeta.source} />
 
           <section className="evidenceGrid">
-            <div className="card evidenceCard"><p className="facet-title">V2 outcomes</p><h2>How the stopped records resolve</h2><dl className="rankedList">
+            <div className="card evidenceCard"><p className="facet-title">Classification outcomes</p><h2>How the stopped records resolve</h2><dl className="rankedList">
               {stats.outcomeBreakdown.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.count.toLocaleString()}</dd></div>)}
             </dl></div>
             <div className="card evidenceCard"><p className="facet-title">Resolved causes</p><h2>Most frequent primary reasons</h2>
@@ -217,8 +217,8 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, editorial,
           </section>
 
           <section className="card recordsSection">
-            <div className="sectionHeader"><div><p className="facet-title">Source-level evidence</p><h2>Crawlable stopped-trial records</h2></div><Link className="seoBtn" href={filteredExploreHref}>View all in Explore</Link></div>
-            <p className="muted recordsIntro">Showing up to {items.length.toLocaleString()} recent records from this data slice. Open an NCT page to inspect its source statement, V2 interpretation, confidence, and ClinicalTrials.gov link.</p>
+            <div className="sectionHeader"><div><p className="facet-title">Source-level evidence</p><h2>{hub.label}: the stopped trials behind these numbers</h2></div><Link className="seoBtn" href={filteredExploreHref}>View all in Explore</Link></div>
+            <p className="muted recordsIntro">Showing up to {items.length.toLocaleString()} recent records from this data slice. Open an NCT page to inspect its source statement, classification, confidence, and ClinicalTrials.gov link.</p>
             <div className="trialList">{items.map((item) => <article className="trialCard" key={item.id}>
               <div className="trialMeta"><span>{item.id}</span><span>{item.phase}</span><span>{item.sponsor}</span></div><Link className="seoTrialtitle" href={item.href}>{item.title}</Link><p><strong>{item.bucket}</strong> · {item.why}</p>
             </article>)}</div>
