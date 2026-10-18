@@ -82,7 +82,7 @@ export const getStaticProps: GetStaticProps<FailureHubPageProps> = async (ctx) =
       },
       rows: displayHubRows(hub.rows, 60),
       stats,
-      editorial: buildHubEditorialInsight(hub, stats),
+      editorial: buildHubEditorialInsight(hub, stats, rows),
       datasetMeta,
     },
   };

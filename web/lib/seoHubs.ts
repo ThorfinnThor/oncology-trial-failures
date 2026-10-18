@@ -54,7 +54,7 @@ export type HubStats = {
 };
 
 export type HubEditorialInsight = {
-  variant: "ophthalmology-review" | "neurology-comparison" | "phase-two-lanes";
+  variant: "ophthalmology-review" | "neurology-comparison" | "phase-two-lanes" | "area-comparison";
   eyebrow: string;
   title: string;
   intro: string;
@@ -270,7 +270,91 @@ function editorialEvidenceById(
   };
 }
 
-export function buildHubEditorialInsight(hub: SeoHub, stats: HubStats): HubEditorialInsight | null {
+// ---------------------------------------------------------------------------
+// Area comparison (2026-10-18): every disease-area hub without a bespoke
+// module explains how its stopped trials differ from all stopped trials, using
+// the same classification for every area. Only differences backed by at least
+// MIN_COMPARISON_COUNT records and COMPARISON_MIN_GAP percentage points are
+// stated, so small slices do not produce inflated contrasts.
+const MIN_COMPARISON_COUNT = 10;
+const COMPARISON_MIN_GAP = 3;
+const RECENT_START_YEAR = 2018;
+
+type ComparisonMetric = {
+  key: string;
+  noun: string;
+  plural: boolean;
+  matches: (row: TrialIndexRow) => boolean;
+};
+
+const COMPARISON_METRICS: ComparisonMetric[] = [
+  { key: "biological", noun: "likely biological failure signals", plural: true, matches: (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" },
+  { key: "safety", noun: "safety stops", plural: true, matches: (row) => resolvedReason(row) === "SAFETY" },
+  { key: "efficacy", noun: "efficacy or futility stops", plural: true, matches: (row) => resolvedReason(row) === "EFFICACY_FUTILITY" },
+  { key: "recruitment", noun: "recruitment stops", plural: true, matches: (row) => ["RECRUITMENT", "ENROLLMENT"].includes(resolvedReason(row)) },
+  { key: "business", noun: "business, strategy and funding stops", plural: true, matches: (row) => ["BUSINESS_STRATEGY", "STRATEGIC", "FUNDING"].includes(resolvedReason(row)) },
+  { key: "withdrawn", noun: "trials withdrawn before enrolling anyone", plural: true, matches: (row) => norm(row.overall_status).toUpperCase() === "WITHDRAWN" },
+  { key: "phase3", noun: "Phase III trials", plural: true, matches: (row) => parsePhases(row.phases || "").some((phase) => phase.includes("PHASE3")) },
+  { key: "early", noun: "Phase I and early Phase I trials", plural: true, matches: (row) => parsePhases(row.phases || "").some((phase) => phase === "PHASE1" || phase === "EARLY_PHASE1") },
+  { key: "recent", noun: `trials that started in ${RECENT_START_YEAR} or later`, plural: true, matches: (row) => Number((row.start_date || "").slice(0, 4)) >= RECENT_START_YEAR },
+];
+
+function sharePercent(part: number, total: number): string {
+  if (!total) return "0%";
+  const value = (part / total) * 100;
+  return `${value < 10 ? value.toFixed(1) : value.toFixed(0)}%`;
+}
+
+function comparisonHeadline(noun: string, ratio: number): string {
+  const subject = noun.charAt(0).toUpperCase() + noun.slice(1);
+  if (ratio >= 1.8) return `${subject} are about ${ratio >= 2.6 ? "three" : "twice"} as common`;
+  if (ratio > 1) return `${subject} are more common`;
+  if (ratio <= 0.55) return `${subject} are much less common`;
+  return `${subject} are less common`;
+}
+
+export function buildAreaComparisonInsight(hub: SeoHub, allRows: TrialIndexRow[]): HubEditorialInsight | null {
+  // "Other" is a residual bucket, not an area a reader searches for.
+  if (hub.kind !== "area" || hub.label === "Other" || hub.rows.length < 2 * MIN_COMPARISON_COUNT || allRows.length === 0) return null;
+  const total = hub.rows.length;
+  const baselineTotal = allRows.length;
+  const candidates = COMPARISON_METRICS.map((metric) => {
+    const count = hub.rows.filter(metric.matches).length;
+    const baselineCount = allRows.filter(metric.matches).length;
+    const share = count / total;
+    const baselineShare = baselineCount / baselineTotal;
+    const ratio = baselineShare > 0 ? share / baselineShare : 0;
+    return { metric, count, share, baselineShare, ratio, gap: Math.abs(share - baselineShare) * 100 };
+  }).filter((item) =>
+    item.baselineShare > 0
+    && item.gap >= COMPARISON_MIN_GAP
+    && Math.max(item.count, item.baselineShare * total) >= MIN_COMPARISON_COUNT
+  ).sort((a, b) => Math.abs(Math.log(Math.max(b.ratio, 1e-6))) - Math.abs(Math.log(Math.max(a.ratio, 1e-6))));
+
+  const chosen = candidates.slice(0, 3);
+  if (chosen.length === 0) return null;
+  const observations = chosen.map((item) => ({
+    title: comparisonHeadline(item.metric.noun, item.ratio),
+    body: `${item.count.toLocaleString("en-US")} of ${total.toLocaleString("en-US")} stopped ${hub.label} trials (${sharePercent(item.count, total)}) are ${item.metric.noun}, compared with ${sharePercent(Math.round(item.baselineShare * baselineTotal), baselineTotal)} across all ${baselineTotal.toLocaleString("en-US")} stopped trials.`,
+  }));
+
+  const evidence = [
+    editorialEvidenceRow(hub.rows, "Efficacy / futility example", (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "EFFICACY_FUTILITY"),
+    editorialEvidenceRow(hub.rows, "Safety example", (row) => resolvedOutcome(row) === "BIOLOGICAL_FAILURE" && resolvedReason(row) === "SAFETY"),
+    editorialEvidenceRow(hub.rows, "Recruitment example", (row) => ["RECRUITMENT", "ENROLLMENT"].includes(resolvedReason(row))),
+  ].filter((item): item is HubEditorialInsight["evidence"][number] => Boolean(item));
+
+  return {
+    variant: "area-comparison",
+    eyebrow: `${hub.label} compared with all areas`,
+    title: `How stopped ${hub.label} trials differ from the average`,
+    intro: `${hub.label} accounts for ${total.toLocaleString("en-US")} of ${baselineTotal.toLocaleString("en-US")} stopped trials in the dataset. Every area is classified with the same rules, so these differences come from what the registry stop statements say. They describe stopped trials only, not how often ${hub.label} trials succeed.`,
+    observations,
+    evidence,
+  };
+}
+
+export function buildHubEditorialInsight(hub: SeoHub, stats: HubStats, allRows: TrialIndexRow[] = []): HubEditorialInsight | null {
   if (hub.kind === "area" && hub.slug === "neurology") {
     const reasonCount = (reason: string) => hub.rows.filter((row) => resolvedReason(row) === reason).length;
     const evidence = [
@@ -373,6 +457,7 @@ export function buildHubEditorialInsight(hub: SeoHub, stats: HubStats): HubEdito
     };
   }
 
+  if (hub.kind === "area" && hub.slug !== "ophthalmology") return buildAreaComparisonInsight(hub, allRows);
   if (hub.kind !== "area" || hub.slug !== "ophthalmology") return null;
 
   const reasonCount = (reason: string) => hub.rows.filter((row) => resolvedReason(row) === reason).length;
