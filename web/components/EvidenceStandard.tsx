@@ -12,35 +12,12 @@ export default function EvidenceStandard({
   source = "ClinicalTrials.gov",
 }: EvidenceStandardProps) {
   return (
-    <section className="evidenceStandard" aria-labelledby="evidence-standard-title">
-      <div className="evidenceStandardHeading">
-        <p className="facet-title">Evidence standard</p>
-        <h2 id="evidence-standard-title">Source-linked, transparent, and reviewable</h2>
-      </div>
-
-      <div className="evidenceStandardGrid">
-        <div>
-          <strong>Primary registry source</strong>
-          <p>
-            Study facts and stop statements come from {source}. Important findings should be checked
-            against the current registry record.
-          </p>
-        </div>
-        <div>
-          <strong>Conservative V2 classification</strong>
-          <p>
-            V2 maps stated source language into evidence categories and retains ambiguous records for
-            review instead of forcing a causal label.
-          </p>
-        </div>
-        <div>
-          <strong>Defined analytical limits</strong>
-          <p>
-            These are stopped-record screening signals, not success rates, medical conclusions, or
-            investment recommendations.
-          </p>
-        </div>
-      </div>
+    <section className="evidenceStandard" aria-label="Source and limits">
+      <p className="evidenceStandardNote">
+        Study facts and stop statements come from {source}; check important findings against the current
+        registry record. Classifications read the stated stop reason and are screening signals, not medical
+        conclusions.
+      </p>
 
       <div className="evidenceStandardMeta">
         <span>Dataset {datasetVersion || "current build"}</span>
@@ -56,6 +33,12 @@ export default function EvidenceStandard({
           padding: 24px 2px;
           border-top: 1px solid var(--border);
           border-bottom: 1px solid var(--border);
+        }
+        .evidenceStandardNote {
+          max-width: 760px;
+          margin: 0;
+          color: var(--muted, inherit);
+          line-height: 1.5;
         }
         .evidenceStandardHeading {
           max-width: 760px;

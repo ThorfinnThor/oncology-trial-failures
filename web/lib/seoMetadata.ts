@@ -5,6 +5,23 @@ import type { TrialDetail } from "./types";
 
 const MAX_TITLE_LENGTH = 75;
 const MAX_DESCRIPTION_LENGTH = 165;
+const MAX_TRIAL_TITLE_LENGTH = 65;
+
+// Reason labels as they read after "terminated for ...".
+const REASON_PHRASES: Record<string, string> = {
+  "efficacy/futility": "efficacy or futility",
+  safety: "safety",
+  "a biological signal": "a biological reason",
+  recruitment: "recruitment problems",
+  "business strategy": "business reasons",
+  funding: "funding reasons",
+  "staffing/resources": "staffing or resource reasons",
+  "protocol feasibility": "feasibility reasons",
+  "supply/manufacturing": "supply problems",
+  "regulatory reasons": "regulatory reasons",
+  "external disruption": "an external disruption",
+  "operational reasons": "operational reasons",
+};
 
 const REASON_LABELS: Record<string, string> = {
   EFFICACY_FUTILITY: "efficacy/futility",
@@ -131,21 +148,19 @@ export function buildTrialSeoMetadata(trial: TrialDetail | null, fallbackId: str
   const status = statusLabel(trial.overall_status);
   const reason = reasonLabel(trial);
   const outcome = outcomeLabel(trial);
-  const titleReason = reason === "efficacy/futility" ? "futility" : reason.replace(/^a\s+/i, "");
-  const titleSuffix = titleReason ? ` trial - ${titleReason}` : ` ${status} trial`;
-  const subjectLimit = Math.max(14, MAX_TITLE_LENGTH - trialId.length - titleSuffix.length - 2);
-  const title = `${trialId}: ${compactSeoText(subject, subjectLimit)}${titleSuffix}`;
+  // Searchers type the NCT number with the status ("nct05505539 withdrawn"),
+  // so the title leads with both and names the stated reason in plain words.
+  const forReason = REASON_PHRASES[reason] ? ` for ${REASON_PHRASES[reason]}` : "";
+  const titleLead = `${trialId} ${status}${forReason}`;
+  const subjectLimit = Math.max(14, MAX_TRIAL_TITLE_LENGTH - titleLead.length - 2);
+  const title = `${titleLead}: ${compactSeoText(subject, subjectLimit)}`;
 
   const phaseKey = parsePhases(trial.phases || "")[0] || "UNKNOWN";
   const phase = phaseLabel(phaseKey);
   const phaseText = phase === "Unknown" ? "" : `${phase} `;
   const sourceReason = resolveTrialStopEvidence(trial).text;
-  const descriptionSignal = outcome
-    ? ` V2: ${outcome}${reason ? ` - ${reason}` : ""}.`
-    : reason
-      ? ` V2 reason: ${reason}.`
-      : "";
-  const descriptionLead = `${trialId} was ${status}.${descriptionSignal}`;
+  const descriptionSignal = outcome ? ` Classification: ${outcome}.` : "";
+  const descriptionLead = `${trialId} was ${status}${forReason}.${descriptionSignal}`;
   const evidencePrefix = sourceReason ? " Registry: " : " Study: ";
   const fallbackContext = `${phaseText}${subject}${trial.lead_sponsor ? ` by ${cleanText(trial.lead_sponsor)}` : ""}`;
   const evidenceValue = withoutTrailingPunctuation(sourceReason || fallbackContext);

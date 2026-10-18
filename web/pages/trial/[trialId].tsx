@@ -92,10 +92,10 @@ const REASON_LABELS: Record<string, string> = {
 
 function classificationInterpretation(outcome: string, reason: string): string {
   if (outcome === "BIOLOGICAL_FAILURE" && reason === "EFFICACY_FUTILITY") {
-    return "The source statement points to efficacy, lack of benefit, failed activity, or futility. Classification V2 therefore treats this record as a biological failure signal.";
+    return "The source statement points to efficacy, lack of benefit, failed activity, or futility. Our classification therefore treats this record as a biological failure signal.";
   }
   if (outcome === "BIOLOGICAL_FAILURE" && reason === "SAFETY") {
-    return "The source statement points to safety, toxicity, tolerability, or an unfavorable benefit-risk assessment. Classification V2 therefore treats this record as a biological failure signal.";
+    return "The source statement points to safety, toxicity, tolerability, or an unfavorable benefit-risk assessment. Our classification therefore treats this record as a biological failure signal.";
   }
   if (outcome === "BIOLOGICAL_FAILURE") {
     return "The available source language supports a biological failure signal, but it is not specific enough to separate efficacy or futility from safety with confidence.";
@@ -107,7 +107,7 @@ function classificationInterpretation(outcome: string, reason: string): string {
     return "The record appears to describe a transition or program change rather than evidence of failed biology. The original source should still be reviewed for context.";
   }
   if (outcome === "MIXED_CAUSES") {
-    return "The source language supports more than one type of cause. Classification V2 keeps the outcome mixed instead of reducing the record to a single explanation.";
+    return "The source language supports more than one type of cause. Our classification keeps the outcome mixed instead of reducing the record to a single explanation.";
   }
   if (outcome === "CAUSE_NOT_STATED") {
     return "The registry records that the study stopped but does not state a usable cause. No biological or non-biological conclusion should be inferred from status alone.";
@@ -316,7 +316,7 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
                     </div>
 
                     <p className="trialStatusNote">
-                      Registry status and Classification V2 answer different questions: status records
+                      Registry status and our classification answer different questions: status records
                       what happened to the study; the evidence classification summarizes the stated cause.
                     </p>
                   </section>
@@ -334,7 +334,7 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
                         <dd>{(trial.overall_status || "Unknown").toUpperCase()}</dd>
                       </div>
                       <div>
-                        <dt>V2 outcome</dt>
+                        <dt>Classified outcome</dt>
                         <dd>{outcomeLabel}</dd>
                       </div>
                       <div>
@@ -371,7 +371,7 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
                     {stopEvidence?.source === "registry_detailed_description" ? (
                       <p className="trialEvidenceNote">
                         The registry stop-reason field points to the study&apos;s detailed description. The source
-                        sentence above is the detailed-description evidence used by Classification V2.
+                        sentence above is the detailed-description evidence used by our classification.
                       </p>
                     ) : null}
                     <a className="trialSourceLink" href={sourceUrl} target="_blank" rel="noreferrer">
@@ -380,13 +380,11 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
                   </section>
 
                   <section className="card trialPanel trialInterpretationPanel">
-                    <div className="trialEyebrow">Classification V2 interpretation</div>
+                    <div className="trialEyebrow">Our classification</div>
                     <h2>{outcomeLabel}</h2>
                     <p>{interpretation}</p>
                     <p className="trialCaution">
-                      This is an analytical screening signal, not a medical conclusion. Review the
-                      protocol, endpoints, publications, sponsor disclosures, and primary record before
-                      relying on the classification.
+                      A screening signal read from the registry text, not a medical conclusion.
                     </p>
                   </section>
                 </div>
