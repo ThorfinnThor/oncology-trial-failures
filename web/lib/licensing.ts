@@ -2,10 +2,12 @@
 //
 // Commercial access boundaries shared by exports and the pricing page.
 
+import { CONTACT_EMAIL } from "@/lib/siteContact";
+
 export const EXPORT_ROW_LIMIT = 100;
 export const DATA_PAGE_PATH = "/pricing";
 export const DATA_PAGE_URL = "https://clinicaltrialfailures.com/pricing";
-export const LICENSING_EMAIL = "contact@clinicaltrialfailures.com";
+export const LICENSING_EMAIL = CONTACT_EMAIL;
 
 export function limitExportRows<T>(rows: T[]): { rows: T[]; truncated: boolean; totalRows: number } {
   return { rows: rows.slice(0, EXPORT_ROW_LIMIT), truncated: rows.length > EXPORT_ROW_LIMIT, totalRows: rows.length };

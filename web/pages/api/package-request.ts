@@ -10,7 +10,8 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { canSendMail, frame, mailEnv, sendMail } from "@/lib/server/mail";
+import { canSendMail, frame, sendMail } from "@/lib/server/mail";
+import { CONTACT_EMAIL } from "@/lib/siteContact";
 
 type KvBinding = { put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void> };
 type CloudflareGlobal = typeof globalThis & {
@@ -94,14 +95,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 /** A short mail to whoever runs this, when a sending key is configured. */
 async function notify(lead: Record<string, unknown>): Promise<void> {
   if (!canSendMail()) return;
-  const lines = Object.entries(lead)
+  const escapeHtml = (value: string) => value.replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[character] as string);
+  const entries = Object.entries(lead)
     .filter(([, value]) => value !== "" && value !== undefined && value !== null)
-    .map(([field, value]) => `<tr><td style="padding:3px 10px 3px 0;color:#666">${field}</td><td>${String(value)}</td></tr>`)
+    .map(([field, value]) => [field, String(value)] as const);
+  const lines = entries
+    .map(([field, value]) => `<tr><td style="padding:3px 10px 3px 0;color:#666">${escapeHtml(field)}</td><td>${escapeHtml(value)}</td></tr>`)
     .join("");
+  const replyEmail = String(lead.email || "");
   await sendMail(
-    mailEnv().LEAD_NOTIFY_TO || "contact@clinicaltrialfailures.com",
+    CONTACT_EMAIL,
     `${lead.type === "full_access_waitlist" ? "Waiting list" : "Request"}: ${lead.company || lead.email}`,
     frame(`<table style="font-size:14px">${lines}</table>`),
+    entries.map(([field, value]) => `${field}: ${value}`).join("\n"),
+    replyEmail ? { replyTo: { email: replyEmail } } : {},
   );
 }
 

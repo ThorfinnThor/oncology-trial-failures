@@ -15,7 +15,8 @@
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { canSendMail, frame, layout, mailEnv, sendMail } from "@/lib/server/mail";
+import { canSendMail, frame, layout, sendMail } from "@/lib/server/mail";
+import { CONTACT_EMAIL } from "@/lib/siteContact";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -91,7 +92,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     console.error(JSON.stringify({ event: "newsletter_cannot_confirm", hint: "BREVO_API_KEY is not set on the Worker" }));
     return res.status(503).json({
       ok: false,
-      error: "Sign-up is briefly unavailable. Please try again later, or write to contact@clinicaltrialfailures.com.",
+      error: `Sign-up is briefly unavailable. Please try again later, or write to ${CONTACT_EMAIL}.`,
     });
   }
 
@@ -169,7 +170,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!sent) {
     return res.status(503).json({
       ok: false,
-      error: "We could not send the confirmation mail. Please try again, or write to contact@clinicaltrialfailures.com.",
+      error: `We could not send the confirmation mail. Please try again, or write to ${CONTACT_EMAIL}.`,
     });
   }
 
@@ -252,8 +253,6 @@ export async function confirm(store: KvBinding, key: string, res: NextApiRespons
  *  variable rather than a line in this file because the repository is public. */
 export async function notifyOwner(record: { email?: string; company?: string; country?: string; confirmed_at?: string }) {
   if (!canSendMail()) return false;
-  const env = mailEnv();
-  const to = env.NEWSLETTER_NOTIFY_TO || env.LEAD_NOTIFY_TO || "contact@clinicaltrialfailures.com";
   const email = clean(record.email, 254);
   const lines = [
     `New confirmed newsletter subscriber: ${email}`,
@@ -262,8 +261,13 @@ export async function notifyOwner(record: { email?: string; company?: string; co
     `Confirmed: ${record.confirmed_at || new Date().toISOString()}`,
   ].filter(Boolean);
   const esc = (v: string) => v.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c] as string);
-  return sendMail(to, "New Newsletter Registration CTF", frame(lines.map((l) => `<p style="margin:0 0 6px">${esc(l)}</p>`).join("")),
-    lines.join("\n"));
+  return sendMail(
+    CONTACT_EMAIL,
+    "New Newsletter Registration CTF",
+    frame(lines.map((l) => `<p style="margin:0 0 6px">${esc(l)}</p>`).join("")),
+    lines.join("\n"),
+    email ? { replyTo: { email } } : {},
+  );
 }
 
 function safeParse(value: string): Record<string, unknown> {

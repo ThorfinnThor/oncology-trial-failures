@@ -22,7 +22,8 @@ Environment:
                                                      needs a secret of its own; CF_KV_NAMESPACE_ID
                                                      and CF_ACCOUNT_ID override them if set.
   BREVO_API_KEY                                      send the mail
-  MAIL_FROM, MAIL_FROM_NAME                          the sender
+  MAIL_FROM_NAME                                     optional sender display name; the address is
+                                                     contact@clinicaltrialfailures.com
 """
 from __future__ import annotations
 
@@ -44,6 +45,7 @@ OUT_DIR = ROOT / "product/watchlist_mail"
 SITE = "https://clinicaltrialfailures.com"
 KV_API = "https://api.cloudflare.com/client/v4"
 BREVO_API = "https://api.brevo.com/v3/smtp/email"
+CONTACT_EMAIL = "contact@clinicaltrialfailures.com"
 
 
 def e(x) -> str:
@@ -195,7 +197,7 @@ Clinical Trial Failures</p></div>"""
 
 def send(to: str, subject: str, body: str, key: str) -> bool:
     payload = {
-        "sender": {"email": os.environ.get("MAIL_FROM") or "contact@clinicaltrialfailures.com",
+        "sender": {"email": CONTACT_EMAIL,
                    "name": os.environ.get("MAIL_FROM_NAME") or "Clinical Trial Failures"},
         "to": [{"email": to}],
         "subject": subject,

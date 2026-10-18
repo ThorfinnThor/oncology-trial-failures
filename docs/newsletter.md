@@ -122,14 +122,11 @@ Two, both in GitHub → Settings → Secrets and variables → Actions:
 Neither the account id nor the namespace id needs a secret: the namespace is read from
 `web/wrangler.jsonc` and the account is resolved from the token.
 
-`NEWSLETTER_NOTIFY_TO` (Worker, type Text or Secret) is where the "New Newsletter Registration CTF"
-note goes when somebody confirms — one mail per new subscriber, carrying their address. It is a
-Worker variable and not a line in the code because the repository is public; without it the note
-goes to `LEAD_NOTIFY_TO`, then `contact@clinicaltrialfailures.com`.
+The "New Newsletter Registration CTF" note goes to `contact@clinicaltrialfailures.com` when
+somebody confirms — one mail per new subscriber, carrying their address.
 
-`MAIL_FROM` and `MAIL_FROM_NAME` are optional overrides; the default sender is
-`contact@clinicaltrialfailures.com`, which has to be a domain verified with the sending service
-or the mail lands in spam.
+The sender is `contact@clinicaltrialfailures.com`; `MAIL_FROM_NAME` is an optional display-name
+override. The domain has to be verified with the sending service or the mail lands in spam.
 
 ## Checking who is subscribed
 

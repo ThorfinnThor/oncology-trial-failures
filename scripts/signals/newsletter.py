@@ -20,7 +20,7 @@ content can be read and judged before anyone signs up to a sending service.
 Environment:
   CF_API_TOKEN     read the subscribers and the pending changes (Workers KV: Read and Write)
   BREVO_API_KEY    send the mail
-  MAIL_FROM, MAIL_FROM_NAME   the sender
+  MAIL_FROM_NAME   optional sender display name; the address is contact@clinicaltrialfailures.com
 """
 from __future__ import annotations
 
@@ -58,6 +58,7 @@ PREVIEW = ROOT / "web/data/newsletter_preview.json"
 PREVIEW_ROWS = 8
 SITE = "https://clinicaltrialfailures.com"
 BREVO_API = "https://api.brevo.com/v3/smtp/email"
+CONTACT_EMAIL = "contact@clinicaltrialfailures.com"
 
 PENDING_KEY = "newsletter:pending"
 DAYS_BETWEEN = 12          # a fortnight, with room for a run that starts late
@@ -565,7 +566,7 @@ def unsubscribe_headers(person_key: str) -> dict:
 def send(to: str, subject: str, body: str, key: str, text: str | None = None,
          headers: dict | None = None) -> bool:
     payload = {
-        "sender": {"email": os.environ.get("MAIL_FROM") or "contact@clinicaltrialfailures.com",
+        "sender": {"email": CONTACT_EMAIL,
                    "name": os.environ.get("MAIL_FROM_NAME") or "Clinical Trial Failures"},
         "to": [{"email": to}],
         "subject": subject,

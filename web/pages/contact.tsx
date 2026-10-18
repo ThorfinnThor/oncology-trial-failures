@@ -1,9 +1,11 @@
 import Head from "next/head";
 import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
+import { type FormEvent, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import { staticRobotsForPath } from "@/lib/seoStaticPolicy";
+import { CONTACT_EMAIL, contactMailto } from "@/lib/siteContact";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "Contact | Clinical Trial Failures";
@@ -11,13 +13,39 @@ const DESCRIPTION =
   "Contact Clinical Trial Failures for data corrections, source issues, methodology questions, and website feedback.";
 const CANONICAL_URL = `${SITE_URL}/contact`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
-const CONTACT_EMAIL = "contact@clinicaltrialfailures.com";
 const DATA_CORRECTION_MAILTO =
-  `mailto:${CONTACT_EMAIL}?subject=Clinical%20Trial%20Failures%20data%20correction&body=Please%20include%3A%0A-%20NCT%20ID%3A%0A-%20Page%20URL%3A%0A-%20Current%20source%20text%3A%0A-%20Suggested%20correction%3A%0A-%20Primary%20source%20link%3A`;
+  `${contactMailto("Clinical Trial Failures data correction")}&body=Please%20include%3A%0A-%20NCT%20ID%3A%0A-%20Page%20URL%3A%0A-%20Current%20source%20text%3A%0A-%20Suggested%20correction%3A%0A-%20Primary%20source%20link%3A`;
 const WEBSITE_FEEDBACK_MAILTO =
-  `mailto:${CONTACT_EMAIL}?subject=Clinical%20Trial%20Failures%20website%20feedback&body=Please%20include%3A%0A-%20Page%20URL%3A%0A-%20Browser%20and%20device%3A%0A-%20What%20is%20broken%20or%20unclear%3A`;
+  `${contactMailto("Clinical Trial Failures website feedback")}&body=Please%20include%3A%0A-%20Page%20URL%3A%0A-%20Browser%20and%20device%3A%0A-%20What%20is%20broken%20or%20unclear%3A`;
 
 export default function ContactPage() {
+  const [formState, setFormState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [formMessage, setFormMessage] = useState("");
+
+  async function submitContact(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    setFormState("sending");
+    setFormMessage("");
+
+    try {
+      const payload = Object.fromEntries(new FormData(form).entries());
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result.error || "We could not send your message. Please try again.");
+      form.reset();
+      setFormState("sent");
+      setFormMessage(result.message || "Thank you. Your message has been sent.");
+    } catch (error) {
+      setFormState("error");
+      setFormMessage(error instanceof Error ? error.message : "We could not send your message. Please try again.");
+    }
+  }
+
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -25,6 +53,7 @@ export default function ContactPage() {
       name: TITLE,
       description: DESCRIPTION,
       url: CANONICAL_URL,
+      email: CONTACT_EMAIL,
       isPartOf: {
         "@type": "WebSite",
         name: "Clinical Trial Failures",
@@ -91,6 +120,75 @@ export default function ContactPage() {
               </p>
             </header>
 
+            <section className="contactFormSection" aria-labelledby="contact-form-heading">
+              <div className="contactFormIntro">
+                <p className="facet-title">Send a message</p>
+                <h2 id="contact-form-heading">Write to the team</h2>
+                <p>
+                  Messages submitted here are delivered to <strong>{CONTACT_EMAIL}</strong>. When we reply,
+                  the response will come from the same address.
+                </p>
+                <p>
+                  Do not include patient-level data, medical records, or other sensitive health information.
+                </p>
+              </div>
+
+              <form className="contactForm" onSubmit={submitContact}>
+                <label>
+                  What is this about?
+                  <select name="topic" defaultValue="correction" required>
+                    <option value="correction">Data correction</option>
+                    <option value="methodology">Methodology or source question</option>
+                    <option value="privacy">Privacy request</option>
+                    <option value="licensing">Licensing or custom research</option>
+                    <option value="website">Website issue</option>
+                    <option value="other">Other</option>
+                  </select>
+                </label>
+
+                <div className="contactFormRow">
+                  <label>
+                    Name <span>optional</span>
+                    <input name="name" type="text" autoComplete="name" maxLength={120} />
+                  </label>
+                  <label>
+                    Email address
+                    <input name="email" type="email" autoComplete="email" maxLength={254} required />
+                  </label>
+                </div>
+
+                <label>
+                  Relevant page URL <span>optional</span>
+                  <input name="pageUrl" type="url" inputMode="url" maxLength={500} placeholder="https://clinicaltrialfailures.com/..." />
+                </label>
+
+                <label>
+                  Message
+                  <textarea name="message" rows={7} minLength={10} maxLength={5000} required />
+                </label>
+
+                <label className="contactHoneypot" aria-hidden="true">
+                  Website
+                  <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </label>
+
+                <div className="contactFormFooter">
+                  <button type="submit" disabled={formState === "sending"}>
+                    {formState === "sending" ? "Sending…" : "Send message"}
+                  </button>
+                  <p>
+                    Your details are used only to handle this request. See the <Link href="/privacy">Privacy Policy</Link>.
+                  </p>
+                </div>
+
+                {formMessage ? (
+                  <p className={`contactFormStatus ${formState}`} role={formState === "error" ? "alert" : "status"}>
+                    {formMessage}
+                  </p>
+                ) : null}
+              </form>
+            </section>
+
             <section className="contactGrid" aria-label="Contact options">
               <div className="contactCard">
                 <h2>Data corrections</h2>
@@ -134,6 +232,7 @@ export default function ContactPage() {
               <div className="contactLinks">
                 <Link href="/about">About and data trust</Link>
                 <Link href="/privacy">Privacy Policy</Link>
+                <Link href="/imprint">Imprint</Link>
               </div>
             </section>
           </article>
@@ -191,6 +290,152 @@ export default function ContactPage() {
           text-decoration: underline;
         }
 
+        .contactFormSection {
+          display: grid;
+          grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+          gap: clamp(22px, 4vw, 42px);
+          margin-top: 28px;
+          padding: clamp(20px, 3vw, 28px);
+          border: 1px solid #cbd5e1;
+          border-radius: 14px;
+          background: #f8fafc;
+        }
+
+        .contactFormIntro h2 {
+          margin: 4px 0 10px;
+          font-size: 24px;
+          line-height: 1.15;
+        }
+
+        .contactFormIntro p:not(.facet-title) {
+          margin: 0;
+          color: #475569;
+          line-height: 1.65;
+        }
+
+        .contactFormIntro p + p {
+          margin-top: 12px;
+        }
+
+        .contactForm {
+          display: grid;
+          gap: 14px;
+        }
+
+        .contactFormRow {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
+        }
+
+        .contactForm label {
+          display: grid;
+          gap: 6px;
+          color: #0f172a;
+          font-size: 14px;
+          font-weight: 800;
+        }
+
+        .contactForm label span {
+          color: #64748b;
+          font-size: 12px;
+          font-weight: 600;
+        }
+
+        .contactForm input,
+        .contactForm select,
+        .contactForm textarea {
+          width: 100%;
+          border: 1px solid #94a3b8;
+          border-radius: 8px;
+          background: #ffffff;
+          padding: 11px 12px;
+          color: #0f172a;
+          font: inherit;
+          font-weight: 500;
+        }
+
+        .contactForm textarea {
+          min-height: 150px;
+          resize: vertical;
+        }
+
+        .contactForm input:focus,
+        .contactForm select:focus,
+        .contactForm textarea:focus {
+          outline: 3px solid rgba(79, 70, 229, 0.2);
+          border-color: #4f46e5;
+        }
+
+        .contactFormFooter {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+        }
+
+        .contactFormFooter button {
+          flex: 0 0 auto;
+          border: 0;
+          border-radius: 8px;
+          background: #4f46e5;
+          padding: 12px 18px;
+          color: #ffffff;
+          font: inherit;
+          font-weight: 800;
+          cursor: pointer;
+        }
+
+        .contactFormFooter button:hover:not(:disabled) {
+          background: #4338ca;
+        }
+
+        .contactFormFooter button:disabled {
+          cursor: wait;
+          opacity: 0.7;
+        }
+
+        .contactFormFooter p {
+          margin: 0;
+          color: #64748b;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+
+        .contactFormFooter :global(a) {
+          color: #3730a3;
+          font-weight: 700;
+        }
+
+        .contactFormStatus {
+          margin: 0;
+          border-radius: 8px;
+          padding: 11px 12px;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        .contactFormStatus.sent {
+          border: 1px solid #86efac;
+          background: #f0fdf4;
+          color: #166534;
+        }
+
+        .contactFormStatus.error {
+          border: 1px solid #fca5a5;
+          background: #fef2f2;
+          color: #991b1b;
+        }
+
+        .contactHoneypot {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip: rect(0 0 0 0);
+          clip-path: inset(50%);
+          white-space: nowrap;
+        }
+
         .contactGrid {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -240,8 +485,23 @@ export default function ContactPage() {
         }
 
         @media (max-width: 860px) {
+          .contactFormSection {
+            grid-template-columns: 1fr;
+          }
+
           .contactGrid {
             grid-template-columns: 1fr;
+          }
+        }
+
+        @media (max-width: 580px) {
+          .contactFormRow {
+            grid-template-columns: 1fr;
+          }
+
+          .contactFormFooter {
+            align-items: stretch;
+            flex-direction: column;
           }
         }
       `}</style>

@@ -11,6 +11,7 @@
 import Link from "next/link";
 
 import { useCheckout } from "@/lib/checkout";
+import { contactMailto } from "@/lib/siteContact";
 
 export type PackageSummary = {
   slug: string;
@@ -36,8 +37,7 @@ export const PACKAGE_PRICE = "€99";
 // for it until there is one we can defend. See the waiting list on /pricing.
 export const ACCESS_PRICE = "On request";
 export const ACCESS_UNIT = "";
-export const CUSTOM_COHORT_MAILTO =
-  "mailto:contact@clinicaltrialfailures.com?subject=" + encodeURIComponent("Diligence report for a custom cohort");
+export const CUSTOM_COHORT_MAILTO = contactMailto("Diligence report for a custom cohort");
 
 /** Trials in the cohort that the brief does not cover: closed without a biological stop, or still running.
  *

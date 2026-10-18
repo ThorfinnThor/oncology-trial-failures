@@ -32,6 +32,7 @@ test("strong data, evidence, and commercial pages stay indexable", () => {
     "/briefs",
     "/pricing",
     "/packages/sample",
+    "/imprint",
   ]) {
     assert.equal(staticRobotsForPath(path), "index,follow");
     assert.equal(includeStaticPathInSitemap(path), true);

@@ -8,6 +8,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { confirm, notifyOwner, stop } from "../pages/api/newsletter";
+import { CONTACT_EMAIL } from "../lib/siteContact";
 
 type Json = { status: number; body: any };
 
@@ -100,12 +101,11 @@ test("confirming writes an index, so the same address cannot be subscribed twice
   assert.match(index[0], /^sub:[0-9a-f]{64}$/);
 });
 
-test("a confirmation tells the owner who joined, once, at the address the Worker names", async () => {
+test("a confirmation tells the owner who joined, once, at the canonical contact mailbox", async () => {
   const sent: any[] = [];
   const realFetch = globalThis.fetch;
-  const saved = { key: process.env.BREVO_API_KEY, to: process.env.NEWSLETTER_NOTIFY_TO };
+  const saved = { key: process.env.BREVO_API_KEY };
   process.env.BREVO_API_KEY = "test-key";
-  process.env.NEWSLETTER_NOTIFY_TO = "owner@example.com";
   globalThis.fetch = (async (_url: string, init: any) => {
     sent.push(JSON.parse(init.body));
     return new Response("{}", { status: 201 });
@@ -115,7 +115,7 @@ test("a confirmation tells the owner who joined, once, at the address the Worker
     await confirm(store as any, "abc", fakeRes().res);
     assert.equal(sent.length, 1);
     assert.equal(sent[0].subject, "New Newsletter Registration CTF");
-    assert.deepEqual(sent[0].to, [{ email: "owner@example.com" }]);
+    assert.deepEqual(sent[0].to, [{ email: CONTACT_EMAIL }]);
     assert.match(sent[0].textContent, /new@example\.com/);
 
     // The same link again: already confirmed, no second note.
@@ -128,7 +128,6 @@ test("a confirmation tells the owner who joined, once, at the address the Worker
   } finally {
     globalThis.fetch = realFetch;
     if (saved.key === undefined) delete process.env.BREVO_API_KEY; else process.env.BREVO_API_KEY = saved.key;
-    if (saved.to === undefined) delete process.env.NEWSLETTER_NOTIFY_TO; else process.env.NEWSLETTER_NOTIFY_TO = saved.to;
   }
 });
 

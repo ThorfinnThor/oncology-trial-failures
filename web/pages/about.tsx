@@ -3,6 +3,7 @@ import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
+import { CONTACT_EMAIL } from "@/lib/siteContact";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const TITLE = "About Clinical Trial Failures | Source, scope, and data trust";
@@ -129,7 +130,8 @@ export default function AboutPage() {
                 <Link className="link" href="/contact">
                   Contact page
                 </Link>
-                .
+                {" "}or email <a className="link" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+                Provider details are listed in the <Link className="link" href="/imprint">Imprint</Link>.
               </p>
             </section>
           </article>

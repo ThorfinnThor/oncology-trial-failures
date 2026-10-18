@@ -1,13 +1,14 @@
 import Head from "next/head";
 import Link from "next/link";
 
+import { CONTACT_EMAIL } from "@/lib/siteContact";
+
 const TITLE = "Disclaimer and limitations | Clinical Trial Failures";
 const DESCRIPTION =
   "Important limitations, verification guidance, and liability information for the Clinical Trial Failures research database.";
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/disclaimer`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
-const CONTACT_EMAIL = "contact@clinicaltrialfailures.com";
 
 export default function DisclaimerPage() {
   return (
@@ -188,7 +189,8 @@ export default function DisclaimerPage() {
             <h2>Relationship to other policies</h2>
             <p>
               This page addresses informational and liability limitations. Personal-data processing is
-              explained separately in the <Link href="/privacy">Privacy Policy</Link>. The{" "}
+              explained separately in the <Link href="/privacy">Privacy Policy</Link>. Provider details are
+              listed in the <Link href="/imprint">Imprint</Link>. The{" "}
               <Link href="/methods">Data and methods page</Link> describes the source data, analytical
               categories, calculations, and known methodological limitations.
             </p>

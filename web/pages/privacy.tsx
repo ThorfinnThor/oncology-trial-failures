@@ -1,13 +1,14 @@
 import Head from "next/head";
 import Link from "next/link";
 
+import { CONTACT_EMAIL, SITE_OPERATOR } from "@/lib/siteContact";
+
 const TITLE = "Privacy Policy | Clinical Trial Failures";
 const DESCRIPTION =
   "Privacy Policy for Clinical Trial Failures, including GDPR rights, analytics, cookies, public registry data, advertising, affiliate links, contact messages, and user rights.";
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/privacy`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
-const CONTACT_EMAIL = "contact@clinicaltrialfailures.com";
 
 export default function PrivacyPage() {
   return (
@@ -35,16 +36,17 @@ export default function PrivacyPage() {
               Clinical Trial Failures is an informational website. You can browse the site without
               creating an account or submitting personal information.
             </p>
-            <p className="privacy-updated">Last updated: August 4, 2026</p>
+            <p className="privacy-updated">Last updated: October 19, 2026</p>
           </header>
 
           <section>
             <h2>Who operates this site and controller role</h2>
             <p>
-              Clinical Trial Failures is operated as a research-support website at{" "}
-              <Link href="/">clinicaltrialfailures.com</Link>. For privacy questions, corrections, or
-              website feedback, use the <Link href="/contact">Contact page</Link> or email{" "}
-              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+              The controller for this website is {SITE_OPERATOR.name}, {SITE_OPERATOR.street},{" "}
+              {SITE_OPERATOR.postalCode} {SITE_OPERATOR.city}, {SITE_OPERATOR.country}. Full provider
+              details are available in the <Link href="/imprint">Imprint</Link>. For privacy questions,
+              corrections, or website feedback, use the <Link href="/contact">Contact page</Link> or
+              email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
             </p>
             <p>
               If you are located in the European Economic Area, the United Kingdom, or Switzerland, the
@@ -163,13 +165,17 @@ export default function PrivacyPage() {
           <section>
             <h2>Contact messages</h2>
             <p>
-              If you contact us by email or through a feedback link, we may receive your email address,
-              message content, and any information you choose to include, such as an NCT ID, page URL,
-              correction request, browser, or device details.
+              If you contact us by email or through the contact form, we receive your email address,
+              message content, selected topic, and any optional name or page URL you provide. Please do
+              not submit patient-level data, medical records, or other sensitive health information.
             </p>
             <p>
               We use contact messages only to respond, review corrections, improve the site, and maintain
-              a reasonable record of the request.
+              a reasonable record of the request (Art. 6(1)(b) or (f) GDPR, depending on the request).
+              Form messages are transmitted through our transactional email provider to{" "}
+              <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. They may be retained as long as
+              reasonably needed to handle the request or meet record-keeping obligations, and can be
+              deleted earlier on request where no legal retention duty applies.
             </p>
           </section>
 
@@ -253,7 +259,8 @@ export default function PrivacyPage() {
             <p>
               This policy is intended to clearly explain the site&apos;s privacy practices, but it is not legal
               advice. Because the operator is based in Europe and because AdSense, affiliate tracking,
-              and newsletter tools can trigger GDPR and German TTDSG consent duties, the policy and
+              and newsletter tools can trigger GDPR and German consent requirements for cookies and
+              similar technologies, the policy and
               consent setup should be reviewed by a qualified privacy professional before monetization
               or personalized advertising is enabled. Information-quality, verification, and liability
               limitations are explained separately in the <Link href="/disclaimer">Disclaimer</Link>.
@@ -263,8 +270,8 @@ export default function PrivacyPage() {
           <section>
             <h2>Updates</h2>
             <p>
-              This policy may be updated as the site changes. Continued use of the site means you accept
-              the current version published here.
+              This policy may be updated as the site changes. The date above identifies the currently
+              published version.
             </p>
           </section>
         </div>

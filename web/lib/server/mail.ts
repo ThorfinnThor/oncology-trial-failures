@@ -1,12 +1,14 @@
 // web/lib/server/mail.ts
 //
 // The one place the site sends a mail from. Two routes need it — the confirmation that turns a
-// signup into a subscription, and the note that tells us somebody joined the waiting list — and
-// a second copy of the same fetch is a second place for the sender address to drift.
+// signup into a subscription, the note that tells us somebody joined the waiting list, and the
+// contact form — and a second copy of the same fetch is a second place for the sender address to drift.
 //
 // Brevo's transactional API, the same account the fortnightly mail goes through. The key is a
 // Worker secret: the GitHub secret of the same name belongs to the weekly workflow and is not
 // readable from here.
+
+import { CONTACT_EMAIL } from "@/lib/siteContact";
 
 type CloudflareGlobal = typeof globalThis & {
   [key: symbol]: { env?: Record<string, string | undefined> } | undefined;
@@ -24,7 +26,20 @@ export function canSendMail(): boolean {
   return Boolean(mailEnv().BREVO_API_KEY);
 }
 
-export async function sendMail(to: string, subject: string, html: string, text?: string): Promise<boolean> {
+export type MailOptions = {
+  replyTo?: {
+    email: string;
+    name?: string;
+  };
+};
+
+export async function sendMail(
+  to: string,
+  subject: string,
+  html: string,
+  text?: string,
+  options: MailOptions = {},
+): Promise<boolean> {
   const env = mailEnv();
   const key = env.BREVO_API_KEY;
   if (!key) return false;
@@ -33,10 +48,11 @@ export async function sendMail(to: string, subject: string, html: string, text?:
     headers: { "api-key": key, "content-type": "application/json" },
     body: JSON.stringify({
       sender: {
-        email: env.MAIL_FROM || "contact@clinicaltrialfailures.com",
+        email: CONTACT_EMAIL,
         name: env.MAIL_FROM_NAME || "Clinical Trial Failures",
       },
       to: [{ email: to }],
+      ...(options.replyTo ? { replyTo: options.replyTo } : {}),
       subject,
       htmlContent: html,
       // A plain-text part alongside the HTML. Mail without one scores worse with spam filters,

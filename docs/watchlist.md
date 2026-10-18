@@ -64,9 +64,8 @@ Neither the account id nor the namespace id needs a secret: the namespace is rea
 step that asks someone to copy an id that is sitting in the repository is a step that can only
 go wrong.
 
-`MAIL_FROM` and `MAIL_FROM_NAME` are optional overrides; the default sender is
-`contact@clinicaltrialfailures.com`, which has to be a domain verified with the sending
-service or the mail lands in spam.
+The sender is `contact@clinicaltrialfailures.com`; `MAIL_FROM_NAME` is an optional display-name
+override. The domain has to be verified with the sending service or the mail lands in spam.
 
 ## Checking who is subscribed
 

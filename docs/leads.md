@@ -10,7 +10,7 @@ indefinitely. Without KV, a lead is lost once the log retention window passes.
 
 `package-request.ts` also sends a short mail when `BREVO_API_KEY` is set **as a secret on the
 Worker** (the GitHub secret of the same name is for the weekly workflow and does not reach the
-site). `LEAD_NOTIFY_TO` overrides the recipient; the default is `contact@clinicaltrialfailures.com`.
+site). Owner notifications are delivered to `contact@clinicaltrialfailures.com`.
 
 Without that secret nothing is sent and the lead is only in KV — which is a waiting list that
 rings nowhere, so set it at the same time as the Brevo key for the newsletter. The mail is best
