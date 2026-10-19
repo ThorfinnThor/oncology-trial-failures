@@ -1,12 +1,12 @@
 {
- "read_on": "2026-10-12",
- "readable_completed": 4667,
+ "read_on": "2026-10-19",
+ "readable_completed": 4677,
  "cards": [
   {
    "key": "stopped_efficacy",
    "status": "Stopped",
    "label": "Efficacy or futility",
-   "count": 1618,
+   "count": 1619,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT04757636",
@@ -24,7 +24,7 @@
    "key": "stopped_safety",
    "status": "Stopped",
    "label": "Safety",
-   "count": 630,
+   "count": 628,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT04921358",
@@ -42,7 +42,7 @@
    "key": "completed_missed",
    "status": "Completed",
    "label": "Primary endpoint missed",
-   "count": 1937,
+   "count": 1941,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT03867084",
@@ -60,7 +60,7 @@
    "key": "completed_met",
    "status": "Completed",
    "label": "Primary endpoint met",
-   "count": 2294,
+   "count": 2299,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT06109311",
