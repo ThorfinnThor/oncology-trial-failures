@@ -4,6 +4,37 @@ import test from "node:test";
 import { buildInsightStats } from "../lib/insightStats";
 import { getInsightBySlug } from "../lib/insights";
 
+test("BACE1 insight separates efficacy, safety, and programme-cascade evidence", async () => {
+  const stats = await buildInsightStats();
+  const brief = stats.mechanismBriefs.baceSecretase;
+  const article = getInsightBySlug("bace1-inhibitor-efficacy-safety-trial-stops", stats);
+
+  assert.ok(article);
+  assert.ok(article.dek.includes(`${brief.biologicalStops} of ${brief.closed}`));
+  assert.ok(article.dek.includes(`${brief.molecules} mapped molecules`));
+  assert.ok(article.facts.some((fact) => fact.includes(`${brief.efficacyStops}`) && fact.includes("efficacy")));
+  assert.ok(article.sections.some((section) => section.heading.includes("Production blockade")));
+  assert.ok(article.tables.some((table) => table.heading.includes("not four identical failures")));
+  assert.ok(article.links.some((link) => link.href === `/briefs/${brief.slug}`));
+  assert.ok(article.links.some((link) => link.href === "/trial/NCT02569398"));
+});
+
+test("JAK/TYK2 insight keeps heterogeneous endpoint evidence indication-specific", async () => {
+  const stats = await buildInsightStats();
+  const brief = stats.mechanismBriefs.jakTyk2Autoimmune;
+  const article = getInsightBySlug("jak-tyk2-clinical-results-depend-on-indication", stats);
+
+  assert.ok(article);
+  assert.ok(article.dek.includes(`${brief.endpointMet}`));
+  assert.ok(article.dek.includes(`${brief.endpointMissed}`));
+  assert.ok(article.dek.includes(`${brief.endpointMixed}`));
+  assert.ok(article.facts.some((fact) => fact.includes("not statistically unusual")));
+  assert.ok(article.sections.some((section) => section.heading.includes("both directions")));
+  assert.ok(article.tables.some((table) => table.heading.includes("indication changes")));
+  assert.ok(article.links.some((link) => link.href === `/briefs/${brief.slug}`));
+  assert.ok(article.links.some((link) => link.href.includes("NCT02889796") && link.href.includes("tab=results")));
+});
+
 test("amyloid-beta insight compresses trial stops to molecules and programme evidence", async () => {
   const stats = await buildInsightStats();
   const brief = stats.mechanismBriefs.amyloidBetaAntibodies;

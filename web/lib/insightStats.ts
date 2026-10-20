@@ -905,6 +905,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
     registryTiming: registryTimingSlice(rows),
     phaseCoverage: phaseCoverageSlice(rows),
     mechanismBriefs: {
+      baceSecretase: mechanismBriefSnapshot("Neurology", "BACE / γ-secretase"),
+      jakTyk2Autoimmune: mechanismBriefSnapshot("Immunology & Autoimmune", "JAK / TYK2"),
       tauAntibodies: mechanismBriefSnapshot("Neurology", "Tau"),
       tgfBetaPdL1: mechanismBriefSnapshot("Oncology", "TGF-β + PD-(L)1"),
       amyloidBetaAntibodies: mechanismBriefSnapshot("Neurology", "Amyloid-β directed"),

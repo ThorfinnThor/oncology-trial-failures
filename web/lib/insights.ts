@@ -247,6 +247,8 @@ export type InsightStats = {
     }>;
   };
   mechanismBriefs: {
+    baceSecretase: MechanismBriefSnapshot;
+    jakTyk2Autoimmune: MechanismBriefSnapshot;
     tauAntibodies: MechanismBriefSnapshot;
     tgfBetaPdL1: MechanismBriefSnapshot;
     amyloidBetaAntibodies: MechanismBriefSnapshot;
@@ -367,6 +369,74 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "bace1-inhibitor-efficacy-safety-trial-stops",
+    title: "Three BACE1 inhibitors hit the same wall—but not for one reason",
+    metaDescription:
+      "Four Phase III BACE1 inhibitor trials stopped across three molecules, combining futility, adverse events, and liver-enzyme risk rather than one simple class verdict.",
+    eyebrow: "BACE1 clinical evidence",
+    dek:
+      "Every closed trial in this small BACE1 cohort stopped for a biological reason. The records do not repeat one identical failure: they expose both an efficacy problem and a therapeutic-window problem across three small molecules.",
+    datePublished: "2026-10-20",
+    readingTime: "10 min read",
+    keyword: "BACE1 inhibitor clinical trial failure",
+    factsHeading: "One complete stop pattern, three molecules, two constraints",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do these trials prove that lowering amyloid production cannot work?",
+        answer:
+          "No. They raise a serious warning for the systemic small-molecule BACE1 strategies represented here. They do not test every degree, timing, or compartment of amyloid-production modulation, and they are not evidence about antibody-mediated amyloid clearance.",
+      },
+      {
+        question: "Why is a 100% stop rate not enough on its own?",
+        answer:
+          "The denominator contains only four closed trials and three molecules. The signal is statistically unusual against the neurology comparator, but its confidence interval is wide and one lanabecestat decision closed two related records.",
+      },
+      {
+        question: "What is the clinically useful lesson from the mixed stop reasons?",
+        answer:
+          "A successor must address both sides of the benefit–risk equation: evidence of meaningful clinical effect and an exposure strategy that avoids adverse-event or liver-safety constraints. Solving only one would not answer the full pattern.",
+      },
+    ],
+  },
+  {
+    slug: "jak-tyk2-clinical-results-depend-on-indication",
+    title: "JAK/TYK2 trials show why one mechanism can work—and still fail by indication",
+    metaDescription:
+      "Our JAK/TYK2 cohort contains 20 met, 8 missed, and 5 mixed readable primary results. The pattern argues for indication-level evidence, not a class-wide verdict.",
+    eyebrow: "JAK/TYK2 clinical evidence",
+    dek:
+      "The same broad target-family label contains successful endpoint readouts, clear misses, and benefit–risk stops. The clinically useful signal is not whether JAK/TYK2 ‘works’, but where molecule, selectivity, disease biology, dose, background therapy, and endpoint align.",
+    datePublished: "2026-10-20",
+    readingTime: "11 min read",
+    keyword: "JAK TYK2 clinical trial results by indication",
+    factsHeading: "A bidirectional evidence set, not a class verdict",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do the 20 met primary results establish a JAK/TYK2 class success rate?",
+        answer:
+          "No. They come from the subset of completed trials with a primary result readable by our method. Trials differ by molecule, target profile, indication, dose, comparator, and endpoint, and several records can belong to the same programme.",
+      },
+      {
+        question: "Why can safety be described as consistent while benefit–risk is still unfavorable?",
+        answer:
+          "Benefit–risk is comparative and indication-specific. A known safety profile can still be unacceptable when efficacy is insufficient, the disease has safer alternatives, or the required exposure does not deliver enough additional benefit.",
+      },
+      {
+        question: "What should be compared before transferring evidence between JAK/TYK2 programmes?",
+        answer:
+          "At minimum: indication and disease compartment, inhibited kinase profile, achieved exposure, dose schedule, background therapy, enrolled severity, endpoint definition, and whether the evidence came from the trial itself or a programme cascade.",
+      },
+    ],
+  },
   {
     slug: "amyloid-beta-antibody-trial-stops-programme-cascades",
     title: "Thirteen amyloid-β trial stops collapse to four antibodies",
@@ -4706,6 +4776,240 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
   };
 }
 
+function hydrateBaceSecretaseArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.baceSecretase;
+  const rate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const interval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const leaveOneOutRate = pctFromRatio(brief.rateLeaveOneProgrammeOut);
+  const qValue = brief.qValue === null ? "not available" : brief.qValue.toPrecision(2);
+  const assetList = brief.assets.length ? brief.assets.join(", ") : "the three mapped inhibitors";
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.biologicalStops)} of ${n(brief.closed)} closed Phase III BACE1 inhibitor trials stopped biologically across ${n(brief.molecules)} molecules, combining efficacy, safety, and benefit–risk constraints.`,
+    dek: `${n(brief.biologicalStops)} of ${n(brief.closed)} closed Phase III trials in the BACE / γ-secretase cohort stopped for a biological reason. The ${n(brief.molecules)} mapped molecules—${assetList}—do not tell one repetitive failure story: the records combine futility, adverse events, and liver-enzyme risk.`,
+    facts: [
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials stopped for a biological reason (${rate}; 95% CI ${interval}).`,
+      `${n(brief.efficacyStops)} records carried an efficacy signal, ${n(brief.safetyStops)} carried a safety signal, and ${n(brief.benefitRiskStops)} was classified as benefit–risk only. Categories can overlap within a record.`,
+      `The four records resolve to ${n(brief.molecules)} small molecules and ${n(brief.stopProgrammes)} sponsor–asset programmes.`,
+      `${n(brief.stopsFromOwnData)} stops were attributed to the trial's own evidence; ${n(brief.stopsFromProgrammeCascade)} followed another programme result.`,
+      `The comparator recorded ${n(brief.referenceStops)} biological stops among ${n(brief.referenceClosed)} closed neurology trials with a resolved target (${referenceRate}).`,
+    ],
+    sections: [
+      {
+        heading: "Three molecules, two clinical constraints",
+        body: [
+          "Lanabecestat, atabecestat, and elenbecestat all reached Phase III, yet the stop records divide into two clinically different problems. Lanabecestat was stopped for futility. Atabecestat was stopped after liver-enzyme elevations changed the benefit–risk profile. Elenbecestat combined no evidence of potential efficacy with an adverse-event profile worse than placebo.",
+          "The repeated lesson is therefore not just ‘the endpoint was missed’. These programmes encountered both insufficient observable benefit and limits on tolerable exposure. A successor that only changes the cognitive endpoint, or only argues for cleaner safety, answers half of the evidence.",
+        ],
+      },
+      {
+        heading: "Production blockade is not antibody clearance",
+        body: [
+          "The public brief groups these records under BACE / γ-secretase, but the stopped assets in this cohort map to beta-secretase 1 inhibition and are small molecules. They reduce amyloid production upstream; they are not antibodies designed to bind and clear deposited amyloid. The intervention point, exposure pattern, and potential on-target consequences differ.",
+          "That distinction prevents an invalid biological shortcut. These records update the prior for similar systemic BACE1 inhibitors. They cannot be transferred unchanged to every amyloid-directed modality, nor do later antibody results erase what these production-blocking programmes observed.",
+        ],
+      },
+      {
+        heading: "Futility and toxicity should not be averaged into one cause",
+        body: [
+          "NCT02783573 is the independent lanabecestat futility readout: the trial was judged unlikely to meet its primary endpoint. NCT02972658 then closed because that feeder study stopped, so the second record expands the programme impact without adding an independent biological experiment.",
+          "NCT02569398 and NCT02956486 add a different constraint. Liver-enzyme elevations drove the atabecestat benefit–risk change, while elenbecestat combined no potential efficacy with a worse adverse-event profile than placebo. Reading only the total stop count would hide this clinically important split.",
+        ],
+      },
+      {
+        heading: "The statistical signal is strong; the biological sample is small",
+        body: [
+          `The observed rate is ${rate}, versus ${referenceRate} in ${brief.referenceLabel}. The multiplicity-adjusted analysis survives the 10% false-discovery threshold${brief.qValue === null ? "" : ` (BY q=${qValue})`}, and removing the largest programme still leaves a ${leaveOneOutRate} stop rate.`,
+          `But the 95% interval spans ${interval}, because the denominator is only ${n(brief.closed)} closed trials. The correct conclusion is that this small cohort contains an unusually consistent stop pattern—not that it estimates a precise universal probability for BACE1 inhibition.`,
+        ],
+      },
+      {
+        heading: "There is no completed-endpoint counterweight in this cohort",
+        body: [
+          `The endpoint layer contains ${n(brief.endpointCompleted)} completed cohort trials and ${n(brief.endpointReadable)} readable posted primary results. That means there is no parallel set of completed, readable outcomes here from which to estimate how often the approach succeeded.`,
+          "Absence of that counterweight strengthens the need to inspect the stop records, but it is not proof that no favorable BACE1 experiment ever existed outside this cohort. This analysis is bounded to the mapped Phase II/III starts from 2015 through 2024 and the registry evidence available to the build.",
+        ],
+      },
+      {
+        heading: "What a next BACE1 programme would have to prove",
+        body: [
+          "A differentiated programme would need prospective evidence that the selected degree and timing of BACE1 inhibition can move a clinically relevant endpoint before toxicity or other adverse effects constrain exposure. Earlier disease, partial rather than maximal inhibition, central versus peripheral exposure, and biomarker-confirmed target engagement are separate hypotheses—not automatic answers.",
+          "The practical diligence test is demanding: show which assumption differs from lanabecestat's futility, why atabecestat's liver signal is not expected, and how elenbecestat's combined efficacy and adverse-event result is avoided. Without that bridge, a new molecule remains exposed to both failure modes seen here.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "The four stops are not four identical failures",
+        columns: ["Molecule and trial", "What the registry says"],
+        rows: [
+          ["Elenbecestat · NCT02956486", "No evidence of potential efficacy and an adverse-event profile worse than placebo"],
+          ["Atabecestat · NCT02569398", "Benefit–risk changed after liver-enzyme elevations"],
+          ["Lanabecestat · NCT02783573", "Independent assessment found the primary endpoint unlikely to be met"],
+          ["Lanabecestat · NCT02972658", "Programme cascade after the feeder study stopped for futility"],
+        ],
+      },
+      {
+        heading: "Signal strength and independence",
+        columns: ["Measure", "Current cohort"],
+        rows: [
+          ["Biological stops among closed trials", `${n(brief.biologicalStops)} / ${n(brief.closed)} (${rate})`],
+          [brief.referenceLabel, `${n(brief.referenceStops)} / ${n(brief.referenceClosed)} (${referenceRate})`],
+          ["Resolved molecules / programmes / sponsors", `${n(brief.molecules)} / ${n(brief.stopProgrammes)} / ${n(brief.stopSponsors)}`],
+          ["Own-trial evidence / programme cascades", `${n(brief.stopsFromOwnData)} / ${n(brief.stopsFromProgrammeCascade)}`],
+          ["95% interval", interval],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the BACE / γ-secretase brief",
+        text: "Inspect the cohort rule, comparator, uncertainty, programme attribution, and source records.",
+      },
+      {
+        href: "/trial/NCT02783573",
+        label: "Lanabecestat: direct futility decision",
+        text: "Read the Phase III record that was judged unlikely to meet its primary endpoint.",
+      },
+      {
+        href: "/trial/NCT02569398",
+        label: "Atabecestat: liver-related benefit–risk change",
+        text: "Inspect the record linking the stop to liver-enzyme elevations.",
+      },
+      {
+        href: "/trial/NCT02956486",
+        label: "Elenbecestat: efficacy and adverse-event evidence",
+        text: "Read the record combining no potential efficacy with an adverse-event profile worse than placebo.",
+      },
+    ],
+  };
+}
+
+function hydrateJakTyk2Article(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.jakTyk2Autoimmune;
+  const rate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const interval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const readableShare = pctFromCounts(brief.endpointReadable, brief.endpointCompleted);
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.endpointMet)} met, ${n(brief.endpointMissed)} missed, and ${n(brief.endpointMixed)} mixed readable primary results in our JAK/TYK2 cohort show why evidence must be read by indication and molecule.`,
+    dek: `Among ${n(brief.endpointCompleted)} completed JAK/TYK2 cohort trials, ${n(brief.endpointReadable)} had a primary result readable by our method: ${n(brief.endpointMet)} met, ${n(brief.endpointMissed)} missed, and ${n(brief.endpointMixed)} were mixed. The pattern rejects a single class verdict and points instead to indication, molecule, exposure, and endpoint.`,
+    facts: [
+      `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials had a readable posted primary result (${readableShare}).`,
+      `Within that readable subset, ${n(brief.endpointMet)} met, ${n(brief.endpointMissed)} missed, and ${n(brief.endpointMixed)} were mixed across co-primary outcomes.`,
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials stopped for a biological reason (${rate}; 95% CI ${interval}).`,
+      `The stop rate was not statistically unusual after multiplicity correction; the comparator was ${n(brief.referenceStops)} of ${n(brief.referenceClosed)} (${referenceRate}).`,
+      `The ${n(brief.biologicalStops)} stops resolved to ${n(brief.molecules)} molecules and ${n(brief.stopProgrammes)} programmes, with ${n(brief.stopsFromOwnData)} based on own-trial evidence and ${n(brief.stopsFromProgrammeCascade)} programme cascade.`,
+    ],
+    sections: [
+      {
+        heading: "One target-family label hides several pharmacologies",
+        body: [
+          "JAK/TYK2 is a useful retrieval label, not one uniform intervention. The cohort spans molecules with different kinase selectivity, allosteric versus active-site modulation, doses, tissue exposure, and combination or background therapies. Those differences alter both which cytokine pathways are suppressed and how much systemic safety burden may accompany the intended effect.",
+          "This is why a class-level count should begin a clinical review, not end it. Baricitinib in systemic lupus erythematosus, cravacitinib in Crohn's disease, and filgotinib or upadacitinib in rheumatoid arthritis or ulcerative colitis do not test interchangeable biological propositions.",
+        ],
+      },
+      {
+        heading: "The endpoint evidence runs in both directions",
+        body: [
+          `The readable results contain ${n(brief.endpointMet)} met, ${n(brief.endpointMissed)} missed, and ${n(brief.endpointMixed)} mixed primary readouts. That is not a ${pctFromCounts(brief.endpointMet, brief.endpointReadable)} class success rate: only ${readableShare} of completed trials were readable, the cohort is heterogeneous, and related trials are not statistically independent.`,
+          "It is nevertheless biologically useful. The coexistence of clear positive and negative readouts means pathway modulation can produce clinical benefit in some contexts without making every disease, molecule, dose, or endpoint tractable. A new programme needs an indication-specific bridge, not just class precedent.",
+        ],
+      },
+      {
+        heading: "The negative examples are clinically specific",
+        body: [
+          "The missed-results layer includes baricitinib on SRI-4 in systemic lupus erythematosus, cravacitinib on remission in Crohn's disease, brepocitinib readouts in lupus and psoriasis, and filgotinib-containing studies in Crohn's and cutaneous lupus. These failures span different compounds and diseases, but they do not distribute evenly enough to support a universal mechanism claim.",
+          "The stop records reinforce that specificity. Two Phase III baricitinib SLE studies ended for insufficient evidence of a positive benefit–risk profile; a cravacitinib Crohn's trial ended for lack of acute-phase efficacy; and an upadacitinib combination extension closed after the feeder study showed no differentiated clinical effect.",
+        ],
+      },
+      {
+        heading: "Positive readouts prevent a class-failure narrative",
+        body: [
+          "The same generated evidence package records met primary results for filgotinib in rheumatoid arthritis and upadacitinib in ulcerative colitis, among other examples. NCT02889796 reports a met ACR20 endpoint for filgotinib on methotrexate background; NCT02819635 reports clinical remission for upadacitinib in ulcerative colitis.",
+          "Those examples do not rescue a negative SLE or Crohn's study. They show why the clinically relevant unit is closer to molecule × exposure × indication × endpoint. Evidence transfers only after those dimensions are compared explicitly.",
+        ],
+      },
+      {
+        heading: "Benefit–risk can fail without a new safety surprise",
+        body: [
+          "The baricitinib SLE stop language is especially instructive: it says the safety findings were consistent with the known profile, while the evidence was still insufficient to support a positive benefit–risk balance. Familiar risk does not become irrelevant; it must be justified by the benefit observed in that disease and treatment setting.",
+          "For chronic immune disease, that balance also depends on available alternatives, baseline severity, duration of exposure, and whether broad kinase inhibition is necessary for the desired effect. Greater selectivity may change the equation, but it must demonstrate clinical benefit rather than rely on a pharmacology label alone.",
+        ],
+      },
+      {
+        heading: "A practical decision matrix for the next asset",
+        body: [
+          "First match disease compartment and endpoint to the positive and negative precedents. Then compare target profile and exposure: which JAK-family members are inhibited at the clinical dose, and in which tissue? Next examine background therapy and comparator, because an incremental effect is harder to show when control treatment is effective.",
+          `Finally, keep the evidence layers separate. The biological-stop rate is ${rate} and does not stand out after multiplicity correction; the readable endpoint layer contains much more information but covers only ${n(brief.endpointReadable)} completed trials. Together they support indication-level diligence—not a blanket endorsement or rejection of JAK/TYK2 biology.`,
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Three outcome layers answer different questions",
+        columns: ["Evidence layer", "What our data contains"],
+        rows: [
+          ["Biological trial stops", `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials (${rate})`],
+          ["Readable completed-trial results", `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials (${readableShare})`],
+          ["Readable results that met", n(brief.endpointMet)],
+          ["Readable results that missed", n(brief.endpointMissed)],
+          ["Readable results that were mixed", n(brief.endpointMixed)],
+        ],
+      },
+      {
+        heading: "Why indication changes the interpretation",
+        columns: ["Selected evidence", "Clinical reading"],
+        rows: [
+          ["Baricitinib · SLE", "Missed SRI-4 result and two benefit–risk programme stops"],
+          ["Cravacitinib · Crohn's disease", "Missed remission result and a separate acute-phase efficacy stop"],
+          ["Brepocitinib · SLE / psoriasis", "Readable primary results missed in both settings"],
+          ["Filgotinib · rheumatoid arthritis", "Readable Phase III ACR20 primary results met"],
+          ["Upadacitinib · ulcerative colitis", "Readable clinical-remission primary result met"],
+        ],
+      },
+      {
+        heading: "Questions to answer before transferring class evidence",
+        columns: ["Dimension", "Diligence question"],
+        rows: [
+          ["Indication", "Is the pathogenic cytokine dependence comparable to the precedent?"],
+          ["Molecule", "Which JAK/TYK2 targets are inhibited at clinical exposure?"],
+          ["Dose and tissue", "Is target engagement achieved where disease biology resides?"],
+          ["Trial context", "What background therapy, comparator, and disease severity shape the effect size?"],
+          ["Endpoint", "Does the measure capture the pathway's plausible clinical contribution?"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the JAK / TYK2 mechanism brief",
+        text: "Review the cohort definition, stop records, endpoint evidence, and missing-results limitations.",
+      },
+      {
+        href: "/trial/NCT03616964?tab=results",
+        label: "Baricitinib in SLE: missed SRI-4 result",
+        text: "Inspect the posted Phase III primary comparison and confidence interval.",
+      },
+      {
+        href: "/trial/NCT02889796?tab=results",
+        label: "Filgotinib in rheumatoid arthritis: met ACR20 result",
+        text: "Compare a positive Phase III result from the same broad target-family cohort.",
+      },
+      {
+        href: "/trial/NCT03843125",
+        label: "Baricitinib in SLE: benefit–risk stop",
+        text: "Read why known safety findings could coexist with an insufficient benefit–risk profile.",
+      },
+    ],
+  };
+}
+
 function hydrateAmyloidBetaArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const brief = stats.mechanismBriefs.amyloidBetaAntibodies;
   const rate = pctFromRatio(brief.rate);
@@ -5174,6 +5478,12 @@ function hydrateTgfBetaPdL1Article(article: InsightArticle, stats: InsightStats)
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "bace1-inhibitor-efficacy-safety-trial-stops") {
+    return hydrateBaceSecretaseArticle(article, stats);
+  }
+  if (article.slug === "jak-tyk2-clinical-results-depend-on-indication") {
+    return hydrateJakTyk2Article(article, stats);
+  }
   if (article.slug === "amyloid-beta-antibody-trial-stops-programme-cascades") {
     return hydrateAmyloidBetaArticle(article, stats);
   }
