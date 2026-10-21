@@ -24,6 +24,7 @@
 /public/trials-index.json
 /public/trials-index-shards/
 /public/trial-shards/
+/public/related-shards/
 
 # misc
 .DS_Store

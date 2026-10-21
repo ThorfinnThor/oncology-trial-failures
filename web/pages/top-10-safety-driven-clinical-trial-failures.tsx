@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { href: "/clinical-trial-failures", label: "Clinical trial failures guide", text: "Understand stopped-trial classification." },
         { href: "/failed-clinical-trials", label: "Failed clinical trials", text: "Review broader stopped-trial evidence." },
         { href: "/explore?bucket=SAFETY", label: "Explore safety records", text: "Open the database filtered to safety signals." },
+        { href: "/top-10-phase-2-clinical-trial-failure-signals", label: "Top 10 Phase II failure signals", text: "Phase II interventions with repeated stop signals." },
       ],
     },
   };

@@ -12,9 +12,12 @@ import briefsIndex from "@/data/briefs_index.json";
 import catalogue from "@/data/evidence_catalogue.json";
 import { pluralModality } from "@/lib/modality";
 import { LICENSING_EMAIL } from "@/lib/licensing";
+import { trialPath } from "@/lib/seoUrls";
 
 type Brief = (typeof briefsIndex.briefs)[number];
-type Props = { brief: Brief };
+// Our own page for each trial the brief lists, so the brief links into the site, not only out to the
+// registry. Only the trials the brief already shows are looked up: nothing is listed that was not.
+type Props = { brief: Brief; trialPaths: Record<string, string> };
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const pct = (v: number, digits = 1) => `${(v * 100).toFixed(digits)}%`;
@@ -28,10 +31,20 @@ export const getStaticPaths: GetStaticPaths = async () => ({
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   const brief = (briefsIndex.briefs as Brief[]).find((b) => b.slug === params?.slug);
   if (!brief) return { notFound: true };
-  return { props: { brief } };
+  const shown = new Set(
+    [...brief.trials_preview, ...(((brief as any).endpoint_trials || []) as { nct_id: string }[])].map((t) =>
+      t.nct_id.toUpperCase()
+    )
+  );
+  const { loadIndexServer } = await import("@/lib/server-data");
+  const trialPaths: Record<string, string> = {};
+  for (const row of await loadIndexServer()) {
+    if (shown.has(row.nct_id.toUpperCase())) trialPaths[row.nct_id.toUpperCase()] = trialPath(row);
+  }
+  return { props: { brief, trialPaths } };
 };
 
-export default function BriefPage({ brief }: Props) {
+export default function BriefPage({ brief, trialPaths }: Props) {
 
   const area = brief.area.toLowerCase();
   const AREA_LABEL: Record<string, string> = {
@@ -507,8 +520,15 @@ export default function BriefPage({ brief }: Props) {
                     {endpointTrials.map((t) => (
                       <tr key={t.nct_id}>
                         <td className="mono">
-                          <a className="link" href={t.results_url} target="_blank" rel="noopener noreferrer">
-                            {t.nct_id}
+                          {trialPaths[t.nct_id.toUpperCase()] ? (
+                            <Link className="link" href={trialPaths[t.nct_id.toUpperCase()]}>
+                              {t.nct_id}
+                            </Link>
+                          ) : (
+                            t.nct_id
+                          )}{" "}
+                          <a className="ext" href={t.results_url} target="_blank" rel="noopener noreferrer" aria-label={`Results for ${t.nct_id} on ClinicalTrials.gov`}>
+                            ↗
                           </a>
                         </td>
                         <td>{t.phase}</td>
@@ -553,8 +573,15 @@ export default function BriefPage({ brief }: Props) {
                   {brief.trials_preview.map((t) => (
                     <tr key={t.nct_id}>
                       <td className="mono">
-                        <a className="link" href={t.registry_url} target="_blank" rel="noopener noreferrer">
-                          {t.nct_id}
+                        {trialPaths[t.nct_id.toUpperCase()] ? (
+                          <Link className="link" href={trialPaths[t.nct_id.toUpperCase()]}>
+                            {t.nct_id}
+                          </Link>
+                        ) : (
+                          t.nct_id
+                        )}{" "}
+                        <a className="ext" href={t.registry_url} target="_blank" rel="noopener noreferrer" aria-label={`${t.nct_id} on ClinicalTrials.gov`}>
+                          ↗
                         </a>
                       </td>
                       <td>{t.phase}</td>
@@ -836,6 +863,15 @@ export default function BriefPage({ brief }: Props) {
           font-family: var(--font-mono);
           font-size: 12.5px;
           white-space: nowrap;
+        }
+        .mono .ext {
+          margin-left: 2px;
+          color: var(--text-muted);
+          font-size: 11px;
+          text-decoration: none;
+        }
+        .mono .ext:hover {
+          color: var(--accent);
         }
         .reason {
           min-width: 280px;

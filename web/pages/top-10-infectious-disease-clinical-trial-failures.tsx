@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { href: "/clinical-trial-failures", label: "Clinical trial failures guide", text: "Understand how stopped-trial records are classified." },
         { href: "/clinical-trial-futility", label: "Futility signals", text: "Review weak efficacy and failed endpoint language." },
         { href: "/explore?area=Infectious%20Disease", label: "Explore infectious disease records", text: "Open the database filtered to infectious disease." },
+        { href: "/top-10-safety-driven-clinical-trial-failures", label: "Top 10 safety-driven failures", text: "Trials stopped for safety, ranked by intervention." },
       ],
     },
   };

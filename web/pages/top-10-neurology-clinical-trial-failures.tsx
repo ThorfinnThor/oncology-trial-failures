@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { href: "/failures/neurology", label: "Neurology failure hub", text: "Review crawlable neurology stopped-trial records." },
         { href: "/why-clinical-trials-fail", label: "Why trials fail", text: "Separate biological and non-biological stop reasons." },
         { href: "/explore?area=Neurology", label: "Explore neurology records", text: "Open the live database filtered to neurology." },
+        { href: "/top-10-infectious-disease-clinical-trial-failures", label: "Top 10 infectious disease failures", text: "Infectious disease interventions with repeated stop signals." },
       ],
     },
   };

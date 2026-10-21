@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { href: "/failures/oncology", label: "Oncology evidence hub", text: "Review classification outcomes and source-linked oncology records." },
         { href: "/clinical-trial-futility", label: "Futility signals", text: "Focus on weak efficacy and failed endpoint language." },
         { href: "/explore?area=Oncology", label: "Explore oncology records", text: "Open the live database filtered to oncology." },
+        { href: "/top-10-neurology-clinical-trial-failures", label: "Top 10 neurology failures", text: "Neurology interventions with repeated stop signals." },
       ],
     },
   };
