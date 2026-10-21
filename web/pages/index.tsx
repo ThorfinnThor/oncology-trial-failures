@@ -37,6 +37,7 @@ const TITLE = "Clinical Trial Failures: why clinical trials stop";
 const DESCRIPTION =
   "Search 23,000+ stopped clinical trials classified by why they stopped. Find efficacy, futility, safety, recruitment, business, funding, and regulatory stop signals linked to ClinicalTrials.gov.";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
+const ASSET_EXAMPLES = ["PD-L1", "KRAS", "HER2 ADC", "osimertinib"];
 
 type SampleTrial = {
   nctId: string;
@@ -334,28 +335,40 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
                   <span className="v2ReleaseDivider" aria-hidden="true" />
                   <span>{compactNumber(v2.resolved)} resolved records</span>
                 </div>
-                <h1 id="v2-hero-title">Clinical trial stops,<span>reclassified.</span></h1>
+                <h1 id="v2-hero-title">Has a drug with your target<span>failed before?</span></h1>
                 <p className="v2HeroLede">
-                  A searchable evidence layer for terminated, suspended, and withdrawn trials. Separate likely biological failure signals from recruitment, funding, strategy, and other non-biological causes — and see which completed trials missed their primary endpoint.
+                  Name a molecule, target or mechanism. See which trials against it were stopped for efficacy, futility or safety — kept apart from recruitment, funding and strategy stops — and which completed trials missed their primary endpoint.
                 </p>
 
-                <form className="v2Search" action="/explore" method="get" role="search">
-                  <label className="sr-only" htmlFor="v2-home-search">Search the clinical trial failure database</label>
+                {/* The buyer's question first: the asset check reads ?q= and runs on arrival. */}
+                <form className="v2Search" action="/asset-check" method="get" role="search">
+                  <label className="sr-only" htmlFor="v2-home-asset">Check a molecule, target or mechanism</label>
                   <span className="v2SearchPrompt" aria-hidden="true">/</span>
-                  <input id="v2-home-search" name="q" type="search" placeholder="NCT ID, sponsor, drug, disease area..." />
-                  <button type="submit">Search database</button>
+                  <input id="v2-home-asset" name="q" type="search" placeholder="Molecule, target or mechanism" autoComplete="off" />
+                  <button type="submit">Check a molecule</button>
                 </form>
-
-                <div className="v2HeroActions">
-                  <Link href="/explore" className="v2PrimaryAction">Open database <span aria-hidden="true">→</span></Link>
-                  <Link href="/methods" className="v2SecondaryAction">Read the method</Link>
+                <div className="v2HeroExamples">
+                  <span>Try</span>
+                  {ASSET_EXAMPLES.map((example) => (
+                    <Link href={`/asset-check?q=${encodeURIComponent(example)}`} key={example}>{example}</Link>
+                  ))}
                 </div>
 
-                <dl className="v2HeroMetrics" aria-label="Dataset metrics">
-                  <div><dt>Registry records</dt><dd>{compactNumber(stats.trialCount)}</dd></div>
-                  <div><dt>Biological signals</dt><dd>{compactNumber(v2.biological)}</dd></div>
-                  <div><dt>Biological precision (held-out)</dt><dd>{qualityPercent(v2.heldoutBiologicalPrecision)}</dd></div>
-                </dl>
+                <Link href="/validation" className="v2HeroValidation" aria-label="Held-out validation results">
+                  <dl className="v2HeroMetrics">
+                    <div><dt>Biological precision</dt><dd>{qualityPercent(v2.heldoutBiologicalPrecision)}</dd></div>
+                    <div><dt>Biological recall</dt><dd>{qualityPercent(v2.heldoutBiologicalRecall)}</dd></div>
+                    <div><dt>Stopped trials read</dt><dd>{compactNumber(stats.trialCount)}</dd></div>
+                  </dl>
+                  <span className="v2HeroValidationNote">
+                    Held-out validation, blind double annotation, n={v2.heldoutSampleSize || 600} <span aria-hidden="true">→</span>
+                  </span>
+                </Link>
+
+                <div className="v2HeroActions">
+                  <Link href="/explore" className="v2SecondaryAction">Search all {compactNumber(stats.trialCount)} trials</Link>
+                  <Link href="/methods" className="v2SecondaryAction">Read the method</Link>
+                </div>
               </div>
 
               <div className="v2Console" aria-label="Live sample of classified trial records">
@@ -669,7 +682,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .v2Pulse{width:8px;height:8px;border-radius:50%;background:var(--v2-green);box-shadow:0 0 0 4px rgba(129,140,248,.18)}
         .v2ReleaseDivider{width:1px;height:14px;background:#4e5a5e}
         .v2Hero h1,.v2Signals h2,.v2Method h2,.v2Workflows h2,.v2Trust h2,.v2Home h3,.v2Home h4,.v2Home p{margin:0;letter-spacing:0}
-        .v2Hero h1{max-width:620px;font-size:clamp(3rem,5.4vw,5.35rem);font-weight:850;line-height:.98}
+        .v2Hero h1{max-width:620px;font-size:clamp(2.6rem,4.1vw,4.2rem);font-weight:850;line-height:1}
         .v2Hero h1 span{display:block;color:var(--v2-green)}
         .v2HeroLede{max-width:650px;margin-top:24px!important;color:#c8d0cd;font-size:17px;line-height:1.65}
         .v2Search{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;max-width:650px;min-height:56px;margin-top:28px;border:1px solid #485259;background:#171d21}
@@ -677,6 +690,8 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .v2Search input{min-width:0;height:54px;border:0;outline:0;padding:0 12px;background:transparent;color:#fff;font-family:var(--font-mono);font-size:13px}
         .v2Search input::placeholder{color:#94a3b8}.v2Search button{align-self:stretch;border:0;border-left:1px solid #475569;background:var(--v2-green-deep);color:#fff;padding:0 18px;font-size:13px;font-weight:850;cursor:pointer}.v2Search button:hover,.v2Search button:focus-visible{background:#4338ca}
         .v2HeroActions{display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:20px}.v2PrimaryAction,.v2SecondaryAction{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:43px;font-size:13px;font-weight:800}.v2PrimaryAction{padding:0 16px;background:#f7faf6;color:var(--v2-ink)}.v2SecondaryAction{color:#d9e0dd;text-decoration:underline;text-underline-offset:4px}
+        .v2HeroExamples{display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:650px;margin-top:12px;font-size:12px}.v2HeroExamples>span{color:#94a3b8;font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase}.v2HeroExamples a{padding:4px 9px;border:1px solid #475569;color:#e2e8f0;font-family:var(--font-mono);font-size:11px}.v2HeroExamples a:hover,.v2HeroExamples a:focus-visible{border-color:var(--v2-green);color:#fff}
+        .v2HeroValidation{display:block;max-width:650px;margin-top:26px;color:inherit}.v2HeroValidation .v2HeroMetrics{margin-top:0}.v2HeroValidationNote{display:block;margin-top:9px;color:#a5b4fc;font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase}.v2HeroValidation:hover .v2HeroValidationNote,.v2HeroValidation:focus-visible .v2HeroValidationNote{color:#fff;text-decoration:underline;text-underline-offset:3px}
         .v2HeroMetrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));max-width:650px;margin:30px 0 0;padding:0;border-top:1px solid #3c454a;border-bottom:1px solid #3c454a}.v2HeroMetrics div{padding:15px 15px 16px 0;border-right:1px solid #3c454a}.v2HeroMetrics div+div{padding-left:15px}.v2HeroMetrics div:last-child{border-right:0}.v2HeroMetrics dt{color:#879398;font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase}.v2HeroMetrics dd{margin:7px 0 0;color:#fff;font-family:var(--font-mono);font-size:18px;font-weight:800;font-variant-numeric:tabular-nums}
         .v2Console{min-width:0;overflow:hidden;border:1px solid #475569;background:#111827;box-shadow:18px 22px 0 rgba(79,70,229,.18)}
         .v2ConsoleHeader,.v2ConsoleFooter{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 14px;color:#94a3b8;font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase}.v2ConsoleHeader{border-bottom:1px solid #334155}.v2ConsoleHeader div{display:flex;align-items:center;gap:8px}.v2ConsoleDot{width:7px;height:7px;border-radius:50%;background:var(--v2-green)}
@@ -712,7 +727,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .v2Trust{padding:58px 0;background:#eef2ff;border-top:1px solid #dbe3f2}.v2TrustInner{grid-template-columns:minmax(260px,.85fr) minmax(360px,1fr) auto;align-items:center}.v2Trust h2{max-width:470px;font-size:clamp(1.65rem,2.6vw,2.5rem)}.v2TrustInner>p{color:var(--v2-copy);font-size:13px;line-height:1.65}.v2TrustLinks{display:grid;gap:9px;min-width:100px}.v2TrustLinks a{color:var(--v2-green-deep);font-size:12px;font-weight:850;text-decoration:underline;text-underline-offset:3px}
         .v2Footer{padding:28px 0;background:var(--v2-ink);color:#fff}.v2FooterInner{display:flex;align-items:center;justify-content:space-between;gap:32px}.v2Footer strong{font-size:13px}.v2Footer p{margin:5px 0 0;color:#94a3b8;font-size:11px}.v2Footer nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:18px}.v2Footer a{color:#cbd5e1;font-size:11px;font-weight:750}.v2Footer a:hover{color:var(--v2-green)}
         @media(max-width:1080px){.v2HeroGrid{grid-template-columns:1fr}.v2HeroCopy{max-width:760px}.v2Console{max-width:860px}.v2NewsletterBox{grid-template-columns:1fr}.v2NewsletterSignup{border-top:1px solid #cbd5e1;border-left:0}.v2NewsletterSignup form{max-width:620px}.v2SignalLayout{grid-template-columns:1fr}.v2CauseIndex{min-height:410px}.v2TrustInner{grid-template-columns:1fr 1fr}.v2TrustLinks{grid-column:1/-1;grid-template-columns:repeat(3,auto);justify-content:start}}
-        @media(max-width:780px){.v2Container{padding:0 16px}.v2Hero{padding:42px 0 40px}.v2HeroGrid{gap:38px}.v2Hero h1{font-size:clamp(2.75rem,13vw,4rem)}.v2Newsletter{padding:20px 0}.v2NewsletterCopy,.v2NewsletterSignup{padding:26px 24px}.v2NewsletterBenefits{grid-template-columns:1fr}.v2NewsletterBenefits li,.v2NewsletterBenefits li+li{padding:11px 0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2NewsletterBenefits li:last-child{border-bottom:0}.v2SectionIntro,.v2MethodHeader,.v2TrustInner,.v2QuestionIntro{grid-template-columns:1fr;gap:20px}.v2QuestionGrid{grid-template-columns:1fr}.v2QuestionCard{min-height:0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2QuestionCard:last-child{border-bottom:0}.v2QuestionCard>em{margin-top:22px}.v2MethodLink{justify-self:start}.v2BiologicalGrid{grid-template-columns:1fr}.v2BiologicalItem{min-height:210px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-bottom:0}.v2Pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:nth-child(-n+2){border-bottom:1px solid #cbd5e1}.v2WorkflowGrid{grid-template-columns:1fr}.v2Workflow{min-height:230px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2Workflow:last-child{border-bottom:0}.v2FooterInner{align-items:flex-start;flex-direction:column}.v2Footer nav{justify-content:flex-start}}
+        @media(max-width:780px){.v2Container{padding:0 16px}.v2Hero{padding:42px 0 40px}.v2HeroGrid{gap:38px}.v2Hero h1{font-size:clamp(2.4rem,11vw,3.4rem)}.v2Newsletter{padding:20px 0}.v2NewsletterCopy,.v2NewsletterSignup{padding:26px 24px}.v2NewsletterBenefits{grid-template-columns:1fr}.v2NewsletterBenefits li,.v2NewsletterBenefits li+li{padding:11px 0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2NewsletterBenefits li:last-child{border-bottom:0}.v2SectionIntro,.v2MethodHeader,.v2TrustInner,.v2QuestionIntro{grid-template-columns:1fr;gap:20px}.v2QuestionGrid{grid-template-columns:1fr}.v2QuestionCard{min-height:0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2QuestionCard:last-child{border-bottom:0}.v2QuestionCard>em{margin-top:22px}.v2MethodLink{justify-self:start}.v2BiologicalGrid{grid-template-columns:1fr}.v2BiologicalItem{min-height:210px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-bottom:0}.v2Pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:nth-child(-n+2){border-bottom:1px solid #cbd5e1}.v2WorkflowGrid{grid-template-columns:1fr}.v2Workflow{min-height:230px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2Workflow:last-child{border-bottom:0}.v2FooterInner{align-items:flex-start;flex-direction:column}.v2Footer nav{justify-content:flex-start}}
         @media(max-width:600px){.v2ReleaseLine{align-items:flex-start}.v2ReleaseDivider{display:none}.v2HeroLede{font-size:15px}.v2Search{grid-template-columns:auto minmax(0,1fr)}.v2Search button{grid-column:1/-1;min-height:44px;border-top:1px solid #475569;border-left:0}.v2HeroActions{align-items:stretch;flex-direction:column;gap:10px}.v2PrimaryAction,.v2SecondaryAction{width:100%}.v2HeroMetrics{grid-template-columns:1fr}.v2HeroMetrics div,.v2HeroMetrics div+div{padding:12px 0;border-right:0;border-bottom:1px solid #334155}.v2HeroMetrics div:last-child{border-bottom:0}.v2Console{box-shadow:8px 10px 0 rgba(79,70,229,.18)}.v2ConsoleSummary{grid-template-columns:1fr 1fr}.v2ConsoleSummary div:nth-child(2){border-right:0}.v2ConsoleSummary div:last-child{grid-column:1/-1;border-top:1px solid #334155}.v2ConsoleRows{min-height:0}.v2ConsoleRow{grid-template-columns:24px minmax(0,1fr) 16px;min-height:0}.v2ConsoleRow .v2Tag,.v2Evidence{grid-column:2/-1}.v2RowArrow{grid-column:3;grid-row:1}.v2ConsoleFooter{align-items:flex-start;flex-direction:column}.v2Signals,.v2Method,.v2Workflows{padding:56px 0}.v2Signals h2,.v2Method h2,.v2Workflows h2{font-size:2.15rem}.v2PanelHeading,.v2CauseIndexHeader{align-items:flex-start;flex-direction:column}.v2PanelTotal{text-align:left}.v2CauseRow{grid-template-columns:minmax(0,1fr) 58px}.v2CauseTrack{grid-column:1/-1;grid-row:2;margin-bottom:9px}.v2CauseRow strong{grid-column:2;grid-row:1}.v2Pipeline{grid-template-columns:1fr}.v2Pipeline li{min-height:180px;border-right:0;border-bottom:1px solid #cbd5e1}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:last-child{border-bottom:0}.v2AuditStrip{align-items:flex-start;flex-direction:column}.v2TrustLinks{grid-template-columns:1fr}}
       `}</style>
     </>
