@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { href: "/sponsors", label: "Sponsor hubs", text: "Open crawlable sponsor pages." },
         { href: "/sponsor-insights", label: "Sponsor insights", text: "Drill down into sponsors and stop-reason distributions." },
         { href: "/explore", label: "Explore database", text: "Search and filter stopped clinical trial records." },
+        { href: "/top-10-oncology-clinical-trial-failures", label: "Top 10 oncology failures", text: "Oncology interventions with repeated biological stop signals." },
       ],
     },
   };

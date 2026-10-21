@@ -45,6 +45,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { href: "/clinical-trial-futility", label: "Clinical trial futility", text: "Focus on weak efficacy and futility language." },
         { href: "/failed-endpoint-clinical-trials", label: "Failed endpoint guide", text: "Understand endpoint failure signals." },
         { href: "/explore?phase=PHASE2", label: "Explore Phase II records", text: "Open the database filtered to Phase II." },
+        { href: "/top-10-pharma-companies-clinical-trial-failure-share", label: "Top 10 pharma companies by failure share", text: "Large sponsors compared by biological stop share." },
       ],
     },
   };

@@ -16,6 +16,10 @@ const shardFiles = (await readdir(shardDir)).filter((name) => name.endsWith(".js
 if (shardFiles.length !== 256) {
   throw new Error(`Expected 256 trial shards, found ${shardFiles.length}.`);
 }
+const relatedFiles = (await readdir(path.join(assetsDir, "related-shards"))).filter((name) => name.endsWith(".json"));
+if (relatedFiles.length !== 256) {
+  throw new Error(`Expected 256 related-link shards, found ${relatedFiles.length}.`);
+}
 
 // Bulk dataset files are licensed products and are never deployed. The site itself
 // only needs the index/detail shards, dataset_meta.json, ingest_changes.json and

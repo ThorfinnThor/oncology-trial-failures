@@ -6,12 +6,14 @@
 import path from "path";
 import { promises as fs } from "fs";
 
+import type { TrialRelatedLinks } from "./relatedLinks";
 import { trialShardKey } from "./trial-sharding";
 import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
 
 let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
 const _detailShards = new Map<string, TrialDetail[]>();
+const _relatedShards = new Map<string, Record<string, TrialRelatedLinks>>();
 const INDEX_SHARD_KEYS = Array.from({ length: 16 }, (_, bucket) => bucket.toString(16));
 
 type StaticAssetsBinding = {
@@ -136,4 +138,23 @@ export async function loadDetailServer(nctId: string): Promise<TrialDetail | nul
     conditions: row.conditions || row.condition_first || "",
     intervention_names: row.intervention_names || row.intervention_first || "",
   };
+}
+
+// Sponsor hub, briefs and similar trials for one trial page (scripts/generate-related-links.ts).
+// Optional: a build without the shards renders the page without the related section.
+export async function loadRelatedLinksServer(nctId: string): Promise<TrialRelatedLinks | null> {
+  const normalizedId = (nctId || "").trim().toUpperCase();
+  if (!normalizedId) return null;
+
+  const key = trialShardKey(normalizedId);
+  let shard = _relatedShards.get(key);
+  if (!shard) {
+    try {
+      shard = await readJsonServerAsset<Record<string, TrialRelatedLinks>>(`public/related-shards/${key}.json`);
+      _relatedShards.set(key, shard);
+    } catch {
+      return null;
+    }
+  }
+  return shard[normalizedId] || null;
 }

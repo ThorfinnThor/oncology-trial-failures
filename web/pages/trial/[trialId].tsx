@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { loadDetail, loadMeta } from "@/lib/data";
 import { DatasetMeta, EndpointResult, TrialDetail } from "@/lib/types";
+import type { TrialRelatedLinks } from "@/lib/relatedLinks";
 import { parsePhases, phaseLabel, reasonBucket } from "@/lib/filtering";
 import { resolveClassification } from "@/lib/classificationResolution";
 import { extractNctId, trialPath } from "@/lib/seoUrls";
@@ -26,6 +27,7 @@ type TrialPageProps = {
   initialMeta: DatasetMeta | null;
   initialTrial: TrialDetail | null;
   initialSeoState: SeoIndexingState | null;
+  initialRelated: TrialRelatedLinks | null;
 };
 
 function phaseChipClass(phaseKey: string) {
@@ -132,7 +134,7 @@ const ENDPOINT_HEADING: Record<EndpointResult["verdict"], string> = {
   MIXED: "The primary comparisons split",
 };
 
-export default function TrialPage({ initialMeta, initialTrial, initialSeoState }: TrialPageProps) {
+export default function TrialPage({ initialMeta, initialTrial, initialSeoState, initialRelated }: TrialPageProps) {
   const router = useRouter();
 
   const trialParam = useMemo(
@@ -196,6 +198,8 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
   const reasonHubHref = ["DECISION ONLY", "PROGRAM STOP ONLY"].includes(bucket)
     ? null
     : reasonHubPath(bucket);
+  // Built for the trial the page was rendered for; a client-side switch to another trial drops it.
+  const related = initialRelated && initialTrial?.nct_id === trial?.nct_id ? initialRelated : null;
   const classificationStatus = classification?.reviewRequired
     ? "Review required"
     : classification?.resolutionStatus === "RESOLVED"
@@ -496,6 +500,24 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
                   </div>
                 </section>
 
+                {related?.similar.length ? (
+                  <section className="trialSimilar" aria-labelledby="trial-similar-title">
+                    <div className="trialEyebrow">Same disease area, same stop reason</div>
+                    <h2 id="trial-similar-title">Similar stopped trials</h2>
+                    <ul>
+                      {related.similar.map((item) => (
+                        <li key={item.nct_id}>
+                          <Link href={item.href}>
+                            <span className="trialMono">{item.nct_id}</span>
+                            <strong>{item.title}</strong>
+                            <small>{item.sponsor}</small>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ) : null}
+
                 <nav className="trialRelated" aria-label="Related evidence">
                   <span>Continue exploring:</span>
                   {trial.disease_area ? (
@@ -505,11 +527,18 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
                   ) : null}
                   <Link href={phaseHubPath(phaseKey)}>{phaseLabel(phaseKey)} evidence hub</Link>
                   {reasonHubHref ? <Link href={reasonHubHref}>{reasonLabel} evidence hub</Link> : null}
-                  {trial.lead_sponsor ? (
+                  {related?.sponsor ? (
+                    <Link href={related.sponsor.href}>All stopped trials from {related.sponsor.label}</Link>
+                  ) : trial.lead_sponsor ? (
                     <Link href={`/explore?sponsor=${encodeURIComponent(trial.lead_sponsor)}`}>
                       More from {trial.lead_sponsor}
                     </Link>
                   ) : null}
+                  {related?.briefs.map((brief) => (
+                    <Link href={brief.href} key={brief.href}>
+                      {brief.label} mechanism brief
+                    </Link>
+                  ))}
                   {outcomeCode === "BIOLOGICAL_FAILURE" ? (
                     <Link href="/failed-clinical-trials">Biological failure signals</Link>
                   ) : (
@@ -761,6 +790,55 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
           justify-content: flex-end;
           gap: 10px;
         }
+        .trialSimilar {
+          margin-top: 16px;
+          padding: 20px 4px 4px;
+        }
+        .trialSimilar h2 {
+          margin: 0;
+          font-size: 20px;
+          line-height: 1.25;
+          letter-spacing: 0;
+        }
+        .trialSimilar ul {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+          margin: 14px 0 0;
+          padding: 0;
+          list-style: none;
+        }
+        .trialSimilar li :global(a) {
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+          height: 100%;
+          padding: 14px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          background: #fff;
+          color: var(--text);
+        }
+        .trialSimilar li :global(a:hover) {
+          border-color: var(--accent);
+        }
+        .trialSimilar .trialMono {
+          color: var(--accent);
+          font-size: 12px;
+          font-weight: 800;
+        }
+        .trialSimilar strong {
+          font-size: 13px;
+          line-height: 1.4;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .trialSimilar small {
+          color: var(--text-muted);
+          font-size: 12px;
+        }
         .trialRelated {
           display: flex;
           flex-wrap: wrap;
@@ -783,6 +861,9 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState }
           }
           .trialFactsGrid {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+          }
+          .trialSimilar ul {
+            grid-template-columns: 1fr;
           }
           .trialProvenance {
             align-items: flex-start;
@@ -842,9 +923,13 @@ export const getStaticProps: GetStaticProps<TrialPageProps> = async (ctx) => {
   const trialId = extractNctId(String(ctx.params?.trialId || "").trim());
   if (!trialId) return { notFound: true };
 
-  const { loadMetaServer, loadDetailServer } = await import("@/lib/server-data");
+  const { loadMetaServer, loadDetailServer, loadRelatedLinksServer } = await import("@/lib/server-data");
   const { readSeoIndexingFeatures, resolveSeoIndexingPolicy } = await import("@/lib/seoIndexingPolicy");
-  const [meta, trial] = await Promise.all([loadMetaServer(), loadDetailServer(trialId)]);
+  const [meta, trial, related] = await Promise.all([
+    loadMetaServer(),
+    loadDetailServer(trialId),
+    loadRelatedLinksServer(trialId),
+  ]);
 
   if (!trial) {
     return { notFound: true, revalidate: 3600 };
@@ -870,6 +955,7 @@ export const getStaticProps: GetStaticProps<TrialPageProps> = async (ctx) => {
       initialMeta: meta,
       initialTrial: trial,
       initialSeoState: seoPolicy.effective,
+      initialRelated: related,
     },
     // ISR: refresh the static HTML occasionally without changing UX/design.
     revalidate: 24 * 60 * 60,

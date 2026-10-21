@@ -294,6 +294,7 @@ export function buildReferencePage(
       related: [
         { href: "/top-10-oncology-clinical-trial-failures", label: "Oncology intervention ranking", text: "Compare repeated oncology intervention signals." },
         { href: "/top-10-neurology-clinical-trial-failures", label: "Neurology intervention ranking", text: "Review repeated neurology stop signals." },
+        { href: "/top-10-infectious-disease-clinical-trial-failures", label: "Infectious disease intervention ranking", text: "Review repeated infectious disease stop signals." },
         { href: "/failures", label: "Disease-area hubs", text: "Open each disease-area record directory." },
       ],
       updated: meta.version,
