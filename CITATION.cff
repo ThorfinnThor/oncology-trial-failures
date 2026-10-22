@@ -5,6 +5,7 @@ type: dataset
 authors:
   - family-names: Yousefian
     given-names: Schayan
+doi: "10.5281/zenodo.23558833"
 repository-code: "https://github.com/ThorfinnThor/oncology-trial-failures"
 url: "https://clinicaltrialfailures.com"
 abstract: >-

@@ -1,5 +1,7 @@
 # Clinical Trial Failures
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23558833.svg)](https://doi.org/10.5281/zenodo.23558833)
+
 **Has a drug with your target failed before, and did it fail because of the biology?**
 
 This repository builds [clinicaltrialfailures.com](https://clinicaltrialfailures.com), a
@@ -97,5 +99,6 @@ necessarily newly registered on ClinicalTrials.gov.
   ClinicalTrials.gov and remain under its terms. See [`LICENSE-DATA.md`](LICENSE-DATA.md) and
   [`docs/provenance_and_rights.md`](docs/provenance_and_rights.md).
 
-Please cite as: *Clinical Trial Failures, https://clinicaltrialfailures.com, release
-&lt;date&gt;.*
+Please cite as: *Yousefian, S. Clinical Trial Failures: stopped clinical trials classified by why
+they stopped. Zenodo. https://doi.org/10.5281/zenodo.23558833* — the DOI always resolves to the latest archived
+release; each release also has its own version DOI on Zenodo.
