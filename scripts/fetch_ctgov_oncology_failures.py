@@ -98,6 +98,8 @@ DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
     ("Oncology", [
         "cancer", "oncology", "neoplasm", "tumor", "tumour", "malign", "carcinoma", "sarcoma", "lymphoma", "leukemia",
         "myeloma", "metast", "melanoma", "glioma",
+        # Myeloproliferative neoplasms; "fibrosis" alone had filed myelofibrosis under respiratory.
+        "myelofibrosis", "myeloprolif",
     ]),
     ("Cardiovascular", [
         "cardio", "heart", "myocard", "coronary", "atrial", "ventric", "hypertension", "ischemi",
@@ -105,7 +107,7 @@ DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
     ]),
     ("Neurology", [
         "alzheimer", "parkinson", "multiple sclerosis", "epilep", "seizure", "migraine", "neuro", "dementia",
-        "amyotrophic", "als", "neuropath",
+        "amyotrophic", "als", "neuropath", "palsy", "dyskinesi",
     ]),
     ("Infectious Disease", [
         "infection", "infectious", "virus", "viral", "bacterial", "fungal", "hiv", "aids", "hepatitis", "influenza",
@@ -117,7 +119,7 @@ DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
     ]),
     ("Endocrine & Metabolic", [
         "diabetes", "obesity", "metabolic", "thyroid", "insulin", "dyslip", "cholesterol",
-        "hyperlip", "metabolic syndrome",
+        "hyperlip", "metabolic syndrome", "adrenal",
     ]),
     ("Psychiatry & Mental Health", [
         "depress", "bipolar", "schiz", "anxiety", "ptsd", "autism", "adhd", "mental", "psychiatr", "substance use",
@@ -135,12 +137,13 @@ DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
         "cholangitis", "cholestas", "biliary", "steatohepat", "portal hypertension",
         "esophag", "oesophag", "duoden", "celiac", "coeliac", "pouchitis", "proctitis",
         "diverticul", "dyspepsia", "constipation", "ileus", "hemorrhoid", "haemorrhoid",
+        "gallstone", "cholecyst",
     ]),
     ("Renal & Urology", [
-        "renal", "kidney", "nephro", "urology", "bladder", "prostate", "urinary",
+        "renal", "kidney", "nephro", "urology", "bladder", "prostate", "urinary", "glomerul",
     ]),
     ("Dermatology", [
-        "dermat", "skin", "eczema", "atopic", "psoriasis", "acne",
+        "dermat", "skin", "eczema", "atopic", "psoriasis", "acne", "vitiligo",
     ]),
     ("Ophthalmology", [
         "ocular", "eye", "retina", "macular", "glaucoma", "ophthalm",
@@ -154,6 +157,44 @@ DISEASE_AREA_TAXONOMY: List[Tuple[str, List[str]]] = [
 ]
 
 
+# Keywords match anywhere in a word on purpose: "carcinoma" has to find "adenocarcinoma", "sarcoma"
+# "liposarcoma". These are the words where that reads a different disease. They were found by listing
+# every keyword hit inside a longer word across the stopped-trial corpus; "mental" inside
+# "segmental" had put focal segmental glomerulosclerosis, a kidney disease, under psychiatry.
+KEYWORD_EXCLUDED_WORDS: Dict[str, Tuple[str, ...]] = {
+    "mental": ("segmental", "instrumental", "experimental", "environmental", "supplemental", "incremental"),
+    "skin": ("dyskinesi", "klatskin"),
+    "liver": ("deliver",),
+    "bladder": ("gallbladder",),
+    "renal": ("adrenal",),
+    "fibrosis": ("myelofibrosis",),
+    "hepatitis": ("steatohepatitis",),
+    "immun": ("angioimmunoblastic",),
+}
+# Abbreviations that only count as a word of their own: "als" is inside "individuals" and "palsy".
+WHOLE_WORD_KEYWORDS: Set[str] = {"als"}
+
+
+def _enclosing_word(text: str, start: int, end: int) -> str:
+    while start > 0 and text[start - 1].isalnum():
+        start -= 1
+    while end < len(text) and text[end].isalnum():
+        end += 1
+    return text[start:end]
+
+
+def keyword_matches(kw: str, text: str) -> bool:
+    excluded = KEYWORD_EXCLUDED_WORDS.get(kw, ())
+    for hit in re.finditer(re.escape(kw), text):
+        word = _enclosing_word(text, hit.start(), hit.end())
+        if kw in WHOLE_WORD_KEYWORDS and word != kw:
+            continue
+        if any(word.startswith(prefix) for prefix in excluded):
+            continue
+        return True
+    return False
+
+
 def assign_disease_areas(conditions: List[str], mesh_terms: List[str]) -> Tuple[str, str]:
     text = normalize_text(" ; ".join(conditions + mesh_terms))
     if not text:
@@ -165,7 +206,7 @@ def assign_disease_areas(conditions: List[str], mesh_terms: List[str]) -> Tuple[
     for area, kws in DISEASE_AREA_TAXONOMY:
         score = 0
         for kw in kws:
-            if kw in text:
+            if keyword_matches(kw, text):
                 score += 1
         if score > 0:
             scores[area] = score
