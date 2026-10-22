@@ -1,11 +1,11 @@
 {
   "version": "2026-10-21",
-  "generated_at_utc": "2026-10-22T08:10:18Z",
-  "imported_at_utc": "2026-10-22T08:10:18Z",
-  "source_verified_at": "2026-10-22T08:10:18Z",
+  "generated_at_utc": "2026-10-22T09:12:51Z",
+  "imported_at_utc": "2026-10-22T09:12:51Z",
+  "source_verified_at": "2026-10-22T09:12:51Z",
   "latest_source_update_at": "2026-10-21",
-  "content_changed_at": "2026-10-22T08:10:17Z",
-  "source_snapshot_id": "sha256:4f29c4ccc3a3559e22891629fb67b1500db05497d9626b968a5964c44b37258f",
+  "content_changed_at": "2026-10-22T09:12:50Z",
+  "source_snapshot_id": "sha256:01f98a699051ccdf5c991a4650f5ccf7eb2d21447512eb3350e1dd143f02389e",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 23974,
@@ -18,7 +18,7 @@
   "top_areas": [
     {
       "area": "Oncology",
-      "count": 8489
+      "count": 9121
     },
     {
       "area": "Other",
@@ -26,27 +26,27 @@
     },
     {
       "area": "Infectious Disease",
-      "count": 1779
-    },
-    {
-      "area": "Gastroenterology & Hepatology",
-      "count": 1596
+      "count": 1750
     },
     {
       "area": "Cardiovascular",
-      "count": 1366
+      "count": 1333
+    },
+    {
+      "area": "Gastroenterology & Hepatology",
+      "count": 1250
     },
     {
       "area": "Neurology",
-      "count": 1081
+      "count": 1013
     },
     {
       "area": "Endocrine & Metabolic",
-      "count": 848
+      "count": 828
     },
     {
       "area": "Immunology & Autoimmune",
-      "count": 784
+      "count": 760
     },
     {
       "area": "Respiratory",
