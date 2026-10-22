@@ -20,22 +20,22 @@
     },
     {
      "step": "Tagged Oncology",
-     "trials": 34514,
+     "trials": 34505,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 34514,
+     "trials": 34505,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
      "step": "Started 2015–2024",
-     "trials": 21595,
+     "trials": 21590,
      "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
     },
     {
      "step": "Closed: completed or terminated",
-     "trials": 7937,
+     "trials": 7935,
      "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
     },
     {
@@ -44,15 +44,15 @@
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
-   "closed": 7937,
+   "closed": 7935,
    "biological_stops": 355,
-   "rate": 0.04472722691193146,
+   "rate": 0.04473850031505986,
    "aside": {
     "closed_with_resolved_target": 5776,
     "closed_with_resolved_target_stops": 301,
-    "terminated_any_reason": 2468,
+    "terminated_any_reason": 2466,
     "terminated_with_no_readable_cause": 485,
-    "still_open_or_unknown": 13658
+    "still_open_or_unknown": 13655
    }
   },
   {
@@ -120,12 +120,12 @@
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 5499,
+     "trials": 5500,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 5499,
+     "trials": 5500,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
@@ -170,12 +170,12 @@
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 4600,
+     "trials": 4602,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 4600,
+     "trials": 4602,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
@@ -220,12 +220,12 @@
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 4657,
+     "trials": 4658,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 4657,
+     "trials": 4658,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
@@ -320,12 +320,12 @@
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 4883,
+     "trials": 4884,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 4883,
+     "trials": 4884,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {

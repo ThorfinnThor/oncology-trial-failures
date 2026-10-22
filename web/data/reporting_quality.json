@@ -14,20 +14,20 @@
  "areas": [
   {
    "area": "Oncology",
-   "terminations": 2468,
+   "terminations": 2466,
    "unreadable": 485,
    "by_sponsor_class": [
     {
      "group": "OTHER",
-     "terminations": 1294,
+     "terminations": 1293,
      "unreadable": 175,
-     "unreadable_share": 0.13523956723338484
+     "unreadable_share": 0.13534416086620263
     },
     {
      "group": "INDUSTRY",
-     "terminations": 1068,
+     "terminations": 1067,
      "unreadable": 294,
-     "unreadable_share": 0.2752808988764045
+     "unreadable_share": 0.2755388940955951
     },
     {
      "group": "NIH",
@@ -45,15 +45,15 @@
    "by_start_era": [
     {
      "group": "2015–2019",
-     "terminations": 1445,
+     "terminations": 1444,
      "unreadable": 278,
-     "unreadable_share": 0.19238754325259516
+     "unreadable_share": 0.1925207756232687
     },
     {
      "group": "2020–2024",
-     "terminations": 1023,
+     "terminations": 1022,
      "unreadable": 207,
-     "unreadable_share": 0.20234604105571846
+     "unreadable_share": 0.2025440313111546
     }
    ],
    "by_phase": [
@@ -65,9 +65,9 @@
     },
     {
      "group": "Phase 3",
-     "terminations": 338,
+     "terminations": 336,
      "unreadable": 78,
-     "unreadable_share": 0.23076923076923078
+     "unreadable_share": 0.23214285714285715
     }
    ],
    "by_sponsor_group": [
@@ -116,18 +116,18 @@
    ],
    "consequence": {
     "industry": {
-     "closed": 3072,
+     "closed": 3071,
      "biological_stops": 187,
-     "rate": 0.060872395833333336,
+     "rate": 0.06089221751872354,
      "unresolved_terminations": 294,
-     "rate_if_all_unresolved_were_biological": 0.15657552083333334
+     "rate_if_all_unresolved_were_biological": 0.1566265060240964
     },
     "non_industry": {
-     "closed": 4865,
+     "closed": 4864,
      "biological_stops": 168,
-     "rate": 0.034532374100719423,
+     "rate": 0.03453947368421053,
      "unresolved_terminations": 191,
-     "rate_if_all_unresolved_were_biological": 0.073792394655704
+     "rate_if_all_unresolved_were_biological": 0.07380756578947369
     }
    }
   },

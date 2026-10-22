@@ -21,8 +21,8 @@
   "discontinuation_rates": {
     "segments": 198,
     "mechanism_classes": 40,
-    "universe_closed_trials": 7937,
-    "baseline_rate": 0.04472722691193146,
+    "universe_closed_trials": 7935,
+    "baseline_rate": 0.04473850031505986,
     "window": {
       "start_year_from": 2015,
       "start_year_to": 2024,
@@ -45,12 +45,12 @@
     },
     "baseline": {
       "label": "All oncology Phase 2/3",
-      "rate": 0.04472722691193146,
+      "rate": 0.04473850031505986,
       "stops": 355,
-      "closed": 7937,
+      "closed": 7935,
       "ci95": [
-        0.040395695010263855,
-        0.04949926020455871
+        0.04040589852234317,
+        0.049511703562071775
       ]
     },
     "reference": {
