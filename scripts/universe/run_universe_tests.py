@@ -417,6 +417,29 @@ for _b in _index["briefs"]:
     check(f"{_b['slug']}: the survivor flag matches its q",
           _b["survives_fdr_10pct"], _b["q_value_by"] <= 0.10)
 
+# Disease areas: a keyword inside an unrelated word must not file the trial there. Each case is a real
+# condition string that used to land in the wrong area (NCT03448692, FSGS, was under psychiatry).
+from scripts.fetch_ctgov_oncology_failures import assign_disease_areas  # noqa: E402
+
+for _conds, _mesh, _area in [
+    (["Focal Segmental Glomerulosclerosis (FSGS)"], ["Glomerulosclerosis, Focal Segmental", "Proteinuria"], "Renal & Urology"),
+    (["Non-segmental Vitiligo"], [], "Dermatology"),
+    (["Hemorrhage", "Complicating Delivery"], [], "Other"),
+    (["Tardive Dyskinesia"], [], "Neurology"),
+    (["Congenital Adrenal Hyperplasia"], [], "Endocrine & Metabolic"),
+    (["Primary Myelofibrosis"], ["Primary Myelofibrosis"], "Oncology"),
+    (["Gallbladder Polyp", "Asymptomatic Gallstones"], [], "Gastroenterology & Hepatology"),
+    (["Gallbladder Carcinoma", "Biliary Carcinoma"], ["Gallbladder Neoplasms"], "Oncology"),
+    (["Individuals Undergoing Cardiac and General Surgery"], [], "Other"),
+    (["Experimental Pain Perception"], [], "Other"),
+    # Still matched inside a longer word where that is the same disease.
+    (["Adenocarcinoma of Lung"], ["Adenocarcinoma of Lung"], "Oncology"),
+    (["Amyotrophic Lateral Sclerosis", "ALS"], [], "Neurology"),
+    (["Cerebral Palsy"], [], "Neurology"),
+    (["Major Depressive Disorder"], ["Mental Disorders"], "Psychiatry & Mental Health"),
+]:
+    check(f"disease area of {_conds[0]}", assign_disease_areas(_conds, _mesh)[0], _area)
+
 if failures:
     print(f"{failures} universe test(s) failed")
     sys.exit(1)
