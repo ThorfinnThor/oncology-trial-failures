@@ -9,8 +9,10 @@
 // documents covers which part of it. Everything else is detail.
 
 import Link from "next/link";
+import { useRef } from "react";
 
-import { useCheckout } from "@/lib/checkout";
+import BuyButton from "@/components/BuyButton";
+import { BUY_NOTE, PACKAGE_PRICE } from "@/lib/offer";
 import { contactMailto } from "@/lib/siteContact";
 
 export type PackageSummary = {
@@ -31,7 +33,9 @@ export type PackageSummary = {
   headline: { rate: number; comparator_rate: number; comparator_label: string };
 };
 
-export const PACKAGE_PRICE = "€99";
+// The report's price lives in lib/offer.ts (free during the beta); re-exported for the pages that
+// already import it from here.
+export { PACKAGE_PRICE };
 // Full access has no public price while it is arranged by hand. The constants stay because the
 // scope:"all" grant they describe is real and still issued; nothing on the site quotes a figure
 // for it until there is one we can defend. See the waiting list on /pricing.
@@ -78,13 +82,14 @@ export default function BriefVsPackage({
   const adds = trialsBeyondTheBrief(pkg);
   const briefListsAll = c.brief_lists_stops >= c.stopped;
   const buyable = emphasis === "package" && adds > 0 && Boolean(buyAs);
-  const checkout = useCheckout(buyAs || "");
-  // The card is the product, so clicking anywhere on it buys it — except on a link inside it,
-  // which keeps doing what it says.
+  const emailRef = useRef<HTMLInputElement>(null);
+  // The card is the product, so clicking anywhere on it starts the order: it takes the reader to
+  // the email field, the one thing the order needs. A link, a button or the form itself keeps
+  // doing what it does.
   function onCardClick(event: React.MouseEvent<HTMLDivElement>) {
     if (!buyable) return;
-    if ((event.target as HTMLElement).closest("a, button")) return;
-    void checkout.go();
+    if ((event.target as HTMLElement).closest("a, button, form")) return;
+    emailRef.current?.focus();
   }
 
   return (
@@ -228,11 +233,8 @@ export default function BriefVsPackage({
             </div>
           ) : buyable ? (
             <div className="bvpFoot">
-              <button type="button" className="bvpCta bvpBuyBtn" onClick={checkout.go} disabled={checkout.state === "sending"}>
-                {checkout.state === "sending" ? "Opening checkout…" : `Buy this report — ${PACKAGE_PRICE}`}
-              </button>
-              <span className="bvpSecure">Secure checkout by Stripe · opens straight after payment</span>
-              {checkout.state === "error" ? <div className="bvpError" role="alert">{checkout.error}</div> : null}
+              <BuyButton ref={emailRef} asset={buyAs || ""} className="bvpCta bvpBuyBtn" />
+              <span className="bvpSecure">{BUY_NOTE}</span>
             </div>
           ) : null}
         </div>
@@ -305,7 +307,7 @@ export default function BriefVsPackage({
           border-color: var(--accent);
           box-shadow: 0 6px 22px rgba(79, 70, 229, 0.14);
         }
-        .bvpBuyBtn {
+        :global(.bvpBuyBtn) {
           border: 0;
           cursor: pointer;
           font: inherit;
@@ -313,7 +315,7 @@ export default function BriefVsPackage({
           font-weight: 850;
           padding: 12px 18px;
         }
-        .bvpBuyBtn:disabled {
+        :global(.bvpBuyBtn:disabled) {
           opacity: 0.7;
           cursor: progress;
         }
@@ -322,11 +324,6 @@ export default function BriefVsPackage({
           margin-top: 8px;
           font-size: 12px;
           color: var(--text-muted);
-        }
-        .bvpError {
-          margin-top: 8px;
-          font-size: 12.5px;
-          color: #b91c1c;
         }
         .bvpTag {
           display: flex;

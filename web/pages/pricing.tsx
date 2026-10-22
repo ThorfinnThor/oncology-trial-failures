@@ -13,8 +13,10 @@ import { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
 import { readJsonServerAsset } from "@/lib/server-data";
 import { EXPORT_ROW_LIMIT, LICENSING_EMAIL } from "@/lib/licensing";
+import { PACKAGE_LIST_PRICE, PACKAGE_PRICE, REPORT_BETA } from "@/lib/offer";
 
-// Prices are list prices, excluding VAT. Edit here; the page follows.
+// Prices are list prices, excluding VAT. Edit here; the page follows. The diligence report's price
+// comes from lib/offer.ts, which says "free during the beta" until payment is switched on.
 //
 // The offer is deliberately built around a deliverable rather than around access to a file.
 // A dated copy of a database is worth what the buyer's own SQL would cost; the work they
@@ -59,8 +61,8 @@ const PRICING = [
   {
     name: "Diligence report",
     prefix: "",
-    price: "€99",
-    unit: "one molecule",
+    price: PACKAGE_PRICE,
+    unit: REPORT_BETA ? "one molecule, for a work email" : "one molecule",
     for: "A molecule on the table now — diligence, an in-licensing decision, a trial you are designing.",
     includes: [
       "One report per molecule, with a chapter for every cohort where a drug that failed shares its target",
@@ -433,8 +435,17 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
           <section className="section" id="pricing">
             <h2>Pricing</h2>
             <p className="sectionSub">
-              Two of these are free and stay free. Prices exclude VAT; a report&rsquo;s link stays live and current for a
-              year. Academic and single-analyst rates on request.
+              {REPORT_BETA ? (
+                <>
+                  Two of these are free and stay free. The diligence report is free during the beta, in exchange for a
+                  work email; its link stays live and current for a year.
+                </>
+              ) : (
+                <>
+                  Two of these are free and stay free. Prices exclude VAT; a report&rsquo;s link stays live and current
+                  for a year. Academic and single-analyst rates on request.
+                </>
+              )}
             </p>
             <div className="tiers">
               {PRICING.map((tier) => (
@@ -544,7 +555,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             <h2>Questions</h2>
             <div className="faqGrid">
               <div className="faq">
-                <h3>What do I actually get for €99?</h3>
+                <h3>{REPORT_BETA ? "What is in a diligence report?" : `What do I actually get for ${PACKAGE_LIST_PRICE}?`}</h3>
                 <p>
                   One report on your molecule, with a chapter for every cohort where a drug that failed acts on its
                   target. Each chapter gives the

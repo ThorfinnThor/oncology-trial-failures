@@ -8,9 +8,10 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticPaths, GetStaticProps } from "next";
 
-import BriefVsPackage, { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
+import BriefVsPackage, { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import PrimaryNav from "@/components/PrimaryNav";
 import BuyButton from "@/components/BuyButton";
+import { BUY_NOTE, DELIVERY, PACKAGE_PRICE, REPORT_BETA } from "@/lib/offer";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
 
@@ -117,14 +118,18 @@ export default function PackagePage({ pkg, briefSlug }: { pkg: Pkg; briefSlug: s
                   against the molecules that failed there.
                 </p>
                 <ul className="list">
-                  <li>One payment, delivered immediately, and a link that stays current for a year</li>
+                  <li>{DELIVERY}</li>
                   <li>Every figure traces to a trial, and every trial to its registry record</li>
-                  <li>Automated analysis: no clinician has reviewed these records, and the price reflects that</li>
+                  <li>
+                    {REPORT_BETA
+                      ? "Automated analysis: no clinician has reviewed these records"
+                      : "Automated analysis: no clinician has reviewed these records, and the price reflects that"}
+                  </li>
                 </ul>
               </div>
               <div className="buySide">
-                <BuyButton asset={buyAs} className="btnPrimary buyMain" label={`Buy this report — ${PACKAGE_PRICE}`} />
-                <p className="fine">Secure checkout by Stripe. The report opens straight after payment.</p>
+                <BuyButton asset={buyAs} className="btnPrimary buyMain" />
+                <p className="fine">{BUY_NOTE}</p>
                 <p className="fine">
                   Evaluating a specific molecule?{" "}
                   <Link className="link" href="/asset-check">

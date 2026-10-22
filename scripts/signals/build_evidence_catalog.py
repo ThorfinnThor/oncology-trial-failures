@@ -38,7 +38,7 @@ EXPORTS = ROOT / "web/data/private/evidence_exports.json"
 # What the site may say about a package before anyone has paid for it: the cohort, how much is
 # in it, and which brief it extends. Never the contents.
 PUBLIC = ROOT / "web/data/evidence_catalogue.json"
-# One package published in full, so a buyer can see exactly what €99 buys before paying: the same
+# One package published in full, so a reader can see exactly what a report contains before asking for one: the same
 # cohort as the one brief that is also open (TGF-β + PD-(L)1), with a real molecule in the slot a
 # buyer's own asset goes into. Fresolimumab shares the TGF-β target with the molecules that failed
 # here but not their PD-L1 arm, which is the kind of partial overlap the comparison exists to show.
@@ -100,7 +100,7 @@ def sample_banner(cohort: str, asset: str) -> str:
             "padding:10px 16px;max-width:1000px;box-sizing:border-box;margin:0 auto 22px;font:13px/1.5 -apple-system,Segoe UI,Helvetica,Arial,sans-serif'>"
             f"<span><b style='color:#0f172a'>Sample report</b> · {cohort} · Example molecule: {asset}</span>"
             f"<span><a href='https://clinicaltrialfailures.com/packages' style='{link}'>All diligence reports</a>"
-            f" · <a href='https://clinicaltrialfailures.com/asset-check' style='{link}'>Request a report — €99</a></span></div>")
+            f" · <a href='https://clinicaltrialfailures.com/asset-check' style='{link}'>Get a report — free during the beta</a></span></div>")
 
 
 def write_sample(built: dict, job) -> dict | None:

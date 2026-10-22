@@ -18,7 +18,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { canSendMail, frame, layout, sendMail } from "@/lib/server/mail";
 import { CONTACT_EMAIL } from "@/lib/siteContact";
 
-type KvBinding = {
+export type KvBinding = {
   get(key: string): Promise<string | null>;
   put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
   delete?(key: string): Promise<void>;
@@ -84,16 +84,35 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const email = clean(body.email, 254).toLowerCase();
   const company = clean(body.company, 160);
-  if (!EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
+  const result = await requestSubscription(store, { email, company, country: clean(req.headers["cf-ipcountry"], 4) });
+  return res.status(result.status).json(result.body);
+}
+
+export type SubscriptionResult = {
+  status: number;
+  body: { ok: true; message: string } | { ok: false; error: string };
+};
+
+/** Starts a double opt-in: writes a pending record and sends the confirmation mail. Nobody is on
+ *  the list until they click the link in it, whoever called this: the signup form, or the report
+ *  order's "also send me the newsletter" box. One path, so the second caller cannot quietly skip
+ *  the confirmation the first one depends on. */
+export async function requestSubscription(
+  store: KvBinding,
+  input: { email: string; company?: string; country?: string },
+): Promise<SubscriptionResult> {
+  const email = clean(input.email, 254).toLowerCase();
+  const company = clean(input.company, 160);
+  if (!EMAIL.test(email)) return { status: 400, body: { ok: false, error: "Please enter a valid work email." } };
 
   // Refusing here rather than subscribing anyway. Without a sending key the confirmation can never
   // arrive, and a list nobody confirmed is exactly the thing this route exists to avoid.
   if (!canSendMail()) {
     console.error(JSON.stringify({ event: "newsletter_cannot_confirm", hint: "BREVO_API_KEY is not set on the Worker" }));
-    return res.status(503).json({
-      ok: false,
-      error: `Sign-up is briefly unavailable. Please try again later, or write to ${CONTACT_EMAIL}.`,
-    });
+    return {
+      status: 503,
+      body: { ok: false, error: `Sign-up is briefly unavailable. Please try again later, or write to ${CONTACT_EMAIL}.` },
+    };
   }
 
   const index = await addressKey(email);
@@ -103,10 +122,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // stranger "that address is already subscribed" turns the form into a way to test whether
     // somebody is on the list.
     console.log(JSON.stringify({ event: "newsletter_already_subscribed" }));
-    return res.status(200).json({
-      ok: true,
-      message: "Please check your inbox to confirm your subscription.",
-    });
+    return { status: 200, body: { ok: true, message: "Please check your inbox to confirm your subscription." } };
   }
 
   const key = token();
@@ -117,7 +133,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // country, and when it was confirmed. Nothing else about the person is stored.
     requested_at: new Date().toISOString(),
     confirmed_at: null as string | null,
-    country: clean(req.headers["cf-ipcountry"], 4),
+    country: clean(input.country, 4),
     last_sent_at: null as string | null,
   };
 
@@ -126,7 +142,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await store.put(`pending:${key}`, JSON.stringify(record), { expirationTtl: PENDING_TTL_SECONDS });
   } catch (error) {
     console.error(JSON.stringify({ event: "newsletter_store_failed", message: String(error) }));
-    return res.status(503).json({ ok: false, error: "Could not save it. Please try again." });
+    return { status: 503, body: { ok: false, error: "Could not save it. Please try again." } };
   }
 
   const link = `${SITE}/newsletter/confirm?k=${key}`;
@@ -168,17 +184,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   });
 
   if (!sent) {
-    return res.status(503).json({
-      ok: false,
-      error: `We could not send the confirmation mail. Please try again, or write to ${CONTACT_EMAIL}.`,
-    });
+    return {
+      status: 503,
+      body: { ok: false, error: `We could not send the confirmation mail. Please try again, or write to ${CONTACT_EMAIL}.` },
+    };
   }
 
   console.log(JSON.stringify({ event: "newsletter_confirmation_sent", email }));
-  return res.status(200).json({
-    ok: true,
-    message: "Please check your inbox to confirm your subscription.",
-  });
+  return { status: 200, body: { ok: true, message: "Please check your inbox to confirm your subscription." } };
 }
 
 /** Ends a subscription. Reached two ways: the unsubscribe page (GET, after a button click), and
