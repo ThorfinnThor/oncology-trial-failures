@@ -20,6 +20,8 @@ export type TrialRelatedLinks = {
   sponsor: RelatedLink | null;
   briefs: RelatedLink[];
   similar: RelatedTrial[];
+  // Drug pages (lib/drugPages.ts) for the drugs this trial lists; absent in shards built before them.
+  drugs?: RelatedLink[];
 };
 
 export type BriefMembership = {
@@ -88,7 +90,8 @@ function neighbours(group: TrialIndexRow[], keys: string[], self: TrialIndexRow)
 
 export function buildRelatedLinks(
   rows: TrialIndexRow[],
-  briefs: BriefMembership[]
+  briefs: BriefMembership[],
+  drugsByTrial: Record<string, RelatedLink[]> = {}
 ): Map<string, TrialRelatedLinks> {
   const sponsorPaths = new Map(buildSponsorHubs(rows).map((hub) => [hub.label, hub.path]));
 
@@ -135,6 +138,7 @@ export function buildRelatedLinks(
       sponsor: sponsorPath && row.lead_sponsor ? { label: row.lead_sponsor, href: sponsorPath } : null,
       briefs: briefsByTrial.get(row.nct_id.toUpperCase()) || [],
       similar,
+      drugs: drugsByTrial[row.nct_id.toUpperCase()] || [],
     });
   }
   return out;

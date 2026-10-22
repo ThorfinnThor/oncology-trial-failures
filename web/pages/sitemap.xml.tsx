@@ -30,8 +30,8 @@ function toIsoDate(value: string | undefined, fallback: string): string {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
-  const { loadIndexServer, loadMetaServer } = await import("@/lib/server-data");
-  const [rows, meta] = await Promise.all([loadIndexServer(), loadMetaServer()]);
+  const { loadIndexServer, loadMetaServer, loadDrugCatalogServer } = await import("@/lib/server-data");
+  const [rows, meta, drugCatalog] = await Promise.all([loadIndexServer(), loadMetaServer(), loadDrugCatalogServer()]);
 
   const dataDrivenPaths = [
     "/",
@@ -108,6 +108,17 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       };
     })
     .filter((entry) => entry.include);
+  const drugEntries = drugCatalog
+    .filter((drug) => drug.indexable)
+    .map((drug) => `${SITE_URL}${drug.path}`)
+    .filter((loc) =>
+      resolveSeoIndexingPolicy(
+        loc,
+        { httpStatus: 200, robots: "index,follow", canonical: loc, sitemap: true, redirectTo: null, editorialStatus: "ready" },
+        seoFeatures
+      ).effective.sitemap
+    )
+    .map((loc) => ({ loc, lastmod }));
 
   const urls = [
     ...dataDrivenPaths.filter(includeStaticPathInSitemap).map((path) => ({
@@ -142,6 +153,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       lastmod: new Date(article.datePublished).toISOString(),
     })),
     ...trialEntries,
+    ...(drugEntries.length ? [{ loc: `${SITE_URL}/drugs`, lastmod }, ...drugEntries] : []),
   ];
 
   const seen = new Set<string>();

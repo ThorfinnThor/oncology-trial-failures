@@ -465,6 +465,19 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
                       <dt>Intervention</dt>
                       <dd>{trial.intervention_names || trial.intervention_first || "Not stated"}</dd>
                     </div>
+                    {related?.drugs?.length ? (
+                      <div>
+                        <dt>Drug pages</dt>
+                        <dd>
+                          {related.drugs.map((drug, index) => (
+                            <span key={drug.href}>
+                              {index ? ", " : ""}
+                              <Link href={drug.href}>{drug.label}</Link>
+                            </span>
+                          ))}
+                        </dd>
+                      </div>
+                    ) : null}
                     <div>
                       <dt>Disease area</dt>
                       <dd>{trial.disease_area || "Other"}</dd>
@@ -534,6 +547,11 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
                       More from {trial.lead_sponsor}
                     </Link>
                   ) : null}
+                  {related?.drugs?.map((drug) => (
+                    <Link href={drug.href} key={drug.href}>
+                      Stopped trials of {drug.label}
+                    </Link>
+                  ))}
                   {related?.briefs.map((brief) => (
                     <Link href={brief.href} key={brief.href}>
                       {brief.label} mechanism brief

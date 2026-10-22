@@ -3,7 +3,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 
-import { buildRelatedLinks, type BriefMembership, type TrialRelatedLinks } from "../lib/relatedLinks";
+import { buildRelatedLinks, type BriefMembership, type RelatedLink, type TrialRelatedLinks } from "../lib/relatedLinks";
 import { trialShardKey } from "../lib/trial-sharding";
 import type { TrialIndexRow } from "../lib/types";
 
@@ -11,6 +11,16 @@ const PUBLIC_DIR = path.join(process.cwd(), "public");
 const INDEX_SHARD_DIR = path.join(PUBLIC_DIR, "trials-index-shards");
 const OUT_DIR = path.join(PUBLIC_DIR, "related-shards");
 const BRIEFS_FILE = path.join(process.cwd(), "data", "briefs_index.json");
+// Written by generate-drug-pages.ts, which runs first; without it trials simply carry no drug links.
+const DRUGS_BY_TRIAL_FILE = path.join(PUBLIC_DIR, "drug-pages", "by-trial.json");
+
+async function readDrugsByTrial(): Promise<Record<string, RelatedLink[]>> {
+  try {
+    return JSON.parse(await fs.readFile(DRUGS_BY_TRIAL_FILE, "utf8"));
+  } catch {
+    return {};
+  }
+}
 
 type BriefRow = { slug: string; segment: string; trials_preview?: { nct_id: string }[]; endpoint_trials?: { nct_id: string }[] };
 
@@ -28,7 +38,7 @@ async function main() {
     nct_ids: [...(brief.trials_preview || []), ...(brief.endpoint_trials || [])].map((trial) => trial.nct_id),
   }));
 
-  const links = buildRelatedLinks(rows, briefs);
+  const links = buildRelatedLinks(rows, briefs, await readDrugsByTrial());
   const shards = new Map<string, Record<string, TrialRelatedLinks>>();
   for (const [nctId, entry] of links) {
     const key = trialShardKey(nctId);
@@ -51,7 +61,8 @@ async function main() {
     `Generated related links for ${links.size.toLocaleString()} trials: ` +
       `${entries.filter((entry) => entry.sponsor).length.toLocaleString()} with a sponsor hub, ` +
       `${entries.filter((entry) => entry.briefs.length).length.toLocaleString()} with a brief, ` +
-      `${entries.filter((entry) => entry.similar.length).length.toLocaleString()} with similar trials.`
+      `${entries.filter((entry) => entry.similar.length).length.toLocaleString()} with similar trials, ` +
+      `${entries.filter((entry) => entry.drugs?.length).length.toLocaleString()} with a drug page.`
   );
 }
 
