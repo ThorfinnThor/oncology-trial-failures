@@ -17,6 +17,7 @@ export type PrimaryNavItem =
   | "briefs"
   | "packages"
   | "newsletter"
+  | "use-cases"
   | "pricing";
 
 type PrimaryNavProps = {
@@ -81,20 +82,19 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
           onNavigate={closeMobileNav}
         />
         <GuidesMenu active={active === "guides"} />
+        {/* While nothing is for sale, the bar carries what a visitor can use for free. The report and
+            pricing pages stay reachable from the asset check and the briefs. */}
         <Link className="navlink" href="/asset-check" aria-current={current(active, "asset-check")} onClick={closeMobileNav}>
-          Asset check
+          Check a molecule <span className="navFree">free</span>
         </Link>
         <Link className="navlink" href="/briefs" aria-current={current(active, "briefs")} onClick={closeMobileNav}>
           Briefs
         </Link>
-        <Link className="navlink" href="/packages" aria-current={current(active, "packages")} onClick={closeMobileNav}>
-          Diligence reports
+        <Link className="navlink" href="/use-cases" aria-current={current(active, "use-cases")} onClick={closeMobileNav}>
+          Who it&apos;s for
         </Link>
         <Link className="navlink" href="/newsletter" aria-current={current(active, "newsletter")} onClick={closeMobileNav}>
           Newsletter
-        </Link>
-        <Link className="navlink" href="/pricing" aria-current={current(active, "pricing")} onClick={closeMobileNav}>
-          Pricing
         </Link>
       </nav>
     </div>

@@ -55,6 +55,9 @@ SUMMARY = ROOT / "web/data/product_summary.json"
 OUT_DIR = ROOT / "product/newsletter"
 # Shown on the signup page: the same items the mail is built from.
 PREVIEW = ROOT / "web/data/newsletter_preview.json"
+# One file per mail that actually went out, read by /newsletter/issues. Only registry facts and our
+# classification, the same rows the mail carries, so an issue page can stand as a public record.
+ISSUES_DIR = ROOT / "web/data/newsletter_issues"
 PREVIEW_ROWS = 8
 SITE = "https://clinicaltrialfailures.com"
 BREVO_API = "https://api.brevo.com/v3/smtp/email"
@@ -520,6 +523,43 @@ def recent_stops(limit: int) -> list[dict]:
             for r in rows[:limit]]
 
 
+def issue_row(item: dict, kind: str) -> dict:
+    detail = (shorten(item.get("why_stopped"), 200) if kind == "added"
+              else "; ".join(f"{label}: {text}" for label, text in
+                             (move_text(f, m) for f, m in (item.get("changes") or {}).items()))[:200])
+    return {"nct_id": item.get("nct_id"), "title": shorten(item.get("brief_title"), 140),
+            "sponsor": item.get("lead_sponsor") or "", "area": item.get("disease_area") or "",
+            "reason": reason_of(item)[0] if kind == "added" else "", "detail": detail}
+
+
+def write_issue(pending: dict, summary: dict, subject: str, sent_at: str) -> Path:
+    """The mail that just went out, kept as a page. Every row, not the preview's first few."""
+    added = order(list(pending.get("added", {}).values()))
+    changed = list(pending.get("changed", {}).values())
+    ISSUES_DIR.mkdir(parents=True, exist_ok=True)
+    path = ISSUES_DIR / f"{sent_at[:10]}.json"
+    path.write_text(json.dumps({
+        "schema_version": 1,
+        "sent_at": sent_at,
+        "subject": subject,
+        "release": (pending.get("releases") or [""])[-1],
+        "since": pending.get("since") or "",
+        "trial_count": summary.get("trial_count"),
+        "counts": {"added": len(added), "changed": len(changed)},
+        "added": [issue_row(i, "added") for i in added],
+        "changed": [issue_row(i, "changed") for i in changed],
+    }, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    # The list the archive page and the sitemap read, newest first; the pages read the files.
+    index = []
+    for issue_path in sorted(ISSUES_DIR.glob("????-??-??.json"), reverse=True):
+        issue = json.loads(issue_path.read_text(encoding="utf-8"))
+        index.append({"date": issue_path.stem, "subject": issue.get("subject") or "",
+                      "counts": issue.get("counts") or {}})
+    (ISSUES_DIR / "index.json").write_text(json.dumps(index, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"wrote {path.relative_to(ROOT)}")
+    return path
+
+
 def write_preview(pending: dict, summary: dict) -> None:
     """What the next mail carries, for the signup page to show.
 
@@ -527,13 +567,7 @@ def write_preview(pending: dict, summary: dict) -> None:
     the same content the mail is rendered from, written every run, so the page shows the thing
     itself rather than describing it.
     """
-    def row(item: dict, kind: str) -> dict:
-        detail = (shorten(item.get("why_stopped"), 200) if kind == "added"
-                  else "; ".join(f"{label}: {text}" for label, text in
-                                 (move_text(f, m) for f, m in (item.get("changes") or {}).items()))[:200])
-        return {"nct_id": item.get("nct_id"), "title": shorten(item.get("brief_title"), 140),
-                "sponsor": item.get("lead_sponsor") or "", "area": item.get("disease_area") or "",
-                "reason": reason_of(item)[0] if kind == "added" else "", "detail": detail}
+    row = issue_row
 
     added = order(list(pending.get("added", {}).values()))
     changed = list(pending.get("changed", {}).values())
@@ -700,11 +734,14 @@ def main() -> int:
         print(f"sent {sent} mail(s)")
 
     if sending and sent and not args.dry_run:
+        sent_at = datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+        subject, _ = render(pending, summary, f"{SITE}/newsletter/stop?k=ARCHIVE")
+        write_issue(pending, summary, subject, sent_at)
         # Cleared only once it has actually gone somewhere, so a failed send is told next time
         # rather than lost.
         kv_write(base, PENDING_KEY, token,
                  {"since": (pending.get("releases") or [""])[-1], "releases": [], "added": {}, "changed": {},
-                  "last_sent_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")})
+                  "last_sent_at": sent_at})
     else:
         kv_write(base, PENDING_KEY, token, pending)
     return 0

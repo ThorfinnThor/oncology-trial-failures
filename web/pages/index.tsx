@@ -287,7 +287,11 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
       dateModified: stats.updatedIso,
       version: v2.version,
       isAccessibleForFree: true,
-      creator: { "@type": "Organization", name: SITE_NAME },
+      license: "https://creativecommons.org/licenses/by-nc/4.0/",
+      creator: [
+        { "@type": "Person", name: "Schayan Yousefian" },
+        { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+      ],
       measurementTechnique: "Audited rule-based semantic classification with explicit review gating",
       variableMeasured: ["trial status", "clinical phase", "sponsor", "disease area", "registered stop reason", "classification outcome", "classification reason"],
     },

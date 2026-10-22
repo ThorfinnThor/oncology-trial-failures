@@ -1,0 +1,13 @@
+{
+  "title": "Clinical Trial Failures: stopped clinical trials classified by why they stopped",
+  "upload_type": "dataset",
+  "description": "<p>Terminated, suspended and withdrawn trials from ClinicalTrials.gov, classified by the sponsor's stated stop reason into biological failure signals (efficacy, futility, safety) and non-biological causes (recruitment, funding, strategy, regulatory), with the evidence span each label rests on. Completed Phase 2/3 trials are read for a missed primary endpoint. Rebuilt weekly; browse it at <a href=\"https://clinicaltrialfailures.com\">clinicaltrialfailures.com</a>.</p><p>Code is MIT-licensed. Our classifications and derived fields are CC BY-NC 4.0; registry fields remain under ClinicalTrials.gov terms (see LICENSE-DATA.md).</p>",
+  "creators": [
+    { "name": "Yousefian, Schayan" }
+  ],
+  "license": "cc-by-nc-4.0",
+  "keywords": ["clinical trials", "ClinicalTrials.gov", "drug development", "trial termination", "clinical trial failure"],
+  "related_identifiers": [
+    { "identifier": "https://clinicaltrialfailures.com", "relation": "isDocumentedBy", "resource_type": "other" }
+  ]
+}

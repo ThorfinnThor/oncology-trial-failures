@@ -556,6 +556,22 @@ _big = {"added": {f"N{i}": {"nct_id": f"N{i}", "brief_title": "T" * 150, "why_st
         "releases": ["2026-10-12"]}
 check("even a huge fortnight stays under Gmail's clipping limit",
       len(_nl.render(_big, {}, "u")[1].encode()) < 100_000, True)
+# An issue that went out is kept as a page: every row, not the preview's first few, and nothing
+# from the mail that is about one subscriber.
+from pathlib import Path as _Path  # noqa: E402
+
+with _tempfile.TemporaryDirectory() as _tmp:
+    _saved, _nl.ISSUES_DIR, _saved_root = _nl.ISSUES_DIR, _Path(_tmp) / "issues", _nl.ROOT
+    _nl.ROOT = _Path(_tmp)
+    try:
+        _issue = _json.loads(_nl.write_issue(_big, {"trial_count": 1}, "Subject", "2026-10-26T07:00:00Z").read_text())
+        _index = _json.loads((_nl.ISSUES_DIR / "index.json").read_text())
+    finally:
+        _nl.ISSUES_DIR, _nl.ROOT = _saved, _saved_root
+check("an issue is filed under the day it went out", _issue["sent_at"], "2026-10-26T07:00:00Z")
+check("an issue keeps every trial it told", (len(_issue["added"]), len(_issue["changed"])), (200, 200))
+check("an issue carries no unsubscribe key", "stop?k=" in _json.dumps(_issue), False)
+check("the archive index lists the issue", [i["date"] for i in _index], ["2026-10-26"])
 check("a quiet fortnight shows no row of zeros",
       "new stopped trials</div>" in _nl.render({"added": {}, "changed": {}, "releases": ["v"]}, {}, "u")[1], False)
 

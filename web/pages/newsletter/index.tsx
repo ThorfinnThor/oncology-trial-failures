@@ -15,6 +15,7 @@ import productSummary from "@/data/product_summary.json";
 import briefsIndex from "@/data/briefs_index.json";
 import preview from "@/data/newsletter_preview.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
+import { ISSUES, issueLabel, issuePath } from "@/lib/newsletterIssues";
 import { staticRobotsForPath } from "@/lib/seoStaticPolicy";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -264,6 +265,13 @@ export default function NewsletterPage() {
             <p className="fine">
               The page and the mail are rendered from the same list, refreshed with every weekly release.{" "}
               {p.last_sent_at ? `The last mail went out on ${p.last_sent_at.slice(0, 10)}.` : ""}
+              {ISSUES.length ? (
+                <>
+                  {" "}
+                  Read the last issue, <Link className="link" href={issuePath(ISSUES[0].date)}>{issueLabel(ISSUES[0].date)}</Link>, or{" "}
+                  <Link className="link" href="/newsletter/issues">every past issue</Link>.
+                </>
+              ) : null}
             </p>
           </section>
         </div>

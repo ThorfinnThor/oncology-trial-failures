@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this dataset or its classifications, please cite it as below."
+title: "Clinical Trial Failures: stopped clinical trials classified by why they stopped"
+type: dataset
+authors:
+  - family-names: Yousefian
+    given-names: Schayan
+repository-code: "https://github.com/ThorfinnThor/oncology-trial-failures"
+url: "https://clinicaltrialfailures.com"
+abstract: >-
+  Terminated, suspended and withdrawn trials from ClinicalTrials.gov, classified by the
+  sponsor's stated stop reason into biological failure signals (efficacy, futility, safety)
+  and non-biological causes (recruitment, funding, strategy, regulatory), with the evidence
+  span each label rests on. Completed Phase 2/3 trials are read for a missed primary endpoint.
+  Rebuilt weekly.
+keywords:
+  - clinical trials
+  - ClinicalTrials.gov
+  - drug development
+  - trial termination
+  - clinical trial failure
+license: CC-BY-NC-4.0

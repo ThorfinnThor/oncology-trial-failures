@@ -317,6 +317,19 @@ jobs:
         run: |
           python scripts/signals/newsletter.py
 
+      # The preview the signup page shows is rewritten on every run and an issue page is written
+      # when a mail went out; both happen after the last data commit, so they are committed here.
+      - name: Commit newsletter preview and archive
+        if: steps.signals.outcome == 'success'
+        continue-on-error: true
+        run: |
+          git add web/data/newsletter_preview.json
+          [ -d web/data/newsletter_issues ] && git add web/data/newsletter_issues
+          git diff --cached --quiet && echo "No newsletter changes" && exit 0
+          git commit -m "Update newsletter preview and archive"
+          git pull --rebase --autostash origin main || true
+          git push
+
       - name: Upload the newsletter for review
         if: always()
         uses: actions/upload-artifact@v4

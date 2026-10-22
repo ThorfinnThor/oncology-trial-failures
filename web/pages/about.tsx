@@ -11,6 +11,7 @@ const DESCRIPTION =
   "About Clinical Trial Failures: a ClinicalTrials.gov-based research database for studying terminated, suspended, and withdrawn clinical trials.";
 const CANONICAL_URL = `${SITE_URL}/about`;
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
+const AUTHOR = { name: "Schayan Yousefian" };
 
 export default function AboutPage() {
   const jsonLd = [
@@ -24,6 +25,13 @@ export default function AboutPage() {
         "@type": "WebSite",
         name: "Clinical Trial Failures",
         url: SITE_URL,
+      },
+      author: { "@type": "Person", name: AUTHOR.name },
+      mainEntity: {
+        "@type": "Organization",
+        name: "Clinical Trial Failures",
+        url: SITE_URL,
+        founder: { "@type": "Person", name: AUTHOR.name },
       },
     },
     {
@@ -83,6 +91,19 @@ export default function AboutPage() {
               search terminated, suspended, and withdrawn records and compare likely stop-reason signals such as
               efficacy, futility, safety, operational, enrollment, funding, regulatory, and other/unknown reasons.
             </p>
+
+            <section style={{ marginTop: 24 }}>
+              <h2>Who builds it</h2>
+              <p>
+                Clinical Trial Failures is built and maintained by <strong>{AUTHOR.name}</strong>. The classification
+                pipeline, the validation and every page on this site are published openly, so each number can be traced
+                back to the registry record it came from. The code is on{" "}
+                <a className="link" href="https://github.com/ThorfinnThor/oncology-trial-failures" rel="noopener">
+                  GitHub
+                </a>
+                .
+              </p>
+            </section>
 
             <section style={{ marginTop: 24 }}>
               <h2>Primary source</h2>
