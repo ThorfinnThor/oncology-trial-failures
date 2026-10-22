@@ -62,7 +62,7 @@ const PRICING = [
     name: "Diligence report",
     prefix: "",
     price: PACKAGE_PRICE,
-    unit: REPORT_BETA ? "one molecule, for a work email" : "one molecule",
+    unit: REPORT_BETA ? "one molecule, just enter your work email" : "one molecule",
     for: "A molecule on the table now — diligence, an in-licensing decision, a trial you are designing.",
     includes: [
       "One report per molecule, with a chapter for every cohort where a drug that failed shares its target",
@@ -437,8 +437,8 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
             <p className="sectionSub">
               {REPORT_BETA ? (
                 <>
-                  Two of these are free and stay free. The diligence report is free during the beta, in exchange for a
-                  work email; its link stays live and current for a year.
+                  Two of these are free and stay free. The diligence report is free during the beta: enter your work
+                  email and it opens straight away, with a link that stays live and current for a year.
                 </>
               ) : (
                 <>

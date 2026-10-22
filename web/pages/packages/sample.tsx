@@ -135,7 +135,7 @@ export default function SamplePackagePage() {
                   Name a drug in the asset check. You see for free which cohorts contain molecules that share its target;
                   the report is every one of them, each opening with your molecule placed against the ones that failed.
                   {REPORT_BETA
-                    ? "Free during the beta, in exchange for a work email; delivered immediately, current for a year."
+                    ? "Free during the beta. Enter your work email and it opens straight away, current for a year."
                     : "One payment, delivered immediately, current for a year."}
                 </p>
               </div>
