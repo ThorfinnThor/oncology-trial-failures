@@ -6,6 +6,7 @@
 import path from "path";
 import { promises as fs } from "fs";
 
+import type { DrugCatalogEntry, DrugPage } from "./drugPages";
 import type { TrialRelatedLinks } from "./relatedLinks";
 import { trialShardKey } from "./trial-sharding";
 import { DatasetMeta, TrialDetail, TrialIndexRow } from "./types";
@@ -14,6 +15,7 @@ let _meta: DatasetMeta | null = null;
 let _index: TrialIndexRow[] | null = null;
 const _detailShards = new Map<string, TrialDetail[]>();
 const _relatedShards = new Map<string, Record<string, TrialRelatedLinks>>();
+let _drugCatalog: DrugCatalogEntry[] | null = null;
 const INDEX_SHARD_KEYS = Array.from({ length: 16 }, (_, bucket) => bucket.toString(16));
 
 type StaticAssetsBinding = {
@@ -157,4 +159,25 @@ export async function loadRelatedLinksServer(nctId: string): Promise<TrialRelate
     }
   }
   return shard[normalizedId] || null;
+}
+
+// Drug pages (scripts/generate-drug-pages.ts): the catalogue for the A-Z list and the sitemap, and
+// one small file per drug, so neither a drug page nor the sitemap loads the trial index.
+export async function loadDrugCatalogServer(): Promise<DrugCatalogEntry[]> {
+  if (_drugCatalog) return _drugCatalog;
+  try {
+    _drugCatalog = await readJsonServerAsset<DrugCatalogEntry[]>("public/drug-pages/catalog.json");
+  } catch {
+    return [];
+  }
+  return _drugCatalog;
+}
+
+export async function loadDrugPageServer(slug: string): Promise<DrugPage | null> {
+  if (!/^[a-z0-9-]{1,80}$/.test(slug || "")) return null;
+  try {
+    return await readJsonServerAsset<DrugPage>(`public/drug-pages/${slug}.json`);
+  } catch {
+    return null;
+  }
 }

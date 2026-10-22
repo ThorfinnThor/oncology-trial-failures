@@ -25,6 +25,7 @@
 /public/trials-index-shards/
 /public/trial-shards/
 /public/related-shards/
+/public/drug-pages/
 
 # misc
 .DS_Store
