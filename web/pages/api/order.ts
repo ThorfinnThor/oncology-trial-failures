@@ -12,11 +12,19 @@
 // bit on a record that is already there. While no Payment Link is configured the order is granted
 // immediately, exactly as it was before any of this existed: a half-connected checkout that takes
 // an order and then refuses to deliver is worse than no checkout. See docs/payment.md.
+//
+// During the beta that free path is the offer: the report costs a work email, nothing else. The
+// address is required, a free-mail domain is accepted but flagged on the record (refusing it loses
+// the lead and stops nobody who is willing to invent an address), and an optional, unticked
+// newsletter box starts the newsletter's own double opt-in. The report is delivered whether or not
+// that box is ticked: delivering a file somebody asked for is not marketing
+// (docs/provenance_and_rights.md).
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { cohortsForAsset, PACKAGES, type Grant } from "@/lib/server/grants";
 import { checkoutUrl, isConfigured } from "@/lib/server/payment";
+import { requestSubscription } from "@/pages/api/newsletter";
 
 type KvBinding = {
   get(key: string): Promise<string | null>;
@@ -46,8 +54,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
-  // The buy button no longer asks for an email, so nothing on the form stops a script from minting
-  // grants. Only the site's own pages may place an order; a browser always sends Origin on a POST.
+  // The order asks for an email again, but an address is free to invent, so it does not stop a
+  // script from minting grants either. Only the site's own pages may place an order; a browser
+  // always sends Origin on a POST.
   if (!sameSite(req)) {
     console.log(JSON.stringify({ event: "order_rejected_origin", origin: clean(req.headers.origin, 120) }));
     return res.status(403).json({ ok: false, error: "Please order from clinicaltrialfailures.com." });
@@ -60,12 +69,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const asset = clean(body.asset, 200);
   const email = clean(body.email, 254).toLowerCase();
   const company = clean(body.company, 160);
-  const marketing = body.marketing === true || body.marketing === "true" || body.marketing === "on";
+  // Unticked by default on the form, and only a request: nobody is on the list until they click
+  // the confirmation mail.
+  const newsletter = body.newsletter === true || body.newsletter === "true" || body.newsletter === "on";
 
-  // Email and company are optional: the buy button goes straight to Stripe, whose checkout
-  // collects both, and the webhook copies them onto the grant. An address that is given still has
-  // to look like one.
-  if (email && !EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
+  // The work email is what the report costs during the beta, and once Stripe is on it prefills the
+  // checkout. Company stays optional; Stripe's checkout collects it when there is one.
+  if (!email) return res.status(400).json({ ok: false, error: "Please enter your work email to get the report." });
+  if (!EMAIL.test(email)) return res.status(400).json({ ok: false, error: "Please enter a valid work email." });
   if (!asset && !slug) return res.status(400).json({ ok: false, error: "Name the molecule or target you are evaluating." });
 
   let scope: Grant["scope"] = "cohort";
@@ -102,8 +113,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     slugs,
     email,
     company,
-    marketing_consent: marketing,
-    free_mail_domain: FREE_MAIL.test(email),
+    // A request, not consent: consent is the confirmed newsletter record, if the click ever comes.
+    newsletter_requested: newsletter,
+    free_mail_domain: isFreeMail(email),
     issued_at: new Date().toISOString(),
     country: clean(req.headers["cf-ipcountry"], 4),
     paid: false,
@@ -113,7 +125,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // A grant lasts a year: long enough that a bookmark still works, short enough that a link
     // pasted into a public channel does not stay open forever.
     await store.put(`grant:${value}`, JSON.stringify(record), { expirationTtl: YEAR_SECONDS });
-    await store.put(`order:${record.issued_at}:${email || value.slice(0, 8)}`, JSON.stringify(record));
+    await store.put(`order:${record.issued_at}:${email}`, JSON.stringify(record));
   } catch (error) {
     console.error(JSON.stringify({ event: "order_store_failed", message: String(error) }));
     return res.status(503).json({ ok: false, error: "Could not complete the order. Please try again." });
@@ -126,6 +138,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const tier = "molecule" as const;
   const pay = isConfigured(tier) ? checkoutUrl(tier, value, email) : "";
 
+  // After the grant exists, and never in its way: a newsletter that cannot send its confirmation
+  // right now costs the reader the newsletter, not the report.
+  let newsletterNote = "";
+  let newsletterStarted = false;
+  if (newsletter) {
+    const sub = await requestSubscription(store, { email, company, country: String(record.country || "") })
+      .catch(() => null);
+    newsletterStarted = Boolean(sub?.body.ok);
+    console.log(JSON.stringify({ event: "order_newsletter", started: newsletterStarted }));
+    newsletterNote = newsletterStarted
+      ? " For the newsletter, please confirm the mail we have just sent you."
+      : " We could not start the newsletter sign-up just now; you can subscribe on the newsletter page.";
+  }
+
   console.log(JSON.stringify({ event: "order", ...record, awaiting_payment: Boolean(pay) }));
   return res.status(200).json({
     ok: true,
@@ -133,7 +159,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     access_url: `/access?token=${value}`,
     payment: Boolean(pay),
     cohorts: slugs.length,
-    message: pay
+    message: (pay
       ? (slugs.length === 1
         ? "One step left. After payment the report opens straight away and the link stays current for a year."
         : `One report with ${slugs.length} cohort chapters. It opens straight away after payment and the link `
@@ -141,8 +167,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       : (slugs.length === 1
         ? "Your report is ready. The link works from any device and stays current for a year."
         : `Your report is ready — ${slugs.length} cohort chapters, one for every cohort where something that `
-          + "failed shares your target. The link works from any device and stays current for a year."),
+          + "failed shares your target. The link works from any device and stays current for a year."))
+      + newsletterNote,
+    newsletter: newsletter ? (newsletterStarted ? "confirmation_sent" : "unavailable") : "not_requested",
   });
+}
+
+/** Accepted, but flagged on the order: a personal address is a weaker lead, not a reason to refuse. */
+export function isFreeMail(email: string): boolean {
+  return FREE_MAIL.test(email);
 }
 
 export function sameSite(req: Pick<NextApiRequest, "headers">): boolean {

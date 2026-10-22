@@ -13,7 +13,8 @@ import { useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import SampleCallout from "@/components/SampleCallout";
-import { PACKAGE_PRICE, trialsBeyondTheBrief } from "@/components/BriefVsPackage";
+import { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
+import { PACKAGE_PRICE, REPORT_BETA } from "@/lib/offer";
 import catalogue from "@/data/evidence_catalogue.json";
 import briefsIndex from "@/data/briefs_index.json";
 
@@ -102,11 +103,11 @@ export default function PackagesIndexPage() {
               <Link className="link" href="/asset-check">
                 Name your molecule and we will say which cohorts contain drugs like it
               </Link>{" "}
-              — free, before you buy anything.
+              {REPORT_BETA ? "— free, before you ask for anything." : "— free, before you buy anything."}
             </p>
             <div className="strip">
               <span>{all.length} cohorts</span>
-              <span>{PACKAGE_PRICE} each</span>
+              <span>{REPORT_BETA ? PACKAGE_PRICE : `${PACKAGE_PRICE} each`}</span>
               <span>Delivered immediately</span>
               <span>Rebuilt weekly</span>
             </div>

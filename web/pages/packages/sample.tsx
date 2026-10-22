@@ -1,6 +1,6 @@
 // web/pages/packages/sample.tsx
 //
-// What €99 buys, shown rather than described: one complete report, unlocked, with every
+// What a report contains, shown rather than described: one complete report, unlocked, with every
 // section named and explained next to it. A feature list asks to be believed; the document
 // itself does not.
 
@@ -8,7 +8,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
-import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
+import { PACKAGE_PRICE, REPORT_BETA } from "@/lib/offer";
 import { SAMPLE_PACKAGE } from "@/lib/sample";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -96,7 +96,7 @@ export default function SamplePackagePage() {
                 Open the full sample ↗
               </a>
               <Link className="btn" href="/asset-check">
-                Request a report for your molecule — {PACKAGE_PRICE}
+                Get a report for your molecule — {PACKAGE_PRICE}
               </Link>
             </div>
           </section>
@@ -134,7 +134,9 @@ export default function SamplePackagePage() {
                 <p className="sub">
                   Name a drug in the asset check. You see for free which cohorts contain molecules that share its target;
                   the report is every one of them, each opening with your molecule placed against the ones that failed.
-                  One payment, delivered immediately, current for a year.
+                  {REPORT_BETA
+                    ? "Free during the beta, in exchange for a work email; delivered immediately, current for a year."
+                    : "One payment, delivered immediately, current for a year."}
                 </p>
               </div>
               <Link className="btn btn-primary" href="/asset-check">

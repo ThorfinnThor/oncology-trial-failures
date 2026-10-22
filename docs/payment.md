@@ -3,6 +3,15 @@
 Two things can be bought: one molecule's evidence packages (€99, once) and access to everything
 (€999 a year). Both go through **Stripe Payment Links**, not the Stripe API.
 
+**Beta.** Payment is not switched on yet. Until it is, the diligence report is offered *free during
+the beta, in exchange for a work email*: `/api/order` requires the address (free-mail domains are
+accepted and flagged as `free_mail_domain` on the order), grants immediately, and an optional,
+unticked box starts the newsletter's double opt-in. The pages are static and cannot read the
+Worker's secrets, so the wording follows `REPORT_BETA` in `web/lib/offer.ts`, not the Stripe
+configuration. Switching payment on is two changes made together: set `STRIPE_LINK_PACKAGE`, and
+set `REPORT_BETA` to `false`. The order route charges whenever the link is set, whatever the flag
+says.
+
 That choice is the whole design. A Payment Link is created once in the dashboard and needs no
 secret key in our Worker, so the one credential worth stealing never leaves Stripe. What we do
 need — the webhook signing secret — can only be used to *send* us messages, not to move money.

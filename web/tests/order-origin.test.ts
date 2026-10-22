@@ -1,5 +1,5 @@
-// Only the site's own pages may place an order: the buy button asks for nothing, so the origin is
-// the one thing that separates a customer's click from a script minting grants in a loop.
+// Only the site's own pages may place an order. The form asks for an email, but an address costs
+// nothing to invent, so the origin is what separates a reader's click from a script minting grants.
 
 import assert from "node:assert/strict";
 import test from "node:test";

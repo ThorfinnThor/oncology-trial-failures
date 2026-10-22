@@ -6,7 +6,7 @@
 
 import Link from "next/link";
 
-import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
+import { PACKAGE_LIST_PRICE, REPORT_BETA } from "@/lib/offer";
 import { SAMPLE_PACKAGE } from "@/lib/sample";
 
 const SECTIONS = [
@@ -25,7 +25,7 @@ export default function SampleCallout({ compact = false }: { compact?: boolean }
           <span className="scFree">Free</span>
           <span className="scNo">No sign-up required</span>
         </div>
-        <div className="scTitle">View a complete {PACKAGE_PRICE} report</div>
+        <div className="scTitle">{REPORT_BETA ? "View a complete diligence report" : `View a complete ${PACKAGE_LIST_PRICE} report`}</div>
         <p className="scText">
           Full sample for the {s.cohort} cohort, with {s.asset} as the example molecule.
         </p>

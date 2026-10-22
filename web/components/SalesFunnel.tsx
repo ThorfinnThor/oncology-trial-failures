@@ -6,7 +6,7 @@
 
 import Link from "next/link";
 
-import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
+import { PACKAGE_PRICE, REPORT_BETA } from "@/lib/offer";
 
 type Step = { key: string; label: string; detail: string; href: string; price: string };
 
@@ -31,7 +31,7 @@ export default function SalesFunnel({ current = "brief", title }: { current?: st
                 <b>{s.label}</b>
                 <span>{s.detail}</span>
               </span>
-              <span className={s.price === "Free" ? "sfPrice sfFree" : "sfPrice"}>
+              <span className={s.price === "Free" || (s.key === "buy" && REPORT_BETA) ? "sfPrice sfFree" : "sfPrice"}>
                 {i === at ? "You are here" : s.price}
               </span>
             </Link>

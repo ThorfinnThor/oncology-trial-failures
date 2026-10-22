@@ -14,7 +14,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import BuyButton from "@/components/BuyButton";
-import { PACKAGE_PRICE } from "@/components/BriefVsPackage";
+import { BUY_NOTE, PACKAGE_PRICE, PACKAGE_PRICE_INLINE, REPORT_BETA } from "@/lib/offer";
 import catalogue from "@/data/evidence_catalogue.json";
 import { LICENSING_EMAIL } from "@/lib/licensing";
 import { useLinkKey } from "@/lib/linkKey";
@@ -118,7 +118,7 @@ export default function AssetCheckPage() {
   // read" is an answer. Sharing only a modality is not, and goes in the one-line tail.
   const strong = matches.filter((m) => m.by === "class" || m.best === "closest" || m.best === "related");
   const modalityOnly = matches.filter((m) => m.by !== "class" && m.best === "weak");
-  // What €99 covers: a shared target, not a shared pathway. The price says so on the pricing page,
+  // What a report covers: a shared target, not a shared pathway. The price says so on the pricing page,
   // and a promise that is wider in the code than on the page is one nobody can check.
   const withTarget = matches.filter((m) => m.slug && m.same_target_and_modality + m.same_target > 0);
 
@@ -155,7 +155,7 @@ export default function AssetCheckPage() {
               <b>HER2 ADC</b>. We resolve what it acts on and compare it against every drug behind a trial that was
               stopped early for an efficacy, safety or benefit–risk reason, across every mechanism class we track in
               oncology, neurology, immunology and metabolic disease. You get the counts and the rates now, free. The names of
-              those molecules and the trials behind them are what a report costs {PACKAGE_PRICE}.
+              those molecules and the trials behind them are in the report — {PACKAGE_PRICE_INLINE}.
             </p>
 
             <form className="ask" onSubmit={onSubmit}>
@@ -399,18 +399,14 @@ export default function AssetCheckPage() {
                             ? "the cohort above where a molecule that failed acts on the same target"
                             : `a chapter for each of the ${withTarget.length} cohorts above where a molecule that failed acts on the same target`}
                           : all trials, the cohort rules, the attribution, the time-to-event curve, and{" "}
-                          {resolved.asset.name} compared against every molecule that failed there. One payment, one
-                          link, current for a year.
+                          {resolved.asset.name} compared against every molecule that failed there.{" "}
+                          {REPORT_BETA ? "One link, current for a year." : "One payment, one link, current for a year."}
                         </p>
                       </div>
                       <div className="buySide">
-                        <BuyButton
-                          asset={resolved.asset.name}
-                          className="buyNow"
-                          label={`Buy the report — ${PACKAGE_PRICE}`}
-                        />
+                        <BuyButton asset={resolved.asset.name} className="buyNow" />
                         <p className="buyNote">
-                          Secure checkout by Stripe. The report opens straight after payment.{" "}
+                          {BUY_NOTE}{" "}
                           <Link className="link" href="/packages/sample">
                             View a sample report
                           </Link>
@@ -422,7 +418,7 @@ export default function AssetCheckPage() {
                   <p className="fine">
                     What is withheld here is deliberate and small: the names of the molecules, the trials behind each,
                     and whether a stop was that trial&rsquo;s own result or a programme decision taken elsewhere. That is
-                    the report, at {PACKAGE_PRICE}, and it opens with this comparison already run for your molecule.
+                    the report — {PACKAGE_PRICE_INLINE} — and it opens with this comparison already run for your molecule.
                     The brief for each class is free either way.{" "}
                     <Link className="link" href="/packages/sample">
                       View a sample report
