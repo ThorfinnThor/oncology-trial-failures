@@ -180,6 +180,7 @@ code,kbd,pre,samp{font-family:var(--font-mono)}
 .nav{display:flex;align-items:center;gap:16px;flex-wrap:nowrap}
 .navlink{color:var(--text-muted);font-size:14px;padding:6px 8px;border-radius:10px}
 .navlink:hover{color:var(--text);background:rgba(15,23,42,.03)}
+.navFree{margin-left:4px;padding:1px 5px;border-radius:6px;background:#e0e7ff;color:#4338ca;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;vertical-align:1px}
 .guidesMenu{position:relative;display:inline-flex;align-items:center;flex:0 0 auto}
 .guidesSummary{
   display:inline-flex;

@@ -5,6 +5,7 @@ import type { GetServerSideProps } from "next";
 import { trialPath } from "@/lib/seoUrls";
 import briefsIndex from "@/data/briefs_index.json";
 import { latestBriefSitemapLastmod, selectBriefSitemapEntries } from "@/lib/briefSitemap";
+import { ISSUES, issuePath } from "@/lib/newsletterIssues";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "@/lib/seoHubs";
 import { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } from "@/lib/insights";
 import { readSeoIndexingFeatures, resolveSeoIndexingPolicy } from "@/lib/seoIndexingPolicy";
@@ -71,6 +72,7 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     "/methods",
     "/pricing",
     "/about",
+    "/use-cases",
     "/contact",
     "/privacy",
     "/disclaimer",
@@ -116,6 +118,13 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
       loc: `${SITE_URL}${entry.path}`,
       lastmod: toIsoDate(entry.lastmod, lastmod),
     })),
+    // The archive only once it has an issue; until then it is noindex.
+    ...(ISSUES.length
+      ? [
+          { loc: `${SITE_URL}/newsletter/issues`, lastmod: toIsoDate(ISSUES[0].date, lastmod) },
+          ...ISSUES.map((issue) => ({ loc: `${SITE_URL}${issuePath(issue.date)}`, lastmod: toIsoDate(issue.date, lastmod) })),
+        ]
+      : []),
     ...stableInformationPaths.filter(includeStaticPathInSitemap).map((path) => ({
       loc: `${SITE_URL}${path}`,
       lastmod: undefined,

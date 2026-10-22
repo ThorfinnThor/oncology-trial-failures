@@ -12,6 +12,7 @@ import briefsIndex from "@/data/briefs_index.json";
 import catalogue from "@/data/evidence_catalogue.json";
 import { pluralModality } from "@/lib/modality";
 import { LICENSING_EMAIL } from "@/lib/licensing";
+import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import { trialPath } from "@/lib/seoUrls";
 
 type Brief = (typeof briefsIndex.briefs)[number];
@@ -130,6 +131,39 @@ export default function BriefPage({ brief, trialPaths }: Props) {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:url" content={`${SITE_URL}/briefs/${brief.slug}`} />
+        {/* Dataset markup, so the brief can appear in Google Dataset Search. The licence is the one
+            in LICENSE-DATA.md: our classification is CC BY-NC, the registry fields keep their terms. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: serializeJsonLd({
+              "@context": "https://schema.org",
+              "@type": "Dataset",
+              name: title,
+              description,
+              url: `${SITE_URL}/briefs/${brief.slug}`,
+              isAccessibleForFree: true,
+              license: "https://creativecommons.org/licenses/by-nc/4.0/",
+              isBasedOn: "https://clinicaltrials.gov",
+              temporalCoverage: `${brief.start_from}/${brief.start_to}`,
+              dateModified: (brief as any).generated_at_utc || undefined,
+              keywords: [brief.segment, brief.area, "clinical trial failure", "terminated clinical trials", "discontinuation rate"],
+              variableMeasured: [
+                "biological stops among closed trials",
+                "efficacy and safety stops",
+                "completed trials that missed their primary endpoint",
+              ],
+              creator: [
+                { "@type": "Person", name: "Schayan Yousefian" },
+                { "@type": "Organization", name: "Clinical Trial Failures", url: SITE_URL },
+              ],
+              distribution: [
+                { "@type": "DataDownload", encodingFormat: "application/pdf", contentUrl: `${SITE_URL}/briefs/${brief.file_stem}.pdf` },
+                { "@type": "DataDownload", encodingFormat: "text/html", contentUrl: `${SITE_URL}/briefs/${brief.file_stem}.html` },
+              ],
+            }),
+          }}
+        />
       </Head>
 
       <header className="topbar">
