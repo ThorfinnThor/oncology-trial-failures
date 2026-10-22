@@ -101,6 +101,10 @@ export default function AboutPage() {
                 <a className="link" href="https://github.com/ThorfinnThor/oncology-trial-failures" rel="noopener">
                   GitHub
                 </a>
+                . To cite the dataset, use its DOI:{" "}
+                <a className="link" href="https://doi.org/10.5281/zenodo.23558833" rel="noopener">
+                  10.5281/zenodo.23558833
+                </a>
                 .
               </p>
             </section>

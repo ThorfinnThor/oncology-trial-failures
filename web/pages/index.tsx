@@ -288,6 +288,7 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
       version: v2.version,
       isAccessibleForFree: true,
       license: "https://creativecommons.org/licenses/by-nc/4.0/",
+      identifier: "https://doi.org/10.5281/zenodo.23558833",
       creator: [
         { "@type": "Person", name: "Schayan Yousefian" },
         { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
