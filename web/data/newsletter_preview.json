@@ -1,70 +1,143 @@
 {
- "schema_version": 1,
- "release": "",
- "generated_at_utc": "",
- "last_sent_at": "",
+ "schema_version": 2,
+ "release": "2026-10-22",
+ "generated_at_utc": "2026-10-22T09:20:17Z",
+ "last_sent_at": "2026-10-12T15:43:23Z",
  "counts": {
-  "added": 0,
-  "changed": 0
+  "added": 85,
+  "changed": 12
  },
- "added": [],
- "changed": [],
- "recent": [
+ "added": [
   {
-   "nct_id": "NCT05226598",
-   "title": "Study of Pembrolizumab/Vibostolimab Coformulation (MK-7684A) in Combination With Chemotherapy Versus Pembrolizumab Plus Chemotherapy in Part",
-   "sponsor": "Merck & Co.",
-   "detail": "MK-7684A-007 was terminated early due to futility. A non-submission CSR, not intended to support any registration, was issued; therefore, an abbreviated CSR was generated.",
-   "updated": "2026-09-11"
+   "nct_id": "NCT03854032",
+   "title": "Nivolumab and BMS986205 in Treating Patients With Stage II-IV Squamous Cell Cancer of the Head and Neck",
+   "sponsor": "Thomas Jefferson University",
+   "area": "Infectious Disease",
+   "reason": "Safety",
+   "detail": "Study was terminated early due to toxicity concerns by the Sponsor."
   },
   {
-   "nct_id": "NCT07025538",
-   "title": "Biomarker-Guided Ruxolitinib for the Prevention of Chronic Graft Versus Host Disease After Allogeneic Hematopoietic Cell Transplantation",
+   "nct_id": "NCT05263284",
+   "title": "8-Chloroadenosine in Combination With Venetoclax for the Treatment of Patients With Relapsed/Refractory Acute Myeloid Leukemia",
    "sponsor": "City of Hope Medical Center",
-   "detail": "Safety Issues",
-   "updated": "2026-09-11"
+   "area": "Oncology",
+   "reason": "Safety",
+   "detail": "Safety Issues, status is being updated per PI due to safety issues. Study is now Temporarily Closed to Accrual."
   },
   {
-   "nct_id": "NCT06573294",
-   "title": "Trial to Assess the Safety and Antitumor Activity of GEN1057 in Malignant Solid Tumors",
-   "sponsor": "Genmab",
-   "detail": "Genmab has decided to terminate the GEN1057 program due to marginal anti-tumor activity not supporting further development",
-   "updated": "2026-09-09"
+   "nct_id": "NCT04534751",
+   "title": "Factor In the Initial Resuscitation of Severe Trauma 2 Patients",
+   "sponsor": "University Health Network, Toronto",
+   "area": "Hematology (non-onc)",
+   "reason": "Efficacy / futility",
+   "detail": "Upon IDSMC's review of interim data, they recommended the trial be stopped based on futility."
   },
   {
-   "nct_id": "NCT05167409",
-   "title": "Study of Evorpacept (ALX148) With Cetuximab and Pembrolizumab for Refractory Microsatellite Stable Metastatic Colorectal Cancer",
-   "sponsor": "University of Colorado, Denver",
-   "detail": "Accrual was terminated due to safety concerns",
-   "updated": "2026-09-03"
+   "nct_id": "NCT05568745",
+   "title": "Balloon + Oxytocin Versus Oral Misoprostol to Induce Labor in Case of PROM (RUBAPRO2)",
+   "sponsor": "University Hospital, Clermont-Ferrand",
+   "area": "Other",
+   "reason": "Efficacy / futility",
+   "detail": "futility"
   },
   {
-   "nct_id": "NCT03816319",
-   "title": "TAK-243 in Treating Patients With Relapsed or Refractory Acute Myeloid Leukemia or Myelodysplastic Syndromes With Increased Blasts",
-   "sponsor": "National Cancer Institute (NCI)",
-   "detail": "Unacceptable Toxicity",
-   "updated": "2026-08-27"
+   "nct_id": "NCT07625306",
+   "title": "Lp(a) Lowering Study of Pelacarsen (TQJ230) in Patients in the US With Elevated Lp(a) and Recent ACS (STEMI/NSTEMI) - Lp(a)FRONTIERS PEARL",
+   "sponsor": "Novartis Pharmaceuticals",
+   "area": "Cardiovascular",
+   "reason": "Efficacy / futility",
+   "detail": "Study terminated by sponsor following the outcome of the Lp(a)HORIZON study (NCT04023552), which did not meet its primary endpoint"
   },
   {
-   "nct_id": "NCT06620302",
-   "title": "Testing the Addition of an Anti-cancer Drug, DT2216, to the Usual Chemotherapy Treatment for Relapsed or Refractory Solid Tumors and Fibrola",
-   "sponsor": "Children's Oncology Group",
-   "detail": "Unacceptable Toxicity",
-   "updated": "2026-08-24"
+   "nct_id": "NCT06116526",
+   "title": "Dupilumab De-escalation in Pediatric Atopic Dermatitis",
+   "sponsor": "Johns Hopkins University",
+   "area": "Dermatology",
+   "reason": "Recruitment",
+   "detail": "Poor accrual"
   },
   {
-   "nct_id": "NCT03274258",
-   "title": "Phase II Trial of Nivolumab Plus Ipilimumab in Patients With Renal Medullary Carcinoma",
-   "sponsor": "M.D. Anderson Cancer Center",
-   "detail": "The study met its prespecified futility criteria during the prespecified interim futility analysis after enrolling the first cohort of 10 patients.",
-   "updated": "2026-08-20"
+   "nct_id": "NCT06278987",
+   "title": "Comparison of Cryoablation of Pericapsular Nerve Group (PENG) to Fascia Iliaca Catheter in Patients With a Hip Fracture",
+   "sponsor": "University of Minnesota",
+   "area": "Musculoskeletal",
+   "reason": "Operational other",
+   "detail": "The study was terminated early due to operational feasibility challenges, including competing clinical priorities and resource constraints."
   },
   {
-   "nct_id": "NCT05580770",
-   "title": "Mirdametinib + BGB-3245 in Advanced Solid Tumors",
-   "sponsor": "SpringWorks Therapeutics, Inc., a healthcare company of Merck KGaA, Darmstadt, Germany",
-   "detail": "Lack of tolerability of BGB-3245 (Brimarafenib) when given in combination with Mirdametinib",
-   "updated": "2026-08-20"
+   "nct_id": "NCT06979492",
+   "title": "Prophylactic Transfusion In Pregnant in Women With Sickle Cell Disease",
+   "sponsor": "Emory University",
+   "area": "Hematology (non-onc)",
+   "reason": "Recruitment",
+   "detail": "The study was withdrawn due to no enrollment"
   }
- ]
+ ],
+ "changed": [
+  {
+   "nct_id": "NCT06213298",
+   "title": "Effect of Kava on Anxiety and Stress in Cancer Survivors",
+   "sponsor": "Masonic Cancer Center, University of Minnesota",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Status: Terminated → Withdrawn; Stop reason: “Drug expiration testing” → “Funding unavailable”"
+  },
+  {
+   "nct_id": "NCT05861050",
+   "title": "Glofitamab With Obinutuzumab, Venetoclax, and Lenalidomide for the Treatment of Patients With Newly Diagnosed High Risk Mantle Cell Lymphoma",
+   "sponsor": "City of Hope Medical Center",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Stop reason: “Safety Issues” → “10/12/2026 DSMC: Resuming suspension instated on 09/18/2026 due to unresolved monitoring findings, study accrual is suspended and will remain on hold until…”"
+  },
+  {
+   "nct_id": "NCT05158439",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord or Placental Derived Mesenchymal Stem Cells for Tourette Syndrome",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Other",
+   "reason": "",
+   "detail": "Stop reason: “covid-19” → “Inability to recruit participants”"
+  },
+  {
+   "nct_id": "NCT05003921",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord or Placental Derived Mesenchymal Stem Cell Intrathecal Injection for ALS",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Neurology",
+   "reason": "",
+   "detail": "Status: Suspended → Withdrawn; Stop reason: “Modifying Protocol” → “Inability to recruit patients”"
+  },
+  {
+   "nct_id": "NCT07604792",
+   "title": "FIT-(BCMA+CD19)-CAR-T Cells in Recurrent/Refractory Autoimmune Diseases Patients.",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Immunology & Autoimmune",
+   "reason": "",
+   "detail": "Status: Suspended → Withdrawn; Stop reason: “Enrollment is suspended to address regulatory requirements. Follow-up of currently…” → “No participants”"
+  },
+  {
+   "nct_id": "NCT05617313",
+   "title": "Study of GT103 in Combination With Pembrolizumab in Refractory, Metastatic Non-Small Cell Lung Cancer",
+   "sponsor": "Ryan Dackor",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Stop reason: “Study did not meet the criteria for continuation after interim analysis” → “Study terminated after completion of planned interim analysis of 21 patients.”"
+  },
+  {
+   "nct_id": "NCT04218773",
+   "title": "Blood PREssure Augmentation in Large-vessel Occlusion Stroke Study",
+   "sponsor": "Yale University",
+   "area": "Cardiovascular",
+   "reason": "",
+   "detail": "Status: Suspended → Terminated; Stop reason: “seeking additional funding” → “The study was terminated prematurely due to lack of continued funding.”"
+  },
+  {
+   "nct_id": "NCT07555561",
+   "title": "Autologous CD19-CD20-NKG2D-nsBicephali CAR-T for Relapsed/Refractory Central Nervous System Lymphoma",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Status: Suspended → Withdrawn; Stop reason: “Enrollment temporarily suspended due to temporary operational limitations at the study…” → “Due to the promulgation of State Council Order No. 818, this ca"
+  }
+ ],
+ "recent": []
 }
