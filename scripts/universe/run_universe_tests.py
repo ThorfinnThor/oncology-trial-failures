@@ -437,6 +437,11 @@ for _conds, _mesh, _area in [
     (["Amyotrophic Lateral Sclerosis", "ALS"], [], "Neurology"),
     (["Cerebral Palsy"], [], "Neurology"),
     (["Major Depressive Disorder"], ["Mental Disorders"], "Psychiatry & Mental Health"),
+    # A tie goes to the tumour, not the organ it grows in.
+    (["Pancreatic Adenocarcinoma"], [], "Oncology"),
+    (["Hepatocellular Carcinoma"], ["Carcinoma, Hepatocellular"], "Oncology"),
+    (["Melanoma (Skin)"], ["Melanoma"], "Oncology"),
+    (["Idiopathic Intracranial Hypertension"], ["Pseudotumor Cerebri"], "Cardiovascular"),
 ]:
     check(f"disease area of {_conds[0]}", assign_disease_areas(_conds, _mesh)[0], _area)
 

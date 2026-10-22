@@ -170,6 +170,7 @@ KEYWORD_EXCLUDED_WORDS: Dict[str, Tuple[str, ...]] = {
     "fibrosis": ("myelofibrosis",),
     "hepatitis": ("steatohepatitis",),
     "immun": ("angioimmunoblastic",),
+    "tumor": ("pseudotumor",),
 }
 # Abbreviations that only count as a word of their own: "als" is inside "individuals" and "palsy".
 WHOLE_WORD_KEYWORDS: Set[str] = {"als"}
@@ -215,7 +216,10 @@ def assign_disease_areas(conditions: List[str], mesh_terms: List[str]) -> Tuple[
     if not scores:
         return "Other", ""
 
-    primary = sorted(scores.items(), key=lambda x: (-x[1], x[0]))[0][0]
+    # A tie goes to Oncology when it is one of the tied areas: its keywords are tumour words, and a
+    # tumour of an organ ("pancreatic adenocarcinoma", "hepatocellular carcinoma") is filed by the
+    # tumour, not the organ. Other ties stay alphabetical.
+    primary = sorted(scores.items(), key=lambda x: (-x[1], x[0] != "Oncology", x[0]))[0][0]
     return primary, "; ".join(sorted(matched))
 
 
