@@ -3,8 +3,8 @@
 Two things can be bought: one molecule's evidence packages (€99, once) and access to everything
 (€999 a year). Both go through **Stripe Payment Links**, not the Stripe API.
 
-**Beta.** Payment is not switched on yet. Until it is, the diligence report is offered *free during
-the beta, in exchange for a work email*: `/api/order` requires the address (free-mail domains are
+**Beta.** Payment is not switched on yet. Until it is, the diligence report is *free during the
+beta*: the reader enters a work email and it opens. `/api/order` requires the address (free-mail domains are
 accepted and flagged as `free_mail_domain` on the order), grants immediately, and an optional,
 unticked box starts the newsletter's double opt-in. The pages are static and cannot read the
 Worker's secrets, so the wording follows `REPORT_BETA` in `web/lib/offer.ts`, not the Stripe

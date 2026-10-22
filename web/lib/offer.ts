@@ -2,7 +2,7 @@
 //
 // What the diligence report costs, said in one place so every page says the same thing.
 //
-// During the beta the report is free, in exchange for a work email. The pages that show the price
+// During the beta the report is free: you enter a work email and it opens. The pages that show the price
 // are static, built before the Worker's Stripe variables are readable, so this cannot follow
 // isConfigured() at render time. Switching payment on is therefore two changes made together:
 // set STRIPE_LINK_PACKAGE on the Worker, and set REPORT_BETA to false here. The order route does
@@ -23,7 +23,7 @@ export const BUY_LABEL = REPORT_BETA ? "Get the report" : `Buy the report — ${
 
 /** The line under the button. */
 export const BUY_NOTE = REPORT_BETA
-  ? "Free during the beta, in exchange for a work email. The report opens straight away."
+  ? "Free during the beta. Enter your work email and the report opens straight away."
   : "Secure checkout by Stripe. The report opens straight after payment.";
 
 /** How a report is delivered, as a bullet. */
