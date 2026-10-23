@@ -1,0 +1,47 @@
+name: Checks
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  classification-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Every step below reads the committed snapshot and never calls the
+      # registry, so the whole job stays cheap enough to run on each pull
+      # request.  The step names match the data workflow, so a failure here
+      # reads the same as the failure it is meant to pre-empt.
+      - name: Check the reviewed-reason index is current
+        run: |
+          python scripts/build_reviewed_reason_index_v2.py --check
+
+      - name: Run Classification V2 tests and quality gate
+        run: |
+          python scripts/run_golden_tests.py
+          python scripts/run_classification_v2_tests.py
+          python scripts/evaluate_classification_v2.py --enforce
+
+      - name: Validate Classification V2 snapshot invariants
+        run: |
+          python scripts/validate_classification_v2_snapshot.py

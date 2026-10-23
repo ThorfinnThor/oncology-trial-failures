@@ -208,6 +208,48 @@ def build(
     }
 
 
+def describe_index_drift(
+    committed: Dict[str, Any],
+    fresh: Dict[str, Any],
+) -> List[str]:
+    """Summarise why a committed index no longer matches a fresh build.
+
+    The index is a pure function of the gold file, the approved manual
+    decisions, and the classifier rules, so any difference means one of those
+    moved without the index being rebuilt.
+    """
+
+    differences: List[str] = []
+    for field in ("schema_version", "classifier_version", "normalization"):
+        if committed.get(field) != fresh.get(field):
+            differences.append(
+                f"{field} is {committed.get(field)!r}, a fresh build says {fresh.get(field)!r}"
+            )
+    committed_entries = committed.get("entries") or {}
+    fresh_entries = fresh.get("entries") or {}
+    groups = (
+        ("missing", sorted(set(fresh_entries) - set(committed_entries))),
+        ("stale", sorted(set(committed_entries) - set(fresh_entries))),
+        (
+            "outdated",
+            sorted(
+                digest
+                for digest in set(committed_entries) & set(fresh_entries)
+                if committed_entries[digest] != fresh_entries[digest]
+            ),
+        ),
+    )
+    for name, digests in groups:
+        if not digests:
+            continue
+        sample = fresh_entries.get(digests[0]) or committed_entries[digests[0]]
+        text = str(sample.get("normalized_text") or "")[:60]
+        differences.append(f"{len(digests)} {name} entries, e.g. {digests[0]} ({text!r})")
+    if not differences and committed != fresh:
+        differences.append("index metadata differs from a fresh build")
+    return differences
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--gold", default="tests/classification_gold_v2.jsonl")
@@ -216,12 +258,37 @@ def main() -> None:
         default="data/classification_manual_decisions_v2.csv",
     )
     parser.add_argument("--output", default="data/classification_reviewed_reasons_v2.json")
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Verify the committed index matches a fresh build instead of writing it",
+    )
     args = parser.parse_args()
     payload = build(
         load_jsonl(Path(args.gold)),
         load_manual_decisions(Path(args.manual_decisions)),
     )
     output = Path(args.output)
+    if args.check:
+        if not output.exists():
+            print(f"{output} is missing; build it with:")
+            print("  python scripts/build_reviewed_reason_index_v2.py")
+            raise SystemExit(1)
+        differences = describe_index_drift(
+            json.loads(output.read_text(encoding="utf-8")), payload
+        )
+        if differences:
+            print(f"{output} no longer matches a fresh build:\n")
+            print("\n".join(f"- {line}" for line in differences))
+            print("\nRebuild and commit it with:")
+            print("  python scripts/build_reviewed_reason_index_v2.py")
+            raise SystemExit(1)
+        print(
+            f"{output} matches a fresh build "
+            f"({payload['entry_count']} reviewed reasons, "
+            f"classifier {payload['classifier_version']})"
+        )
+        return
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
