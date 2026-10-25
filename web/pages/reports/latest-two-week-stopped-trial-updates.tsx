@@ -12,6 +12,7 @@ import {
 } from "@/lib/ingestChanges";
 import type { InsightStats } from "@/lib/insights";
 import { trialPath } from "@/lib/seoUrls";
+import { DATA_LICENSE_URL, DATASET_CREATOR } from "@/lib/licensing";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const PATH = "/reports/latest-two-week-stopped-trial-updates";
@@ -101,6 +102,8 @@ export default function LatestTwoWeekReport({ report, changes }: ReportProps) {
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
+      license: DATA_LICENSE_URL,
+      creator: DATASET_CREATOR,
       name: "Latest two-week stopped clinical trial update window",
       description,
       temporalCoverage: `${report.startDate}/${report.endDate}`,

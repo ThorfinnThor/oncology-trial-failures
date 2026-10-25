@@ -6,6 +6,8 @@ import {
   drugCatalogEntry,
   drugLinksForRow,
   drugsForRow,
+  DRUG_INDEX_MIN_REASON_CHARS,
+  DRUG_INDEX_MIN_STATED_REASONS,
   DRUG_MIN_TRIALS,
   normaliseDrugName,
   type DrugSourceRow,
@@ -70,7 +72,7 @@ test("only drug and biological interventions count, matched by position", () => 
   assert.deepEqual(drugsForRow(row("NCT00000003", "Drugx; Device y; Drugz", "DRUG; DEVICE")), []);
 });
 
-test("a drug gets a page at the threshold; indexing needs an indexable trial and two stated reasons", () => {
+test("a drug gets a page at the threshold; two short stated reasons are not enough to index it", () => {
   const rows = [
     row("NCT00000011", "Vortioxetine 10 mg; Placebo", "DRUG; DRUG", {
       why_stopped_short: "Lack of efficacy at interim analysis",
@@ -91,7 +93,7 @@ test("a drug gets a page at the threshold; indexing needs an indexable trial and
   assert.equal(page.total, 2);
   assert.equal(page.withStopReason, 2);
   assert.equal(page.efficacyOrSafety, 1);
-  assert.equal(page.indexable, true);
+  assert.equal(page.indexable, false);
   assert.equal(page.trials[0].ended, "2022-01-01");
   assert.deepEqual(page.trials.find((trial) => trial.nct_id === "NCT00000011")?.listed_with, ["Placebo"]);
 
@@ -103,6 +105,31 @@ test("a drug gets a page at the threshold; indexing needs an indexable trial and
 
   const noReasons = buildDrugPages([row("NCT00000021", "Druglumab", "DRUG", { why_stopped_short: "" }), row("NCT00000022", "Druglumab", "DRUG", { why_stopped_short: "" })]);
   assert.equal(noReasons[0].indexable, false);
+});
+
+test("indexing a drug page needs an indexable trial, three stated reasons and enough distinct reason text", () => {
+  const efficacy: Partial<DrugSourceRow> = {
+    classification_final_outcome: "BIOLOGICAL_FAILURE",
+    classification_final_category: "EFFICACY_FUTILITY",
+    classification_resolution_status: "RESOLVED",
+  };
+  const long = (text: string) => `${text} ${"The independent data monitoring committee reviewed the unblinded interim results. ".repeat(2)}`;
+  const substantial = [
+    row("NCT00000041", "Testumab", "BIOLOGICAL", { why_stopped_short: long("Futility at the planned interim analysis."), ...efficacy }),
+    row("NCT00000042", "Testumab", "BIOLOGICAL", { why_stopped_short: long("Primary endpoint not met in the dose-expansion cohort.") }),
+    row("NCT00000043", "Testumab", "BIOLOGICAL", { why_stopped_short: long("Unexpected hepatotoxicity in two participants.") }),
+  ];
+  assert.ok(DRUG_INDEX_MIN_STATED_REASONS >= 3);
+  assert.equal(buildDrugPages(substantial)[0].indexable, true);
+
+  // The same short line three times says too little.
+  const repeated = [1, 2, 3].map((n) =>
+    row(`NCT0000005${n}`, "Repeatumab", "BIOLOGICAL", { why_stopped_short: "Sponsor decision", ...(n === 1 ? efficacy : {}) })
+  );
+  const [page] = buildDrugPages(repeated);
+  assert.equal(page.withStopReason, 3);
+  assert.ok("sponsor decision".length < DRUG_INDEX_MIN_REASON_CHARS);
+  assert.equal(page.indexable, false);
 });
 
 test("a drug page never carries cohort analysis fields", () => {
