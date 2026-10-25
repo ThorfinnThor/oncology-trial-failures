@@ -4,6 +4,36 @@ import test from "node:test";
 import { buildInsightStats } from "../lib/insightStats";
 import { getInsightBySlug } from "../lib/insights";
 
+test("FcRn insight separates disease endpoints from the programme-cascade stop", async () => {
+  const stats = await buildInsightStats();
+  const brief = stats.mechanismBriefs.fcrnAutoimmune;
+  const article = getInsightBySlug("fcrn-inhibitor-clinical-results-disease-endpoints", stats);
+
+  assert.ok(article);
+  assert.ok(article.dek.includes(`${brief.endpointReadable}`));
+  assert.ok(article.dek.includes(`${brief.endpointMissedMolecules} molecules`));
+  assert.ok(article.facts.some((fact) => fact.includes("rheumatoid arthritis") && fact.includes("CIDP")));
+  assert.ok(article.sections.some((section) => section.heading.includes("mechanism-to-benefit")));
+  assert.ok(article.tables.some((table) => table.heading.includes("different clinical propositions")));
+  assert.ok(article.links.some((link) => link.href === `/briefs/${brief.slug}`));
+  assert.ok(article.links.some((link) => link.href === "/trial/NCT05517447"));
+});
+
+test("LAG-3 insight contrasts the quiet status layer with missed primary results", async () => {
+  const stats = await buildInsightStats();
+  const brief = stats.mechanismBriefs.lag3PdL1;
+  const article = getInsightBySlug("lag-3-inhibitor-trial-results-beyond-melanoma", stats);
+
+  assert.ok(article);
+  assert.ok(article.dek.includes(`${brief.biologicalStops} of ${brief.closed}`));
+  assert.ok(article.dek.includes(`all ${brief.endpointReadable}`));
+  assert.ok(article.facts.some((fact) => fact.includes(`${brief.endpointMissedMolecules}`) && fact.includes("molecules")));
+  assert.ok(article.sections.some((section) => section.heading.includes("Two ledgers")));
+  assert.ok(article.tables.some((table) => table.heading.includes("near no added effect")));
+  assert.ok(article.links.some((link) => link.href === `/briefs/${brief.slug}`));
+  assert.ok(article.links.some((link) => link.href.includes("NCT05064059") && link.href.includes("tab=results")));
+});
+
 test("BACE1 insight separates efficacy, safety, and programme-cascade evidence", async () => {
   const stats = await buildInsightStats();
   const brief = stats.mechanismBriefs.baceSecretase;
