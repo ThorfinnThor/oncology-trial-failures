@@ -917,6 +917,5 @@ export const getStaticProps: GetStaticProps<TopEntitiesPageProps> = async () => 
   const rows = await loadIndexServer();
   return {
     props: { initialSnapshot: buildTopEntitiesSnapshot(rows) },
-    revalidate: 86_400,
   };
 };

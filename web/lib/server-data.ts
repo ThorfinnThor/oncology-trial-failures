@@ -127,9 +127,13 @@ export async function loadDetailServer(nctId: string): Promise<TrialDetail | nul
 
   const detail = rows?.find((row) => row.nct_id.toUpperCase() === normalizedId);
   if (detail) return detail;
+  // The detail shards hold every index row, so an ID missing from its shard is not in the
+  // index either. Loading the whole index for it (every unknown /trial/ URL a bot requests)
+  // exceeded the Cloudflare Worker memory limit.
+  if (rows) return null;
 
-  // Build/runtime safety fallback. This still reads only the compact index rather
-  // than the full all_stopped_trials.json payload.
+  // Build/runtime safety fallback when the shard cannot be read. This still reads only the
+  // compact index rather than the full all_stopped_trials.json payload.
   const index = await loadIndexServer();
   const row = index.find((candidate) => candidate.nct_id.toUpperCase() === normalizedId);
   if (!row) return null;
