@@ -3,6 +3,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 import SeoHubPage from "@/components/SeoHubPage";
 import {
   buildFailureHubs,
+  buildSponsorHubs,
   buildHubEditorialInsight,
   displayHubRows,
   findFailureHub,
@@ -28,9 +29,10 @@ type FailureHubPageProps = {
   stats: HubStats;
   editorial: HubEditorialInsight | null;
   datasetMeta: DatasetMeta;
+  sponsorHubHrefs: Record<string, string>;
 };
 
-export default function FailureHubPage({ hub, rows, stats, editorial, datasetMeta }: FailureHubPageProps) {
+export default function FailureHubPage({ hub, rows, stats, editorial, datasetMeta, sponsorHubHrefs }: FailureHubPageProps) {
   return (
     <SeoHubPage
       hub={hub}
@@ -40,6 +42,7 @@ export default function FailureHubPage({ hub, rows, stats, editorial, datasetMet
       datasetMeta={datasetMeta}
       parentHref="/failures"
       parentLabel="Failure hubs"
+      sponsorHubHrefs={sponsorHubHrefs}
     />
   );
 }
@@ -61,6 +64,11 @@ export const getStaticProps: GetStaticProps<FailureHubPageProps> = async (ctx) =
 
   if (!hub) return { notFound: true };
   const stats = hubStats(hub.rows);
+  // Leading sponsors link to their sponsor hub (indexable) rather than to a noindex Explore filter.
+  const sponsorHubs = new Map(buildSponsorHubs(rows).map((sponsor) => [sponsor.label, sponsor.path]));
+  const sponsorHubHrefs = Object.fromEntries(
+    stats.topSponsors.flatMap((item) => (sponsorHubs.has(item.label) ? [[item.label, sponsorHubs.get(item.label)!]] : []))
+  );
 
   return {
     props: {
@@ -84,6 +92,7 @@ export const getStaticProps: GetStaticProps<FailureHubPageProps> = async (ctx) =
       stats,
       editorial: buildHubEditorialInsight(hub, stats, rows),
       datasetMeta,
+      sponsorHubHrefs,
     },
   };
 };

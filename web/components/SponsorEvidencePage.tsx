@@ -15,6 +15,7 @@ import {
   type SponsorEvidenceStats,
 } from "@/lib/seoHubs";
 import type { DatasetMeta, TrialIndexRow } from "@/lib/types";
+import { DATA_LICENSE_URL } from "@/lib/licensing";
 
 type SponsorMeta = {
   title: string;
@@ -56,6 +57,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
+      license: DATA_LICENSE_URL,
       name: `${hub.label} stopped clinical trial evidence profile`,
       description: hub.description,
       url: canonicalUrl,

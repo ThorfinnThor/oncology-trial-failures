@@ -79,10 +79,29 @@ type HomeStats = {
   classification: ClassificationStats;
 };
 
+type BrowseLink = {
+  href: string;
+  label: string;
+  total?: number;
+};
+
+type HomeBrowse = {
+  areas: BrowseLink[];
+  sponsors: BrowseLink[];
+  insights: BrowseLink[];
+};
+
 type HomePageProps = {
   stats: HomeStats;
   sampleTrials: SampleTrial[];
+  browse: HomeBrowse;
 };
+
+// How many hub and insight links the home page carries: enough that every large area and sponsor
+// hub is one click from the home page, few enough to stay a readable index.
+const BROWSE_AREA_LIMIT = 16;
+const BROWSE_SPONSOR_LIMIT = 24;
+const BROWSE_INSIGHT_LIMIT = 8;
 
 function compactNumber(value: number): string {
   return value.toLocaleString("en-US");
@@ -155,6 +174,8 @@ function buildSampleTrials(rows: TrialIndexRow[]): SampleTrial[] {
 
 export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
   const { loadIndexServer, readJsonServerAsset } = await import("@/lib/server-data");
+  const { buildFailureHubs, buildSponsorHubs } = await import("@/lib/seoHubs");
+  const { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } = await import("@/lib/insights");
   const [meta, rows] = await Promise.all([
     readJsonServerAsset<any>("public/dataset_meta.json"),
     loadIndexServer(),
@@ -197,11 +218,24 @@ export const getStaticProps: GetStaticProps<HomePageProps> = async () => {
         },
       },
       sampleTrials: buildSampleTrials(rows),
+      browse: {
+        areas: buildFailureHubs(rows)
+          .filter((hub) => hub.kind === "area")
+          .sort((a, b) => b.total - a.total)
+          .slice(0, BROWSE_AREA_LIMIT)
+          .map((hub) => ({ href: hub.path, label: hub.label, total: hub.total })),
+        sponsors: buildSponsorHubs(rows)
+          .slice(0, BROWSE_SPONSOR_LIMIT)
+          .map((hub) => ({ href: hub.path, label: hub.label, total: hub.total })),
+        insights: sortInsightArticlesByDate(INSIGHT_ARTICLES)
+          .slice(0, BROWSE_INSIGHT_LIMIT)
+          .map((article) => ({ href: insightPath(article), label: article.title })),
+      },
     },
   };
 };
 
-export default function HomePage({ stats, sampleTrials }: HomePageProps) {
+export default function HomePage({ stats, sampleTrials, browse }: HomePageProps) {
   const v2 = stats.classification;
   const [newsletterStatus, setNewsletterStatus] = useState<"idle" | "sending" | "done" | "error">("idle");
   const [newsletterMessage, setNewsletterMessage] = useState("");
@@ -661,6 +695,30 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
             </div>
           </section>
 
+          <section className="v2Browse" aria-labelledby="v2-browse-title">
+            <div className="v2Container">
+              <div className="v2SectionIntro v2SectionIntroCompact"><div><p className="v2Kicker">Browse the evidence</p><h2 id="v2-browse-title">Stopped trials by disease area, sponsor and question.</h2></div></div>
+              <div className="v2BrowseGrid">
+                <nav aria-labelledby="v2-browse-areas">
+                  <h3 id="v2-browse-areas">Disease areas</h3>
+                  <ul>{browse.areas.map((item) => <li key={item.href}><Link href={item.href}>{item.label}</Link>{item.total ? <span>{compactNumber(item.total)}</span> : null}</li>)}</ul>
+                  <Link href="/failures" className="v2BrowseMore">All failure hubs →</Link>
+                </nav>
+                <nav aria-labelledby="v2-browse-sponsors">
+                  <h3 id="v2-browse-sponsors">Sponsors</h3>
+                  <ul>{browse.sponsors.map((item) => <li key={item.href}><Link href={item.href}>{item.label}</Link>{item.total ? <span>{compactNumber(item.total)}</span> : null}</li>)}</ul>
+                  <Link href="/sponsors" className="v2BrowseMore">All sponsors →</Link>
+                </nav>
+                <nav aria-labelledby="v2-browse-insights">
+                  <h3 id="v2-browse-insights">Latest insights</h3>
+                  <ul>{browse.insights.map((item) => <li key={item.href}><Link href={item.href}>{item.label}</Link></li>)}</ul>
+                  <Link href="/insights" className="v2BrowseMore">All insights →</Link>
+                  <Link href="/briefs" className="v2BrowseMore">Mechanism briefs →</Link>
+                </nav>
+              </div>
+            </div>
+          </section>
+
           <section className="v2Trust" aria-labelledby="v2-trust-title">
             <div className="v2Container v2TrustInner">
               <div><p className="v2Kicker">Source discipline</p><h2 id="v2-trust-title">A screening signal, not a final medical conclusion.</h2></div>
@@ -728,11 +786,12 @@ export default function HomePage({ stats, sampleTrials }: HomePageProps) {
         .v2BiologicalBar{display:flex;height:8px;background:#e2e8f0}.v2BiologicalBar span{display:block;height:100%}.v2BioBarEfficacy{background:var(--v2-green-deep)}.v2BioBarSafety{background:var(--v2-coral)}.v2BioBarUnspecified{background:var(--v2-cyan)}.v2BiologicalGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.v2BiologicalItem{position:relative;min-height:264px;padding:24px 21px 22px;border-right:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-right:0}.v2BiologicalItem:hover{background:#fff}.v2CategoryMarker{display:block;width:12px;height:12px;margin-bottom:25px;background:currentColor}.v2BioEfficacy{color:var(--v2-green-deep)}.v2BioSafety{color:#be123c}.v2BioUnspecified{color:#0369a1}.v2BiologicalItem>strong{display:block;color:var(--v2-ink);font-family:var(--font-mono);font-size:30px;font-variant-numeric:tabular-nums}.v2BiologicalItem h4{margin-top:7px;color:var(--v2-ink);font-size:15px;font-weight:850}.v2BiologicalItem p{margin-top:13px;color:var(--v2-copy);font-size:12px;line-height:1.55}.v2InlineAction{position:absolute;left:21px;bottom:22px;color:currentColor;font-size:12px;font-weight:850}
         .v2CauseIndex{display:flex;flex-direction:column}.v2CauseIndexHeader a{color:var(--v2-copy);font-size:11px;font-weight:800}.v2CauseRows{flex:1}.v2CauseRow{display:grid;grid-template-columns:minmax(128px,1fr) minmax(70px,.75fr) 58px;align-items:center;gap:12px;min-height:49px;padding:0 18px;border-bottom:1px solid var(--v2-line)}.v2CauseRow:hover{background:#fff}.v2CauseLabel{color:var(--v2-copy);font-size:12px;font-weight:750}.v2CauseRow strong{text-align:right;font-family:var(--font-mono);font-size:12px;font-variant-numeric:tabular-nums}.v2CauseTrack{display:block;height:5px;background:#e2e8f0}.v2CauseTrack span{display:block;height:100%;background:var(--v2-ink-soft)}.v2ReviewNote{padding:17px 18px;border-top:3px solid var(--v2-amber)}.v2ReviewNote strong{font-size:12px}.v2ReviewNote p{margin-top:6px;color:var(--v2-muted);font-size:11px;line-height:1.45}
         .v2Method{padding:76px 0;background:#eef2ff;border-top:1px solid #dbe3f2;border-bottom:1px solid #dbe3f2}.v2MethodHeader{align-items:end}.v2MethodLink{justify-self:end;font-size:13px;font-weight:850;text-decoration:underline;text-underline-offset:4px}.v2Pipeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:34px 0 0;padding:0;border:1px solid #cbd5e1;list-style:none}.v2Pipeline li{min-height:218px;padding:21px;border-right:1px solid #cbd5e1}.v2Pipeline li:last-child{border-right:0}.v2Pipeline li>span{color:var(--v2-green-deep);font-family:var(--font-mono);font-size:11px;font-weight:850}.v2Pipeline strong{display:block;margin-top:30px;font-size:15px}.v2Pipeline p{margin-top:12px;color:var(--v2-copy);font-size:12px;line-height:1.55}.v2AuditStrip{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 22px;padding:13px 15px;border-right:1px solid #cbd5e1;border-bottom:1px solid #cbd5e1;border-left:1px solid #cbd5e1;color:#526079;font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase}
+        .v2Browse{padding:64px 0;background:var(--v2-paper);border-top:1px solid var(--v2-line)}.v2Browse h2{max-width:760px;margin-top:10px;color:var(--v2-ink);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:850;line-height:1.08}.v2BrowseGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin-top:30px}.v2BrowseGrid h3{font-size:15px;font-weight:850}.v2BrowseGrid ul{margin:12px 0 0;padding:0;list-style:none;border-top:1px solid var(--v2-line)}.v2BrowseGrid li{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid var(--v2-line);font-size:13px;line-height:1.4}.v2BrowseGrid li a{color:var(--v2-ink)}.v2BrowseGrid li a:hover,.v2BrowseGrid li a:focus-visible{color:var(--v2-green-deep);text-decoration:underline;text-underline-offset:3px}.v2BrowseGrid li span{flex:none;color:var(--v2-muted);font-family:var(--font-mono);font-size:11px;font-variant-numeric:tabular-nums}.v2BrowseMore{display:inline-block;margin:12px 16px 0 0;font-size:13px;font-weight:800}
         .v2Workflows{padding:76px 0;background:#fff}.v2SectionIntroCompact{grid-template-columns:1fr}.v2WorkflowGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:34px;border-top:1px solid var(--v2-line);border-bottom:1px solid var(--v2-line)}.v2Workflow{display:flex;min-height:290px;flex-direction:column;padding:24px;border-right:1px solid var(--v2-line)}.v2Workflow:last-child{border-right:0}.v2Workflow:hover{background:var(--v2-paper)}.v2Workflow>span{color:var(--v2-muted);font-family:var(--font-mono);font-size:10px;font-weight:800}.v2Workflow h3{margin-top:36px;font-size:20px;line-height:1.25}.v2Workflow p{margin-top:15px;color:var(--v2-copy);font-size:13px;line-height:1.6}.v2Workflow>strong{margin-top:auto;padding-top:24px;font-size:13px}
         .v2Trust{padding:58px 0;background:#eef2ff;border-top:1px solid #dbe3f2}.v2TrustInner{grid-template-columns:minmax(260px,.85fr) minmax(360px,1fr) auto;align-items:center}.v2Trust h2{max-width:470px;font-size:clamp(1.65rem,2.6vw,2.5rem)}.v2TrustInner>p{color:var(--v2-copy);font-size:13px;line-height:1.65}.v2TrustLinks{display:grid;gap:9px;min-width:100px}.v2TrustLinks a{color:var(--v2-green-deep);font-size:12px;font-weight:850;text-decoration:underline;text-underline-offset:3px}
         .v2Footer{padding:28px 0;background:var(--v2-ink);color:#fff}.v2FooterInner{display:flex;align-items:center;justify-content:space-between;gap:32px}.v2Footer strong{font-size:13px}.v2Footer p{margin:5px 0 0;color:#94a3b8;font-size:11px}.v2Footer nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:18px}.v2Footer a{color:#cbd5e1;font-size:11px;font-weight:750}.v2Footer a:hover{color:var(--v2-green)}
         @media(max-width:1080px){.v2HeroGrid{grid-template-columns:1fr}.v2HeroCopy{max-width:760px}.v2Console{max-width:860px}.v2NewsletterBox{grid-template-columns:1fr}.v2NewsletterSignup{border-top:1px solid #cbd5e1;border-left:0}.v2NewsletterSignup form{max-width:620px}.v2SignalLayout{grid-template-columns:1fr}.v2CauseIndex{min-height:410px}.v2TrustInner{grid-template-columns:1fr 1fr}.v2TrustLinks{grid-column:1/-1;grid-template-columns:repeat(3,auto);justify-content:start}}
-        @media(max-width:780px){.v2Container{padding:0 16px}.v2Hero{padding:42px 0 40px}.v2HeroGrid{gap:38px}.v2Hero h1{font-size:clamp(2.4rem,11vw,3.4rem)}.v2Newsletter{padding:20px 0}.v2NewsletterCopy,.v2NewsletterSignup{padding:26px 24px}.v2NewsletterBenefits{grid-template-columns:1fr}.v2NewsletterBenefits li,.v2NewsletterBenefits li+li{padding:11px 0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2NewsletterBenefits li:last-child{border-bottom:0}.v2SectionIntro,.v2MethodHeader,.v2TrustInner,.v2QuestionIntro{grid-template-columns:1fr;gap:20px}.v2QuestionGrid{grid-template-columns:1fr}.v2QuestionCard{min-height:0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2QuestionCard:last-child{border-bottom:0}.v2QuestionCard>em{margin-top:22px}.v2MethodLink{justify-self:start}.v2BiologicalGrid{grid-template-columns:1fr}.v2BiologicalItem{min-height:210px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-bottom:0}.v2Pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:nth-child(-n+2){border-bottom:1px solid #cbd5e1}.v2WorkflowGrid{grid-template-columns:1fr}.v2Workflow{min-height:230px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2Workflow:last-child{border-bottom:0}.v2FooterInner{align-items:flex-start;flex-direction:column}.v2Footer nav{justify-content:flex-start}}
+        @media(max-width:780px){.v2Container{padding:0 16px}.v2Hero{padding:42px 0 40px}.v2HeroGrid{gap:38px}.v2Hero h1{font-size:clamp(2.4rem,11vw,3.4rem)}.v2Newsletter{padding:20px 0}.v2NewsletterCopy,.v2NewsletterSignup{padding:26px 24px}.v2NewsletterBenefits{grid-template-columns:1fr}.v2NewsletterBenefits li,.v2NewsletterBenefits li+li{padding:11px 0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2NewsletterBenefits li:last-child{border-bottom:0}.v2SectionIntro,.v2MethodHeader,.v2TrustInner,.v2QuestionIntro{grid-template-columns:1fr;gap:20px}.v2QuestionGrid{grid-template-columns:1fr}.v2QuestionCard{min-height:0;border-right:0;border-bottom:1px solid var(--v2-line)}.v2QuestionCard:last-child{border-bottom:0}.v2QuestionCard>em{margin-top:22px}.v2MethodLink{justify-self:start}.v2BiologicalGrid{grid-template-columns:1fr}.v2BiologicalItem{min-height:210px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2BiologicalItem:last-child{border-bottom:0}.v2Pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:nth-child(-n+2){border-bottom:1px solid #cbd5e1}.v2WorkflowGrid,.v2BrowseGrid{grid-template-columns:1fr}.v2Workflow{min-height:230px;border-right:0;border-bottom:1px solid var(--v2-line)}.v2Workflow:last-child{border-bottom:0}.v2FooterInner{align-items:flex-start;flex-direction:column}.v2Footer nav{justify-content:flex-start}}
         @media(max-width:600px){.v2ReleaseLine{align-items:flex-start}.v2ReleaseDivider{display:none}.v2HeroLede{font-size:15px}.v2Search{grid-template-columns:auto minmax(0,1fr)}.v2Search button{grid-column:1/-1;min-height:44px;border-top:1px solid #475569;border-left:0}.v2HeroActions{align-items:stretch;flex-direction:column;gap:10px}.v2PrimaryAction,.v2SecondaryAction{width:100%}.v2HeroMetrics{grid-template-columns:1fr}.v2HeroMetrics div,.v2HeroMetrics div+div{padding:12px 0;border-right:0;border-bottom:1px solid #334155}.v2HeroMetrics div:last-child{border-bottom:0}.v2Console{box-shadow:8px 10px 0 rgba(79,70,229,.18)}.v2ConsoleSummary{grid-template-columns:1fr 1fr}.v2ConsoleSummary div:nth-child(2){border-right:0}.v2ConsoleSummary div:last-child{grid-column:1/-1;border-top:1px solid #334155}.v2ConsoleRows{min-height:0}.v2ConsoleRow{grid-template-columns:24px minmax(0,1fr) 16px;min-height:0}.v2ConsoleRow .v2Tag,.v2Evidence{grid-column:2/-1}.v2RowArrow{grid-column:3;grid-row:1}.v2ConsoleFooter{align-items:flex-start;flex-direction:column}.v2Signals,.v2Method,.v2Workflows{padding:56px 0}.v2Signals h2,.v2Method h2,.v2Workflows h2{font-size:2.15rem}.v2PanelHeading,.v2CauseIndexHeader{align-items:flex-start;flex-direction:column}.v2PanelTotal{text-align:left}.v2CauseRow{grid-template-columns:minmax(0,1fr) 58px}.v2CauseTrack{grid-column:1/-1;grid-row:2;margin-bottom:9px}.v2CauseRow strong{grid-column:2;grid-row:1}.v2Pipeline{grid-template-columns:1fr}.v2Pipeline li{min-height:180px;border-right:0;border-bottom:1px solid #cbd5e1}.v2Pipeline li:nth-child(2){border-right:0}.v2Pipeline li:last-child{border-bottom:0}.v2AuditStrip{align-items:flex-start;flex-direction:column}.v2TrustLinks{grid-template-columns:1fr}}
       `}</style>
     </>

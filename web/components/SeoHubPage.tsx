@@ -16,6 +16,7 @@ import {
   type HubStats,
 } from "@/lib/seoHubs";
 import type { DatasetMeta, TrialIndexRow } from "@/lib/types";
+import { DATA_LICENSE_URL } from "@/lib/licensing";
 
 type HubMeta = {
   slug: string;
@@ -37,6 +38,8 @@ type SeoHubPageProps = {
   datasetMeta: DatasetMeta;
   parentHref: string;
   parentLabel: string;
+  // Sponsor name -> its sponsor hub path, for sponsors large enough to have one.
+  sponsorHubHrefs?: Record<string, string>;
 };
 
 const PHASE_PARAMS: Record<string, string> = {
@@ -81,7 +84,7 @@ function interpretation(hub: HubMeta): { title: string; body: string } {
   };
 }
 
-export default function SeoHubPage({ hub, rows, stats: providedStats, editorial, datasetMeta, parentHref, parentLabel }: SeoHubPageProps) {
+export default function SeoHubPage({ hub, rows, stats: providedStats, editorial, datasetMeta, parentHref, parentLabel, sponsorHubHrefs = {} }: SeoHubPageProps) {
   const stats = providedStats || hubStats(rows);
   const items = displayHubRows(rows, 60).map(trialListItem);
   const structuredItems = hub.slug === "ophthalmology" ? items.slice(0, 20) : items;
@@ -106,6 +109,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, editorial,
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
+      license: DATA_LICENSE_URL,
       name: `${hub.label} stopped clinical trial evidence profile`,
       description: hub.description,
       url: canonicalUrl,
@@ -212,7 +216,7 @@ export default function SeoHubPage({ hub, rows, stats: providedStats, editorial,
           </section>
 
           <section className="contextGrid">
-            <div className="card evidenceCard"><p className="facet-title">Source context</p><h2>Leading sponsors</h2><dl className="rankedList compact">{stats.topSponsors.map((item) => <div key={item.label}><dt><Link className="seoRankedlink" href={`/explore?sponsor=${encodeURIComponent(item.label)}`}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>)}</dl></div>
+            <div className="card evidenceCard"><p className="facet-title">Source context</p><h2>Leading sponsors</h2><dl className="rankedList compact">{stats.topSponsors.map((item) => <div key={item.label}><dt><Link className="seoRankedlink" href={sponsorHubHrefs[item.label] || `/explore?sponsor=${encodeURIComponent(item.label)}`}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>)}</dl></div>
             <div className="card evidenceCard"><p className="facet-title">Development context</p><h2>{secondaryTitle}</h2><dl className="rankedList compact">{secondaryContext.map((item) => <div key={item.label}><dt><Link className="seoRankedlink" href={secondaryHref(item.label)}>{item.label}</Link></dt><dd>{item.count.toLocaleString()}</dd></div>)}</dl></div>
           </section>
 
