@@ -24,6 +24,8 @@ const drugFiles = (await readdir(path.join(assetsDir, "drug-pages"))).filter((na
 if (!drugFiles.includes("catalog.json") || drugFiles.length < 3) {
   throw new Error(`Expected the drug page catalog and drug files, found ${drugFiles.length} files.`);
 }
+// /sitemap.xml reads only this file (lib/sitemapEntries.ts); without it the sitemap would fail.
+await stat(path.join(assetsDir, "sitemap", "entries.json"));
 // by-trial.json is folded into the related-link shards at build time; the site never reads it.
 await rm(path.join(assetsDir, "drug-pages", "by-trial.json"), { force: true });
 
