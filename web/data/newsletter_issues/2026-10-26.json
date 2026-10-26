@@ -1,0 +1,912 @@
+{
+ "schema_version": 1,
+ "sent_at": "2026-10-26T07:59:42Z",
+ "subject": "100 new stopped trials, 12 records changed — 26 Oct 2026",
+ "release": "2026-10-26",
+ "since": "2026-10-12",
+ "trial_count": 23987,
+ "counts": {
+  "added": 100,
+  "changed": 12
+ },
+ "added": [
+  {
+   "nct_id": "NCT03854032",
+   "title": "Nivolumab and BMS986205 in Treating Patients With Stage II-IV Squamous Cell Cancer of the Head and Neck",
+   "sponsor": "Thomas Jefferson University",
+   "area": "Infectious Disease",
+   "reason": "Safety",
+   "detail": "Study was terminated early due to toxicity concerns by the Sponsor."
+  },
+  {
+   "nct_id": "NCT05263284",
+   "title": "8-Chloroadenosine in Combination With Venetoclax for the Treatment of Patients With Relapsed/Refractory Acute Myeloid Leukemia",
+   "sponsor": "City of Hope Medical Center",
+   "area": "Oncology",
+   "reason": "Safety",
+   "detail": "Safety Issues, status is being updated per PI due to safety issues. Study is now Temporarily Closed to Accrual."
+  },
+  {
+   "nct_id": "NCT04534751",
+   "title": "Factor In the Initial Resuscitation of Severe Trauma 2 Patients",
+   "sponsor": "University Health Network, Toronto",
+   "area": "Hematology (non-onc)",
+   "reason": "Efficacy / futility",
+   "detail": "Upon IDSMC's review of interim data, they recommended the trial be stopped based on futility."
+  },
+  {
+   "nct_id": "NCT05568745",
+   "title": "Balloon + Oxytocin Versus Oral Misoprostol to Induce Labor in Case of PROM (RUBAPRO2)",
+   "sponsor": "University Hospital, Clermont-Ferrand",
+   "area": "Other",
+   "reason": "Efficacy / futility",
+   "detail": "futility"
+  },
+  {
+   "nct_id": "NCT07625306",
+   "title": "Lp(a) Lowering Study of Pelacarsen (TQJ230) in Patients in the US With Elevated Lp(a) and Recent ACS (STEMI/NSTEMI) - Lp(a)FRONTIERS PEARL",
+   "sponsor": "Novartis Pharmaceuticals",
+   "area": "Cardiovascular",
+   "reason": "Efficacy / futility",
+   "detail": "Study terminated by sponsor following the outcome of the Lp(a)HORIZON study (NCT04023552), which did not meet its primary endpoint"
+  },
+  {
+   "nct_id": "NCT06116526",
+   "title": "Dupilumab De-escalation in Pediatric Atopic Dermatitis",
+   "sponsor": "Johns Hopkins University",
+   "area": "Dermatology",
+   "reason": "Recruitment",
+   "detail": "Poor accrual"
+  },
+  {
+   "nct_id": "NCT06278987",
+   "title": "Comparison of Cryoablation of Pericapsular Nerve Group (PENG) to Fascia Iliaca Catheter in Patients With a Hip Fracture",
+   "sponsor": "University of Minnesota",
+   "area": "Musculoskeletal",
+   "reason": "Operational other",
+   "detail": "The study was terminated early due to operational feasibility challenges, including competing clinical priorities and resource constraints."
+  },
+  {
+   "nct_id": "NCT06718179",
+   "title": "Comparison of Short Versus 12 Months Prasugrel Plus Aspirin in Patients With Acute Coronary Syndromes Treated With Percutaneous Coronary…",
+   "sponsor": "Odense University Hospital",
+   "area": "Cardiovascular",
+   "reason": "Supply manufacturing",
+   "detail": "Insufficient drug supply (prasugrel)"
+  },
+  {
+   "nct_id": "NCT06979492",
+   "title": "Prophylactic Transfusion In Pregnant in Women With Sickle Cell Disease",
+   "sponsor": "Emory University",
+   "area": "Hematology (non-onc)",
+   "reason": "Recruitment",
+   "detail": "The study was withdrawn due to no enrollment"
+  },
+  {
+   "nct_id": "NCT07040865",
+   "title": "Randomized Comparison of Contrast Agents Gadopiclenol and Gadobutrol in the Workup of Incidental Renal and Adrenal Findings",
+   "sponsor": "Insel Gruppe AG, University Hospital Bern",
+   "area": "Renal & Urology",
+   "reason": "Recruitment",
+   "detail": "Terminated prematurely due to a lower-than-expected enrollment rate, making it unfeasible to reach the target population in a timely manner."
+  },
+  {
+   "nct_id": "NCT07086222",
+   "title": "Efficacy and Safety of NVX-CoV2705",
+   "sponsor": "Novavax",
+   "area": "Infectious Disease",
+   "reason": "Reason not stated",
+   "detail": "The study was terminated early due to low COVID-19 incidence and high population immunity, limiting meaningful vaccine efficacy assessment. The decision was made in consultation with FDA/CBER and was…"
+  },
+  {
+   "nct_id": "NCT02051218",
+   "title": "Prevention of Symptomatic Skeletal Events With Denosumab Administered Every 4 Weeks Versus Every 12 Weeks",
+   "sponsor": "Swiss Cancer Institute",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "Board decision as by March 2026, the number of patients undergoing treatment decreased to around 50, from the total 1,380 patients enrolled in the trial. And due to price changes in medication"
+  },
+  {
+   "nct_id": "NCT03999580",
+   "title": "The Vitamin D in Pediatric Crohn's Disease ( ViDiPeC-2 )",
+   "sponsor": "Jantchou Prevost",
+   "area": "Immunology & Autoimmune",
+   "reason": "Recruitment",
+   "detail": "Enrollment stopped at 55 of 316 planned participants due to recruitment challenges related to the COVID-19 pandemic and funding constraints. All enrolled participants completed 52-week follow-up."
+  },
+  {
+   "nct_id": "NCT04446065",
+   "title": "Previfenon® as Chemoprophylaxis of COVID-19 in Health Workers",
+   "sponsor": "MELISA Institute Genomics & Proteomics Research SpA",
+   "area": "Infectious Disease",
+   "reason": "Reason not stated",
+   "detail": "The protocol was withdrawn because enrollment did not begin."
+  },
+  {
+   "nct_id": "NCT04500678",
+   "title": "Impact of Metformin on Immuno-virologic Parameters in HIV",
+   "sponsor": "University of Hawaii",
+   "area": "Infectious Disease",
+   "reason": "External disruption",
+   "detail": "During the COVID pandemic, our IRB halted enrollment into the study among other changes. Post COVID it was decided that too long an interval between patient enrollment was problematic for the study…"
+  },
+  {
+   "nct_id": "NCT05063786",
+   "title": "Trastuzumab + Alpelisib +/- Fulvestrant vs Trastuzumab + CT in PIK3CA-mutated HER2+ Advanced BC (ALPHABET)",
+   "sponsor": "Spanish Breast Cancer Research Group",
+   "area": "Oncology",
+   "reason": "Recruitment",
+   "detail": "Study prematurely terminated due to recruitment challenges, low incidence of the target population, evolving treatment landscape, ethical considerations, and inability to ensure funding through study…"
+  },
+  {
+   "nct_id": "NCT05600426",
+   "title": "A Trial Comparing Unrelated Donor BMT With IST for Pediatric and Young Adult Patients With Severe Aplastic Anemia (TransIT, BMT CTN 2202)",
+   "sponsor": "Boston Children's Hospital",
+   "area": "Hematology (non-onc)",
+   "reason": "Funding",
+   "detail": "Funding terminated"
+  },
+  {
+   "nct_id": "NCT06494475",
+   "title": "GBS-NN/NN2 (50 µg of Each Fusion Protein [GBS-NN and GBS-NN2] in Combination With 500 µg Aluminum as Alhydrogel®) Given With and Without…",
+   "sponsor": "Minervax ApS",
+   "area": "Infectious Disease",
+   "reason": "Reason not stated",
+   "detail": "The trial has been postponed for later in the development program"
+  },
+  {
+   "nct_id": "NCT01037101",
+   "title": "D-Cycloserine-Enhancer of One-Session Treatment for Phobia of Heights",
+   "sponsor": "CAMC Health System",
+   "area": "Other",
+   "reason": "Recruitment",
+   "detail": "Lack of enrollment, 5 completed by 2011 however no further enrollment took place until study terminated in 2017."
+  },
+  {
+   "nct_id": "NCT03206047",
+   "title": "Atezolizumab, Guadecitabine, and CDX-1401 Vaccine in Treating Patients With Recurrent Ovarian, Fallopian Tube, or Primary Peritoneal Cancer",
+   "sponsor": "National Cancer Institute (NCI)",
+   "area": "Oncology",
+   "reason": "Supply manufacturing",
+   "detail": "The study was terminated due to a shortage of the drug supply."
+  },
+  {
+   "nct_id": "NCT03536767",
+   "title": "Open-Label Study of AG10 in Patients With Cardiomyopathy",
+   "sponsor": "Eidos Therapeutics, a BridgeBio company",
+   "area": "Neurology",
+   "reason": "Reason not stated",
+   "detail": "Study ended by the sponsor due to meeting Study Objectives"
+  },
+  {
+   "nct_id": "NCT04062266",
+   "title": "AZA + Venetoclax as Maintenance Therapy in Patients With AML in Remission",
+   "sponsor": "M.D. Anderson Cancer Center",
+   "area": "Hematology (non-onc)",
+   "reason": "Recruitment",
+   "detail": "\\<75% participation"
+  },
+  {
+   "nct_id": "NCT04172532",
+   "title": "Testing the Addition of a New Anti-cancer Drug, M3814 (Peposertib), to the Usual Radiotherapy in Patients With Locally Advanced Pancreatic…",
+   "sponsor": "National Cancer Institute (NCI)",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "Other - DSMB decision"
+  },
+  {
+   "nct_id": "NCT04219046",
+   "title": "Evaluation of Naloxegol in the Prevention of POI After Cystectomy",
+   "sponsor": "Institut Paoli-Calmettes",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "the industrial partner withdrew from the study"
+  },
+  {
+   "nct_id": "NCT04311606",
+   "title": "Anti-VEGF Therapy for Acute Thyroid Eye Disease",
+   "sponsor": "Massachusetts Eye and Ear Infirmary",
+   "area": "Ophthalmology",
+   "reason": "Reason not stated",
+   "detail": "Funding prematurely ended"
+  },
+  {
+   "nct_id": "NCT04620148",
+   "title": "TAK-242 in Patients With Acute Alcoholic Hepatitis",
+   "sponsor": "Akaza Bioscience Ltd",
+   "area": "Gastroenterology & Hepatology",
+   "reason": "Business decision",
+   "detail": "Strategic decision by the company"
+  },
+  {
+   "nct_id": "NCT04824937",
+   "title": "Telaglenastat + Talazoparib In Prostate Cancer",
+   "sponsor": "Massachusetts General Hospital",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "Calithera pulled out of this trial."
+  },
+  {
+   "nct_id": "NCT04898504",
+   "title": "HAI-Floxuridine, or Liver-Tx, Combined With 2nd Line Chemotherapy Versus 2nd Line Chemotherapy Alone for Patients With Colorectal Liver…",
+   "sponsor": "Oslo University Hospital",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "Following temporary halt of inclusion in September 2024, several measures were taken, as previuosly reported. As numbers included by September 2024 were sufficient to conclude for primary endpont, we…"
+  },
+  {
+   "nct_id": "NCT04920968",
+   "title": "Obinutuzumab Versus Rituximab for Acute Lymphoblastic Leukemia/PALG ALL7 \"OVERALL\"",
+   "sponsor": "Maria Sklodowska-Curie National Research Institute of Oncology",
+   "area": "Oncology",
+   "reason": "Decision, cause not stated",
+   "detail": "Following the recommendation of the Data Monitoring Committee (DMC), based on the results of the interim analysis, the Sponsor has decided to terminate the study prematurely"
+  },
+  {
+   "nct_id": "NCT05070845",
+   "title": "Safety and Efficacy Study of PF-06835375 in Primary Immune Thrombocytopenia",
+   "sponsor": "Pfizer",
+   "area": "Cardiovascular",
+   "reason": "Business decision",
+   "detail": "The study terminated due to a business decision. The decision to terminate the trial was not based on any safety concerns."
+  },
+  {
+   "nct_id": "NCT05099003",
+   "title": "A Study of the Drug Selinexor With Radiation Therapy in Patients With Newly-Diagnosed Diffuse Intrinsic Pontine (DIPG) Glioma and…",
+   "sponsor": "National Cancer Institute (NCI)",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "Other - evaluation of patients currently enrolled on study"
+  },
+  {
+   "nct_id": "NCT05268289",
+   "title": "Study of Efficacy and Safety of LNP023 in Participants With Active Lupus Nephritis Class III-IV, +/- V",
+   "sponsor": "Novartis Pharmaceuticals",
+   "area": "Immunology & Autoimmune",
+   "reason": "Business decision",
+   "detail": "The decision to conclude the study after Part 1 LPLV is based on strategic considerations by the Sponsor."
+  },
+  {
+   "nct_id": "NCT05291390",
+   "title": "Pyronaridine in Acute Myeloid Leukemia (AML)",
+   "sponsor": "Armaceutica, Inc.",
+   "area": "Oncology",
+   "reason": "Protocol feasibility",
+   "detail": "Change of protocol"
+  },
+  {
+   "nct_id": "NCT05335473",
+   "title": "Iribrine Plus Tucidinostat in the Treatment of HR+/HER2 Advanced Breast Cancer After CDK4/6 Inhibitor Failure",
+   "sponsor": "Henan Cancer Hospital",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "The anticipated efficacy was not achieved; the primary objective of Stage 1 in the Simon-2 design was not met."
+  },
+  {
+   "nct_id": "NCT05358249",
+   "title": "Platform Study of JDQ443 in Combinations in Patients With Advanced Solid Tumors Harboring the KRAS G12C Mutation",
+   "sponsor": "Novartis Pharmaceuticals",
+   "area": "Oncology",
+   "reason": "Business decision",
+   "detail": "Business reasons and not based on any safety concerns."
+  },
+  {
+   "nct_id": "NCT05451602",
+   "title": "HEC169096 in Participants With Advanced Solid Tumors",
+   "sponsor": "Sunshine Lake Pharma Co., Ltd.",
+   "area": "Oncology",
+   "reason": "Business decision",
+   "detail": "Sponsor strategic decision; the study will not continue."
+  },
+  {
+   "nct_id": "NCT05499637",
+   "title": "[68Ga]Ga-PentixaFor PET/CT in Acute Myocardial Inflammation",
+   "sponsor": "John O. Prior",
+   "area": "Cardiovascular",
+   "reason": "Recruitment",
+   "detail": "Recruitment difficulties"
+  },
+  {
+   "nct_id": "NCT05529316",
+   "title": "A Study of Botensilimab (AGEN1181) for the Treatment of Advanced Melanoma",
+   "sponsor": "Agenus Inc.",
+   "area": "Oncology",
+   "reason": "Decision, cause not stated",
+   "detail": "Sponsor decision"
+  },
+  {
+   "nct_id": "NCT05532020",
+   "title": "An Open-Label Study of Diazoxide Choline in Patients With Genetic Obesities",
+   "sponsor": "Soleno Therapeutics, Inc.",
+   "area": "Endocrine & Metabolic",
+   "reason": "Decision, cause not stated",
+   "detail": "Company Decision"
+  },
+  {
+   "nct_id": "NCT05625087",
+   "title": "Detection of Tumor DNA in the Blood of Patients Receiving Standard Therapy for Hormone Receptor-positive (HR+) Non-HER2 Expressing (HER2-)…",
+   "sponsor": "UNICANCER",
+   "area": "Oncology",
+   "reason": "Recruitment",
+   "detail": "poor accrual"
+  },
+  {
+   "nct_id": "NCT05643638",
+   "title": "A Study of CYP-001 in Combination With Corticosteroids in Adults With High-risk aGvHD",
+   "sponsor": "Cynata Therapeutics Limited",
+   "area": "Other",
+   "reason": "Reason not stated",
+   "detail": "Cynata Therapeutics has taken the decision to discontinue the study following the Primary Evaluation period analysis. The results did not demonstrate the anticipated clinical benefit of CYP-001 in…"
+  },
+  {
+   "nct_id": "NCT05849129",
+   "title": "Adjunctive Intravenous Ascorbic Acid for Advanced Non-Small Cell Lung Cancer",
+   "sponsor": "The Canadian College of Naturopathic Medicine",
+   "area": "Oncology",
+   "reason": "Recruitment",
+   "detail": "Insufficient recruitment"
+  },
+  {
+   "nct_id": "NCT05879822",
+   "title": "A Study to Evaluate INCB099280 in Participants With Select Solid Tumors Who Are Immune Checkpoint Inhibitor Naive",
+   "sponsor": "Incyte Corporation",
+   "area": "Oncology",
+   "reason": "Business decision",
+   "detail": "This was a strategic business decision. There were no safety concerns contributing to this decision."
+  },
+  {
+   "nct_id": "NCT05888844",
+   "title": "A Study to Evaluate INCB099280 in Participants With Advanced Cutaneous Squamous Cell Carcinoma",
+   "sponsor": "Incyte Corporation",
+   "area": "Oncology",
+   "reason": "Business decision",
+   "detail": "This was a strategic business decision. There were no safety concerns contributing to this decision."
+  },
+  {
+   "nct_id": "NCT05960578",
+   "title": "Golimumab and Apalutamide for the Treatment of Castration-Resistant Prostate Cancer, TRAMP Study",
+   "sponsor": "University of Washington",
+   "area": "Oncology",
+   "reason": "Recruitment",
+   "detail": "The trial was ended sooner than expected due to a combination of factors, including slow accrual, lower than anticipated benefit to patients, and loss of funding from the study sponsor."
+  },
+  {
+   "nct_id": "NCT06046248",
+   "title": "Belumosudil and Rituximab for Primary Treatment of Chronic Graft-Versus-Host-Disease",
+   "sponsor": "Northside Hospital, Inc.",
+   "area": "Respiratory",
+   "reason": "Recruitment",
+   "detail": "Lack of funding and slow accrual"
+  },
+  {
+   "nct_id": "NCT06097533",
+   "title": "Improvement of Quality of Life by Cannabinoids in Oncologic Patients",
+   "sponsor": "University Hospital Schleswig-Holstein",
+   "area": "Oncology",
+   "reason": "Protocol feasibility",
+   "detail": "Given the current recruitment rate and the changes in the treatment landscape, there is no reasonable expectation of achieving the planned sample size."
+  },
+  {
+   "nct_id": "NCT06365619",
+   "title": "Neoadjuvant Ipilimumab/Nivolumab for Patients With Recurrent, High Risk, Resectable Melanoma",
+   "sponsor": "University of Utah",
+   "area": "Oncology",
+   "reason": "Recruitment",
+   "detail": "Low Accrual"
+  },
+  {
+   "nct_id": "NCT06462547",
+   "title": "ADAPT Study: Long-term Safety Study of INZ-701 in Patients With ENPP1 Deficiency and ABCC6 Deficiency",
+   "sponsor": "Inozyme Pharma",
+   "area": "Other",
+   "reason": "Decision, cause not stated",
+   "detail": "The study was terminated by the sponsor prior to planned completion based on a review of the data across indications and overall program considerations. Study termination was not related to…"
+  },
+  {
+   "nct_id": "NCT06637631",
+   "title": "A Study to Investigate Efficacy and Safety of SAR441566 in Patients With Crohn's Disease.",
+   "sponsor": "Sanofi",
+   "area": "Gastroenterology & Hepatology",
+   "reason": "Business decision",
+   "detail": "Business decision."
+  },
+  {
+   "nct_id": "NCT06867094",
+   "title": "A Study to Investigate Efficacy and Safety of SAR441566 in Patients With Ulcerative Colitis",
+   "sponsor": "Sanofi",
+   "area": "Gastroenterology & Hepatology",
+   "reason": "Business decision",
+   "detail": "Business decision"
+  },
+  {
+   "nct_id": "NCT07001254",
+   "title": "UI-Romi-02; Romiplostim Added to Standard of Care for Treatment Naive and Relapsed or Refractory Severe Aplastic Anemia",
+   "sponsor": "Anjali Sharathkumar",
+   "area": "Hematology (non-onc)",
+   "reason": "Reason not stated",
+   "detail": "Withdrawn in HawkIRB"
+  },
+  {
+   "nct_id": "NCT07039422",
+   "title": "Study of Ianalumab in Adults With Primary Immune Thrombocytopenia (ITP) and Warm-antibody Autoimmune Hemolytic Anemia (wAIHA) Who Have…",
+   "sponsor": "Novartis Pharmaceuticals",
+   "area": "Immunology & Autoimmune",
+   "reason": "Reason not stated",
+   "detail": "The study was discontinued due to evolving scientific \\& feasibility considerations that could adversely affect recruitment, thereby reducing the likelihood of generating a sufficiently robust…"
+  },
+  {
+   "nct_id": "NCT07146646",
+   "title": "Trifluridine/Tipiracil + Oxaliplatin in Participants With Advanced or Metastatic Biliary Tract Cancer",
+   "sponsor": "Case Comprehensive Cancer Center",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "Interim Analysis"
+  },
+  {
+   "nct_id": "NCT07222189",
+   "title": "A Study to Investigate the Long-term Safety, Tolerability and Efficacy of Balinatunfib in Participants With Crohn's Disease or Ulcerative…",
+   "sponsor": "Sanofi",
+   "area": "Gastroenterology & Hepatology",
+   "reason": "Business decision",
+   "detail": "Business decision"
+  },
+  {
+   "nct_id": "NCT07274774",
+   "title": "SBRT Plus Systemic Therapy vs Systemic Therapy Alone in BCLC C Hepatocellular Carcinoma",
+   "sponsor": "Shandong Cancer Hospital and Institute",
+   "area": "Oncology",
+   "reason": "Recruitment",
+   "detail": "Difficult to recruit patients"
+  },
+  {
+   "nct_id": "NCT07428044",
+   "title": "A Study of Trastuzumab Deruxtecan in People With Non-Small Cell Lung Cancer",
+   "sponsor": "Memorial Sloan Kettering Cancer Center",
+   "area": "Oncology",
+   "reason": "Decision, cause not stated",
+   "detail": "sponsor closed study"
+  },
+  {
+   "nct_id": "NCT07553299",
+   "title": "A Study of Weekly Oral Dose of Ecnoglutide (VRB-101) for Weight Maintenance in Participants Who Have Obesity or Overweight With…",
+   "sponsor": "Verdiva Bio Dev Limited",
+   "area": "Endocrine & Metabolic",
+   "reason": "Business decision",
+   "detail": "The Study Sponsor made a business decision not to continue the study. The decision was not based on safety findings."
+  },
+  {
+   "nct_id": "NCT02897063",
+   "title": "Effects of Midodrine and Droxidopa on Splanchnic Capacitance in Autonomic Failure",
+   "sponsor": "Vanderbilt University Medical Center",
+   "area": "Neurology",
+   "reason": "Recruitment",
+   "detail": "enrollment goal was not met."
+  },
+  {
+   "nct_id": "NCT03444701",
+   "title": "A Study of E7130 in Participants With Solid Tumors",
+   "sponsor": "Eisai Co., Ltd.",
+   "area": "Oncology",
+   "reason": "Decision, cause not stated",
+   "detail": "The trial was prematurely terminated due to the sponsor's decision."
+  },
+  {
+   "nct_id": "NCT03975231",
+   "title": "Dabrafenib, Trametinib, and IMRT in Treating Patients With BRAF Mutated Anaplastic Thyroid Cancer",
+   "sponsor": "City of Hope Medical Center",
+   "area": "Endocrine & Metabolic",
+   "reason": "Planned milestone",
+   "detail": "Accrual goal met"
+  },
+  {
+   "nct_id": "NCT05016804",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord Derived Mesenchymal Stem Cell IV Infusion for Systemic Sclerosis",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Other",
+   "reason": "Reason not stated",
+   "detail": "Inadequate treatment response observed in preliminary data did not justify enrolling further study participants"
+  },
+  {
+   "nct_id": "NCT05016817",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord Derived Mesenchymal Stem Cell Intravenous Infusion for IPF",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Respiratory",
+   "reason": "Reason not stated",
+   "detail": "Inadequate treatment response observed in preliminary data did not justify enrolling further study participants"
+  },
+  {
+   "nct_id": "NCT05018845",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord or Placental Derived Mesenchymal Stem Cell Intravenous Infusion for CKD",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Renal & Urology",
+   "reason": "Reason not stated",
+   "detail": "Inadequate treatment response observed in preliminary data did not justify enrolling further study participants"
+  },
+  {
+   "nct_id": "NCT05147779",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord Stem Cells for Peyronie's Disease, ED, and Interstitial Cystitis",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Other",
+   "reason": "Reason not stated",
+   "detail": "Inadequate treatment response observed in preliminary data did not justify enrolling further study participants"
+  },
+  {
+   "nct_id": "NCT05351502",
+   "title": "A Study to Assess the Safety and Efficacy of UNO - Ultra High Concentration Nitric Oxide Injection in Combination With PD-1 Inhibitors Into…",
+   "sponsor": "Beyond Air Inc.",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "study stopped due to changes of sponsor strategy and resource allocation. No safety issues were identified"
+  },
+  {
+   "nct_id": "NCT05382325",
+   "title": "A Study of MK-1484 as Monotherapy and in Combination With Pembrolizumab (MK-3475) In Advanced or Metastatic Solid Tumors (MK-1484-001)",
+   "sponsor": "Merck Sharp & Dohme LLC",
+   "area": "Oncology",
+   "reason": "Business decision",
+   "detail": "Business Reasons"
+  },
+  {
+   "nct_id": "NCT05410041",
+   "title": "Anti-CD19 CAR-Engineered NK Cells in the Treatment of Relapsed/Refractory B-cell Malignancies",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Oncology",
+   "reason": "Recruitment",
+   "detail": "No participants."
+  },
+  {
+   "nct_id": "NCT05533242",
+   "title": "Radioimmunotherapy With Lu-177 Labeled 6A10 Fab-fragments in Patients With Glioblastoma After Standard Treatment",
+   "sponsor": "University Hospital Muenster",
+   "area": "Other",
+   "reason": "Reason not stated",
+   "detail": "The remaining shelf-life of 1 component used in the manufacture of the study medication (SM) was insufficient to support further study conduct, and no additional material could be manufactured.…"
+  },
+  {
+   "nct_id": "NCT05594433",
+   "title": "Donation of Whole Blood by Healthy Volunteers After Mobilisation by Haematopoietic Growth Factor (Rhu-G-CSF = Granocyte)",
+   "sponsor": "CellProthera",
+   "area": "Other",
+   "reason": "Business decision",
+   "detail": "Strategic change"
+  },
+  {
+   "nct_id": "NCT05617885",
+   "title": "Neo-DAB: Darolutamide and Abemaciclib in Prostate Cancer",
+   "sponsor": "Praful Ravi, MB BCHir, MRCP",
+   "area": "Oncology",
+   "reason": "Support withdrawal",
+   "detail": "The trial was intended to be Phase 1/2 but did not move forward to Phase 2 since the company providing drug and funding (Lilly) withdrew support for the trial based on data relating to abemaciclib in…"
+  },
+  {
+   "nct_id": "NCT05734196",
+   "title": "The ENERGY Study: Evaluation of Safety and Tolerability of INZ-701 in Infants With ENPP1 Deficiency or ABCC6 Deficiency",
+   "sponsor": "Inozyme Pharma",
+   "area": "Other",
+   "reason": "Decision, cause not stated",
+   "detail": "The study was terminated by the sponsor prior to planned completion based on a review of the data across indications and overall program considerations. Study termination was not related to…"
+  },
+  {
+   "nct_id": "NCT05800964",
+   "title": "Study to Explore the Safety, Tolerability, and Pharmacokinetics of AMG 305 in Subjects With Advanced Solid Tumors",
+   "sponsor": "Amgen",
+   "area": "Oncology",
+   "reason": "Decision, cause not stated",
+   "detail": "Sponsor decision"
+  },
+  {
+   "nct_id": "NCT05879744",
+   "title": "A Study of CLN-978 in Patients With Relapsed or Refractory (R/R) B Cell Non-Hodgkin Lymphoma (B-NHL)",
+   "sponsor": "Cullinan Therapeutics Inc.",
+   "area": "Oncology",
+   "reason": "Business decision",
+   "detail": "Strategic business decision"
+  },
+  {
+   "nct_id": "NCT06195891",
+   "title": "Orca-T Following Chemotherapy and Total Marrow and Lymphoid Irradiation for the Treatment of Acute Myeloid Leukemia, Acute Lymphoblastic…",
+   "sponsor": "City of Hope Medical Center",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "Timeline Adjustment"
+  },
+  {
+   "nct_id": "NCT06487559",
+   "title": "A Study to Assess the Adverse Events and How Intravenously Infused Livmoniplimab in Combination With Budigalimab Moves Through the Bodies…",
+   "sponsor": "AbbVie",
+   "area": "Gastroenterology & Hepatology",
+   "reason": "Business decision",
+   "detail": "Strategic considerations"
+  },
+  {
+   "nct_id": "NCT06566092",
+   "title": "Study of Autologous Tumor-Infiltrating Lymphocytes in Pediatric, Adolescent, and Young Adult Participants",
+   "sponsor": "Iovance Biotherapeutics, Inc.",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "After reviewing the available safety and efficacy data to date, Iovance has made the decision to conclude all remaining participant visits."
+  },
+  {
+   "nct_id": "NCT06577337",
+   "title": "Phase 1 Single Ascending Doses (SAD) of M5542 in Healthy Participants",
+   "sponsor": "Merck Healthcare KGaA, Darmstadt, Germany, an affiliate of Merck KGaA, Darmstadt, Germany",
+   "area": "Other",
+   "reason": "Reason not stated",
+   "detail": "The study is currently paused pending a potential amendment."
+  },
+  {
+   "nct_id": "NCT06603246",
+   "title": "A Study to Test the Safety and Effects of Inhaled GDC-6988 in Participants With Muco-obstructive Disease",
+   "sponsor": "Genentech, Inc.",
+   "area": "Respiratory",
+   "reason": "Decision, cause not stated",
+   "detail": "Sponsor's Decision"
+  },
+  {
+   "nct_id": "NCT06652958",
+   "title": "A Study to Assess the Safety and Pharmacokinetics of a Human Monoclonal Antibody (VH4527079) in Healthy Adults and Persons With HIV",
+   "sponsor": "ViiV Healthcare",
+   "area": "Infectious Disease",
+   "reason": "Business decision",
+   "detail": "Terminated for business reasons"
+  },
+  {
+   "nct_id": "NCT06700811",
+   "title": "Ketogenic Diet for Prevention of Epileptic Spasms in Infantile Onset Genetic Epilepsies",
+   "sponsor": "Heather Olson",
+   "area": "Neurology",
+   "reason": "Recruitment",
+   "detail": "The study closed due to recruitment challenges."
+  },
+  {
+   "nct_id": "NCT06741982",
+   "title": "A Clinical Study on Neoadjuvant Treatment of Resectable Head and Neck Squamous Carcinoma With Immune-targeted Therapy and Lysogenic HSV…",
+   "sponsor": "West China Hospital",
+   "area": "Immunology & Autoimmune",
+   "reason": "Never started",
+   "detail": "The study was withdrawn prior to participant enrollment due to administrative and protocol optimization considerations."
+  },
+  {
+   "nct_id": "NCT06881888",
+   "title": "Intranasal Delivery of Octreotide for Treatment of Diabetic Macular Edema",
+   "sponsor": "University of Alabama at Birmingham",
+   "area": "Ophthalmology",
+   "reason": "Support withdrawal",
+   "detail": "Project terminated due to loss of sponsor funding following the dissolution of AMD Opti."
+  },
+  {
+   "nct_id": "NCT06943937",
+   "title": "A Clinical Study of YTS109 Cell in R/R Systemic Lupus Erythematosus",
+   "sponsor": "China Immunotech (Beijing) Biotechnology Co., Ltd.",
+   "area": "Immunology & Autoimmune",
+   "reason": "Business decision",
+   "detail": "Sponsor decision to discontinue; the study is no longer being pursued due to sponsor strategic reprioritization and resource allocation. The decision was not based on safety concerns. Enrolled…"
+  },
+  {
+   "nct_id": "NCT06950177",
+   "title": "Pancoronavirus Vaccine Study in Healthy Adults",
+   "sponsor": "Duke University",
+   "area": "Infectious Disease",
+   "reason": "Reason not stated",
+   "detail": "Adjuvant stability not extended"
+  },
+  {
+   "nct_id": "NCT07052383",
+   "title": "Safety and Efficacy of DIT309 in Advanced Bone and Soft Tissue Sarcomas",
+   "sponsor": "Tcelltech Inc.",
+   "area": "Musculoskeletal",
+   "reason": "Reason not stated",
+   "detail": "Data update in progress."
+  },
+  {
+   "nct_id": "NCT07179770",
+   "title": "Effects of Belzutifan on 89Zr-DFO-girentuximab PET Uptake in Patients With Renal Cell Carcinoma (RCC)",
+   "sponsor": "NYU Langone Health",
+   "area": "Oncology",
+   "reason": "Staffing resources",
+   "detail": "PI Departure"
+  },
+  {
+   "nct_id": "NCT07231081",
+   "title": "Phase I Study of TX103 CAR-T Cells in Participants With Advanced Solid Tumors",
+   "sponsor": "Tcelltech Inc.",
+   "area": "Oncology",
+   "reason": "Business decision",
+   "detail": "Following a comprehensive review and strategic realignment of the company's operations and projects in 2026, the Sponsor made the decision to voluntarily suspend the clinical trial."
+  },
+  {
+   "nct_id": "NCT07307768",
+   "title": "Ketamine Biomarker Validation",
+   "sponsor": "Soterix Medical",
+   "area": "Psychiatry & Mental Health",
+   "reason": "Reason not stated",
+   "detail": "Funding was not provided"
+  },
+  {
+   "nct_id": "NCT07361094",
+   "title": "Autologous CD19/BCMA Dual-Target CAR-T for Relapsed/Refractory Autoimmune Diseases",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Immunology & Autoimmune",
+   "reason": "Recruitment",
+   "detail": "No participants."
+  },
+  {
+   "nct_id": "NCT07448298",
+   "title": "A Clinical Study of AFN50 in the Treatment of Autoimmune Diseases",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Immunology & Autoimmune",
+   "reason": "Recruitment",
+   "detail": "No participants."
+  },
+  {
+   "nct_id": "NCT07626476",
+   "title": "Autologous BCMA-targeted CAR-T Cell Injection for Relapsed/Refractory Light Chain Amyloidosis",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Immunology & Autoimmune",
+   "reason": "Reason not stated",
+   "detail": "Due to the promulgation of State Council Order No. 818, clinical trials of this category are prohibited."
+  },
+  {
+   "nct_id": "NCT07719127",
+   "title": "Study of Disulfiram to Reduce Myeloid Immunosuppression and Steroid Dependence in Resectable High Grade Glioma",
+   "sponsor": "Case Comprehensive Cancer Center",
+   "area": "Oncology",
+   "reason": "Reason not stated",
+   "detail": "calendar pending"
+  },
+  {
+   "nct_id": "NCT03596424",
+   "title": "Dexmedetomidine and Ketamine in VATS Surgery",
+   "sponsor": "Ciusss de L'Est de l'Île de Montréal",
+   "area": "Other",
+   "reason": "Funding",
+   "detail": "Not enough funding. recruitment less than anticipated"
+  },
+  {
+   "nct_id": "NCT05615194",
+   "title": "The Impact of a Single Dexmedetomidine Bolus on Intraoperative Sevoflurane Consumption (DEXHALE)",
+   "sponsor": "Ciusss de L'Est de l'Île de Montréal",
+   "area": "Other",
+   "reason": "Recruitment",
+   "detail": "Recruitment was too slow and difficult, we decided to prioritize other protocols that seem more clinically relevant"
+  },
+  {
+   "nct_id": "NCT06661811",
+   "title": "A Study of CAR-T Cells Targeting Autoimmune Diseases",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Immunology & Autoimmune",
+   "reason": "Recruitment",
+   "detail": "No participants."
+  },
+  {
+   "nct_id": "NCT06730282",
+   "title": "A Preliminary Study on the Efficacy of Danggui Shaoyao San and Cuscuta Chinensis in Patients With Primary Dysmenorrhea",
+   "sponsor": "Taichung Tzu Chi Hospital",
+   "area": "Other",
+   "reason": "Funding",
+   "detail": "The study was stopped early before reaching the planned enrollment of 200 participants because the allocated research budget was exhausted and additional study medication could not be funded.…"
+  },
+  {
+   "nct_id": "NCT06926764",
+   "title": "Intertransverse Process Block to Improve Quality of Recovery After Cardiac Surgery With Sternotomy",
+   "sponsor": "Chinese University of Hong Kong",
+   "area": "Other",
+   "reason": "Reason not stated",
+   "detail": "Change and merge into another study protocol (NCT06946290)"
+  },
+  {
+   "nct_id": "NCT07066891",
+   "title": "Validation of Insulin Dose Prediction Model Based on Artificial Intelligence Algorithm",
+   "sponsor": "Sun Yat-sen University",
+   "area": "Endocrine & Metabolic",
+   "reason": "Recruitment",
+   "detail": "Recruitment was stopped early because hospital length-of-stay constraints limited protocol delivery. The PI's decision also took account of the available non-inferiority results."
+  },
+  {
+   "nct_id": "NCT07786571",
+   "title": "Study on Improving Blood Glucose Homeostasis With Dorzagliatin Tablets in the Treatment of Type 2 Diabetes Mellitus Patients With Moderate…",
+   "sponsor": "Sun Yat-sen University",
+   "area": "Renal & Urology",
+   "reason": "Reason not stated",
+   "detail": "The study was withdrawn because the protocol was revised and would be replaced by an updated study design, prior to participant enrollment."
+  }
+ ],
+ "changed": [
+  {
+   "nct_id": "NCT06213298",
+   "title": "Effect of Kava on Anxiety and Stress in Cancer Survivors",
+   "sponsor": "Masonic Cancer Center, University of Minnesota",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Status: Terminated → Withdrawn; Stop reason: “Drug expiration testing” → “Funding unavailable”"
+  },
+  {
+   "nct_id": "NCT05861050",
+   "title": "Glofitamab With Obinutuzumab, Venetoclax, and Lenalidomide for the Treatment of Patients With Newly Diagnosed High Risk Mantle Cell Lymphoma",
+   "sponsor": "City of Hope Medical Center",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Stop reason: “Safety Issues” → “10/12/2026 DSMC: Resuming suspension instated on 09/18/2026 due to unresolved monitoring findings, study accrual is suspended and will remain on hold until…”"
+  },
+  {
+   "nct_id": "NCT05158439",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord or Placental Derived Mesenchymal Stem Cells for Tourette Syndrome",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Other",
+   "reason": "",
+   "detail": "Stop reason: “covid-19” → “Inability to recruit participants”"
+  },
+  {
+   "nct_id": "NCT05003921",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord or Placental Derived Mesenchymal Stem Cell Intrathecal Injection for ALS",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Neurology",
+   "reason": "",
+   "detail": "Status: Suspended → Withdrawn; Stop reason: “Modifying Protocol” → “Inability to recruit patients”"
+  },
+  {
+   "nct_id": "NCT07604792",
+   "title": "FIT-(BCMA+CD19)-CAR-T Cells in Recurrent/Refractory Autoimmune Diseases Patients.",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Immunology & Autoimmune",
+   "reason": "",
+   "detail": "Status: Suspended → Withdrawn; Stop reason: “Enrollment is suspended to address regulatory requirements. Follow-up of currently…” → “No participants”"
+  },
+  {
+   "nct_id": "NCT05617313",
+   "title": "Study of GT103 in Combination With Pembrolizumab in Refractory, Metastatic Non-Small Cell Lung Cancer",
+   "sponsor": "Ryan Dackor",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Stop reason: “Study did not meet the criteria for continuation after interim analysis” → “Study terminated after completion of planned interim analysis of 21 patients.”"
+  },
+  {
+   "nct_id": "NCT04218773",
+   "title": "Blood PREssure Augmentation in Large-vessel Occlusion Stroke Study",
+   "sponsor": "Yale University",
+   "area": "Cardiovascular",
+   "reason": "",
+   "detail": "Status: Suspended → Terminated; Stop reason: “seeking additional funding” → “The study was terminated prematurely due to lack of continued funding.”"
+  },
+  {
+   "nct_id": "NCT07555561",
+   "title": "Autologous CD19-CD20-NKG2D-nsBicephali CAR-T for Relapsed/Refractory Central Nervous System Lymphoma",
+   "sponsor": "Beijing Boren Hospital",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Status: Suspended → Withdrawn; Stop reason: “Enrollment temporarily suspended due to temporary operational limitations at the study…” → “Due to the promulgation of State Council Order No. 818, this ca"
+  },
+  {
+   "nct_id": "NCT05669352",
+   "title": "CA-4948 in Combination With Pembrolizumab and Stereotactic Radiosurgery to Improve Treatment of Melanoma Brain Metastases",
+   "sponsor": "Mayo Clinic",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Stop reason: “uncertain study staffing” → “transition to new institution”"
+  },
+  {
+   "nct_id": "NCT05147766",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord Derived Mesenchymal Stem Cells for Heart Disease",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Cardiovascular",
+   "reason": "",
+   "detail": "Stop reason: “Insufficient efficacy seen in treated patients” → “Inadequate treatment response observed in preliminary data did not justify enrolling further study participants”"
+  },
+  {
+   "nct_id": "NCT05003908",
+   "title": "Safety of Cultured Allogeneic Adult Umbilical Cord Derived Mesenchymal Stem Cell Intravenous Infusion for Diabetes",
+   "sponsor": "The Foundation for Orthopaedics and Regenerative Medicine",
+   "area": "Endocrine & Metabolic",
+   "reason": "",
+   "detail": "Stop reason: “Due to lack of efficacy” → “Inadequate treatment response observed in preliminary data did not justify enrolling further study participants”"
+  },
+  {
+   "nct_id": "NCT06854861",
+   "title": "Premixed Glucagon/Insulin Solution for Faster Insulin Absorption in Type 1 Diabetes",
+   "sponsor": "St. Olavs Hospital",
+   "area": "Endocrine & Metabolic",
+   "reason": "",
+   "detail": "Status: Suspended → Terminated; Stop reason: “No sign of anticipated effect.” → “The study was terminated due toa combination of: 1. At best minimal effect on insulin absorption 2. Withdrawal of fundi"
+  }
+ ]
+}
