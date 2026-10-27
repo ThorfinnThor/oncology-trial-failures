@@ -124,5 +124,5 @@ export const getStaticProps: GetStaticProps<DrugDirectoryProps> = async () => {
   const groups = [...byLetter.entries()]
     .sort(([a], [b]) => (a === "#" ? 1 : b === "#" ? -1 : a.localeCompare(b)))
     .map(([letter, drugs]) => ({ letter, drugs }));
-  return { props: { groups, count: catalog.length }, revalidate: 24 * 60 * 60 };
+  return { props: { groups, count: catalog.length } };
 };
