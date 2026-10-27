@@ -43,6 +43,10 @@ type MechanismBriefSource = {
     shared_modality: string | null;
     assets: Array<{ asset: string }>;
   };
+  composition?: {
+    top_assets?: Array<{ asset: string; trials: number }>;
+    top_mechanisms?: Array<{ mechanism: string; components: number }>;
+  };
   stop_attribution?: {
     stops_from_own_data: number;
     stops_from_programme_cascade: number;
@@ -113,6 +117,14 @@ function mechanismBriefSnapshot(area: string, segment: string): MechanismBriefSn
     molecules: brief.failure_signature?.molecules || 0,
     sharedModality: brief.failure_signature?.shared_modality || null,
     assets: (brief.failure_signature?.assets || []).map((asset) => asset.asset),
+    topAssets: (brief.composition?.top_assets || []).map((asset) => ({
+      label: asset.asset,
+      count: asset.trials,
+    })),
+    topMechanisms: (brief.composition?.top_mechanisms || []).map((mechanism) => ({
+      label: mechanism.mechanism,
+      count: mechanism.components,
+    })),
     stopsFromOwnData: brief.stop_attribution?.stops_from_own_data || 0,
     stopsFromProgrammeCascade: brief.stop_attribution?.stops_from_programme_cascade || 0,
     stopsUnclear: brief.stop_attribution?.stops_unclear || 0,
@@ -905,6 +917,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
     registryTiming: registryTimingSlice(rows),
     phaseCoverage: phaseCoverageSlice(rows),
     mechanismBriefs: {
+      serotonin5ht2aPsychiatry: mechanismBriefSnapshot("Psychiatry & Mental Health", "Serotonin 5-HT2A"),
+      alarminsRespiratory: mechanismBriefSnapshot("Respiratory", "Alarmins (TSLP / IL-33)"),
       fcrnAutoimmune: mechanismBriefSnapshot("Immunology & Autoimmune", "FcRn"),
       lag3PdL1: mechanismBriefSnapshot("Oncology", "LAG-3 + PD-(L)1"),
       baceSecretase: mechanismBriefSnapshot("Neurology", "BACE / γ-secretase"),

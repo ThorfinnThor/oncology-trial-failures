@@ -4,6 +4,36 @@ import test from "node:test";
 import { buildInsightStats } from "../lib/insightStats";
 import { getInsightBySlug } from "../lib/insights";
 
+test("5-HT2A insight separates agonist from antagonist pharmacology", async () => {
+  const stats = await buildInsightStats();
+  const brief = stats.mechanismBriefs.serotonin5ht2aPsychiatry;
+  const article = getInsightBySlug("5-ht2a-agonist-antagonist-clinical-trial-results", stats);
+
+  assert.ok(article);
+  assert.ok(article.dek.includes(`${brief.endpointMissed}`));
+  assert.ok(article.dek.includes(`${brief.endpointMet}`));
+  assert.ok(article.facts.some((fact) => fact.includes("antagonist") && fact.includes("agonist")));
+  assert.ok(article.sections.some((section) => section.heading.toLowerCase().includes("opposite")));
+  assert.ok(article.tables.some((table) => table.heading.includes("opposite mechanism")));
+  assert.ok(article.links.some((link) => link.href === `/briefs/${brief.slug}`));
+  assert.ok(article.links.some((link) => link.href === "/trial/NCT02691182"));
+});
+
+test("TSLP and IL-33 insight keeps trial status separate from endpoint results", async () => {
+  const stats = await buildInsightStats();
+  const brief = stats.mechanismBriefs.alarminsRespiratory;
+  const article = getInsightBySlug("tslp-il33-inhibitor-copd-trial-results", stats);
+
+  assert.ok(article);
+  assert.ok(article.dek.includes(`${brief.biologicalStops}`));
+  assert.ok(article.dek.includes(`${brief.endpointMissed}`));
+  assert.ok(article.facts.some((fact) => fact.includes("COPD") && fact.includes("asthma")));
+  assert.ok(article.sections.some((section) => section.heading.includes("interchangeable")));
+  assert.ok(article.tables.some((table) => table.heading.includes("status ledger")));
+  assert.ok(article.links.some((link) => link.href === `/briefs/${brief.slug}`));
+  assert.ok(article.links.some((link) => link.href.includes("NCT05037929") && link.href.includes("tab=results")));
+});
+
 test("FcRn insight separates disease endpoints from the programme-cascade stop", async () => {
   const stats = await buildInsightStats();
   const brief = stats.mechanismBriefs.fcrnAutoimmune;
