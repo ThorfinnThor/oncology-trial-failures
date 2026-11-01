@@ -439,6 +439,5 @@ export const getStaticProps: GetStaticProps<ExplorePageProps> = async () => {
       initialRows,
       initialTotal: rows.length,
     },
-    revalidate: 24 * 60 * 60,
   };
 };

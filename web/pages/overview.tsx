@@ -2245,6 +2245,5 @@ export const getStaticProps: GetStaticProps<OverviewPageProps> = async () => {
   const [rows, meta] = await Promise.all([loadIndexServer(), loadMetaServer()]);
   return {
     props: { initialSnapshot: buildOverviewSnapshot(rows, meta) },
-    revalidate: 86_400,
   };
 };

@@ -5,7 +5,7 @@
   "scripts": {
     "predev": "npm run data:optimize",
     "dev": "next dev",
-    "data:optimize": "node scripts/generate-data-shards.mjs && tsx scripts/generate-drug-pages.ts && tsx scripts/generate-related-links.ts",
+    "data:optimize": "node scripts/generate-data-shards.mjs && tsx scripts/generate-drug-pages.ts && tsx scripts/generate-sitemap-entries.ts && tsx scripts/generate-related-links.ts",
     "build": "npm run data:optimize && npm run check:seo-policy && next build && npm run check:seo-pilot",
     "build:cloudflare": "npm run data:optimize && npm run check:seo-policy && next build --webpack && npm run check:seo-pilot",
     "cloudflare:build": "opennextjs-cloudflare build && node scripts/prepare-cloudflare-assets.mjs",
