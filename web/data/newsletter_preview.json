@@ -1,10 +1,10 @@
 {
  "schema_version": 2,
- "release": "2026-10-22",
- "generated_at_utc": "2026-10-22T09:20:17Z",
+ "release": "2026-10-26",
+ "generated_at_utc": "2026-10-26T07:59:37Z",
  "last_sent_at": "2026-10-12T15:43:23Z",
  "counts": {
-  "added": 85,
+  "added": 100,
   "changed": 12
  },
  "added": [
@@ -65,12 +65,12 @@
    "detail": "The study was terminated early due to operational feasibility challenges, including competing clinical priorities and resource constraints."
   },
   {
-   "nct_id": "NCT06979492",
-   "title": "Prophylactic Transfusion In Pregnant in Women With Sickle Cell Disease",
-   "sponsor": "Emory University",
-   "area": "Hematology (non-onc)",
-   "reason": "Recruitment",
-   "detail": "The study was withdrawn due to no enrollment"
+   "nct_id": "NCT06718179",
+   "title": "Comparison of Short Versus 12 Months Prasugrel Plus Aspirin in Patients With Acute Coronary Syndromes Treated With Percutaneous Coronary…",
+   "sponsor": "Odense University Hospital",
+   "area": "Cardiovascular",
+   "reason": "Supply manufacturing",
+   "detail": "Insufficient drug supply (prasugrel)"
   }
  ],
  "changed": [

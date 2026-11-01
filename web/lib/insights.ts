@@ -247,6 +247,10 @@ export type InsightStats = {
     }>;
   };
   mechanismBriefs: {
+    serotonin5ht2aPsychiatry: MechanismBriefSnapshot;
+    alarminsRespiratory: MechanismBriefSnapshot;
+    fcrnAutoimmune: MechanismBriefSnapshot;
+    lag3PdL1: MechanismBriefSnapshot;
     baceSecretase: MechanismBriefSnapshot;
     jakTyk2Autoimmune: MechanismBriefSnapshot;
     tauAntibodies: MechanismBriefSnapshot;
@@ -287,6 +291,8 @@ export type MechanismBriefSnapshot = {
   molecules: number;
   sharedModality: string | null;
   assets: string[];
+  topAssets: Array<{ label: string; count: number }>;
+  topMechanisms: Array<{ label: string; count: number }>;
   stopsFromOwnData: number;
   stopsFromProgrammeCascade: number;
   stopsUnclear: number;
@@ -369,6 +375,142 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "5-ht2a-agonist-antagonist-clinical-trial-results",
+    title: "One 5-HT2A label hides two opposite pharmacologies",
+    metaDescription:
+      "Our 5-HT2A trial cohort combines receptor agonists with antagonists: 21 readable primary results split into 10 missed, 9 met, and 2 mixed trials.",
+    eyebrow: "5-HT2A clinical evidence",
+    dek:
+      "Search interest clusters around 5-HT2A agonists and non-hallucinogenic psychedelics. The clinical dataset shows why a receptor name is not a therapeutic class: agonism and antagonism sit in the same cohort but test different biology.",
+    datePublished: "2026-10-27",
+    readingTime: "10 min read",
+    keyword: "5-HT2A agonist clinical trial results",
+    factsHeading: "A receptor-level cohort can conceal the direction of pharmacology",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do these data show that 5-HT2A agonists fail in psychiatry?",
+        answer:
+          "No. The receptor-level cohort also contains 5-HT2A antagonists and multireceptor antipsychotics. Its aggregate endpoint split cannot be treated as an agonist-specific efficacy estimate.",
+      },
+      {
+        question: "Why are agonists and antagonists in the same cohort?",
+        answer:
+          "The cohort is generated from target mappings. Both directions engage HTR2A, but they push receptor signalling in opposite directions and are used in different therapeutic contexts.",
+      },
+      {
+        question: "What should be separated before comparing 5-HT2A programmes?",
+        answer:
+          "At minimum: agonist versus antagonist or inverse agonist, signalling efficacy, receptor selectivity, indication, dosing model, psychotherapy context, and the clinical endpoint being tested.",
+      },
+    ],
+  },
+  {
+    slug: "tslp-il33-inhibitor-copd-trial-results",
+    title: "Upstream airway biology did not produce one uniform clinical result",
+    metaDescription:
+      "Five of eight readable TSLP or IL-33 pathway trials missed their primary endpoint, while none of 24 closed trials carried a biological stop signal.",
+    eyebrow: "TSLP and IL-33 clinical evidence",
+    dek:
+      "TSLP and IL-33 both sit upstream in airway inflammation, but that does not make them interchangeable—or guarantee that a trial status will reveal the clinical result. Our cohort separates endpoint evidence from stop labels.",
+    datePublished: "2026-10-27",
+    readingTime: "11 min read",
+    keyword: "TSLP IL-33 inhibitor COPD trial results",
+    factsHeading: "Five endpoint misses, three meets, and no biological trial stops",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do the missed trials prove that TSLP or IL-33 blockade does not work in COPD?",
+        answer:
+          "No. The readable subset spans different targets, antibodies, populations, doses, and diseases. It supports an indication- and design-specific interpretation, not a shared class verdict.",
+      },
+      {
+        question: "Why are there no biological stops if five primary endpoints missed?",
+        answer:
+          "Completed trials stay classified as completed even when their primary comparison is negative. Trial status and trial outcome are separate evidence layers.",
+      },
+      {
+        question: "Are TSLP and IL-33 the same therapeutic hypothesis?",
+        answer:
+          "No. Both are epithelial alarmins, but they occupy different ligand-receptor systems, recruit overlapping but non-identical immune pathways, and may require different patient enrichment and dosing strategies.",
+      },
+    ],
+  },
+  {
+    slug: "fcrn-inhibitor-clinical-results-disease-endpoints",
+    title: "FcRn inhibition is not the same as clinical benefit",
+    metaDescription:
+      "Four of four readable FcRn inhibitor primary results missed across rheumatoid arthritis, ITP, and CIDP, while a batoclimab extension stopped after feeder-study failures.",
+    eyebrow: "FcRn clinical evidence",
+    dek:
+      "FcRn blockade has a clear pharmacological objective: reduce the persistence of circulating IgG. Our trial data shows why that intermediate step cannot substitute for an indication-specific clinical endpoint.",
+    datePublished: "2026-10-25",
+    readingTime: "10 min read",
+    keyword: "FcRn inhibitor clinical trial results",
+    factsHeading: "Four readable misses, three molecules, and one programme cascade",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do these results mean FcRn inhibitors do not work?",
+        answer:
+          "No. The negative records cover selected trials in rheumatoid arthritis, immune thrombocytopenia, CIDP, and a thyroid-eye-disease programme. They do not represent every FcRn molecule, indication, dose, or endpoint, and they should not be transferred automatically to myasthenia gravis or other diseases.",
+      },
+      {
+        question: "Why can an FcRn inhibitor affect IgG biology but miss a clinical endpoint?",
+        answer:
+          "A disease may not be driven mainly by circulating pathogenic IgG, suppression may be too shallow or brief, tissue antibodies may turn over differently, or the endpoint and treatment window may not capture the expected effect. The registry results identify the miss but cannot choose among those explanations.",
+      },
+      {
+        question: "Is four missed results a class failure rate?",
+        answer:
+          "No. Only four of twelve completed cohort trials had a primary result readable by our method. The four misses are a cross-molecule warning signal, not a probability estimate for the entire class.",
+      },
+    ],
+  },
+  {
+    slug: "lag-3-inhibitor-trial-results-beyond-melanoma",
+    title: "LAG-3 validation in one setting did not travel automatically",
+    metaDescription:
+      "Our LAG-3 plus PD-(L)1 cohort has one biological trial stop but eight missed readable primary results across four sponsors and eleven mapped molecules.",
+    eyebrow: "LAG-3 clinical evidence",
+    dek:
+      "A checkpoint can be clinically validated without becoming indication-agnostic. In our LAG-3 plus PD-(L)1 cohort, the status layer looks quiet while every readable primary-result record is negative.",
+    datePublished: "2026-10-25",
+    readingTime: "11 min read",
+    keyword: "LAG-3 inhibitor clinical trial results",
+    factsHeading: "The stop label and the endpoint layer tell different stories",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [
+      {
+        question: "Do eight missed results prove that LAG-3 inhibition does not work?",
+        answer:
+          "No. They come from a selected readable subset across different tumors, molecules, comparators, and designs. They show that broad transfer from one successful context is unsafe; they do not erase benefit in a setting where the molecule, population, and combination are already supported.",
+      },
+      {
+        question: "Why is there only one biological stop if eight primary results missed?",
+        answer:
+          "A completed study remains completed even when its primary comparison is negative. Trial status describes whether the study ran to its planned end; posted endpoint results describe what the study found.",
+      },
+      {
+        question: "What should a new LAG-3 programme prove before Phase III?",
+        answer:
+          "It should establish incremental benefit over the actual checkpoint comparator in the intended tumor setting, define the biomarker or immune context that makes LAG-3 relevant, and show that dose and molecule design produce enough added activity without unacceptable toxicity.",
+      },
+    ],
+  },
   {
     slug: "bace1-inhibitor-efficacy-safety-trial-stops",
     title: "Three BACE1 inhibitors hit the same wall—but not for one reason",
@@ -4776,6 +4918,491 @@ function hydrateWithdrawnArticle(article: InsightArticle, stats: InsightStats): 
   };
 }
 
+function hydrateSerotonin5ht2aArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.serotonin5ht2aPsychiatry;
+  const antagonist = brief.topMechanisms.find(
+    (item) => item.label === "Serotonin 2a (5-HT2a) receptor antagonist"
+  )?.count || 0;
+  const agonist = brief.topMechanisms.find(
+    (item) => item.label === "Serotonin 2a (5-HT2a) receptor agonist"
+  )?.count || 0;
+  const psilocybin = brief.topAssets.find((item) => item.label === "PSILOCYBIN")?.count || 0;
+  const readableShare = pctFromCounts(brief.endpointReadable, brief.endpointCompleted);
+  const stopRate = pctFromRatio(brief.rate);
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.endpointReadable)} readable 5-HT2A cohort trials split into ${n(brief.endpointMissed)} missed, ${n(brief.endpointMet)} met, and ${n(brief.endpointMixed)} mixed results—but the cohort combines agonists and antagonists.`,
+    dek: `The ${n(brief.trialsInSegment)}-trial 5-HT2A cohort contains both receptor agonists and antagonists. Among ${n(brief.endpointReadable)} completed trials with a readable primary result, ${n(brief.endpointMissed)} missed, ${n(brief.endpointMet)} met, and ${n(brief.endpointMixed)} were mixed. That aggregate is clinically interesting—and pharmacologically unsafe to read as an agonist verdict.`,
+    facts: [
+      `The cohort contains ${n(brief.trialsInSegment)} Phase II or III trials started from ${brief.startFrom} to ${brief.startTo}; ${n(brief.closed)} are closed.`,
+      `Its intervention mappings include ${n(antagonist)} 5-HT2A-antagonist components and ${n(agonist)} 5-HT2A-agonist components. Component counts are not unique trials and can overlap within combinations.`,
+      `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials had a readable primary result (${readableShare}): ${n(brief.endpointMissed)} missed, ${n(brief.endpointMet)} met, and ${n(brief.endpointMixed)} were mixed.`,
+      `Psilocybin is the largest named asset in the target-mapped cohort with ${n(psilocybin)} trial appearances, while several other leading assets are multireceptor antipsychotics.`,
+      `Only ${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials carried a biological stop (${stopRate}); both were efficacy-related programme cascades, not direct psychedelic-agonist stop signals.`,
+    ],
+    sections: [
+      {
+        heading: "The search query asks about agonists; the database starts from a receptor",
+        body: [
+          "Google's related searches cluster around 5-HT2A agonist drugs, non-hallucinogenic agonists, and the receptor's role in depression. A target-mapped registry cohort answers a broader question. It gathers interventions connected to HTR2A whether they activate, partially activate, block, or indirectly combine that pharmacology with other receptors.",
+          `That distinction is visible in the data. The cohort has ${n(antagonist)} antagonist-component mappings and ${n(agonist)} agonist-component mappings. These are intervention-component counts, not mutually exclusive patient groups, but they are enough to show that the cohort is not one directional mechanism.`
+        ],
+      },
+      {
+        heading: "Opposite receptor actions change the biological proposition",
+        body: [
+          "An agonist asks whether activating 5-HT2A-linked signalling can produce a useful acute state or longer-lasting neuroplastic and clinical effects. An antagonist or inverse agonist asks whether reducing receptor signalling contributes to antipsychotic, anti-hallucinatory, sleep, or behavioural benefit. The same receptor name therefore sits on opposite sides of the causal intervention.",
+          "Multireceptor drugs add another layer. Risperidone, olanzapine, brexpiprazole, lumateperone, and pimavanserin cannot be interpreted as clean probes of isolated 5-HT2A biology merely because the target mapping includes HTR2A. Dopamine, other serotonin receptors, transporters, exposure, and indication all change the clinical hypothesis.",
+        ],
+      },
+      {
+        heading: "The endpoint split is useful—but only after pharmacology is separated",
+        body: [
+          `The readable results are almost evenly divided: ${n(brief.endpointMissed)} missed, ${n(brief.endpointMet)} met, and ${n(brief.endpointMixed)} mixed. That balance warns against a simple success narrative, but it cannot estimate the efficacy of 5-HT2A agonists because the numerator contains trials with different directions of action and different diseases.`,
+          "A defensible analysis would stratify first by agonist, partial agonist, antagonist, or inverse agonist; then by selectivity and indication; and only then compare endpoints. Without that ordering, a receptor-level average blends clinical questions that should never share one denominator.",
+        ],
+      },
+      {
+        heading: "The two stop records are not psychedelic failure evidence",
+        body: [
+          "NCT02691182 concerned molindone and stopped after a programme-level lack-of-efficacy decision. NCT03230864 compared Lu AF35700 with risperidone and olanzapine and stopped after new efficacy data from another study. Both records sit on the antagonist or multireceptor-antipsychotic side of the cohort.",
+          `Counting them as two stopped ‘5-HT2A trials’ is technically possible and biologically misleading. Both are programme cascades, so the ${n(brief.biologicalStops)} records do not represent two new independent readouts from the stopped trials themselves—and they say nothing direct about psilocybin or emerging non-hallucinogenic agonists.`,
+        ],
+      },
+      {
+        heading: "Non-hallucinogenic is not a target-level switch",
+        body: [
+          "Current research interest asks whether therapeutic effects can be retained while acute perceptual effects are reduced. That question cannot be answered by target identity alone. Intrinsic efficacy, biased signalling, residence time, receptor selectivity, active metabolites, brain exposure, and dosing context can all alter the phenotype of a 5-HT2A agonist.",
+          "The practical diligence question is therefore not simply whether a molecule ‘hits 5-HT2A’. It is what signalling profile it produces at clinically relevant exposure, what other receptors it engages, and which endpoint should move if the proposed mechanism is correct.",
+        ],
+      },
+      {
+        heading: "A minimum evidence specification for 5-HT2A programmes",
+        body: [
+          "Every comparison should state the direction of action, functional efficacy, selectivity panel, active exposure, indication, dosing model, and whether psychological support is part of the intervention. For agonists, acute subjective intensity and durability of clinical benefit should remain separate outcomes. For antagonists, the contribution beyond dopamine or other receptor pharmacology needs its own argument.",
+          `The database can expose the category error: ${n(brief.trialsInSegment)} target-linked trials are not ${n(brief.trialsInSegment)} repetitions of one hypothesis. The next analytical step is narrower cohorts, not a more confident pooled percentage.`,
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "One receptor label contains opposite mechanism directions",
+        columns: ["Target-mapped component", "Appearances in the cohort"],
+        rows: [
+          ["5-HT2A receptor antagonist", n(antagonist)],
+          ["5-HT2A receptor agonist", n(agonist)],
+          ["Psilocybin", `${n(psilocybin)} trial appearances`],
+          ["Important denominator note", "Components overlap within multidrug and multireceptor trials"],
+        ],
+      },
+      {
+        heading: "The aggregate endpoint result is balanced, not agonist-specific",
+        columns: ["Evidence layer", "Current cohort"],
+        rows: [
+          ["Completed trials", n(brief.endpointCompleted)],
+          ["Readable primary results", `${n(brief.endpointReadable)} (${readableShare})`],
+          ["Missed / met / mixed", `${n(brief.endpointMissed)} / ${n(brief.endpointMet)} / ${n(brief.endpointMixed)}`],
+          ["Biological stops", `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials (${stopRate})`],
+          ["Own-trial stops / programme cascades", `${n(brief.stopsFromOwnData)} / ${n(brief.stopsFromProgrammeCascade)}`],
+        ],
+      },
+      {
+        heading: "What must be separated before results transfer",
+        columns: ["Dimension", "Why it changes interpretation"],
+        rows: [
+          ["Direction", "Agonism and antagonism test opposite causal interventions"],
+          ["Functional efficacy", "Full, partial, biased, and inverse activity need not produce the same phenotype"],
+          ["Selectivity", "Multireceptor drugs are not clean HTR2A experiments"],
+          ["Clinical context", "Depression, psychosis, dementia, and other indications use different endpoints"],
+          ["Treatment model", "Single-session assisted therapy and chronic daily dosing are not comparable exposures"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the 5-HT2A mechanism brief",
+        text: "Inspect the target-mapped cohort, endpoint split, molecule mix, and stopped-programme evidence.",
+      },
+      {
+        href: "/trial/NCT02691182",
+        label: "Molindone programme stop",
+        text: "Read the efficacy-related programme decision behind one of the two stop records.",
+      },
+      {
+        href: "/trial/NCT03230864",
+        label: "Lu AF35700 comparator programme",
+        text: "See why a multireceptor antipsychotic study cannot stand in for agonist evidence.",
+      },
+      {
+        href: "https://pubmed.ncbi.nlm.nih.gov/37651119/",
+        label: "Randomized psilocybin trial in major depression",
+        text: "A primary clinical example of the agonist side of the receptor-level cohort.",
+      },
+    ],
+  };
+}
+
+function hydrateAlarminsArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.alarminsRespiratory;
+  const tslp = brief.topMechanisms.find(
+    (item) => item.label === "Thymic stromal lymphopoietin inhibitor"
+  )?.count || 0;
+  const il33 = brief.topMechanisms.find(
+    (item) => item.label === "Interleukin-33 inhibitor"
+  )?.count || 0;
+  const st2 = brief.topMechanisms.find(
+    (item) => item.label === "IL-33 receptor (ST2) inhibitor"
+  )?.count || 0;
+  const readableShare = pctFromCounts(brief.endpointReadable, brief.endpointCompleted);
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.endpointMissed)} of ${n(brief.endpointReadable)} readable TSLP or IL-33 pathway trials missed their primary result, while ${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials had a biological stop.`,
+    dek: `The respiratory alarmin cohort has ${n(brief.biologicalStops)} biological stops among ${n(brief.closed)} closed trials. That quiet status layer conceals a mixed results layer: ${n(brief.endpointMissed)} of ${n(brief.endpointReadable)} readable completed trials missed, while ${n(brief.endpointMet)} met. Upstream biology did not erase target, phenotype, dose, or endpoint dependence.`,
+    facts: [
+      `The cohort contains ${n(brief.trialsInSegment)} Phase II or III trials: ${n(tslp)} TSLP-inhibitor, ${n(il33)} IL-33-inhibitor, and ${n(st2)} ST2-inhibitor component mappings. Counts can overlap within trials.`,
+      `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials had a readable primary result (${readableShare}): ${n(brief.endpointMissed)} missed and ${n(brief.endpointMet)} met.`,
+      `The missed-result records span ${n(brief.endpointMissedMolecules)} mapped molecules and ${n(brief.endpointMissedSponsors)} sponsors.`,
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials carried a biological stop signal; completed negative studies therefore dominate the visible cautionary evidence.`,
+      `The misses include COPD exacerbations, oral-corticosteroid reduction in asthma, and time to recovery in COVID-19—not one repeated disease test.`,
+    ],
+    sections: [
+      {
+        heading: "No stop signal is not a clean bill of efficacy",
+        body: [
+          `None of the ${n(brief.closed)} closed cohort trials stopped for a classified biological reason. If diligence stopped at recruitment status, the mechanism class would look unusually quiet. The posted-results layer changes that picture: ${n(brief.endpointMissed)} of ${n(brief.endpointReadable)} readable primary results missed.`,
+          "That is not a contradiction. A trial can complete exactly as planned and still show no statistically persuasive benefit. Status is a measure of conduct; the endpoint is a measure of the prespecified clinical comparison. Both need to be read before a programme is called validated or failed.",
+        ],
+      },
+      {
+        heading: "TSLP, IL-33, and ST2 are upstream—but not interchangeable",
+        body: [
+          "TSLP and IL-33 are epithelial alarm signals released in response to tissue stress, yet they engage different ligand-receptor systems and overlapping but non-identical downstream cells. Blocking TSLP, neutralizing IL-33, and blocking ST2 are therefore related strategies, not the same pharmacological experiment.",
+          `The cohort reflects that distinction with ${n(tslp)} TSLP-inhibitor component mappings, ${n(il33)} IL-33-inhibitor mappings, and ${n(st2)} ST2-inhibitor mappings. Pooling them is useful for finding the evidence; it is not sufficient for transferring one molecule's result to another target branch.`,
+        ],
+      },
+      {
+        heading: "The five misses test different clinical bottlenecks",
+        body: [
+          "Itepekimab and astegolimab records tested exacerbation rates in COPD. Tezepelumab tested oral-corticosteroid reduction without loss of asthma control. Another astegolimab study tested time to recovery in COVID-19. These endpoints sit at different distances from epithelial signalling and depend on different populations, background therapies, event rates, and follow-up windows.",
+          "A negative exacerbation comparison can reflect insufficient target contribution, inadequate exposure, an unselected inflammatory phenotype, or a smaller-than-designed effect. A steroid-sparing miss asks a different question about disease control and tapering. A recovery-time miss in infection should not be carried back into chronic-airway efficacy as if it replicated the same hypothesis.",
+        ],
+      },
+      {
+        heading: "The COPD signal is dose- and population-sensitive",
+        body: [
+          "Google's related searches focus on tezepelumab, itepekimab, and astegolimab in COPD. The registry comparisons explain why the answer is not a binary target verdict. In NCT05037929, the selected astegolimab comparison produced a rate ratio of 0.93 with a confidence interval crossing one. In NCT04751487, itepekimab produced a rate ratio of 0.876 in the former-smoker cohort, also with an interval crossing one.",
+          "Those estimates are compatible with modest benefit as well as no material benefit. They also do not summarize every dose, subgroup, or later replication. For COPD, smoking history, exacerbation burden, eosinophils or other inflammatory features, dose schedule, and comparator therapy must remain attached to the result.",
+        ],
+      },
+      {
+        heading: "A trial-level label can hide arm-level information",
+        body: [
+          "The astegolimab programme illustrates the danger of flattening a multi-arm result. One registry comparison can miss while another dose, replicate, or pooled analysis yields a different estimate. The correct unit of interpretation is the prespecified comparison with its multiplicity rules—not the target name and not a single headline.",
+          "Our endpoint reader deliberately records the statistical comparison it can verify. That makes the evidence auditable, but it should be treated as a starting row for review. For investment or development decisions, every dose arm, hierarchical test, subgroup, and replicate needs to be reconstructed before assigning a programme-level verdict.",
+        ],
+      },
+      {
+        heading: "What a credible alarmin translation case must specify",
+        body: [
+          "A new programme should state which epithelial signal is being interrupted, which inflammatory phenotype depends on it, how patients are enriched, and why the selected endpoint should respond during the treatment window. It should also identify whether the intended value is fewer exacerbations, steroid sparing, improved lung function, or another outcome; these are not interchangeable demonstrations of benefit.",
+          `The current evidence is mixed rather than empty: ${n(brief.endpointMet)} readable trials met, ${n(brief.endpointMissed)} missed, and no biological stops were recorded. That pattern supports more precise trial design and evidence transfer—not a broad dismissal of airway alarmins.`,
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "The status ledger and results ledger answer different questions",
+        columns: ["Evidence layer", "Current cohort"],
+        rows: [
+          ["Trials in the cohort", n(brief.trialsInSegment)],
+          ["Closed trials", n(brief.closed)],
+          ["Biological stops", `${n(brief.biologicalStops)} of ${n(brief.closed)}`],
+          ["Readable primary results", `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed (${readableShare})`],
+          ["Missed / met / mixed", `${n(brief.endpointMissed)} / ${n(brief.endpointMet)} / ${n(brief.endpointMixed)}`],
+        ],
+      },
+      {
+        heading: "Five readable misses are not five copies of one experiment",
+        columns: ["Trial and intervention", "Posted comparison read from the registry"],
+        rows: [
+          ["NCT06280391 · itepekimab", "Pulmonary exacerbations: rate ratio 0.851; p=0.3419"],
+          ["NCT05037929 · astegolimab", "COPD exacerbations: rate ratio 0.93; 95% CI 0.789–1.095"],
+          ["NCT04751487 · itepekimab", "Former-smoker COPD cohort: rate ratio 0.876; p=0.2176"],
+          ["NCT04386616 · astegolimab", "COVID-19 recovery: HR 1.01; p=0.9266"],
+          ["NCT03406078 · tezepelumab", "Oral-steroid reduction in asthma: OR 1.28; p=0.434"],
+        ],
+      },
+      {
+        heading: "Questions that determine whether alarmin evidence transfers",
+        columns: ["Dimension", "Decision question"],
+        rows: [
+          ["Target branch", "TSLP ligand, IL-33 ligand, or ST2 receptor blockade?"],
+          ["Phenotype", "Which inflammatory subgroup is expected to depend on that branch?"],
+          ["Population", "Smoking history, exacerbation burden, biomarkers, and background therapy?"],
+          ["Exposure", "Did dose and schedule sustain enough pathway suppression?"],
+          ["Endpoint", "Exacerbations, steroid sparing, lung function, or recovery—and over what window?"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the TSLP / IL-33 mechanism brief",
+        text: "Review the cohort definition, all five missed comparisons, and the zero-stop denominator.",
+      },
+      {
+        href: "/trial/NCT05037929?tab=results",
+        label: "Astegolimab COPD comparison",
+        text: "Inspect the posted rate ratio, confidence interval, dose arms, and analysis details.",
+      },
+      {
+        href: "/trial/NCT04751487?tab=results",
+        label: "Itepekimab former-smoker COPD cohort",
+        text: "Read the Phase III exacerbation comparison and prespecified threshold.",
+      },
+      {
+        href: "https://pubmed.ncbi.nlm.nih.gov/42150581/",
+        label: "Astegolimab ALIENTO and ARNASA publication",
+        text: "Use the primary publication to reconstruct dose-specific and replicate-specific evidence beyond one registry row.",
+      },
+    ],
+  };
+}
+
+function hydrateFcrnArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.fcrnAutoimmune;
+  const rate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const interval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const readableShare = pctFromCounts(brief.endpointReadable, brief.endpointCompleted);
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.endpointMissed)} of ${n(brief.endpointReadable)} readable FcRn primary results missed across ${n(brief.endpointMissedMolecules)} molecules; a separate batoclimab trial stopped after feeder-study failures.`,
+    dek: `Among ${n(brief.endpointCompleted)} completed FcRn cohort trials, only ${n(brief.endpointReadable)} had a primary result readable by our method—and all ${n(brief.endpointReadable)} missed. The records span ${n(brief.endpointMissedMolecules)} molecules and show why altering IgG handling is a mechanistic step, not an indication-independent clinical outcome.`,
+    facts: [
+      `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials had a readable posted primary result (${readableShare}); all ${n(brief.endpointReadable)} missed.`,
+      `The readable misses came from ${n(brief.endpointMissedMolecules)} molecules across ${n(brief.endpointMissedSponsors)} sponsors.`,
+      `The endpoints covered rheumatoid arthritis, immune thrombocytopenia, and CIDP rather than one repeated disease test.`,
+      `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials carried a biological stop (${rate}; 95% CI ${interval}), versus ${referenceRate} in the autoimmune comparator.`,
+      `The stopped batoclimab extension was a programme cascade: its feeder studies missed their predefined efficacy outcomes, with no new safety finding reported in the stop text.`,
+    ],
+    sections: [
+      {
+        heading: "The mechanism-to-benefit chain has four links",
+        body: [
+          "An FcRn inhibitor is intended to interrupt IgG recycling and shorten the persistence of circulating IgG. Clinical benefit then requires several additional conditions: the disease must be materially driven by pathogenic IgG, suppression must be deep and sustained enough, the relevant tissue compartment must respond, and the selected endpoint must move within the trial window.",
+          "The trial registry does not measure that whole chain for us. It records the clinical comparison. Four readable misses therefore do not identify which link failed—but they show that target rationale alone did not secure the endpoint in these settings.",
+        ],
+      },
+      {
+        heading: "The negative evidence crosses molecules and diseases",
+        body: [
+          "Two nipocalimab rheumatoid-arthritis trials missed DAS28-CRP comparisons. An efgartigimod alfa trial missed sustained platelet response in chronic immune thrombocytopenia. A rozanolixizumab trial missed change on the inflammatory disability scale in CIDP. The records come from three sponsors and three molecules rather than one isolated programme.",
+          "That breadth makes the signal more useful, but not uniform. Joint inflammation, platelet destruction, and peripheral-nerve disability have different pathogenic compartments, timescales, background treatments, and clinical measures. Pooling them into a single class rate would discard the biology that matters most.",
+        ],
+      },
+      {
+        heading: "The thyroid-eye-disease stop answers a different question",
+        body: [
+          "The batoclimab record NCT05517447 is not a fifth independent endpoint miss from the extension itself. The extension stopped because two feeder studies failed their predefined primary efficacy outcomes, which changed the programme's benefit–risk balance. The registry explicitly says no new safety findings were observed.",
+          "That distinction is clinically important. It points toward insufficient demonstrated benefit in that programme, not a newly observed toxicity signal, and it prevents one feeder decision from being counted repeatedly as separate biological replication.",
+        ],
+      },
+      {
+        heading: "Why myasthenia-gravis evidence cannot answer every FcRn question",
+        body: [
+          "Google's related searches cluster heavily around myasthenia gravis, CIDP, and thyroid eye disease. Those are not interchangeable applications of the same laboratory effect. The fraction of disease activity attributable to circulating IgG, the speed at which pathogenic antibodies turn over, and the reversibility of tissue injury can all change the expected clinical response.",
+          "The proper transfer question is therefore not ‘has FcRn ever worked?’ It is whether the proposed indication shares the relevant antibody biology, exposure requirement, disease stage, and endpoint sensitivity with the precedent being used to justify it.",
+        ],
+      },
+      {
+        heading: "The denominator prevents a class verdict",
+        body: [
+          `The endpoint reader could classify ${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials. The remaining completed records did not provide a primary comparison our method could call. The observed stop rate of ${rate} also does not stand out after multiplicity correction against the ${referenceRate} comparator.`,
+          `The defensible conclusion is narrower: every readable primary result in this selected cohort missed, across ${n(brief.endpointMissedMolecules)} molecules, while the single stopped record was a programme cascade. That is a diligence signal about indication fit and endpoint translation—not an FcRn class failure probability.`,
+        ],
+      },
+      {
+        heading: "What a new programme needs to make visible",
+        body: [
+          "A strong protocol should connect pharmacology to disease biology before asking the pivotal endpoint to carry the whole argument. That means prespecifying the expected degree and duration of IgG reduction, identifying the pathogenic antibody or antibody-dependent process, and explaining how quickly the chosen clinical measure should respond.",
+          "It should also show what is different from the negative precedents: disease compartment, molecule, dose, maintenance schedule, background therapy, enrichment strategy, or endpoint. Without that bridge, ‘same target, new disease’ is an assumption rather than a clinical hypothesis.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Four readable misses test different clinical propositions",
+        columns: ["Trial and molecule", "Primary result read from the registry"],
+        rows: [
+          ["NCT06028438 · nipocalimab · rheumatoid arthritis", "DAS28-CRP difference missed; p=0.822"],
+          ["NCT04991753 · nipocalimab · rheumatoid arthritis", "DAS28-CRP difference missed; interval included no effect"],
+          ["NCT04687072 · efgartigimod alfa · chronic ITP", "Sustained platelet response missed; p=0.5081"],
+          ["NCT03861481 · rozanolixizumab · CIDP", "iRODS difference missed; interval included no effect"],
+        ],
+      },
+      {
+        heading: "Keep the two evidence layers separate",
+        columns: ["Evidence layer", "Current cohort"],
+        rows: [
+          ["Readable primary results", `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials (${readableShare})`],
+          ["Missed / met / mixed", `${n(brief.endpointMissed)} / ${n(brief.endpointMet)} / ${n(brief.endpointMixed)}`],
+          ["Biological stops", `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials (${rate})`],
+          ["Own-trial stops / programme cascades", `${n(brief.stopsFromOwnData)} / ${n(brief.stopsFromProgrammeCascade)}`],
+          ["Autoimmune comparator", `${n(brief.referenceStops)} of ${n(brief.referenceClosed)} (${referenceRate})`],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the FcRn mechanism brief",
+        text: "Inspect the cohort definition, every readable endpoint, the stop record, and the missing-results limits.",
+      },
+      {
+        href: "/trial/NCT06028438?tab=results",
+        label: "Nipocalimab: rheumatoid-arthritis endpoint",
+        text: "Read the posted DAS28-CRP comparison and confidence interval.",
+      },
+      {
+        href: "/trial/NCT04687072?tab=results",
+        label: "Efgartigimod alfa: chronic ITP endpoint",
+        text: "Inspect the sustained platelet-response result.",
+      },
+      {
+        href: "/trial/NCT05517447",
+        label: "Batoclimab: thyroid-eye-disease programme cascade",
+        text: "Read why the extension stopped after its feeder studies missed efficacy outcomes.",
+      },
+    ],
+  };
+}
+
+function hydrateLag3PdL1Article(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const brief = stats.mechanismBriefs.lag3PdL1;
+  const rate = pctFromRatio(brief.rate);
+  const referenceRate = pctFromRatio(brief.referenceRate);
+  const interval = `${pctFromRatio(brief.confidenceLow)}–${pctFromRatio(brief.confidenceHigh)}`;
+  const readableShare = pctFromCounts(brief.endpointReadable, brief.endpointCompleted);
+
+  return {
+    ...article,
+    metaDescription: `${n(brief.biologicalStops)} biological stop among ${n(brief.closed)} closed LAG-3 plus PD-(L)1 trials contrasts with ${n(brief.endpointMissed)} missed results in ${n(brief.endpointReadable)} readable completed trials.`,
+    dek: `Only ${n(brief.biologicalStops)} of ${n(brief.closed)} closed LAG-3 plus PD-(L)1 trials carries a biological stop label. Yet all ${n(brief.endpointReadable)} completed trials with a readable primary result missed. The gap shows why clinical validation in one setting cannot be transferred by target name alone.`,
+    facts: [
+      `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials had a readable primary result (${readableShare}); all ${n(brief.endpointReadable)} missed.`,
+      `The missed-result layer spans ${n(brief.endpointMissedMolecules)} mapped molecules and ${n(brief.endpointMissedSponsors)} sponsors.`,
+      `Only ${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials stopped for a biological reason (${rate}; 95% CI ${interval}).`,
+      `The lone stop was safety-related; the registry text says only that an internal safety review drove the decision.`,
+      `The checkpoint-combination comparator recorded ${n(brief.referenceStops)} biological stops among ${n(brief.referenceClosed)} closed trials (${referenceRate}).`,
+    ],
+    sections: [
+      {
+        heading: "Two ledgers produce opposite first impressions",
+        body: [
+          `The status ledger looks reassuring: ${n(brief.biologicalStops)} biological stop among ${n(brief.closed)} closed trials. The results ledger looks very different: ${n(brief.endpointMissed)} misses among ${n(brief.endpointReadable)} readable primary-result records. Neither ledger is wrong; they answer different questions.`,
+          "A trial that completes and misses remains completed. Searching only terminated, withdrawn, or suspended studies therefore hides negative comparative evidence. Conversely, the eight readable results are a selected subset and cannot be treated as the failure rate of every LAG-3 programme.",
+        ],
+      },
+      {
+        heading: "Clinical validation does not make a checkpoint tumor-agnostic",
+        body: [
+          "LAG-3 is an immune checkpoint, but the contribution of LAG-3-positive exhausted T cells can vary with tumor type, prior therapy, antigenicity, immune-cell infiltration, and co-expression of other inhibitory pathways. The value of adding LAG-3 blockade therefore depends on the immune context that remains after PD-(L)1 blockade and on the comparator it must beat.",
+          "The cohort's negative readouts are consistent with that context dependence. They do not show that the target is biologically irrelevant; they show that target relevance in one tumor-and-combination setting is not evidence of incremental benefit in another.",
+        ],
+      },
+      {
+        heading: "Several programmes produced near-null comparative effects",
+        body: [
+          "The registry results are not merely ambiguous status labels. A favezelimab–pembrolizumab Phase III trial posted an overall-survival hazard ratio of 0.98. Tobemstomig and tuparstobart–verzistobart studies posted progression-free-survival hazard ratios near 1.0. Another tobemstomig study reported an overall-survival hazard ratio of 1.05.",
+          "Those estimates do not prove a common molecular cause, because the tumors, agents, lines of therapy, and statistical designs differ. They do show why a development case should quantify incremental activity over the relevant PD-(L)1 backbone rather than rely on the general success of checkpoint blockade.",
+        ],
+      },
+      {
+        heading: "The one safety stop should remain one safety stop",
+        body: [
+          "NCT04634825 stopped after an internal safety-data review. The public explanation does not identify the event, attribute it to one component, or establish a class mechanism. It belongs in the evidence set, but it cannot carry a broad causal claim.",
+          "This is a useful contrast with the endpoint layer. The safety record is sparse and uncertain; the negative comparative results are numerically inspectable. Combining them into one generic ‘failure’ bucket would make both less informative.",
+        ],
+      },
+      {
+        heading: "The missing-results denominator still matters",
+        body: [
+          `Only ${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed cohort trials yielded a primary comparison our method could read. The eight misses span ${n(brief.endpointMissedMolecules)} mapped molecules, but the unreadable remainder prevents a complete reconstruction of the class.`,
+          `The observed stop rate of ${rate} is also below the ${referenceRate} checkpoint-combination comparator and is not statistically unusual after multiplicity correction. The strongest statement is therefore about the visible endpoint pattern, not a universal LAG-3 failure probability.`,
+        ],
+      },
+      {
+        heading: "A transfer test for the next LAG-3 programme",
+        body: [
+          "Before a positive precedent is transferred, the next programme should answer four questions. Is LAG-3 biology enriched in the intended tumor and treatment line? Does the molecule add target coverage or functional activity beyond the PD-(L)1 partner? Is the comparator strong enough to reveal incremental benefit? And is the biomarker defined before, rather than after, the readout?",
+          "A fifth question is statistical: what effect size is plausible after an active checkpoint control? When several completed comparisons sit near the null, an undifferentiated all-comer design carries a higher burden of proof than the target label alone suggests.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "The status view misses completed negative trials",
+        columns: ["Evidence view", "What it shows"],
+        rows: [
+          ["Biological trial stops", `${n(brief.biologicalStops)} of ${n(brief.closed)} closed trials (${rate})`],
+          ["Readable primary results", `${n(brief.endpointReadable)} of ${n(brief.endpointCompleted)} completed trials (${readableShare})`],
+          ["Missed / met / mixed", `${n(brief.endpointMissed)} / ${n(brief.endpointMet)} / ${n(brief.endpointMixed)}`],
+          ["Sponsors behind readable misses", n(brief.endpointMissedSponsors)],
+          ["Mapped molecules behind readable misses", n(brief.endpointMissedMolecules)],
+        ],
+      },
+      {
+        heading: "Selected comparative results cluster near no added effect",
+        columns: ["Trial and regimen", "Readable primary comparison"],
+        rows: [
+          ["NCT05064059 · favezelimab + pembrolizumab", "Overall survival HR 0.98 (95% CI 0.80–1.20)"],
+          ["NCT05775289 · tobemstomig", "Progression-free survival HR 0.99 (95% CI 0.63–1.56)"],
+          ["NCT05287113 · tuparstobart + verzistobart", "Progression-free survival HR 1.05 (95% CI 0.66–1.67)"],
+          ["NCT04785820 · lomvastomig / tobemstomig", "Overall survival HR 1.05 (80% CI 0.84–1.33)"],
+        ],
+      },
+      {
+        heading: "What must match before evidence transfers",
+        columns: ["Dimension", "Clinical question"],
+        rows: [
+          ["Tumor context", "Is LAG-3 biology active and enriched in this disease and treatment line?"],
+          ["Combination", "What incremental activity should LAG-3 add to the PD-(L)1 backbone?"],
+          ["Molecule", "Does format, valency, exposure, or target coverage differ meaningfully?"],
+          ["Biomarker", "Was the responder hypothesis prespecified and assayable?"],
+          ["Comparator", "Can the trial detect added benefit over an active checkpoint standard?"],
+        ],
+      },
+    ],
+    links: [
+      {
+        href: `/briefs/${brief.slug}`,
+        label: "Open the LAG-3 + PD-(L)1 mechanism brief",
+        text: "Review the cohort, all endpoint rows, the safety stop, and the denominator limitations.",
+      },
+      {
+        href: "/trial/NCT05064059?tab=results",
+        label: "Favezelimab plus pembrolizumab: overall survival",
+        text: "Inspect the posted Phase III hazard ratio and confidence interval.",
+      },
+      {
+        href: "/trial/NCT05775289?tab=results",
+        label: "Tobemstomig: progression-free survival",
+        text: "Read a completed comparative result with a hazard ratio near one.",
+      },
+      {
+        href: "/trial/NCT04634825",
+        label: "The cohort's lone safety stop",
+        text: "Read the limited public explanation and why it cannot support a broader causal claim.",
+      },
+    ],
+  };
+}
+
 function hydrateBaceSecretaseArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
   const brief = stats.mechanismBriefs.baceSecretase;
   const rate = pctFromRatio(brief.rate);
@@ -5478,6 +6105,18 @@ function hydrateTgfBetaPdL1Article(article: InsightArticle, stats: InsightStats)
 }
 
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "5-ht2a-agonist-antagonist-clinical-trial-results") {
+    return hydrateSerotonin5ht2aArticle(article, stats);
+  }
+  if (article.slug === "tslp-il33-inhibitor-copd-trial-results") {
+    return hydrateAlarminsArticle(article, stats);
+  }
+  if (article.slug === "fcrn-inhibitor-clinical-results-disease-endpoints") {
+    return hydrateFcrnArticle(article, stats);
+  }
+  if (article.slug === "lag-3-inhibitor-trial-results-beyond-melanoma") {
+    return hydrateLag3PdL1Article(article, stats);
+  }
   if (article.slug === "bace1-inhibitor-efficacy-safety-trial-stops") {
     return hydrateBaceSecretaseArticle(article, stats);
   }

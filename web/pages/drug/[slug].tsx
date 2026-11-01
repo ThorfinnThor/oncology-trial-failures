@@ -9,6 +9,7 @@ import { OG_IMAGE, SITE_URL } from "@/lib/seoHubs";
 import type { SeoIndexingState } from "@/lib/seoIndexingPolicy";
 import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import type { DatasetMeta } from "@/lib/types";
+import { DATA_LICENSE_URL } from "@/lib/licensing";
 
 type DrugPageProps = {
   drug: DrugPage;
@@ -36,6 +37,7 @@ export default function DrugStoppedTrialsPage({ drug, seo, datasetMeta }: DrugPa
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
+      license: DATA_LICENSE_URL,
       name: `${drug.name}: stopped clinical trials`,
       description,
       url: canonicalUrl,

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import type { TopListRow } from "@/lib/topSeoData";
+import { DATA_LICENSE_URL, DATASET_CREATOR } from "@/lib/licensing";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -56,6 +57,8 @@ export default function TopSeoPage({
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
+      license: DATA_LICENSE_URL,
+      creator: DATASET_CREATOR,
       name: tableTitle,
       description: tableIntro,
       isBasedOn: "https://clinicaltrials.gov",

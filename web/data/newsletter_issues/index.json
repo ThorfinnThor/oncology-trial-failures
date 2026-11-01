@@ -1,1 +1,10 @@
-[]
+[
+ {
+  "date": "2026-10-26",
+  "subject": "100 new stopped trials, 12 records changed — 26 Oct 2026",
+  "counts": {
+   "added": 100,
+   "changed": 12
+  }
+ }
+]

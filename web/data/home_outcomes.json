@@ -1,6 +1,6 @@
 {
- "read_on": "2026-10-22",
- "readable_completed": 4677,
+ "read_on": "2026-10-26",
+ "readable_completed": 4681,
  "cards": [
   {
    "key": "stopped_efficacy",
@@ -42,7 +42,7 @@
    "key": "completed_missed",
    "status": "Completed",
    "label": "Primary endpoint missed",
-   "count": 1941,
+   "count": 1944,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT03867084",
@@ -60,7 +60,7 @@
    "key": "completed_met",
    "status": "Completed",
    "label": "Primary endpoint met",
-   "count": 2299,
+   "count": 2300,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT06109311",

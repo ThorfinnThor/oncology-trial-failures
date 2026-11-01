@@ -50,6 +50,10 @@ const ACCEPTED_TYPES = new Set(["DRUG", "BIOLOGICAL"]);
 const LISTED_WITH_LIMIT = 6;
 // A page lists at most this many trials (most recent first); the counts always cover all of them.
 export const DRUG_TRIAL_LIST_LIMIT = 150;
+// Indexing bar: a drug page must add more than a list of registry entries. It needs this many trials
+// with a stated stop reason, and their distinct reasons together must say at least this much.
+export const DRUG_INDEX_MIN_STATED_REASONS = 3;
+export const DRUG_INDEX_MIN_REASON_CHARS = 400;
 
 const SALT_SUFFIX =
   /\s+(hydrochloride|dihydrochloride|hcl|hydrobromide|phosphate|sodium|disodium|potassium|calcium|mesylate|dimesylate|maleate|tartrate|citrate|sulfate|sulphate|acetate|besylate|fumarate|succinate|tosylate|monohydrate)$/;
@@ -175,8 +179,9 @@ export function drugPath(slug: string): string {
 
 /**
  * Group stopped trials by the drugs they list. A drug gets a page at DRUG_MIN_TRIALS stopped trials;
- * the page is indexable when at least one of its trials is itself an indexable trial page and at
- * least two carry a stop reason in the registry, so a thin list of unexplained stops stays noindex.
+ * the page is indexable when at least one of its trials is itself an indexable trial page, at least
+ * DRUG_INDEX_MIN_STATED_REASONS carry a stop reason in the registry, and those reasons are not all
+ * the same short line (DRUG_INDEX_MIN_REASON_CHARS of distinct text), so a thin list stays noindex.
  */
 export function buildDrugPages(rows: DrugSourceRow[]): DrugPage[] {
   const bySlug = new Map<string, { key: string; variants: Map<string, number>; rows: DrugSourceRow[] }>();
@@ -201,6 +206,8 @@ export function buildDrugPages(rows: DrugSourceRow[]): DrugPage[] {
       .map((row) => trialEntry(row, slug, names))
       .sort((a, b) => (b.ended || "").localeCompare(a.ended || "") || a.nct_id.localeCompare(b.nct_id));
     const withStopReason = trials.filter((trial) => trial.why).length;
+    const distinctReasonChars = [...new Set(trials.map((trial) => (trial.why || "").trim().toLowerCase()).filter(Boolean))]
+      .reduce((sum, why) => sum + why.length, 0);
     pages.push({
       slug,
       name: names.get(slug) || group.key,
@@ -208,7 +215,10 @@ export function buildDrugPages(rows: DrugSourceRow[]): DrugPage[] {
       total: trials.length,
       efficacyOrSafety: trials.filter((trial) => trial.bucket === "EFFICACY/FUTILITY" || trial.bucket === "SAFETY").length,
       withStopReason,
-      indexable: withStopReason >= 2 && group.rows.some(isIndexableTrial),
+      indexable:
+        withStopReason >= DRUG_INDEX_MIN_STATED_REASONS &&
+        distinctReasonChars >= DRUG_INDEX_MIN_REASON_CHARS &&
+        group.rows.some(isIndexableTrial),
       trials: trials.slice(0, DRUG_TRIAL_LIST_LIMIT),
     });
   }

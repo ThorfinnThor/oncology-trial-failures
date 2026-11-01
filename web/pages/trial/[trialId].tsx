@@ -153,6 +153,14 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
     let alive = true;
     (async () => {
       if (!trialId) return;
+      // The server already rendered this trial: fetching its shard again only costs crawlers and
+      // visitors a JSON download, and a blocked or failed fetch must not replace good content.
+      if (initialTrial && initialMeta && initialTrial.nct_id.toUpperCase() === trialId.toUpperCase()) {
+        setErr(null);
+        setMeta(initialMeta);
+        setTrial(initialTrial);
+        return;
+      }
       try {
         setErr(null);
         const [m, t] = await Promise.all([loadMeta(), loadDetail(trialId)]);
@@ -167,7 +175,7 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
     return () => {
       alive = false;
     };
-  }, [trialId]);
+  }, [trialId, initialTrial, initialMeta]);
 
   const phaseKey = useMemo(
     () => (trial ? parsePhases(trial.phases || "")[0] || "UNKNOWN" : "UNKNOWN"),

@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
 import type { ReferencePageProps } from "@/lib/seoReferenceData";
+import { DATA_LICENSE_URL } from "@/lib/licensing";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const OG_IMAGE = `${SITE_URL}/og-image.png`;
@@ -19,6 +20,7 @@ export default function DataReferencePage(props: ReferencePageProps) {
     {
       "@context": "https://schema.org",
       "@type": "Dataset",
+      license: DATA_LICENSE_URL,
       name: props.h1,
       description: props.description,
       url: canonicalUrl,

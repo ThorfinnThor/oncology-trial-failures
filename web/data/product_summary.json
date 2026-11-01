@@ -1,7 +1,7 @@
 {
   "product": "Oncology Failure Signals",
   "product_version": "1.0.0",
-  "dataset_version": "2026-10-21",
+  "dataset_version": "2026-10-23",
   "trial_count": 1027,
   "industry_trial_count": 463,
   "industry_phase2_3_trial_count": 311,
@@ -21,8 +21,8 @@
   "discontinuation_rates": {
     "segments": 198,
     "mechanism_classes": 40,
-    "universe_closed_trials": 7935,
-    "baseline_rate": 0.04473850031505986,
+    "universe_closed_trials": 7956,
+    "baseline_rate": 0.04474610356963298,
     "window": {
       "start_year_from": 2015,
       "start_year_to": 2024,
@@ -45,27 +45,27 @@
     },
     "baseline": {
       "label": "All oncology Phase 2/3",
-      "rate": 0.04473850031505986,
-      "stops": 355,
-      "closed": 7935,
+      "rate": 0.04474610356963298,
+      "stops": 356,
+      "closed": 7956,
       "ci95": [
-        0.04040589852234317,
-        0.049511703562071775
+        0.040418573524371816,
+        0.04951306531628049
       ]
     },
     "reference": {
       "label": "All PD-(L)1 trials",
-      "rate": 0.04963855421686747,
-      "stops": 103,
-      "closed": 2075,
+      "rate": 0.04990403071017274,
+      "stops": 104,
+      "closed": 2084,
       "ci95": [
-        0.041096954960146814,
-        0.05984464636243593
+        0.04135529994874551,
+        0.06010910233158073
       ]
     }
   },
-  "brief_count": 63,
-  "sample_file": "/samples/oncology-failure-signals-sample-2026-10-21-cce20d1b57f74b26.csv",
+  "brief_count": 64,
+  "sample_file": "/samples/oncology-failure-signals-sample-2026-10-23-cce20d1b57f74b26.csv",
   "sample_record_count": 100,
   "sample_columns": [
     "nct_id",
@@ -99,6 +99,6 @@
     "last_update_post_date",
     "registry_url"
   ],
-  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-10-21-cce20d1b57f74b26-README.txt",
+  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-10-23-cce20d1b57f74b26-README.txt",
   "signals_column_count": 30
 }
