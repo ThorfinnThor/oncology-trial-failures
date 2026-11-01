@@ -12,6 +12,16 @@ whether it will fail on biology better than a simple base rate?
   the base rate (AUC 0.64 against 0.56, gain +0.08, 95 % CI +0.07 to +0.10). It is still a weak
   predictor in absolute terms. Its riskiest 10 % stop for biology at 7.1 %, against 3.4 % overall.
 
+**Round 2: genetic evidence from Open Targets.** It is a real, independent effect, but it does not
+move the prediction. Outside oncology, trials whose target has genetic evidence for the indication
+fail less often, odds ratio about 0.6–0.7 after controlling for phase and area. In oncology there is
+no effect, because germline genetics says little about tumours. Added to the base rate, the AUC
+gain is +0.001 overall and +0.003 to +0.004 on mapped trials, and neither is distinguishable from
+zero. Section "Round 2" has the numbers.
+
+**The record as it stood at the start** is not done. ClinicalTrials.gov's version history is served
+only to browsers, and the monthly AACT snapshots need an account. See "Not done".
+
 The base rate is the product: phase and disease area, refreshed from the database. The failure
 history of a target, molecule or sponsor does carry signal on its own (single-feature AUC
 0.62–0.66), but in this data most of that signal is already in phase and area.
@@ -105,6 +115,60 @@ Biological stops cluster in industry trials of defined experimental drugs, and i
 molecules that have stopped before. Academic trials mostly stop for recruitment. That is a real
 pattern, but it describes *who* runs a trial more than *which biology* fails.
 
+## Round 2: genetic evidence (Open Targets)
+
+`fetch_opentargets.py` queries the public Open Targets Platform GraphQL API (release 26.09):
+- **Mapping:** MeSH condition terms map to disease IDs, and target genes map to Ensembl IDs.
+- **Scores:** for each (disease, target) pair, including indirect ontology evidence, the script
+  reads the datatype scores. Only datatypes that do not encode clinical outcomes are used:
+  genetic association, somatic mutation, animal model, affected pathway and RNA expression. The
+  `known_drug` datatype is excluded, because it is built from trial outcomes and would leak them.
+- **Coverage:** 1,204 of 2,348 MeSH terms and 1,410 of 1,579 genes mapped. 14,202 of 24,392
+  labelled trials with a target have a mapped pair, and 4,191 of those have genetic evidence.
+
+**Effect.** Fail and miss rates, randomized trials with a mapped pair:
+
+| | With genetic evidence | Without |
+| --- | ---: | ---: |
+| Task A, Phase 2 | 63 % (n = 217) | 73 % (n = 528) |
+| Task A, Phase 3 | 28 % (n = 500) | 42 % (n = 755) |
+| A_endpoint (missed), Phase 3 | 23 % (n = 471) | 33 % (n = 653) |
+| Task B (biological stop), Phase 3 | 2.3 % (n = 1,608) | 4.0 % (n = 2,985) |
+
+The crude odds ratio for task A is 0.51. Within phase × area strata (Mantel–Haenszel) it is 0.70.
+Split by area, it is 0.63 outside oncology and 1.07 in oncology. Part of the crude effect is area:
+82 % of endocrine and metabolic trials have genetic evidence, and only 17 % of them fail.
+
+**Prediction.** `genetics_backtest.py` uses the same walk-forward design. The model is the base
+rate's logit (cross-fitted on the training rows) plus three inputs: mapped, genetic evidence, and
+genetic evidence outside oncology.
+
+| Task | Baseline AUC | + genetics | Gain (95 % CI) | Gain on mapped trials (95 % CI) |
+| --- | ---: | ---: | --- | --- |
+| A, randomized | 0.712 | 0.713 | +0.000 (−0.003 to +0.004) | +0.003 (−0.006 to +0.012) |
+| A_endpoint | 0.707 | 0.708 | +0.001 (−0.002 to +0.004) | +0.004 (−0.004 to +0.012) |
+| B, biological stop | 0.555 | 0.579 | **+0.024 (+0.013 to +0.037)** | +0.009 (−0.007 to +0.024) |
+
+The full models in `backtest.py`, with the Open Targets columns added (`results_ot.json`), stay below
+the baseline on task A (0.69). Genetic evidence on its own reaches AUC 0.54 in task A.
+
+**Why a real effect barely moves AUC.** The input is yes or no, it applies to about a third of
+trials, and its effect (OR about 0.6) is smaller than the gap between phases. It shifts
+probabilities, which is worth showing to a user, but it reorders few trials. The evidence is also
+today's, not what was known at each trial's start. That can only flatter the result, and it still
+adds nothing measurable.
+
+## Not done: the record as it stood at the start
+
+- **Version history:** ClinicalTrials.gov keeps every version of a record. The site serves the
+  history to browsers and refuses scripted requests (403), so it was not used.
+- **AACT monthly snapshots:** CTTI keeps a permanent full copy of the registry for each month,
+  but downloading it needs an AACT account.
+
+With either source, the planned enrollment, the primary outcome as first registered, masking and
+the number of sites could be read as they were on the start date. Planned enrollment is the
+feature the literature rates most useful after phase and area.
+
 ## What this means for the product
 
 1. **Sell the base rate, not a black box.** "Phase 2 in your area fails on its primary endpoint
@@ -118,8 +182,9 @@ pattern, but it describes *who* runs a trial more than *which biology* fails.
      planned enrollment become usable
    - add outcome data beyond the registry: publications and press releases for trials that posted
      nothing readable, which is most of them (14,867 completed trials have no readable verdict)
-   - add better biology features, e.g. genetic evidence for the target–indication pair (Open
-     Targets), which the literature finds to be the strongest single predictor of success
+   - genetic evidence was tried in round 2. It is a real effect worth showing next to the base rate
+     ("targets with genetic support fail about a third less often outside oncology"), but it does
+     not improve ranking
 
 ## Reproduce
 
@@ -128,6 +193,14 @@ uv venv mlenv && VIRTUAL_ENV=mlenv uv pip install numpy pandas scikit-learn
 mlenv/bin/python research/failure_prediction/build_dataset.py .cache/universe trials.pkl
 mlenv/bin/python research/failure_prediction/backtest.py trials.pkl research/failure_prediction/results.json
 cd research/failure_prediction && ../../mlenv/bin/python importance.py   # expects trials.pkl here
+```
+
+Round 2 needs `truststore` and `requests` in the same environment:
+
+```bash
+mlenv/bin/python research/failure_prediction/fetch_opentargets.py .cache/universe/universe_resolved_v1.jsonl.gz trials.pkl ot_cache
+mlenv/bin/python research/failure_prediction/backtest.py trials.pkl results_ot.json ot_cache/trial_features.json
+mlenv/bin/python research/failure_prediction/genetics_backtest.py trials.pkl ot_cache/trial_features.json results_genetics.json
 ```
 
 `results.json` holds per-year metrics, calibration bins and single-feature AUCs for every task.

@@ -28,6 +28,8 @@ OUT = Path(sys.argv[2])
 RNG = np.random.default_rng(7)
 
 CATEGORICAL = ["phase", "area", "sponsor_class", "modality"]
+OT_COLS = ["ot_mapped", "ot_genetic_association", "ot_somatic_mutation", "ot_animal_model",
+           "ot_affected_pathway", "ot_rna_expression"]
 NUMERIC_DESIGN = ["randomized", "placebo_arm", "active_comparator", "n_conditions", "n_interventions",
                   "n_experimental", "resolved_share", "has_target", "start_year"]
 
@@ -117,9 +119,12 @@ def run(df: pd.DataFrame, label: str, known: str, years: list[int], name: str, o
     feats = pd.concat([df, hist], axis=1)
     feats["has_target"] = feats["targets"].map(bool).astype(int)
     feats["tgt_crowding"] = crowding(df)
+    if OT is not None:
+        for c in OT_COLS:
+            feats[c] = feats["nct_id"].map(lambda n, c=c: (OT.get(n) or {}).get(c, 0.0))
     if only is not None:
         feats = feats[only(feats)]
-    numeric = NUMERIC_DESIGN + list(hist.columns) + ["tgt_crowding"]
+    numeric = NUMERIC_DESIGN + list(hist.columns) + ["tgt_crowding"] + (OT_COLS if OT is not None else [])
 
     pre = ColumnTransformer([
         ("cat", OneHotEncoder(handle_unknown="ignore", min_frequency=20), CATEGORICAL),
@@ -167,6 +172,9 @@ def run(df: pd.DataFrame, label: str, known: str, years: list[int], name: str, o
                 r = frame[c].to_numpy(dtype=float)
                 cols.append(np.where(np.isnan(r), 0.0, np.log(np.clip(r, 1e-3, 1 - 1e-3) / (1 - np.clip(r, 1e-3, 1 - 1e-3))) - logit))
                 cols.append(np.log1p(frame[c.replace("_rate", "_n")].to_numpy(dtype=float)))
+            if "ot_genetic_association" in frame:
+                cols += [frame["ot_mapped"].to_numpy(dtype=float), frame["ot_genetic_association"].to_numpy(dtype=float),
+                         frame["ot_somatic_mutation"].to_numpy(dtype=float)]
             return np.column_stack(cols)
         base_tr = baseline_rates(train, train, label)
         lean = LogisticRegression(max_iter=2000, C=1.0)
@@ -179,7 +187,7 @@ def run(df: pd.DataFrame, label: str, known: str, years: list[int], name: str, o
             row.update({f"{key}_{k}": v for k, v in m.items()})
             pooled[key].append(p)
         pooled["y"].append(yte.to_numpy())
-        pooled["has_hist"].append((test["h_tgt_n"] > 0).to_numpy())
+        pooled["has_hist"].append(((test["ot_mapped"] if "ot_mapped" in test else test["h_tgt_n"]) > 0).to_numpy())
         rows.append(row)
 
     y = np.concatenate(pooled["y"])
@@ -216,7 +224,10 @@ def run(df: pd.DataFrame, label: str, known: str, years: list[int], name: str, o
     # Which inputs carry the signal: permutation-free proxy via standalone AUC of history features.
     tested = feats[feats[label].notna() & feats["start_year"].isin([r["year"] for r in rows])]
     single = {}
-    for col in ["h_tgt_rate", "h_mol_rate", "h_spo_rate", "h_tgt_fail", "tgt_crowding", "randomized", "placebo_arm"]:
+    for col in ["h_tgt_rate", "h_mol_rate", "h_spo_rate", "h_tgt_fail", "tgt_crowding", "randomized", "placebo_arm",
+                "ot_genetic_association", "ot_somatic_mutation", "ot_animal_model"]:
+        if col not in tested:
+            continue
         v = tested[col]
         ok = v.notna()
         if ok.sum() > 100 and tested.loc[ok, label].nunique() == 2:
@@ -225,7 +236,13 @@ def run(df: pd.DataFrame, label: str, known: str, years: list[int], name: str, o
     return summary
 
 
+OT = None
+
+
 def main() -> None:
+    global OT
+    if len(sys.argv) > 3:
+        OT = json.loads(Path(sys.argv[3]).read_text())
     df = pd.read_pickle(DATA)
     results = {
         # Meeting a primary endpoint needs a between-group comparison, so a single-arm trial can only
@@ -248,7 +265,7 @@ def main() -> None:
         for m in ("baseline", "logistic", "boosting", "lean"):
             s = r[m]
             print(f"  {m:9} AUC {s['auc']:.3f}  Brier {s['brier']:.4f}  top10% {s['top_decile_rate']:.3f}  "
-                  f"bottom10% {s['bottom_decile_rate']:.3f}  AUC(with target history) {s['auc_with_target_history']}")
+                  f"bottom10% {s['bottom_decile_rate']:.3f}  AUC(subset: mapped/target history) {s['auc_with_target_history']}")
         print("  gain vs baseline:", json.dumps(r["auc_gain_vs_baseline"]))
         print("  single-feature AUC:", json.dumps(r["single_feature_auc"]))
         for y in r["years"]:
