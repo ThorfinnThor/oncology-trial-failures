@@ -19,8 +19,17 @@ no effect, because germline genetics says little about tumours. Added to the bas
 gain is +0.001 overall and +0.003 to +0.004 on mapped trials, and neither is distinguishable from
 zero. Section "Round 2" has the numbers.
 
-**The record as it stood at the start** is not done. ClinicalTrials.gov's version history is served
-only to browsers, and the monthly AACT snapshots need an account. See "Not done".
+**Round 3: the registry record as it stood at the start.** It came from 20 quarterly AACT
+snapshots, 2017–2021. It does not help predict a missed endpoint either: AUC +0.006, 95 % CI
+−0.015 to +0.027. Planned enrollment, sites, arms, masking and primary-endpoint type add nothing
+measurable to phase and area. It does help predict **early biological stops**: AUC 0.65 against
+0.52, gain +0.13 (CI +0.09 to +0.18). Larger, FDA-regulated treatment trials with a data monitoring
+committee stop for efficacy or safety more often. That is the machinery for stopping early (interim
+analyses) more than the biology.
+
+**Overall verdict.** With registry data, genetic evidence and the start-of-trial record, nothing
+beats the phase × area base rate at predicting whether a trial meets its primary endpoint. Early
+biological stops can be ranked moderately well (AUC about 0.65).
 
 The base rate is the product: phase and disease area, refreshed from the database. The failure
 history of a target, molecule or sponsor does carry signal on its own (single-feature AUC
@@ -158,16 +167,58 @@ probabilities, which is worth showing to a user, but it reorders few trials. The
 today's, not what was known at each trial's start. That can only flatter the result, and it still
 adds nothing measurable.
 
-## Not done: the record as it stood at the start
+## Round 3: the registry record as it stood at the start (AACT)
 
-- **Version history:** ClinicalTrials.gov keeps every version of a record. The site serves the
-  history to browsers and refuses scripted requests (403), so it was not used.
-- **AACT monthly snapshots:** CTTI keeps a permanent full copy of the registry for each month,
-  but downloading it needs an AACT account.
+**Source.** The AACT API (CTTI) serves monthly flat-file snapshots back to January 2017.
+`aact_remote.py` reads single tables out of a remote snapshot through HTTP range requests, so only
+about 150–260 MB per snapshot is transferred instead of 0.6–1.4 GB. The API key is read from
+`~/.aact_api_key` and is never in the repository. `fetch_aact.py` reads `studies`, `designs`,
+`calculated_values` and `design_outcomes` from 20 quarterly snapshots (January, April, July and
+October 2017–2021; July 2021 is replaced by June). Downloads are rate-limited per hour, which cost
+one hour's wait.
 
-With either source, the planned enrollment, the primary outcome as first registered, masking and
-the number of sites could be read as they were on the start date. Planned enrollment is the
-feature the literature rates most useful after phase and area.
+**Which record a trial gets.** The latest snapshot dated on or before its start. If the trial was
+not yet registered then, the first snapshot within six months after the start is used and flagged
+`rec_late`. A record that already shows the trial finished is not used. Planned enrollment counts
+only while the record calls it anticipated or estimated. The record was found for 94 % of
+randomized task-A trials started 2018–2021.
+
+**Features:**
+- log planned enrollment, log number of sites, US site
+- arms, data monitoring committee, FDA-regulated, masking level, single-group design, treatment
+  purpose
+- number of primary outcomes, and whether the primary outcome is survival or response
+- missing-value flags
+
+**Why the walk-forward test cannot judge them.** Its training sets need outcomes known before the
+test year. Because snapshots begin in 2017, only 0–18 % of those training trials have a start
+record, and they are mostly fast failures. The model learns "has a record → fails", and in the
+test years 96 % have one. Task A drops to AUC 0.57 (`results_startstate.json`). This is an
+artefact of the design, not a property of the features.
+
+**Fair comparison** (`startstate_blocked.py`). Every model is trained on the same trials:
+randomized, record present, started 2017–2019, with outcomes as known today. Testing is on trials
+started 2020–2021. The base rate comes from all trials started before 2020. Training labels may have
+become known after 2020. That look-ahead affects every model equally and is not in the features.
+
+| Task | Train / test | Base rate | + genetics | + start record | Gain vs base rate (95 % CI) |
+| --- | ---: | ---: | ---: | ---: | --- |
+| A, randomized | 1,387 / 776 | 0.744 | 0.737 | 0.749 | +0.006 (−0.015 to +0.027) |
+| A_endpoint | 1,148 / 598 | 0.763 | 0.753 | 0.750 | −0.013 (−0.037 to +0.011) |
+| B, biological stop | 9,225 / 5,541 | 0.516 | 0.530 | **0.650** | **+0.134 (+0.088 to +0.182)** |
+
+Gradient boosting on the same inputs is worse than the base rate on A (−0.04) and better on B
+(+0.10).
+
+**Planned enrollment on its own does not separate endpoint outcomes.** Randomized Phase 3 fail
+rates by enrollment tercile within phase are 42 / 34 / 45 % (small / mid / large), and Phase 2 is
+73 / 75 / 70 %. For early biological stops the rate rises with size: Phase 3 is 2.8 / 3.8 / 5.7 %.
+
+**What carries B.** The largest standardized coefficients: genetic evidence outside oncology
+−0.53, FDA-regulated +0.31, treatment purpose +0.31, data monitoring committee +0.20, planned
+enrollment +0.18. Trials built with interim analyses and a committee watching them are the trials
+that *can* be stopped early for efficacy or safety. The model learns the opportunity to stop, not
+which mechanism fails.
 
 ## What this means for the product
 
@@ -178,8 +229,8 @@ feature the literature rates most useful after phase and area.
    about twice the base rate of biological stops. That is useful for screening a portfolio, not
    for calling a single trial.
 3. **What would have to change for a real model:**
-   - read the record as it stood at the start (registry version history), so features like
-     planned enrollment become usable
+   - the start-of-trial record was tried in round 3. It does not help with endpoints, but it does
+     with early stops
    - add outcome data beyond the registry: publications and press releases for trials that posted
      nothing readable, which is most of them (14,867 completed trials have no readable verdict)
    - genetic evidence was tried in round 2. It is a real effect worth showing next to the base rate
@@ -201,6 +252,15 @@ Round 2 needs `truststore` and `requests` in the same environment:
 mlenv/bin/python research/failure_prediction/fetch_opentargets.py .cache/universe/universe_resolved_v1.jsonl.gz trials.pkl ot_cache
 mlenv/bin/python research/failure_prediction/backtest.py trials.pkl results_ot.json ot_cache/trial_features.json
 mlenv/bin/python research/failure_prediction/genetics_backtest.py trials.pkl ot_cache/trial_features.json results_genetics.json
+```
+
+Round 3 needs an AACT API key in `~/.aact_api_key`:
+
+```bash
+cd research/failure_prediction
+../../mlenv/bin/python fetch_aact.py ../../.cache/universe/universe_resolved_v1.jsonl.gz aact
+../../mlenv/bin/python startstate_backtest.py trials.pkl ot_cache/trial_features.json aact results_startstate.json
+../../mlenv/bin/python startstate_blocked.py
 ```
 
 `results.json` holds per-year metrics, calibration bins and single-feature AUCs for every task.
