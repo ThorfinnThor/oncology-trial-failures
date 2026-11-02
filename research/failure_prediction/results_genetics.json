@@ -1,0 +1,83 @@
+{
+ "A": {
+  "task": "Randomized: fails on biology vs meets endpoint",
+  "n": 3666,
+  "n_mapped": 1289,
+  "auc_baseline": 0.7124900214238826,
+  "auc_model": 0.7127073259580035,
+  "brier_baseline": 0.21474645998667968,
+  "brier_model": 0.214333667894534,
+  "gain": [
+   0.0002773917765084478,
+   -0.003030448306379932,
+   0.003584948414651723
+  ],
+  "auc_mapped_baseline": 0.7264422451153845,
+  "auc_mapped_model": 0.7292852769756599,
+  "gain_mapped": [
+   0.0029291903889281873,
+   -0.006497621412436016,
+   0.011700404619936385
+  ],
+  "mean_coef[base_logit, mapped, genetic, genetic_non_oncology]": [
+   0.982,
+   -0.005,
+   0.165,
+   -0.669
+  ]
+ },
+ "A_endpoint": {
+  "task": "Randomized, posted results: missed vs met",
+  "n": 3055,
+  "n_mapped": 1084,
+  "auc_baseline": 0.7068505054026396,
+  "auc_model": 0.7077744594340387,
+  "brier_baseline": 0.21796944189977918,
+  "brier_model": 0.21743580029062537,
+  "gain": [
+   0.0009220943435306407,
+   -0.0021908440810905483,
+   0.0040368699397420734
+  ],
+  "auc_mapped_baseline": 0.7220824459570441,
+  "auc_mapped_model": 0.7263940507509639,
+  "gain_mapped": [
+   0.004244739611878948,
+   -0.003550233274404191,
+   0.011925232730905616
+  ],
+  "mean_coef[base_logit, mapped, genetic, genetic_non_oncology]": [
+   0.981,
+   -0.045,
+   0.184,
+   -0.523
+  ]
+ },
+ "B": {
+  "task": "Biological stop among closed trials",
+  "n": 28505,
+  "n_mapped": 8119,
+  "auc_baseline": 0.555030719966553,
+  "auc_model": 0.5794351250938322,
+  "brier_baseline": 0.03248946182108663,
+  "brier_model": 0.03241736779686885,
+  "gain": [
+   0.024488110312052405,
+   0.012762566243735382,
+   0.036886555409029416
+  ],
+  "auc_mapped_baseline": 0.5268531671905236,
+  "auc_mapped_model": 0.5364939989485578,
+  "gain_mapped": [
+   0.009255952311401458,
+   -0.006506737841693119,
+   0.023878240111727938
+  ],
+  "mean_coef[base_logit, mapped, genetic, genetic_non_oncology]": [
+   0.515,
+   0.626,
+   0.18,
+   -0.79
+  ]
+ }
+}
