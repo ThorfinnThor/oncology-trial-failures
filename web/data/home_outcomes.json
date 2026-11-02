@@ -1,22 +1,22 @@
 {
- "read_on": "2026-10-26",
- "readable_completed": 4681,
+ "read_on": "2026-11-02",
+ "readable_completed": 4688,
  "cards": [
   {
    "key": "stopped_efficacy",
    "status": "Stopped",
    "label": "Efficacy or futility",
-   "count": 1617,
+   "count": 1619,
    "count_label": "stopped trials",
    "example": {
-    "nct_id": "NCT04757636",
-    "sponsor": "Opthea Limited",
+    "nct_id": "NCT05746559",
+    "sponsor": "Alexion Pharmaceuticals, Inc.",
     "phase": "Phase 3",
-    "drugs": "OPT-302",
-    "evidence": "“The primary endpoint was not achieved in the study.”",
+    "drugs": "Ravulizumab",
+    "evidence": "“The ALXN1210-CSA-AKI-318 trial was discontinued on 29-Apr-2026 due to lack of efficacy in this overall study universe / patient population.”",
     "evidence_source": "the sponsor's stop reason",
-    "posted": "“This study was terminated early by the Sponsor because the study did not meet the primary endpoint.”",
-    "href": "/trial/NCT04757636",
+    "posted": null,
+    "href": "/trial/NCT05746559",
     "external": false
    }
   },
@@ -24,7 +24,7 @@
    "key": "stopped_safety",
    "status": "Stopped",
    "label": "Safety",
-   "count": 630,
+   "count": 631,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT04921358",
@@ -42,7 +42,7 @@
    "key": "completed_missed",
    "status": "Completed",
    "label": "Primary endpoint missed",
-   "count": 1944,
+   "count": 1949,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT03867084",
@@ -60,7 +60,7 @@
    "key": "completed_met",
    "status": "Completed",
    "label": "Primary endpoint met",
-   "count": 2300,
+   "count": 2301,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT06109311",
