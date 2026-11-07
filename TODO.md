@@ -23,13 +23,52 @@ in each section is blocked on nothing but time.
   `/drugs`), area comparisons, internal links, insight articles (BACE1, JAK/TYK2, FcRn, LAG-3,
   5-HT2A, airway alarmins). Plan and audits: `docs/seo/`.
 - **First data-licence lead:** DEEPCISION (BasGenBio, Korea) asked on 7 Nov for labelled
-  success/failure data for model training. Reply drafted; pricing deliberately left open until
-  they name scope. Clinician review is promised as scheduled (see 8).
+  success/failure data for model training. Final reply written 7 Nov; details under *Blocking
+  revenue → The DEEPCISION lead*.
 - **Citable:** Zenodo DOI 10.5281/zenodo.23558833; MIT for code, CC BY-NC 4.0 for derived data.
 
 ---
 
 ## Blocking revenue
+
+### The DEEPCISION lead (BasGenBio)
+
+**Who:** BasGenBio, Korean AI/biotech company. DEEPCISION predicts trial success from compound
+structure, indication and target. Government AI grant (~$3.3M to 2027), a first paid US
+distribution deal (Cambridge Scientific, June 2026), funding otherwise unclear. Small, serious,
+price-sensitive — they asked about per-record pricing.
+
+**What they asked:** validated success/failure labels from efficacy or safety outcomes (not
+status alone), failure reasons, NCT IDs with evidence; how labels are made and whether
+expert-validated labels exist; commercial training rights without restrictions on the models;
+pricing; a sample and data dictionary.
+
+**What the reply (7 Nov) says:** two label types (stop reasons, 24,023 trials; posted endpoint
+met/missed, ~5,200 assessable 2015–2024, ~1,960 missed); validation by two model families, 98.2 %
+agreement, precision 91–95.5 %; not clinician-validated yet, clinician review of the borderline
+cases "scheduled for the coming weeks" (see 8), larger clinician review offered as a separate
+paid project; CC BY-NC → commercial licence for training, evaluation and deployment with no
+restrictions on their models; one-time or annual licence, no price named; asks for their areas,
+phases and format; offers a short call.
+
+**Deliberately not said yet:** any price, and the drug/target linkage (keep for the call; check
+coverage first — oncology ~86 % resolved drug, ~70 % with a target gene; ChEMBL fields are
+CC BY-SA, see `docs/provenance_and_rights.md`).
+
+**Price thinking (not sent):** pilot ~€2,500 for one or two areas, one dated release, credited if
+they buy the full licence within three months; full one-time licence ~€5,000; weekly updates on
+top; clinician review per trial at clinician cost plus margin. Discount by giving less, not by
+halving the price.
+
+**When they answer:**
+1. Build the sample for their areas from the release of 9 Nov or later — not from 2 Nov (see 9).
+   A first generic sample (240 stop-reason labels, 120 endpoint labels, README) was made on 7 Nov
+   and sent to Schayan; it was not committed. Completed-trial endpoint labels exist only in the
+   weekly run's cache, so a sample with them needs a workflow step that writes it as an artifact.
+2. In a call: ask first (what they train, what "success" means to them, volume, current labels),
+   then show one trial end to end, the sample and `/validation`.
+3. Contract: commercial licence; settle the ChEMBL ShareAlike question before shipping any
+   ChEMBL-derived field.
 
 ### 1. Taking money is switched off — on purpose, for the beta
 
