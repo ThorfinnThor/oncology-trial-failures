@@ -3,38 +3,55 @@
 Ordered by what stands between the site and its first paying customer. Everything above the line
 in each section is blocked on nothing but time.
 
+*Last reviewed 7 Nov 2026.*
+
+---
+
+## Where things stand
+
+- **The weekly data run works.** The Cloudflare scheduler dispatches `update-data.yml` every Monday
+  at 08:15 Europe/Berlin; every run since 1 Oct succeeded (last one 2 Nov). The
+  database holds about 24,000 stopped trials.
+- **The newsletter sends.** The first issue went out on **26 Oct 2026** ("100 new stopped trials,
+  12 records changed") and is archived at `/newsletter` (`web/data/newsletter_issues/`). On 2 Nov,
+  43 new stops and 3 changed records were pending; the next issue goes out with the first run at
+  least twelve days after the last send, i.e. **Monday 9 Nov**.
+- **The diligence report is free during the beta, for a work email** (#94, 22 Oct). The order form
+  also offers the newsletter (double opt-in). Leads land in the `LEADS` KV namespace and are
+  mailed to `contact@clinicaltrialfailures.com`.
+- **SEO recovery is under way:** stricter indexing, hub pages, drug pages (`/drug/<slug>`,
+  `/drugs`), area comparisons, internal links, insight articles (BACE1, JAK/TYK2, FcRn, LAG-3,
+  5-HT2A, airway alarmins). Plan and audits: `docs/seo/`.
+- **Citable:** Zenodo DOI 10.5281/zenodo.23558833; MIT for code, CC BY-NC 4.0 for derived data.
+
 ---
 
 ## Blocking revenue
 
-### 1. There is no way to pay — code done, account missing
+### 1. Taking money is switched off — on purpose, for the beta
 
-The code is finished: `/api/order` mints the token first and sends the customer to a Stripe
-Payment Link carrying it, `/api/stripe` verifies the signature and the timestamp and flips
-`paid: true`, and a configured-but-unpaid grant opens nothing (tested). While no link is set the
-site behaves exactly as before — orders are granted and nothing is charged — so this switches on
-without a deploy.
+The Stripe code is finished: `/api/order` mints the token first and sends the customer to a
+Stripe Payment Link carrying it, `/api/stripe` verifies the signature and the timestamp and flips
+`paid: true`, and a configured-but-unpaid grant opens nothing (tested). Since #94 the site says
+"Free during the beta" everywhere the €99 price was shown (`REPORT_BETA = true` in
+`web/lib/offer.ts`) and asks for a work email in exchange.
 
-**Schayan, ~20 minutes, once:** two Payment Links (€99 one-off, €999/year), one webhook endpoint
-at `https://clinicaltrialfailures.com/api/stripe` for `checkout.session.completed`, and three
-GitHub secrets: `STRIPE_LINK_PACKAGE`, `STRIPE_LINK_ACCESS`, `STRIPE_WEBHOOK_SECRET`.
-Step by step, with the exact dashboard paths: **docs/payment.md**.
+**When the beta ends:** decide on prices, then **Schayan, ~30 minutes, once:** Stripe account,
+two Payment Links, one webhook endpoint at `https://clinicaltrialfailures.com/api/stripe` for
+`checkout.session.completed`, the secrets `STRIPE_LINK_PACKAGE`, `STRIPE_LINK_ACCESS`,
+`STRIPE_WEBHOOK_SECRET`; then set `REPORT_BETA = false` and deploy (the pages are static, so the
+wording needs a deploy). Step by step: **docs/setup_checklist.md** (German) and **docs/payment.md**.
 
-Until those secrets exist, every order is still free.
+What the beta should produce before then: how many reports were ordered, from which kind of
+company (`free_mail_domain` flags private addresses), and whether anyone came back. Read the
+`LEADS` namespace before deciding on a price.
 
-### 2. The newsletter cannot send
+### 2. ~~The newsletter cannot send~~ — done
 
-Two secrets are missing and the sending account does not exist.
-
-**Schayan, ~15 minutes, once:**
-1. dash.cloudflare.com → My Profile → API Tokens → Create Token → Create Custom Token.
-   Permissions **Account / Workers KV Storage / Edit** (Edit, not Read — the pending list lives in
-   KV between runs). Save as GitHub secret `CF_API_TOKEN`.
-2. brevo.com → Senders, Domains & Dedicated IPs → Domains → `clinicaltrialfailures.com` → put the
-   DNS records it shows into Cloudflare → SMTP & API → API Keys. Save as `BREVO_API_KEY`.
-
-Until then every run writes the mail it would have sent to the `newsletter-…` artifact. Read one
-before signing up for anything.
+Brevo, `CF_API_TOKEN` and `BREVO_API_KEY` are set up; the first issue went out on 26 Oct.
+Still worth doing once: subscribe a test address, confirm, receive an issue, and stop it from the
+link in the mail — the stop path has not been exercised by a real subscriber yet as far as this
+file knows.
 
 ---
 
@@ -115,16 +132,21 @@ with a doublet not on that list gets the two single-agent cohorts and has to rea
 
 ## Things that are true but unproven
 
-### 6. The Cloudflare build has never been verified from here
+### 6. The memory fix (#101) has not been checked on the live site
 
-`opennextjs-cloudflare build` cannot run on the mounted folder — a permissions error when it
-copies, not a code fault. So the Worker bundle size is a calculation, not a measurement: the
-private data sits at **0.73 MB compressed against a self-imposed 2 MB budget**, checked on every
-build by `scripts/web/check_private_data.py`. The real limit is Cloudflare's, and which one
-applies depends on the plan.
+Cloudflare logged 515 "Exceeded Memory" errors in the week to 25 Oct and Search Console saw
+server failures around 19/20 Oct: the sitemap, every prerendered page and unknown trial IDs loaded
+the whole 36 MB index in the Worker. #101 (merged 1 Nov) precomputes the sitemap, serves
+prerendered pages from static assets and stops loading the index for unknown IDs. CI builds the
+Cloudflare bundle, but nothing in CI runs it.
 
-**Watch the Cloudflare build after the next push.** If it fails on size, that check is where to
-look.
+**Check now that it is deployed:** `/` and `/overview` answer with `x-opennext-cache: HIT`
+(not `x-nextjs-cache: MISS`), `/sitemap.xml` still lists ~2,042 URLs, and the Workers metrics
+show no more "Exceeded Memory". If the deploy runs plain `wrangler deploy` without OpenNext's cache
+population, pages still render per request — no regression, but no gain.
+
+The bundle-size worry from earlier is settled in practice: the Worker deploys. The private data
+is still checked against a 2 MB budget by `scripts/web/check_private_data.py` on every build.
 
 ### 7. The delivery path has never run against a real KV binding
 
@@ -138,8 +160,19 @@ answered 403 to the first person who ever paid — and, once Stripe was connecte
 handed the document to an unpaid one. Fixed, with a test that reads the routes as text. The rest
 of this section is the same risk still unexercised.
 
-Worth doing: order a package on the live site, open the link, check the document, and stop the
-newsletter from the link in the mail.
+Worth doing: order a report on the live site with the beta form (work email, newsletter box
+ticked), open the link, check the document, confirm the newsletter, and stop it from the link in
+the mail.
+
+### 8. Open pull requests
+
+- **#102 Research: can a model predict which trials fail?** Feasibility only, nothing on the site
+  changes. Result: against the baseline, a model does *not* predict missed endpoints (AUC 0.683
+  vs 0.707), but does predict biological stops among closed trials (0.639 vs 0.555). Decide
+  whether to merge the write-up and whether the third task is worth a product.
+- **Stale since August/September:** #72 (benchmarks), #61 (reviewed-index guard, drop Vercel
+  config), #41 (Cloudflare compat), #36, #37, #2 (temporary audit extractions). Close them or
+  take out what is still useful.
 
 ---
 
