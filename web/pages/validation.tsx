@@ -33,6 +33,7 @@ export default function ValidationPage() {
   const v: any = validation;
   const est = v.estimates;
   const ci = v.estimates_ci95;
+  const cc: any = v.crosscheck;
   const perOutcome: Record<string, any> = v.per_predicted_outcome;
   const confusion: { predicted: string; reference: string; count: number }[] = v.confusion_pred_vs_ref;
 
@@ -440,6 +441,90 @@ export default function ValidationPage() {
             </p>
           </section>
 
+          {cc && (
+            <section className="section">
+              <h2>Cross-check with a second model family</h2>
+              <p className="sectionSub">
+                The reference labels above came from Claude models, and the classifier rules were written with Claude. A blind
+                spot they share would not show up in the figures above. So the same {n(cc.sample_size)} texts were labelled
+                again by {cc.annotator.model} ({cc.annotator.model_family}), blind to the classifier and to the reference labels,
+                from the same written guidelines.
+              </p>
+              <div className="grid2">
+                <div className="card pad">
+                  <div className="cardTitle">Agreement with the reference labels</div>
+                  <ul className="list">
+                    <li>
+                      Biological cause yes/no: <b>{pct(cc.agreement_with_reference.biological_yes_no)}</b> (
+                      {cc.agreement_with_reference.biological_yes_no_count} of {cc.sample_size})
+                    </li>
+                    <li>
+                      Outcome: {pct(cc.agreement_with_reference.outcome)} ({cc.agreement_with_reference.outcome_count} of{" "}
+                      {cc.sample_size})
+                    </li>
+                    <li>
+                      Outcome and primary reason: {pct(cc.agreement_with_reference.outcome_and_primary_reason)}
+                    </li>
+                  </ul>
+                  <p className="fine">
+                    Most disagreements sit between non-biological classes — not initiated vs. recruitment, cause not stated vs.
+                    unknown — and do not move a discontinuation rate.
+                  </p>
+                </div>
+                <div className="card pad">
+                  <div className="cardTitle">The headline figures under either reference</div>
+                  <ul className="list">
+                    <li>
+                      Biological-failure precision: <b>{pct(cc.estimates_published_reference.biological_precision)}</b> against
+                      the Claude reference, <b>{pct(cc.estimates_crosscheck_reference.biological_precision)}</b> against the
+                      cross-check (95% CI {pct(cc.estimates_crosscheck_reference_ci95.biological_precision[0])}–
+                      {pct(cc.estimates_crosscheck_reference_ci95.biological_precision[1])})
+                    </li>
+                    <li>
+                      Biological-failure recall: {pct(cc.estimates_published_reference.biological_recall)} and{" "}
+                      {pct(cc.estimates_crosscheck_reference.biological_recall)}
+                    </li>
+                  </ul>
+                  <p className="fine">
+                    Neither reference is clinical ground truth. The difference rests on {cc.disputed_biological.length} texts
+                    where the two disagree on whether the stop was biological;{" "}
+                    {cc.disputed_awaiting_review === cc.disputed_biological.length
+                      ? "all of them are awaiting review by clinicians, and the true figure is not known until they are decided."
+                      : cc.disputed_awaiting_review > 0
+                        ? `${cc.disputed_awaiting_review} of them are still awaiting review by clinicians.`
+                        : "all of them have been decided by clinicians."}
+                  </p>
+                </div>
+              </div>
+              <div className="tableWrap">
+                <table className="disputed">
+                  <thead>
+                    <tr>
+                      <th>Stop reason as written</th>
+                      <th>Claude reference</th>
+                      <th>Cross-check</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {cc.disputed_biological.map((d: any) => (
+                      <tr key={d.sample_id}>
+                        <td className="reason">
+                          <a className="link" href={`https://clinicaltrials.gov/study/${d.nct_id}`} rel="noopener">
+                            {d.why_stopped}
+                          </a>
+                        </td>
+                        <td>{label(d.reference.outcome)}</td>
+                        <td>{label(d.crosscheck.outcome)}</td>
+                        <td>{d.review_status === "AWAITING_CLINICIAN_REVIEW" ? "Awaiting clinician review" : label(d.review_status)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          )}
+
           <section className="section">
             <h2>What this does not establish</h2>
             <div className="grid2">
@@ -614,6 +699,13 @@ export default function ValidationPage() {
         .matrix .diag {
           font-weight: 850;
           background: rgba(79, 70, 229, 0.08);
+        }
+        .disputed .reason {
+          white-space: normal;
+          min-width: 260px;
+        }
+        .disputed .reason .link {
+          font-weight: 500;
         }
         .matrix .zero {
           color: rgba(15, 23, 42, 0.3);

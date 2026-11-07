@@ -413,5 +413,401 @@
       "count": 54
     }
   ],
-  "error_count_outcome_or_primary": 154
+  "error_count_outcome_or_primary": 154,
+  "crosscheck": {
+    "schema_version": 1,
+    "annotator": {
+      "id": "crosscheck_gpt61",
+      "type": "LLM",
+      "model": "GPT-6.1 Sol",
+      "reasoning_setting": "High",
+      "interface": "OpenAI Codex (desktop), one new conversation per batch",
+      "model_family": "OpenAI GPT",
+      "blind_to_classifier": true,
+      "blind_to_reference_labels": true
+    },
+    "labelled_at": "2026-11-07",
+    "sample_size": 600,
+    "agreement_with_reference": {
+      "outcome": 0.8933333333333333,
+      "outcome_count": 536,
+      "outcome_and_primary_reason": 0.87,
+      "outcome_and_primary_reason_count": 522,
+      "biological_yes_no": 0.9816666666666667,
+      "biological_yes_no_count": 589
+    },
+    "outcome_transitions_reference_to_crosscheck": [
+      {
+        "reference": "NON_FAILURE_TRANSITION",
+        "crosscheck": "NON_BIOLOGICAL",
+        "count": 10
+      },
+      {
+        "reference": "BIOLOGICAL_FAILURE",
+        "crosscheck": "UNKNOWN",
+        "count": 7
+      },
+      {
+        "reference": "NON_BIOLOGICAL",
+        "crosscheck": "MIXED_CAUSES",
+        "count": 6
+      },
+      {
+        "reference": "NON_BIOLOGICAL",
+        "crosscheck": "UNKNOWN",
+        "count": 6
+      },
+      {
+        "reference": "BIOLOGICAL_FAILURE",
+        "crosscheck": "MIXED_CAUSES",
+        "count": 5
+      },
+      {
+        "reference": "NON_BIOLOGICAL",
+        "crosscheck": "CAUSE_NOT_STATED",
+        "count": 5
+      },
+      {
+        "reference": "CAUSE_NOT_STATED",
+        "crosscheck": "UNKNOWN",
+        "count": 4
+      },
+      {
+        "reference": "NON_FAILURE_TRANSITION",
+        "crosscheck": "UNKNOWN",
+        "count": 4
+      },
+      {
+        "reference": "CAUSE_NOT_STATED",
+        "crosscheck": "NON_BIOLOGICAL",
+        "count": 4
+      },
+      {
+        "reference": "MIXED_CAUSES",
+        "crosscheck": "NON_BIOLOGICAL",
+        "count": 3
+      },
+      {
+        "reference": "UNKNOWN",
+        "crosscheck": "NON_BIOLOGICAL",
+        "count": 2
+      },
+      {
+        "reference": "UNKNOWN",
+        "crosscheck": "CAUSE_NOT_STATED",
+        "count": 2
+      },
+      {
+        "reference": "MIXED_CAUSES",
+        "crosscheck": "BIOLOGICAL_FAILURE",
+        "count": 1
+      },
+      {
+        "reference": "NON_BIOLOGICAL",
+        "crosscheck": "BIOLOGICAL_FAILURE",
+        "count": 1
+      },
+      {
+        "reference": "UNKNOWN",
+        "crosscheck": "NON_FAILURE_TRANSITION",
+        "count": 1
+      },
+      {
+        "reference": "NON_FAILURE_TRANSITION",
+        "crosscheck": "BIOLOGICAL_FAILURE",
+        "count": 1
+      },
+      {
+        "reference": "BIOLOGICAL_FAILURE",
+        "crosscheck": "NON_BIOLOGICAL",
+        "count": 1
+      },
+      {
+        "reference": "CAUSE_NOT_STATED",
+        "crosscheck": "NON_FAILURE_TRANSITION",
+        "count": 1
+      }
+    ],
+    "estimates_published_reference": {
+      "biological_precision": 0.9548387096774194,
+      "biological_recall": 0.9528327460016267,
+      "biological_domain_precision": 0.960331949368113,
+      "assertion_outcome_precision": 0.842916835493274,
+      "outcome_accuracy_all_records": 0.8216297742036112
+    },
+    "estimates_crosscheck_reference": {
+      "biological_precision": 0.9096774193548384,
+      "biological_recall": 0.957631123011498,
+      "biological_domain_precision": 0.9239763124491124,
+      "assertion_outcome_precision": 0.8370281449501211,
+      "outcome_accuracy_all_records": 0.8236224830498793
+    },
+    "estimates_crosscheck_reference_ci95": {
+      "biological_precision": [
+        0.8598726114649674,
+        0.9551282051282047
+      ],
+      "biological_recall": [
+        0.9155529058171663,
+        0.9896714054851631
+      ],
+      "biological_domain_precision": [
+        0.8799893980865576,
+        0.9632670939417889
+      ],
+      "assertion_outcome_precision": [
+        0.7986717095731642,
+        0.8742277711808908
+      ],
+      "outcome_accuracy_all_records": [
+        0.7885261528492011,
+        0.8589187661900617
+      ]
+    },
+    "disputed_biological": [
+      {
+        "sample_id": "HV-0002",
+        "nct_id": "NCT01709136",
+        "why_stopped": "Sirolimus usage discontinued since black box warning",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY"
+        },
+        "crosscheck": {
+          "outcome": "NON_BIOLOGICAL",
+          "primary_reason": "REGULATORY",
+          "note": "A warning is cited without a stated medical finding."
+        },
+        "classifier": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0056",
+        "nct_id": "NCT01057017",
+        "why_stopped": "possible lack of efficacy",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY"
+        },
+        "crosscheck": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "note": "Possible lack of efficacy does not establish an observed result."
+        },
+        "classifier": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0067",
+        "nct_id": "NCT03551522",
+        "why_stopped": "unexpected histological findings",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY"
+        },
+        "crosscheck": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "note": "Unexpected findings are not explicitly described as adverse or ineffective."
+        },
+        "classifier": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0082",
+        "nct_id": "NCT02517359",
+        "why_stopped": "Preset pharmacokinetic stopping criteria met at lower doses than expected.",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED"
+        },
+        "crosscheck": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "note": "Pharmacokinetic stopping criteria are stated without an efficacy, safety, or successful milestone result."
+        },
+        "classifier": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0109",
+        "nct_id": "NCT02920424",
+        "why_stopped": "The decision is based on a change in the benefit risk assessment of this drug for the lupus population targeted in this study.",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED"
+        },
+        "crosscheck": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "note": "The benefit-risk assessment changed, but its direction is not stated."
+        },
+        "classifier": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0118",
+        "nct_id": "NCT01343823",
+        "why_stopped": "Interim analysis suggested a trend favoring ecallantide; observed response rate to placebo was substantially higher than described in medical literature.",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY"
+        },
+        "crosscheck": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "note": "Favorable treatment trend and high placebo response do not explicitly establish futility or a design failure."
+        },
+        "classifier": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0136",
+        "nct_id": "NCT03139500",
+        "why_stopped": "Terminated due to nonclinical findings",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED"
+        },
+        "crosscheck": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "note": "Nonclinical findings are not characterized as adverse, ineffective, or otherwise unfavorable."
+        },
+        "classifier": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0478",
+        "nct_id": "NCT04303572",
+        "why_stopped": "The INHIBIT Trials IDSMB, in a letter dated 05-18-22, recommended, given the slow enrollment, that the INHIBIT Trials be discontinued due to futility.",
+        "reference": {
+          "outcome": "NON_BIOLOGICAL",
+          "primary_reason": "RECRUITMENT"
+        },
+        "crosscheck": {
+          "outcome": "MIXED_CAUSES",
+          "primary_reason": "MULTIPLE",
+          "note": ""
+        },
+        "classifier": {
+          "outcome": "MIXED_CAUSES",
+          "primary_reason": "MULTIPLE"
+        },
+        "biological_per_reference": false,
+        "biological_per_crosscheck": true,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0492",
+        "nct_id": "NCT02586961",
+        "why_stopped": "Removal of Adrénaline lots for safety reasons.",
+        "reference": {
+          "outcome": "NON_BIOLOGICAL",
+          "primary_reason": "SUPPLY_MANUFACTURING"
+        },
+        "crosscheck": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY",
+          "note": ""
+        },
+        "classifier": {
+          "outcome": "MIXED_CAUSES",
+          "primary_reason": "MULTIPLE"
+        },
+        "biological_per_reference": false,
+        "biological_per_crosscheck": true,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0508",
+        "nct_id": "NCT02851381",
+        "why_stopped": "The patient passed before treatment could be started",
+        "reference": {
+          "outcome": "NON_FAILURE_TRANSITION",
+          "primary_reason": "NOT_INITIATED"
+        },
+        "crosscheck": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+          "note": "Patient death is a medical cause; occurred before treatment, without an efficacy or toxicity finding."
+        },
+        "classifier": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED"
+        },
+        "biological_per_reference": false,
+        "biological_per_crosscheck": true,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      },
+      {
+        "sample_id": "HV-0575",
+        "nct_id": "NCT02429934",
+        "why_stopped": "Response rate in placebo group for primary outcome was 100% on interim analysis.",
+        "reference": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY"
+        },
+        "crosscheck": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "note": "Placebo response reported without an explicit futility conclusion or stated design failure."
+        },
+        "classifier": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED"
+        },
+        "biological_per_reference": true,
+        "biological_per_crosscheck": false,
+        "review_status": "AWAITING_CLINICIAN_REVIEW",
+        "review_verdict": null
+      }
+    ],
+    "disputed_awaiting_review": 11
+  }
 }

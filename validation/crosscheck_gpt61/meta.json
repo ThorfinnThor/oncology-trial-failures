@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "annotator": {
+    "id": "crosscheck_gpt61",
+    "type": "LLM",
+    "model": "GPT-6.1 Sol",
+    "reasoning_setting": "High",
+    "interface": "OpenAI Codex (desktop), one new conversation per batch",
+    "model_family": "OpenAI GPT",
+    "blind_to_classifier": true,
+    "blind_to_reference_labels": true
+  },
+  "labelled_at": "2026-11-07",
+  "purpose": "Second-model-family check of the held-out reference labels, which were produced by Claude Opus and Claude Sonnet with a Claude Opus adjudicator.",
+  "input": "validation/heldout_v2_blind.jsonl with nct_id removed (sample_id and why_stopped only), 6 batches of 100 in file order",
+  "guidelines": "validation/LABELING_GUIDELINES.md, included verbatim",
+  "instruction_preamble": "You are an annotator in a blind validation study. Label each text on your own, strictly by the guidelines below.\n\nRules for this task:\n- Use only the \"why_stopped\" text of each record. Do not browse the web, do not look anything up, and do not use outside knowledge about drugs, sponsors or trials.\n- Label every record in this batch, in the same order. Do not skip, merge or summarise records.\n- Output ONLY JSON Lines: one JSON object per line, no prose, no markdown, no code fences, nothing before or after.\n- Use only the exact label values listed in the guidelines.",
+  "web_access": "instructed not to browse or look anything up",
+  "post_processing": "none; answers stored exactly as returned"
+}

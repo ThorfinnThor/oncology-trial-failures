@@ -74,9 +74,15 @@ def pct(x: float) -> str:
     return "n/a" if x != x else f"{100 * x:.1f}%"
 
 
-def main() -> int:
+def main(
+    reference: Path = VAL / "heldout_v2_reference_labels.jsonl",
+    metrics_out: Path = VAL / "heldout_v2_metrics.json",
+    report_out: Path | None = ROOT / "docs/validation_heldout_v2.md",
+) -> int:
+    """Defaults reproduce the published validation. A different `reference` (e.g. a cross-check
+    annotator) is scored the same way; pass report_out=None to write only the metrics."""
     key = {r["sample_id"]: r for r in load_jsonl(VAL / "heldout_v2_key.jsonl")}
-    ref = {r["sample_id"]: r for r in load_jsonl(VAL / "heldout_v2_reference_labels.jsonl")}
+    ref = {r["sample_id"]: r for r in load_jsonl(reference)}
     meta = json.loads((VAL / "heldout_v2_sample_meta.json").read_text())
     assert set(key) == set(ref), "key and reference labels do not cover the same samples"
 
@@ -92,7 +98,7 @@ def main() -> int:
             "ref_outcome": r["outcome"],
             "ref_primary": r["primary_reason"],
             "ref_secondary": r.get("secondary_reasons", []),
-            "label_status": r["label_status"],
+            "label_status": r.get("label_status", ""),
         })
 
     for row in rows:
@@ -273,7 +279,9 @@ def main() -> int:
         "error_count_outcome_or_primary": len(errors),
         "errors": errors,
     }
-    (VAL / "heldout_v2_metrics.json").write_text(json.dumps(result, indent=2) + "\n")
+    metrics_out.write_text(json.dumps(result, indent=2) + "\n")
+    if report_out is None:
+        return 0
 
     # --- Markdown report
     ann = json.loads((VAL / "heldout_v2_annotation_meta.json").read_text()) if (VAL / "heldout_v2_annotation_meta.json").exists() else {}
@@ -338,7 +346,7 @@ def main() -> int:
     L.append("- Records resolved via exact reviewed text and records without stop-reason text are outside this estimate.")
     L.append("- The `UNKNOWN` stratum measures how often a resolvable reason was left unresolved (conservatism), not a false claim.\n")
     L.append("Reproduce: `python scripts/build_heldout_validation_sample_v2.py && python scripts/evaluate_heldout_validation_v2.py`")
-    (ROOT / "docs/validation_heldout_v2.md").write_text("\n".join(L) + "\n")
+    report_out.write_text("\n".join(L) + "\n")
     print(json.dumps({"weighted": point, "ci95": ci, "per_stratum": {k: (round(v['outcome_precision'],3), round(v['outcome_and_primary_reason_precision'],3)) for k,v in per_stratum.items()}}, indent=2))
     return 0
 

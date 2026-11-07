@@ -164,7 +164,19 @@ Worth doing: order a report on the live site with the beta form (work email, new
 ticked), open the link, check the document, confirm the newsletter, and stop it from the link in
 the mail.
 
-### 8. Open pull requests
+### 8. Clinicians decide the 11 disputed validation texts
+
+A second model family (GPT-6.1) relabelled the 600 held-out texts on 7 Nov: 98.2 % agreement on
+biological yes/no, but biological-failure precision is 91.0 % against its labels against 95.5 %
+against the Claude reference. Both figures are on `/validation`. The gap rests on 11 texts
+(`docs/validation_crosscheck_gpt61.md`); the blind A/B sheet for the clinicians was sent to
+Schayan separately, with its key. When the verdicts come back: record them in
+`validation/crosscheck_gpt61/decisions.json`, run `python scripts/crosscheck_heldout_v2.py` and
+`python scripts/build_validation_public.py`, and decide whether a rule changes (the likely one:
+"possible lack of efficacy" and directionless "findings" read as biological — CLAUDE.md rules
+1–4 apply). Clinicians are available in a few weeks.
+
+### 9. Open pull requests
 
 - **#102 Research: can a model predict which trials fail?** Feasibility only, nothing on the site
   changes. Result: against the baseline, a model does *not* predict missed endpoints (AUC 0.683

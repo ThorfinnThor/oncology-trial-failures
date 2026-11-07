@@ -20,6 +20,10 @@ def main() -> int:
     metrics = json.loads((VALIDATION / "heldout_v2_metrics.json").read_text())
     sample = json.loads((VALIDATION / "heldout_v2_sample_meta.json").read_text())
     annotation = json.loads((VALIDATION / "heldout_v2_annotation_meta.json").read_text())
+    # Second-model-family check (scripts/crosscheck_heldout_v2.py). Optional: absent, the page
+    # simply has no cross-check section.
+    cc_path = VALIDATION / "crosscheck_gpt61" / "summary.json"
+    crosscheck = json.loads(cc_path.read_text(encoding="utf-8")) if cc_path.exists() else None
 
     OUT.write_text(json.dumps({
         "schema_version": 1,
@@ -44,6 +48,7 @@ def main() -> int:
         "per_predicted_outcome": metrics["per_predicted_outcome"],
         "confusion_pred_vs_ref": metrics["confusion_pred_vs_ref"],
         "error_count_outcome_or_primary": metrics["error_count_outcome_or_primary"],
+        "crosscheck": crosscheck,
     }, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)} (sample {metrics['sample_size']}, classifier {metrics['classifier_version']})")
     return 0

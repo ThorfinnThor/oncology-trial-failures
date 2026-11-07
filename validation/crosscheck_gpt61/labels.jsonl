@@ -1,0 +1,600 @@
+{"sample_id": "HV-0505", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Actor and treatment cessation stated without a reason."}
+{"sample_id": "HV-0270", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0220", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0426", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0590", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": "Screening consent occurred, but no participants enrolled; no cause given."}
+{"sample_id": "HV-0293", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0550", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Facility approval failure stated; regulatory authority not identified."}
+{"sample_id": "HV-0493", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["OPERATIONAL_OTHER", "SAFETY"], "confidence": "MEDIUM", "note": "Availability of alternative treatments and toxicity are both stated."}
+{"sample_id": "HV-0416", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Data no longer required; no medical failure or safety finding stated."}
+{"sample_id": "HV-0516", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Interim analysis direction unstated; safety explicitly excluded."}
+{"sample_id": "HV-0106", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0341", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0045", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0479", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0526", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Study transferred to another location; no replacement protocol stated."}
+{"sample_id": "HV-0113", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0456", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Resources shifted to a new trial following positive results elsewhere."}
+{"sample_id": "HV-0061", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0399", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0389", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0534", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Pending negotiations describe an unresolved temporary state."}
+{"sample_id": "HV-0307", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0226", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "OPERATIONAL_OTHER"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0261", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0327", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "PROTOCOL_FEASIBILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0149", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0098", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0519", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Registry withdrawal stated without a cause."}
+{"sample_id": "HV-0128", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0195", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0058", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0190", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0199", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0396", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0049", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0466", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Competing trials are the stated obstacle; no approval failure stated."}
+{"sample_id": "HV-0073", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0567", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Reassessment named without its conclusion or an explicit causal domain."}
+{"sample_id": "HV-0042", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": "Insufficient statistical power stated, without a negative treatment result."}
+{"sample_id": "HV-0338", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0598", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": "Board request gives no efficacy or safety rationale."}
+{"sample_id": "HV-0031", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Poor results stated; efficacy versus safety cannot be separated."}
+{"sample_id": "HV-0200", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0089", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0569", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Fragment does not distinguish recruitment failure from no enrollment without a cause."}
+{"sample_id": "HV-0205", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPORT_WITHDRAWAL", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0587", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Interim analysis result direction unstated."}
+{"sample_id": "HV-0092", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0487", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Insufficient exposure explicitly linked to failure to achieve the intended therapeutic effect."}
+{"sample_id": "HV-0067", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Unexpected findings are not explicitly described as adverse or ineffective."}
+{"sample_id": "HV-0351", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Sponsor links stopping to initiation of a phase 3 study."}
+{"sample_id": "HV-0243", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0035", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0544", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Incomplete fragment."}
+{"sample_id": "HV-0447", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0104", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Excess lymphodepletion caused the hold; no separate reason given for the partner's development cessation."}
+{"sample_id": "HV-0064", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0021", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0409", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Cessation status only; no actor, cause, or explicit non-initiation."}
+{"sample_id": "HV-0166", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0250", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0435", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": "No enrollment explicitly given as the closure cause."}
+{"sample_id": "HV-0122", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Futility criteria supplied as the stop reason."}
+{"sample_id": "HV-0329", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": "PI departure stated; funding loss is not stated."}
+{"sample_id": "HV-0442", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0377", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Successful Part 1 completion does not explain why Part 2 was omitted."}
+{"sample_id": "HV-0352", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0214", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0124", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0108", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0125", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0134", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0388", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0209", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SUPPLY_MANUFACTURING", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0057", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0437", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Completion of the stated study part is the only reason supplied."}
+{"sample_id": "HV-0211", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "OPERATIONAL_OTHER"], "confidence": "MEDIUM", "note": "Recruitment failure and follow-up compliance problems both stated."}
+{"sample_id": "HV-0502", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Reason is deferred to text not provided."}
+{"sample_id": "HV-0397", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0013", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0285", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0346", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": "Pandemic is the stated cause; recruitment uncertainty is its consequence."}
+{"sample_id": "HV-0347", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0575", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Placebo response reported without an explicit futility conclusion or stated design failure."}
+{"sample_id": "HV-0504", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Programme evaluation and other study outcomes lack a stated direction or explicit strategic rationale."}
+{"sample_id": "HV-0345", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "STAFFING_RESOURCES"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0227", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0498", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": "Required design changes stated without an explicit negative efficacy result."}
+{"sample_id": "HV-0288", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": "Absence of recruitment explicitly causes cancellation."}
+{"sample_id": "HV-0234", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Hospital protocol change stated without a study design problem."}
+{"sample_id": "HV-0011", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0384", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Sponsor withdrew the IND; no regulatory demand or underlying reason stated."}
+{"sample_id": "HV-0118", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Favorable treatment trend and high placebo response do not explicitly establish futility or a design failure."}
+{"sample_id": "HV-0291", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0492", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0170", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPLY_MANUFACTURING", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Market removal indicates unavailability; its medical or regulatory cause is unstated."}
+{"sample_id": "HV-0259", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["OPERATIONAL_OTHER", "STAFFING_RESOURCES", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0084", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0204", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "No subjects enrolled; administrative closure describes the action without an underlying cause."}
+{"sample_id": "HV-0436", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0075", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0471", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EFFICACY_FUTILITY", "SAFETY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0317", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0233", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0423", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0401", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0561", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Temporary hold pending formulation selection."}
+{"sample_id": "HV-0565", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0144", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0578", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Permanent cessation is stated without a cause."}
+{"sample_id": "HV-0275", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SUPPLY_MANUFACTURING", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0219", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0343", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": "No enrollment is explicitly given as the stopping cause."}
+{"sample_id": "HV-0023", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0391", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0231", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "OPERATIONAL_OTHER"], "confidence": "MEDIUM", "note": "Milestone failure is stated, but its nature is unspecified."}
+{"sample_id": "HV-0179", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Loss of scientific purpose is stated without an efficacy or safety finding."}
+{"sample_id": "HV-0181", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0419", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Endpoint attainment is presented as the reason for early closure."}
+{"sample_id": "HV-0304", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0568", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0547", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Withdrawal is explicitly temporary, with reactivation planned."}
+{"sample_id": "HV-0062", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0427", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0503", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Sponsor convenience is stated; loss of funding is not."}
+{"sample_id": "HV-0294", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["OPERATIONAL_OTHER", "RECRUITMENT"], "confidence": "MEDIUM", "note": "Logistical or population limitations and resulting poor recruitment are stated."}
+{"sample_id": "HV-0028", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0500", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": "Clinical hold is explicit; no medical cause is stated."}
+{"sample_id": "HV-0357", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0145", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0556", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0463", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": "Changed regulatory requirements necessitated redesign."}
+{"sample_id": "HV-0403", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0303", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPORT_WITHDRAWAL", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0246", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0465", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0029", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0175", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": "Participants could not perform the required measurement; treatment efficacy is not assessed."}
+{"sample_id": "HV-0425", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Project revision does not clearly establish a cause or replacement."}
+{"sample_id": "HV-0289", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0025", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0282", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0369", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0136", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Nonclinical findings are not characterized as adverse, ineffective, or otherwise unfavorable."}
+{"sample_id": "HV-0482", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "REGULATORY"], "confidence": "MEDIUM", "note": "Government policy changes prevented receipt of insurance funding."}
+{"sample_id": "HV-0056", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Possible lack of efficacy does not establish an observed result."}
+{"sample_id": "HV-0193", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "RECRUITMENT"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0287", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0215", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "The stated obstacle concerns obtaining medication approval."}
+{"sample_id": "HV-0063", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0161", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0203", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0371", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": "Safety and efficacy concerns are explicitly negated."}
+{"sample_id": "HV-0260", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0417", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Design change is explicit, but replacement by another study is not."}
+{"sample_id": "HV-0083", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SAFETY", "PROTOCOL_FEASIBILITY"], "confidence": "MEDIUM", "note": "An urgent safety measure and inability to fulfill the trial's purpose are stated."}
+{"sample_id": "HV-0198", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0018", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0221", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0378", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "The decision is qualified as pending further analysis."}
+{"sample_id": "HV-0325", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Protocol change is stated without a clear replacement transition."}
+{"sample_id": "HV-0160", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "SUPPLY_MANUFACTURING", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0312", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0274", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0115", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0551", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Organizational inability is given as the obstacle."}
+{"sample_id": "HV-0027", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0005", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0490", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0359", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0566", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "OPERATIONAL_OTHER"], "confidence": "HIGH", "note": "Changed standard therapy reduced scientific relevance; no unfavorable treatment result is stated."}
+{"sample_id": "HV-0196", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0332", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0308", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": "No participants enrolled, with no cause given."}
+{"sample_id": "HV-0462", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SUPPLY_MANUFACTURING", "REGULATORY", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0583", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Fragment does not identify who was busy or a clear stopping cause."}
+{"sample_id": "HV-0216", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0218", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EXTERNAL_DISRUPTION"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0111", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0159", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Accelerating development is the stated objective; safety concerns are negated."}
+{"sample_id": "HV-0017", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0299", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": "Accrual closure follows required staff departure; no separate recruitment difficulty is stated."}
+{"sample_id": "HV-0383", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0392", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0014", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Unfavorable cohort results are stated without distinguishing efficacy from safety."}
+{"sample_id": "HV-0536", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Delayed project onset is the stated operational reason."}
+{"sample_id": "HV-0269", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0217", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPLY_MANUFACTURING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0523", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Only a negated cause is provided."}
+{"sample_id": "HV-0354", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": "Termination and abandonment of marketing approval are actions without a stated underlying cause."}
+{"sample_id": "HV-0071", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Unfavorable data are stated without distinguishing efficacy from safety."}
+{"sample_id": "HV-0594", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Permanent cessation and participant status do not identify a cause."}
+{"sample_id": "HV-0319", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0554", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Changed labeled indication is stated without a medical explanation."}
+{"sample_id": "HV-0577", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "An explicit change in study strategy is given."}
+{"sample_id": "HV-0015", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0095", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0470", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0376", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0473", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": "Insufficient safety information prompted FDA action; no toxicity finding or reason for program discontinuation is stated."}
+{"sample_id": "HV-0316", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "IRB closure is treated as regulatory action; no medical cause is stated."}
+{"sample_id": "HV-0491", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0600", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0155", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0453", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Change of coordinating center is an administrative reason."}
+{"sample_id": "HV-0405", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0486", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": "COVID explicitly halted research; subsequent protocols are not explicitly identified as replacements."}
+{"sample_id": "HV-0588", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Defines terminated status without explaining its cause."}
+{"sample_id": "HV-0450", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "PLANNED_MILESTONE"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0044", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0158", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": "Authority decision is named without a stated restriction or underlying cause."}
+{"sample_id": "HV-0177", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0147", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0415", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0100", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": "Limited efficacy explicitly underlies the unsuitable benefit-risk profile."}
+{"sample_id": "HV-0520", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "New efficacy data are mentioned without their direction or result."}
+{"sample_id": "HV-0206", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Changed treatment landscape is stated; failure of this intervention is not."}
+{"sample_id": "HV-0527", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0086", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0150", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0545", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Project termination is named without its underlying cause."}
+{"sample_id": "HV-0278", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Resource limitations are explicit; funding shortage is not specified."}
+{"sample_id": "HV-0323", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0132", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0099", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0452", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0186", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": "Eligibility restrictions prevented enrollment."}
+{"sample_id": "HV-0194", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0127", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": "Tolerability caused withdrawals; failure to meet objectives is predicted, not an observed efficacy result."}
+{"sample_id": "HV-0496", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0016", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0176", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0464", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SAFETY", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0381", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Corporate decision is stated; completing the lead-in alone does not establish planned study completion."}
+{"sample_id": "HV-0382", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": "Evaluation in younger age groups is discontinued without explanation."}
+{"sample_id": "HV-0574", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Only negated causes are supplied."}
+{"sample_id": "HV-0350", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": "Compound sale and resulting company exit describe a business reason."}
+{"sample_id": "HV-0066", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0508", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Patient death is a medical cause; occurred before treatment, without an efficacy or toxicity finding."}
+{"sample_id": "HV-0298", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0356", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0162", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0342", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPORT_WITHDRAWAL", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0586", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Interim analysis results are not characterized."}
+{"sample_id": "HV-0248", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0591", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Another study's results are cited without stating their direction."}
+{"sample_id": "HV-0286", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0579", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Enrollment ceased; difficulty recruiting or zero total enrollment is not stated."}
+{"sample_id": "HV-0395", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0131", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0238", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0535", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0143", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0277", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0469", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["REGULATORY", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0512", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Retention percentage alone does not identify a stopping cause."}
+{"sample_id": "HV-0265", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": "Infeasibility is tied to inability to meet enrollment targets; no separate regulatory restriction is stated."}
+{"sample_id": "HV-0173", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0060", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0408", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0513", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Development reevaluation is named without a business or medical rationale."}
+{"sample_id": "HV-0379", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0365", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0271", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": "Explicit regulatory restriction followed quality assurance and compliance concerns."}
+{"sample_id": "HV-0553", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "MEDIUM", "note": ""}
+{"sample_id": "HV-0157", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0096", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Benefit-risk profile is the stated stopping reason, without separating efficacy and safety."}
+{"sample_id": "HV-0333", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": "Recruitment delays and increased costs are consequences of COVID; funding shortage is not stated."}
+{"sample_id": "HV-0068", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SUPPLY_MANUFACTURING", "SAFETY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0454", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0148", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0334", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0032", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0539", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Administrative submission timeline requires a cutoff; completed study objectives are not stated."}
+{"sample_id": "HV-0349", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["STAFFING_RESOURCES", "RECRUITMENT"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0154", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0406", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": "GCP reference does not state a compliance failure or regulatory restriction."}
+{"sample_id": "HV-0309", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": "Non-initiation has an explicit resource cause."}
+{"sample_id": "HV-0593", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Administrative pause is temporary; safety is explicitly negated."}
+{"sample_id": "HV-0140", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Graft failure is stated without distinguishing efficacy from safety."}
+{"sample_id": "HV-0562", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "SUPPLY_MANUFACTURING", "RECRUITMENT", "OPERATIONAL_OTHER"], "confidence": "HIGH", "note": "Endpoint data requirements were unmet; no negative efficacy result is stated."}
+{"sample_id": "HV-0380", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0595", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Recommendation is named without its content or cause."}
+{"sample_id": "HV-0171", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0212", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0237", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Technical issues are explicit but unspecified."}
+{"sample_id": "HV-0421", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0432", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Transfer of responsibility and planning is an administrative reason."}
+{"sample_id": "HV-0441", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0059", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0123", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0522", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Enrollment discontinuation is stated without a cause."}
+{"sample_id": "HV-0043", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0290", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0210", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "OPERATIONAL_OTHER", "FUNDING", "BUSINESS_STRATEGY"], "confidence": "HIGH", "note": "Enrollment and follow-up scheduling problems, funding shortages, and strategic adjustments are explicitly stated."}
+{"sample_id": "HV-0082", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Pharmacokinetic stopping criteria are stated without an efficacy, safety, or successful milestone result."}
+{"sample_id": "HV-0087", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0046", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0448", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0188", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0097", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0570", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "The interim analysis result is not stated."}
+{"sample_id": "HV-0320", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPLY_MANUFACTURING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0202", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0585", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Notifications alone do not specify a cause or action."}
+{"sample_id": "HV-0257", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0385", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Project abandonment describes status without an underlying cause."}
+{"sample_id": "HV-0076", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0225", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0164", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0002", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "A warning is cited without a stated medical finding."}
+{"sample_id": "HV-0251", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0596", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": "Changed clinical practice made the study intervention obsolete."}
+{"sample_id": "HV-0189", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0001", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0284", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0267", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0445", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0069", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0156", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0335", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0183", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": ["SUPPLY_MANUFACTURING"], "confidence": "MEDIUM", "note": "Recall cites possible contamination; no medical harm is stated."}
+{"sample_id": "HV-0182", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0163", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0361", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "FDA release is the stated context for termination."}
+{"sample_id": "HV-0130", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0229", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0477", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0091", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0256", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["PROTOCOL_FEASIBILITY", "OPERATIONAL_OTHER"], "confidence": "MEDIUM", "note": "Poor feasibility and participating sites' lack of interest are both stated."}
+{"sample_id": "HV-0081", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0443", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0422", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0239", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0413", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": "Current protocol cannot readily be implemented; restarting is only proposed."}
+{"sample_id": "HV-0222", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0119", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0407", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": "The funding entity is the terminating actor; funding loss is not stated."}
+{"sample_id": "HV-0387", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0038", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": "Death imbalance is stated despite uncertain treatment attribution."}
+{"sample_id": "HV-0208", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0420", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0167", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0337", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0107", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0489", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0224", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": "Dosing gap prevented addressing objectives; no biological result is stated."}
+{"sample_id": "HV-0353", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0253", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0546", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Termination is pending additional data without a stated result."}
+{"sample_id": "HV-0474", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0472", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "SAFETY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0279", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0360", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Slow development progress is stated; a specific strategic or biological cause is not."}
+{"sample_id": "HV-0201", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0281", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0592", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Cohort omission and closeout are stated without a cause."}
+{"sample_id": "HV-0101", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": ""}
+{"sample_id": "HV-0094", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0102", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": ["REGULATORY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0499", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "REGULATORY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0460", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0252", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EXTERNAL_DISRUPTION", "OPERATIONAL_OTHER"], "confidence": "MEDIUM", "note": "Placebo randomization concerns are stated without an explicit safety finding."}
+{"sample_id": "HV-0300", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0589", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0255", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": "Protocol amendment describes an action; operational issues explicitly explain final termination."}
+{"sample_id": "HV-0358", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0322", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0008", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0172", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Grant transfer difficulty is the stated funding obstacle."}
+{"sample_id": "HV-0262", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "The reason the scaffold cannot be used is unspecified."}
+{"sample_id": "HV-0266", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0236", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["BUSINESS_STRATEGY", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0528", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0126", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": ["REGULATORY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0514", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "IRB direction is cited without a medical cause."}
+{"sample_id": "HV-0517", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "An alternative design is only under discussion."}
+{"sample_id": "HV-0549", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0249", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SUPPLY_MANUFACTURING", "FUNDING"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0439", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Promoter change accompanies the start of a replacement study."}
+{"sample_id": "HV-0192", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0213", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0418", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0006", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0268", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": "Regulatory agreement endorses termination; recruitment is the stated cause."}
+{"sample_id": "HV-0047", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0129", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0548", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Approval is pending; no definitive stopping cause is given."}
+{"sample_id": "HV-0581", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0152", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Competing studies are stated without specifying recruitment or resource effects."}
+{"sample_id": "HV-0197", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "SUPPLY_MANUFACTURING"], "confidence": "MEDIUM", "note": "Pandemic disruption and the current supply's shelf-life limit jointly prevent completion."}
+{"sample_id": "HV-0451", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0090", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0264", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": "No subjects enrolled and no underlying cause is stated."}
+{"sample_id": "HV-0461", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": ["REGULATORY"], "confidence": "MEDIUM", "note": "A specific drug interaction is the medical issue cited."}
+{"sample_id": "HV-0532", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0180", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": "An explicit recall explains suspension; no medical cause for recall is stated."}
+{"sample_id": "HV-0272", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0555", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Therapeutic use approval for one patient does not clearly explain the study stop."}
+{"sample_id": "HV-0010", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0112", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "LOW", "note": "Inefficiency does not clearly specify inefficacy or an operational problem."}
+{"sample_id": "HV-0457", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0495", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "REGULATORY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0174", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0558", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Unacceptable palatability is an explicit unfavorable formulation result; efficacy versus safety is not specified."}
+{"sample_id": "HV-0263", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0543", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "The text explicitly reports inability to confirm the withdrawal reason."}
+{"sample_id": "HV-0151", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0072", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0449", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Pilot data will support an upcoming larger trial."}
+{"sample_id": "HV-0114", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0306", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "OPERATIONAL_OTHER"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0390", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0507", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0313", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0515", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Interim analysis is mentioned without its result."}
+{"sample_id": "HV-0440", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "MEDIUM", "note": ""}
+{"sample_id": "HV-0506", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Acquisition of the asset and sponsorship states a corporate reason."}
+{"sample_id": "HV-0480", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "IRB approval expired; no enrollment is reported as context."}
+{"sample_id": "HV-0276", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0375", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0184", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0244", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": "Restrictive eligibility criteria explain insufficient enrollment."}
+{"sample_id": "HV-0348", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPORT_WITHDRAWAL", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0374", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0518", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0258", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0571", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Waiting for additional funds describes a pending situation."}
+{"sample_id": "HV-0296", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0283", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPORT_WITHDRAWAL", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0085", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0007", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0178", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "REGULATORY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0582", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "LOW", "note": "Lack of scientific process does not identify a clear causal category."}
+{"sample_id": "HV-0292", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0533", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0054", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0318", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0168", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0584", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Other trials' results are referenced without direction; safety concerns are negated."}
+{"sample_id": "HV-0146", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0475", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EFFICACY_FUTILITY", "SAFETY"], "confidence": "MEDIUM", "note": "Negative trial results and regimen safety concerns are separately stated."}
+{"sample_id": "HV-0428", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0573", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "The text describes a temporary suspension."}
+{"sample_id": "HV-0020", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0530", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Regulatory approval is pending; no final stop cause is stated."}
+{"sample_id": "HV-0121", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0074", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0315", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0411", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0048", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Unfavorable interim findings are stated, but the failed candidate criteria are unspecified."}
+{"sample_id": "HV-0552", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0560", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Examinations ended and results were published, but no stopping cause or achieved objective is stated."}
+{"sample_id": "HV-0247", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0241", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Participant withdrawal indicates an enrollment retention problem; withdrawal causes are unstated."}
+{"sample_id": "HV-0402", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0026", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0003", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0141", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0137", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0467", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["EXTERNAL_DISRUPTION", "REPLACEMENT_TRANSITION"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0326", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "STAFFING_RESOURCES"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0088", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0538", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0424", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0362", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0458", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Further follow-up offered no useful information; therapeutic inefficacy is not stated."}
+{"sample_id": "HV-0050", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0191", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "secondary_reasons": [], "confidence": "HIGH", "note": "COVID-19 explicitly caused the recruitment failure."}
+{"sample_id": "HV-0310", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0429", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0339", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0478", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EFFICACY_FUTILITY"], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0116", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0355", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0344", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0242", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0434", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Study never enrolled participants; sponsor decision supplies no underlying cause."}
+{"sample_id": "HV-0105", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0340", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0033", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0494", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": "PI relocation is the stated cause; restarting elsewhere is only planned."}
+{"sample_id": "HV-0052", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "MEDIUM", "note": ""}
+{"sample_id": "HV-0055", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0053", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0070", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0153", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["FUNDING", "PROTOCOL_FEASIBILITY"], "confidence": "MEDIUM", "note": "Underfunding and a device change affecting the planned study are stated."}
+{"sample_id": "HV-0040", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0065", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0497", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SAFETY", "EFFICACY_FUTILITY"], "confidence": "MEDIUM", "note": "Drug-related adverse events and absent required biomarker action are separately stated."}
+{"sample_id": "HV-0103", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "MEDIUM", "note": ""}
+{"sample_id": "HV-0521", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0185", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0431", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0394", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0476", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "HIGH", "note": "Part-A findings made Part-B unnecessary under the protocol."}
+{"sample_id": "HV-0488", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Safety and efficacy form a joint unfavorable assessment without separable findings."}
+{"sample_id": "HV-0230", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0093", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Context supports reading efficency as inadequate efficacy."}
+{"sample_id": "HV-0525", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "A study-team memo is cited without its rationale."}
+{"sample_id": "HV-0410", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0036", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0444", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0254", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0138", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0484", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["SUPPORT_WITHDRAWAL", "REGULATORY"], "confidence": "MEDIUM", "note": "Required regulatory modifications and inability to continue support are both stated."}
+{"sample_id": "HV-0336", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPLY_MANUFACTURING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0120", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0509", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Local inability to conduct phase 1 studies is stated; regulatory prohibition is not."}
+{"sample_id": "HV-0414", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0459", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0455", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0446", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "FDA approval is the stated circumstance; no planned milestone is specified."}
+{"sample_id": "HV-0483", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0366", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Collaborator withdrew the study; withdrawal of support is not explicitly stated."}
+{"sample_id": "HV-0580", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Funding is mentioned without stating a shortage or other causal problem."}
+{"sample_id": "HV-0542", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Analysis is planned; no result or definitive underlying cause is stated."}
+{"sample_id": "HV-0404", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0524", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0009", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0037", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0331", "outcome": "NON_BIOLOGICAL", "primary_reason": "FUNDING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0557", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Phase 1 results are cited without their direction or nature."}
+{"sample_id": "HV-0433", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0485", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "EFFICACY_FUTILITY"], "confidence": "MEDIUM", "note": "Slow recruitment and a no-go result from the futility analysis are stated."}
+{"sample_id": "HV-0599", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Agreement with FDA identifies decision participants, without stating a regulatory requirement or underlying cause."}
+{"sample_id": "HV-0363", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0080", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0041", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0139", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0169", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0400", "outcome": "CAUSE_NOT_STATED", "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0328", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPLY_MANUFACTURING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0531", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Study outcomes are cited without stating whether they were unfavorable."}
+{"sample_id": "HV-0004", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Poor response concerns patient follow-up; treatment efficacy is not stated."}
+{"sample_id": "HV-0501", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "An ongoing institutional pause is described without its underlying cause."}
+{"sample_id": "HV-0165", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0541", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0079", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0245", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Insufficient subject availability is explicit; the reference to findings is unclear."}
+{"sample_id": "HV-0537", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0540", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0024", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0030", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "An unfavorable risk-benefit concern is stated, although qualified as suspected."}
+{"sample_id": "HV-0324", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0034", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0142", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0235", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0564", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Only the responsible actor is named."}
+{"sample_id": "HV-0273", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0559", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "LOW", "note": "The expired CTP is undefined, and the proposed pathway does not clarify the stopping cause."}
+{"sample_id": "HV-0412", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0223", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0301", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0386", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0372", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0398", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "SAFETY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "The hold is linked to evaluation of a safety event."}
+{"sample_id": "HV-0510", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Pending FDA review does not state a regulatory hold or underlying cause."}
+{"sample_id": "HV-0438", "outcome": "NON_BIOLOGICAL", "primary_reason": "REGULATORY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "FDA approval is stated; no planned milestone is specified."}
+{"sample_id": "HV-0393", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0240", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0314", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Enrollment and retention describe insufficient participant accrual and maintenance."}
+{"sample_id": "HV-0572", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0109", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "The benefit-risk assessment changed, but its direction is not stated."}
+{"sample_id": "HV-0133", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0232", "outcome": "NON_BIOLOGICAL", "primary_reason": "STAFFING_RESOURCES", "secondary_reasons": [], "confidence": "MEDIUM", "note": "The investigator's unwillingness to conduct the study is an explicit personnel obstacle."}
+{"sample_id": "HV-0012", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0077", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0481", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "secondary_reasons": ["REGULATORY"], "confidence": "HIGH", "note": "The protocol is being replaced by separate submissions at the ethics committee's request."}
+{"sample_id": "HV-0228", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0022", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0078", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "BIOLOGICAL_UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Unacceptable pharmacokinetics states a biological problem without distinguishing efficacy from safety."}
+{"sample_id": "HV-0330", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0529", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Transition is pending; no completed milestone or replacement is stated."}
+{"sample_id": "HV-0207", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Lower-than-expected infection prevalence indicates limited eligible participant availability."}
+{"sample_id": "HV-0367", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0019", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0597", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0511", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Primary analysis is cited without stating its result."}
+{"sample_id": "HV-0135", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0373", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "Unmet continuation criteria are not identified as biological, operational, or planned completion criteria."}
+{"sample_id": "HV-0295", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0187", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0370", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "NOT_INITIATED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Non-initiation is stated without a cause."}
+{"sample_id": "HV-0430", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "PLANNED_MILESTONE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0576", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "MEDIUM", "note": "An IRB audit is named without findings or a stated regulatory action."}
+{"sample_id": "HV-0117", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0563", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "secondary_reasons": [], "confidence": "HIGH", "note": "New data and a stopping rule are cited without their direction or substance."}
+{"sample_id": "HV-0110", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0297", "outcome": "NON_BIOLOGICAL", "primary_reason": "OPERATIONAL_OTHER", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0364", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0368", "outcome": "CAUSE_NOT_STATED", "primary_reason": "DECISION_WITHOUT_STATED_CAUSE", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0305", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0311", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPLY_MANUFACTURING", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0321", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0302", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0468", "outcome": "MIXED_CAUSES", "primary_reason": "MULTIPLE", "secondary_reasons": ["RECRUITMENT", "PLANNED_MILESTONE"], "confidence": "MEDIUM", "note": "Recruitment difficulty and sufficient results to draw conclusions are both stated."}
+{"sample_id": "HV-0039", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "MEDIUM", "note": "Insufficient responses are linked to continuing treatment, indicating inadequate treatment efficacy."}
+{"sample_id": "HV-0280", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}
+{"sample_id": "HV-0051", "outcome": "BIOLOGICAL_FAILURE", "primary_reason": "EFFICACY_FUTILITY", "secondary_reasons": [], "confidence": "HIGH", "note": ""}

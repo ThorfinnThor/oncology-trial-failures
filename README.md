@@ -30,6 +30,10 @@ reason blind to the classifier, with a third model adjudicating disagreements. T
 clinical experts, and no clinician-adjudicated label set exists yet. Against these reference
 labels, biological-failure precision was **95.5 %** (95 % CI 91.6–98.7 %) and recall **95.3 %**.
 The protocol is in [`docs/validation_heldout_v2.md`](docs/validation_heldout_v2.md).
+A cross-check of the same 600 texts by a model from another family (GPT-6.1) agrees on biological
+vs. non-biological for 98.2 % of them; with its labels as reference, biological-failure precision is
+91.0 %. The 11 texts the two disagree on await clinician review:
+[`docs/validation_crosscheck_gpt61.md`](docs/validation_crosscheck_gpt61.md).
 
 For completed Phase 2/3 trials, the pipeline also reads the sponsor's own posted primary
 comparison. This shows which trials ran to the end and still missed their primary endpoint, a
