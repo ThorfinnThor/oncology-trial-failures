@@ -23,8 +23,8 @@ in each section is blocked on nothing but time.
   `/drugs`), area comparisons, internal links, insight articles (BACE1, JAK/TYK2, FcRn, LAG-3,
   5-HT2A, airway alarmins). Plan and audits: `docs/seo/`.
 - **First data-licence lead:** DEEPCISION (BasGenBio, Korea) asked on 7 Nov for labelled
-  success/failure data for model training. Final reply written 7 Nov; details under *Blocking
-  revenue → The DEEPCISION lead*.
+  success/failure data for model training. Reply **sent 7 Nov**; waiting for their answer.
+  Details under *Blocking revenue → The DEEPCISION lead*.
 - **Citable:** Zenodo DOI 10.5281/zenodo.23558833; MIT for code, CC BY-NC 4.0 for derived data.
 
 ---
@@ -43,7 +43,9 @@ status alone), failure reasons, NCT IDs with evidence; how labels are made and w
 expert-validated labels exist; commercial training rights without restrictions on the models;
 pricing; a sample and data dictionary.
 
-**What the reply (7 Nov) says:** two label types (stop reasons, 24,023 trials; posted endpoint
+**Status:** reply sent 7 Nov 2026. Waiting for their answer.
+
+**What the reply (sent 7 Nov) says:** two label types (stop reasons, 24,023 trials; posted endpoint
 met/missed, ~5,200 assessable 2015–2024, ~1,960 missed); validation by two model families, 98.2 %
 agreement, precision 91–95.5 %; not clinician-validated yet, clinician review of the borderline
 cases "scheduled for the coming weeks" (see 8), larger clinician review offered as a separate
