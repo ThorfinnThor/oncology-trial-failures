@@ -24,9 +24,12 @@ The figures below are from the release of 16 Oct 2026. Every weekly run refreshe
 | Not a failure (e.g. a planned transition to another study) | 1,292 |
 | No cause stated, or routed to review rather than guessed | 5,610 |
 
-Classification quality was checked on a held-out sample of 600 trials, with two blind
-annotators. Biological-failure precision was **95.5 %** (95 % CI 91.6–98.7 %) and recall
-**95.3 %**. The protocol is in [`docs/validation_heldout_v2.md`](docs/validation_heldout_v2.md).
+Classification quality was checked on a held-out sample of 600 trials. The reference labels come
+from two independent language-model annotators (different model families), who labelled each stop
+reason blind to the classifier, with a third model adjudicating disagreements. They are not
+clinical experts, and no clinician-adjudicated label set exists yet. Against these reference
+labels, biological-failure precision was **95.5 %** (95 % CI 91.6–98.7 %) and recall **95.3 %**.
+The protocol is in [`docs/validation_heldout_v2.md`](docs/validation_heldout_v2.md).
 
 For completed Phase 2/3 trials, the pipeline also reads the sponsor's own posted primary
 comparison. This shows which trials ran to the end and still missed their primary endpoint, a

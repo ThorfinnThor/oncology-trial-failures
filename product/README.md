@@ -12,7 +12,8 @@ their sources; the classification, linkage, validation and curation are derived 
 - Stopped (terminated, withdrawn or suspended) oncology trials in ClinicalTrials.gov.
 - Classification V2 outcome `BIOLOGICAL_FAILURE`, or `MIXED_CAUSES` that includes an efficacy,
   safety or unspecified biological cause.
-- Classification quality (held-out, blind double annotation, n=600): biological failure precision
+- Classification quality (held-out, n=600, blind double annotation by two LLM annotators with LLM
+  adjudication; not clinician-reviewed): biological failure precision
   95.5% (95% CI 91.6–98.7%), recall 95.3%. See `docs/validation_heldout_v2.md`.
 - Coverage figures for each release are in `oncology_failure_signals_v1_meta.json`.
 
