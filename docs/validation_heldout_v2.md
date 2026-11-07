@@ -23,7 +23,7 @@ Generated: 2026-09-20T18:58:22Z · Dataset `2026-09-14` · Classifier `2.7.0`
 - **Sample:** 600 unique stop-reason texts, stratified by predicted V2 outcome, fixed seed `20260915` (`scripts/build_heldout_validation_sample_v2.py`).
 - **Held out:** 4,159 text hashes used for writing, auditing or adjudicating the rules were excluded (reviewed-reason index, 4,000-record audit gold set, golden tests, manual decisions, Open Targets adjudications), as well as 6,302 records classified by exact reviewed text and 2,162 records without stop-reason text.
 - **Eligible population:** 13,729 of 23,766 records (rule-classified records whose text was never used for tuning).
-- **Reference labels:** two independent LLM annotators (different model families) labelled every text blind — without classifier output — using written guidelines (`validation/LABELING_GUIDELINES.md`). Disagreements on outcome or primary reason were resolved by a third, independent LLM adjudicator.
+- **Reference labels:** two LLM annotators (Claude Opus and Claude Sonnet) labelled every text blind — without classifier output — using written guidelines (`validation/LABELING_GUIDELINES.md`). Disagreements on outcome or primary reason were resolved by a third, independent LLM adjudicator.
 - **Inter-annotator agreement:** outcome 93.8% (Cohen's κ 0.92); outcome + primary reason 90.7%; 56 adjudicated.
 - **Weighting:** per-stratum results are scaled to the eligible record population; intervals from a 2,000-sample stratified bootstrap. Per-stratum intervals are Wilson score intervals.
 

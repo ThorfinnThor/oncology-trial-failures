@@ -281,7 +281,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
               <div className="statValue">{pct(heldoutPrecision)}</div>
               <div className="statLabel">Held-out precision</div>
               <div className="statNote">
-                recall {pct(heldoutRecall)} on a blind-annotated sample.{" "}
+                recall {pct(heldoutRecall)} on a sample labelled blind by AI annotators.{" "}
                 <Link className="link" href="/validation">
                   How we validate
                 </Link>
@@ -590,7 +590,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <h3>How good are the labels?</h3>
                 <p>
                   Measured, not asserted: {pct(heldoutPrecision)} precision and {pct(heldoutRecall)} recall for
-                  biological failure on a held-out sample of blind-annotated stop reasons.{" "}
+                  biological failure on a held-out sample of stop reasons labelled blind by AI annotators, not clinicians.{" "}
                   <Link className="link" href="/validation">
                     See the validation
                   </Link>

@@ -309,7 +309,7 @@ def main() -> int:
              f"and {meta['excluded_records'].get('empty_stop_reason', 0):,} records without stop-reason text.")
     L.append(f"- **Eligible population:** {result['population']['eligible_records']:,} of {meta['population_records_total']:,} records "
              "(rule-classified records whose text was never used for tuning).")
-    L.append("- **Reference labels:** two independent LLM annotators (different model families) labelled every text blind — "
+    L.append("- **Reference labels:** two LLM annotators (Claude Opus and Claude Sonnet) labelled every text blind — "
              "without classifier output — using written guidelines (`validation/LABELING_GUIDELINES.md`). "
              "Disagreements on outcome or primary reason were resolved by a third, independent LLM adjudicator.")
     if ann:

@@ -188,7 +188,7 @@ export default function UseCasesPage({ licensing, sponsor, recruitment }: Props)
             <ul>
               <li>Every classification links to the ClinicalTrials.gov record and quotes the sponsor&apos;s own stop reason.</li>
               <li>
-                Biological-failure precision on a blind, double-annotated held-out sample is published on the{" "}
+                Biological-failure precision on a held-out sample, labelled blind by two AI models (not clinicians), is published on the{" "}
                 <Link className="link" href="/validation">validation page</Link>.
               </li>
               <li>It is a screening signal from registry text, not a medical, regulatory or investment conclusion.</li>

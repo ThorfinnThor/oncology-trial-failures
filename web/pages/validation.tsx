@@ -12,7 +12,7 @@ import eventAscertainment from "@/data/event_ascertainment.json";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
 const CANONICAL_URL = `${SITE_URL}/validation`;
-const TITLE = "How the labels were validated — held-out sample, blind annotation, confusion matrix";
+const TITLE = "How the labels were validated — held-out sample, blind AI annotation, confusion matrix";
 const DESCRIPTION =
   "The full evidence behind the classification quality figures: how the held-out sample was drawn, who annotated it blind, how disagreements were adjudicated, per-class precision and the confusion matrix.";
 
@@ -398,7 +398,7 @@ export default function ValidationPage() {
           <section className="section">
             <h2>Confusion matrix</h2>
             <p className="sectionSub">
-              Rows are what the classifier predicted, columns what the blind annotators agreed the text actually says. Counts are
+              Rows are what the classifier predicted, columns what the blind AI annotators agreed the text actually says. Counts are
               sampled texts.
             </p>
             <div className="tableWrap">

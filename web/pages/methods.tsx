@@ -211,7 +211,7 @@ export default function MethodsPage() {
               Classification quality is measured on a held-out sample of {heldout?.sample_size ?? 600} unique stop-reason texts that were never
               used to write, audit, or adjudicate the rules. The sample is stratified by predicted outcome and weighted back to the{" "}
               {heldout?.eligible_records ? heldout.eligible_records.toLocaleString("en-US") : "eligible"} rule-classified records it represents.
-              Reference labels were produced blind to the classifier by two independent LLM annotators from different model families, with
+              Reference labels were produced blind to the classifier by two LLM annotators (Claude Opus and Claude Sonnet), with
               disagreements resolved by a third LLM adjudicator following written guidelines.
             </p>
             <div className="trustPanel">

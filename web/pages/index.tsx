@@ -400,7 +400,7 @@ export default function HomePage({ stats, sampleTrials, browse }: HomePageProps)
                     <div><dt>Stopped trials read</dt><dd>{compactNumber(stats.trialCount)}</dd></div>
                   </dl>
                   <span className="v2HeroValidationNote">
-                    Held-out validation, blind double annotation, n={v2.heldoutSampleSize || 600} <span aria-hidden="true">→</span>
+                    Held-out validation, two blind AI annotators, n={v2.heldoutSampleSize || 600} <span aria-hidden="true">→</span>
                   </span>
                 </Link>
 
