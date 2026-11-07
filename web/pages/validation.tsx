@@ -510,7 +510,7 @@ export default function ValidationPage() {
                     {cc.disputed_biological.map((d: any) => (
                       <tr key={d.sample_id}>
                         <td className="reason">
-                          <a className="link" href={`https://clinicaltrials.gov/study/${d.nct_id}`} rel="noopener">
+                          <a className="link reasonLink" href={`https://clinicaltrials.gov/study/${d.nct_id}`} rel="noopener">
                             {d.why_stopped}
                           </a>
                         </td>
@@ -704,7 +704,7 @@ export default function ValidationPage() {
           white-space: normal;
           min-width: 260px;
         }
-        .disputed .reason .link {
+        .disputed .reasonLink {
           font-weight: 500;
         }
         .matrix .zero {
