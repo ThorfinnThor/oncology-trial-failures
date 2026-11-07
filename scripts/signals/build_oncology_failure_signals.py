@@ -373,10 +373,25 @@ def main() -> int:
                     if cands:
                         candidate_lists.add(cands)
 
+        # One failing request used to discard the whole source: a persistent HTTP 500 on the
+        # single search term "Gemzar" shipped the 2 Nov release with no ChEMBL asset and no
+        # target gene on any trial (the 5 Oct release went the same way). A lookup that fails
+        # now loses only that lookup. A network-policy block still ends the source at once.
+        chembl_failed: list[str] = []
+
+        def tolerant(fn, arg, default):
+            try:
+                return fn(arg)
+            except SourceUnavailable as exc:
+                if "blocked by network policy" in str(exc):
+                    raise
+                chembl_failed.append(str(exc))
+                return default
+
         def first_hit(cands: tuple) -> dict:
             found = {}
             for cand in cands:
-                mol = chembl_molecule(cand)
+                mol = tolerant(chembl_molecule, cand, None)
                 found[cand] = mol
                 if mol:
                     break
@@ -386,8 +401,15 @@ def main() -> int:
         for found in run_pool("chembl", first_hit, sorted(candidate_lists), args.chembl_workers).values():
             chembl_hits.update(found)
         mol_ids = sorted({m["molecule_chembl_id"] for m in chembl_hits.values() if m})
-        chembl_mech = run_pool("chembl-mechanisms", chembl_mechanisms, mol_ids, args.chembl_workers)
-        source_status["chembl"] = "OK"
+        chembl_mech = run_pool("chembl-mechanisms", lambda cid: tolerant(chembl_mechanisms, cid, []),
+                               mol_ids, args.chembl_workers)
+        lookups = len(chembl_hits) + len(mol_ids)
+        if not chembl_failed:
+            source_status["chembl"] = "OK"
+        elif not mol_ids:
+            source_status["chembl"] = f"UNAVAILABLE: all {len(chembl_failed)} failed lookups, none matched; first: {chembl_failed[0]}"
+        else:
+            source_status["chembl"] = f"PARTIAL: {len(chembl_failed)} of {lookups} lookups failed; first: {chembl_failed[0]}"
     except SourceUnavailable as exc:
         source_status["chembl"] = f"UNAVAILABLE: {exc}"
     print(f"chembl: {sum(1 for v in chembl_hits.values() if v)}/{len(chembl_hits)} queried names matched, {len(chembl_mech)} molecules with mechanism lookups")
