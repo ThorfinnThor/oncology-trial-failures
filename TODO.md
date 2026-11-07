@@ -22,6 +22,9 @@ in each section is blocked on nothing but time.
 - **SEO recovery is under way:** stricter indexing, hub pages, drug pages (`/drug/<slug>`,
   `/drugs`), area comparisons, internal links, insight articles (BACE1, JAK/TYK2, FcRn, LAG-3,
   5-HT2A, airway alarmins). Plan and audits: `docs/seo/`.
+- **First data-licence lead:** DEEPCISION (BasGenBio, Korea) asked on 7 Nov for labelled
+  success/failure data for model training. Reply drafted; pricing deliberately left open until
+  they name scope. Clinician review is promised as scheduled (see 8).
 - **Citable:** Zenodo DOI 10.5281/zenodo.23558833; MIT for code, CC BY-NC 4.0 for derived data.
 
 ---
@@ -164,17 +167,32 @@ Worth doing: order a report on the live site with the beta form (work email, new
 ticked), open the link, check the document, confirm the newsletter, and stop it from the link in
 the mail.
 
-### 8. Clinicians decide the 11 disputed validation texts
+### 8. Clinicians: the 11 disputed validation texts, then a paid review offer
 
-A second model family (GPT-6.1) relabelled the 600 held-out texts on 7 Nov: 98.2 % agreement on
-biological yes/no, but biological-failure precision is 91.0 % against its labels against 95.5 %
-against the Claude reference. Both figures are on `/validation`. The gap rests on 11 texts
-(`docs/validation_crosscheck_gpt61.md`); the blind A/B sheet for the clinicians was sent to
-Schayan separately, with its key. When the verdicts come back: record them in
-`validation/crosscheck_gpt61/decisions.json`, run `python scripts/crosscheck_heldout_v2.py` and
-`python scripts/build_validation_public.py`, and decide whether a rule changes (the likely one:
-"possible lack of efficacy" and directionless "findings" read as biological — CLAUDE.md rules
-1–4 apply). Clinicians are available in a few weeks.
+**Status (7 Nov):** Schayan knows clinicians who will do this; they are paid, and have time in a
+few weeks. Nothing is booked in the repo yet.
+
+**Why it matters:** a second model family (GPT-6.1) relabelled the 600 held-out texts on 7 Nov:
+98.2 % agreement on biological yes/no, but biological-failure precision is 91.0 % against its
+labels and 95.5 % against the Claude reference. Both figures are on `/validation`, with the 11
+texts the gap rests on marked "Awaiting clinician review" (`docs/validation_crosscheck_gpt61.md`).
+DEEPCISION (BasGenBio) has been told that clinician review of those cases is scheduled for the
+coming weeks — so it has to happen.
+
+**The sheet:** `clinician_review.csv` — 11 texts, options A/B in random order, columns for the
+verdict and "biological failure? yes / no / cannot tell". The key
+(`clinician_review_KEY_do_not_share.csv`) stays with Schayan until the verdicts are in. Neither
+file is in the repo; both were sent to Schayan on 7 Nov. About half an hour of clinician time.
+
+**When the verdicts come back:** record them in `validation/crosscheck_gpt61/decisions.json`
+(format in the cross-check report), run `python scripts/crosscheck_heldout_v2.py` and
+`python scripts/build_validation_public.py`, push. Then decide whether a rule changes — the likely
+candidates are "possible lack of efficacy" and directionless "findings" being read as biological
+(CLAUDE.md rules 1–4 apply: golden case first, corpus check, declared rule change).
+
+**Before then, ask the clinicians two things:** their rate per hour, and how many stop reasons
+they can judge per hour. That prices the paid offer DEEPCISION was given — clinician review of a
+larger, defined subset as a separate project (clinician fee plus a margin).
 
 ### 9. Open pull requests
 
