@@ -95,13 +95,9 @@ export default function AboutPage() {
             <section style={{ marginTop: 24 }}>
               <h2>Who builds it</h2>
               <p>
-                Clinical Trial Failures is built and maintained by <strong>{AUTHOR.name}</strong>. The classification
-                pipeline, the validation and every page on this site are published openly, so each number can be traced
-                back to the registry record it came from. The code is on{" "}
-                <a className="link" href="https://github.com/ThorfinnThor/oncology-trial-failures" rel="noopener">
-                  GitHub
-                </a>
-                . To cite the dataset, use its DOI:{" "}
+                Clinical Trial Failures is built and maintained by <strong>{AUTHOR.name}</strong>. The method, the
+                validation and every page on this site are published openly, so each number can be traced back to the
+                registry record it came from. To cite the dataset, use its DOI:{" "}
                 <a className="link" href="https://doi.org/10.5281/zenodo.23558833" rel="noopener">
                   10.5281/zenodo.23558833
                 </a>
