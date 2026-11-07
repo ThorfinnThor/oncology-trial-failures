@@ -194,7 +194,24 @@ candidates are "possible lack of efficacy" and directionless "findings" being re
 they can judge per hour. That prices the paid offer DEEPCISION was given — clinician review of a
 larger, defined subset as a separate project (clinician fee plus a margin).
 
-### 9. Open pull requests
+### 9. Check that the Oncology Failure Signals release has its ChEMBL data back
+
+The 2 Nov release shipped with **no ChEMBL asset and no target gene on any trial**
+(`trials_with_focus_target_gene` 0.0 instead of ~0.54, resolved assets 0.378 instead of ~0.735).
+One ChEMBL search ("Gemzar") answered HTTP 500 through every retry, and that one failure discarded
+the whole ChEMBL step; the 5 Oct release went the same way. Fixed on 7 Nov (`9d59f02`): a failed
+lookup now loses only that lookup, and the run reports `chembl: PARTIAL` with the count.
+
+Affected until the next run: the public sample CSV under `/samples` and the product figures in
+`web/data/product_summary.json`. Not affected: briefs, diligence packages, rates and drug pages
+(they use the universe ChEMBL index, which built correctly).
+
+**After the run on 9 Nov (or a manual run):** `trials_with_focus_target_gene` is back near 0.5
+and the run log shows `chembl: OK` or `PARTIAL`, not `UNAVAILABLE`. Don't build a sample for a
+customer from the 2 Nov release. Worth adding later: fail the publish step when ChEMBL coverage
+drops far below the previous release, instead of shipping it.
+
+### 10. Open pull requests
 
 - **#102 Research: can a model predict which trials fail?** Feasibility only, nothing on the site
   changes. Result: against the baseline, a model does *not* predict missed endpoints (AUC 0.683
