@@ -519,6 +519,19 @@ check("stops for efficacy or safety lead the list",
 check("registry phase strings read as phases", _nl.phase("PHASE1; PHASE2"), "Phase 1/2")
 check("placebo is not a drug", _nl.drugs("Placebo; Latozinemab"), "Latozinemab")
 
+# Reports from runs whose newsletter step was skipped are folded once, in order, and never twice.
+_b1 = {"generated_at_utc": "2026-11-09T07:33:11Z", "has_previous_snapshot": True,
+       "new_records": [{"nct_id": "NB1", "brief_title": "B1"}], "updated_records": [], "status_changes": [], "removed_records": []}
+_b2 = {"generated_at_utc": "2026-11-16T07:35:11Z", "has_previous_snapshot": True,
+       "new_records": [{"nct_id": "NB2", "brief_title": "B2"}], "updated_records": [], "status_changes": [], "removed_records": []}
+_waiting = {"since": "2026-10-26", "releases": ["2026-11-02"], "added": {"NA": {"nct_id": "NA"}}, "changed": {}}
+_f = _nl.fold_backlog(_waiting, [_b2, _b1])
+check("backlog reports are folded into what is waiting", sorted(_f["added"]), ["NA", "NB1", "NB2"])
+check("backlog releases are recorded", _f["releases"], ["2026-11-02", "2026-11-09", "2026-11-16"])
+check("a backlog report already waiting is not folded twice", _nl.fold_backlog(_f, [_b1, _b2]), _f)
+check("a backlog report older than the last mail is not told again",
+      _nl.fold_backlog({"since": "2026-11-23", "releases": [], "added": {}, "changed": {}}, [_b1, _b2])["added"], {})
+
 check("a list that has never been mailed is due", _nl.due({}, False), True)
 check("a list mailed yesterday is not", _nl.due({"last_sent_at": _dt_now()}, False), False)
 check("--force overrides the wait", _nl.due({"last_sent_at": _dt_now()}, True), True)

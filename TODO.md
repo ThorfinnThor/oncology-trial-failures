@@ -13,9 +13,9 @@ in each section is blocked on nothing but time.
   at 08:15 Europe/Berlin; every run since 1 Oct succeeded (last one 2 Nov). The
   database holds about 24,000 stopped trials.
 - **The newsletter sends.** The first issue went out on **26 Oct 2026** ("100 new stopped trials,
-  12 records changed") and is archived at `/newsletter` (`web/data/newsletter_issues/`). On 2 Nov,
-  43 new stops and 3 changed records were pending; the next issue goes out with the first run at
-  least twelve days after the last send, i.e. **Monday 9 Nov**.
+  12 records changed") and is archived at `/newsletter` (`web/data/newsletter_issues/`). **The
+  second issue, due 9 Nov, did not go out** — see 9. It goes out with the next weekly run
+  (Monday 23 Nov, or a manual run before), carrying the four weeks since 26 Oct.
 - **The diligence report is free during the beta, for a work email** (#94, 22 Oct). The order form
   also offers the newsletter (double opt-in). Leads land in the `LEADS` KV namespace and are
   mailed to `contact@clinicaltrialfailures.com`.
@@ -235,22 +235,36 @@ candidates are "possible lack of efficacy" and directionless "findings" being re
 they can judge per hour. That prices the paid offer DEEPCISION was given — clinician review of a
 larger, defined subset as a separate project (clinician fee plus a margin).
 
-### 9. Check that the Oncology Failure Signals release has its ChEMBL data back
+### 9. The signals build failed on 9 and 16 Nov — fixed 16 Nov, check the next run
 
-The 2 Nov release shipped with **no ChEMBL asset and no target gene on any trial**
-(`trials_with_focus_target_gene` 0.0 instead of ~0.54, resolved assets 0.378 instead of ~0.735).
-One ChEMBL search ("Gemzar") answered HTTP 500 through every retry, and that one failure discarded
-the whole ChEMBL step; the 5 Oct release went the same way. Fixed on 7 Nov (`9d59f02`): a failed
-lookup now loses only that lookup, and the run reports `chembl: PARTIAL` with the count.
+**What happened.** On 2 Nov one ChEMBL search ("Gemzar") answered HTTP 500 through every retry,
+and that one failure discarded the whole ChEMBL step: the Oncology Failure Signals release shipped
+with no ChEMBL asset and no target gene (`trials_with_focus_target_gene` 0.0 instead of ~0.54;
+the 5 Oct release went the same way). The fix of 7 Nov (`9d59f02`) made each lookup fail on its
+own — but named a counter `lookups`, the name of the RxNorm results in the same function. The
+build then crashed on 9 and 16 Nov (`AttributeError: 'int' object has no attribute 'get'`). The
+step is `continue-on-error`, so both runs showed green, and every step gated on it was skipped:
+product summary and sample, briefs index, validation page data, cohort exports — and the
+newsletter, which was due on 9 Nov.
 
-Affected until the next run: the public sample CSV under `/samples` and the product figures in
-`web/data/product_summary.json`. Not affected: briefs, diligence packages, rates and drug pages
-(they use the universe ChEMBL index, which built correctly).
+**Fixed 16 Nov (`88f1455` and the commit after it):**
+- the counter is renamed;
+- `scripts/signals/smoke_build_signals.py` runs the real build offline with every source stubbed
+  (including failing ChEMBL searches). It fails on the 7 Nov code with the same error. It now runs
+  on every push and before each weekly build;
+- the change reports of 9 and 16 Nov are in `data/newsletter_backlog/`; `newsletter.py` folds
+  them in once, so the next issue covers 26 Oct to the run date with nothing lost or told twice.
 
-**After the run on 9 Nov (or a manual run):** `trials_with_focus_target_gene` is back near 0.5
-and the run log shows `chembl: OK` or `PARTIAL`, not `UNAVAILABLE`. Don't build a sample for a
-customer from the 2 Nov release. Worth adding later: fail the publish step when ChEMBL coverage
-drops far below the previous release, instead of shipping it.
+**Check after the next run (23 Nov, or start one by hand: Actions → Update trial failure data):**
+the "Build Oncology Failure Signals" step succeeded (its *outcome*, not the green tick);
+`trials_with_focus_target_gene` is back near 0.5; the run log shows `chembl: OK` or `PARTIAL`;
+the log of the Newsletter step says `backlog: folded ['2026-11-09', '2026-11-16']` and a mail
+went out. Then `data/newsletter_backlog/` can be deleted.
+
+**Still open:** a failing step that is `continue-on-error` is invisible — the run is green.
+Worth a final step that fails the run (or mails the owner) when the signals step's outcome is
+`failure`. And: fail the publish step when ChEMBL coverage drops far below the previous release.
+Don't build a sample for a customer from the 2 Nov release.
 
 ### 10. Open pull requests
 

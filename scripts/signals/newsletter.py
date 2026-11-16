@@ -50,6 +50,7 @@ from scripts.signals.send_watchlists import (  # noqa: E402  — one KV client, 
 # The whole stopped-trial database, every disease area: what entered it and what a sponsor changed,
 # diffed by the weekly workflow against the snapshot it started from (scripts/ingest_changes.py).
 REPORT = ROOT / "data/ingest_changes.json"
+BACKLOG = ROOT / "data/newsletter_backlog"
 DATASET = ROOT / "data/all_stopped_trials.json"
 SUMMARY = ROOT / "web/data/product_summary.json"
 OUT_DIR = ROOT / "product/newsletter"
@@ -187,6 +188,24 @@ def merge(pending: dict, report: dict) -> dict:
         "last_sent_at": pending.get("last_sent_at"),
     }
     return out
+
+
+def fold_backlog(pending: dict, reports: list[dict]) -> dict:
+    """Fold change reports from runs whose newsletter step never ran, oldest first.
+
+    On 9 and 16 Nov 2026 the signals build failed, every step gated on it was skipped, and those
+    two weeks' reports were never folded in; the next run's report covers only its own week.
+    The reports are kept in data/newsletter_backlog/. Each is folded once: a report whose release
+    is already waiting, or no newer than the last mail, is skipped — so the files can stay put
+    until someone removes them, without anything being told twice.
+    """
+    for report in sorted(reports, key=lambda r: r.get("generated_at_utc") or ""):
+        release = (report.get("generated_at_utc") or "")[:10]
+        if (not report.get("has_previous_snapshot") or not release
+                or release in (pending.get("releases") or []) or release <= (pending.get("since") or "")):
+            continue
+        pending = merge(pending, report)
+    return pending
 
 
 def due(pending: dict, force: bool) -> bool:
@@ -688,6 +707,12 @@ def main() -> int:
     except Exception:  # noqa: BLE001 — an absent key is the normal first run
         pending = {}
 
+    backlog = [json.loads(p.read_text()) for p in sorted(BACKLOG.glob("*.json"))] if BACKLOG.exists() else []
+    if backlog:
+        before = set(pending.get("releases") or [])
+        pending = fold_backlog(pending, backlog)
+        folded = sorted(set(pending.get("releases") or []) - before)
+        print(f"backlog: folded {folded or 'nothing'} from {len(backlog)} report(s)")
     if report.get("has_previous_snapshot"):
         pending = merge(pending, report)
 
