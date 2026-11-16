@@ -694,10 +694,21 @@ export function buildFailureHubs(rows: TrialIndexRow[]): SeoHub[] {
   });
 }
 
-export function buildSponsorHubs(rows: TrialIndexRow[]): SponsorHub[] {
+function sponsorGroups(rows: TrialIndexRow[]): Array<{ label: string; count: number }> {
   return countBy(rows, (row) => row.lead_sponsor || "Unknown sponsor")
-    .filter((item) => item.count >= SPONSOR_MIN_COUNT && item.label !== "Unknown sponsor")
-    .slice(0, SPONSOR_LIMIT)
+    .filter((item) => item.count >= SPONSOR_MIN_COUNT && item.label !== "Unknown sponsor");
+}
+
+// The indexable sponsors: the SPONSOR_LIMIT largest, plus every sponsor tied with the last of them.
+// Without the ties, a data update that only reorders equal counts moved sponsors in and out.
+function indexableSponsorGroups(groups: Array<{ label: string; count: number }>): Array<{ label: string; count: number }> {
+  if (groups.length <= SPONSOR_LIMIT) return groups;
+  const cutoff = groups[SPONSOR_LIMIT - 1].count;
+  return groups.filter((item) => item.count >= cutoff);
+}
+
+function sponsorHubsFromGroups(rows: TrialIndexRow[], groups: Array<{ label: string; count: number }>): SponsorHub[] {
+  return groups
     .map((sponsor) => {
       const memberRows = rows.filter((row) => (row.lead_sponsor || "") === sponsor.label);
       return sponsorHubFromGroup(sponsor.label, memberRows);
@@ -705,19 +716,32 @@ export function buildSponsorHubs(rows: TrialIndexRow[]): SponsorHub[] {
     .filter((hub, index, arr) => hub.slug && arr.findIndex((x) => x.slug === hub.slug) === index);
 }
 
+/** Sponsor hubs that are indexed, listed in the sitemap and linked from other pages. */
+export function buildSponsorHubs(rows: TrialIndexRow[]): SponsorHub[] {
+  return sponsorHubsFromGroups(rows, indexableSponsorGroups(sponsorGroups(rows)));
+}
+
+/**
+ * Every sponsor page that exists: all sponsors with SPONSOR_MIN_COUNT stopped trials. Pages outside
+ * the indexable set stay reachable (noindex) so a sponsor dropping out of it never turns into a 404.
+ */
+export function buildSponsorPages(rows: TrialIndexRow[]): Array<SponsorHub & { indexable: boolean }> {
+  const indexable = new Set(buildSponsorHubs(rows).map((hub) => hub.slug));
+  return sponsorHubsFromGroups(rows, sponsorGroups(rows)).map((hub) => ({ ...hub, indexable: indexable.has(hub.slug) }));
+}
+
 export function findFailureHub(rows: TrialIndexRow[], slug: string): SeoHub | null {
   return buildFailureHubs(rows).find((hub) => hub.slug === slug) || null;
 }
 
-export function findSponsorHub(rows: TrialIndexRow[], slug: string): SponsorHub | null {
-  const sponsor = countBy(rows, (row) => row.lead_sponsor || "Unknown sponsor")
-    .filter((item) => item.count >= SPONSOR_MIN_COUNT && item.label !== "Unknown sponsor")
-    .slice(0, SPONSOR_LIMIT)
-    .find((item) => slugify(item.label) === slug);
+export function findSponsorHub(rows: TrialIndexRow[], slug: string): (SponsorHub & { indexable: boolean }) | null {
+  const groups = sponsorGroups(rows);
+  const sponsor = groups.find((item) => slugify(item.label) === slug);
   if (!sponsor) return null;
 
   const memberRows = rows.filter((row) => (row.lead_sponsor || "") === sponsor.label);
-  return sponsorHubFromGroup(sponsor.label, memberRows);
+  const indexable = indexableSponsorGroups(groups).some((item) => item.label === sponsor.label);
+  return { ...sponsorHubFromGroup(sponsor.label, memberRows), indexable };
 }
 
 export function trialListItem(row: TrialIndexRow) {
