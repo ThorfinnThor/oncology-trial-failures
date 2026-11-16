@@ -60,4 +60,5 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python scripts/signals/check_text_readers.py
       - run: python scripts/signals/run_signals_tests.py
+      - run: python scripts/signals/smoke_build_signals.py
       - run: python scripts/review/run_review_tests.py

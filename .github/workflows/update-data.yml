@@ -159,6 +159,7 @@ jobs:
           NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
         run: |
           python scripts/signals/run_signals_tests.py
+          python scripts/signals/smoke_build_signals.py
           # Exit code 3 = time budget reached; the cache is saved below and the next run resumes.
           python -u scripts/signals/build_oncology_failure_signals.py --step all --max-seconds 9000 --workers 6
           # Diffs against the snapshot in .cache/signals, then refreshes it for the next run.

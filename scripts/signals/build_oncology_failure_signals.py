@@ -403,13 +403,13 @@ def main() -> int:
         mol_ids = sorted({m["molecule_chembl_id"] for m in chembl_hits.values() if m})
         chembl_mech = run_pool("chembl-mechanisms", lambda cid: tolerant(chembl_mechanisms, cid, []),
                                mol_ids, args.chembl_workers)
-        lookups = len(chembl_hits) + len(mol_ids)
+        chembl_lookup_count = len(chembl_hits) + len(mol_ids)
         if not chembl_failed:
             source_status["chembl"] = "OK"
         elif not mol_ids:
             source_status["chembl"] = f"UNAVAILABLE: all {len(chembl_failed)} failed lookups, none matched; first: {chembl_failed[0]}"
         else:
-            source_status["chembl"] = f"PARTIAL: {len(chembl_failed)} of {lookups} lookups failed; first: {chembl_failed[0]}"
+            source_status["chembl"] = f"PARTIAL: {len(chembl_failed)} of {chembl_lookup_count} lookups failed; first: {chembl_failed[0]}"
     except SourceUnavailable as exc:
         source_status["chembl"] = f"UNAVAILABLE: {exc}"
     print(f"chembl: {sum(1 for v in chembl_hits.values() if v)}/{len(chembl_hits)} queried names matched, {len(chembl_mech)} molecules with mechanism lookups")
