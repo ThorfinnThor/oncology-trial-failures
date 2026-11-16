@@ -63,10 +63,11 @@ top; clinician review per trial at clinician cost plus margin. Discount by givin
 halving the price.
 
 **When they answer:**
-1. Build the sample for their areas from the release of 9 Nov or later — not from 2 Nov (see 9).
-   A first generic sample (240 stop-reason labels, 120 endpoint labels, README) was made on 7 Nov
-   and sent to Schayan; it was not committed. Completed-trial endpoint labels exist only in the
-   weekly run's cache, so a sample with them needs a workflow step that writes it as an artifact.
+1. Build the sample for their areas once a weekly run has rebuilt the signals release (see 9):
+   `python scripts/samples/build_label_sample.py --out <dir> --area Oncology --phase 2 --phase 3
+   --for DEEPCISION` writes both CSVs and a README with that release's numbers. A first generic
+   sample went to Schayan on 7 Nov. Completed-trial endpoint labels exist only in the weekly run's
+   cache, so a sample with them needs a workflow step that writes it as an artifact.
 2. In a call: ask first (what they train, what "success" means to them, volume, current labels),
    then show one trial end to end, the sample and `/validation`.
 3. Contract: commercial licence; settle the ChEMBL ShareAlike question before shipping any
