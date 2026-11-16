@@ -27,6 +27,8 @@ type SponsorMeta = {
 
 type SponsorEvidencePageProps = {
   hub: SponsorMeta;
+  // false for sponsors outside the indexed set: the page stays reachable but is noindex.
+  indexable?: boolean;
   rows: TrialIndexRow[];
   stats: SponsorEvidenceStats;
   editorial?: SponsorEditorialInsight | null;
@@ -39,7 +41,7 @@ function percent(part: number, total: number): string {
   return `${value < 10 ? value.toFixed(1) : value.toFixed(0)}%`;
 }
 
-export default function SponsorEvidencePage({ hub, rows, stats, editorial, datasetMeta }: SponsorEvidencePageProps) {
+export default function SponsorEvidencePage({ hub, indexable = true, rows, stats, editorial, datasetMeta }: SponsorEvidencePageProps) {
   const canonicalUrl = `${SITE_URL}${hub.path}`;
   const items = displayHubRows(rows).map(trialListItem);
   const exploreHref = `/explore?sponsor=${encodeURIComponent(hub.label)}`;
@@ -96,7 +98,7 @@ export default function SponsorEvidencePage({ hub, rows, stats, editorial, datas
       <Head>
         <title>{hub.title}</title>
         <meta name="description" content={hub.description} />
-        <meta name="robots" content="index,follow" />
+        <meta name="robots" content={indexable ? "index,follow" : "noindex,follow"} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={hub.title} />
         <meta property="og:description" content={hub.description} />

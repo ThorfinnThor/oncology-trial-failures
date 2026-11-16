@@ -3,7 +3,7 @@ import type { GetStaticPaths, GetStaticProps } from "next";
 import SponsorEvidencePage from "@/components/SponsorEvidencePage";
 import {
   buildSponsorEditorialInsight,
-  buildSponsorHubs,
+  buildSponsorPages,
   displayHubRows,
   findSponsorHub,
   sponsorEvidenceStats,
@@ -20,21 +20,23 @@ type SponsorHubPageProps = {
     path: string;
     label: string;
   };
+  indexable: boolean;
   rows: TrialIndexRow[];
   stats: SponsorEvidenceStats;
   editorial: SponsorEditorialInsight | null;
   datasetMeta: DatasetMeta;
 };
 
-export default function SponsorHubPage({ hub, rows, stats, editorial, datasetMeta }: SponsorHubPageProps) {
-  return <SponsorEvidencePage hub={hub} rows={rows} stats={stats} editorial={editorial} datasetMeta={datasetMeta} />;
+export default function SponsorHubPage({ hub, indexable, rows, stats, editorial, datasetMeta }: SponsorHubPageProps) {
+  return <SponsorEvidencePage hub={hub} indexable={indexable} rows={rows} stats={stats} editorial={editorial} datasetMeta={datasetMeta} />;
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const { loadIndexServer } = await import("@/lib/server-data");
   const rows = await loadIndexServer();
   return {
-    paths: buildSponsorHubs(rows).map((hub) => ({ params: { slug: hub.slug } })),
+    // Every sponsor page, indexable or not, so no sponsor page turns into a 404 after a data update.
+    paths: buildSponsorPages(rows).map((hub) => ({ params: { slug: hub.slug } })),
     fallback: false,
   };
 };
@@ -56,6 +58,7 @@ export const getStaticProps: GetStaticProps<SponsorHubPageProps> = async (ctx) =
         path: hub.path,
         label: hub.label,
       },
+      indexable: hub.indexable,
       rows: displayHubRows(hub.rows, 60),
       stats: sponsorEvidenceStats(hub.rows),
       editorial: buildSponsorEditorialInsight(hub),
