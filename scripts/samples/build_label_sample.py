@@ -257,8 +257,6 @@ def main() -> int:
           "- A versioned rule-based classifier reads the registry stop reason. Every rule must survive negation (\"not "
           "due to safety concerns\" is not a safety stop). Novel or empty language goes to `UNRESOLVED`.",
           "- Exact stop-reason texts decided in an earlier AI-assisted review override the rules.",
-          "- Each week a language model re-reads new or changed stop reasons as a second reader; it never changes an "
-          "outcome on its own.",
           f"- Validation: a held-out sample of {val['sample_size']} stop-reason texts never used to build the rules, "
           "labelled blind by AI annotators. Biological-failure precision "
           f"{pct(est['biological_precision'])} (95% CI {pct(ci['biological_precision'][0])}–{pct(ci['biological_precision'][1])}), "

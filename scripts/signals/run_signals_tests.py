@@ -593,6 +593,32 @@ check("a test send says so in the mail itself",
 check("a real issue carries no test banner", "Test send." in _nl.render(_p, {}, "u")[1], False)
 check("a biopsy is not a drug", _nl.drugs("Biopsy; Biospecimen Collection; Glofitamab"), "Glofitamab")
 
+# ---------------------------------------------------------------------------
+# The package's reading of a cohort whose stops cannot be attributed. LAG-3 and LAG-3 + PD-(L)1
+# (one biological stop each, unattributable) failed to build every week until 16 Nov 2026:
+# len() was called on the stop count.
+# ---------------------------------------------------------------------------
+from scripts.signals.build_evidence_package import interpretation as _interp  # noqa: E402
+
+
+def _reading(stops: int) -> list[str]:
+    return _interp({
+        "headline": {"biological_stops": stops, "closed": 69, "rate": stops / 69, "comparator_rate": 0.05,
+                     "comparator_label": "all oncology trials", "closed_share": 0.8},
+        "attribution": {"stops_from_programme_cascade": 0, "stops_from_own_data": 0, "stops_unclear": stops},
+        "concentration": {"stop_programmes": stops, "stop_sponsors": stops, "largest_programme": "X",
+                          "largest_programme_stops": 1, "rate_leave_one_programme_out": None},
+        "endpoints": {"missed": 6, "readable": 9, "missed_sponsors": 3},
+        "failure_signature": {"molecules": 0, "stops": stops, "sentence": ""},
+        "ambiguity": {"unresolved_terminations": 0, "rate_if_all_unresolved_were_biological": None},
+    })
+
+
+check("one unattributable stop reads as one stop",
+      any(x.startswith("For the one stop, the record does not say") for x in _reading(1)), True)
+check("several unattributable stops are counted, not measured",
+      any(x.startswith("For none of the 3 stops does the record say") for x in _reading(3)), True)
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

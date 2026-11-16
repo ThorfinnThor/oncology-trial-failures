@@ -267,7 +267,26 @@ Worth a final step that fails the run (or mails the owner) when the signals step
 `failure`. And: fail the publish step when ChEMBL coverage drops far below the previous release.
 Don't build a sample for a customer from the 2 Nov release.
 
-### 10. Open pull requests
+### 10. Two more silent failures found on 16 Nov
+
+**LAG-3 and LAG-3 + PD-(L)1 diligence packages were never built** (failing since at least 26 Oct;
+the run on 16 Nov did not get that far). `interpretation()` in
+`scripts/signals/build_evidence_package.py` called `len()` on the stop count when a cohort's stops
+cannot be attributed — LAG-3 has one such stop. Fixed 16 Nov, with a test. Both briefs are on the
+site, so ordering their report has been failing; check after the next run that
+`web/data/private/evidence_packages.json` holds `oncology-lag-3` and `oncology-lag-3-pd-l-1`, and
+order one on the live site.
+
+**The independent language-model review of stop reasons has never run.** `ANTHROPIC_API_KEY` is
+not set as a GitHub secret; every run since at least 1 Oct logs "nothing was sent", and
+`data/llm_review/last_run.md` shows 0 stored readings. Nothing public claims it runs (the
+DEEPCISION mail says "AI-assisted review", which is true of the earlier review). But **the sample
+README sent to Schayan on 7 Nov says "Each week a language model reads every new or changed stop
+reason" — remove that line before that sample goes to anyone.** To switch it on:
+`docs/llm_review.md` (API key with a spend limit, secret `ANTHROPIC_API_KEY`; first full read
+about $5).
+
+### 11. Open pull requests
 
 - **#102 Research: can a model predict which trials fail?** Feasibility only, nothing on the site
   changes. Result: against the baseline, a model does *not* predict missed endpoints (AUC 0.683

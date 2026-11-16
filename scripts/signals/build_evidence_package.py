@@ -645,8 +645,9 @@ def interpretation(pkg: dict) -> list[str]:
                      "molecule, the population or the endpoint of the programmes that failed.")
     elif not a["stops_from_own_data"]:
         # Nothing could be attributed: say so, and never render "All 0 stops".
-        out.append(("For the one stop, the record does not say" if len(stops) == 1 else
-                    f"For none of the {len(stops)} stops does the record say")
+        # `stops` is a count here (headline biological_stops), not a list.
+        out.append(("For the one stop, the record does not say" if stops == 1 else
+                    f"For none of the {stops} stops does the record say")
                    + " whether the trial's own data or a decision taken elsewhere ended it. The rate therefore rests "
                      "on the stated reasons alone; the individual cases below are where to judge them.")
     elif a["stops_from_own_data"] == 1:
