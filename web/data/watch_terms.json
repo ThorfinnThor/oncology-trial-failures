@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_trials": 1025,
+  "source_trials": 1031,
   "groups": [
     {
       "key": "assets",
@@ -11,11 +11,11 @@
           "trials": 22
         },
         {
-          "term": "gemcitabine",
-          "trials": 21
+          "term": "pembrolizumab",
+          "trials": 22
         },
         {
-          "term": "pembrolizumab",
+          "term": "gemcitabine",
           "trials": 21
         },
         {
@@ -35,10 +35,6 @@
           "trials": 15
         },
         {
-          "term": "lenalidomide",
-          "trials": 14
-        },
-        {
           "term": "cisplatin",
           "trials": 13
         },
@@ -52,6 +48,10 @@
         },
         {
           "term": "paclitaxel",
+          "trials": 13
+        },
+        {
+          "term": "lenalidomide",
           "trials": 13
         },
         {
@@ -70,7 +70,7 @@
       "terms": [
         {
           "term": "PDCD1",
-          "trials": 51
+          "trials": 52
         },
         {
           "term": "TUBB",
@@ -78,7 +78,7 @@
         },
         {
           "term": "CD274",
-          "trials": 44
+          "trials": 45
         },
         {
           "term": "TYMS",
@@ -97,12 +97,12 @@
           "trials": 26
         },
         {
-          "term": "FLT3",
-          "trials": 24
+          "term": "PIK3CD",
+          "trials": 25
         },
         {
-          "term": "PIK3CD",
-          "trials": 23
+          "term": "FLT3",
+          "trials": 24
         },
         {
           "term": "VEGFA",
@@ -136,7 +136,7 @@
         },
         {
           "term": "Programmed cell death protein 1 inhibitor",
-          "trials": 39
+          "trials": 40
         },
         {
           "term": "Nucleic Acid Synthesis Inhibitors",
@@ -160,7 +160,7 @@
         },
         {
           "term": "Programmed cell death 1 ligand 1 inhibitor",
-          "trials": 25
+          "trials": 26
         },
         {
           "term": "Tyrosine-protein kinase receptor FLT3 inhibitor",

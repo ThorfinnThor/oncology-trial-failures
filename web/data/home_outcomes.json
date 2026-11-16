@@ -1,12 +1,12 @@
 {
- "read_on": "2026-11-02",
- "readable_completed": 4688,
+ "read_on": "2026-11-16",
+ "readable_completed": 4709,
  "cards": [
   {
    "key": "stopped_efficacy",
    "status": "Stopped",
    "label": "Efficacy or futility",
-   "count": 1619,
+   "count": 1627,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT05746559",
@@ -42,17 +42,17 @@
    "key": "completed_missed",
    "status": "Completed",
    "label": "Primary endpoint missed",
-   "count": 1949,
+   "count": 1957,
    "count_label": "completed trials",
    "example": {
-    "nct_id": "NCT03867084",
-    "sponsor": "Merck Sharp & Dohme LLC",
+    "nct_id": "NCT05093634",
+    "sponsor": "Rhythm Pharmaceuticals, Inc.",
     "phase": "Phase 3",
-    "drugs": "Pembrolizumab",
-    "evidence": "Recurrence-Free Survival (RFS) — one-sided p 0.719, no threshold stated; 0.2 or above, so not significant at any one-sided threshold in use. Hazard Ratio (HR) 1.06 (95% CI 0.88 to 1.26).",
+    "drugs": "Setmelanotide",
+    "evidence": "Treatment Period: Percent Change From Baseline in Body Mass Index (BMI) — p 0.147, no threshold stated; 0.1 or above, so not significant under any conventional threshold. Least-squares Mean Difference -4.293 (95% CI -10.106 to…",
     "evidence_source": "the sponsor's posted comparison",
     "posted": null,
-    "href": "https://clinicaltrials.gov/study/NCT03867084?tab=results",
+    "href": "https://clinicaltrials.gov/study/NCT05093634?tab=results",
     "external": true
    }
   },
@@ -60,17 +60,17 @@
    "key": "completed_met",
    "status": "Completed",
    "label": "Primary endpoint met",
-   "count": 2301,
+   "count": 2313,
    "count_label": "completed trials",
    "example": {
-    "nct_id": "NCT06109311",
-    "sponsor": "Eli Lilly and Company",
+    "nct_id": "NCT04578834",
+    "sponsor": "Novartis Pharmaceuticals",
     "phase": "Phase 3",
-    "drugs": "Orforglipron",
-    "evidence": "Change From Baseline in Hemoglobin A1c (HbA1c) — p <0.001, no threshold stated; below 0.01, so significant under any conventional threshold. Least Square (LS) Mean Difference (Net) -0.77 (95% CI -1.01 to -0.52).",
+    "drugs": "Iptacopan",
+    "evidence": "Ratio to Baseline in UPCR at 9 Months - Interim Analysis — one-sided p <0.0001, no threshold stated; below 0.025, so significant at any one-sided threshold in use. Geometric mean ratio 0.617 (95% CI 0.514 to 0.74).",
     "evidence_source": "the sponsor's posted comparison",
     "posted": null,
-    "href": "https://clinicaltrials.gov/study/NCT06109311?tab=results",
+    "href": "https://clinicaltrials.gov/study/NCT04578834?tab=results",
     "external": true
    }
   }
