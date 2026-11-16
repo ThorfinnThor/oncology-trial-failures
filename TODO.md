@@ -221,7 +221,15 @@ texts the gap rests on marked "Awaiting clinician review" (`docs/validation_cros
 DEEPCISION (BasGenBio) has been told that clinician review of those cases is scheduled for the
 coming weeks — so it has to happen.
 
-**The sheet:** `clinician_review.csv` — 11 texts, options A/B in random order, columns for the
+**The tool (16 Nov):** https://claude.ai/artifact/DRTJvGrrYc7pSi6W8XFjk9 — one case at a time,
+every answer saved as given, reviewers blind to our labels and to each other; the owner sees
+progress. The 11 cases are loaded. Invite each clinician from the page's Share menu by email as
+**Editor**. Plan: two clinicians independently, then they settle their disagreements together.
+Details and data layout: `tools/clinician-review/README.md`. (Schayan's own test run on 16 Nov
+agreed with the Claude reference on 6 of 11 and with GPT on 5 — these are hard cases; test answers
+deleted.)
+
+**The old sheet:** `clinician_review.csv` — 11 texts, options A/B in random order, columns for the
 verdict and "biological failure? yes / no / cannot tell". The key
 (`clinician_review_KEY_do_not_share.csv`) stays with Schayan until the verdicts are in. Neither
 file is in the repo; both were sent to Schayan on 7 Nov. About half an hour of clinician time.

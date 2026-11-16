@@ -1,0 +1,545 @@
+<title>Stop Reason Review</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+/* Layout: one case at a time. The sponsor's words on the left as a quoted record, the decision on the right; stacks on phones. */
+:root {
+  --bg: #f5f7f8; --surface: #ffffff; --surface-2: #eef2f3; --line: #d7dfe2;
+  --ink: #142126; --ink-2: #4b5d64; --ink-3: #7a8b91;
+  --accent: #0f6e74; --accent-ink: #ffffff; --accent-soft: #dcefef;
+  --bio: #a23c2a; --bio-soft: #f6e3de; --ok: #2f7a3e; --ok-soft: #e1f1e4; --warn: #8a6100; --warn-soft: #f7ecd2;
+  --quote: #f9fbfb;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-quote: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1719; --surface: #162124; --surface-2: #1d2a2e; --line: #2b3b40;
+  --ink: #e6eef0; --ink-2: #a9bbc0; --ink-3: #7e9298;
+  --accent: #4fb3b8; --accent-ink: #0b1416; --accent-soft: #173537;
+  --bio: #ec8a75; --bio-soft: #3a1f19; --ok: #7bc98a; --ok-soft: #17301d; --warn: #e2b54f; --warn-soft: #33290f;
+  --quote: #121c1f; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0f1719; --surface: #162124; --surface-2: #1d2a2e; --line: #2b3b40;
+  --ink: #e6eef0; --ink-2: #a9bbc0; --ink-3: #7e9298;
+  --accent: #4fb3b8; --accent-ink: #0b1416; --accent-soft: #173537;
+  --bio: #ec8a75; --bio-soft: #3a1f19; --ok: #7bc98a; --ok-soft: #17301d; --warn: #e2b54f; --warn-soft: #33290f;
+  --quote: #121c1f; color-scheme: dark }
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 18px 40px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--f-mono); font-size: 0.86em; }
+.muted { color: var(--ink-2); }
+.small { font-size: 13px; }
+.label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+
+/* header */
+.top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; justify-content: space-between; margin-bottom: 16px; }
+.brand { display: flex; flex-direction: column; gap: 2px; }
+.brand h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+.who { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--ink-2); font-size: 13px; border: 1px solid var(--line); }
+.btn { border: 1px solid var(--line); background: var(--surface); padding: 8px 14px; border-radius: 8px; font-weight: 500; }
+.btn:hover { border-color: var(--ink-3); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.btn.primary:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn.ghost { background: transparent; }
+.linkbtn { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+
+/* progress */
+.progress { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 14px; }
+.bar { flex: 1 1 220px; height: 8px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; min-width: 160px; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.dots { display: flex; flex-wrap: wrap; gap: 6px; }
+.dot { width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface); font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); display: grid; place-items: center; }
+.dot.done { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
+.dot.current { outline: 2px solid var(--ink); outline-offset: 1px; }
+
+/* main grid */
+.grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 20px; min-width: 0; }
+.casehead { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: baseline; margin-bottom: 14px; }
+.quote { font-family: var(--f-quote); font-size: 22px; line-height: 1.45; background: var(--quote); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 18px 20px; margin: 0 0 6px; overflow-wrap: anywhere; }
+.quote.empty { font-style: italic; color: var(--ink-3); font-size: 18px; }
+.src { font-size: 12.5px; color: var(--ink-3); margin-bottom: 18px; }
+details.ctx { border-top: 1px solid var(--line); padding-top: 12px; }
+details.ctx summary { cursor: pointer; font-weight: 600; color: var(--ink-2); }
+dl.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; margin: 12px 0 0; font-size: 14px; }
+dl.facts dt { color: var(--ink-3); }
+dl.facts dd { margin: 0; overflow-wrap: anywhere; }
+
+/* decision */
+fieldset { border: 0; padding: 0; margin: 0 0 18px; min-width: 0; }
+legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
+.opts { display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 2px 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); cursor: pointer; }
+.opt:hover { border-color: var(--ink-3); }
+.opt input { margin: 3px 0 0; accent-color: var(--accent); }
+.opt b { font-weight: 600; }
+.opt .k { font-family: var(--f-mono); font-size: 11px; color: var(--ink-3); margin-left: 6px; }
+.opt .d { grid-column: 2; font-size: 13px; color: var(--ink-2); }
+.opt.on { border-color: var(--accent); background: var(--accent-soft); }
+.opt.bio.on { border-color: var(--bio); background: var(--bio-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chipopt { position: relative; }
+.chipopt input { position: absolute; opacity: 0; pointer-events: none; }
+.chipopt span { display: inline-block; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13.5px; cursor: pointer; }
+.chipopt input:checked + span { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.chipopt input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; padding: 7px 14px; font-size: 13.5px; cursor: pointer; border-right: 1px solid var(--line); background: var(--surface); }
+.seg label:last-child span { border-right: 0; }
+.seg input:checked + span { background: var(--accent); color: var(--accent-ink); }
+.seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: -2px; }
+textarea { width: 100%; min-height: 70px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; background: var(--surface); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px; }
+.status { font-size: 13px; color: var(--ink-2); min-height: 1.5em; }
+.status.ok { color: var(--ok); }
+.status.err { color: var(--bio); }
+.hint { font-size: 12.5px; color: var(--ink-3); }
+
+/* notices, onboarding, owner */
+.notice { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r); padding: 18px 20px; margin-bottom: 16px; }
+.notice.warn { background: var(--warn-soft); border-color: var(--warn); }
+.notice h2 { font-size: 17px; margin-bottom: 6px; }
+.onboard { max-width: 560px; }
+.onboard form { display: grid; gap: 12px; margin-top: 12px; }
+.onboard input[type=text] { width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.done-card { text-align: left; }
+.owner { margin-top: 22px; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 11.5px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+td.num { font-variant-numeric: tabular-nums; text-align: right; }
+
+/* guidelines drawer */
+.guide { margin-top: 22px; }
+.guide summary { cursor: pointer; font-weight: 600; }
+.guide ul { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; max-width: 75ch; color: var(--ink-2); }
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="label">Clinical Trial Failures · blind review</span>
+      <h1>Why did this trial stop?</h1>
+    </div>
+    <div class="who" id="who"></div>
+  </header>
+
+  <div id="notice"></div>
+
+  <section id="onboard" class="notice onboard" hidden>
+    <h2>Before you start</h2>
+    <p class="muted">Your name is stored with your answers so we know who reviewed each case. Other reviewers do not see your answers.</p>
+    <form id="onboardForm">
+      <label for="rvName">Your name
+        <input type="text" id="rvName" autocomplete="name" required maxlength="80">
+      </label>
+      <label for="rvRole">Your role
+        <input type="text" id="rvRole" placeholder="e.g. oncologist, clinical pharmacologist" maxlength="80">
+      </label>
+      <div><button class="btn primary" type="submit">Start reviewing</button></div>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <div class="progress">
+      <span class="small" id="progText">0 of 0 reviewed</span>
+      <div class="bar" aria-hidden="true"><i id="progBar"></i></div>
+      <div class="dots" id="dots" role="list" aria-label="Cases"></div>
+    </div>
+
+    <div class="grid" id="caseView">
+      <article class="panel" aria-labelledby="caseTitle">
+        <div class="casehead">
+          <h2 class="label" id="caseTitle">Case</h2>
+          <span class="mono muted" id="caseId"></span>
+        </div>
+        <blockquote class="quote" id="quote"></blockquote>
+        <div class="src">The sponsor's stop reason, as written in the ClinicalTrials.gov record.</div>
+        <details class="ctx" id="ctx">
+          <summary>Trial details</summary>
+          <dl class="facts" id="facts"></dl>
+        </details>
+      </article>
+
+      <form class="panel" id="decision" novalidate>
+        <fieldset>
+          <legend>1 · What does the text say ended the trial? <span class="hint">(keys 1–6)</span></legend>
+          <div class="opts" id="outcomes"></div>
+        </fieldset>
+        <fieldset id="reasonSet" hidden>
+          <legend id="reasonLegend">2 · Main reason</legend>
+          <div class="chips" id="reasons"></div>
+        </fieldset>
+        <fieldset id="mixedSet" hidden>
+          <legend>2 · Which causes are stated? <span class="hint">(pick two or more)</span></legend>
+          <div class="chips" id="mixed"></div>
+        </fieldset>
+        <fieldset>
+          <legend>3 · How sure are you?</legend>
+          <div class="seg" role="radiogroup" aria-label="Confidence">
+            <label><input type="radio" name="conf" id="confHigh" value="HIGH"><span>Sure</span></label>
+            <label><input type="radio" name="conf" id="confMed" value="MEDIUM"><span>Fairly sure</span></label>
+            <label><input type="radio" name="conf" id="confLow" value="LOW"><span>Unsure</span></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend><label for="note">Comment <span class="hint">(optional)</span></label></legend>
+          <textarea id="note" maxlength="1000" placeholder="Anything that made this case hard to judge"></textarea>
+        </fieldset>
+        <div class="actions">
+          <button class="btn ghost" type="button" id="prevBtn">← Previous</button>
+          <span class="status" id="status" role="status" aria-live="polite"></span>
+          <button class="btn primary" type="submit" id="saveBtn" disabled>Save and next →</button>
+        </div>
+      </form>
+    </div>
+
+    <section class="notice done-card" id="doneCard" hidden>
+      <h2>All cases reviewed</h2>
+      <p class="muted">Thank you. Every answer is saved. You can go back to any case with the numbered buttons above and change it; changes are saved when you press “Save”.</p>
+    </section>
+
+    <details class="guide">
+      <summary>How to judge a case</summary>
+      <ul>
+        <li>Judge only what the stop reason states. Don't infer a cause from the drug, the sponsor or what you know about the programme.</li>
+        <li>A negated cause does not count: “not due to safety concerns” is not a safety stop.</li>
+        <li>Only a stated result counts. “Possible lack of efficacy” or “after an interim analysis” without the result is <b>Unclear</b>.</li>
+        <li>“Sponsor decision” with no reason is <b>Decision without a stated cause</b>. “Business” or “strategic reasons” is <b>Not about the drug</b>.</li>
+        <li>A regulatory hold with a stated toxicity is <b>Biological failure → Safety</b>. A hold without a medical cause is <b>Not about the drug → Regulatory</b>.</li>
+        <li>Two or more causes from different areas (e.g. futility and slow accrual) are <b>Several causes</b>.</li>
+        <li>“Futility” that the text ties only to slow or insufficient enrolment is <b>Not about the drug → Recruitment</b>: the trial could not answer its question, it did not answer it negatively.</li>
+        <li>A recall or removal of product lots (contamination, a quality defect, “for safety reasons” about the batch) is <b>Not about the drug → Supply / manufacturing</b>. Safety means harm from the drug's effect in people.</li>
+        <li>The trial details are there for orientation. When the text and the details disagree, judge the text.</li>
+      </ul>
+    </details>
+  </div>
+
+  <section class="owner" id="owner" hidden>
+    <h2 class="label">Reviewers (visible to you as the owner)</h2>
+    <div class="panel tablewrap" style="margin-top:8px">
+      <table>
+        <thead><tr><th>Reviewer</th><th>Role</th><th class="num">Reviewed</th><th>Last saved</th></tr></thead>
+        <tbody id="ownerRows"><tr><td colspan="4" class="muted">No reviewer has started yet.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+const OUTCOMES = [
+  { v: "BIOLOGICAL_FAILURE", t: "Biological failure", d: "Lack of efficacy, futility, a negative result, safety or toxicity, or an unfavourable benefit–risk.", bio: true,
+    reasons: [["EFFICACY_FUTILITY", "Efficacy / futility"], ["SAFETY", "Safety / toxicity"], ["BIOLOGICAL_UNSPECIFIED", "Benefit–risk, not separable"]] },
+  { v: "NON_BIOLOGICAL", t: "Not about the drug", d: "Recruitment, funding, business, regulatory, supply, staffing, protocol, external events.",
+    reasons: [["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Business / strategy"], ["REGULATORY", "Regulatory"],
+      ["SUPPLY_MANUFACTURING", "Supply / manufacturing"], ["STAFFING_RESOURCES", "Staff / site resources"], ["PROTOCOL_FEASIBILITY", "Protocol / feasibility"],
+      ["SUPPORT_WITHDRAWAL", "Partner withdrew support"], ["EXTERNAL_DISRUPTION", "External event (e.g. COVID-19)"], ["OPERATIONAL_OTHER", "Other administrative"]] },
+  { v: "MIXED_CAUSES", t: "Several causes", d: "Two or more causes from different areas, e.g. futility and slow accrual." },
+  { v: "NON_FAILURE_TRANSITION", t: "Not a failure", d: "Planned milestone reached, replaced by another study, or never started.",
+    reasons: [["PLANNED_MILESTONE", "Planned milestone"], ["REPLACEMENT_TRANSITION", "Replaced by another study"], ["NOT_INITIATED", "Never started"]] },
+  { v: "CAUSE_NOT_STATED", t: "Decision without a stated cause", d: "Someone decided (“sponsor decision”), but no reason is given.",
+    reasons: [["DECISION_WITHOUT_STATED_CAUSE", "Decision, no cause"], ["PROGRAM_ACTION_WITHOUT_STATED_CAUSE", "Programme stopped, no cause"]] },
+  { v: "UNKNOWN", t: "Unclear", d: "Fragment, status only, temporary hold, result not stated, or only negated causes." },
+];
+const MIXED_CAUSES = [["EFFICACY_FUTILITY", "Efficacy / futility"], ["SAFETY", "Safety / toxicity"], ["BIOLOGICAL_UNSPECIFIED", "Benefit–risk"],
+  ["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Business / strategy"], ["REGULATORY", "Regulatory"],
+  ["SUPPLY_MANUFACTURING", "Supply"], ["STAFFING_RESOURCES", "Staff / resources"], ["PROTOCOL_FEASIBILITY", "Protocol"],
+  ["SUPPORT_WITHDRAWAL", "Partner withdrew"], ["EXTERNAL_DISRUPTION", "External event"], ["OPERATIONAL_OTHER", "Other administrative"]];
+const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-16)";
+
+const $ = (id) => document.getElementById(id);
+const S = { db: null, user: null, uid: null, canWrite: true, owner: false, profile: null,
+  cases: [], answers: {}, idx: 0, form: null, dirty: false, saving: false };
+
+function notice(html, kind) { $("notice").innerHTML = html ? `<div class="notice ${kind || ""}">${html}</div>` : ""; }
+function esc(s) { const d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
+function phases(p) { return (p || "").split(";").map(x => x.trim().replace("PHASE", "Phase ").replace("EARLY_Phase 1", "Early Phase 1")).filter(Boolean).join(" / ") || "—"; }
+function words(s) { return (s || "").replace(/_/g, " ").toLowerCase().replace(/^./, c => c.toUpperCase()); }
+
+/* ---------- rendering ---------- */
+function buildOutcomes() {
+  $("outcomes").innerHTML = OUTCOMES.map((o, i) => `
+    <label class="opt ${o.bio ? "bio" : ""}" data-v="${o.v}">
+      <input type="radio" name="outcome" id="out_${o.v}" value="${o.v}">
+      <b>${esc(o.t)}<span class="k">${i + 1}</span></b>
+      <span class="d">${esc(o.d)}</span>
+    </label>`).join("");
+  $("mixed").innerHTML = MIXED_CAUSES.map(([v, t]) =>
+    `<label class="chipopt"><input type="checkbox" name="mixed" id="mix_${v}" value="${v}"><span>${esc(t)}</span></label>`).join("");
+}
+
+function renderReasons(outcome, selected) {
+  const o = OUTCOMES.find(x => x.v === outcome);
+  $("reasonSet").hidden = !(o && o.reasons);
+  $("mixedSet").hidden = outcome !== "MIXED_CAUSES";
+  if (o && o.reasons) {
+    $("reasonLegend").textContent = "2 · Main reason";
+    $("reasons").innerHTML = o.reasons.map(([v, t]) =>
+      `<label class="chipopt"><input type="radio" name="reason" id="rs_${v}" value="${v}" ${v === selected ? "checked" : ""}><span>${esc(t)}</span></label>`).join("");
+  } else {
+    $("reasons").innerHTML = "";
+  }
+  document.querySelectorAll(".opt").forEach(el => el.classList.toggle("on", el.dataset.v === outcome));
+}
+
+function readForm() {
+  const outcome = (document.querySelector('input[name="outcome"]:checked') || {}).value || "";
+  const reason = (document.querySelector('input[name="reason"]:checked') || {}).value || "";
+  const mixed = [...document.querySelectorAll('input[name="mixed"]:checked')].map(x => x.value);
+  const confidence = (document.querySelector('input[name="conf"]:checked') || {}).value || "";
+  const note = $("note").value.trim();
+  let primary = reason;
+  if (outcome === "MIXED_CAUSES") primary = "MULTIPLE";
+  if (outcome === "UNKNOWN") primary = "UNSPECIFIED";
+  return { outcome, primary_reason: primary, secondary_reasons: outcome === "MIXED_CAUSES" ? mixed : [], confidence, note };
+}
+
+function complete(f) {
+  if (!f.outcome || !f.confidence) return false;
+  if (f.outcome === "MIXED_CAUSES") return f.secondary_reasons.length >= 2;
+  if (f.outcome === "UNKNOWN") return true;
+  return !!f.primary_reason;
+}
+
+function refreshSave() {
+  const f = readForm();
+  $("saveBtn").disabled = !complete(f) || !S.canWrite || S.saving;
+  const last = S.idx >= S.cases.length - 1;
+  $("saveBtn").textContent = last ? "Save" : "Save and next →";
+}
+
+function fillForm(a) {
+  document.querySelectorAll('input[name="outcome"], input[name="conf"], input[name="mixed"]').forEach(x => { x.checked = false; });
+  $("note").value = "";
+  if (a) {
+    const o = document.getElementById("out_" + a.outcome); if (o) o.checked = true;
+    (a.secondary_reasons || []).forEach(v => { const m = document.getElementById("mix_" + v); if (m) m.checked = true; });
+    const c = document.querySelector(`input[name="conf"][value="${a.confidence}"]`); if (c) c.checked = true;
+    $("note").value = a.note || "";
+  }
+  renderReasons(a ? a.outcome : "", a ? a.primary_reason : "");
+  S.dirty = false;
+  refreshSave();
+}
+
+function renderCase() {
+  const c = S.cases[S.idx];
+  if (!c) return;
+  $("caseTitle").textContent = `Case ${S.idx + 1} of ${S.cases.length}`;
+  $("caseId").textContent = c.case_id || c._id;
+  const q = $("quote");
+  q.textContent = c.why_stopped || "No stop reason was given in the record.";
+  q.classList.toggle("empty", !c.why_stopped);
+  const rows = [["Title", esc(c.title || "—")], ["Status", esc(words(c.status) || "—")], ["Phase", esc(phases(c.phases))],
+    ["Conditions", esc(c.conditions || "—")], ["Interventions", esc(c.interventions || "—")],
+    ["Record", c.registry_url ? `<a href="${esc(c.registry_url)}" target="_blank" rel="noopener">${esc(c.nct_id)} on ClinicalTrials.gov ↗</a>` : esc(c.nct_id || "—")]];
+  $("facts").innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+  fillForm(S.answers[c._id]);
+  $("status").textContent = S.answers[c._id] ? "Saved earlier. Change anything and save again." : "";
+  $("status").className = "status";
+  $("prevBtn").disabled = S.idx === 0;
+  renderProgress();
+}
+
+function renderProgress() {
+  const n = S.cases.length, done = S.cases.filter(c => S.answers[c._id]).length;
+  $("progText").textContent = `${done} of ${n} reviewed`;
+  $("progBar").style.width = n ? `${(100 * done / n).toFixed(1)}%` : "0";
+  $("dots").innerHTML = S.cases.map((c, i) =>
+    `<button type="button" role="listitem" class="dot ${S.answers[c._id] ? "done" : ""} ${i === S.idx ? "current" : ""}" data-i="${i}" aria-label="Case ${i + 1}${S.answers[c._id] ? ", reviewed" : ""}">${i + 1}</button>`).join("");
+  const allDone = n > 0 && done === n;
+  $("doneCard").hidden = !allDone;
+}
+
+function renderWho() {
+  const bits = [];
+  if (S.profile) bits.push(`<span class="chip">Reviewing as <b>${esc(S.profile.name)}</b></span>`);
+  if (S.owner) bits.push(`<span class="chip">Owner</span>`);
+  $("who").innerHTML = bits.join("");
+}
+
+/* ---------- saving ---------- */
+async function saveCurrent() {
+  const c = S.cases[S.idx]; if (!c) return false;
+  const f = readForm(); if (!complete(f)) return false;
+  S.saving = true; refreshSave();
+  $("status").textContent = "Saving…"; $("status").className = "status";
+  const body = { ...f, case_id: c._id, nct_id: c.nct_id || "", batch: c.batch || "", guideline_version: GUIDE_VERSION,
+    reviewer_name: S.profile ? S.profile.name : "", saved_at: new Date().toISOString() };
+  try {
+    await S.db.doc(`reviews/${S.uid}/answers/${c._id}`).set(body);
+    try { await S.db.doc(`reviews/${S.uid}`).update({ updated_at: body.saved_at }); } catch (_) { /* profile doc may lag */ }
+    S.answers[c._id] = body; S.dirty = false;
+    const t = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    $("status").textContent = `Saved ${t}`; $("status").className = "status ok";
+    return true;
+  } catch (e) {
+    $("status").textContent = e && e.code === "invalid_argument"
+      ? "Your answers can't be saved with your current access. Ask the owner to share the page with you as Editor."
+      : "Not saved: the connection failed. Your answer is still here; press Save again.";
+    $("status").className = "status err";
+    if (e && e.code === "invalid_argument") { S.canWrite = false; }
+    return false;
+  } finally { S.saving = false; refreshSave(); }
+}
+
+async function goTo(i) {
+  if (i < 0 || i >= S.cases.length || i === S.idx) return;
+  if (S.dirty && complete(readForm()) && S.canWrite) await saveCurrent();
+  S.idx = i; renderCase();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ---------- events ---------- */
+function wire() {
+  buildOutcomes();
+  $("decision").addEventListener("change", (e) => {
+    if (e.target.name === "outcome") renderReasons(e.target.value, "");
+    S.dirty = true; refreshSave();
+  });
+  $("note").addEventListener("input", () => { S.dirty = true; refreshSave(); });
+  $("decision").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const ok = await saveCurrent();
+    if (!ok) return;
+    renderProgress();
+    const next = S.cases.findIndex((c, i) => i > S.idx && !S.answers[c._id]);
+    const target = next >= 0 ? next : (S.idx < S.cases.length - 1 ? S.idx + 1 : -1);
+    if (target >= 0) { S.idx = target; renderCase(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  });
+  $("prevBtn").addEventListener("click", () => goTo(S.idx - 1));
+  $("dots").addEventListener("click", (e) => { const b = e.target.closest(".dot"); if (b) goTo(+b.dataset.i); });
+  document.addEventListener("keydown", (e) => {
+    if ($("app").hidden || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && document.activeElement.type !== "radio" && document.activeElement.type !== "checkbox") return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const n = parseInt(e.key, 10);
+    if (n >= 1 && n <= OUTCOMES.length) {
+      const r = document.getElementById("out_" + OUTCOMES[n - 1].v);
+      r.checked = true; renderReasons(r.value, ""); S.dirty = true; refreshSave(); e.preventDefault();
+    }
+  });
+  $("onboardForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = $("rvName").value.trim(); if (!name) return;
+    const profile = { name, role: $("rvRole").value.trim(), started_at: new Date().toISOString() };
+    try {
+      await S.db.doc(`reviews/${S.uid}`).set(profile);
+      S.profile = profile; $("onboard").hidden = true; renderWho(); startReview();
+    } catch (err) {
+      notice(`<h2>Couldn't start</h2><p>${err && err.code === "invalid_argument"
+        ? "Your access to this page doesn't allow saving answers. Ask the owner to share it with you as Editor."
+        : "The connection failed. Please try again in a moment."}</p>`, "warn");
+    }
+  });
+}
+
+/* ---------- data ---------- */
+function loadTimer(msg) { return setTimeout(() => notice(`<p>${msg}</p>`, "warn"), 10000); }
+
+function startReview() {
+  if (!S.cases.length) {
+    notice(`<h2>No cases yet</h2><p class="muted">Cases appear here as soon as the owner adds a batch.</p>`);
+    return;
+  }
+  notice("");
+  $("app").hidden = false;
+  const first = S.cases.findIndex(c => !S.answers[c._id]);
+  S.idx = first >= 0 ? first : 0;
+  renderCase();
+}
+
+async function main() {
+  wire();
+  notice(`<p class="muted">Loading the cases…</p>`);
+  const claude = window.claude;
+  const [db, user] = await Promise.all([
+    claude && claude.use ? claude.use("db") : null,
+    claude && claude.use ? claude.use("user") : null,
+  ]);
+  if (!db || !user) {
+    notice(`<h2>Sign in to review</h2><p class="muted">Open this page while signed in to claude.ai. Your answers are saved to your account so nothing is lost between visits.</p>`, "warn");
+    return;
+  }
+  S.db = db; S.user = user;
+  S.uid = await user.id();
+  S.owner = await user.isOwner();
+  const can = await user.can("data.write");
+  if (!S.uid) { notice(`<h2>Sign in to review</h2><p class="muted">We couldn't identify your account on this page.</p>`, "warn"); return; }
+  if (can === false && !S.owner) {
+    S.canWrite = false;
+    notice(`<h2>Read-only access</h2><p class="muted">You can look at the cases but not save answers. Ask the owner to share this page with you as Editor.</p>`, "warn");
+  }
+
+  // Cases (shared, written only by the owner).
+  let gotCases = false;
+  const t1 = loadTimer("The cases can't be reached yet. Check your connection; the page keeps trying.");
+  db.collection("cases").orderBy("order").onSnapshot((snap) => {
+    if (!snap.metadata.fromCache) clearTimeout(t1);
+    const keepId = S.cases[S.idx] && S.cases[S.idx]._id;
+    S.cases = snap.docs.map(d => ({ _id: d.id, ...d.data() }));
+    if (!gotCases && !snap.metadata.fromCache) { gotCases = true; afterLoad(); }
+    else if (gotCases) {
+      const i = S.cases.findIndex(c => c._id === keepId); if (i >= 0) S.idx = i;
+      if (!$("app").hidden) renderProgress();
+    }
+  }, (e) => { clearTimeout(t1); notice(`<h2>Cases unavailable</h2><p class="muted">${esc(e.message || e.code)}</p>`, "warn"); });
+
+  // This reviewer's own answers. The review starts only once they are in, so it opens on the
+  // first open case with earlier answers filled in.
+  let answersReady;
+  const answersLoaded = new Promise((r) => { answersReady = r; });
+  db.collection(`reviews/${S.uid}/answers`).onSnapshot((snap) => {
+    const fresh = {};
+    snap.docs.forEach(d => { fresh[d.id] = d.data(); });
+    S.answers = fresh;
+    if (!snap.metadata.fromCache) answersReady();
+    if (!$("app").hidden) renderProgress();
+  }, () => answersReady());
+
+  async function afterLoad() {
+    await Promise.race([answersLoaded, new Promise((r) => setTimeout(r, 8000))]);
+    try {
+      const p = await db.doc(`reviews/${S.uid}`).get();
+      S.profile = p.exists ? p.data() : null;
+    } catch (_) { S.profile = null; }
+    renderWho();
+    if (S.owner) watchReviewers();
+    if (!S.profile && S.canWrite) { notice(""); $("onboard").hidden = false; return; }
+    startReview();
+  }
+}
+
+function watchReviewers() {
+  $("owner").hidden = false;
+  S.db.collection("reviews").onSnapshot(async (snap) => {
+    if (snap.empty) return;
+    const rows = await Promise.all(snap.docs.map(async (d) => {
+      const p = d.data() || {};
+      let count = 0;
+      try { count = (await S.db.collection(`reviews/${d.id}/answers`).get()).size; } catch (_) {}
+      const last = p.updated_at ? new Date(p.updated_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "—";
+      return `<tr><td>${esc(p.name || "Unnamed")}${d.id === S.uid ? " <span class=\"muted small\">(you)</span>" : ""}</td><td>${esc(p.role || "—")}</td><td class="num">${count} / ${S.cases.length}</td><td>${esc(last)}</td></tr>`;
+    }));
+    $("ownerRows").innerHTML = rows.join("");
+  }, () => {});
+}
+
+main();
+</script>
