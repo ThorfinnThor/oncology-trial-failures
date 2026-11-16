@@ -35,7 +35,20 @@ a batch of `set` writes to `cases` adds cases (keep `order` unique); a `list` of
 of `reviews/<id>/answers`, reads the answers. Answers for the held-out validation go into
 `validation/crosscheck_gpt61/decisions.json`, then `python scripts/crosscheck_heldout_v2.py`.
 
+## Batches and order
+
+Cases carry `batch`, `batch_label`, `batch_priority` and a global `order` (priority × 10000 +
+position). The page opens at the first unanswered case in that order, so a lower priority number
+is finished first; "Later" leaves a case open. Draw a new batch with
+`python tools/clinician-review/build_batch.py` (one trial per distinct stop-reason text, seeded,
+our labels frozen in `batches/<batch>.json` and never sent to the page), then load
+`<out>/cases/*.json` into `cases` with ArtifactData batch writes of up to 50.
+
 ## Loaded so far
 
-- `validation-disputed` (16 Nov 2026): the 11 held-out texts where the Claude reference and the
+- `oncology-2026-11` (priority 1, 16 Nov 2026): 150 oncology Phase 2/3 trials — 100 we label
+  biological, 50 others by outcome — from 3,775 distinct oncology stop-reason texts.
+  `batches/oncology-2026-11.json` holds our labels at draw time.
+
+- `validation-disputed` (priority 2, 16 Nov 2026): the 11 held-out texts where the Claude reference and the
   GPT-6.1 cross-check disagree on biological vs. not (`docs/validation_crosscheck_gpt61.md`).

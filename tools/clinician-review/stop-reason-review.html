@@ -63,6 +63,14 @@ button { cursor: pointer; }
 .dot { width: 30px; height: 30px; border-radius: 7px; border: 1px solid var(--line); background: var(--surface); font-family: var(--f-mono); font-size: 12px; color: var(--ink-2); display: grid; place-items: center; }
 .dot.done { background: var(--accent-soft); border-color: var(--accent); color: var(--ink); }
 .dot.current { outline: 2px solid var(--ink); outline-offset: 1px; }
+.dots.compact .dot { width: 14px; height: 14px; border-radius: 3px; font-size: 0; }
+.batches { display: grid; gap: 8px; margin-bottom: 14px; }
+.batchrow { display: grid; grid-template-columns: minmax(0, 220px) minmax(120px, 1fr) max-content; gap: 6px 14px; align-items: center; font-size: 14px; }
+.batchrow .name { font-weight: 600; overflow-wrap: anywhere; }
+.batchrow.cur .name::before { content: "▸ "; color: var(--accent); }
+.batchrow .cnt { font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: 13px; }
+.batchrow.done .cnt { color: var(--ok); }
+@media (max-width: 560px) { .batchrow { grid-template-columns: minmax(0, 1fr) max-content; } .batchrow .bar { grid-column: 1 / -1; grid-row: 2; } }
 
 /* main grid */
 .grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 18px; align-items: start; }
@@ -158,10 +166,10 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
   </section>
 
   <div id="app" hidden>
+    <div class="batches" id="batches" aria-label="Progress by batch"></div>
     <div class="progress">
-      <span class="small" id="progText">0 of 0 reviewed</span>
-      <div class="bar" aria-hidden="true"><i id="progBar"></i></div>
-      <div class="dots" id="dots" role="list" aria-label="Cases"></div>
+      <span class="small" id="progText"></span>
+      <div class="dots" id="dots" role="list" aria-label="Cases in this batch"></div>
     </div>
 
     <div class="grid" id="caseView">
@@ -206,14 +214,17 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
         <div class="actions">
           <button class="btn ghost" type="button" id="prevBtn">← Previous</button>
           <span class="status" id="status" role="status" aria-live="polite"></span>
-          <button class="btn primary" type="submit" id="saveBtn" disabled>Save and next →</button>
+          <span style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn ghost" type="button" id="skipBtn" title="Leave this case open and come back to it later">Later</button>
+            <button class="btn primary" type="submit" id="saveBtn" disabled>Save and next →</button>
+          </span>
         </div>
       </form>
     </div>
 
     <section class="notice done-card" id="doneCard" hidden>
       <h2>All cases reviewed</h2>
-      <p class="muted">Thank you. Every answer is saved. You can go back to any case with the numbered buttons above and change it; changes are saved when you press “Save”.</p>
+      <p class="muted">Thank you. Every answer is saved. You can still open any case from the squares above and change it. New cases may be added later; they will show up here.</p>
     </section>
 
     <details class="guide">
@@ -228,6 +239,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
         <li>“Futility” that the text ties only to slow or insufficient enrolment is <b>Not about the drug → Recruitment</b>: the trial could not answer its question, it did not answer it negatively.</li>
         <li>A recall or removal of product lots (contamination, a quality defect, “for safety reasons” about the batch) is <b>Not about the drug → Supply / manufacturing</b>. Safety means harm from the drug's effect in people.</li>
         <li>The trial details are there for orientation. When the text and the details disagree, judge the text.</li>
+        <li>Work in as many sittings as you like. Every answer is saved the moment you press Save; next time you start at the first open case. “Later” leaves a case open without answering it.</li>
       </ul>
     </details>
   </div>
@@ -236,8 +248,8 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
     <h2 class="label">Reviewers (visible to you as the owner)</h2>
     <div class="panel tablewrap" style="margin-top:8px">
       <table>
-        <thead><tr><th>Reviewer</th><th>Role</th><th class="num">Reviewed</th><th>Last saved</th></tr></thead>
-        <tbody id="ownerRows"><tr><td colspan="4" class="muted">No reviewer has started yet.</td></tr></tbody>
+        <thead><tr><th>Reviewer</th><th>Role</th><th class="num">Reviewed</th><th>By batch</th><th>Last saved</th></tr></thead>
+        <tbody id="ownerRows"><tr><td colspan="5" class="muted">No reviewer has started yet.</td></tr></tbody>
       </table>
     </div>
   </section>
@@ -321,8 +333,9 @@ function complete(f) {
 function refreshSave() {
   const f = readForm();
   $("saveBtn").disabled = !complete(f) || !S.canWrite || S.saving;
-  const last = S.idx >= S.cases.length - 1;
-  $("saveBtn").textContent = last ? "Save" : "Save and next →";
+  const others = S.cases.some((c, i) => i !== S.idx && !S.answers[c._id]);
+  $("saveBtn").textContent = others ? "Save and next →" : "Save";
+  $("skipBtn").hidden = !others;
 }
 
 function fillForm(a) {
@@ -342,7 +355,8 @@ function fillForm(a) {
 function renderCase() {
   const c = S.cases[S.idx];
   if (!c) return;
-  $("caseTitle").textContent = `Case ${S.idx + 1} of ${S.cases.length}`;
+  const b = batchOf(c), pos = b.cases.indexOf(c) + 1;
+  $("caseTitle").textContent = `${b.label} · case ${pos} of ${b.cases.length}`;
   $("caseId").textContent = c.case_id || c._id;
   const q = $("quote");
   q.textContent = c.why_stopped || "No stop reason was given in the record.";
@@ -358,14 +372,42 @@ function renderCase() {
   renderProgress();
 }
 
+function batches() {
+  const m = new Map();
+  S.cases.forEach(c => {
+    const k = c.batch || "cases";
+    if (!m.has(k)) m.set(k, { id: k, label: c.batch_label || "Cases", cases: [] });
+    m.get(k).cases.push(c);
+  });
+  return [...m.values()];  // S.cases is ordered by `order`, so batches come in priority order
+}
+function batchOf(c) { return batches().find(b => b.id === (c.batch || "cases")); }
+
 function renderProgress() {
   const n = S.cases.length, done = S.cases.filter(c => S.answers[c._id]).length;
-  $("progText").textContent = `${done} of ${n} reviewed`;
-  $("progBar").style.width = n ? `${(100 * done / n).toFixed(1)}%` : "0";
-  $("dots").innerHTML = S.cases.map((c, i) =>
-    `<button type="button" role="listitem" class="dot ${S.answers[c._id] ? "done" : ""} ${i === S.idx ? "current" : ""}" data-i="${i}" aria-label="Case ${i + 1}${S.answers[c._id] ? ", reviewed" : ""}">${i + 1}</button>`).join("");
-  const allDone = n > 0 && done === n;
-  $("doneCard").hidden = !allDone;
+  const cur = S.cases[S.idx], curBatch = cur ? batchOf(cur) : null;
+  $("batches").innerHTML = batches().map(b => {
+    const d = b.cases.filter(c => S.answers[c._id]).length, all = d === b.cases.length;
+    return `<div class="batchrow ${curBatch && b.id === curBatch.id ? "cur" : ""} ${all ? "done" : ""}">
+      <span class="name">${esc(b.label)}</span>
+      <div class="bar" aria-hidden="true"><i style="width:${(100 * d / b.cases.length).toFixed(1)}%"></i></div>
+      <span class="cnt">${all ? "✓ " : ""}${d} of ${b.cases.length}</span></div>`;
+  }).join("");
+  $("progText").textContent = `${done} of ${n} reviewed in total`;
+  if (curBatch) {
+    const many = curBatch.cases.length > 30;
+    $("dots").classList.toggle("compact", many);
+    $("dots").innerHTML = curBatch.cases.map((c) => {
+      const i = S.cases.indexOf(c), pos = curBatch.cases.indexOf(c) + 1;
+      return `<button type="button" role="listitem" class="dot ${S.answers[c._id] ? "done" : ""} ${i === S.idx ? "current" : ""}" data-i="${i}" title="Case ${pos}" aria-label="Case ${pos}${S.answers[c._id] ? ", reviewed" : ""}">${many ? "" : pos}</button>`;
+    }).join("");
+  }
+  $("doneCard").hidden = !(n > 0 && done === n);
+}
+
+function nextOpen(after) {
+  const i = S.cases.findIndex((c, j) => j > after && !S.answers[c._id]);
+  return i >= 0 ? i : S.cases.findIndex(c => !S.answers[c._id]);
 }
 
 function renderWho() {
@@ -420,11 +462,14 @@ function wire() {
     const ok = await saveCurrent();
     if (!ok) return;
     renderProgress();
-    const next = S.cases.findIndex((c, i) => i > S.idx && !S.answers[c._id]);
-    const target = next >= 0 ? next : (S.idx < S.cases.length - 1 ? S.idx + 1 : -1);
-    if (target >= 0) { S.idx = target; renderCase(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    const target = nextOpen(S.idx);
+    if (target >= 0 && target !== S.idx) { S.idx = target; renderCase(); window.scrollTo({ top: 0, behavior: "smooth" }); }
   });
   $("prevBtn").addEventListener("click", () => goTo(S.idx - 1));
+  $("skipBtn").addEventListener("click", () => {
+    const i = S.cases.findIndex((c, j) => j > S.idx && !S.answers[c._id]);
+    goTo(i >= 0 ? i : nextOpen(-1));
+  });
   $("dots").addEventListener("click", (e) => { const b = e.target.closest(".dot"); if (b) goTo(+b.dataset.i); });
   document.addEventListener("keydown", (e) => {
     if ($("app").hidden || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && document.activeElement.type !== "radio" && document.activeElement.type !== "checkbox") return;
@@ -460,7 +505,7 @@ function startReview() {
   }
   notice("");
   $("app").hidden = false;
-  const first = S.cases.findIndex(c => !S.answers[c._id]);
+  const first = nextOpen(-1);
   S.idx = first >= 0 ? first : 0;
   renderCase();
 }
@@ -532,10 +577,12 @@ function watchReviewers() {
     if (snap.empty) return;
     const rows = await Promise.all(snap.docs.map(async (d) => {
       const p = d.data() || {};
-      let count = 0;
-      try { count = (await S.db.collection(`reviews/${d.id}/answers`).get()).size; } catch (_) {}
+      let ids = [];
+      try { ids = (await S.db.collection(`reviews/${d.id}/answers`).get()).docs.map(x => x.id); } catch (_) {}
+      const have = new Set(ids);
+      const per = batches().map(b => `${esc(b.label)} ${b.cases.filter(c => have.has(c._id)).length}/${b.cases.length}`).join(" · ");
       const last = p.updated_at ? new Date(p.updated_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }) : "—";
-      return `<tr><td>${esc(p.name || "Unnamed")}${d.id === S.uid ? " <span class=\"muted small\">(you)</span>" : ""}</td><td>${esc(p.role || "—")}</td><td class="num">${count} / ${S.cases.length}</td><td>${esc(last)}</td></tr>`;
+      return `<tr><td>${esc(p.name || "Unnamed")}${d.id === S.uid ? " <span class=\"muted small\">(you)</span>" : ""}</td><td>${esc(p.role || "—")}</td><td class="num">${ids.length} / ${S.cases.length}</td><td>${per}</td><td>${esc(last)}</td></tr>`;
     }));
     $("ownerRows").innerHTML = rows.join("");
   }, () => {});
