@@ -50,5 +50,8 @@ our labels frozen in `batches/<batch>.json` and never sent to the page), then lo
   biological, 50 others by outcome — from 3,775 distinct oncology stop-reason texts.
   `batches/oncology-2026-11.json` holds our labels at draw time.
 
+- `oncology-bio-2026-11` (priority 3, 16 Nov 2026): every other oncology trial we label biological
+  — 638 distinct stop-reason texts, all phases and study types, the 100 of the sample excluded.
+  With the sample's 100, every biological label in oncology is in front of a clinician.
 - `validation-disputed` (priority 2, 16 Nov 2026): the 11 held-out texts where the Claude reference and the
   GPT-6.1 cross-check disagree on biological vs. not (`docs/validation_crosscheck_gpt61.md`).

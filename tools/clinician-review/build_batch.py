@@ -16,7 +16,10 @@ causes including a biological one); `--other` from the rest, stratified by outco
 be estimated too.
 
   python tools/clinician-review/build_batch.py --area Oncology --bio 100 --other 50 \\
-      --batch oncology-2026-11 --label "Oncology (Nov 2026)" --priority 1 --out /tmp/batch
+      --batch oncology-2026-11 --label "Oncology" --priority 1 --out /tmp/batch
+  python tools/clinician-review/build_batch.py --area Oncology --bio 100000 --other 0 --all-phases \\
+      --exclude-batch oncology-2026-11 --batch oncology-bio-2026-11 --label "Oncology: every failure label" \\
+      --priority 3 --out /tmp/batch2
 """
 from __future__ import annotations
 
@@ -49,6 +52,9 @@ def main() -> int:
     ap.add_argument("--priority", type=int, required=True, help="1 is reviewed first")
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--seed", type=int, default=20261116)
+    ap.add_argument("--all-phases", action="store_true", help="every phase and study type, not only interventional Phase 2/3")
+    ap.add_argument("--exclude-batch", action="append", default=[],
+                    help="leave out texts already drawn into this batch (repeatable)")
     args = ap.parse_args()
 
     rng = random.Random(args.seed)
@@ -57,11 +63,15 @@ def main() -> int:
     # Texts already used in the held-out validation are left out: they are judged there.
     held_out = {json.loads(l)["why_stopped"].strip().lower()
                 for l in open(ROOT / "validation/heldout_v2_blind.jsonl", encoding="utf-8")}
+    for other_batch in args.exclude_batch:
+        prev = json.loads((ROOT / "tools/clinician-review/batches" / f"{other_batch}.json").read_text())
+        held_out |= {c["why_stopped"].strip().lower() for c in prev["cases"]}
 
     pool, seen = [], set()
     candidates = [r for r in rows
-                  if r["disease_area"] == args.area and r["study_type"] == "INTERVENTIONAL"
-                  and ("PHASE2" in r["phases"] or "PHASE3" in r["phases"]) and r["why_stopped"].strip()]
+                  if r["disease_area"] == args.area and r["why_stopped"].strip()
+                  and (args.all_phases or (r["study_type"] == "INTERVENTIONAL"
+                                           and ("PHASE2" in r["phases"] or "PHASE3" in r["phases"])))]
     rng.shuffle(candidates)
     for r in candidates:
         key = r["why_stopped"].strip().lower()
@@ -77,11 +87,11 @@ def main() -> int:
         by_outcome[r["classification_final_outcome"]].append(r)
     # The non-biological share in proportion to the pool, at least 3 per outcome that exists.
     total = len(rest)
-    quota = {o: max(3, round(args.other * len(v) / total)) for o, v in by_outcome.items()}
+    quota = {o: max(3, round(args.other * len(v) / total)) for o, v in by_outcome.items()} if args.other else {}
     while sum(quota.values()) > args.other:
         biggest = max(quota, key=quota.get)
         quota[biggest] -= 1
-    other = [r for o, v in by_outcome.items() for r in v[: quota[o]]]
+    other = [r for o, v in by_outcome.items() for r in v[: quota.get(o, 0)]]
 
     picked = bio + other
     rng.shuffle(picked)  # reviewers must not be able to tell the strata apart by position
@@ -108,8 +118,10 @@ def main() -> int:
     batch_file.write_text(json.dumps({
         "batch": args.batch, "label": args.label, "priority": args.priority, "drawn_on": date.today().isoformat(),
         "release": meta.get("version"), "seed": args.seed, "area": args.area,
-        "design": f"{len(bio)} biological-labelled + {len(other)} other ({dict(quota)}), interventional Phase 2/3, "
-                  "one trial per distinct stop-reason text, held-out validation texts excluded",
+        "design": f"{len(bio)} biological-labelled + {len(other)} other ({dict(quota)}), "
+                  + ("all phases and study types" if args.all_phases else "interventional Phase 2/3")
+                  + ", one trial per distinct stop-reason text, held-out validation texts excluded"
+                  + (f", texts in {args.exclude_batch} excluded" if args.exclude_batch else ""),
         "pool": {"distinct_texts": len(pool), "biological": sum(is_bio(r) for r in pool), "other": len(rest)},
         "cases": frozen}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"{args.batch}: {len(picked)} cases ({len(bio)} biological, {len(other)} other {dict(quota)}) "
