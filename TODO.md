@@ -262,9 +262,11 @@ the "Build Oncology Failure Signals" step succeeded (its *outcome*, not the gree
 the log of the Newsletter step says `backlog: folded ['2026-11-09', '2026-11-16']` and a mail
 went out. Then `data/newsletter_backlog/` can be deleted.
 
-**Still open:** a failing step that is `continue-on-error` is invisible — the run is green.
-Worth a final step that fails the run (or mails the owner) when the signals step's outcome is
-`failure`. And: fail the publish step when ChEMBL coverage drops far below the previous release.
+**Done 16 Nov:** a last step, "Fail the run if a step failed quietly", turns the weekly run red
+when any continue-on-error step failed (signals, universe and rates, brief PDFs, product summary
+and packages, exports, newsletter, review), with a table of outcomes in the run summary. GitHub
+mails the owner on a red run. **Still open:** fail the publish step when ChEMBL coverage drops far
+below the previous release.
 Don't build a sample for a customer from the 2 Nov release.
 
 ### 10. Two more silent failures found on 16 Nov

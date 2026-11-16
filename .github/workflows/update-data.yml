@@ -194,6 +194,7 @@ jobs:
           cp .cache/universe/resolution_report.json product/discontinuation_rates/
 
       - name: Render discontinuation-rate briefs to PDF
+        id: brief_pdfs
         if: steps.discontinuation_rates.outcome == 'success'
         continue-on-error: true
         run: |
@@ -224,6 +225,7 @@ jobs:
       # those steps. Run inside the signals step it wrote a summary with no rate figures,
       # and the licensing page rendered "—" for every rate.
       - name: Build public product summary and sample
+        id: product_summary
         if: steps.signals.outcome == 'success'
         continue-on-error: true
         run: |
@@ -290,6 +292,7 @@ jobs:
       # checks above passed (an implicit success() guards this step), so an export never runs
       # ahead of the report it belongs to. Kept in Workers KV, not in this public repository.
       - name: Upload full cohort exports
+        id: cohort_exports
         if: steps.signals.outcome == 'success'
         continue-on-error: true
         env:
@@ -307,6 +310,7 @@ jobs:
       # signs up to a sending service.
       # ---------------------------------------------------------------------------
       - name: Newsletter
+        id: newsletter
         if: steps.signals.outcome == 'success'
         continue-on-error: true
         env:
@@ -321,6 +325,7 @@ jobs:
       # The preview the signup page shows is rewritten on every run and an issue page is written
       # when a mail went out; both happen after the last data commit, so they are committed here.
       - name: Commit newsletter preview and archive
+        id: newsletter_commit
         if: steps.signals.outcome == 'success'
         continue-on-error: true
         run: |
@@ -339,3 +344,44 @@ jobs:
           path: product/newsletter/
           if-no-files-found: ignore
           retention-days: 30
+
+      # ---------------------------------------------------------------------------
+      # The steps above are continue-on-error on purpose: one failing source must not stop the
+      # weekly data. But it also made every failure invisible — the run stayed green while the
+      # signals build crashed (9 and 16 Nov 2026), two diligence packages failed for weeks, and
+      # the newsletter was skipped. This step runs last, after everything that can run has run,
+      # and turns the run red when any of those steps failed. GitHub then mails the owner.
+      # ---------------------------------------------------------------------------
+      - name: Fail the run if a step failed quietly
+        if: always()
+        env:
+          REVIEW: ${{ steps.llm_review.outcome }}
+          SIGNALS: ${{ steps.signals.outcome }}
+          RATES: ${{ steps.discontinuation_rates.outcome }}
+          BRIEF_PDFS: ${{ steps.brief_pdfs.outcome }}
+          PRODUCT: ${{ steps.product_summary.outcome }}
+          EXPORTS: ${{ steps.cohort_exports.outcome }}
+          NEWSLETTER: ${{ steps.newsletter.outcome }}
+          NEWSLETTER_COMMIT: ${{ steps.newsletter_commit.outcome }}
+        run: |
+          failed=0
+          {
+            echo "## Steps that are allowed to fail without stopping the run"
+            echo ""
+            echo "| Step | Outcome |"
+            echo "| --- | --- |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for pair in "Independent review:$REVIEW" "Oncology Failure Signals:$SIGNALS" \
+                      "Trial universe and rates:$RATES" "Brief PDFs:$BRIEF_PDFS" \
+                      "Product summary, packages, asset index:$PRODUCT" "Cohort exports:$EXPORTS" \
+                      "Newsletter:$NEWSLETTER" "Newsletter archive commit:$NEWSLETTER_COMMIT"; do
+            name="${pair%%:*}"; outcome="${pair##*:}"
+            echo "| $name | ${outcome:-not reached} |" >> "$GITHUB_STEP_SUMMARY"
+            if [ "$outcome" = "failure" ]; then
+              echo "::error title=$name failed::Its log is above. The run went on without it; whatever depends on it was skipped."
+              failed=1
+            fi
+          done
+          # Exit code 3 from the signals build means its time budget ran out; the cache is saved
+          # and the next run resumes. Still red: that week has no product update and no newsletter.
+          exit $failed
