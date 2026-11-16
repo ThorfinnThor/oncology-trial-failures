@@ -1,11 +1,11 @@
 {
  "schema_version": 2,
- "release": "2026-11-02",
- "generated_at_utc": "2026-11-02T07:52:42Z",
+ "release": "2026-11-16",
+ "generated_at_utc": "2026-11-16T23:48:42Z",
  "last_sent_at": "2026-10-26T07:59:42Z",
  "counts": {
-  "added": 43,
-  "changed": 3
+  "added": 106,
+  "changed": 11
  },
  "added": [
   {
@@ -17,6 +17,38 @@
    "detail": "Study stopped early due to reaching the minimum number of DLTs required for halting the study due to toxicity."
   },
   {
+   "nct_id": "NCT07818330",
+   "title": "A Repeat Dose Study of the Dexmedetomidine Transdermal System in Healthy Subjects",
+   "sponsor": "Teikoku Pharma USA, Inc.",
+   "area": "Other",
+   "reason": "Safety",
+   "detail": "Sponsor decision, after observation of adverse events"
+  },
+  {
+   "nct_id": "NCT05900141",
+   "title": "An Open Label Extension (OLE) Study to Evaluate Long-term Safety and Tolerability of Pelacarsen (TQJ230)",
+   "sponsor": "Novartis Pharmaceuticals",
+   "area": "Cardiovascular",
+   "reason": "Efficacy / futility",
+   "detail": "Study terminated by sponsor following the outcome of the Lp(a)HORIZON study (NCT04023552), which did not meet its primary endpoint"
+  },
+  {
+   "nct_id": "NCT06415344",
+   "title": "Long-term Extension of GTX-102 in Angelman Syndrome",
+   "sponsor": "Ultragenyx Pharmaceutical Inc",
+   "area": "Other",
+   "reason": "Efficacy / futility",
+   "detail": "Lack of efficacy"
+  },
+  {
+   "nct_id": "NCT06617429",
+   "title": "Phase 3 Efficacy and Safety Study of GTX-102 in Pediatric Subjects With Angelman Syndrome (AS)",
+   "sponsor": "Ultragenyx Pharmaceutical Inc",
+   "area": "Other",
+   "reason": "Efficacy / futility",
+   "detail": "Lack of efficacy"
+  },
+  {
    "nct_id": "NCT03371979",
    "title": "Pegzilarginase and Pembrolizumab for Extensive Disease Small Cell Lung Cancer",
    "sponsor": "Immedica Pharma AB",
@@ -25,52 +57,20 @@
    "detail": "Study enrollment was halted early based on ongoing data monitoring; no efficacy analyses were performed"
   },
   {
-   "nct_id": "NCT06961344",
-   "title": "An Open-label Extension Safety Study of MELAS Patients Who Completed TIS6463-203 (PRIZM)",
-   "sponsor": "Tisento Therapeutics",
+   "nct_id": "NCT05985109",
+   "title": "KN 046 Plus Regorafenib in MSS Metastatic Colorectal Cancer",
+   "sponsor": "Peking University Cancer Hospital & Institute",
+   "area": "Oncology",
+   "reason": "Efficacy / futility",
+   "detail": "The study was stopped early due to lack of efficacy."
+  },
+  {
+   "nct_id": "NCT06692673",
+   "title": "Linaclotide for Colonoscopy Bowel Prep",
+   "sponsor": "University of Florida",
    "area": "Other",
    "reason": "Efficacy / futility",
-   "detail": "On 5 October 2026 the study was terminated based on results from the parent study, which did not meet its primary or secondary efficacy endpoints. The decision was not related to a safety."
-  },
-  {
-   "nct_id": "NCT04747431",
-   "title": "A Study of PBFT02 in Participants With FTD and Mutations in the Granulin Precursor (GRN) or C9ORF72 Genes",
-   "sponsor": "Passage Bio, Inc.",
-   "area": "Neurology",
-   "reason": "Biological, unspecified",
-   "detail": "The PBFT02-001 Study was terminated by the Sponsor, Passage Bio, Inc., due to strategic company resourcing decisions. The early closure is not related to safety, efficacy, or any change in the…"
-  },
-  {
-   "nct_id": "NCT02275169",
-   "title": "FSH in Azoospermic Men",
-   "sponsor": "Azienda Sanitaria Locale Bari",
-   "area": "Other",
-   "reason": "Funding",
-   "detail": "study funds not available"
-  },
-  {
-   "nct_id": "NCT04407650",
-   "title": "Ursodeoxycholic Acid vs Metformin in Gestational Diabetes Mellitus",
-   "sponsor": "King's College London",
-   "area": "Endocrine & Metabolic",
-   "reason": "Recruitment",
-   "detail": "CTIMP randomised part of the study was halted early due to difficulty to recruit sufficient participants."
-  },
-  {
-   "nct_id": "NCT04676802",
-   "title": "Pain Relief After Trapeziectomy: Ibuprofen & Acetaminophen Versus Oxycodone",
-   "sponsor": "Stanford University",
-   "area": "Immunology & Autoimmune",
-   "reason": "Supply manufacturing",
-   "detail": "Study drug supply unavailable"
-  },
-  {
-   "nct_id": "NCT06080178",
-   "title": "Goal-directed Fluid Therapy During Deep Inferior Epigastric Perforator (DIEP) Free Flap Breast Reconstruction",
-   "sponsor": "Algemeen Ziekenhuis Maria Middelares",
-   "area": "Other",
-   "reason": "Recruitment",
-   "detail": "The planned interim analysis revealed greater variability than expected, requiring a larger sample size. Given the limited eligible population, recruitment was deemed infeasible within a reasonable…"
+   "detail": "terminated early due to futility/ineffectiveness"
   }
  ],
  "changed": [
@@ -97,6 +97,46 @@
    "area": "Oncology",
    "reason": "",
    "detail": "Status: Suspended → Terminated; Stop reason: “Enrollment paused” → “discontinued enrollment”"
+  },
+  {
+   "nct_id": "NCT06378528",
+   "title": "Ketamine-assisted Psychotherapy for Adolescent PTSD (KAP)",
+   "sponsor": "University of Wisconsin, Madison",
+   "area": "Other",
+   "reason": "",
+   "detail": "Status: Suspended → Withdrawn"
+  },
+  {
+   "nct_id": "NCT04981860",
+   "title": "Comparison of Conjunctival Antimicrobial Activity and Patient Comfort Between Topical Hypochlorous Acid (Avenova) and Betadine",
+   "sponsor": "University of Miami",
+   "area": "Infectious Disease",
+   "reason": "",
+   "detail": "Status: Suspended → Terminated; Stop reason: “sample microbiologic results where not consistent” → “The study was terminated early due to operational feasibility challenges, including multi-site coord"
+  },
+  {
+   "nct_id": "NCT03756389",
+   "title": "Evaluation of Topical Application of BMX-010 in Subjects With Rosacea",
+   "sponsor": "BioMimetix JV, LLC",
+   "area": "Other",
+   "reason": "",
+   "detail": "Status: Suspended → Terminated; Stop reason: “Re-formulation of study product” → “Re-formulation of study product needed.”"
+  },
+  {
+   "nct_id": "NCT05425862",
+   "title": "Pidnarulex and Talazoparib in Patients With Metastatic Castration Resistant Prostate Cancer",
+   "sponsor": "Peter MacCallum Cancer Centre, Australia",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Status: Suspended → Terminated; Stop reason: “Enrolment suspended to further assess supplementary non-clinical study data.” → “It was decided to stop the study due to changes in the treatment landscap"
+  },
+  {
+   "nct_id": "NCT04241835",
+   "title": "A Study to Compare the Blood Levels and Safety of Tazemetostat in Participants With Advanced Cancer and Moderate/Severe Liver Impairment to…",
+   "sponsor": "Epizyme, Inc.",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Stop reason: “Ipsen decided to discontinue all active tazemetostat clinical trials.” → “Sponsor's decision to discontinue tazemetostat treatment based on emerging safety data from another clinical tri"
   }
  ],
  "recent": []

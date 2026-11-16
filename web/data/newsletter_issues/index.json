@@ -1,5 +1,13 @@
 [
  {
+  "date": "2026-11-16",
+  "subject": "106 new stopped trials, 11 records changed — 16 Nov 2026",
+  "counts": {
+   "added": 106,
+   "changed": 11
+  }
+ },
+ {
   "date": "2026-10-26",
   "subject": "100 new stopped trials, 12 records changed — 26 Oct 2026",
   "counts": {
