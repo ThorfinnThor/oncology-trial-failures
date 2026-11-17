@@ -52,6 +52,9 @@ button { cursor: pointer; }
 .btn:hover { border-color: var(--ink-3); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
 .btn.primary:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn.primary.incomplete { opacity: 0.6; }
+fieldset.needs > legend { color: var(--bio); }
+fieldset.needs > legend::after { content: " · still to choose"; font-weight: 400; }
 .btn.ghost { background: transparent; }
 .linkbtn { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 
@@ -358,9 +361,21 @@ function complete(f) {
   return !!f.primary_reason;
 }
 
+// What is still to choose, in the reviewer's words. Save stays clickable and says this instead of
+// sitting greyed out with no reason (a clinician could not tell why Save did nothing, 17 Nov).
+function missing(f) {
+  const m = [];
+  if (!f.outcome) m.push({ text: "step 1, what ended the trial", el: document.querySelector('input[name="outcome"]') });
+  else if (f.outcome === "MIXED_CAUSES" && f.secondary_reasons.length < 2) m.push({ text: "step 2, at least two causes", el: $("mixedSet") });
+  else if (f.outcome !== "MIXED_CAUSES" && f.outcome !== "UNKNOWN" && !f.primary_reason) m.push({ text: "step 2, the main reason", el: $("reasonSet") });
+  if (!f.confidence) m.push({ text: "step 3, how sure you are", el: $("confHigh") });
+  return m;
+}
+
 function refreshSave() {
   const f = readForm();
-  $("saveBtn").disabled = !complete(f) || !S.canWrite || S.saving;
+  $("saveBtn").disabled = !S.canWrite || S.saving;
+  $("saveBtn").classList.toggle("incomplete", !complete(f));
   const others = S.cases.some((c, i) => i !== S.idx && !S.answers[c._id]);
   $("saveBtn").textContent = others ? "Save and next →" : "Save";
   $("skipBtn").hidden = !others;
@@ -370,6 +385,7 @@ function refreshSave() {
 function fillForm(a) {
   document.querySelectorAll('input[name="outcome"], input[name="conf"], input[name="mixed"]').forEach(x => { x.checked = false; });
   $("note").value = "";
+  document.querySelectorAll("fieldset.needs").forEach(x => x.classList.remove("needs"));
   if (a) {
     const o = document.getElementById("out_" + a.outcome); if (o) o.checked = true;
     (a.secondary_reasons || []).forEach(v => { const m = document.getElementById("mix_" + v); if (m) m.checked = true; });
@@ -494,11 +510,21 @@ function wire() {
   buildOutcomes();
   $("decision").addEventListener("change", (e) => {
     if (e.target.name === "outcome") renderReasons(e.target.value, "");
+    document.querySelectorAll("fieldset.needs").forEach(x => x.classList.remove("needs"));
     S.dirty = true; refreshSave();
   });
   $("note").addEventListener("input", () => { S.dirty = true; refreshSave(); });
   $("decision").addEventListener("submit", async (e) => {
     e.preventDefault();
+    const gaps = missing(readForm());
+    if (gaps.length) {
+      $("status").textContent = "Still to choose: " + gaps.map(g => g.text).join(" and ") + ".";
+      $("status").className = "status err";
+      gaps.forEach(g => { const fs = g.el && g.el.closest("fieldset"); if (fs) fs.classList.add("needs"); });
+      const target = gaps[0].el;
+      if (target) { target.scrollIntoView({ behavior: "smooth", block: "center" }); if (target.focus) target.focus({ preventScroll: true }); }
+      return;
+    }
     const ok = await saveCurrent();
     if (!ok) return;
     renderProgress();
