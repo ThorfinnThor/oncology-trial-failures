@@ -93,6 +93,9 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
           <p className="atlasTribute">
             Behind most of these lights are people who volunteered to take part. What they made possible is part of what medicine knows today.
           </p>
+          <p className="atlasFollow">
+            New stops are added every week. <Link href="/newsletter">Get them by email, every two weeks →</Link>
+          </p>
         </header>
 
         <div className="atlasOverlay atlasControls">
@@ -239,7 +242,10 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
         #atlas-search { width: 220px; }
         .atlasBtn { padding: 0 14px; cursor: pointer; }
         .atlasBtn:hover { border-color: rgba(160, 178, 214, 0.4); }
-        .atlasRoot :is(.atlasField, .atlasBtn, .atlasLegend button, .atlasCard a, .atlasEyebrow a):focus-visible { outline: 2px solid var(--atlas-focus); outline-offset: 2px; }
+        .atlasFollow { margin: 0; font-size: 13px; line-height: 1.45; color: var(--atlas-ink-soft); }
+        .atlasRoot .atlasFollow a { color: var(--atlas-ink); text-decoration: underline; text-decoration-color: var(--atlas-line); text-underline-offset: 3px; }
+        .atlasRoot .atlasFollow a:hover { text-decoration-color: currentColor; }
+        .atlasRoot :is(.atlasField, .atlasBtn, .atlasLegend button, .atlasCard a, .atlasEyebrow a, .atlasFollow a):focus-visible { outline: 2px solid var(--atlas-focus); outline-offset: 2px; }
 
         .atlasLegend {
           bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
@@ -347,6 +353,7 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
           .atlasRoot h1 { font-size: 2rem; }
           .atlasThesis { font-size: 13px; }
           .atlasTribute { display: none; }
+          .atlasFollow { font-size: 12px; }
           .atlasControls {
             top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + var(--atlas-privacy-clearance));
             left: max(16px, env(safe-area-inset-left, 0px));
