@@ -114,7 +114,9 @@ MIXED → BIOLOGICAL_FAILURE (NCT05393999, ineffective against Omicron); nothing
 biological class. Every changed text: `docs/classification_change_2026-11-17_zero_enrolment.md`.
 Takes effect in the next weekly run (Monday 23 Nov, or a manual run before; the data files are
 reclassified there) — after it, check that `data/all_stopped_trials.csv` shows `classification_version`
-2.7.2 and the NOT_INITIATED count rose by about 320. The review tool's guidance says the same. Still open: texts like "drug not available … no patients enrolled" or
+2.7.3 and the NOT_INITIATED count rose by about 320. (2.7.3, same day: in MIXED_CAUSES, "the sponsor
+decided" is no longer listed as a secondary reason next to stated causes; 7 trials, outcomes
+unchanged.) The review tool's guidance says the same. Still open: texts like "drug not available … no patients enrolled" or
 "withdrawn … due to resources" become NOT_INITIATED because no rule reads that cause — better than
 RECRUITMENT, not yet right.
 
