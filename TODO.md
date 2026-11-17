@@ -100,6 +100,31 @@ file knows.
 
 ---
 
+## What makes the data hard to copy, and how to get it found (plan of 17 Nov)
+
+The full stopped-trial dataset and the code are public (GitHub, Zenodo, the site; CC BY-NC for the
+data). Anything built only from public sources can be downloaded or rebuilt. What cannot:
+
+- **Clinicians' verdicts** from the review tool (`tools/clinician-review/`). The strongest moat.
+  **Keep them out of the public repo and Zenodo**; deliver them only under licence. (The 11
+  disputed validation texts are the exception: they are published for transparency.)
+- **The weekly history** of what sponsors changed: nobody can produce it backwards.
+- **Completed-trial endpoint labels and the drug–target linkage**: internal today; keep it so.
+
+New sources worth adding: SEC 8-K filings and press releases (often the real stop reason where
+the registry says "sponsor decision" — use the facts, not the text); the EU register (CTIS / EU
+CTR); FDA complete response letters (published since 2025).
+
+Getting found, in this order:
+1. Clinicians start reviewing (moat and sales argument at once).
+2. Hugging Face: the free sample only, a dataset card stating the validation honestly (two model
+   families; clinician review under way), CC BY-NC, link to the commercial licence.
+3. One indexable product page per dataset on the site (Dataset markup already exists on the home
+   page, briefs, drug pages and the two-week updates; a page per dataset does not).
+4. SEC filings as a new source.
+5. Marketplaces once there is demand: Defined.ai first (AI training data), AWS Data Exchange and
+   Snowflake only when buyers ask for delivery there. First customers come direct.
+
 ## Product gaps that cost sales
 
 ### 3. Coverage is thin where it matters commercially
