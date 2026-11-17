@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.2"
+CLASSIFIER_VERSION = "2.7.3"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -11190,10 +11190,15 @@ def classify_reason_v2(
         )
 
     if domains > 1 or multiple_bio:
+        # The causes, once each. "The sponsor decided" names who acted, not why; next to stated
+        # causes it is not one of them (decided 17 Nov 2026).
         return ClassificationV2(
             OUTCOME_MIXED,
             REASON_MULTIPLE,
-            tuple(reasons),
+            tuple(dict.fromkeys(
+                reason for reason in reasons
+                if reason not in {REASON_DECISION_ONLY, REASON_PROGRAM_ACTION_ONLY}
+            )),
             _confidence(evidence, False),
             False,
             evidence,

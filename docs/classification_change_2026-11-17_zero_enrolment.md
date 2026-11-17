@@ -333,3 +333,10 @@ Count = trials with that exact text.
 
 - 1 × Due to nationwide shortage of Aminophylline. No subjects enrolled.
 
+
+## Also on 17 Nov (2.7.3): "the sponsor decided" is not a cause next to stated causes
+
+In MIXED_CAUSES, the secondary reasons listed DECISION_WITHOUT_STATED_CAUSE when the text said
+"the sponsor decided … due to X and Y", and could list a cause twice. The sponsor is who acted, not
+why. Seven trials lose that entry (and one a duplicate); outcome and primary reason do not change
+anywhere: NCT05689021, NCT06435845, NCT04642365, NCT04029688, NCT04649060, NCT01981187, NCT01453595.
