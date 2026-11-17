@@ -703,6 +703,7 @@ export default function HomePage({ stats, sampleTrials, browse }: HomePageProps)
                   <h3 id="v2-browse-areas">Disease areas</h3>
                   <ul>{browse.areas.map((item) => <li key={item.href}><Link href={item.href}>{item.label}</Link>{item.total ? <span>{compactNumber(item.total)}</span> : null}</li>)}</ul>
                   <Link href="/failures" className="v2BrowseMore">All failure hubs →</Link>
+                  <Link href="/atlas" className="v2BrowseMore">Every trial on one map →</Link>
                 </nav>
                 <nav aria-labelledby="v2-browse-sponsors">
                   <h3 id="v2-browse-sponsors">Sponsors</h3>

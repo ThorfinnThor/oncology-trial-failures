@@ -27,6 +27,7 @@
 /public/related-shards/
 /public/drug-pages/
 /public/sitemap/
+/public/atlas/
 
 # misc
 .DS_Store

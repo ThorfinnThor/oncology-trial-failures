@@ -26,6 +26,7 @@ const DATA_DRIVEN_PATHS = [
   "/",
   "/explore",
   "/overview",
+  "/atlas",
   "/failures",
   "/sponsors",
   "/insights",

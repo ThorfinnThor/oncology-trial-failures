@@ -26,6 +26,8 @@ if (!drugFiles.includes("catalog.json") || drugFiles.length < 3) {
 }
 // /sitemap.xml reads only this file (lib/sitemapEntries.ts); without it the sitemap would fail.
 await stat(path.join(assetsDir, "sitemap", "entries.json"));
+// /atlas draws its map from this file (lib/atlas.ts); without it the page shows only its text.
+await stat(path.join(assetsDir, "atlas", "data.json"));
 // by-trial.json is folded into the related-link shards at build time; the site never reads it.
 await rm(path.join(assetsDir, "drug-pages", "by-trial.json"), { force: true });
 
