@@ -252,6 +252,8 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
         <li>A regulatory hold with a stated toxicity is <b>Biological failure → Safety</b>. A hold without a medical cause is <b>Not about the drug → Regulatory</b>.</li>
         <li>Two or more causes from different areas (e.g. futility and slow accrual) are <b>Several causes</b>.</li>
         <li>“Futility” that the text ties only to slow or insufficient enrolment is <b>Not about the drug → Recruitment</b>: the trial could not answer its question, it did not answer it negatively.</li>
+        <li>“Nobody enrolled” and nothing more (“0 participant accrual”, “no participants enrolled”) is <b>Not a failure → Never started</b>: it restates that the trial enrolled no one and gives no cause. Choose <b>Not about the drug → Recruitment</b> only when the text says enrolment was attempted and failed (“unable to recruit”, “no accrual in one year”, “no patients after the study opened”). If another cause is named (funding, sponsor withdrew), that cause decides.</li>
+        <li>The sponsor is who decided, not a cause. A sponsor stopping for a business, portfolio or development reason (“to focus on another route of administration”, “portfolio prioritisation”) is <b>Not about the drug → Sponsor's business / strategy decision</b>. “Sponsor decision” with no reason is <b>Decision without a stated cause</b>. <b>Partner or funder withdrew support</b> is for someone other than the sponsor pulling out: a collaborator, a funder, a drug supplier.</li>
         <li>A recall or removal of product lots (contamination, a quality defect, “for safety reasons” about the batch) is <b>Not about the drug → Supply / manufacturing</b>. Safety means harm from the drug's effect in people.</li>
         <li>The trial details are there for orientation. When the text and the details disagree, judge the text.</li>
         <li>In batches marked “confirm”, our label is shown: press <b>Correct</b> if it fits the text, otherwise <b>Not correct</b> and choose the right one. About one label in twenty there is deliberately wrong, to check attention.</li>
@@ -275,10 +277,10 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
 const OUTCOMES = [
   { v: "BIOLOGICAL_FAILURE", t: "Biological failure", d: "Lack of efficacy, futility, a negative result, safety or toxicity, or an unfavourable benefit–risk.", bio: true,
     reasons: [["EFFICACY_FUTILITY", "Efficacy / futility"], ["SAFETY", "Safety / toxicity"], ["BIOLOGICAL_UNSPECIFIED", "Benefit–risk, not separable"]] },
-  { v: "NON_BIOLOGICAL", t: "Not about the drug", d: "Recruitment, funding, business, regulatory, supply, staffing, protocol, external events.",
-    reasons: [["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Business / strategy"], ["REGULATORY", "Regulatory"],
+  { v: "NON_BIOLOGICAL", t: "Not about the drug", d: "Recruitment, funding, a sponsor's business or development decision, regulatory, supply, staffing, protocol, external events.",
+    reasons: [["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Sponsor's business / strategy decision"], ["REGULATORY", "Regulatory"],
       ["SUPPLY_MANUFACTURING", "Supply / manufacturing"], ["STAFFING_RESOURCES", "Staff / site resources"], ["PROTOCOL_FEASIBILITY", "Protocol / feasibility"],
-      ["SUPPORT_WITHDRAWAL", "Partner withdrew support"], ["EXTERNAL_DISRUPTION", "External event (e.g. COVID-19)"], ["OPERATIONAL_OTHER", "Other administrative"]] },
+      ["SUPPORT_WITHDRAWAL", "Partner or funder withdrew support"], ["EXTERNAL_DISRUPTION", "External event (e.g. COVID-19)"], ["OPERATIONAL_OTHER", "Other administrative"]] },
   { v: "MIXED_CAUSES", t: "Several causes", d: "Two or more causes from different areas, e.g. futility and slow accrual." },
   { v: "NON_FAILURE_TRANSITION", t: "Not a failure", d: "Planned milestone reached, replaced by another study, or never started.",
     reasons: [["PLANNED_MILESTONE", "Planned milestone"], ["REPLACEMENT_TRANSITION", "Replaced by another study"], ["NOT_INITIATED", "Never started"]] },
@@ -287,10 +289,10 @@ const OUTCOMES = [
   { v: "UNKNOWN", t: "Unclear", d: "Fragment, status only, temporary hold, result not stated, or only negated causes." },
 ];
 const MIXED_CAUSES = [["EFFICACY_FUTILITY", "Efficacy / futility"], ["SAFETY", "Safety / toxicity"], ["BIOLOGICAL_UNSPECIFIED", "Benefit–risk"],
-  ["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Business / strategy"], ["REGULATORY", "Regulatory"],
+  ["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Sponsor's business / strategy"], ["REGULATORY", "Regulatory"],
   ["SUPPLY_MANUFACTURING", "Supply"], ["STAFFING_RESOURCES", "Staff / resources"], ["PROTOCOL_FEASIBILITY", "Protocol"],
-  ["SUPPORT_WITHDRAWAL", "Partner withdrew"], ["EXTERNAL_DISRUPTION", "External event"], ["OPERATIONAL_OTHER", "Other administrative"]];
-const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-17)";
+  ["SUPPORT_WITHDRAWAL", "Partner / funder withdrew"], ["EXTERNAL_DISRUPTION", "External event"], ["OPERATIONAL_OTHER", "Other administrative"]];
+const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-17c)";
 
 const $ = (id) => document.getElementById(id);
 const S = { db: null, user: null, uid: null, canWrite: true, owner: false, profile: null,
