@@ -47,6 +47,10 @@ jobs:
       - run: npm run check:seo-release
       - run: npm test
       - run: npm run build:cloudflare
+      # Bundle the Worker the way Workers Builds deploys it (worker-entry.mjs wraps the OpenNext
+      # worker), so a broken entry fails here instead of in production. Nothing is uploaded.
+      - run: npx opennextjs-cloudflare build --skipNextBuild
+      - run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/worker-bundle"
 
   # The rules that read free text (why a trial stopped, whose data stopped it) are checked on every
   # push, before the weekly run would publish anything built with them. MISTAKES.md #15.
