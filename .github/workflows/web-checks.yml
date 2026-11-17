@@ -46,10 +46,10 @@ jobs:
       # Keep the committed default report-only and fail if the reviewed URL scope expands accidentally.
       - run: npm run check:seo-release
       - run: npm test
-      # The OpenNext build runs build:cloudflare (open-next.config.ts) in standalone mode and then
-      # bundles the Worker the way Workers Builds deploys it (worker-entry.mjs wraps the OpenNext
-      # worker), so a broken entry fails here instead of in production. Nothing is uploaded.
-      - run: npx opennextjs-cloudflare build
+      # cloudflare:build is the deploy build minus the upload: OpenNext runs build:cloudflare
+      # (open-next.config.ts), bundles the Worker and trims oversized assets. The dry run then bundles
+      # worker-entry.mjs (which wraps the OpenNext worker), so a broken entry fails here, not in production.
+      - run: npm run cloudflare:build
       - run: npx wrangler deploy --dry-run --outdir "$RUNNER_TEMP/worker-bundle"
 
   # The rules that read free text (why a trial stopped, whose data stopped it) are checked on every
