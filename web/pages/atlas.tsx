@@ -158,6 +158,8 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
           --atlas-operational: #6ccbc5;
           --atlas-unclear: #6c7891;
           --atlas-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+          /* clears the site's fixed "Privacy choices" button (globals.css: 14px + 36px + 14px) */
+          --atlas-privacy-clearance: 64px;
           position: fixed;
           inset: 0;
           overflow: hidden;
@@ -277,7 +279,7 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
         .atlasDivider { height: 1px; margin: 4px 6px; background: var(--atlas-line); }
 
         .atlasStatus {
-          bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+          bottom: calc(env(safe-area-inset-bottom, 0px) + var(--atlas-privacy-clearance));
           right: max(16px, env(safe-area-inset-right, 0px));
           display: grid;
           justify-items: end;
@@ -346,13 +348,13 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
           .atlasThesis { font-size: 13px; }
           .atlasTribute { display: none; }
           .atlasControls {
-            top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+            top: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + var(--atlas-privacy-clearance));
             left: max(16px, env(safe-area-inset-left, 0px));
             max-width: none; display: grid; grid-template-columns: minmax(0, 1fr) auto auto;
           }
           #atlas-search { grid-column: 1 / -1; width: auto; min-width: 0; }
           #atlas-phase { min-width: 0; }
-          .atlasLegend { bottom: calc(env(safe-area-inset-bottom, 0px) + 104px); width: calc(100vw - 32px); grid-template-columns: 1fr 1fr; column-gap: 4px; padding: 8px; }
+          .atlasLegend { bottom: calc(env(safe-area-inset-bottom, 0px) + var(--atlas-privacy-clearance) + 88px); width: calc(100vw - 32px); grid-template-columns: 1fr 1fr; column-gap: 4px; padding: 8px; }
           .atlasLegendHead, .atlasDivider { grid-column: 1 / -1; }
           .atlasLegend button { font-size: 12px; padding: 4px; }
           .atlasStatus { display: none; }
@@ -449,7 +451,7 @@ function startAtlas(root: HTMLElement): () => void {
     const narrow = W < 760;
     const wide = W >= 1180;
     const padTop = narrow ? 200 : wide ? 70 : 230;
-    const padBottom = narrow ? 340 : 70;
+    const padBottom = narrow ? 390 : 70;
     const padSide = wide ? Math.min(520, W * 0.36) : narrow ? 20 : 300;
     const availW = W - padSide - 40, availH = H - padTop - padBottom;
     const k = Math.min(availW / (maxX - minX), availH / (maxY - minY));
@@ -675,7 +677,7 @@ function startAtlas(root: HTMLElement): () => void {
     if (W < 760) {
       card.style.left = "16px";
       card.style.top = "auto";
-      card.style.bottom = "calc(env(safe-area-inset-bottom, 0px) + 16px)";
+      card.style.bottom = "calc(env(safe-area-inset-bottom, 0px) + var(--atlas-privacy-clearance))";
     } else {
       card.style.bottom = "auto";
       placeCard(sx, sy);
