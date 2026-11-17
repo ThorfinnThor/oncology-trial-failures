@@ -27,6 +27,8 @@ type AtlasPageProps = {
 
 const fmt = (n: number) => n.toLocaleString("en-US");
 
+const RELOAD_IF_STUCK = `setTimeout(function(){var r=document.querySelector(".atlasRoot");if(!r||r.dataset.started)return;try{if(sessionStorage.getItem("atlas-reloaded"))return;sessionStorage.setItem("atlas-reloaded","1")}catch(e){return}location.reload()},12000)`;
+
 export const getStaticProps: GetStaticProps<AtlasPageProps> = async () => {
   const { loadIndexServer, loadMetaServer } = await import("@/lib/server-data");
   const [rows, meta] = await Promise.all([loadIndexServer(), loadMetaServer()]);
@@ -41,6 +43,7 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
 
   useEffect(() => {
     if (!rootRef.current) return;
+    rootRef.current.dataset.started = "1";
     return startAtlas(rootRef.current);
   }, []);
 
@@ -79,7 +82,15 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
       <div className="atlasRoot" ref={rootRef}>
         <canvas className="atlasStage" data-atlas="stage" aria-label={`Map of ${fmt(summary.total)} stopped clinical trials, one light per trial, grouped by disease area`} />
 
-        <div className="atlasLoading" data-atlas="loading">Gathering {fmt(summary.total)} lights…</div>
+        <div className="atlasLoading" data-atlas="loading">
+          <span data-atlas="loading-text">Gathering {fmt(summary.total)} lights…</span>
+          {/* Shown by CSS after a while, so it also works when the page script never ran. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- a full reload is the point */}
+          <a className="atlasLoadingHelp" href="/atlas">Still loading? Reload the page</a>
+        </div>
+        {/* A tab restored from an older deploy asks for script files that no longer exist and would
+            stay on the loading screen. If the page script has not started after 12 s, reload once. */}
+        <script dangerouslySetInnerHTML={{ __html: RELOAD_IF_STUCK }} />
 
         <header className="atlasOverlay atlasIntro">
           <div className="atlasEyebrow">
@@ -334,12 +345,19 @@ export default function AtlasPage({ summary, version }: AtlasPageProps) {
 
         .atlasLoading {
           position: absolute; inset: 0; z-index: 4;
-          display: grid; place-items: center;
+          display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
           font-family: var(--atlas-display); font-style: italic; font-size: 20px; color: var(--atlas-ink-soft);
           background: var(--atlas-night);
           transition: opacity 600ms ease;
         }
         .atlasLoading.done { opacity: 0; pointer-events: none; }
+        .atlasLoadingHelp {
+          font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-style: normal; font-size: 14px; color: var(--atlas-ink-soft);
+          text-decoration: underline; text-underline-offset: 3px;
+          opacity: 0; visibility: hidden; animation: atlasShowHelp 0s linear 10s forwards;
+        }
+        .atlasLoading.failed .atlasLoadingHelp { animation: none; opacity: 1; visibility: visible; }
+        @keyframes atlasShowHelp { to { opacity: 1; visibility: visible; } }
         .atlasToast {
           position: absolute; z-index: 5; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
           transform: translateX(-50%);
@@ -914,11 +932,19 @@ function startAtlas(root: HTMLElement): () => void {
   on(window, "hashchange", () => { if (D) readHash(); });
 
   resize();
-  fetch(ATLAS_DATA_URL)
-    .then((res) => {
-      if (!res.ok) throw new Error(`atlas data: ${res.status}`);
-      return res.json() as Promise<AtlasData>;
-    })
+  // One retry that skips the HTTP cache, each attempt capped so a stalled request cannot hang the page.
+  const loadData = (cache: RequestCache) => {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 45000);
+    return fetch(ATLAS_DATA_URL, { cache, signal: controller.signal })
+      .then((res) => {
+        if (!res.ok) throw new Error(`atlas data: ${res.status}`);
+        return res.json() as Promise<AtlasData>;
+      })
+      .finally(() => window.clearTimeout(timer));
+  };
+  loadData("default")
+    .catch(() => (alive ? loadData("reload") : Promise.reject(new Error("atlas closed"))))
     .then((data) => {
       if (!alive) return;
       D = data;
@@ -950,7 +976,8 @@ function startAtlas(root: HTMLElement): () => void {
     })
     .catch((error) => {
       console.error(error);
-      el("loading").textContent = "The map could not be loaded. Reload the page to try again.";
+      el("loading-text").textContent = "The map could not be loaded.";
+      el("loading").classList.add("failed");
     });
 
   return () => {
