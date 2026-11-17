@@ -16,8 +16,11 @@ reason and how sure they are, and each answer is saved as it is given.
 | `reviews/<user id>/answers/<case_id>` | One answer: `outcome`, `primary_reason`, `secondary_reasons`, `confidence`, `note`, `saved_at`, `guideline_version`. |
 
 Outcome and reason values are those of `validation/LABELING_GUIDELINES.md`. The page's own
-guidance adds two notes (16 Nov 2026): futility tied only to slow enrolment is Recruitment; a
-recall of product lots is Supply / manufacturing.
+guidance adds notes (16–17 Nov 2026): futility tied only to slow enrolment is Recruitment; a
+recall of product lots is Supply / manufacturing; "nobody enrolled" with nothing else is Never
+started (also in the guidelines and classifier 2.7.2); the sponsor is who decided, not a cause —
+a sponsor's business or development reason is "Sponsor's business / strategy decision", and
+"Partner or funder withdrew support" is for someone other than the sponsor.
 
 Reviewers see neither our labels nor each other's answers. The owner sees everyone's progress.
 

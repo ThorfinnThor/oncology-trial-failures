@@ -18,6 +18,8 @@ in each section is blocked on nothing but time.
   issue 2 on **16 Nov** ("106 new stopped trials, 11 records changed", 5 subscribers, the skipped
   weeks included). Archived at `/newsletter` (`web/data/newsletter_issues/`).
 - **Clinician review tool is ready** with 799 cases (see 8). Waiting for the clinicians.
+- **Classifier 2.7.2** (17 Nov): "nobody enrolled" is no longer a recruitment cause on its own;
+  371 trials relabelled from the next weekly run (see the section below).
 - **The diligence report is free during the beta, for a work email** (#94, 22 Oct). The order form
   also offers the newsletter (double opt-in). Leads land in the `LEADS` KV namespace and are
   mailed to `contact@clinicaltrialfailures.com`.
@@ -110,8 +112,9 @@ and failed; another named cause decides. 371 trials change on the current snapsh
 RECRUITMENT → NOT_INITIATED, 43 UNKNOWN → NOT_INITIATED, ~50 RECRUITMENT → the named cause), one
 MIXED → BIOLOGICAL_FAILURE (NCT05393999, ineffective against Omicron); nothing leaves the
 biological class. Every changed text: `docs/classification_change_2026-11-17_zero_enrolment.md`.
-Takes effect in the next weekly run (the data files are reclassified there). The review tool's
-guidance says the same. Still open: texts like "drug not available … no patients enrolled" or
+Takes effect in the next weekly run (Monday 23 Nov, or a manual run before; the data files are
+reclassified there) — after it, check that `data/all_stopped_trials.csv` shows `classification_version`
+2.7.2 and the NOT_INITIATED count rose by about 320. The review tool's guidance says the same. Still open: texts like "drug not available … no patients enrolled" or
 "withdrawn … due to resources" become NOT_INITIATED because no rule reads that cause — better than
 RECRUITMENT, not yet right.
 
@@ -254,6 +257,16 @@ the mail.
 
 **Status (17 Nov):** the review tool is live and loaded; no clinician has started. Schayan knows
 clinicians who will do this, paid, with time in a few weeks.
+
+**Guidance in the tool** ("How to judge a case", refined 16–17 Nov from Schayan's own trial run and
+questions): judge only what the text states; a negated cause does not count; a possible result is
+Unclear; futility tied only to slow enrolment is Recruitment; a recall of product lots is
+Supply / manufacturing; "nobody enrolled" with nothing else is Never started, Recruitment only
+when an attempt failed; **the sponsor is who decided, not a cause** — a sponsor's business,
+portfolio or development reason is "Sponsor's business / strategy decision", "sponsor decision"
+alone is "Decision without a stated cause", and "Partner or funder withdrew support" is for
+someone other than the sponsor pulling out. Answers record the guideline version they were given
+under.
 
 **Next for Schayan:**
 1. Invite each clinician on the page's Share menu, by email, as **Editor** (outside reviewers can
