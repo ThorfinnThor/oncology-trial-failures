@@ -450,8 +450,13 @@ function startAtlas(root: HTMLElement): () => void {
     // phones: statement above, legend and controls below
     const narrow = W < 760;
     const wide = W >= 1180;
-    const padTop = narrow ? 200 : wide ? 70 : 230;
-    const padBottom = narrow ? 390 : 70;
+    // Measured, not fixed: the statement wraps to more lines on small phones and large text sizes.
+    // 44px above the map leave room for the top cluster's label and count.
+    const rootTop = root.getBoundingClientRect().top;
+    const introBottom = root.querySelector(".atlasIntro")!.getBoundingClientRect().bottom - rootTop;
+    const legendTop = root.querySelector(".atlasLegend")!.getBoundingClientRect().top - rootTop;
+    const padTop = wide ? 70 : introBottom + 44;
+    const padBottom = narrow ? H - legendTop + 12 : 70;
     const padSide = wide ? Math.min(520, W * 0.36) : narrow ? 20 : 300;
     const availW = W - padSide - 40, availH = H - padTop - padBottom;
     const k = Math.min(availW / (maxX - minX), availH / (maxY - minY));
