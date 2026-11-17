@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """Draw a batch of trials for the clinician review tool.
 
-Writes two files:
+Writes:
   <out>/cases/<case_id>.json            one document per case, to load into the page's `cases`
                                         collection (nothing in it reveals our label)
+  <out>/qa_<batch>-labels.json          the label we shipped for each case, frozen at draw time, so
+                                        the clinicians' answers can be compared later even after
+                                        the classifier changes. Load it into the page's owner-only
+                                        `qa/<batch>-labels`; it never goes into this public repo,
+                                        or a reviewer could look up our answer.
   tools/clinician-review/batches/<batch>.json
-                                        the same cases WITH the label we shipped, frozen at draw
-                                        time, so the clinicians' answers can be compared later
-                                        even after the classifier changes
+                                        the cases without labels: which trials, drawn how
 
 The draw: interventional Phase 2/3 trials of one disease area that have a stop reason, one trial
 per distinct stop-reason text (a text decided once is decided for every trial that uses it),
@@ -97,7 +100,7 @@ def main() -> int:
     rng.shuffle(picked)  # reviewers must not be able to tell the strata apart by position
     out_cases = args.out / "cases"
     out_cases.mkdir(parents=True, exist_ok=True)
-    frozen = []
+    frozen, labels = [], {}
     base = args.priority * 10000
     for i, r in enumerate(picked, 1):
         case_id = f"{args.batch}-{i:03d}"
@@ -106,12 +109,12 @@ def main() -> int:
                "status": r["overall_status"], "phases": r["phases"], "conditions": r["conditions"],
                "interventions": r["intervention_names"], "registry_url": r["url"]}
         (out_cases / f"{case_id}.json").write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
-        frozen.append({"case_id": case_id, "nct_id": r["nct_id"], "why_stopped": r["why_stopped"],
-                       "stratum": "biological" if is_bio(r) else "other",
-                       "label_outcome": r["classification_final_outcome"],
-                       "label_primary_reason": r["classification_final_category"],
-                       "label_secondary_reasons": r["classification_secondary_reasons_v2"],
-                       "label_source": r["classification_source"], "classifier_version": r["classification_version"]})
+        frozen.append({"case_id": case_id, "nct_id": r["nct_id"], "why_stopped": r["why_stopped"]})
+        labels[case_id] = {"stratum": "biological" if is_bio(r) else "other",
+                           "label_outcome": r["classification_final_outcome"],
+                           "label_primary_reason": r["classification_final_category"],
+                           "label_secondary_reasons": r["classification_secondary_reasons_v2"],
+                           "label_source": r["classification_source"], "classifier_version": r["classification_version"]}
 
     batch_file = ROOT / "tools/clinician-review/batches" / f"{args.batch}.json"
     batch_file.parent.mkdir(parents=True, exist_ok=True)
@@ -123,7 +126,11 @@ def main() -> int:
                   + ", one trial per distinct stop-reason text, held-out validation texts excluded"
                   + (f", texts in {args.exclude_batch} excluded" if args.exclude_batch else ""),
         "pool": {"distinct_texts": len(pool), "biological": sum(is_bio(r) for r in pool), "other": len(rest)},
+        "labels_at_draw": f"owner-only document qa/{args.batch}-labels in the review page's database",
         "cases": frozen}, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    (args.out / f"qa_{args.batch}-labels.json").write_text(json.dumps(
+        {"batch": args.batch, "release": meta.get("version"), "drawn_on": date.today().isoformat(), "labels": labels},
+        ensure_ascii=False), encoding="utf-8")
     print(f"{args.batch}: {len(picked)} cases ({len(bio)} biological, {len(other)} other {dict(quota)}) "
           f"from {len(pool)} distinct texts; wrote {out_cases} and {batch_file.relative_to(ROOT)}")
     return 0

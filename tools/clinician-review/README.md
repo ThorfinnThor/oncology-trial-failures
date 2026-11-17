@@ -49,6 +49,9 @@ Each batch has a document `batches/<batch>` with `mode`:
 **Attention checks** in confirm batches: about 1 in 20 cases shows a deliberately wrong label,
 drawn only from texts that plainly state efficacy or safety; reviewers are told such checks exist.
 Which cases they are is kept in `qa/<batch>`, readable by the owner only — not in this repo.
+Our label for every drawn case, frozen at draw time, is kept the same way in `qa/<batch>-labels`
+(`build_batch.py` writes it to `<out>/qa_<batch>-labels.json` for loading), so a reviewer cannot
+look up our answer here.
 A reviewer who confirms a check has not read the case; weigh their confirmations accordingly.
 
 Access rules: `cases`, `batches`, `labels` read interact / write owner · `qa` owner only ·
@@ -67,7 +70,7 @@ our labels frozen in `batches/<batch>.json` and never sent to the page), then lo
 
 - `oncology-2026-11` (priority 1, 16 Nov 2026): 150 oncology Phase 2/3 trials — 100 we label
   biological, 50 others by outcome — from 3,775 distinct oncology stop-reason texts.
-  `batches/oncology-2026-11.json` holds our labels at draw time.
+  Our labels at draw time: `qa/oncology-2026-11-labels` (owner-only).
 
 - `oncology-bio-2026-11` (priority 3, 16 Nov 2026): every other oncology trial we label biological
   — 638 distinct stop-reason texts, all phases and study types, the 100 of the sample excluded.
