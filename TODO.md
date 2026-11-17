@@ -3,19 +3,21 @@
 Ordered by what stands between the site and its first paying customer. Everything above the line
 in each section is blocked on nothing but time.
 
-*Last reviewed 7 Nov 2026.*
+*Last reviewed 17 Nov 2026.*
 
 ---
 
 ## Where things stand
 
-- **The weekly data run works.** The Cloudflare scheduler dispatches `update-data.yml` every Monday
-  at 08:15 Europe/Berlin; every run since 1 Oct succeeded (last one 2 Nov). The
-  database holds about 24,000 stopped trials.
-- **The newsletter sends.** The first issue went out on **26 Oct 2026** ("100 new stopped trials,
-  12 records changed") and is archived at `/newsletter` (`web/data/newsletter_issues/`). **The
-  second issue, due 9 Nov, did not go out** — see 9. It goes out with the next weekly run
-  (Monday 23 Nov, or a manual run before), carrying the four weeks since 26 Oct.
+- **The weekly data run works again.** The Cloudflare scheduler dispatches `update-data.yml` every
+  Monday at 08:15 Europe/Berlin. The runs of 9 and 16 Nov looked green but had skipped the product
+  and the newsletter (see 9); the manual run of **16 Nov, 23:23 UTC, did everything**: signals
+  build, 65 packages incl. LAG-3, target genes back (53.7 %), newsletter. A failed step now turns
+  the run red. The database holds about 24,000 stopped trials.
+- **The newsletter sends.** Issue 1 on 26 Oct ("100 new stopped trials, 12 records changed"),
+  issue 2 on **16 Nov** ("106 new stopped trials, 11 records changed", 5 subscribers, the skipped
+  weeks included). Archived at `/newsletter` (`web/data/newsletter_issues/`).
+- **Clinician review tool is ready** with 799 cases (see 8). Waiting for the clinicians.
 - **The diligence report is free during the beta, for a work email** (#94, 22 Oct). The order form
   also offers the newsletter (double opt-in). Leads land in the `LEADS` KV namespace and are
   mailed to `contact@clinicaltrialfailures.com`.
@@ -235,89 +237,81 @@ Worth doing: order a report on the live site with the beta form (work email, new
 ticked), open the link, check the document, confirm the newsletter, and stop it from the link in
 the mail.
 
-### 8. Clinicians: the 11 disputed validation texts, then a paid review offer
+### 8. Clinicians review the labels — tool ready, clinicians to invite
 
-**Status (7 Nov):** Schayan knows clinicians who will do this; they are paid, and have time in a
-few weeks. Nothing is booked in the repo yet.
+**Status (17 Nov):** the review tool is live and loaded; no clinician has started. Schayan knows
+clinicians who will do this, paid, with time in a few weeks.
 
-**Why it matters:** a second model family (GPT-6.1) relabelled the 600 held-out texts on 7 Nov:
-98.2 % agreement on biological yes/no, but biological-failure precision is 91.0 % against its
-labels and 95.5 % against the Claude reference. Both figures are on `/validation`, with the 11
-texts the gap rests on marked "Awaiting clinician review" (`docs/validation_crosscheck_gpt61.md`).
-DEEPCISION (BasGenBio) has been told that clinician review of those cases is scheduled for the
-coming weeks — so it has to happen.
+**Next for Schayan:**
+1. Invite each clinician on the page's Share menu, by email, as **Editor** (outside reviewers can
+   only save as Editor; they need a free claude.ai account). Two clinicians, independently.
+2. Ask each for their rate per hour and how many stop reasons they judge per hour — that prices
+   the paid clinician review offered to DEEPCISION.
 
-**The tool (16 Nov):** https://claude.ai/artifact/DRTJvGrrYc7pSi6W8XFjk9 — one case at a time,
-every answer saved as given, reviewers blind to our labels and to each other; the owner sees
-progress. The 11 cases are loaded. Invite each clinician from the page's Share menu by email as
-**Editor**. Plan: two clinicians independently, then they settle their disagreements together.
-Details and data layout: `tools/clinician-review/README.md`. (Schayan's own test run on 16 Nov
-agreed with the Claude reference on 6 of 11 and with GPT on 5 — these are hard cases; test answers
-deleted.)
+**The tool:** https://claude.ai/artifact/DRTJvGrrYc7pSi6W8XFjk9 (bookmark it; opens in any browser
+signed in to claude.ai, also with Claude closed; listed at claude.ai/code/artifacts). One case at a
+time, every answer saved as given, work in any number of sittings, reviewers do not see each
+other; the owner sees everyone's progress. Source, data layout and how to add batches:
+`tools/clinician-review/README.md`.
 
-**Now loaded (17 Nov), 799 cases in three batches:** 1) oncology sample, 150, blind; 2) the 11
-disputed validation texts, blind; 3) every other oncology trial we label biological, 638, in
-*confirm* mode (our label shown, Correct / Not correct, ~1 in 20 a deliberately wrong attention
-check, list owner-only). Batch 1 + 3 = every biological label in oncology, ~10 hours per
-clinician. See `tools/clinician-review/README.md`.
+| Order | Batch | Cases | Mode | Purpose |
+| ---: | --- | ---: | --- | --- |
+| 1 | Oncology | 150 | blind | 100 we label biological + 50 others: clinician-validated precision and recall. **Hugging Face waits for this.** |
+| 2 | Validation: disputed cases | 11 | blind | The texts where the Claude and GPT references disagree; promised to DEEPCISION. |
+| 3 | Oncology: every failure label | 638 | confirm | Every other oncology trial we label biological, all phases. Our label is shown; Correct (Y) / Not correct (N). |
 
-**The old sheet:** `clinician_review.csv` — 11 texts, options A/B in random order, columns for the
-verdict and "biological failure? yes / no / cannot tell". The key
-(`clinician_review_KEY_do_not_share.csv`) stays with Schayan until the verdicts are in. Neither
-file is in the repo; both were sent to Schayan on 7 Nov. About half an hour of clinician time.
+Batch 1 + 3 = every biological label in oncology in front of a clinician. About 3 h for 1–2 and
+5–6 h for 3, per clinician. In batch 3, 32 cases (~1 in 20) show a deliberately wrong label as an
+attention check; reviewers are told. Which ones, and our labels at draw time for batches 1 and 3,
+are in the page's owner-only `qa/` documents, not in this repo (old versions of the batch files in
+git history still hold the labels; not worth rewriting history for).
 
-**When the verdicts come back:** record them in `validation/crosscheck_gpt61/decisions.json`
-(format in the cross-check report), run `python scripts/crosscheck_heldout_v2.py` and
-`python scripts/build_validation_public.py`, push. Then decide whether a rule changes — the likely
-candidates are "possible lack of efficacy" and directionless "findings" being read as biological
-(CLAUDE.md rules 1–4 apply: golden case first, corpus check, declared rule change).
+**Why batch 2 matters:** GPT-6.1 relabelled the 600 held-out texts on 7 Nov: 98.2 % agreement on
+biological yes/no, but biological-failure precision is 91.0 % against its labels and 95.5 %
+against the Claude reference. Both are on `/validation`, with the 11 texts the gap rests on marked
+"Awaiting clinician review" (`docs/validation_crosscheck_gpt61.md`). Schayan's own test run
+(16 Nov, answers deleted) agreed with Claude on 6 of 11 and with GPT on 5: these are hard cases.
 
-**Before then, ask the clinicians two things:** their rate per hour, and how many stop reasons
-they can judge per hour. That prices the paid offer DEEPCISION was given — clinician review of a
-larger, defined subset as a separate project (clinician fee plus a margin).
+**When answers come in (Claude reads them with ArtifactData):**
+- Batch 2: record the verdicts in `validation/crosscheck_gpt61/decisions.json`, run
+  `python scripts/crosscheck_heldout_v2.py` and `python scripts/build_validation_public.py`, push.
+- Batch 1: compare with `qa/oncology-2026-11-labels`; precision and recall of the biological label
+  in oncology, with intervals; a section on `/validation`; then the Hugging Face card.
+- Batch 3: list every corrected label; check the attention checks first (a reviewer who confirms
+  them is not reading). Corrections become reviewed decisions.
+- Then decide which rules change — likely "possible lack of efficacy" and directionless "findings"
+  read as biological. CLAUDE.md rules 1–4 apply (golden case first, corpus check, declared change).
+- **Clinicians' verdicts stay out of the public repo and Zenodo** (only the 11 validation texts are
+  published); they are the part of the data nobody can copy.
 
-### 9. The signals build failed on 9 and 16 Nov — fixed 16 Nov, check the next run
+The old CSV sheet for the 11 cases (`clinician_review.csv` + key, sent to Schayan on 7 Nov) is
+superseded by the tool.
 
-**What happened.** On 2 Nov one ChEMBL search ("Gemzar") answered HTTP 500 through every retry,
-and that one failure discarded the whole ChEMBL step: the Oncology Failure Signals release shipped
-with no ChEMBL asset and no target gene (`trials_with_focus_target_gene` 0.0 instead of ~0.54;
-the 5 Oct release went the same way). The fix of 7 Nov (`9d59f02`) made each lookup fail on its
-own — but named a counter `lookups`, the name of the RxNorm results in the same function. The
-build then crashed on 9 and 16 Nov (`AttributeError: 'int' object has no attribute 'get'`). The
-step is `continue-on-error`, so both runs showed green, and every step gated on it was skipped:
-product summary and sample, briefs index, validation page data, cohort exports — and the
-newsletter, which was due on 9 Nov.
+### 9. ~~The signals build failed on 9 and 16 Nov~~ — fixed and confirmed 16 Nov
 
-**Fixed 16 Nov (`88f1455` and the commit after it):**
-- the counter is renamed;
-- `scripts/signals/smoke_build_signals.py` runs the real build offline with every source stubbed
-  (including failing ChEMBL searches). It fails on the 7 Nov code with the same error. It now runs
-  on every push and before each weekly build;
-- the change reports of 9 and 16 Nov are in `data/newsletter_backlog/`; `newsletter.py` folds
-  them in once, so the next issue covers 26 Oct to the run date with nothing lost or told twice.
+On 2 Nov one ChEMBL search answered HTTP 500 and the whole ChEMBL step was discarded (no target
+genes in the release). The fix of 7 Nov (`9d59f02`) reused the name `lookups` and crashed the build
+on 9 and 16 Nov; the step is continue-on-error, so the runs looked green while the product and the
+newsletter were skipped. Then the first manual run's product commit was rejected because `main`
+had moved during the run.
 
-**Check after the next run (23 Nov, or start one by hand: Actions → Update trial failure data):**
-the "Build Oncology Failure Signals" step succeeded (its *outcome*, not the green tick);
-`trials_with_focus_target_gene` is back near 0.5; the run log shows `chembl: OK` or `PARTIAL`;
-the log of the Newsletter step says `backlog: folded ['2026-11-09', '2026-11-16']` and a mail
-went out. Then `data/newsletter_backlog/` can be deleted.
+Fixed 16 Nov: the name clash (`88f1455`), a smoke test of the whole build with stubbed sources on
+every push and before each weekly build, the skipped weeks folded into the newsletter
+(`data/newsletter_backlog/`, removed 17 Nov after use), a last step that turns the run red when a
+step failed quietly, and a pull before each data commit (`ddae778`). **Confirmed by the manual run
+of 16 Nov 23:23 UTC:** `chembl: PARTIAL` (13 of 542 failed, each on its own), target genes on
+53.7 % of trials, 65 packages, newsletter sent with both backlog weeks.
 
-**Done 16 Nov:** a last step, "Fail the run if a step failed quietly", turns the weekly run red
-when any continue-on-error step failed (signals, universe and rates, brief PDFs, product summary
-and packages, exports, newsletter, review), with a table of outcomes in the run summary. GitHub
-mails the owner on a red run. **Still open:** fail the publish step when ChEMBL coverage drops far
-below the previous release.
-Don't build a sample for a customer from the 2 Nov release.
+**Still open:** fail the publish step when ChEMBL coverage drops far below the previous release.
 
 ### 10. Two more silent failures found on 16 Nov
 
 **LAG-3 and LAG-3 + PD-(L)1 diligence packages were never built** (failing since at least 26 Oct;
 the run on 16 Nov did not get that far). `interpretation()` in
 `scripts/signals/build_evidence_package.py` called `len()` on the stop count when a cohort's stops
-cannot be attributed — LAG-3 has one such stop. Fixed 16 Nov, with a test. Both briefs are on the
-site, so ordering their report has been failing; check after the next run that
-`web/data/private/evidence_packages.json` holds `oncology-lag-3` and `oncology-lag-3-pd-l-1`, and
-order one on the live site.
+cannot be attributed — LAG-3 has one such stop. Fixed 16 Nov, with a test; **both packages built in
+the run of 16 Nov.** Still to do: order the LAG-3 report once on the live site (work email), open
+the link, and stop the newsletter from the link in the mail — the delivery path end to end (7).
 
 **The independent language-model review of stop reasons has never run.** `ANTHROPIC_API_KEY` is
 not set as a GitHub secret; every run since at least 1 Oct logs "nothing was sent", and
@@ -326,7 +320,7 @@ DEEPCISION mail says "AI-assisted review", which is true of the earlier review).
 README sent to Schayan on 7 Nov says "Each week a language model reads every new or changed stop
 reason" — remove that line before that sample goes to anyone.** To switch it on:
 `docs/llm_review.md` (API key with a spend limit, secret `ANTHROPIC_API_KEY`; first full read
-about $5).
+about $5). Schayan decided on 16 Nov not to switch it on for now.
 
 ### 11. Open pull requests
 
