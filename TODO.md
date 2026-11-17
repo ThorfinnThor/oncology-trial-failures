@@ -117,7 +117,8 @@ CTR); FDA complete response letters (published since 2025).
 
 Getting found, in this order:
 1. Clinicians start reviewing (moat and sales argument at once).
-2. Hugging Face: the free sample only, a dataset card stating the validation honestly (two model
+2. Hugging Face — **only once the 150-case oncology sample is clinician-reviewed** (decided
+   17 Nov), so the card can state a clinician-validated precision: the free sample only, a dataset card stating the validation honestly (two model
    families; clinician review under way), CC BY-NC, link to the commercial licence.
 3. One indexable product page per dataset on the site (Dataset markup already exists on the home
    page, briefs, drug pages and the two-week updates; a page per dataset does not).
@@ -253,6 +254,12 @@ progress. The 11 cases are loaded. Invite each clinician from the page's Share m
 Details and data layout: `tools/clinician-review/README.md`. (Schayan's own test run on 16 Nov
 agreed with the Claude reference on 6 of 11 and with GPT on 5 — these are hard cases; test answers
 deleted.)
+
+**Now loaded (17 Nov), 799 cases in three batches:** 1) oncology sample, 150, blind; 2) the 11
+disputed validation texts, blind; 3) every other oncology trial we label biological, 638, in
+*confirm* mode (our label shown, Correct / Not correct, ~1 in 20 a deliberately wrong attention
+check, list owner-only). Batch 1 + 3 = every biological label in oncology, ~10 hours per
+clinician. See `tools/clinician-review/README.md`.
 
 **The old sheet:** `clinician_review.csv` — 11 texts, options A/B in random order, columns for the
 verdict and "biological failure? yes / no / cannot tell". The key

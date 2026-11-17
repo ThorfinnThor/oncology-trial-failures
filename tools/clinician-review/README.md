@@ -5,9 +5,7 @@ reason and how sure they are, and each answer is saved as it is given.
 
 - **Live page:** https://claude.ai/artifact/DRTJvGrrYc7pSi6W8XFjk9 (private; owner: Schayan)
 - **Source:** `stop-reason-review.html` — published with the Artifact tool, capabilities
-  `db` + `user`, access rules:
-  `cases` read interact / write owner · `reviews` read admin / write owner ·
-  `reviews/{self}` read and write interact.
+  `db` + `user` (access rules below).
 
 ## Data
 
@@ -34,6 +32,27 @@ Cases and answers are read and written with Claude's `ArtifactData` tool on the 
 a batch of `set` writes to `cases` adds cases (keep `order` unique); a `list` of `reviews`, then
 of `reviews/<id>/answers`, reads the answers. Answers for the held-out validation go into
 `validation/crosscheck_gpt61/decisions.json`, then `python scripts/crosscheck_heldout_v2.py`.
+
+## Two review modes
+
+Each batch has a document `batches/<batch>` with `mode`:
+
+- `blind` — the reviewer sees the text and chooses outcome, reason and confidence. Used where the
+  answers measure our accuracy (the oncology sample, the disputed validation texts): showing our
+  label would pull reviewers toward it and flatter the figure.
+- `confirm` — the reviewer also sees our label (`labels/<batch>`, one document mapping case id to
+  the label shown) and presses **Correct** (Y) or **Not correct** (N), then chooses. About two to
+  three times faster; used where the job is checking every label, not measuring
+  (`oncology-bio-2026-11`). Answers carry `mode`, `verdict` (`confirmed`, `corrected`, `blind`) and
+  `shown_label`.
+
+**Attention checks** in confirm batches: about 1 in 20 cases shows a deliberately wrong label,
+drawn only from texts that plainly state efficacy or safety; reviewers are told such checks exist.
+Which cases they are is kept in `qa/<batch>`, readable by the owner only — not in this repo.
+A reviewer who confirms a check has not read the case; weigh their confirmations accordingly.
+
+Access rules: `cases`, `batches`, `labels` read interact / write owner · `qa` owner only ·
+`reviews` read admin / write owner · `reviews/{self}` read and write interact.
 
 ## Batches and order
 

@@ -113,6 +113,10 @@ legend { font-weight: 600; margin-bottom: 8px; padding: 0; }
 .seg input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: -2px; }
 textarea { width: 100%; min-height: 70px; resize: vertical; border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; background: var(--surface); }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; border-top: 1px solid var(--line); padding-top: 14px; }
+.confirm { border: 1px solid var(--accent); background: var(--accent-soft); border-radius: 8px; padding: 14px 16px; margin-bottom: 18px; display: grid; gap: 10px; }
+.confirm .ours { font-size: 17px; font-weight: 600; }
+.confirm .ours small { display: block; font-weight: 400; font-size: 13px; color: var(--ink-2); margin-top: 2px; }
+.confirm .row { display: flex; flex-wrap: wrap; gap: 8px; }
 .status { font-size: 13px; color: var(--ink-2); min-height: 1.5em; }
 .status.ok { color: var(--ok); }
 .status.err { color: var(--bio); }
@@ -143,7 +147,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <span class="label">Clinical Trial Failures · blind review</span>
+      <span class="label">Clinical Trial Failures · clinician review</span>
       <h1>Why did this trial stop?</h1>
     </div>
     <div class="who" id="who"></div>
@@ -187,6 +191,16 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
       </article>
 
       <form class="panel" id="decision" novalidate>
+        <section class="confirm" id="confirmBox" hidden aria-labelledby="confirmTitle">
+          <span class="label" id="confirmTitle">Our label for this text</span>
+          <div class="ours" id="ourLabel"></div>
+          <div class="row">
+            <button class="btn primary" type="button" id="agreeBtn">Correct, save and next <span class="hint" style="color:inherit">(Y)</span></button>
+            <button class="btn" type="button" id="disagreeBtn">Not correct <span class="hint">(N)</span></button>
+          </div>
+          <span class="hint">Some labels in this batch are deliberately wrong, to check that each one is read.</span>
+        </section>
+        <div id="fullForm">
         <fieldset>
           <legend>1 · What does the text say ended the trial? <span class="hint">(keys 1–6)</span></legend>
           <div class="opts" id="outcomes"></div>
@@ -211,6 +225,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
           <legend><label for="note">Comment <span class="hint">(optional)</span></label></legend>
           <textarea id="note" maxlength="1000" placeholder="Anything that made this case hard to judge"></textarea>
         </fieldset>
+        </div>
         <div class="actions">
           <button class="btn ghost" type="button" id="prevBtn">← Previous</button>
           <span class="status" id="status" role="status" aria-live="polite"></span>
@@ -239,6 +254,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
         <li>“Futility” that the text ties only to slow or insufficient enrolment is <b>Not about the drug → Recruitment</b>: the trial could not answer its question, it did not answer it negatively.</li>
         <li>A recall or removal of product lots (contamination, a quality defect, “for safety reasons” about the batch) is <b>Not about the drug → Supply / manufacturing</b>. Safety means harm from the drug's effect in people.</li>
         <li>The trial details are there for orientation. When the text and the details disagree, judge the text.</li>
+        <li>In batches marked “confirm”, our label is shown: press <b>Correct</b> if it fits the text, otherwise <b>Not correct</b> and choose the right one. About one label in twenty there is deliberately wrong, to check attention.</li>
         <li>Work in as many sittings as you like. Every answer is saved the moment you press Save; next time you start at the first open case. “Later” leaves a case open without answering it.</li>
       </ul>
     </details>
@@ -274,11 +290,21 @@ const MIXED_CAUSES = [["EFFICACY_FUTILITY", "Efficacy / futility"], ["SAFETY", "
   ["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Business / strategy"], ["REGULATORY", "Regulatory"],
   ["SUPPLY_MANUFACTURING", "Supply"], ["STAFFING_RESOURCES", "Staff / resources"], ["PROTOCOL_FEASIBILITY", "Protocol"],
   ["SUPPORT_WITHDRAWAL", "Partner withdrew"], ["EXTERNAL_DISRUPTION", "External event"], ["OPERATIONAL_OTHER", "Other administrative"]];
-const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-16)";
+const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-17)";
 
 const $ = (id) => document.getElementById(id);
 const S = { db: null, user: null, uid: null, canWrite: true, owner: false, profile: null,
-  cases: [], answers: {}, idx: 0, form: null, dirty: false, saving: false };
+  cases: [], answers: {}, idx: 0, form: null, dirty: false, saving: false,
+  modes: {}, labels: {}, correcting: false };
+
+function shownLabel(c) { return c && S.modes[c.batch] === "confirm" ? S.labels[c._id] || null : null; }
+function labelHtml(l) {
+  const o = OUTCOMES.find(x => x.v === l.outcome);
+  let r = "";
+  if (l.outcome === "MIXED_CAUSES") r = (l.secondary_reasons || []).map(v => (MIXED_CAUSES.find(m => m[0] === v) || [v, words(v)])[1]).join(" + ");
+  else if (o && o.reasons) r = ((o.reasons.find(x => x[0] === l.primary_reason)) || [l.primary_reason, words(l.primary_reason)])[1];
+  return `${esc(o ? o.t : words(l.outcome))}${r ? `<small>${esc(r)}</small>` : ""}`;
+}
 
 function notice(html, kind) { $("notice").innerHTML = html ? `<div class="notice ${kind || ""}">${html}</div>` : ""; }
 function esc(s) { const d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
@@ -336,6 +362,7 @@ function refreshSave() {
   const others = S.cases.some((c, i) => i !== S.idx && !S.answers[c._id]);
   $("saveBtn").textContent = others ? "Save and next →" : "Save";
   $("skipBtn").hidden = !others;
+  $("saveBtn").hidden = $("fullForm").hidden;
 }
 
 function fillForm(a) {
@@ -365,8 +392,14 @@ function renderCase() {
     ["Conditions", esc(c.conditions || "—")], ["Interventions", esc(c.interventions || "—")],
     ["Record", c.registry_url ? `<a href="${esc(c.registry_url)}" target="_blank" rel="noopener">${esc(c.nct_id)} on ClinicalTrials.gov ↗</a>` : esc(c.nct_id || "—")]];
   $("facts").innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
-  fillForm(S.answers[c._id]);
-  $("status").textContent = S.answers[c._id] ? "Saved earlier. Change anything and save again." : "";
+  const shown = shownLabel(c), prev = S.answers[c._id];
+  S.correcting = !!(shown && prev && prev.verdict === "corrected");
+  $("confirmBox").hidden = !shown;
+  if (shown) $("ourLabel").innerHTML = labelHtml(shown);
+  $("fullForm").hidden = !!shown && !S.correcting;
+  $("agreeBtn").disabled = !S.canWrite;
+  fillForm(shown && prev && prev.verdict !== "corrected" ? null : prev);
+  $("status").textContent = prev ? (prev.verdict === "confirmed" ? "You confirmed this label earlier." : "Saved earlier. Change anything and save again.") : "";
   $("status").className = "status";
   $("prevBtn").disabled = S.idx === 0;
   renderProgress();
@@ -418,9 +451,14 @@ function renderWho() {
 }
 
 /* ---------- saving ---------- */
-async function saveCurrent() {
+async function saveCurrent(explicit) {
   const c = S.cases[S.idx]; if (!c) return false;
-  const f = readForm(); if (!complete(f)) return false;
+  const shown = shownLabel(c);
+  let f = explicit;
+  if (!f) {
+    f = readForm(); if (!complete(f)) return false;
+    f = { ...f, mode: shown ? "confirm" : "blind", verdict: shown ? "corrected" : "blind", shown_label: shown || null };
+  }
   S.saving = true; refreshSave();
   $("status").textContent = "Saving…"; $("status").className = "status";
   const body = { ...f, case_id: c._id, nct_id: c.nct_id || "", batch: c.batch || "", guideline_version: GUIDE_VERSION,
@@ -465,6 +503,20 @@ function wire() {
     const target = nextOpen(S.idx);
     if (target >= 0 && target !== S.idx) { S.idx = target; renderCase(); window.scrollTo({ top: 0, behavior: "smooth" }); }
   });
+  $("agreeBtn").addEventListener("click", async () => {
+    const c = S.cases[S.idx], l = shownLabel(c); if (!l) return;
+    const ok = await saveCurrent({ outcome: l.outcome, primary_reason: l.primary_reason, secondary_reasons: l.secondary_reasons || [],
+      confidence: "CONFIRMED", note: "", mode: "confirm", verdict: "confirmed", shown_label: l });
+    if (!ok) return;
+    renderProgress();
+    const target = nextOpen(S.idx);
+    if (target >= 0 && target !== S.idx) { S.idx = target; renderCase(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  });
+  $("disagreeBtn").addEventListener("click", () => {
+    S.correcting = true; $("fullForm").hidden = false; fillForm(null);
+    $("status").textContent = "Choose what the text actually says."; $("status").className = "status";
+    const first = document.querySelector('input[name="outcome"]'); if (first) first.focus();
+  });
   $("prevBtn").addEventListener("click", () => goTo(S.idx - 1));
   $("skipBtn").addEventListener("click", () => {
     const i = S.cases.findIndex((c, j) => j > S.idx && !S.answers[c._id]);
@@ -474,6 +526,11 @@ function wire() {
   document.addEventListener("keydown", (e) => {
     if ($("app").hidden || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && document.activeElement.type !== "radio" && document.activeElement.type !== "checkbox") return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (!$("confirmBox").hidden && $("fullForm").hidden) {
+      if (e.key === "y" || e.key === "Y") { e.preventDefault(); $("agreeBtn").click(); return; }
+      if (e.key === "n" || e.key === "N") { e.preventDefault(); $("disagreeBtn").click(); return; }
+      return;
+    }
     const n = parseInt(e.key, 10);
     if (n >= 1 && n <= OUTCOMES.length) {
       const r = document.getElementById("out_" + OUTCOMES[n - 1].v);
@@ -558,8 +615,22 @@ async function main() {
     if (!$("app").hidden) renderProgress();
   }, () => answersReady());
 
+  // Batch modes and, for "confirm" batches, the label shown with each case. Without them a batch
+  // falls back to blind review rather than showing nothing.
+  async function loadMeta() {
+    try {
+      const bs = await db.collection("batches").get();
+      bs.docs.forEach(d => { S.modes[d.id] = (d.data() || {}).mode || "blind"; });
+      for (const [batch, mode] of Object.entries(S.modes)) {
+        if (mode !== "confirm") continue;
+        const l = await db.doc(`labels/${batch}`).get();
+        if (l.exists) Object.assign(S.labels, (l.data() || {}).labels || {});
+      }
+    } catch (_) { /* blind review still works */ }
+  }
+
   async function afterLoad() {
-    await Promise.race([answersLoaded, new Promise((r) => setTimeout(r, 8000))]);
+    await Promise.race([Promise.all([answersLoaded, loadMeta()]), new Promise((r) => setTimeout(r, 8000))]);
     try {
       const p = await db.doc(`reviews/${S.uid}`).get();
       S.profile = p.exists ? p.data() : null;

@@ -7031,5 +7031,11 @@
    "label_source": "RULE_V2",
    "classifier_version": "2.7.1"
   }
- ]
+ ],
+ "review_mode": "confirm",
+ "attention_checks": {
+  "count": 32,
+  "where": "owner-only document qa/oncology-bio-2026-11 in the review page's database (not in this repo, so reviewers cannot look them up)",
+  "rule": "about 1 in 20 cases, drawn only from texts that plainly state efficacy or safety; the label shown is deliberately wrong; reviewers are told such checks exist"
+ }
 }
