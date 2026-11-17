@@ -31,6 +31,7 @@ type PrimaryNavProps = {
 const DATA_LINKS = [
   { href: "/explore", label: "Explore the trials" },
   { href: "/overview", label: "Overview" },
+  { href: "/atlas", label: "Atlas of stopped trials" },
   { href: "/insights", label: "Insights" },
   { href: "/sponsor-insights", label: "Sponsor insights" },
   { href: "/outliers", label: "Outliers" },

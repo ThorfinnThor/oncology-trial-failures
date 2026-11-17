@@ -35,7 +35,7 @@ function legacySitemapXml(
     return date.toISOString();
   };
   const dataDrivenPaths = [
-    "/", "/explore", "/overview", "/failures", "/sponsors", "/insights", "/briefs", "/validation", "/asset-check",
+    "/", "/explore", "/overview", "/atlas", "/failures", "/sponsors", "/insights", "/briefs", "/validation", "/asset-check",
     "/packages", "/packages/sample", "/reports/latest-two-week-stopped-trial-updates", "/sponsor-insights",
     "/top-entities", "/outliers", "/clinical-trial-failures", "/why-clinical-trials-fail", "/failed-clinical-trials",
     "/terminated-clinical-trials", "/clinical-trial-futility", "/failed-endpoint-clinical-trials",
