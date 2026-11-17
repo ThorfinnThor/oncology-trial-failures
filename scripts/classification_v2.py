@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.3"
+CLASSIFIER_VERSION = "2.7.4"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -1880,6 +1880,12 @@ RULES: Tuple[Rule, ...] = (
         r"^(?:loss|withdrawal) of (?:study |sponsor )?support\.?$",
         r"^(?:sponsor|company|partner|collaborator) (?:discontinues|discontinued|withdrew|withdraws) support\.?$",
         r"^(?:partner|collaborator) termination\.?$",
+        # 2.7.4: a partner leaving the study ("the industrial partner withdrew from the study",
+        # "Calithera pulled out of this trial."). A named organisation is read only when the
+        # whole text is that one sentence and the name is not a participant, site or the sponsor.
+        r"\b(?:(?:industrial|industry|pharmaceutical|commercial|drug) )?(?:partner|collaborator|company) (?:withdrew from|has withdrawn from|pulled out of) (?:the |this )?(?:study|trial|project)\b",
+        r"^(?!(?:the |a |one |all |some )?(?:participants?|patients?|subjects?|volunteers?|investigators?|pi|principal investigator|sites?|centers?|centres?|hospitals?|institutions?|sponsors?|famil(?:y|ies)|parents?|study|trial)\b)"
+        r"[a-z][a-z0-9&.'-]*(?: [a-z0-9&.'-]+){0,3} pulled out of (?:this|the) (?:study|trial)\.?$",
     ),
     _rule(
         "ops.external",

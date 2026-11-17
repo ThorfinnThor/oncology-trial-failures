@@ -1428,3 +1428,7 @@
 {"why_stopped":"0 accrual","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"The drug was found to be ineffective against Omicron, so the study was terminated and no patients were enrolled.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"Due to slow enrollment and lack of response observed during the enrollment period, the Sponsor decided to close study enrollment early on 28 January 2015","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
+{"why_stopped":"Calithera pulled out of this trial.","outcome":"NON_BIOLOGICAL","primary_reason":"SUPPORT_WITHDRAWAL","needs_review":false}
+{"why_stopped":"the industrial partner withdrew from the study","outcome":"NON_BIOLOGICAL","primary_reason":"SUPPORT_WITHDRAWAL","needs_review":false}
+{"why_stopped":"Patient pulled out of the study","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"The trial was terminated as the participant withdrew from the trial.","outcome":"NON_BIOLOGICAL","primary_reason":"OPERATIONAL_OTHER","needs_review":false}
