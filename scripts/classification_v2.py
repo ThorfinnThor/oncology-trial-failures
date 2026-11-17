@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.1"
+CLASSIFIER_VERSION = "2.7.2"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -10749,6 +10749,25 @@ def _requires_semantic_review(text: str, reasons: Sequence[str]) -> bool:
     return False
 
 
+# "Nobody enrolled", in the words sponsors use for it.
+_ZERO_ENROLMENT = re.compile(
+    r"\b(?:0|zero|no|none)(?: (?:human |eligible )?(?:participants?|patients?|subjects?|volunteers?|one))?"
+    r" (?:were |was |have been |has been |)"
+    r"(?:enrolled|enrollments?|enrolments?|accrued|accruals?|recruited|recruitment|included)\b"
+)
+# Words that show enrolment was attempted and failed. With any of them, a recruitment reading stands.
+_ENROLMENT_ATTEMPTED = re.compile(
+    r"\b(?:unable|could not|couldn't|not possible|impossible|despite|fail\w*|difficult\w*|challeng\w*|"
+    r"low|poor|slow|insufficient|inadequate|inability|lack of (?:eligible |interested )?(?:patients|participants|subjects|enrol\w*|accrual|recruitment)|"
+    r"since (?:being |it was )?open\w*|after (?:the )?(?:study |trial |recruitment |enrol\w* )?(?:was |had been )?open\w*|"
+    r"opened|initiated but|in (?:one|two|three|four|six|\d+) (?:years?|months?)|within|over (?:the )?(?:past |last )?\w+ (?:years?|months?)|"
+    r"screen\w*|identif\w* (?:of )?(?:eligible )?(?:patients|participants|subjects)|no (?:eligible|interested)|"
+    r"declined|refused|not interested|competing|(?:lack of|no|little|low) interest|no potential|"
+    r"(?:were|was) identified|after \d+ (?:weeks?|months?|years?)|from the start|did not progress|"
+    r"as (?:anticipated|expected|planned))\b"
+)
+
+
 def classify_reason_v2(
     why_stopped: Optional[str],
     reviewed_index: Optional[Mapping[str, Mapping[str, Any]]] = None,
@@ -10807,11 +10826,27 @@ def classify_reason_v2(
         evidence = tuple(
             item for item in evidence if item.reason == REASON_UNSPECIFIED
         )
-    if re.fullmatch(
-        r"no (?:patients|participants|subjects) (?:were )?(?:included|enrolled|recruited)\.?",
-        text,
-    ):
+    if _ZERO_ENROLMENT.search(text) and not _ENROLMENT_ATTEMPTED.search(text):
+        # Decided 17 Nov 2026 by the owner. "Nobody enrolled" restates the registry status
+        # (WITHDRAWN = stopped before the first participant); on its own it is not a recruitment
+        # problem. RECRUITMENT needs an attempt or a failure in the text ("unable to recruit",
+        # "no accrual in one year", "since being open to enrollment"). Otherwise another stated
+        # cause decides (funding, resources, a PI who left), and with none the trial was
+        # NOT_INITIATED, as LABELING_GUIDELINES says ("no participants enrolled with no cause
+        # given") and as the reviewed decisions for "No participants enrolled" already were.
+        # Before: 274 such texts RECRUITMENT, 141 NOT_INITIATED, plus ~70 where another cause was
+        # named but RECRUITMENT won.
         evidence = tuple(item for item in evidence if item.reason != REASON_RECRUITMENT)
+        if not any(
+            item.reason not in {REASON_UNSPECIFIED, REASON_DECISION_ONLY, REASON_PROGRAM_ACTION_ONLY,
+                                REASON_NOT_INITIATED}
+            for item in evidence
+        ):
+            evidence = tuple(
+                item for item in evidence
+                if item.reason not in {REASON_DECISION_ONLY, REASON_PROGRAM_ACTION_ONLY}
+            ) + (Evidence("v272.zero_enrolment_without_cause", REASON_NOT_INITIATED,
+                          _ZERO_ENROLMENT.search(text).group(0), "HIGH"),)
     if re.search(
         r"\bdecision .{0,100}\bprior to (?:the )?study start\b.{0,80}"
         r"\bno patients were screened\b",

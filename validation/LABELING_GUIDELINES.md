@@ -46,6 +46,12 @@ from drug names, sponsor type or outside knowledge. Be conservative: never asser
 - A regulator/clinical hold without a stated medical cause = NON_BIOLOGICAL/REGULATORY; with a stated toxicity = MIXED_CAUSES is NOT used —
   use BIOLOGICAL_FAILURE/SAFETY with REGULATORY as secondary.
 - Only a stated result counts; a hypothesis or plan does not.
+- Nobody enrolled (added 17 Nov 2026): "No participants enrolled", "0 accrual", "no enrollment" with
+  nothing else restates that the trial enrolled no one = NON_FAILURE_TRANSITION/NOT_INITIATED.
+  RECRUITMENT only when the text says enrolment was attempted and failed ("unable to recruit",
+  "no accrual in one year", "since it opened", "lack of interest"). If another cause is named
+  (funding, PI left, business decision, COVID), that cause decides. The held-out reference labels
+  of September 2026 were made before this note; they already treated such texts this way.
 
 ## Output format
 

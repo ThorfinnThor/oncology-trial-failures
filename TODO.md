@@ -102,6 +102,19 @@ file knows.
 
 ---
 
+## Classification change of 17 Nov: "nobody enrolled" (classifier 2.7.2)
+
+Decided by Schayan: a stop reason that only says nobody enrolled is NOT_INITIATED (it restates the
+WITHDRAWN status and names no cause); RECRUITMENT only when the text says enrolment was attempted
+and failed; another named cause decides. 371 trials change on the current snapshot (276
+RECRUITMENT → NOT_INITIATED, 43 UNKNOWN → NOT_INITIATED, ~50 RECRUITMENT → the named cause), one
+MIXED → BIOLOGICAL_FAILURE (NCT05393999, ineffective against Omicron); nothing leaves the
+biological class. Every changed text: `docs/classification_change_2026-11-17_zero_enrolment.md`.
+Takes effect in the next weekly run (the data files are reclassified there). The review tool's
+guidance says the same. Still open: texts like "drug not available … no patients enrolled" or
+"withdrawn … due to resources" become NOT_INITIATED because no rule reads that cause — better than
+RECRUITMENT, not yet right.
+
 ## What makes the data hard to copy, and how to get it found (plan of 17 Nov)
 
 The full stopped-trial dataset and the code are public (GitHub, Zenodo, the site; CC BY-NC for the

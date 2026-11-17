@@ -14,7 +14,7 @@
 {"why_stopped":"The company changed its development strategy.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Portfolio reprioritization.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
 {"why_stopped":"Slow accrual.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
-{"why_stopped":"No enrollment.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"No enrollment.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Competing studies made recruitment infeasible.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Not funded.","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
 {"why_stopped":"The grant was not renewed.","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
@@ -50,7 +50,7 @@
 {"why_stopped":"Trial not initiated","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"The research project was cancelled before any participants were enrolled.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Recruitment difficulties","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
-{"why_stopped":"0 participant accrual","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"0 participant accrual","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Lack of eligible patients","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Target number of inclusion not reached","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Funding not secured","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
@@ -204,7 +204,7 @@
 {"why_stopped":"Development stopped due to safety and tolerability concerns and limited clinical activity.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Difficulties to recruit patients","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Insuffisient recruitment","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
-{"why_stopped":"No participant enrollment","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"No participant enrollment","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Enrollment failed","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Accrual Factor","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"No financial support","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
@@ -772,7 +772,7 @@
 {"why_stopped":"Protracted enrollment and limited wound closure in the first three subjects.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
 {"why_stopped":"Subject passed away prior to enrollment.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Protocol suspended prior to patient enrollment.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
-{"why_stopped":"No patients were included.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"No patients were included.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"The study will not progress. This decision was made prior to study start; no patients were screened.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Product availability allowed enrollment to continue.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Did not obtain funding to proceed with the study.","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
@@ -1042,7 +1042,7 @@
 {"why_stopped":"Accrual goals were not met.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Recruitment rate was too slow.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"Poorly recruiting.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
-{"why_stopped":"No enrollments.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"No enrollments.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"The study has been withdrawn prior to enrollment.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Administrative closure prior to any enrollments.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
 {"why_stopped":"Enrollment halted prematurely and will not resume.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
@@ -1414,3 +1414,16 @@
 {"why_stopped": "Termination due to operational futility", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "needs_review": false}
 {"why_stopped": "Due to safety reasons. The region was considered too dangerous.", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "needs_review": false}
 {"why_stopped": "Attendance at study sites carries risk of COVID-19 infection. Non-attendance at planned study site visits has unacceptable study related patient safety risk.", "outcome": "NON_BIOLOGICAL", "primary_reason": "EXTERNAL_DISRUPTION", "needs_review": false}
+{"why_stopped":"Unable to recruit any participants","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"No accrual in one year","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"The study was withdrawn due to no enrollment","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
+{"why_stopped":"There were no participants enrolled.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
+{"why_stopped":"no participant enrolled due to lack of interest.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"No patient enrolled after 6 months from the start.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"Study withdrawn due to lack of funding. No participants enrolled.","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
+{"why_stopped":"PI retired and no recruitment occurred","outcome":"NON_BIOLOGICAL","primary_reason":"STAFFING_RESOURCES","needs_review":false}
+{"why_stopped":"Business decision (no enrollment)","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"No enrollment due to COVID","outcome":"NON_BIOLOGICAL","primary_reason":"EXTERNAL_DISRUPTION","needs_review":false}
+{"why_stopped":"stopped due to no enrollment","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
+{"why_stopped":"0 accrual","outcome":"NON_FAILURE_TRANSITION","primary_reason":"NOT_INITIATED","needs_review":false}
+{"why_stopped":"The drug was found to be ineffective against Omicron, so the study was terminated and no patients were enrolled.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
