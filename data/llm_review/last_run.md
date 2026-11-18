@@ -1,4 +1,4 @@
-## Independent review of stop reasons — 2026-11-16
+## Independent review of stop reasons — 2026-11-18
 
 ANTHROPIC_API_KEY is not set, so nothing was sent. Stored readings were applied.
 
