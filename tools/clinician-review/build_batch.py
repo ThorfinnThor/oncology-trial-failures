@@ -31,6 +31,7 @@ import collections
 import csv
 import json
 import random
+import re
 from datetime import date
 from pathlib import Path
 
@@ -41,7 +42,9 @@ BIO = {"EFFICACY_FUTILITY", "SAFETY", "BIOLOGICAL_UNSPECIFIED"}
 def is_bio(r: dict) -> bool:
     if r["classification_final_outcome"] == "BIOLOGICAL_FAILURE":
         return True
-    secondary = set((r.get("classification_secondary_reasons_v2") or "").split("|"))
+    # The CSV joins secondaries with "; " (not "|"); reading only "|" put every MIXED text with a
+    # biological cause into the "other" stratum and left 82 of them out of oncology-bio-2026-11 (18 Nov).
+    secondary = {s.strip() for s in re.split(r"[|;]", r.get("classification_secondary_reasons_v2") or "")}
     return r["classification_final_outcome"] == "MIXED_CAUSES" and bool(BIO & secondary)
 
 
