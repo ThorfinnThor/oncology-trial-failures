@@ -737,7 +737,7 @@
 {"why_stopped":"The funding entity terminated the study's fiscal support.","outcome":"NON_BIOLOGICAL","primary_reason":"FUNDING","needs_review":false}
 {"why_stopped":"The dose-escalation scheme was scientifically unjustified.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"The FDA determined that there is not adequate safety information to continue.","outcome":"MIXED_CAUSES","primary_reason":"MULTIPLE","needs_review":false}
-{"why_stopped":"The study was terminated after results showed an approved alternative had better treatment efficacy.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped": "The study was terminated after results showed an approved alternative had better treatment efficacy.", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "needs_review": false}
 {"why_stopped":"The primary safety endpoint was reached.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"A new study will be initiated in order to specifically investigate cardiac safety.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"REPLACEMENT_TRANSITION","needs_review":false}
 {"why_stopped":"The sponsor has changed the development plans which is not for safety reasons.","outcome":"CAUSE_NOT_STATED","primary_reason":"PROGRAM_ACTION_WITHOUT_STATED_CAUSE","needs_review":false}
@@ -759,7 +759,7 @@
 {"why_stopped":"The temporary recruitment pause was required to re-assess the protocol design.","outcome":"NON_BIOLOGICAL","primary_reason":"PROTOCOL_FEASIBILITY","needs_review":false}
 {"why_stopped":"The institution required an IND and did not allow enrollment.","outcome":"NON_BIOLOGICAL","primary_reason":"REGULATORY","needs_review":false}
 {"why_stopped":"COVID-19 made recruitment impossible.","outcome":"NON_BIOLOGICAL","primary_reason":"EXTERNAL_DISRUPTION","needs_review":false}
-{"why_stopped":"A standard-of-care change impacted recruitment.","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped": "A standard-of-care change impacted recruitment.", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
 {"why_stopped":"Further recruitment would add no extra PK information.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"The planned sample size has been reached.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"PLANNED_MILESTONE","needs_review":false}
 {"why_stopped":"An alternative study was developed to replace this study.","outcome":"NON_FAILURE_TRANSITION","primary_reason":"REPLACEMENT_TRANSITION","needs_review":false}
@@ -1432,3 +1432,14 @@
 {"why_stopped":"the industrial partner withdrew from the study","outcome":"NON_BIOLOGICAL","primary_reason":"SUPPORT_WITHDRAWAL","needs_review":false}
 {"why_stopped":"Patient pulled out of the study","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"The trial was terminated as the participant withdrew from the trial.","outcome":"NON_BIOLOGICAL","primary_reason":"OPERATIONAL_OTHER","needs_review":false}
+{"why_stopped": "The landscape of treatment for patients targeted for enrollment has significantly changed since the protocol was written and approved, and the research treatment is no longer the best option for this population.", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "needs_review": false}
+{"why_stopped": "The standard of care of adjuvant therapy for liver cancer was changed.", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "needs_review": false}
+{"why_stopped": "Frontline pembrolizumab approved in NSCLC as monotherapy and in combination with chemotherapy representing a new standard of care.", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "needs_review": false}
+{"why_stopped": "Standard of Care change impacted recruitment", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
+{"why_stopped": "Change of practice made further recruitment impossible", "outcome": "NON_BIOLOGICAL", "primary_reason": "RECRUITMENT", "needs_review": false}
+{"why_stopped": "Upon further consideration of the existing data and the competitive landscape, Karyopharm Therapeutics Inc has decided not to pursue the ongoing development of Selinexor in GBM at this time.", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "needs_review": false}
+{"why_stopped": "Sponsor decision based on portfolio prioritization and changing treatment landscape in frontline DLBCL", "outcome": "NON_BIOLOGICAL", "primary_reason": "BUSINESS_STRATEGY", "needs_review": false}
+{"why_stopped": "The treatment landscape for NSCLC has evolved in the past year. An additional NSCLC arm will be added to the IOV-COM-202 study using TIL + pembrolizumab.", "outcome": "NON_FAILURE_TRANSITION", "primary_reason": "REPLACEMENT_TRANSITION", "needs_review": false}
+{"why_stopped": "The standard of care has not changed", "outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "needs_review": true}
+{"why_stopped": "The market approved 68Ga-DOTATATE (NETSPOT(R)) is now approved for public funding in Alberta and is considered standard of care. Furthermore, the manufacturer of the study Investigational Product (IP) is no longer supplying the IP.", "outcome": "NON_BIOLOGICAL", "primary_reason": "SUPPLY_MANUFACTURING", "needs_review": false}
+{"why_stopped": "Majority of patients (62%) had been treated with next line therapies, including new highly effective therapies confounding the interpretation of the OS results.", "outcome": "NON_BIOLOGICAL", "primary_reason": "PROTOCOL_FEASIBILITY", "needs_review": false}

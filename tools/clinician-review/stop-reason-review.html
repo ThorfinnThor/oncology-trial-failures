@@ -257,6 +257,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
         <li>“Futility” that the text ties only to slow or insufficient enrolment is <b>Not about the drug → Recruitment</b>: the trial could not answer its question, it did not answer it negatively.</li>
         <li>“Nobody enrolled” and nothing more (“0 participant accrual”, “no participants enrolled”) is <b>Not a failure → Never started</b>: it restates that the trial enrolled no one and gives no cause. Choose <b>Not about the drug → Recruitment</b> only when the text says enrolment was attempted and failed (“unable to recruit”, “no accrual in one year”, “no patients after the study opened”). If another cause is named (funding, sponsor withdrew), that cause decides.</li>
         <li>The sponsor is who decided, not a cause. A sponsor stopping for a business, portfolio or development reason (“to focus on another route of administration”, “portfolio prioritisation”) is <b>Not about the drug → Sponsor's business / strategy decision</b>. “Sponsor decision” with no reason is <b>Decision without a stated cause</b>. <b>Partner or funder withdrew support</b> is for someone other than the sponsor pulling out: a collaborator, a funder, a drug supplier.</li>
+        <li>A new standard of care, a new approval or a changed treatment landscape that makes the study obsolete (“the research treatment is no longer the best option”) is <b>Not about the drug → Protocol / feasibility</b>, not a business decision. If the text says the change stopped enrolment (“impacted recruitment”), choose <b>Recruitment</b>. It is <b>Sponsor's business / strategy decision</b> only when a business reason is given (competition, strategy, portfolio).</li>
         <li>A recall or removal of product lots (contamination, a quality defect, “for safety reasons” about the batch) is <b>Not about the drug → Supply / manufacturing</b>. Safety means harm from the drug's effect in people.</li>
         <li>The trial details are there for orientation. When the text and the details disagree, judge the text.</li>
         <li>In batches marked “confirm”, our label is shown: press <b>Correct</b> if it fits the text, otherwise <b>Not correct</b> and choose the right one. About one label in twenty there is deliberately wrong, to check attention.</li>
@@ -295,7 +296,7 @@ const MIXED_CAUSES = [["EFFICACY_FUTILITY", "Efficacy / futility"], ["SAFETY", "
   ["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Sponsor's business / strategy"], ["REGULATORY", "Regulatory"],
   ["SUPPLY_MANUFACTURING", "Supply"], ["STAFFING_RESOURCES", "Staff / resources"], ["PROTOCOL_FEASIBILITY", "Protocol"],
   ["SUPPORT_WITHDRAWAL", "Partner / funder withdrew"], ["EXTERNAL_DISRUPTION", "External event"], ["OPERATIONAL_OTHER", "Other administrative"]];
-const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-17c)";
+const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-18)";
 
 const $ = (id) => document.getElementById(id);
 const S = { db: null, user: null, uid: null, canWrite: true, owner: false, profile: null,

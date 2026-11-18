@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.4"
+CLASSIFIER_VERSION = "2.7.5"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -1269,6 +1269,8 @@ RULES: Tuple[Rule, ...] = (
         "ops.supply",
         REASON_SUPPLY,
         "HIGH",
+        # 2.7.5: "the manufacturer of the study Investigational Product (IP) is no longer supplying the IP"
+        r"\b(?:manufacturer|supplier|company)\b(?:(?!\bnot\b)[^.;:]){0,80}\bis no longer supplying (?:the )?(?:ip|imp|drug|study drug|product|investigational product)\b",
         r"\b(?:drug|study drug|study agent|medication|investigational product|product|device|devices|equipment|formulation) (?:was |is )?(?:unavailable|no longer available|not available|expired|no longer produced|no longer manufactured|discontinued by the manufacturer)\b",
         r"\b(?:drug|product|material|raw material) supply (?:issue|issues|shortage|shortages|constraint|constraints)\b",
         r"\bmanufactur(?:ing|er) (?:issue|issues|problem|problems|delay|delays|stopped|halted|ceased)\b",
@@ -3094,7 +3096,7 @@ RULES: Tuple[Rule, ...] = (
         "v261.final_fragments_business",
         REASON_BUSINESS,
         "HIGH",
-        r"^(?:business stragety|bussiness reason|change in clinical landscape|change of company's strategy|changing priorities|company prioritization reasons|development strategy reasons|issue of priority of resources|kalobios to wind down operations|organizational restructure|portfolio proritisation|priortization of other programs)\.?$",
+        r"^(?:business stragety|bussiness reason|change of company's strategy|changing priorities|company prioritization reasons|development strategy reasons|issue of priority of resources|kalobios to wind down operations|organizational restructure|portfolio proritisation|priortization of other programs)\.?$",
         r"^(?:samus therapeutics closure|strategic|strategic corporate decision|strategic desicion by sponsor|study reprioritization|the company is liquidated|to pursue other indications|vbi bankruptcy|widespread vaccine availability)\.?$",
         r"^(?:concern about formulation patent|stopping the marketing of [a-z0-9-]+)\.?$",
         r"^production plan adjustment\.?$",
@@ -3307,8 +3309,6 @@ RULES: Tuple[Rule, ...] = (
         "HIGH",
         r"\bstrategic re[- ]?evaluation of [^.;:]{0,100}portfolio\b",
         r"\brefocused clinical development\b",
-        r"\btreatment landscape [^.;:]{0,120}\bchanged\b",
-        r"\bstandard of care [^.;:]{0,120}\bchanged\b",
         r"\bpriority changes in product development\b",
         r"\bpursue (?:further development of )?[^.;:]{0,100} with a partner\b",
         r"\bto pursue other targets\b",
@@ -3318,11 +3318,8 @@ RULES: Tuple[Rule, ...] = (
         r"\bcorporate decision to pursue further development\b",
         r"\bsite(?:'s)? research goals adjustments?\b",
         r"\bscientific interest in pursuing [^.;:]{1,120}\bhas diminished\b",
-        r"\bno longer novel\b",
         r"\bcompeting corporate priorities\b",
         r"\bprioritize [^.;:]{1,160}\befforts\b",
-        r"\btrial therapy deemed no longer novel\b",
-        r"\bno longer reflects common clinical practice\b",
     ),
     _rule(
         "v261.final_program_regulatory",
@@ -3543,7 +3540,6 @@ RULES: Tuple[Rule, ...] = (
         r"\b(?:loss|losing) (?:of )?(?:the )?[a-z0-9-]+ patent\b",
         r"\black of interest by (?:the )?sponsor\b",
         r"\bproject replanning\b",
-        r"\bchanges? in (?:clinical )?practice\b",
     ),
     _rule(
         "v261.remaining_protocol",
@@ -4141,15 +4137,12 @@ RULES: Tuple[Rule, ...] = (
         REASON_BUSINESS,
         "HIGH",
         r"\bdiscontinue (?:co[- ]?)?development and co[- ]commerciali[sz]ation\b",
-        r"\btreatment (?:landscape|plan) [^.;:]{0,120}\b(?:greatly changed|entered (?:the )?diagnosis and treatment guide)\b",
-        r"\bapproved [^.;:]{0,100}\b(?:first[- ]line|standard of care)\b",
         r"\brefinement of (?:the )?[^.;:]{0,100}development strategy\b",
         r"\badjusted (?:its |the )?(?:r&d|study development) (?:strategy|plan)\b",
         r"\bchange (?:the )?study[- ]drug development strategy\b",
         r"\bstrategic considerations? impacting (?:the )?clinical development\b",
         r"\bstopped because (?:the )?company(?:'s)? strategy\b",
         r"\bobjectives? of (?:this |the )?trial (?:are |were )?no longer deemed appropriate for (?:the )?clinical development\b",
-        r"\bnew treatment plan [^.;:]{0,120}\bnot (?:the )?optimal treatment plan\b",
     ),
     _rule(
         "v261.remaining_program_regulatory2",
@@ -4382,10 +4375,7 @@ RULES: Tuple[Rule, ...] = (
         r"\breview of (?:the )?asset [^.;:]{0,100}\bwithin (?:the )?sponsor(?:'s)? [^.;:]{0,80}\bportfolio\b",
         r"\bbusiness planning purposes\b",
         r"\bapproved for (?:the )?treatment of\b",
-        r"\bnew standard of care\b",
-        r"\b(?:treatment|practice) [^.;:]{0,100}\b(?:obsolete|obselete)\b",
         r"\bnew compounds? available in (?:the )?indication\b",
-        r"\brecent approval of [^.;:]{0,100}\b(?:better efficacy|standard of care)\b",
     ),
     _rule(
         "v261.remaining_domain_admin",
@@ -4515,7 +4505,6 @@ RULES: Tuple[Rule, ...] = (
         r"\btreatment (?:has |had )?greatly changed since (?:the )?initiation of (?:this |the )?trial\b",
         r"\bout of (?:the )?medical plan\b",
         r"\bfirst[- ]line (?:art|treatment|therapy)[^.;:]{0,140}\b(?:cancelled|canceled|terminated|withdrew) (?:the )?study\b",
-        r"\b(?:standard of care|soc) [^.;:]{0,100}\bmade (?:the |this )?study (?:not pertinent|obsolete|obselete)\b",
         r"\bnew vaccine\b[^.;:]{0,100}\b(?:terminated|withdrew|stopped)\b",
         r"\bcanceled by decision strategically\b",
     ),
@@ -4630,7 +4619,6 @@ RULES: Tuple[Rule, ...] = (
         "v261.remaining_round4_business",
         REASON_BUSINESS,
         "HIGH",
-        r"\bphase[- ]?3 study defined (?:the )?(?:soc|standard of care)\b",
         r"\bterminated early following strategic review\b",
         r"\banti[- ]pd[- ]1 agents? were proved effective [^.;:]{0,120}\brecommended to treat\b",
     ),
@@ -4897,10 +4885,8 @@ RULES: Tuple[Rule, ...] = (
         "HIGH",
         r"\bno longer pursuing (?:the )?ovarian cancer indication\b",
         r"\bchange in (?:the )?research plan\b",
-        r"\bchange in practices?\b[^.;:]{0,140}\bstandard\b",
         r"\bnot required for initial us registration\b",
         r"\bpart of (?:the )?out[- ]licen[cs]ure of (?:the )?drug\b",
-        r"\biac is now recogni[sz]ed as part of standard of care\b",
         r"\bscience has moved forward\b",
         r"\bstrategic portfolio review\b",
         r"\bstrategic prioriti[sz]ation of (?:its )?pipeline\b",
@@ -5334,7 +5320,6 @@ RULES: Tuple[Rule, ...] = (
         REASON_BUSINESS,
         "HIGH",
         r"\bethical reason to prioritize (?:the )?ancestral vaccination\b",
-        r"\bfully evaluate (?:the )?impact of changing practice in (?:the )?target population\b",
         r"\bresults of other studies and use of (?:the )?new vaccine\b",
     ),
     _rule(
@@ -5447,7 +5432,6 @@ RULES: Tuple[Rule, ...] = (
         r"\bstrategic priori[stz]ation of (?:its )?pipeline\b",
         r"\bcompany restructuring\b",
         r"\bframework (?:and|&) portfolio of work that is prioriti[sz]ed\b",
-        r"\brecent results from (?:a )?phase 3 study are expected to change (?:the )?standard of care\b",
         r"\bresults unlikely to impact treatment patterns\b",
         r"\binternal need to re[- ]prioriti[sz]ation (?:the )?whole pipeline\b",
         r"\bevolution of immunosuppressant therapy\b.{0,180}\bunlikely that patients will convert\b",
@@ -5626,10 +5610,8 @@ RULES: Tuple[Rule, ...] = (
         "v261.remaining_round12_business",
         REASON_BUSINESS,
         "HIGH",
-        r"\bchange of practice to [^.;:]{0,120}\bmade [^.;:]{0,80}\bobsolete\b",
         r"\boral steroids as 1st line treatment\b.{0,160}\bno longer of high interest\b",
         r"\bshowed [a-z0-9-]+ had (?:a )?better treatment efficacy than\b",
-        r"\bapproved alternative had better treatment efficacy\b",
         r"\bdata became available from phase 3 trials\b.{0,180}\bshowing improved efficacy outcomes\b",
         r"\breceived approval for (?:the )?treatment of\b",
         r"\bchanging efficacy of treatments for\b",
@@ -5841,24 +5823,14 @@ RULES: Tuple[Rule, ...] = (
         "v261.remaining_round13_business",
         REASON_BUSINESS,
         "HIGH",
-        r"\bchange of practice made further recruitment impossible\b",
         r"\bchange[s]? in patient care [^.;:]{0,140}\binclusion criteria\b",
-        r"\bnew agents? for (?:the )?same indication impacted\b",
-        r"\bnew studies available with immunotherapy\b",
-        r"\bstandard[- ]of[- ]care change impacted recruitment\b",
-        r"\bstandard practice change prohibited enrollment\b",
-        r"\btreatment landscape [^.;:]{0,120}\bno longer (?:the )?best option\b",
         r"\bnew strategic considerations\b",
         r"\bclinical development strategy\b.{0,100}\bterminate (?:the )?enrollment\b",
         r"\bresources can be better spent on higher enrolling studies\b",
         r"\breallocating all resources to (?:the )?phase iii program\b",
         r"\binternal company prioriti[sz]ation and resource allocation\b",
         r"\bnew one has different ideas on how to pursue studies\b",
-        r"\bapproved as an indication drug\b.{0,160}\bdifficult [^.;:]{0,80}\benroll\b",
-        r"\bfda approved agent for this indication during enrollment\b",
-        r"\bfda approved higher dose\b.{0,160}\benrollment stopped\b",
         r"\bnew recommendations?\b.{0,180}\brecruitment has been halted\b",
-        r"\bnew treatment options?\b.{0,160}\brecruitment\b",
         r"\bavailability of other treatment options\b",
         r"\bscarce enrolment and presentation of positive results of similar study\b",
     ),
@@ -6301,7 +6273,6 @@ RULES: Tuple[Rule, ...] = (
         r"\boverall strategic objectives\b",
         r"\bmodified (?:the )?study-product development strategy\b",
         r"\bchange in [a-z0-9-]+ corporate strategy\b",
-        r"\bchange in (?:the )?(?:participant|treatment|therapeutic) landscape\b",
         r"\bchange in priority of interventional protocols\b",
         r"\bpriority change\b",
         r"\bdeprioriti[sz]ation of (?:the )?drug\b",
@@ -6331,14 +6302,7 @@ RULES: Tuple[Rule, ...] = (
         r"\bcommercial potential [^.;:]{0,120}\bbest-in-class\b",
         r"\bquestion was no longer [^.;:]{0,80}\bpriority\b",
         r"\bpreference given to gene therapy approaches\b",
-        r"\blandscape [^.;:]{0,160}\bno longer suitable\b",
-        r"\blandscape [^.;:]{0,160}\bimpossible to continue\b",
-        r"\btreatment landscape [^.;:]{0,160}\bhas evolved\b",
-        r"\bstandard of care improved\b",
         r"\bdetermined (?:the )?soc for (?:this |the )?disease\b",
-        r"\bstudy intervention was adopted as standard of care\b",
-        r"\bprocedures became standard of care\b",
-        r"\bestablished [a-z0-9-]+ as standard of care treatment\b",
         r"\bexisting data and (?:the )?competitive landscape\b",
         r"\bsold (?:the )?(?:drug|compound|asset) to another company\b",
         r"\bcompany decided to license (?:the )?product\b",
@@ -6605,7 +6569,6 @@ RULES: Tuple[Rule, ...] = (
         r"\brevised (?:the )?[a-z0-9-]+ development strategy\b",
         r"\bstreamline (?:the )?clinical-development program\b",
         r"\btermination of development and commerciali[sz]ation agreement\b",
-        r"\bnew treatment option introduced\b",
         r"\bprotocol competes with another [^.;:]{0,100}\bprotocol\b",
         r"\breorgani[sz]ation proceedings of (?:the )?sponsor\b",
         r"\brepositioning of (?:the )?target indication\b",
@@ -6890,14 +6853,10 @@ RULES: Tuple[Rule, ...] = (
         REASON_BUSINESS,
         "HIGH",
         r"\bmutually decided to discontinue (?:the )?study\b.{0,220}\bfocus on\b",
-        r"\bapproval of several new agents [^.;:]{0,160}\bmitigate (?:the )?future need\b",
         r"\bchanged (?:the )?focus of future drug development\b",
-        r"\bchange in (?:the )?number of approved drugs\b",
         r"\bcompound development plan changed\b",
         r"\bnot expected to change (?:the )?current treatment practice or fill significant clinical need\b",
-        r"\bchanges in (?:the )?paediatric [^.;:]{0,80}\blandscape\b",
         r"\bdrug exposure of [a-z0-9-]+ was superior to [a-z0-9-]+\b.{0,100}\bfocus on\b",
-        r"\bdrug intervention no longer relevant for (?:the )?proposed population\b",
         r"\bprioriti[sz]e collection of [^.;:]{0,100}\bdata [^.;:]{0,160}\bthrough data sources\b",
         r"\binterferon use [^.;:]{0,100}\beliminating (?:the )?need for (?:the )?study drug\b",
         r"\bnew study drug [^.;:]{0,100}\bwould be superior\b",
@@ -7176,9 +7135,7 @@ RULES: Tuple[Rule, ...] = (
         r"\bpi decided to move in another direction with (?:his |her )?research\b",
         r"\bpursue (?:this |the )?as (?:a )?quality project instead\b",
         r"\bprimary care physicians began prescribing\b",
-        r"\bstandards of care changed at (?:the )?institution\b",
         r"\bsurgeons stopped doing procedures\b",
-        r"\btreatment options for covid have evolved\b",
     ),
     _rule(
         "v261.remaining_round20_regulatory",
@@ -7425,7 +7382,6 @@ RULES: Tuple[Rule, ...] = (
         r"\bediary data collected not sufficient [^.;:]{0,100}\bprotocol endpoints\b",
         r"\binadequate methodology to determine (?:the )?primary outcome\b",
         r"\btechnical difficulty, feasiblity\b",
-        r"\bstandard nutrition practices change [^.;:]{0,100}\bmethodology\b",
     ),
     _rule(
         "v261.remaining_round21_support",
@@ -7450,11 +7406,8 @@ RULES: Tuple[Rule, ...] = (
         r"\bcurrently available treatments worldwide\b",
         r"\bpositive data from (?:the )?dose-ranging portion\b.{0,180}\bnot to move forward with (?:the )?previously designed\b",
         r"\bprotocol'?s question was answered elsewhere\b",
-        r"\bstudy objectives were considered (?:as )?obsolete\b",
         r"\bstudy purposes and objectives have shifted\b",
         r"\bbroader program objectives in oncology\b",
-        r"\bstandard nutrition practices change [^.;:]{0,100}\bmethodology\b",
-        r"\blandscape of treatment [^.;:]{0,140}\bno longer (?:the )?best option\b",
         r"\btrend in [a-z0-9-]+ treatment [^.;:]{0,120}\bstudy was designed \d+ years ago\b",
     ),
     _rule(
@@ -7777,10 +7730,7 @@ RULES: Tuple[Rule, ...] = (
         r"\bdevelopments? in (?:the )?treatment of [^.;:]{0,100}\bno longer considered (?:to be )?(?:the )?best treatment option\b",
         r"\bclinical development plan has been changed\b",
         r"\bchange in departmental research focus\b",
-        r"\bchange in (?:the )?landscape of [^.;:]{0,100}\btreatment\b",
-        r"\bchange in standard-of-care\b",
         r"\bchange in (?:the )?national [a-z0-9 -]+ guidelines\b",
-        r"\bchange of practice pattern\b",
         r"\bchanges in available treatments\b",
         r"\bchanges to (?:the )?cardiac surgery program\b",
         r"\bclinical evidence supporting (?:the )?hypothesis [^.;:]{0,80}\bhas been published\b",
@@ -8002,12 +7952,10 @@ RULES: Tuple[Rule, ...] = (
         "HIGH",
         r"\bpositive preliminary results from other [a-z0-9-]+ studies\b",
         r"\bdue to published data on [a-z0-9-]+\b",
-        r"\bduring (?:the )?study new treatments were available\b",
         r"\bfocus research efforts on other projects\b",
         r"\bcurrent availability of hospitalized patients\b",
         r"\bgemcitabine is not (?:the )?first choice\b",
         r"\breturn rights to [a-z0-9-]+ [^.;:]{0,80}\bdiscontinue [a-z0-9-]+ development\b",
-        r"\bincreasing off-label practice\b",
         r"\binternal decision to progress alternate molecule\b",
         r"\bwindow of opportunity to answer (?:the )?question [^.;:]{0,80}\bwas missed\b",
         r"\bjoin forces with another study [^.;:]{0,80}\bsame question\b",
@@ -8127,8 +8075,6 @@ RULES: Tuple[Rule, ...] = (
         r"\brecent study suggested (?:a )?new [a-z0-9 -]+ regime\b",
         r"\bafter results of other studies published\b",
         r"\banother study with similar methods was recently published\b",
-        r"\bstandard treatment for [a-z0-9 -]+\b",
-        r"\bpractice to antibiotic impregnated catheters [^.;:]{0,120}\bmade topical antibiotics obselete\b",
         r"\brecommended season flu vaccine\b",
         r"\beortc trail showed [^.;:]{0,100}\bconferred significant survivial\b",
         r"\bfurther investment in [a-z0-9-]+ has been discontinued\b",
@@ -8337,7 +8283,6 @@ RULES: Tuple[Rule, ...] = (
         r"\b[a-z0-9-]+, (?:a )?treatment superior to [a-z0-9-]+, has become available\b",
         r"\bnew [a-z0-9 -]+ guidelines [^.;:]{0,140}\babandon (?:the )?use of\b",
         r"\bnew evidence points to (?:a )?new candidate vaccine\b",
-        r"\bnew treatment that changes (?:the )?management of (?:the )?disease\b",
         r"\balternative therapies were more effective\b",
         r"\bno further local interest in pursuing (?:the )?study\b",
         r"\bno longer (?:a )?research question to answer\b",
@@ -8535,10 +8480,6 @@ RULES: Tuple[Rule, ...] = (
         REASON_BUSINESS,
         "HIGH",
         r"\bother published trials showed definitive expected superiority\b",
-        r"\bpatterns? of practice changed\b",
-        r"\bstandard-of-care approaches [^.;:]{0,100}\bstudy enrollment is not required\b",
-        r"\bpractice on [a-z0-9 -]+ changed\b",
-        r"\bpractice patterns? with [a-z0-9-]+ (?:have|has) evolved\b",
         r"\bprevious studies have been done regarding (?:the )?same condition\b",
         r"\bprincipal investigator made aware of similar studies [^.;:]{0,80}\bpublished\b",
         r"\bpublication of (?:a )?similar study\b",
@@ -8546,7 +8487,6 @@ RULES: Tuple[Rule, ...] = (
         r"\bpublication of [^.;:]{0,100}\bfirst line therapy\b",
         r"\bresearch question (?:was )?answered by another\b",
         r"\bresults from similar research were already published\b",
-        r"\broutine use of [a-z0-9-]+ became standard therapy\b",
         r"\bseveral clinical trials [^.;:]{0,120}\bcould increase [a-z0-9-]+ rate\b",
         r"\bshifting patterns of care\b",
         r"\bpublished data resolved (?:the )?study goals\b",
@@ -8671,7 +8611,6 @@ RULES: Tuple[Rule, ...] = (
         r"\brecent research indicates [a-z0-9-]+ to be an? effictive treatment\b",
         r"\brecent publications demonstrating (?:the )?clinical interest\b",
         r"\breview of data, and our other compound is (?:a )?better option\b",
-        r"\bstudy no longer consistent with current clinical practice\b",
         r"\bstudy dose changed based on recent publications\b",
         r"\bstudy ended early to expedite development\b",
         r"\bstudy was temporarily suspended to focus on other projects\b",
@@ -10397,6 +10336,83 @@ RULES: Tuple[Rule, ...] = (
         r"^(?:the )?(?:study|trial|project) (?:was |is )?(?:closed|withdrawn|cancelled|canceled) by (?:the )?(?:pi|principal investigator|investigator) prior to approval\.?$",
         r"^(?:the )?(?:study|trial|project) (?:was |is )?withdrawn prior to (?:the )?(?:irb|reb|ethics committee) approval\.?$",
     ),
+    # 2.7.5 (18 Nov 2026, decided by the owner): a changed standard of care or treatment landscape
+    # that makes the study obsolete is a design / feasibility cause, not a business decision. These
+    # patterns were spread over business rules; a stated business reason (competition, strategy,
+    # development plan) stays business. When the change is said to have stopped enrolment, it is recruitment.
+    _rule(
+        "v275.practice_changed",
+        REASON_PROTOCOL,
+        "HIGH",
+        r"\btreatment landscape [^.;:]{0,120}\bchanged\b",
+        r"\bstandard of care [^.;:]{0,120}\bchanged\b",
+        r"\bno longer novel\b",
+        r"\btrial therapy deemed no longer novel\b",
+        r"\bno longer reflects common clinical practice\b",
+        r"\bchanges? in (?:clinical )?practice\b",
+        r"\btreatment (?:landscape|plan) [^.;:]{0,120}\b(?:greatly changed|entered (?:the )?diagnosis and treatment guide)\b",
+        r"\bapproved [^.;:]{0,100}\b(?:first[- ]line|standard of care)\b",
+        r"\bnew treatment plan [^.;:]{0,120}\bnot (?:the )?optimal treatment plan\b",
+        r"\bnew standard of care\b",
+        r"\b(?:treatment|practice) [^.;:]{0,100}\b(?:obsolete|obselete)\b",
+        r"\brecent approval of [^.;:]{0,100}\b(?:better efficacy|standard of care)\b",
+        r"\b(?:standard of care|soc) [^.;:]{0,100}\bmade (?:the |this )?study (?:not pertinent|obsolete|obselete)\b",
+        r"\bphase[- ]?3 study defined (?:the )?(?:soc|standard of care)\b",
+        r"\bchange in practices?\b[^.;:]{0,140}\bstandard\b",
+        r"\biac is now recogni[sz]ed as part of standard of care\b",
+        r"\bfully evaluate (?:the )?impact of changing practice in (?:the )?target population\b",
+        r"\brecent results from (?:a )?phase 3 study are expected to change (?:the )?standard of care\b",
+        r"\bchange of practice to [^.;:]{0,120}\bmade [^.;:]{0,80}\bobsolete\b",
+        r"\bapproved alternative had better treatment efficacy\b",
+        r"\bnew studies available with immunotherapy\b",
+        r"\btreatment landscape [^.;:]{0,120}\bno longer (?:the )?best option\b",
+        r"\bfda approved agent for this indication during enrollment\b",
+        r"\bfda approved higher dose\b.{0,160}\benrollment stopped\b",
+        r"\bchange in (?:the )?(?:participant|treatment|therapeutic) landscape\b",
+        r"\blandscape [^.;:]{0,160}\bno longer suitable\b",
+        r"\blandscape [^.;:]{0,160}\bimpossible to continue\b",
+        r"\btreatment landscape [^.;:]{0,160}\bhas evolved\b",
+        r"\bstandard of care improved\b",
+        r"\bstudy intervention was adopted as standard of care\b",
+        r"\bprocedures became standard of care\b",
+        r"\bestablished [a-z0-9-]+ as standard of care treatment\b",
+        r"\bnew treatment option introduced\b",
+        r"\bapproval of several new agents [^.;:]{0,160}\bmitigate (?:the )?future need\b",
+        r"\bchange in (?:the )?number of approved drugs\b",
+        r"\bchanges in (?:the )?paediatric [^.;:]{0,80}\blandscape\b",
+        r"\bdrug intervention no longer relevant for (?:the )?proposed population\b",
+        r"\bstandards of care changed at (?:the )?institution\b",
+        r"\btreatment options for covid have evolved\b",
+        r"\bstudy objectives were considered (?:as )?obsolete\b",
+        r"\bstandard nutrition practices change [^.;:]{0,100}\bmethodology\b",
+        r"\blandscape of treatment [^.;:]{0,140}\bno longer (?:the )?best option\b",
+        r"\bchange in (?:the )?landscape of [^.;:]{0,100}\btreatment\b",
+        r"\bchange in standard-of-care\b",
+        r"\bchange of practice pattern\b",
+        r"\bduring (?:the )?study new treatments were available\b",
+        r"\bincreasing off-label practice\b",
+        r"\bstandard treatment for [a-z0-9 -]+\b",
+        r"\bpractice to antibiotic impregnated catheters [^.;:]{0,120}\bmade topical antibiotics obselete\b",
+        r"\bnew treatment that changes (?:the )?management of (?:the )?disease\b",
+        r"\bpatterns? of practice changed\b",
+        r"\bstandard-of-care approaches [^.;:]{0,100}\bstudy enrollment is not required\b",
+        r"\bpractice on [a-z0-9 -]+ changed\b",
+        r"\bpractice patterns? with [a-z0-9-]+ (?:have|has) evolved\b",
+        r"\broutine use of [a-z0-9-]+ became standard therapy\b",
+        r"\bstudy no longer consistent with current clinical practice\b",
+        r"^change in clinical landscape\.?$",
+    ),
+    _rule(
+        "v275.practice_changed_recruitment",
+        REASON_RECRUITMENT,
+        "HIGH",
+        r"\bnew agents? for (?:the )?same indication impacted\b",
+        r"\bstandard[- ]of[- ]care change impacted recruitment\b",
+        r"\bstandard practice change prohibited enrollment\b",
+        r"\bchange of practice made further recruitment impossible\b",
+        r"\bapproved as an indication drug\b.{0,160}\bdifficult [^.;:]{0,80}\benroll\b",
+        r"\bnew treatment options?\b.{0,160}\brecruitment\b",
+    ),
 )
 
 
@@ -10501,10 +10517,31 @@ def _is_negated(text: str, start: int, end: int, reason: Optional[str] = None) -
     return False
 
 
+def _load_text_guards():
+    # The shared denial reader (CLAUDE.md rule 1), loaded by path so this module works whether it is
+    # imported as `classification_v2` or as `scripts.classification_v2`.
+    import importlib.util
+    path = Path(__file__).resolve().parent / "signals" / "text_guards.py"
+    spec = importlib.util.spec_from_file_location("_ctf_text_guards", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.denied
+
+
+_text_denied = _load_text_guards()
+_LANDSCAPE_UNCHANGED = re.compile(
+    r"\b(?:has|have|had|was|were|is|are|did|does|do) not (?:been |yet )?(?:change|changed|evolve|evolved|chang(?:ing)?)\b")
+
+
 def _find_rule_evidence(text: str, rule: Rule) -> List[Evidence]:
     found: List[Evidence] = []
     for pattern in rule.patterns:
         for match in _compiled_pattern(pattern).finditer(text):
+            if rule.rule_id.startswith("v275.") and (
+                _text_denied(text, match.start(), match.end()) or _LANDSCAPE_UNCHANGED.search(match.group(0))
+            ):
+                # "not due to a change in standard of care", "the standard of care has not changed"
+                continue
             affirmative_efficacy_lack = (
                 rule.reason == REASON_EFFICACY
                 and re.match(
@@ -10832,6 +10869,11 @@ def classify_reason_v2(
         evidence = tuple(
             item for item in evidence if item.reason == REASON_UNSPECIFIED
         )
+    if any(item.reason == REASON_REPLACEMENT for item in evidence):
+        # 2.7.5: a study replaced because the treatment landscape changed ("the landscape has
+        # evolved; an additional arm will be added") is a replacement. The changed landscape is
+        # why it was replaced, not a second cause.
+        evidence = tuple(item for item in evidence if item.rule_id != "v275.practice_changed")
     if _ZERO_ENROLMENT.search(text) and not _ENROLMENT_ATTEMPTED.search(text):
         # Decided 17 Nov 2026 by the owner. "Nobody enrolled" restates the registry status
         # (WITHDRAWN = stopped before the first participant); on its own it is not a recruitment

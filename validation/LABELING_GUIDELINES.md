@@ -52,6 +52,13 @@ from drug names, sponsor type or outside knowledge. Be conservative: never asser
   "no accrual in one year", "since it opened", "lack of interest"). If another cause is named
   (funding, PI left, business decision, COVID), that cause decides. The held-out reference labels
   of September 2026 were made before this note; they already treated such texts this way.
+- Changed standard of care (added 18 Nov 2026): a new standard of care, a new approval or a changed
+  treatment landscape or practice that makes the study obsolete ("the research treatment is no longer
+  the best option", "standard of care changed") = NON_BIOLOGICAL/PROTOCOL_FEASIBILITY. It is not
+  BUSINESS_STRATEGY unless the text gives a business reason (competition, strategy, portfolio,
+  development plan). When the text says the change stopped enrolment ("impacted recruitment",
+  "made recruitment impossible") = NON_BIOLOGICAL/RECRUITMENT. A study replaced because of the change
+  stays NON_FAILURE_TRANSITION/REPLACEMENT_TRANSITION.
 
 ## Output format
 
