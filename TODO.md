@@ -3,7 +3,7 @@
 Ordered by what stands between the site and its first paying customer. Everything above the line
 in each section is blocked on nothing but time.
 
-*Last reviewed 17 Nov 2026.*
+*Last reviewed 18 Nov 2026.*
 
 ---
 
@@ -17,9 +17,13 @@ in each section is blocked on nothing but time.
 - **The newsletter sends.** Issue 1 on 26 Oct ("100 new stopped trials, 12 records changed"),
   issue 2 on **16 Nov** ("106 new stopped trials, 11 records changed", 5 subscribers, the skipped
   weeks included). Archived at `/newsletter` (`web/data/newsletter_issues/`).
-- **Clinician review tool is ready** with 799 cases (see 8). Waiting for the clinicians.
-- **Classifier 2.7.2** (17 Nov): "nobody enrolled" is no longer a recruitment cause on its own;
-  371 trials relabelled from the next weekly run (see the section below).
+- **The first clinician finished the 150 oncology cases** (17–18 Nov): biological yes/no agrees
+  on 148 of 150, precision of our biological label 98 % (95 % CI 93–99 %). Caveats and next steps
+  in 8. The tool now holds 904 cases in four batches.
+- **Classifier 2.7.5** (17–18 Nov): "nobody enrolled" is no longer a recruitment cause on its own
+  (2.7.2, 371 trials); a partner pulling out is a support withdrawal (2.7.4, 2 trials); a changed
+  standard of care is a design cause, not business (2.7.5, 58 trials). All from the next weekly
+  run (see the sections below).
 - **The diligence report is free during the beta, for a work email** (#94, 22 Oct). The order form
   also offers the newsletter (double opt-in). Leads land in the `LEADS` KV namespace and are
   mailed to `contact@clinicaltrialfailures.com`.
@@ -120,6 +124,18 @@ unchanged.) The review tool's guidance says the same. Still open: texts like "dr
 "withdrawn … due to resources" become NOT_INITIATED because no rule reads that cause — better than
 RECRUITMENT, not yet right.
 
+## Classification changes of 18 Nov (classifier 2.7.4 and 2.7.5)
+
+From clinician-review cases. **2.7.4:** "the industrial partner withdrew from the study",
+"Calithera pulled out of this trial." → SUPPORT_WITHDRAWAL (2 trials). **2.7.5:** a new standard
+of care, approval or treatment landscape that makes a study obsolete → PROTOCOL_FEASIBILITY, not
+BUSINESS_STRATEGY; "the change stopped enrolment" → RECRUITMENT; a stated business reason stays
+business (58 trials, no outcome changes; 13 reviewed-index entries whose specific reason was only
+the old rule output updated). Owner decisions: NCT02121405 (DFS difference without direction) →
+UNKNOWN, NCT05525286 ("benefit-risk reassessment") → BIOLOGICAL_UNSPECIFIED. Every changed text:
+`docs/classification_change_2026-11-18_*.md` and `..._partner_pulled_out.md`. Still open: the older
+rule `ops.protocol` does not see the denial in "not due to a change in standard of care".
+
 ## What makes the data hard to copy, and how to get it found (plan of 17 Nov)
 
 The full stopped-trial dataset and the code are public (GitHub, Zenodo, the site; CC BY-NC for the
@@ -138,8 +154,8 @@ CTR); FDA complete response letters (published since 2025).
 Getting found, in this order:
 1. Clinicians start reviewing (moat and sales argument at once).
 2. Hugging Face — **only once the 150-case oncology sample is clinician-reviewed** (decided
-   17 Nov), so the card can state a clinician-validated precision: the free sample only, a dataset card stating the validation honestly (two model
-   families; clinician review under way), CC BY-NC, link to the commercial licence.
+   17 Nov), so the card can state a clinician-validated precision: the free sample only, a dataset card stating the validation honestly (two Claude models, Opus and
+   Sonnet, one model family; cross-checked by GPT-6.1; one clinician on 150 oncology cases), CC BY-NC, link to the commercial licence.
 3. One indexable product page per dataset on the site (Dataset markup already exists on the home
    page, briefs, drug pages and the two-week updates; a page per dataset does not).
 4. SEC filings as a new source.
@@ -255,10 +271,37 @@ Worth doing: order a report on the live site with the beta form (work email, new
 ticked), open the link, check the document, confirm the newsletter, and stop it from the link in
 the mail.
 
-### 8. Clinicians review the labels — tool ready, clinicians to invite
+### 8. Clinicians review the labels — batch 1 done by the first clinician
 
-**Status (17 Nov):** the review tool is live and loaded; no clinician has started. Schayan knows
-clinicians who will do this, paid, with time in a few weeks.
+**Status (18 Nov):** "Clinician 1" (clinician scientist) answered all 150 cases of batch 1 between
+17 Nov 09:07 and 18 Nov 08:15 UTC, plus one of batch 2 (HV-0002).
+
+**Result of batch 1** (full analysis, per case: owner-only `qa/oncology-2026-11-review1` in the
+page's database, not in this repo):
+- Biological yes/no: **148 of 150** agree with classifier 2.7.5; outcome (6 classes) 138 of 150;
+  outcome and main reason 134 of 150.
+- Precision of the biological label: **98 of 100 (95 % CI 93–99 %)**. Of the 47 texts we label
+  non-biological, the clinician called none biological (with 47 cases, up to ~8 % missed is still
+  compatible).
+- The two biological disagreements: NCT02121405 (clinician right; fixed by owner decision) and the
+  two-stage "no evidence of promise" text (our label kept, golden case).
+- Where the clinician departed from the guidance: "Sponsor decision" → business (2×), a named low-
+  accrual cause → Never started (3×), the sponsor as a second cause (1×). Guidance sharpened 18 Nov.
+
+**Caveats — state them wherever the number is used:**
+- **One reviewer**, not two independent ones yet.
+- **24 of the 150 texts were discussed with Claude** (Schayan relayed questions, 17–18 Nov) before
+  they were answered. Without them: biological yes/no 125 of 126, outcome 92 %. From now on the
+  clinician's questions should not go through Claude, or those cases are marked.
+- **Fast pass:** median 9 s per case, 81 cases under 10 s, one comment. Batch 1 has no attention
+  checks. Do not sell it as a careful case-by-case clinical review.
+- **The answers are saved under Schayan's own account** (`u_nId1d2LEf8FUeZOntz3oKA`): the clinician
+  used Schayan's login. A second clinician on the same login overwrites them. Every clinician needs
+  an own claude.ai account, invited as Editor.
+
+**Found and fixed while checking:** `build_batch.py` split secondary reasons on "|" but the data
+joins them with "; ", so MIXED texts with a biological cause were treated as non-biological and
+left out of batch 3. Batch 4 (105 cases) closes the gap.
 
 **Guidance in the tool** ("How to judge a case", refined 16–17 Nov from Schayan's own trial run and
 questions): judge only what the text states; a negated cause does not count; a possible result is
@@ -287,8 +330,9 @@ other; the owner sees everyone's progress. Source, data layout and how to add ba
 | 1 | Oncology | 150 | blind | 100 we label biological + 50 others: clinician-validated precision and recall. **Hugging Face waits for this.** |
 | 2 | Validation: disputed cases | 11 | blind | The texts where the Claude and GPT references disagree; promised to DEEPCISION. |
 | 3 | Oncology: every failure label | 638 | confirm | Every other oncology trial we label biological, all phases. Our label is shown; Correct (Y) / Not correct (N). |
+| 4 | Oncology: several causes incl. biological | 105 | confirm | Added 18 Nov: the 95 MIXED texts the separator bug left out of batch 3, plus 10 texts biological since 2.7.2–2.7.5. Labels shown are 2.7.5 with the reviewed index; 5 attention checks. |
 
-Batch 1 + 3 = every biological label in oncology in front of a clinician. About 3 h for 1–2 and
+Batch 1 + 3 + 4 = every biological label in oncology in front of a clinician. About 3 h for 1–2 and
 5–6 h for 3, per clinician. In batch 3, 32 cases (~1 in 20) show a deliberately wrong label as an
 attention check; reviewers are told. Which ones, and our labels at draw time for batches 1 and 3,
 are in the page's owner-only `qa/` documents, not in this repo (old versions of the batch files in
@@ -303,8 +347,8 @@ against the Claude reference. Both are on `/validation`, with the 11 texts the g
 **When answers come in (Claude reads them with ArtifactData):**
 - Batch 2: record the verdicts in `validation/crosscheck_gpt61/decisions.json`, run
   `python scripts/crosscheck_heldout_v2.py` and `python scripts/build_validation_public.py`, push.
-- Batch 1: compare with `qa/oncology-2026-11-labels`; precision and recall of the biological label
-  in oncology, with intervals; a section on `/validation`; then the Hugging Face card.
+- Batch 1: ~~compare with `qa/oncology-2026-11-labels`~~ done 18 Nov (above). Next: a section on
+  `/validation` with the caveats; then the Hugging Face card.
 - Batch 3: list every corrected label; check the attention checks first (a reviewer who confirms
   them is not reading). Corrections become reviewed decisions.
 - Then decide which rules change — likely "possible lack of efficacy" and directionless "findings"
