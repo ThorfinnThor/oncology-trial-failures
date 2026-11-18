@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.5"
+CLASSIFIER_VERSION = "2.7.6"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -10803,7 +10803,7 @@ _ENROLMENT_ATTEMPTED = re.compile(
     r"\b(?:unable|could not|couldn't|not possible|impossible|despite|fail\w*|difficult\w*|challeng\w*|"
     r"low|poor|slow|insufficient|inadequate|inability|lack of (?:eligible |interested )?(?:patients|participants|subjects|enrol\w*|accrual|recruitment)|"
     r"since (?:being |it was )?open\w*|after (?:the )?(?:study |trial |recruitment |enrol\w* )?(?:was |had been )?open\w*|"
-    r"opened|initiated but|in (?:one|two|three|four|six|\d+) (?:years?|months?)|within|over (?:the )?(?:past |last )?\w+ (?:years?|months?)|"
+    r"opened|initiated but|in (?:one|two|three|four|six|\d+) (?:years?|months?)|in an? (?:one|two|three|four|five|six|\d+)[- ](?:years?|months?|weeks?) period|within|over (?:the )?(?:past |last )?\w+ (?:years?|months?)|"
     r"screen\w*|identif\w* (?:of )?(?:eligible )?(?:patients|participants|subjects)|no (?:eligible|interested)|"
     r"declined|refused|not interested|competing|(?:lack of|no|little|low) interest|no potential|"
     r"(?:were|was) identified|after \d+ (?:weeks?|months?|years?)|from the start|did not progress|"

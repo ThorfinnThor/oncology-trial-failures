@@ -1446,3 +1446,4 @@
 {"why_stopped":"DSMB stopped this trial due to the difference of 3-year DFS's rate between two groups more than 5% at the interim analysis in July 2021.","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Trial terminated by Sponsor based on benefit- risk reassessment","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
 {"why_stopped":"Based on two-stage design, the study ended at stage 1 with no evidence of promise based on pre-specified decision rule.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
+{"why_stopped":"no participants enrolled in a three year period","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
