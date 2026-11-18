@@ -46,7 +46,7 @@
     "comparator_rate": 0.041968162083936326,
     "comparator_label": "all gastroenterology & hepatology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:36Z"
+   "generated_at_utc": "2026-11-18T09:29:40Z"
   },
   {
    "slug": "immunology-autoimmune-btk",
@@ -84,7 +84,7 @@
     "comparator_rate": 0.03420752565564424,
     "comparator_label": "all immunology & autoimmune trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:39Z"
+   "generated_at_utc": "2026-11-18T09:29:42Z"
   },
   {
    "slug": "immunology-autoimmune-fcrn",
@@ -122,7 +122,7 @@
     "comparator_rate": 0.03420752565564424,
     "comparator_label": "all immunology & autoimmune trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:39Z"
+   "generated_at_utc": "2026-11-18T09:29:43Z"
   },
   {
    "slug": "immunology-autoimmune-jak-tyk2",
@@ -163,7 +163,7 @@
     "comparator_rate": 0.03420752565564424,
     "comparator_label": "all immunology & autoimmune trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:39Z"
+   "generated_at_utc": "2026-11-18T09:29:43Z"
   },
   {
    "slug": "neurology-amyloid-directed",
@@ -201,7 +201,7 @@
     "comparator_rate": 0.09587020648967552,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:42Z"
+   "generated_at_utc": "2026-11-18T09:29:46Z"
   },
   {
    "slug": "neurology-bace-secretase",
@@ -240,7 +240,7 @@
     "comparator_rate": 0.09587020648967552,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:43Z"
+   "generated_at_utc": "2026-11-18T09:29:46Z"
   },
   {
    "slug": "neurology-dopaminergic",
@@ -286,7 +286,7 @@
     "comparator_rate": 0.09587020648967552,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:43Z"
+   "generated_at_utc": "2026-11-18T09:29:47Z"
   },
   {
    "slug": "neurology-gaba-a",
@@ -339,7 +339,7 @@
     "comparator_rate": 0.09587020648967552,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:43Z"
+   "generated_at_utc": "2026-11-18T09:29:47Z"
   },
   {
    "slug": "neurology-tau",
@@ -377,7 +377,7 @@
     "comparator_rate": 0.09587020648967552,
     "comparator_label": "all neurology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:44Z"
+   "generated_at_utc": "2026-11-18T09:29:48Z"
   },
   {
    "slug": "oncology-alk-ros1-ret",
@@ -417,7 +417,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:51Z"
+   "generated_at_utc": "2026-11-18T09:29:55Z"
   },
   {
    "slug": "oncology-androgen-receptor-axis",
@@ -456,7 +456,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:51Z"
+   "generated_at_utc": "2026-11-18T09:29:55Z"
   },
   {
    "slug": "oncology-antifolate-nucleoside",
@@ -497,7 +497,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:53Z"
+   "generated_at_utc": "2026-11-18T09:29:57Z"
   },
   {
    "slug": "oncology-antifolate-nucleoside-pd-l-1",
@@ -540,7 +540,7 @@
     "comparator_rate": 0.05314256515074093,
     "comparator_label": "PD-(L)1 combinations without Antifolate / nucleoside"
    },
-   "generated_at_utc": "2026-11-16T23:46:52Z"
+   "generated_at_utc": "2026-11-18T09:29:56Z"
   },
   {
    "slug": "oncology-bcl-2",
@@ -578,7 +578,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:53Z"
+   "generated_at_utc": "2026-11-18T09:29:58Z"
   },
   {
    "slug": "oncology-bcma",
@@ -616,7 +616,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:54Z"
+   "generated_at_utc": "2026-11-18T09:29:58Z"
   },
   {
    "slug": "oncology-braf-mek",
@@ -656,7 +656,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:55Z"
+   "generated_at_utc": "2026-11-18T09:29:59Z"
   },
   {
    "slug": "oncology-braf-mek-pd-l-1",
@@ -698,7 +698,7 @@
     "comparator_rate": 0.052995391705069124,
     "comparator_label": "PD-(L)1 combinations without BRAF / MEK"
    },
-   "generated_at_utc": "2026-11-16T23:46:54Z"
+   "generated_at_utc": "2026-11-18T09:29:58Z"
   },
   {
    "slug": "oncology-btk",
@@ -736,7 +736,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:56Z"
+   "generated_at_utc": "2026-11-18T09:30:00Z"
   },
   {
    "slug": "oncology-cd20",
@@ -774,7 +774,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:56Z"
+   "generated_at_utc": "2026-11-18T09:30:00Z"
   },
   {
    "slug": "oncology-cd3-t-cell-engagers",
@@ -814,7 +814,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:57Z"
+   "generated_at_utc": "2026-11-18T09:30:01Z"
   },
   {
    "slug": "oncology-cd38",
@@ -852,7 +852,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:59Z"
+   "generated_at_utc": "2026-11-18T09:30:03Z"
   },
   {
    "slug": "oncology-cd38-pd-l-1",
@@ -892,7 +892,7 @@
     "comparator_rate": 0.051662174303683736,
     "comparator_label": "PD-(L)1 combinations without CD38"
    },
-   "generated_at_utc": "2026-11-16T23:46:57Z"
+   "generated_at_utc": "2026-11-18T09:30:01Z"
   },
   {
    "slug": "oncology-cd47-sirp",
@@ -931,7 +931,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:46:59Z"
+   "generated_at_utc": "2026-11-18T09:30:03Z"
   },
   {
    "slug": "oncology-cdk4-6",
@@ -970,7 +970,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:00Z"
+   "generated_at_utc": "2026-11-18T09:30:04Z"
   },
   {
    "slug": "oncology-ctla-4",
@@ -1008,7 +1008,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:01Z"
+   "generated_at_utc": "2026-11-18T09:30:05Z"
   },
   {
    "slug": "oncology-ctla-4-pd-l-1",
@@ -1048,7 +1048,7 @@
     "comparator_rate": 0.055842812823164424,
     "comparator_label": "PD-(L)1 combinations without CTLA-4"
    },
-   "generated_at_utc": "2026-11-16T23:47:00Z"
+   "generated_at_utc": "2026-11-18T09:30:04Z"
   },
   {
    "slug": "oncology-egfr",
@@ -1086,7 +1086,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:02Z"
+   "generated_at_utc": "2026-11-18T09:30:06Z"
   },
   {
    "slug": "oncology-er-aromatase",
@@ -1125,7 +1125,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:02Z"
+   "generated_at_utc": "2026-11-18T09:30:06Z"
   },
   {
    "slug": "oncology-ezh2",
@@ -1164,7 +1164,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:03Z"
+   "generated_at_utc": "2026-11-18T09:30:07Z"
   },
   {
    "slug": "oncology-fgfr",
@@ -1205,7 +1205,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:04Z"
+   "generated_at_utc": "2026-11-18T09:30:08Z"
   },
   {
    "slug": "oncology-flt3-kit",
@@ -1244,7 +1244,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:05Z"
+   "generated_at_utc": "2026-11-18T09:30:09Z"
   },
   {
    "slug": "oncology-flt3-kit-pd-l-1",
@@ -1285,7 +1285,7 @@
     "comparator_rate": 0.05311355311355311,
     "comparator_label": "PD-(L)1 combinations without FLT3 / KIT"
    },
-   "generated_at_utc": "2026-11-16T23:47:04Z"
+   "generated_at_utc": "2026-11-18T09:30:09Z"
   },
   {
    "slug": "oncology-hdac",
@@ -1326,7 +1326,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:05Z"
+   "generated_at_utc": "2026-11-18T09:30:09Z"
   },
   {
    "slug": "oncology-her2",
@@ -1364,7 +1364,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:06Z"
+   "generated_at_utc": "2026-11-18T09:30:11Z"
   },
   {
    "slug": "oncology-her3",
@@ -1402,7 +1402,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:07Z"
+   "generated_at_utc": "2026-11-18T09:30:11Z"
   },
   {
    "slug": "oncology-ido1",
@@ -1440,7 +1440,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:08Z"
+   "generated_at_utc": "2026-11-18T09:30:12Z"
   },
   {
    "slug": "oncology-ido1-pd-l-1",
@@ -1480,7 +1480,7 @@
     "comparator_rate": 0.05265546981389015,
     "comparator_label": "PD-(L)1 combinations without IDO1"
    },
-   "generated_at_utc": "2026-11-16T23:47:07Z"
+   "generated_at_utc": "2026-11-18T09:30:12Z"
   },
   {
    "slug": "oncology-jak-tyk2",
@@ -1521,7 +1521,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:08Z"
+   "generated_at_utc": "2026-11-18T09:30:12Z"
   },
   {
    "slug": "oncology-lag-3",
@@ -1559,7 +1559,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:10Z"
+   "generated_at_utc": "2026-11-18T09:30:14Z"
   },
   {
    "slug": "oncology-lag-3-pd-l-1",
@@ -1599,7 +1599,7 @@
     "comparator_rate": 0.054377880184331796,
     "comparator_label": "PD-(L)1 combinations without LAG-3"
    },
-   "generated_at_utc": "2026-11-16T23:47:10Z"
+   "generated_at_utc": "2026-11-18T09:30:14Z"
   },
   {
    "slug": "oncology-met",
@@ -1637,7 +1637,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:10Z"
+   "generated_at_utc": "2026-11-18T09:30:15Z"
   },
   {
    "slug": "oncology-microtubule",
@@ -1678,7 +1678,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:11Z"
+   "generated_at_utc": "2026-11-18T09:30:15Z"
   },
   {
    "slug": "oncology-ox40-4-1bb-gitr",
@@ -1718,7 +1718,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:13Z"
+   "generated_at_utc": "2026-11-18T09:30:17Z"
   },
   {
    "slug": "oncology-ox40-4-1bb-gitr-pd-l-1",
@@ -1760,7 +1760,7 @@
     "comparator_rate": 0.05227579990986931,
     "comparator_label": "PD-(L)1 combinations without OX40 / 4-1BB / GITR"
    },
-   "generated_at_utc": "2026-11-16T23:47:12Z"
+   "generated_at_utc": "2026-11-18T09:30:16Z"
   },
   {
    "slug": "oncology-parp",
@@ -1800,7 +1800,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:14Z"
+   "generated_at_utc": "2026-11-18T09:30:18Z"
   },
   {
    "slug": "oncology-parp-pd-l-1",
@@ -1842,7 +1842,7 @@
     "comparator_rate": 0.052486187845303865,
     "comparator_label": "PD-(L)1 combinations without PARP"
    },
-   "generated_at_utc": "2026-11-16T23:47:13Z"
+   "generated_at_utc": "2026-11-18T09:30:17Z"
   },
   {
    "slug": "oncology-pd-l-1",
@@ -1881,7 +1881,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:15Z"
+   "generated_at_utc": "2026-11-18T09:30:19Z"
   },
   {
    "slug": "oncology-pi3k-akt-mtor",
@@ -1927,7 +1927,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:15Z"
+   "generated_at_utc": "2026-11-18T09:30:20Z"
   },
   {
    "slug": "oncology-proteasome",
@@ -1968,7 +1968,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:16Z"
+   "generated_at_utc": "2026-11-18T09:30:20Z"
   },
   {
    "slug": "oncology-tgf",
@@ -2010,7 +2010,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:18Z"
+   "generated_at_utc": "2026-11-18T09:30:22Z"
   },
   {
    "slug": "oncology-tgf-pd-l-1",
@@ -2054,7 +2054,7 @@
     "comparator_rate": 0.049225159525979945,
     "comparator_label": "PD-(L)1 combinations without TGF-β"
    },
-   "generated_at_utc": "2026-11-16T23:47:16Z"
+   "generated_at_utc": "2026-11-18T09:30:20Z"
   },
   {
    "slug": "oncology-tigit",
@@ -2092,7 +2092,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:18Z"
+   "generated_at_utc": "2026-11-18T09:30:23Z"
   },
   {
    "slug": "oncology-tigit-pd-l-1",
@@ -2132,7 +2132,7 @@
     "comparator_rate": 0.052897884084636616,
     "comparator_label": "PD-(L)1 combinations without TIGIT"
    },
-   "generated_at_utc": "2026-11-16T23:47:18Z"
+   "generated_at_utc": "2026-11-18T09:30:22Z"
   },
   {
    "slug": "oncology-topoisomerase",
@@ -2171,7 +2171,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:19Z"
+   "generated_at_utc": "2026-11-18T09:30:23Z"
   },
   {
    "slug": "oncology-vegf-vegfr",
@@ -2212,7 +2212,7 @@
     "comparator_rate": 0.05230663694049048,
     "comparator_label": "all oncology trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:21Z"
+   "generated_at_utc": "2026-11-18T09:30:25Z"
   },
   {
    "slug": "oncology-vegf-vegfr-pd-l-1",
@@ -2255,7 +2255,7 @@
     "comparator_rate": 0.05754276827371695,
     "comparator_label": "PD-(L)1 combinations without VEGF / VEGFR"
    },
-   "generated_at_utc": "2026-11-16T23:47:20Z"
+   "generated_at_utc": "2026-11-18T09:30:24Z"
   },
   {
    "slug": "psychiatry-mental-health-dopamine-d2-d3",
@@ -2294,7 +2294,7 @@
     "comparator_rate": 0.03759398496240601,
     "comparator_label": "all psychiatry & mental health trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:23Z"
+   "generated_at_utc": "2026-11-18T09:30:27Z"
   },
   {
    "slug": "psychiatry-mental-health-kappa-opioid",
@@ -2332,7 +2332,7 @@
     "comparator_rate": 0.03759398496240601,
     "comparator_label": "all psychiatry & mental health trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:24Z"
+   "generated_at_utc": "2026-11-18T09:30:28Z"
   },
   {
    "slug": "psychiatry-mental-health-monoamine-reuptake",
@@ -2372,7 +2372,7 @@
     "comparator_rate": 0.03759398496240601,
     "comparator_label": "all psychiatry & mental health trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:24Z"
+   "generated_at_utc": "2026-11-18T09:30:28Z"
   },
   {
    "slug": "psychiatry-mental-health-nmda-glutamate",
@@ -2419,7 +2419,7 @@
     "comparator_rate": 0.03759398496240601,
     "comparator_label": "all psychiatry & mental health trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:25Z"
+   "generated_at_utc": "2026-11-18T09:30:28Z"
   },
   {
    "slug": "psychiatry-mental-health-serotonin-5-ht1a",
@@ -2457,7 +2457,7 @@
     "comparator_rate": 0.03759398496240601,
     "comparator_label": "all psychiatry & mental health trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:25Z"
+   "generated_at_utc": "2026-11-18T09:30:28Z"
   },
   {
    "slug": "psychiatry-mental-health-serotonin-5-ht2a",
@@ -2495,7 +2495,7 @@
     "comparator_rate": 0.03759398496240601,
     "comparator_label": "all psychiatry & mental health trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:25Z"
+   "generated_at_utc": "2026-11-18T09:30:29Z"
   },
   {
    "slug": "respiratory-alarmins-tslp-il-33",
@@ -2535,7 +2535,7 @@
     "comparator_rate": 0.04142011834319527,
     "comparator_label": "all respiratory trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:28Z"
+   "generated_at_utc": "2026-11-18T09:30:31Z"
   },
   {
    "slug": "respiratory-il-13",
@@ -2573,7 +2573,7 @@
     "comparator_rate": 0.04142011834319527,
     "comparator_label": "all respiratory trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:29Z"
+   "generated_at_utc": "2026-11-18T09:30:32Z"
   },
   {
    "slug": "respiratory-il-5-il-5r",
@@ -2612,7 +2612,7 @@
     "comparator_rate": 0.04142011834319527,
     "comparator_label": "all respiratory trials with a resolved drug target"
    },
-   "generated_at_utc": "2026-11-16T23:47:29Z"
+   "generated_at_utc": "2026-11-18T09:30:32Z"
   }
  ]
 }

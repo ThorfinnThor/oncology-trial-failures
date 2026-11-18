@@ -1,5 +1,5 @@
 {
- "read_on": "2026-11-16",
+ "read_on": "2026-11-18",
  "readable_completed": 4709,
  "cards": [
   {
@@ -24,7 +24,7 @@
    "key": "stopped_safety",
    "status": "Stopped",
    "label": "Safety",
-   "count": 631,
+   "count": 630,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT04921358",

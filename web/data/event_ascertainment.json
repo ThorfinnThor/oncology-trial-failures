@@ -11,8 +11,9 @@
  "recovered_by_outcome": {
   "UNKNOWN": 44,
   "CAUSE_NOT_STATED": 9,
-  "NON_BIOLOGICAL": 8,
-  "BIOLOGICAL_FAILURE": 4
+  "NON_BIOLOGICAL": 7,
+  "BIOLOGICAL_FAILURE": 4,
+  "NON_FAILURE_TRANSITION": 1
  },
  "examples": [
   {
