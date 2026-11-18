@@ -41,6 +41,9 @@ from drug names, sponsor type or outside knowledge. Be conservative: never asser
   CAUSE_NOT_STATED → DECISION_WITHOUT_STATED_CAUSE | PROGRAM_ACTION_WITHOUT_STATED_CAUSE; UNKNOWN → UNSPECIFIED.
 - Negated causes do not count ("not related to safety" is not SAFETY).
 - "Sponsor decision" alone = CAUSE_NOT_STATED. "Business decision" / "strategic reasons" = NON_BIOLOGICAL/BUSINESS_STRATEGY.
+- The sponsor is who decided, not a cause (clarified 18 Nov 2026). "Sponsor decision" is never BUSINESS_STRATEGY on
+  its own, and never a second cause next to a stated one: "terminated by the sponsor due to inferior efficacy" =
+  BIOLOGICAL_FAILURE/EFFICACY_FUTILITY, not MIXED_CAUSES.
 - "Low accrual" = NON_BIOLOGICAL/RECRUITMENT. "Lack of funding" = NON_BIOLOGICAL/FUNDING.
 - "Terminated after interim analysis showed futility" = BIOLOGICAL_FAILURE/EFFICACY_FUTILITY; "after interim analysis" alone = UNKNOWN.
 - A regulator/clinical hold without a stated medical cause = NON_BIOLOGICAL/REGULATORY; with a stated toxicity = MIXED_CAUSES is NOT used —

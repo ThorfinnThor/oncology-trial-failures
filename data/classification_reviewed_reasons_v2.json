@@ -3,7 +3,7 @@
   "classifier_version": "2.7.1",
   "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
   "entry_count": 2503,
-  "manual_entry_count": 130,
+  "manual_entry_count": 132,
   "review_rows_excluded": 346,
   "conflict_count": 9,
   "conflicts": [
@@ -5027,19 +5027,19 @@
       "normalized_text": "trial terminated by sponsor based on benefit- risk reassessment",
       "example_text": "Trial terminated by Sponsor based on benefit- risk reassessment",
       "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "SAFETY",
+      "primary_reason": "BIOLOGICAL_UNSPECIFIED",
       "secondary_reasons": [],
       "needs_review": false,
-      "v2_derivation": "AUDIT_LEGACY_MAPPING",
-      "legacy_label": "BIOLOGICAL_FAILURE",
-      "legacy_reason": "SAFETY",
+      "v2_derivation": "MANUAL_V2_DECISION",
       "reviewed_record_count": 1,
       "nct_ids": [
         "NCT05525286"
       ],
       "provenance": {
-        "MISCLASSIFIED": 1
-      }
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Owner decision 2026-11-18: an unfavourable benefit-risk reassessment names no separable safety finding = BIOLOGICAL_UNSPECIFIED, as the current rule bio.unspecified_risk_benefit reads it. Replaces the legacy audit mapping to SAFETY.",
+      "reviewed_at": "2026-11-18"
     },
     "1b84881a091ec8775ad3": {
       "normalized_text": "no expected efficacy was observed in subsequent extended phase.the company decided to initiatively terminate the development of imm01 as monotherapy and fully promote clinical development of combination therapy.",
@@ -7642,20 +7642,20 @@
     "2c8d46d8f3500659e4ad": {
       "normalized_text": "dsmb stopped this trial due to the difference of 3-year dfs's rate between two groups more than 5% at the interim analysis in july 2021.",
       "example_text": "DSMB stopped this trial due to the difference of 3-year DFS's rate between two groups more than 5% at the interim analysis in July 2021.",
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "EFFICACY_FUTILITY",
+      "outcome": "UNKNOWN",
+      "primary_reason": "UNSPECIFIED",
       "secondary_reasons": [],
-      "needs_review": false,
-      "v2_derivation": "AUDIT_LEGACY_MAPPING",
-      "legacy_label": "BIOLOGICAL_FAILURE",
-      "legacy_reason": "EFFICACY/FUTILITY",
+      "needs_review": true,
+      "v2_derivation": "MANUAL_V2_DECISION",
       "reviewed_record_count": 1,
       "nct_ids": [
         "NCT02121405"
       ],
       "provenance": {
-        "CORRECT": 1
-      }
+        "MANUAL_V2_DECISION": 1
+      },
+      "reviewer_notes": "Owner decision 2026-11-18: the text gives the size of the DFS difference but not its direction; a stop for benefit and a stop for harm are both possible, so the result is not stated (LABELING_GUIDELINES: interim analysis without its result = UNKNOWN). Replaces the legacy audit mapping to EFFICACY_FUTILITY.",
+      "reviewed_at": "2026-11-18"
     },
     "2cc2ca1fafea8c4439bd": {
       "normalized_text": "stopping rules met",
