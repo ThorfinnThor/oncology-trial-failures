@@ -1,143 +1,78 @@
 {
  "schema_version": 2,
- "release": "2026-11-16",
- "generated_at_utc": "2026-11-16T23:48:42Z",
- "last_sent_at": "2026-10-26T07:59:42Z",
+ "release": "2026-11-18",
+ "generated_at_utc": "2026-11-18T09:31:39Z",
+ "last_sent_at": "2026-11-16T23:48:45Z",
  "counts": {
-  "added": 106,
-  "changed": 11
+  "added": 13,
+  "changed": 0
  },
  "added": [
   {
-   "nct_id": "NCT06015659",
-   "title": "ZN-c3 + Gemcitabine in Pancreatic Cancer",
-   "sponsor": "Brandon Huffman, MD",
+   "nct_id": "NCT07199192",
+   "title": "Steroid Treatment for Severe Acute Respiratory Infection (STAR) Trial",
+   "sponsor": "National Institute of Allergy and Infectious Diseases (NIAID)",
+   "area": "Respiratory",
+   "reason": "Reason not stated",
+   "detail": "elected not to move forward"
+  },
+  {
+   "nct_id": "NCT06810375",
+   "title": "Erector Spinae Versus Intercostal Nerve Blocks With Liposomal Bupivacaine for Analgesia in Thoracic Surgery",
+   "sponsor": "George Washington University",
    "area": "Oncology",
-   "reason": "Safety",
-   "detail": "Study stopped early due to reaching the minimum number of DLTs required for halting the study due to toxicity."
+   "reason": "Staffing resources",
+   "detail": "The IRB for this study has been closed and the PI left the institution."
   },
   {
-   "nct_id": "NCT07818330",
-   "title": "A Repeat Dose Study of the Dexmedetomidine Transdermal System in Healthy Subjects",
-   "sponsor": "Teikoku Pharma USA, Inc.",
-   "area": "Other",
-   "reason": "Safety",
-   "detail": "Sponsor decision, after observation of adverse events"
-  },
-  {
-   "nct_id": "NCT05900141",
-   "title": "An Open Label Extension (OLE) Study to Evaluate Long-term Safety and Tolerability of Pelacarsen (TQJ230)",
-   "sponsor": "Novartis Pharmaceuticals",
-   "area": "Cardiovascular",
-   "reason": "Efficacy / futility",
-   "detail": "Study terminated by sponsor following the outcome of the Lp(a)HORIZON study (NCT04023552), which did not meet its primary endpoint"
-  },
-  {
-   "nct_id": "NCT06415344",
-   "title": "Long-term Extension of GTX-102 in Angelman Syndrome",
-   "sponsor": "Ultragenyx Pharmaceutical Inc",
-   "area": "Other",
-   "reason": "Efficacy / futility",
-   "detail": "Lack of efficacy"
-  },
-  {
-   "nct_id": "NCT06617429",
-   "title": "Phase 3 Efficacy and Safety Study of GTX-102 in Pediatric Subjects With Angelman Syndrome (AS)",
-   "sponsor": "Ultragenyx Pharmaceutical Inc",
-   "area": "Other",
-   "reason": "Efficacy / futility",
-   "detail": "Lack of efficacy"
-  },
-  {
-   "nct_id": "NCT03371979",
-   "title": "Pegzilarginase and Pembrolizumab for Extensive Disease Small Cell Lung Cancer",
-   "sponsor": "Immedica Pharma AB",
+   "nct_id": "NCT00434226",
+   "title": "A Study of Sunitinib in Combination With Bevacizumab, Carboplatin, and Paclitaxel in Patients With Advanced Non-Small Cell Lung Cancer…",
+   "sponsor": "Genentech, Inc.",
    "area": "Oncology",
-   "reason": "Efficacy / futility",
-   "detail": "Study enrollment was halted early based on ongoing data monitoring; no efficacy analyses were performed"
+   "reason": "Reason not stated",
+   "detail": "Based on data collected, the combination appeared to be poorly tolearated."
   },
   {
-   "nct_id": "NCT05985109",
-   "title": "KN 046 Plus Regorafenib in MSS Metastatic Colorectal Cancer",
-   "sponsor": "Peking University Cancer Hospital & Institute",
-   "area": "Oncology",
-   "reason": "Efficacy / futility",
-   "detail": "The study was stopped early due to lack of efficacy."
-  },
-  {
-   "nct_id": "NCT06692673",
-   "title": "Linaclotide for Colonoscopy Bowel Prep",
-   "sponsor": "University of Florida",
+   "nct_id": "NCT02893618",
+   "title": "A 5 Treatment Period Pharmacokinetic Study Evaluating Dose Proportionality and Food Effects of Diazoxide Choline Controlled-Release Tablet…",
+   "sponsor": "Essentialis, Inc.",
    "area": "Other",
-   "reason": "Efficacy / futility",
-   "detail": "terminated early due to futility/ineffectiveness"
-  }
- ],
- "changed": [
-  {
-   "nct_id": "NCT06628037",
-   "title": "SN514-066b Enzyme in Deep Partial Thickness Burns",
-   "sponsor": "SERDA bv",
-   "area": "Other",
-   "reason": "",
-   "detail": "Status: Suspended → Terminated; Stop reason: “Administrative Pause- NOT for Safety Reasons” → “Administrative reasons not for safety”"
+   "reason": "Decision, cause not stated",
+   "detail": "Sponsor decision"
   },
   {
-   "nct_id": "NCT04817761",
-   "title": "SPARK-ALL: Calaspargase Pegol in Adults With ALL",
-   "sponsor": "Institut de Recherches Internationales Servier",
+   "nct_id": "NCT04910022",
+   "title": "Ph I/II Study of NMS-03305293+TMZ in Adult Patients With Recurrent Glioblastoma",
+   "sponsor": "Nerviano Medical Sciences",
    "area": "Oncology",
-   "reason": "",
-   "detail": "Stop reason: “Sponsor decision” → “Sponsor decision.”"
+   "reason": "Operational other",
+   "detail": "Per the protocol, the sponsor reserves the right to discontinue the trial for valid scientific or administrative reasons. The discontinuation of the study is not related to safety issues."
   },
   {
-   "nct_id": "NCT05603572",
-   "title": "KAT-101 in Subjects With Hepatocellular Carcinoma (HCC)",
-   "sponsor": "Primocure Pharma",
+   "nct_id": "NCT04940299",
+   "title": "Tocilizumab, Ipilimumab, and Nivolumab for the Treatment of Advanced Melanoma, Non-Small Cell Lung Cancer, or Urothelial Carcinoma",
+   "sponsor": "M.D. Anderson Cancer Center",
    "area": "Oncology",
-   "reason": "",
-   "detail": "Status: Suspended → Terminated; Stop reason: “Enrollment paused” → “discontinued enrollment”"
+   "reason": "Recruitment",
+   "detail": "\\<75% participation"
   },
   {
-   "nct_id": "NCT06378528",
-   "title": "Ketamine-assisted Psychotherapy for Adolescent PTSD (KAP)",
-   "sponsor": "University of Wisconsin, Madison",
-   "area": "Other",
-   "reason": "",
-   "detail": "Status: Suspended → Withdrawn"
-  },
-  {
-   "nct_id": "NCT04981860",
-   "title": "Comparison of Conjunctival Antimicrobial Activity and Patient Comfort Between Topical Hypochlorous Acid (Avenova) and Betadine",
-   "sponsor": "University of Miami",
+   "nct_id": "NCT05551273",
+   "title": "Study of Oral TLR8 Agonist Selgantolimod on HBsAg in Participants With Both Chronic Hepatitis B and HIV",
+   "sponsor": "National Institute of Allergy and Infectious Diseases (NIAID)",
    "area": "Infectious Disease",
-   "reason": "",
-   "detail": "Status: Suspended → Terminated; Stop reason: “sample microbiologic results where not consistent” → “The study was terminated early due to operational feasibility challenges, including multi-site coord"
+   "reason": "Reason not stated",
+   "detail": "ACTG Network funding disruptions"
   },
   {
-   "nct_id": "NCT03756389",
-   "title": "Evaluation of Topical Application of BMX-010 in Subjects With Rosacea",
-   "sponsor": "BioMimetix JV, LLC",
-   "area": "Other",
-   "reason": "",
-   "detail": "Status: Suspended → Terminated; Stop reason: “Re-formulation of study product” → “Re-formulation of study product needed.”"
-  },
-  {
-   "nct_id": "NCT05425862",
-   "title": "Pidnarulex and Talazoparib in Patients With Metastatic Castration Resistant Prostate Cancer",
-   "sponsor": "Peter MacCallum Cancer Centre, Australia",
+   "nct_id": "NCT06484920",
+   "title": "A Phase II Study of the Combination of Pembrolizumab and ATRA Combination Treatment of Relapsed HL and B-NHL",
+   "sponsor": "Rita Assi",
    "area": "Oncology",
-   "reason": "",
-   "detail": "Status: Suspended → Terminated; Stop reason: “Enrolment suspended to further assess supplementary non-clinical study data.” → “It was decided to stop the study due to changes in the treatment landscap"
-  },
-  {
-   "nct_id": "NCT04241835",
-   "title": "A Study to Compare the Blood Levels and Safety of Tazemetostat in Participants With Advanced Cancer and Moderate/Severe Liver Impairment to…",
-   "sponsor": "Epizyme, Inc.",
-   "area": "Oncology",
-   "reason": "",
-   "detail": "Stop reason: “Ipsen decided to discontinue all active tazemetostat clinical trials.” → “Sponsor's decision to discontinue tazemetostat treatment based on emerging safety data from another clinical tri"
+   "reason": "Reason not stated",
+   "detail": "Loss of research support"
   }
  ],
+ "changed": [],
  "recent": []
 }
