@@ -22,8 +22,13 @@ in each section is blocked on nothing but time.
   in 8. The tool now holds 904 cases in four batches.
 - **Classifier 2.7.5** (17–18 Nov): "nobody enrolled" is no longer a recruitment cause on its own
   (2.7.2, 371 trials); a partner pulling out is a support withdrawal (2.7.4, 2 trials); a changed
-  standard of care is a design cause, not business (2.7.5, 58 trials). All from the next weekly
-  run (see the sections below).
+  standard of care is a design cause, not business (2.7.5, 58 trials); "no participants enrolled in a
+  three year period" is recruitment (2.7.6, 1 trial). **In the data since the manual run of 18 Nov**
+  (run 44269445298, all steps green, no newsletter: the 12-day spacing held): 24,095 trials, all on
+  classifier 2.7.6.
+- **`/validation` has a clinician section** (18 Nov) with the caveats. The Hugging Face card is built
+  by `python scripts/samples/build_label_sample.py --out <dir> --huggingface`; upload waits for the
+  account/organisation name and a write token.
 - **The diligence report is free during the beta, for a work email** (#94, 22 Oct). The order form
   also offers the newsletter (double opt-in). Leads land in the `LEADS` KV namespace and are
   mailed to `contact@clinicaltrialfailures.com`.
