@@ -1,0 +1,538 @@
+{
+ "batch": "oncology-bio-2026-11b",
+ "label": "Oncology: several causes incl. biological",
+ "priority": 4,
+ "drawn_on": "2026-11-18",
+ "classifier_version": "2.7.5",
+ "seed": 20261118,
+ "area": "Oncology",
+ "design": "every distinct oncology stop-reason text (all phases and study types) that classifier 2.7.5 with the reviewed index labels biological (a biological failure, or several causes including a biological one), not in oncology-2026-11 or oncology-bio-2026-11 and not a held-out validation text. Makes up for a build_batch bug that left texts with several causes out of oncology-bio-2026-11. Confirm mode, about one label in twenty deliberately wrong.",
+ "labels_at_draw": "owner-only documents qa/oncology-bio-2026-11b-labels and qa/oncology-bio-2026-11b in the review page's database",
+ "cases": [
+  {
+   "case_id": "oncology-bio-2026-11b-001",
+   "nct_id": "NCT02444793",
+   "why_stopped": "The study was terminated due to marginal efficacy and change in sponsor prioritization. The combination had a manageable safety profile."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-002",
+   "nct_id": "NCT02548169",
+   "why_stopped": "The study was stopped because of loss of funding and no safety issues"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-003",
+   "nct_id": "NCT03300921",
+   "why_stopped": "Newer research suggested that paricalcitol may be harmful to a subset of pancreatic cancer patients and it is not feasible to subtype patients in the short time frame before surgery"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-004",
+   "nct_id": "NCT04642365",
+   "why_stopped": "The sponsor decided to terminate the study early, due to recruitment challenges for Part II and, based on the totality of data generated with a low likelihood of achieving the targeted efficacy, to open Part III."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-005",
+   "nct_id": "NCT03637491",
+   "why_stopped": "Available clinical data has shown limited anti-tumor activity and reaching target study drug dose levels may not be feasible."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-006",
+   "nct_id": "NCT01728207",
+   "why_stopped": "Study was stopped due to insufficient efficacy and very slow accrual"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-007",
+   "nct_id": "NCT00824538",
+   "why_stopped": "Closed prematurely due to emerging data on toxicity and competing trials."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-008",
+   "nct_id": "NCT03723915",
+   "why_stopped": "The total accrual goal of 34 patients was not met. Stage 1 of the study did not meet the interim analysis criteria to move onto Stage 2 of the Simon 2 stage design."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-009",
+   "nct_id": "NCT02372305",
+   "why_stopped": "PI is no longer at institution. IRB closed study due to lack of response from PI"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-010",
+   "nct_id": "NCT01803269",
+   "why_stopped": "Due to lack of activity and slow accrual"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-011",
+   "nct_id": "NCT02277093",
+   "why_stopped": "FDA issued a clinical hold as pacritinib had increased side effects"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-012",
+   "nct_id": "NCT04718675",
+   "why_stopped": "Due to lack of safety and futility"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-013",
+   "nct_id": "NCT04296942",
+   "why_stopped": "One participant was accrued, and the study was stopped due to new safety data from the company for M7824 and slow accrual."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-014",
+   "nct_id": "NCT01453595",
+   "why_stopped": "Given the number of toxicities seen and the difficulty with patient retention in the dose escalation portion, the sponsor decided to close the trial."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-015",
+   "nct_id": "NCT02128230",
+   "why_stopped": "Low enrollment and Futility as determined by Amgen's Carfilzomib NASCR program."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-016",
+   "nct_id": "NCT00541112",
+   "why_stopped": "Toxicity and lack of efficacy"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-017",
+   "nct_id": "NCT00752206",
+   "why_stopped": "The Data Safety Monitoring Board (DSMB) recommended study termination for slow accrual and futility."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-018",
+   "nct_id": "NCT05494866",
+   "why_stopped": "lack of efficacy paired with high toxicity"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-019",
+   "nct_id": "NCT01177540",
+   "why_stopped": "The study was terminated early due to enrollment difficulties and the futility of observing differences in remission rate between treatment arms."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-020",
+   "nct_id": "NCT01296555",
+   "why_stopped": "The Sponsor discontinued the manufacturing and development of taselisib due to modest clinical benefit and limited tolerability."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-021",
+   "nct_id": "NCT01266018",
+   "why_stopped": "Lack of efficacy in Cohort 2; slow enrollment in Cohort 1"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-022",
+   "nct_id": "NCT04916236",
+   "why_stopped": "Due to a lack of safety and efficacy."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-023",
+   "nct_id": "NCT00640978",
+   "why_stopped": "Significant Adverse Effects - Futility"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-024",
+   "nct_id": "NCT02452970",
+   "why_stopped": "Poor enrollment and adverse event experiences in the limited population"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-025",
+   "nct_id": "NCT01746173",
+   "why_stopped": "Slow accrual and futility"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-026",
+   "nct_id": "NCT03991741",
+   "why_stopped": "Closed because of feasibility and safety issues, didn't reach our end point"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-027",
+   "nct_id": "NCT05787496",
+   "why_stopped": "As a result of program reprioritization and due to the limited clinical activity observed in the Phase 1 trial, the study has been discontinued."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-028",
+   "nct_id": "NCT00337259",
+   "why_stopped": "poor accrual and response less than expected on interim analysis"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-029",
+   "nct_id": "NCT02016534",
+   "why_stopped": "Amgen decision following interim review of efficacy and safety data from the AMG 337 program."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-030",
+   "nct_id": "NCT02722369",
+   "why_stopped": "Low recruitment, lack of efficacy and increased adverse events in investigational arm."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-031",
+   "nct_id": "NCT00706238",
+   "why_stopped": "The study was terminated early due to difficulties in recruiting subjects, not following concerns for the safety or absence of clinical activity in patients."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-032",
+   "nct_id": "NCT06488716",
+   "why_stopped": "Following a thorough review of safety data, preliminary efficacy data and an evaluation of overall risk-benefit, Sponsor made the decision to end the study."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-033",
+   "nct_id": "NCT02987998",
+   "why_stopped": "higher than expected rate of toxicity \\& unrealistic timeline to complete trial under company's proposed plan to reopen"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-034",
+   "nct_id": "NCT02689219",
+   "why_stopped": "lack of funding/ benefit"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-035",
+   "nct_id": "NCT03473496",
+   "why_stopped": "After CAR-T treatment, the benefit is not significant, and it is difficult to enroll."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-036",
+   "nct_id": "NCT04227275",
+   "why_stopped": "Based on the safety events and evidence of biologic activity without sustained clinical responses the Sponsor finds the risk/benefit analysis unfavorable for patients and has terminated the study."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-037",
+   "nct_id": "NCT00251589",
+   "why_stopped": "This trial is being closed based on lack of substantive efficacy, slow accrual and overall tolerance in patients treated to date."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-038",
+   "nct_id": "NCT05286827",
+   "why_stopped": "The study was terminated due to low accrual and insufficient efficacy seen in first few participants treated."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-039",
+   "nct_id": "NCT04803227",
+   "why_stopped": "Unforeseeable difficulties in recruiting patients. There were no reported serious adverse events."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-040",
+   "nct_id": "NCT03760666",
+   "why_stopped": "No efficacy observed, COVID-19 caused sites to shut down"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-041",
+   "nct_id": "NCT03865212",
+   "why_stopped": "Lack of funding; lack of objective response"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-042",
+   "nct_id": "NCT02291614",
+   "why_stopped": "The study was terminated because of immunogenicity and business decision."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-043",
+   "nct_id": "NCT00984165",
+   "why_stopped": "Terminated due to slow accrual, PI left NIH and primary endpoint not met."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-044",
+   "nct_id": "NCT05393999",
+   "why_stopped": "The drug was found to be ineffective against Omicron, so the study was terminated and no patients were enrolled."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-045",
+   "nct_id": "NCT01307618",
+   "why_stopped": "Due to lack of clinical efficacy and lack of drug supply, trial was closed early and correlative studies were not pursued further."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-046",
+   "nct_id": "NCT02200848",
+   "why_stopped": "Recruitment difficulties and toxicity"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-047",
+   "nct_id": "NCT03254927",
+   "why_stopped": "Sponsor decision based on emerging risk-benefit profile"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-048",
+   "nct_id": "NCT02575807",
+   "why_stopped": "Study was stopped due to low enrollment and lack of clinical activity."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-049",
+   "nct_id": "NCT03119467",
+   "why_stopped": "Study has been stopped after reviewing PK and safety results"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-050",
+   "nct_id": "NCT04648826",
+   "why_stopped": "Due to notification from EMD Serono, for Bintrafusp alfa (M7824) regarding an observed increase in the frequently of early progression and death."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-051",
+   "nct_id": "NCT00961571",
+   "why_stopped": "Unanticipated side effects and futility"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-052",
+   "nct_id": "NCT02951156",
+   "why_stopped": "Study was terminated due to closure of study arms following futility analysis and difficulty in enrolling participants due to evolving treatment landscape"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-053",
+   "nct_id": "NCT01248858",
+   "why_stopped": "The reason for termination was lack of tolerability and efficacy of the combination treatment"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-054",
+   "nct_id": "NCT02713984",
+   "why_stopped": "Reform CAR structure due to safety consideration"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-055",
+   "nct_id": "NCT03510455",
+   "why_stopped": "Study was stopped early due to a greater than expected incidence of ocular AEs and analysis of the data from the first 4 subjects indicating that the likelihood of permanent remission with this therapy was low."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-056",
+   "nct_id": "NCT01918306",
+   "why_stopped": "company stopped production of study drug due to excessive toxicities, lack of efficacy"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-057",
+   "nct_id": "NCT00788606",
+   "why_stopped": "Toxicity and efficacy data from another trial"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-058",
+   "nct_id": "NCT04853043",
+   "why_stopped": "PI Determination - Slow recruitment, funding concerns, poor response to treatment"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-059",
+   "nct_id": "NCT02353143",
+   "why_stopped": "The Sponsor accepted the iDSMB recommendation to terminate the study due to evidence of unpredictable liver toxicity and meaningful target engagement not translating into any clinical objective response."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-060",
+   "nct_id": "NCT03696212",
+   "why_stopped": "Based on the totality of the generated combined safety and efficacy data in the interim period, the company decided to terminate the combination study in NSCLC patients. There are no subjects on study drug at this time or in the EOT Follow-up period."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-061",
+   "nct_id": "NCT01770340",
+   "why_stopped": "Poor recruitment, Interim analysis: The rates of pts who reached primary and secondary endpoints were lower than expected."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-062",
+   "nct_id": "NCT01134497",
+   "why_stopped": "New information on IMP affected the cost/benefit ratio"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-063",
+   "nct_id": "NCT04282668",
+   "why_stopped": "The study was terminated due to the changing treatment landscape, difficulty in enrolling eligible participants, and little likelihood of providing meaningful clinical benefit for the participants."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-064",
+   "nct_id": "NCT00603941",
+   "why_stopped": "Due to low enrollment, no participant had a dose limiting toxicity, therefore a maximum tolerated dose could not be established"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-065",
+   "nct_id": "NCT03693846",
+   "why_stopped": "Terminated due to slow enrollment and lack of efficacy"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-066",
+   "nct_id": "NCT02222363",
+   "why_stopped": "Slow recruitment and lack of efficacy despite the completion of several dose steps."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-067",
+   "nct_id": "NCT02902484",
+   "why_stopped": "The study was terminated due to futility and lack of future funding"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-068",
+   "nct_id": "NCT07320534",
+   "why_stopped": "Interim analysis showed no significant benefit of levofloxacin. Prolonged antibiotic use may increase adverse effects and resistance. Limited funding and the approaching end of the study period also supported early termination."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-069",
+   "nct_id": "NCT02985554",
+   "why_stopped": "Study stopped early due to slow accrual and safety concerns."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-070",
+   "nct_id": "NCT00216047",
+   "why_stopped": "Low patient enrollment; toxicities"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-071",
+   "nct_id": "NCT02420717",
+   "why_stopped": "Study was closed early due to low accrual and lack of response."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-072",
+   "nct_id": "NCT01428219",
+   "why_stopped": "Closed due to slowing enrollment and negative results of a phase III trial using cabozantinib."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-073",
+   "nct_id": "NCT04501094",
+   "why_stopped": "Because of the low accrual and the safety concerns we closed the study."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-074",
+   "nct_id": "NCT00462865",
+   "why_stopped": "DSMB determined toxicity of regimen more than originally thought. Slow accrual."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-075",
+   "nct_id": "NCT01237678",
+   "why_stopped": "Study was stopped early due to lack of efficacy signal and safety concerns"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-076",
+   "nct_id": "NCT02941601",
+   "why_stopped": "This was a strategic decision for business planning purposes and not out of concern for patient safety."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-077",
+   "nct_id": "NCT01514864",
+   "why_stopped": "Lack of efficacy and slow accrual"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-078",
+   "nct_id": "NCT05435053",
+   "why_stopped": "The study was terminated on the basis on an evaluation of the safety and efficacy of the 9 included patients of which 2 of the patients were excluded before receiving any study treatments, thus 7 patients were treated in the study."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-079",
+   "nct_id": "NCT04029688",
+   "why_stopped": "Study was terminated by the sponsor based on insufficient tolerability and efficacy to proceed beyond Part 1b."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-080",
+   "nct_id": "NCT06267001",
+   "why_stopped": "Decision to terminate study was driven by results from preceding tiragolumab study (SKYSCRAPER-06;NCT04619797) \\& sponsor's strategic priorities, not due to safety risks or quality reasons for any of molecules/combinations investigated in this study."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-081",
+   "nct_id": "NCT02943473",
+   "why_stopped": "Poor accrual and risk/benefit ratio."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-082",
+   "nct_id": "NCT03769181",
+   "why_stopped": "Study was stopped after interim analysis for all 4 cohorts with results either not fulfilling the pre-planned interim analysis criteria or fulfilling the criteria but as per sponsor decision. It was not due to any safety concern"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-083",
+   "nct_id": "NCT03131206",
+   "why_stopped": "Study closed due to slow accrual and lack of efficacy."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-084",
+   "nct_id": "NCT05756907",
+   "why_stopped": "Failed to meet efficacy endpoint criteria, despite lack of safety concerns"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-085",
+   "nct_id": "NCT01324141",
+   "why_stopped": "Slow, insufficient accrual and failure to meet endpoints."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-086",
+   "nct_id": "NCT00314353",
+   "why_stopped": "The study was closed early due to low enrollment and new information regarding the benefit of the study regimen."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-087",
+   "nct_id": "NCT05860296",
+   "why_stopped": "Lack of efficacy and enrollment challenges"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-088",
+   "nct_id": "NCT00786682",
+   "why_stopped": "Lack of improved efficacy compared to historical controls, competing studies"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-089",
+   "nct_id": "NCT01598792",
+   "why_stopped": "Patient 2 suffered DLT post-vaccination. The vaccine manufacturers withdrew support for the study on commercial grounds."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-090",
+   "nct_id": "NCT01086332",
+   "why_stopped": "Toxicities, lack of funding"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-091",
+   "nct_id": "NCT05622058",
+   "why_stopped": "The study has been terminated early given that the first four patients enrolled have experienced Grade 4 neutropenia and alopecia after cycle 1 and as such failed to meet the primary endpoint and the main secondary endpoint."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-092",
+   "nct_id": "NCT03670069",
+   "why_stopped": "The study was terminated early with 27 out of 28 planned subjects enrolled. This decision was multifactorial, including slow enrollment in the last remaining cohort and a lack of evidence of clinical benefit."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-093",
+   "nct_id": "NCT02189174",
+   "why_stopped": "Novartis decided to terminate the study considering safety and tolerability concerns and limited clinical activity with CLR457 study drug administered once daily (qd)."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-094",
+   "nct_id": "NCT00904345",
+   "why_stopped": "Stopped early for funding and efficacy reasons."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-095",
+   "nct_id": "NCT01400672",
+   "why_stopped": "Treatment ineffective; Extreme toxicity"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-096",
+   "nct_id": "NCT05609656",
+   "why_stopped": "The study was terminated on the basis on an evaluation of the efficacy and safety of the 4 included and treated patients."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-097",
+   "nct_id": "NCT03539484",
+   "why_stopped": "Study terminated due to change in benefit-risk ratio, driven by high incidence GI toxicity in absence of clinically significant anti-tumor efficacy."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-098",
+   "nct_id": "NCT02984683",
+   "why_stopped": "Study discontinued considering the limited clinical benefit combined with a higher than expected rate of known non-serious ophthalmological event."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-099",
+   "nct_id": "NCT01495988",
+   "why_stopped": "Slow accrual; toxicity; change in priorities"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-100",
+   "nct_id": "NCT01685606",
+   "why_stopped": "Lack of accrual and low efficacy"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-101",
+   "nct_id": "NCT01732640",
+   "why_stopped": "Slow accrual and high levels of toxicity lead to early termination."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-102",
+   "nct_id": "NCT00801801",
+   "why_stopped": "Sponsors withdrew funding; preliminary efficacy data was not encouraging."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-103",
+   "nct_id": "NCT04141995",
+   "why_stopped": "Due to low accrual and futility"
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-104",
+   "nct_id": "NCT02413489",
+   "why_stopped": "DLBCL and FL cohorts met the pre-specified futility criteria and will not proceed. The MCL cohort was terminated due to slow recruitment and aggressive disease."
+  },
+  {
+   "case_id": "oncology-bio-2026-11b-105",
+   "nct_id": "NCT00496431",
+   "why_stopped": "Study accrual was stopped earlier than planned by the Sponsor for 2 main reasons: very slow recruitment rate; lower than estimated efficacy of the drug when delivered as single agent."
+  }
+ ]
+}
