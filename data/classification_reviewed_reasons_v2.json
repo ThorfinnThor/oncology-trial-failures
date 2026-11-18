@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "classifier_version": "2.7.1",
+  "classifier_version": "2.7.6",
   "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
   "entry_count": 2503,
   "manual_entry_count": 132,
@@ -5031,10 +5031,8 @@
       "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT05525286"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -7647,10 +7645,8 @@
       "secondary_reasons": [],
       "needs_review": true,
       "v2_derivation": "MANUAL_V2_DECISION",
-      "reviewed_record_count": 1,
-      "nct_ids": [
-        "NCT02121405"
-      ],
+      "reviewed_record_count": 0,
+      "nct_ids": [],
       "provenance": {
         "MANUAL_V2_DECISION": 1
       },
@@ -18848,10 +18844,8 @@
       "normalized_text": "after completion of phase 1 dose escalation of this study the sponsor decided not to proceed with phase 2a due to strategic reasons. thus, no participants were enrolled for phase 2a and the study was terminated early.",
       "example_text": "After completion of Phase 1 Dose Escalation of this study the sponsor decided not to proceed with Phase 2a due to strategic reasons. Thus, no participants were enrolled for Phase 2a and the study was terminated early.",
       "outcome": "NON_BIOLOGICAL",
-      "primary_reason": "RECRUITMENT",
-      "secondary_reasons": [
-        "BUSINESS_STRATEGY"
-      ],
+      "primary_reason": "BUSINESS_STRATEGY",
+      "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "V2_RULE_WITH_AUDIT_CONFIRMATION",
       "legacy_label": "NON_BIOLOGICAL",
@@ -36356,10 +36350,8 @@
       "normalized_text": "before ls301's licensing and reformulation, 9 patients received ls301-hsa (phase 1a) , but since no patients were recruited (in phase 1b) before the product expired, this study has been terminated.",
       "example_text": "Before LS301's licensing and reformulation, 9 patients received LS301-HSA (Phase 1a) , but since no patients were recruited (in Phase 1b) before the product expired, this study has been terminated.",
       "outcome": "NON_BIOLOGICAL",
-      "primary_reason": "RECRUITMENT",
-      "secondary_reasons": [
-        "SUPPLY_MANUFACTURING"
-      ],
+      "primary_reason": "SUPPLY_MANUFACTURING",
+      "secondary_reasons": [],
       "needs_review": false,
       "v2_derivation": "V2_RULE_WITH_AUDIT_CONFIRMATION",
       "legacy_label": "NON_BIOLOGICAL",

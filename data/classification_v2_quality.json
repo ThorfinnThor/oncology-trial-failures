@@ -20,8 +20,8 @@
     "correct": 3536,
     "asserted": 3287,
     "asserted_correct": 3268,
-    "high_confidence_asserted": 3142,
-    "high_confidence_asserted_correct": 3125,
+    "high_confidence_asserted": 3145,
+    "high_confidence_asserted_correct": 3128,
     "biological_asserted": 380,
     "biological_correct": 374,
     "expected_biological": 438,
@@ -29,7 +29,7 @@
     "audit_review_flagged": 72,
     "audit_review_safely_disposed": 295,
     "predicted_review": 439,
-    "accepted_ontology_transition_matches": 198
+    "accepted_ontology_transition_matches": 197
   },
   "errors_by_expected": {
     "NON_BIOLOGICAL/OPERATIONAL": 53,
@@ -48,7 +48,7 @@
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "NON_BIOLOGICAL/OPERATIONAL",
-      "count": 2196
+      "count": 2197
     },
     {
       "expected": "UNCLEAR/OTHER/UNKNOWN",
@@ -73,7 +73,7 @@
     {
       "expected": "NON_BIOLOGICAL/OPERATIONAL",
       "predicted": "UNCLEAR/OTHER/UNKNOWN",
-      "count": 84
+      "count": 83
     },
     {
       "expected": "BIOLOGICAL_FAILURE/EFFICACY/FUTILITY",
