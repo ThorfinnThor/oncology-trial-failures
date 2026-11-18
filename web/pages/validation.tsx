@@ -34,6 +34,7 @@ export default function ValidationPage() {
   const est = v.estimates;
   const ci = v.estimates_ci95;
   const cc: any = v.crosscheck;
+  const cr: any = v.clinician_review;
   const perOutcome: Record<string, any> = v.per_predicted_outcome;
   const confusion: { predicted: string; reference: string; count: number }[] = v.confusion_pred_vs_ref;
 
@@ -525,6 +526,54 @@ export default function ValidationPage() {
             </section>
           )}
 
+          {cr && (
+            <section className="section">
+              <h2>First clinician review: oncology</h2>
+              <p className="sectionSub">
+                The figures above are measured against model-made reference labels. The first check against a clinician:{" "}
+                {n(cr.sample_size)} oncology trials, each with a different stop reason, judged by one {cr.reviewer_role} blind to
+                our label and compared with the label we had shipped before the review began.
+              </p>
+              <div className="grid2">
+                <div className="card pad">
+                  <div className="cardTitle">What the clinician confirmed</div>
+                  <ul className="list">
+                    <li>
+                      Biological-failure precision: <b>{pct(cr.precision_biological)}</b> ({cr.labelled_biological_confirmed} of{" "}
+                      {cr.labelled_biological} texts we label biological; 95% CI {pct(cr.precision_biological_ci95[0])}–
+                      {pct(cr.precision_biological_ci95[1])})
+                    </li>
+                    <li>
+                      Biological cause yes/no: {cr.agreement.biological_yes_no} of {cr.sample_size} agree. Outcome:{" "}
+                      {cr.agreement.outcome} of {cr.sample_size}.
+                    </li>
+                    <li>
+                      Of the {cr.labelled_non_biological} texts we label non-biological, the clinician called{" "}
+                      {cr.labelled_non_biological_called_biological === 0 ? "none" : cr.labelled_non_biological_called_biological} biological.
+                    </li>
+                    <li>
+                      {cr.labels_changed_after_review} of our labels were changed after the review, where the clinician was right.
+                    </li>
+                  </ul>
+                </div>
+                <div className="card pad">
+                  <div className="cardTitle">How far it goes</div>
+                  <ul className="list">
+                    {cr.caveats.map((c: string) => (
+                      <li key={c}>{c}</li>
+                    ))}
+                    <li>
+                      Without the discussed texts: biological yes/no {cr.without_discussed_cases.biological_yes_no} of{" "}
+                      {cr.without_discussed_cases.sample_size}, precision {cr.without_discussed_cases.labelled_biological_confirmed} of{" "}
+                      {cr.without_discussed_cases.labelled_biological}.
+                    </li>
+                  </ul>
+                  <p className="fine">The clinician&apos;s individual verdicts are not published.</p>
+                </div>
+              </div>
+            </section>
+          )}
+
           <section className="section">
             <h2>What this does not establish</h2>
             <div className="grid2">
@@ -533,7 +582,7 @@ export default function ValidationPage() {
                 <ul className="list">
                   <li>
                     These are precision and recall against a held-out, LLM-adjudicated reference set. They are not independently
-                    verified clinical accuracy, and calling the classifier &quot;95% accurate&quot; would collapse three different
+                    verified clinical accuracy (one clinician has checked 150 oncology texts so far, above), and calling the classifier &quot;95% accurate&quot; would collapse three different
                     claims into one number.
                   </li>
                   <li>

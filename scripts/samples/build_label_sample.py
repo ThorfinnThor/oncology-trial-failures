@@ -111,6 +111,8 @@ def main() -> int:
     ap.add_argument("--endpoint-n", type=int, default=120, help="rows in the endpoint sample")
     ap.add_argument("--for", dest="recipient", default="", help="recipient name for the README title")
     ap.add_argument("--seed", type=int, default=20261107)
+    ap.add_argument("--huggingface", action="store_true",
+                    help="write README.md as a Hugging Face dataset card: YAML header, public CC BY-NC 4.0 terms")
     args = ap.parse_args()
 
     areas, phases = set(args.area), set(args.phase or ["2", "3"])
@@ -177,15 +179,26 @@ def main() -> int:
     est, ci = val["weighted_estimates"], val["weighted_estimates_ci95"]
     cc_path = ROOT / "validation/crosscheck_gpt61/summary.json"
     cc = json.loads(cc_path.read_text()) if cc_path.exists() else None
+    cr_path = ROOT / "validation/clinician_review/oncology-2026-11.json"
+    cr = json.loads(cr_path.read_text()) if cr_path.exists() else None
     scope = (", ".join(sorted(areas)) if areas else f"{len(known_areas)} disease areas") + \
         "; phase " + "/".join(sorted(phases))
     bio = cats["BIOLOGICAL_FAILURE"]
 
-    L = [f"# Clinical Trial Failures — evaluation sample{' for ' + args.recipient if args.recipient else ''}", "",
+    hf_header = ["---", "license: cc-by-nc-4.0", "language:", "- en",
+                 "pretty_name: Clinical Trial Failures - why trials stopped (labelled sample)",
+                 "task_categories:", "- text-classification", "size_categories:", "- n<1K",
+                 "tags:", "- clinical-trials", "- drug-development", "- clinicaltrials-gov", "- oncology", "- biomedical",
+                 "configs:", "- config_name: stop_reasons", "  data_files: stop_reason_labels_sample.csv",
+                 "- config_name: endpoints", "  data_files: endpoint_labels_sample.csv", "---", ""]
+    L = (hf_header if args.huggingface else []) + [
+         ("# Clinical Trial Failures — why trials stopped (labelled sample)" if args.huggingface else
+          f"# Clinical Trial Failures — evaluation sample{' for ' + args.recipient if args.recipient else ''}"), "",
          f"Release {meta.get('version')} (ClinicalTrials.gov snapshot, imported "
          f"{(meta.get('imported_at_utc') or '')[:10]}). Prepared {date.today().isoformat()}.", "",
          "This sample shows the two kinds of labels we produce, in the format we would deliver. "
-         "It is for evaluation only (see *Licence*).", "",
+         + ("The public sample is under CC BY-NC 4.0; the full, weekly-updated data is licensed commercially (see *Licence*)."
+          if args.huggingface else "It is for evaluation only (see *Licence*)."), "",
          "| File | Rows | What it is |", "| --- | ---: | --- |",
          f"| `stop_reason_labels_sample.csv` | {len(picked)} | Stopped trials, labelled by **why** they stopped |",
          f"| `endpoint_labels_sample.csv` | {len(ep_pick)} | Trials labelled by whether the sponsor's **posted primary analysis** met or missed |",
@@ -221,7 +234,7 @@ def main() -> int:
           "| `disease_area` | One of 15 areas, derived from conditions and MeSH terms | Ours |",
           "| `why_stopped` | The sponsor's stop reason, verbatim | ClinicalTrials.gov |",
           "| `label_outcome`, `label_primary_reason` | See above | Ours |",
-          "| `label_secondary_reasons` | Further explicit causes, `\\|`-separated | Ours |",
+          "| `label_secondary_reasons` | Further explicit causes, separated by `; ` | Ours |",
           "| `label_evidence` | Machine-readable trace: classifier version, outcome, reason, and each rule that fired with "
           "the text it matched | Ours |",
           "| `label_basis` | `rule`, `reviewed_decision` (this exact text was decided in an earlier AI-assisted review, not "
@@ -267,17 +280,37 @@ def main() -> int:
                  "biological vs. non-biological; against its labels, biological-failure precision is "
                  f"{pct(cc['estimates_crosscheck_reference']['biological_precision'])}. "
                  f"{cc['disputed_awaiting_review']} disputed texts await clinician review.")
-    L += ["- Not available today: labels reviewed by clinical experts.",
+    if cr:
+        wd = cr["without_discussed_cases"]
+        L.append(f"- Clinician review (first batch): one {cr['reviewer_role']} judged {cr['sample_size']} oncology stop "
+                 f"reasons blind to our label. Of the {cr['labelled_biological']} we label biological, "
+                 f"{cr['labelled_biological_confirmed']} were confirmed: precision {pct(cr['precision_biological'])} "
+                 f"(95% CI {pct(cr['precision_biological_ci95'][0])}–{pct(cr['precision_biological_ci95'][1])}); "
+                 f"biological yes/no agreed on {cr['agreement']['biological_yes_no']} of {cr['sample_size']}. One reviewer "
+                 f"so far; {cr['sample_size'] - wd['sample_size']} texts had been discussed with us before they were "
+                 f"answered (without them: {wd['biological_yes_no']} of {wd['sample_size']}). Individual clinician "
+                 "verdicts are not part of this sample.")
+    else:
+        L.append("- Not available today: labels reviewed by clinical experts.")
+    L += [
           "- Full protocol and results: https://clinicaltrialfailures.com/validation", "",
           "## 4. Limits", "",
           "- A stop reason is what the sponsor wrote, not independent proof of why a drug failed.",
           "- Safety failures are labelled from stop reasons only; adverse-event outcomes are not analysed.",
           "- Endpoint labels cover results posted on ClinicalTrials.gov; publications are not read.",
           "- `disease_area` is keyword-based.", "",
-          "## Licence", "",
-          "This sample is for evaluation only. It may not be used to train or evaluate models, or in a product, without "
-          "a commercial licence. Registry fields remain under ClinicalTrials.gov's terms. The public dataset is under "
-          "CC BY-NC 4.0.", "", "Contact: contact@clinicaltrialfailures.com"]
+          "## Licence", ""]
+    if args.huggingface:
+        L += ["CC BY-NC 4.0: free for non-commercial use, including research and model training, with attribution. "
+              "Commercial use — in a product, a commercial model or for a company's own pipeline decisions — needs a "
+              "commercial licence, which also covers the full dataset, weekly updates and the clinician-reviewed labels as review proceeds. "
+              "Registry fields remain under ClinicalTrials.gov's terms.", "",
+              "Cite: Clinical Trial Failures, https://clinicaltrialfailures.com, Zenodo DOI 10.5281/zenodo.23558833.", "",
+              "Contact: contact@clinicaltrialfailures.com"]
+    else:
+        L += ["This sample is for evaluation only. It may not be used to train or evaluate models, or in a product, without "
+              "a commercial licence. Registry fields remain under ClinicalTrials.gov's terms. The public dataset is under "
+              "CC BY-NC 4.0.", "", "Contact: contact@clinicaltrialfailures.com"]
     (args.out / "README.md").write_text("\n".join(L) + "\n", encoding="utf-8")
     print(f"wrote {args.out}: {len(picked)} stop-reason rows ({dict(in_sample)}), "
           f"{len(ep_pick)} endpoint rows ({dict(ep_counts)})")

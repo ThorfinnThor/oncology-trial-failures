@@ -24,6 +24,10 @@ def main() -> int:
     # simply has no cross-check section.
     cc_path = VALIDATION / "crosscheck_gpt61" / "summary.json"
     crosscheck = json.loads(cc_path.read_text(encoding="utf-8")) if cc_path.exists() else None
+    # Clinician review (tools/clinician-review/): aggregate figures only. The verdicts themselves
+    # stay in the review page's owner-only database and are never published here.
+    cr_path = VALIDATION / "clinician_review" / "oncology-2026-11.json"
+    clinician = json.loads(cr_path.read_text(encoding="utf-8")) if cr_path.exists() else None
 
     OUT.write_text(json.dumps({
         "schema_version": 1,
@@ -49,6 +53,7 @@ def main() -> int:
         "confusion_pred_vs_ref": metrics["confusion_pred_vs_ref"],
         "error_count_outcome_or_primary": metrics["error_count_outcome_or_primary"],
         "crosscheck": crosscheck,
+        "clinician_review": clinician,
     }, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)} (sample {metrics['sample_size']}, classifier {metrics['classifier_version']})")
     return 0

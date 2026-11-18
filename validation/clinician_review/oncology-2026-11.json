@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "batch": "oncology-2026-11",
+  "reviewed_on": "2026-11-17/2026-11-18",
+  "reviewers": 1,
+  "reviewer_role": "clinician scientist",
+  "design": "150 interventional Phase 2/3 oncology trials, one per distinct stop-reason text, none from the held-out validation set: 103 that the classifier labelled biological at draw time (classifier 2.7.1) and 47 it labelled otherwise, stratified by outcome. Reviewed blind to our label, in the review tool, against the written guidelines.",
+  "compared_with": "the label shipped at draw time (classifier 2.7.1, release 2026-11-16), frozen before review",
+  "sample_size": 150,
+  "labelled_biological": 103,
+  "labelled_biological_confirmed": 101,
+  "precision_biological": 0.9806,
+  "precision_biological_ci95": [0.9319, 0.9947],
+  "labelled_non_biological": 47,
+  "labelled_non_biological_called_biological": 0,
+  "missed_rate_ci95_upper": 0.0756,
+  "interval_method": "Wilson score, unweighted",
+  "agreement": {"biological_yes_no": 148, "outcome": 136, "outcome_and_primary_reason": 131},
+  "without_discussed_cases": {"sample_size": 126, "biological_yes_no": 125, "outcome": 116, "labelled_biological": 92, "labelled_biological_confirmed": 91},
+  "labels_changed_after_review": 2,
+  "caveats": [
+    "One reviewer. A second, independent clinician has not reviewed these cases yet, so reviewer agreement is not measured.",
+    "24 of the 150 texts were discussed with the classifier's maintainers before they were answered; the figures without them are given separately.",
+    "A fast pass: the median time per case was about 9 seconds. This batch has no attention checks.",
+    "Precision is unweighted over the sampled texts. With 47 non-biological cases the sample cannot pin down recall; the held-out evaluation above measures it."
+  ],
+  "verdicts_published": false
+}
