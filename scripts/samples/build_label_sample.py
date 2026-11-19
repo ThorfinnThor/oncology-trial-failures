@@ -194,6 +194,12 @@ def main() -> int:
     L = (hf_header if args.huggingface else []) + [
          ("# Clinical Trial Failures — why trials stopped (labelled sample)" if args.huggingface else
           f"# Clinical Trial Failures — evaluation sample{' for ' + args.recipient if args.recipient else ''}"), "",
+         *(["*Why did a clinical trial stop?* Every terminated, withdrawn or suspended trial on ClinicalTrials.gov, "
+            "classified from the sponsor's stated reason into biological failure (efficacy, safety) and non-biological "
+            "causes. This is a sample of the full, weekly-updated dataset at "
+            "[clinicaltrialfailures.com](https://clinicaltrialfailures.com); validation at "
+            "[clinicaltrialfailures.com/validation](https://clinicaltrialfailures.com/validation).", ""]
+           if args.huggingface else []),
          f"Release {meta.get('version')} (ClinicalTrials.gov snapshot, imported "
          f"{(meta.get('imported_at_utc') or '')[:10]}). Prepared {date.today().isoformat()}.", "",
          "This sample shows the two kinds of labels we produce, in the format we would deliver. "
@@ -237,8 +243,8 @@ def main() -> int:
           "| `label_secondary_reasons` | Further explicit causes, separated by `; ` | Ours |",
           "| `label_evidence` | Machine-readable trace: classifier version, outcome, reason, and each rule that fired with "
           "the text it matched | Ours |",
-          "| `label_basis` | `rule`, `reviewed_decision` (this exact text was decided in an earlier AI-assisted review, not "
-          "by clinicians, and the decision is reused), `rule_on_description` (no stop reason; a description sentence was "
+          "| `label_basis` | `rule`, `reviewed_decision` (this exact text was decided in an earlier review — AI-assisted, a few "
+          "by the maintainer — not by clinicians, and the decision is reused), `rule_on_description` (no stop reason; a description sentence was "
           "used), `unresolved` | Ours |",
           "| `needs_review` | `True` where the classifier flags the row | Ours |",
           "| `classifier_version` | Version of the rules | Ours |",
@@ -269,11 +275,12 @@ def main() -> int:
           "---", "", "## 3. How the labels are produced and checked", "",
           "- A versioned rule-based classifier reads the registry stop reason. Every rule must survive negation (\"not "
           "due to safety concerns\" is not a safety stop). Novel or empty language goes to `UNRESOLVED`.",
-          "- Exact stop-reason texts decided in an earlier AI-assisted review override the rules.",
+          "- Exact stop-reason texts decided in an earlier review (AI-assisted, a few by the maintainer) override the rules.",
           f"- Validation: a held-out sample of {val['sample_size']} stop-reason texts never used to build the rules, "
           "labelled blind by AI annotators. Biological-failure precision "
           f"{pct(est['biological_precision'])} (95% CI {pct(ci['biological_precision'][0])}–{pct(ci['biological_precision'][1])}), "
-          f"recall {pct(est['biological_recall'])}."]
+          f"recall {pct(est['biological_recall'])}. Measured on classifier {val['classifier_version']}; the labels here come from "
+          "a later version, whose rule changes are each listed with every label they changed."]
     if cc:
         a = cc["agreement_with_reference"]
         L.append(f"- Cross-check by a model from a second model family: {pct(a['biological_yes_no'])} agreement on "
