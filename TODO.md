@@ -3,7 +3,7 @@
 Ordered by what stands between the site and its first paying customer. Everything above the line
 in each section is blocked on nothing but time.
 
-*Last reviewed 18 Nov 2026.*
+*Last reviewed 19 Nov 2026.*
 
 ---
 
@@ -20,7 +20,7 @@ in each section is blocked on nothing but time.
 - **The first clinician finished the 150 oncology cases** (17–18 Nov): biological yes/no agrees
   on 148 of 150, precision of our biological label 98 % (95 % CI 93–99 %). Caveats and next steps
   in 8. The tool now holds 904 cases in four batches.
-- **Classifier 2.7.5** (17–18 Nov): "nobody enrolled" is no longer a recruitment cause on its own
+- **Classifier 2.7.7** (17–19 Nov; 2.7.7: a denial with an article, "not due to the lack of efficacy", is still a denial — 1 text changed): "nobody enrolled" is no longer a recruitment cause on its own
   (2.7.2, 371 trials); a partner pulling out is a support withdrawal (2.7.4, 2 trials); a changed
   standard of care is a design cause, not business (2.7.5, 58 trials); "no participants enrolled in a
   three year period" is recruitment (2.7.6, 1 trial). **In the data since the manual run of 18 Nov**
@@ -58,7 +58,9 @@ status alone), failure reasons, NCT IDs with evidence; how labels are made and w
 expert-validated labels exist; commercial training rights without restrictions on the models;
 pricing; a sample and data dictionary.
 
-**Status:** reply sent 7 Nov 2026. Waiting for their answer.
+**Status:** reply sent 7 Nov 2026, no answer yet. **Follow-up drafted 19 Nov** (Claude, in the session):
+new since 7 Nov — clinician check of 150 oncology trials (101 of 103 biological labels confirmed), the
+public sample on Hugging Face, classifier 2.7.7. Send around 21 Nov.
 
 **What the reply (sent 7 Nov) says:** two label types (stop reasons, 24,023 trials; posted endpoint
 met/missed, ~5,200 assessable 2015–2024, ~1,960 missed); validation by two model families, 98.2 %
@@ -140,8 +142,8 @@ BUSINESS_STRATEGY; "the change stopped enrolment" → RECRUITMENT; a stated busi
 business (58 trials, no outcome changes; 13 reviewed-index entries whose specific reason was only
 the old rule output updated). Owner decisions: NCT02121405 (DFS difference without direction) →
 UNKNOWN, NCT05525286 ("benefit-risk reassessment") → BIOLOGICAL_UNSPECIFIED. Every changed text:
-`docs/classification_change_2026-11-18_*.md` and `..._partner_pulled_out.md`. Still open: the older
-rule `ops.protocol` does not see the denial in "not due to a change in standard of care".
+`docs/classification_change_2026-11-18_*.md` and `..._partner_pulled_out.md`. The denial in "not due to a change in
+standard of care" is read since 2.7.7 (19 Nov).
 
 ## What makes the data hard to copy, and how to get it found (plan of 17 Nov)
 
@@ -168,6 +170,25 @@ Getting found, in this order:
 4. SEC filings as a new source.
 5. Marketplaces once there is demand: Defined.ai first (AI training data), AWS Data Exchange and
    Snowflake only when buyers ask for delivery there. First customers come direct.
+
+## Getting found: next steps (decided 19 Nov)
+
+1. **Google Dataset Search, done properly:** one indexable product page per dataset (stop-reason
+   labels, endpoint labels, oncology failure signals, discontinuation rates), each with its own
+   schema.org `Dataset` markup — name, description, `variableMeasured`, `temporalCoverage`,
+   `spatialCoverage`, `distribution` (sample CSV, Hugging Face, Zenodo), `license`, `creator`,
+   `isAccessibleForFree`, `sameAs` — listed in the sitemap and linked from `/pricing` and the home page.
+   Then check with Google's Rich Results test and Search Console. Started 19 Nov: the home page's
+   Dataset markup already points to Zenodo and Hugging Face (`sameAs`).
+2. **Defined.ai:** apply for a data partnership (AI training-data marketplace) with the Hugging Face
+   sample and `/validation` as evidence.
+3. **AWS Data Exchange / Snowflake Marketplace:** check only once a buyer asks for delivery there.
+
+**Hugging Face (public since 19 Nov):** the card points to `/pricing`; the weekly run refreshes the
+sample once Schayan adds the repository secret **HF_TOKEN** (GitHub → Settings → Secrets and
+variables → Actions → New repository secret; a fine-grained token with write access to the
+`clinical-trial-failures` organisation). Downloads are anonymous on Hugging Face and Zenodo; gating
+was considered and left off (19 Nov) to keep reach.
 
 ## Product gaps that cost sales
 
@@ -246,7 +267,15 @@ with a doublet not on that list gets the two single-agent cohorts and has to rea
 
 ## Things that are true but unproven
 
-### 6. The memory fix (#101) has not been checked on the live site
+### 6. ~~The memory fix (#101) has not been checked on the live site~~ — confirmed 19 Nov
+
+**Checked 19 Nov** with the new manual workflow *Live site check* (`.github/workflows/live-site-check.yml`,
+run from GitHub because this session cannot reach the site): `/`, `/overview`, `/pricing`, `/drugs` answer
+`x-opennext-cache: HIT` in 0.1–0.7 s; an unknown trial ID answers 404 in 0.1 s; `/sitemap.xml` lists
+**1,768** URLs (2,042 expected before the stricter indexing policy — check that the drop is the policy,
+not lost pages). Still to look at once: Workers metrics for "Exceeded Memory" since 1 Nov.
+
+Original note:
 
 Cloudflare logged 515 "Exceeded Memory" errors in the week to 25 Oct and Search Console saw
 server failures around 19/20 Oct: the sitemap, every prerendered page and unknown trial IDs loaded
@@ -381,7 +410,10 @@ step failed quietly, and a pull before each data commit (`ddae778`). **Confirmed
 of 16 Nov 23:23 UTC:** `chembl: PARTIAL` (13 of 542 failed, each on its own), target genes on
 53.7 % of trials, 65 packages, newsletter sent with both backlog weeks.
 
-**Still open:** fail the publish step when ChEMBL coverage drops far below the previous release.
+~~**Still open:** fail the publish step when ChEMBL coverage drops far below the previous release.~~
+**Done 19 Nov:** `scripts/signals/check_coverage_regression.py` runs before the product commit and
+stops it when target-gene coverage or molecule resolution falls more than 10 points (PubMed 15),
+or unique assets / trials more than 20 / 10 %, against last week's committed summary.
 
 ### 10. Two more silent failures found on 16 Nov
 
