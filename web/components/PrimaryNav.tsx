@@ -17,6 +17,7 @@ export type PrimaryNavItem =
   | "briefs"
   | "packages"
   | "newsletter"
+  | "datasets"
   | "use-cases"
   | "pricing";
 
@@ -87,6 +88,9 @@ export default function PrimaryNav({ active }: PrimaryNavProps) {
             pricing pages stay reachable from the asset check and the briefs. */}
         <Link className="navlink" href="/asset-check" aria-current={current(active, "asset-check")} onClick={closeMobileNav}>
           Check a molecule <span className="navFree">free</span>
+        </Link>
+        <Link className="navlink" href="/datasets" aria-current={current(active, "datasets")} onClick={closeMobileNav}>
+          Free data <span className="navFree">csv</span>
         </Link>
         <Link className="navlink" href="/briefs" aria-current={current(active, "briefs")} onClick={closeMobileNav}>
           Briefs

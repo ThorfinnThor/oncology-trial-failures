@@ -183,7 +183,8 @@ not dispatch); a failed live site check (`live-site-check.yml`, Tuesday 05:41 UT
 
 The clinician decided the 11 texts the two model references disputed: with the Claude reference on
 7, with GPT-6.1 on 4 (`validation/crosscheck_gpt61/decisions.json`, shown on `/validation`). Two
-verdicts contradict our own guidance and need a decision by Schayan: "Removal of Adrénaline lots for
+verdicts contradict our own guidance; **Schayan decided 19 Nov to keep the guidance** (lot recall =
+SUPPLY_MANUFACTURING, a possible result = UNKNOWN): "Removal of Adrénaline lots for
 safety reasons" → SAFETY (guidance: a lot recall is SUPPLY_MANUFACTURING) and "possible lack of
 efficacy" → EFFICACY_FUTILITY (guidance: a possible result is UNKNOWN). One clinician; HV-0002 was
 discussed beforehand.
@@ -194,7 +195,14 @@ discussed beforehand.
 `/insights/clinical-trial-failures-dataset-download` (what is in the data, how it is checked, where to
 download: site, Hugging Face, Zenodo, licence).
 
-1. **Google Dataset Search, done properly:** one indexable product page per dataset (stop-reason
+**Done 19 Nov:** `/datasets` (DataCatalog) and one page per dataset — `/datasets/stop-reason-labels`,
+`/datasets/posted-endpoint-labels`, `/datasets/oncology-failure-signals` — each with schema.org `Dataset`
+markup (distribution, license, coverage, variables, sameAs Hugging Face / Zenodo), free sample
+downloads without a form, and a three-step funnel (sample for your scope by mail → licence →
+newsletter). "Free data" is in the top bar. Figures from `web/data/dataset_facts.json`, rebuilt weekly.
+Next: submit the sitemap in Search Console and check the pages in the Rich Results test after deploy.
+
+1. ~~**Google Dataset Search, done properly:**~~ one indexable product page per dataset (stop-reason
    labels, endpoint labels, oncology failure signals, discontinuation rates), each with its own
    schema.org `Dataset` markup — name, description, `variableMeasured`, `temporalCoverage`,
    `spatialCoverage`, `distribution` (sample CSV, Hugging Face, Zenodo), `license`, `creator`,
