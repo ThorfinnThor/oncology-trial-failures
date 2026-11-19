@@ -232,6 +232,8 @@ jobs:
         continue-on-error: true
         run: |
           python scripts/signals/build_public_sample.py
+          # The free labelled sample offered on the site (/samples/labels/), same draw as Hugging Face.
+          python scripts/samples/build_label_sample.py --out web/public/samples/labels --public
           python scripts/briefs/build_briefs_index.py
           python scripts/build_validation_public.py
           python scripts/universe/cohort_flow.py

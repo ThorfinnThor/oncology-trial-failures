@@ -113,6 +113,8 @@ def main() -> int:
     ap.add_argument("--seed", type=int, default=20261107)
     ap.add_argument("--huggingface", action="store_true",
                     help="write README.md as a Hugging Face dataset card: YAML header, public CC BY-NC 4.0 terms")
+    ap.add_argument("--public", action="store_true",
+                    help="the public sample offered on the site: CC BY-NC 4.0 terms, no YAML header")
     args = ap.parse_args()
 
     areas, phases = set(args.area), set(args.phase or ["2", "3"])
@@ -185,6 +187,7 @@ def main() -> int:
         "; phase " + "/".join(sorted(phases))
     bio = cats["BIOLOGICAL_FAILURE"]
 
+    public = args.huggingface or args.public
     hf_header = ["---", "license: cc-by-nc-4.0", "language:", "- en",
                  "pretty_name: Clinical Trial Failures - why trials stopped (labelled sample)",
                  "task_categories:", "- text-classification", "size_categories:", "- n<1K",
@@ -192,7 +195,7 @@ def main() -> int:
                  "configs:", "- config_name: stop_reasons", "  data_files: stop_reason_labels_sample.csv", "  default: true",
                  "- config_name: endpoints", "  data_files: endpoint_labels_sample.csv", "---", ""]
     L = (hf_header if args.huggingface else []) + [
-         ("# Clinical Trial Failures — why trials stopped (labelled sample)" if args.huggingface else
+         ("# Clinical Trial Failures — why trials stopped (labelled sample)" if public else
           f"# Clinical Trial Failures — evaluation sample{' for ' + args.recipient if args.recipient else ''}"), "",
          *(["*Why did a clinical trial stop?* Every terminated, withdrawn or suspended trial on ClinicalTrials.gov, "
             "classified from the sponsor's stated reason into biological failure (efficacy, safety) and non-biological "
@@ -201,12 +204,12 @@ def main() -> int:
             "[clinicaltrialfailures.com/validation](https://clinicaltrialfailures.com/validation).", "",
             "**Full dataset, every disease area, weekly updates and clinician-reviewed labels:** "
             "[clinicaltrialfailures.com/pricing](https://clinicaltrialfailures.com/pricing) · contact@clinicaltrialfailures.com", ""]
-           if args.huggingface else []),
+           if public else []),
          f"Release {meta.get('version')} (ClinicalTrials.gov snapshot, imported "
          f"{(meta.get('imported_at_utc') or '')[:10]}). Prepared {date.today().isoformat()}.", "",
          "This sample shows the two kinds of labels we produce, in the format we would deliver. "
          + ("The public sample is under CC BY-NC 4.0; the full, weekly-updated data is licensed commercially (see *Licence*)."
-          if args.huggingface else "It is for evaluation only (see *Licence*)."), "",
+          if public else "It is for evaluation only (see *Licence*)."), "",
          "| File | Rows | What it is |", "| --- | ---: | --- |",
          f"| `stop_reason_labels_sample.csv` | {len(picked)} | Stopped trials, labelled by **why** they stopped |",
          f"| `endpoint_labels_sample.csv` | {len(ep_pick)} | Trials labelled by whether the sponsor's **posted primary analysis** met or missed |",
@@ -309,7 +312,7 @@ def main() -> int:
           "- Endpoint labels cover results posted on ClinicalTrials.gov; publications are not read.",
           "- `disease_area` is keyword-based.", "",
           "## Licence", ""]
-    if args.huggingface:
+    if public:
         L += ["CC BY-NC 4.0: free for non-commercial use, including research and model training, with attribution. "
               "Commercial use — in a product, a commercial model or for a company's own pipeline decisions — needs a "
               "commercial licence, which also covers the full dataset, weekly updates and the clinician-reviewed labels as review proceeds. "

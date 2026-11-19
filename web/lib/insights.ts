@@ -1,3 +1,5 @@
+import validationData from "@/data/validation_v2.json";
+
 export const INSIGHTS_BASE_URL = "https://clinicaltrialfailures.com";
 
 export type InsightStats = {
@@ -375,6 +377,24 @@ export type InsightArticle = {
 };
 
 export const INSIGHT_ARTICLES: InsightArticle[] = [
+  {
+    slug: "clinical-trial-failures-dataset-download",
+    title: "The Clinical Trial Failures dataset: what is in it and where to download it",
+    metaDescription:
+      "Stopped clinical trials from ClinicalTrials.gov, labelled by why they stopped and by posted primary results. What the labels mean, how they are checked, and free downloads on this site, Hugging Face and Zenodo.",
+    eyebrow: "Data",
+    dek:
+      "Every terminated, withdrawn and suspended trial on ClinicalTrials.gov, read for the sponsor's stated reason and labelled, with the evidence each label rests on. Here is what the data contains and where to get it.",
+    datePublished: "2026-11-19",
+    readingTime: "6 min read",
+    keyword: "clinical trial failure dataset download",
+    factsHeading: "The dataset in brief",
+    facts: [],
+    sections: [],
+    tables: [],
+    links: [],
+    faqs: [],
+  },
   {
     slug: "5-ht2a-agonist-antagonist-clinical-trial-results",
     title: "One 5-HT2A label hides two opposite pharmacologies",
@@ -6104,7 +6124,98 @@ function hydrateTgfBetaPdL1Article(article: InsightArticle, stats: InsightStats)
   };
 }
 
+// The dataset article: every figure is read from this release (stats) and the published validation,
+// so the page never states last month's numbers.
+function hydrateDatasetDownloadArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const v = validationData as any;
+  const est = v.estimates || {};
+  const cr = v.clinician_review;
+  const pctOf = (x: number | undefined) => (typeof x === "number" ? `${(x * 100).toFixed(1)}%` : "—");
+  const HF = "https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-failures-sample";
+  const ZENODO = "https://doi.org/10.5281/zenodo.23558833";
+  const clinicianLine = cr
+    ? `A clinician check of ${n(cr.sample_size)} oncology trials, blind to our labels, confirmed ${cr.labelled_biological_confirmed} of the ${cr.labelled_biological} we label as biological failures (${pctOf(cr.precision_biological)}). That is one reviewer so far; the validation page lists what the figure does and does not cover.`
+    : "Clinician review of the labels is under way.";
+  return {
+    ...article,
+    facts: [
+      `${n(stats.total)} stopped trials (terminated, withdrawn or suspended) from ClinicalTrials.gov, all disease areas, rebuilt every week.`,
+      "Two kinds of labels: why each trial stopped, and whether a posted primary analysis met or missed.",
+      "Every label keeps the sponsor's own words and a trace of the rule that produced it.",
+      "A free labelled sample (240 stop-reason and 120 endpoint labels) on this site and on Hugging Face; archived, citable releases on Zenodo; CC BY-NC 4.0.",
+    ],
+    sections: [
+      {
+        heading: "What the dataset covers",
+        body: [
+          `The dataset holds every trial on ClinicalTrials.gov whose status is terminated, withdrawn or suspended: ${n(stats.total)} in this release, across all disease areas and phases. It is rebuilt every week from the registry, so newly stopped trials appear and changed records are re-read.`,
+          "For each trial it keeps the registry fields (phase, sponsor, conditions, interventions, dates), the stop reason exactly as the sponsor wrote it, and our labels. The point is not to replace the registry but to make its least structured field, the free-text reason for stopping, usable at scale.",
+        ],
+      },
+      {
+        heading: "Two kinds of labels",
+        body: [
+          "Stop-reason labels say why a trial stopped. A biological failure means the stated reason is about the drug's effect: lack of efficacy or futility, safety or toxicity, or an unfavourable benefit–risk. Everything else is kept apart: recruitment, funding, a sponsor's business decision, regulatory or supply problems, a changed standard of care, several causes at once, or a decision with no stated cause. Texts too vague to label are marked unresolved rather than guessed.",
+          "Endpoint labels say whether the sponsor's posted primary analysis met or missed, read from the results on ClinicalTrials.gov. A result is called met or missed only against a threshold the record states or its interval implies; anything else is left out as not assessable.",
+        ],
+      },
+      {
+        heading: "How the labels are checked",
+        body: [
+          `A held-out sample of ${n(v.sample_size || 600)} stop-reason texts, never used to write the rules, was labelled blind by AI annotators (two Claude models, with an adjudicator) from written guidelines: biological-failure precision ${pctOf(est.biological_precision)}, recall ${pctOf(est.biological_recall)}. A second model family relabelled the same texts as a cross-check, and the texts the two disagreed on went to a clinician.`,
+          clinicianLine,
+          "Every rule must survive the text saying the opposite: \"not due to safety concerns\" is not a safety stop. Each change to the rules is recorded with every label it changed.",
+        ],
+      },
+      {
+        heading: "What it is good for, and what it is not",
+        body: [
+          "Use it to see how often a mechanism, indication or phase stops for biological reasons, to find the trials behind a failure pattern, or to train and evaluate models that predict trial outcomes. For a success/failure model, the biological-failure class is the failure label; the other classes are not successes and are best left out rather than counted as negatives.",
+          "A stop reason is what the sponsor wrote, not independent proof of why a drug failed. Safety stops are labelled from the stop reason only; adverse-event tables are not analysed.",
+        ],
+      },
+      {
+        heading: "Where to download it",
+        body: [
+          "The free sample is the same on this site and on Hugging Face: 240 stop-reason labels spread across outcome classes and disease areas, 120 endpoint labels, and a data dictionary. Take it from whichever place fits your workflow; the table below says what each offers.",
+          "The full dataset, all disease areas with weekly updates and clinician-reviewed labels as review proceeds, is licensed for commercial use. Research and other non-commercial use of the public data is free under CC BY-NC 4.0 with attribution.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Where to get the data",
+        columns: ["Where", "What you get"],
+        rows: [
+          ["This site: /samples/labels/", "The sample as CSV files with a README; refreshed with each weekly release"],
+          ["Hugging Face", `${HF.replace("https://", "")} — the same sample, loadable with the datasets library, pandas or Polars`],
+          ["Zenodo", `${ZENODO.replace("https://", "")} — archived, citable releases with a DOI`],
+          ["Commercial licence", "Full dataset, weekly updates, clinician-reviewed labels: see /pricing or write to contact@clinicaltrialfailures.com"],
+        ],
+      },
+    ],
+    links: [
+      { href: "/samples/labels/stop_reason_labels_sample.csv", label: "Download the stop-reason sample (CSV)", text: "240 stopped trials with outcome, reason, evidence trace and the sponsor's own words." },
+      { href: "/samples/labels/endpoint_labels_sample.csv", label: "Download the endpoint sample (CSV)", text: "120 trials labelled met, missed or mixed from their posted primary analysis." },
+      { href: "/samples/labels/README.md", label: "Read the data dictionary", text: "Label definitions, columns, method, validation and limits." },
+      { href: HF, label: "Open the sample on Hugging Face", text: "Browse it in the dataset viewer or load it in Python." },
+      { href: ZENODO, label: "Cite the dataset on Zenodo", text: "Versioned, archived releases with a DOI." },
+      { href: "/validation", label: "How the labels are validated", text: "Held-out evaluation, the cross-check and the clinician review, with their limits." },
+      { href: "/pricing", label: "Licence the full dataset", text: "All disease areas, weekly updates and clinician-reviewed labels." },
+    ],
+    faqs: [
+      { question: "Is the data free?", answer: "The sample and the public data are free for non-commercial use under CC BY-NC 4.0, with attribution. Commercial use needs a licence." },
+      { question: "Can I use it to train a model?", answer: "Yes for research and other non-commercial work under CC BY-NC 4.0. A commercial model, product or a company's own pipeline decisions need a commercial licence." },
+      { question: "How current is it?", answer: "The dataset is rebuilt every week from ClinicalTrials.gov; the sample on this site and on Hugging Face is refreshed with each release." },
+      { question: "How do I cite it?", answer: "Clinical Trial Failures, https://clinicaltrialfailures.com, Zenodo DOI 10.5281/zenodo.23558833." },
+    ],
+  };
+}
+
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "clinical-trial-failures-dataset-download") {
+    return hydrateDatasetDownloadArticle(article, stats);
+  }
   if (article.slug === "5-ht2a-agonist-antagonist-clinical-trial-results") {
     return hydrateSerotonin5ht2aArticle(article, stats);
   }
