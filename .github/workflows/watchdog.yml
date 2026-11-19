@@ -1,0 +1,50 @@
+name: Weekly run watchdog
+
+# The weekly data run is dispatched by the Cloudflare scheduler on Monday 08:15 Berlin. If the
+# scheduler or GitHub drops it, no run fails and nobody is told. This checks on Tuesday morning that
+# a run of update-data.yml succeeded since Monday and mails the owner if not. Run by hand with
+# "send a test mail" to check that alert mails arrive.
+on:
+  schedule:
+    - cron: "17 5 * * 2"
+  workflow_dispatch:
+    inputs:
+      test_mail:
+        description: "Send a test mail to the owner"
+        type: boolean
+        default: false
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check that the weekly run succeeded since Monday
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          since=$(date -u -d "36 hours ago" +%Y-%m-%dT%H:%M:%SZ)
+          ok=$(gh api "repos/${{ github.repository }}/actions/workflows/update-data.yml/runs?status=success&created=%3E$since" --jq '.total_count')
+          last=$(gh api "repos/${{ github.repository }}/actions/workflows/update-data.yml/runs?per_page=1" --jq '.workflow_runs[0] | "\(.created_at) \(.conclusion // .status) \(.html_url)"')
+          echo "successful runs since $since: $ok; latest: $last"
+          echo "last=$last" >> "$GITHUB_OUTPUT"
+          [ "$ok" -gt 0 ] || echo "missing=1" >> "$GITHUB_OUTPUT"
+      - name: Mail the owner when no weekly run succeeded
+        if: steps.check.outputs.missing == '1' && github.event_name == 'schedule'
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: |
+          python3 scripts/ops/notify_owner.py --subject "No successful weekly data run since Monday" \
+            --body "No run of update-data.yml has succeeded in the last 36 hours. Latest run: ${{ steps.check.outputs.last }}. If there is none, the Cloudflare scheduler did not dispatch it: start it by hand (Actions > Update trial failure data > Run workflow)."
+      - name: Send a test mail
+        if: github.event_name == 'workflow_dispatch' && inputs.test_mail
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: |
+          python3 scripts/ops/notify_owner.py --subject "Test: alert mails arrive" \
+            --body "This is a test from the Weekly run watchdog. Alerts for a failed weekly run, a missing weekly run and a failed live site check come from this address. Last weekly run: ${{ steps.check.outputs.last }}"

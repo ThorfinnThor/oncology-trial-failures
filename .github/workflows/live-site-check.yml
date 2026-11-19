@@ -2,10 +2,12 @@ name: Live site check
 
 # Reads the deployed site the way a visitor and a crawler do: status codes, the cache layer
 # (#101: prerendered pages should come from the OpenNext static-asset cache, not be rendered
-# per request), the sitemap, and the cost of an unknown trial ID. Run by hand (Actions → Live
-# site check → Run workflow); it changes nothing.
+# per request), the sitemap, and the cost of an unknown trial ID. Runs every Tuesday morning and by
+# hand (Actions → Live site check → Run workflow); it changes nothing and mails the owner on failure.
 on:
   workflow_dispatch: {}
+  schedule:
+    - cron: "41 5 * * 2"
 
 permissions:
   contents: read
@@ -39,3 +41,14 @@ jobs:
           { echo; echo "sitemap.xml lists **$urls** URLs."; } >> "$GITHUB_STEP_SUMMARY"
           [ "$urls" -lt 1500 ] && { echo "::error::sitemap has only $urls URLs"; fail=1; }
           exit $fail
+
+      - uses: actions/checkout@v4
+        if: failure()
+      - name: Mail the owner when the site check failed
+        if: failure()
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 scripts/ops/notify_owner.py --subject "Live site check failed" \
+            --body "A page answered with a server error or did not answer, or the sitemap shrank below 1,500 URLs. Details: $RUN_URL"

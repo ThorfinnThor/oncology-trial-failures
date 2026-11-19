@@ -417,3 +417,38 @@ jobs:
           # Exit code 3 from the signals build means its time budget ran out; the cache is saved
           # and the next run resumes. Still red: that week has no product update and no newsletter.
           exit $failed
+
+      # A red run used to be noticed only by looking. Mail the owner: which steps failed and where
+      # the log is. Runs after everything else, also when a required step stopped the run.
+      - name: Mail the owner when the run failed
+        if: failure()
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          REVIEW: ${{ steps.llm_review.outcome }}
+          SIGNALS: ${{ steps.signals.outcome }}
+          RATES: ${{ steps.discontinuation_rates.outcome }}
+          BRIEF_PDFS: ${{ steps.brief_pdfs.outcome }}
+          PRODUCT: ${{ steps.product_summary.outcome }}
+          EXPORTS: ${{ steps.cohort_exports.outcome }}
+          HF: ${{ steps.hf_sample.outcome }}
+          NEWSLETTER: ${{ steps.newsletter.outcome }}
+          NEWSLETTER_COMMIT: ${{ steps.newsletter_commit.outcome }}
+        run: |
+          {
+            echo "The weekly data run failed: $RUN_URL"
+            echo
+            echo "Steps that may fail on their own (failure = that part of this week's update is missing):"
+            for pair in "Independent review:$REVIEW" "Oncology Failure Signals:$SIGNALS" \
+                        "Trial universe and rates:$RATES" "Brief PDFs:$BRIEF_PDFS" \
+                        "Product summary, packages, asset index:$PRODUCT" "Cohort exports:$EXPORTS" \
+                        "Hugging Face sample:$HF" "Newsletter:$NEWSLETTER" "Newsletter archive commit:$NEWSLETTER_COMMIT"; do
+              echo "  - ${pair%%:*}: ${pair##*:}"
+            done
+            echo
+            echo "If none of these says failure, a required step stopped the run: data fetch, the"
+            echo "classification tests and quality gate, a commit, the generated-text check, or the"
+            echo "coverage check (enrichment fell far below last week; the previous release stays online)."
+            echo "The site keeps last week's data until a run succeeds. Open the link for the log."
+          } > "$RUNNER_TEMP/alert.txt"
+          python scripts/ops/notify_owner.py --subject "Weekly data run failed" --body-file "$RUNNER_TEMP/alert.txt"
