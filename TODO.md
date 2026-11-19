@@ -27,11 +27,10 @@ in each section is blocked on nothing but time.
   (run 44269445298, all steps green, no newsletter: the 12-day spacing held): 24,095 trials, all on
   classifier 2.7.6.
 - **`/validation` has a clinician section** (18 Nov) with the caveats. The Hugging Face card is built
-  by `python scripts/samples/build_label_sample.py --out <dir> --huggingface`. **Uploaded 19 Nov, still
-  private:** https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-failures-sample
+  by `python scripts/samples/build_label_sample.py --out <dir> --huggingface`. **Public since 19 Nov:** https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-failures-sample
   (org `clinical-trial-failures`, owner account `ClinicalTrialFailures`; the write token is a network
   secret for huggingface.co on the Default cloud environment, fine-grained, write only in that org).
-  Make it public once Schayan has looked at it; refresh it from a new release with the same command.
+  Refresh it from a new release with the same command and upload_folder (see the 19 Nov session).
 - **The diligence report is free during the beta, for a work email** (#94, 22 Oct). The order form
   also offers the newsletter (double opt-in). Leads land in the `LEADS` KV namespace and are
   mailed to `contact@clinicaltrialfailures.com`.
