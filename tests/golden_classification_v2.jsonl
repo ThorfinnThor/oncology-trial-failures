@@ -1447,3 +1447,7 @@
 {"why_stopped":"Trial terminated by Sponsor based on benefit- risk reassessment","outcome":"BIOLOGICAL_FAILURE","primary_reason":"BIOLOGICAL_UNSPECIFIED","needs_review":false}
 {"why_stopped":"Based on two-stage design, the study ended at stage 1 with no evidence of promise based on pre-specified decision rule.","outcome":"BIOLOGICAL_FAILURE","primary_reason":"EFFICACY_FUTILITY","needs_review":false}
 {"why_stopped":"no participants enrolled in a three year period","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"Not due to a change in standard of care","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"not due to the lack of efficacy","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
+{"why_stopped":"Terminated, not due to an adverse event but because of slow accrual","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
+{"why_stopped":"was not continued due to safety concerns","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}

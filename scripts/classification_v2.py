@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.6"
+CLASSIFIER_VERSION = "2.7.7"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -10478,9 +10478,13 @@ def _is_negated(text: str, start: int, end: int, reason: Optional[str] = None) -
         r"\b(?:no|not|never|neither|without|unrelated(?: to)?)\s+"
         r"(?:(?:being|prematurely|early|directly|primarily|specifically)\s+)*"
         r"(?:(?:due to|because of|related to|prompted by|based on)\s+)?"
-        r"(?:(?:any|new|observed|identified|additional)\s+)?$",
+        r"(?:(?:a|an|the|any|new|observed|identified|additional)\s+)*$",
         before,
     ):
+        return True
+    # 2.7.7: the shared denial reader (CLAUDE.md rule 1) as a second, independent check:
+    # "not due to the lack of efficacy", "not due to an adverse event but because of slow accrual".
+    if _text_denied(text, start, end):
         return True
     if re.search(r"\bno (?:evidence|signal) of\s*$", before):
         return True
