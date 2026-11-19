@@ -39,6 +39,11 @@ export const ATLAS_STATUSES = ["TERMINATED", "WITHDRAWN", "SUSPENDED"] as const;
 
 const BUSINESS = new Set(["BUSINESS_STRATEGY", "FUNDING", "SUPPORT_WITHDRAWAL"]);
 
+/** The #fragment that opens the atlas zoomed into one disease area, e.g. "gastroenterology-and-hepatology". */
+export function atlasAreaHash(area: string): string {
+  return area.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 /** The plain-language group a trial falls into, from its final classification. */
 export function atlasGroup(row: Pick<TrialIndexRow, "classification_final_outcome" | "classification_final_category">): AtlasGroupKey {
   const outcome = row.classification_final_outcome || "";

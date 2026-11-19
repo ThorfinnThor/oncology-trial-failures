@@ -1,5 +1,7 @@
 import validationData from "@/data/validation_v2.json";
 
+import { atlasAreaHash } from "./atlas";
+
 export const INSIGHTS_BASE_URL = "https://clinicaltrialfailures.com";
 
 export type InsightStats = {
@@ -127,6 +129,7 @@ export type InsightStats = {
       resultsUrl: string;
     }>;
   };
+  recruitmentVsBiological: RecruitmentVsBiologicalSlice;
   countryScaleSignals: {
     bands: Array<CountrySignalSlice & { key: string }>;
     phaseComparisons: Array<{
@@ -322,6 +325,22 @@ export type MechanismBriefSnapshot = {
     why: string;
     registryUrl: string;
   }>;
+};
+
+/** Per disease area: stops for too few participants against stops for efficacy or safety (lib/atlas groups). */
+export type RecruitmentVsBiologicalArea = {
+  label: string;
+  total: number;
+  recruitment: number;
+  efficacy: number;
+  safety: number;
+  biological: number;
+  unclear: number;
+};
+
+export type RecruitmentVsBiologicalSlice = {
+  overall: Omit<RecruitmentVsBiologicalArea, "label">;
+  areas: RecruitmentVsBiologicalArea[];
 };
 
 export type InsightSignalSlice = {
@@ -2865,6 +2884,78 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
           "No. Terminated status only says the study stopped early. The stop reason is needed before calling it an efficacy, safety, operational, or unclear signal.",
       },
     ],
+  },
+  {
+    slug: "recruitment-vs-efficacy-clinical-trial-stops-by-disease-area",
+    title: "Recruitment vs efficacy: why clinical trials stop, by disease area",
+    metaDescription:
+      "Stopped clinical trials compared by disease area: how many stopped for too few participants and how many for efficacy or safety, from ClinicalTrials.gov stop reasons.",
+    eyebrow: "Recruitment vs efficacy",
+    dek:
+      "In every disease area with enough stopped trials, failing to recruit participants is a more common stated reason than the treatment not working or not being safe. How wide the gap is depends on the area.",
+    datePublished: "2026-11-19",
+    readingTime: "5 min read",
+    keyword: "recruitment vs efficacy clinical trial stops by disease area",
+    factsHeading: "Key numbers",
+    facts: [],
+    sections: [
+      {
+        heading: "Two very different reasons to stop",
+        body: [
+          "A trial that stops because the treatment showed too little benefit, or caused harm, has answered a scientific question. A trial that stops because it could not find enough participants has not: the treatment was never properly tested.",
+          "Both end up with the same registry status, terminated or withdrawn. Counting them together makes stopped trials look like evidence against the drugs they tested, when most of them are evidence about feasibility instead.",
+        ],
+      },
+      {
+        heading: "Recruitment comes first everywhere",
+        body: [],
+      },
+      {
+        heading: "Where the gap is widest",
+        body: [],
+      },
+      {
+        heading: "Where efficacy and safety matter most",
+        body: [],
+      },
+      {
+        heading: "What this comparison does not show",
+        body: [
+          "These are stopped trials only. A trial that runs to the end and misses its primary endpoint is not in this count, and many efficacy failures end that way. The numbers describe why trials stop early, not how often drugs fail.",
+          "The reason is the one the sponsor wrote in the registry. Stops with no usable reason are kept apart as unclear rather than guessed, and a stated business reason may sometimes cover weak interim data that the registry does not mention.",
+        ],
+      },
+      {
+        heading: "How to use it",
+        body: [
+          "If you are planning a trial, the recruitment stops in your area are the most useful ones to read: their stop reasons often name the problem, such as narrow eligibility, competing studies or a changed standard of care. If you are judging a drug class, set the recruitment stops aside and read the efficacy and safety stops on their own.",
+        ],
+      },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/atlas#recruitment",
+        label: "See every recruitment stop on the atlas",
+        text: "All stopped trials as one map, filtered to those that stopped for too few participants. Click a disease area to see its own split.",
+      },
+      {
+        href: "/insights/enrollment-failure-clinical-trials",
+        label: "Enrollment failure is not drug failure",
+        text: "What recruitment and accrual stops can and cannot tell you about a treatment.",
+      },
+      {
+        href: "/insights/safety-vs-efficacy-clinical-trial-signals-by-disease-area",
+        label: "Safety vs efficacy by disease area",
+        text: "Within the efficacy and safety stops, which areas lean toward each.",
+      },
+      {
+        href: "/methods",
+        label: "How stop reasons are classified",
+        text: "The rules, their validation and their limits.",
+      },
+    ],
+    faqs: [],
   },
 ];
 
@@ -6212,7 +6303,108 @@ function hydrateDatasetDownloadArticle(article: InsightArticle, stats: InsightSt
   };
 }
 
+function hydrateRecruitmentVsBiologicalArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const { overall, areas } = stats.recruitmentVsBiological;
+  if (!areas.length) return article;
+  const share = (part: number, total: number) => pctFromCounts(part, total);
+  const ratio = (area: { recruitment: number; biological: number }) =>
+    area.biological ? `${(area.recruitment / area.biological).toFixed(1)} to 1` : "no efficacy or safety stops";
+  const widest = areas[0];
+  const narrowest = areas[areas.length - 1];
+  const everywhere = areas.every((area) => area.recruitment > area.biological);
+  const behind = areas.filter((area) => area.recruitment <= area.biological);
+  const oncology = areas.find((area) => area.label === "Oncology");
+  const stated = overall.total - overall.unclear;
+  const split = (area: (typeof areas)[number]) =>
+    `${share(area.recruitment, area.total)} too few participants, ${share(area.biological, area.total)} efficacy or safety`;
+  const line = (area: (typeof areas)[number]) => `${area.label}: ${split(area)}`;
+
+  return {
+    ...article,
+    metaDescription: `${share(overall.recruitment, overall.total)} of stopped clinical trials stopped for too few participants and ${share(overall.biological, overall.total)} for efficacy or safety. The gap by disease area, from ${widest.label} to ${narrowest.label}.`,
+    dek: everywhere
+      ? article.dek
+      : `Failing to recruit participants is a more common stated reason than efficacy or safety in most disease areas, but not in ${behind.map((area) => area.label).join(", ")}. How wide the gap is depends on the area.`,
+    facts: [
+      `${n(overall.recruitment)} of ${n(overall.total)} stopped trials (${share(overall.recruitment, overall.total)}) stopped because they could not enrol enough participants.`,
+      `${n(overall.biological)} (${share(overall.biological, overall.total)}) stopped for efficacy or safety: ${n(overall.efficacy)} for too little benefit and ${n(overall.safety)} for safety concerns.`,
+      `Leaving out the ${n(overall.unclear)} stops with no clear reason, efficacy and safety account for ${share(overall.biological, stated)} of stops with a stated reason.`,
+      `The gap is widest in ${widest.label} (${ratio(widest)}) and narrowest in ${narrowest.label} (${ratio(narrowest)}).`,
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "Recruitment comes first everywhere") {
+        return {
+          heading: everywhere ? section.heading : "Recruitment comes first almost everywhere",
+          body: [
+            `Across all ${n(overall.total)} stopped trials, ${n(overall.recruitment)} stopped for too few participants and ${n(overall.biological)} for efficacy or safety, about ${ratio(overall)}. ${everywhere ? `That holds in each of the ${areas.length} disease areas with at least 200 stopped trials.` : `That holds in ${areas.length - behind.length} of the ${areas.length} disease areas with at least 200 stopped trials.`}`,
+            oncology
+              ? `Oncology, the largest area with ${n(oncology.total)} stopped trials, follows the overall pattern: ${split(oncology)}.`
+              : "The largest areas follow the overall pattern closely.",
+          ],
+        };
+      }
+      if (section.heading === "Where the gap is widest") {
+        const top = areas.slice(0, 3);
+        return {
+          ...section,
+          body: [
+            `${top.map(line).join(". ")}.`,
+            "The counts do not say why recruitment fails more often here. The individual stop reasons sometimes do, and every one of them can be read on the atlas.",
+          ],
+        };
+      }
+      if (section.heading === "Where efficacy and safety matter most") {
+        const bottom = areas.slice(-3).reverse();
+        return {
+          ...section,
+          body: [
+            `${bottom.map(line).join(". ")}.`,
+            "In these areas a stop is more likely to say something about the treatment itself, so the efficacy and safety stops deserve a closer read.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Stops for too few participants vs efficacy or safety",
+        columns: ["Disease area (stopped trials)", "Too few participants · efficacy or safety"],
+        rows: areas.map((area): [string, string] => [
+          `${area.label} (${n(area.total)})`,
+          `${share(area.recruitment, area.total)} · ${share(area.biological, area.total)} (${ratio(area)})`,
+        ]),
+      },
+    ],
+    links: [
+      ...article.links.slice(0, 1),
+      {
+        href: `/atlas#${atlasAreaHash(widest.label)}`,
+        label: `${widest.label} on the atlas`,
+        text: `Zoom into ${widest.label} and see its stop reasons light by light.`,
+      },
+      ...article.links.slice(1),
+    ],
+    faqs: [
+      {
+        question: "What share of clinical trials stop because of efficacy or safety?",
+        answer: `Of ${n(overall.total)} stopped trials in this dataset, ${share(overall.biological, overall.total)} stopped for efficacy or safety, and ${share(overall.recruitment, overall.total)} for too few participants. Trials that ran to the end and missed their endpoint are not included.`,
+      },
+      {
+        question: "Which disease area has the most recruitment-driven trial stops?",
+        answer: `Relative to efficacy and safety stops, ${widest.label}: ${split(widest)}.`,
+      },
+      {
+        question: "Does a recruitment stop mean the drug failed?",
+        answer: "No. The treatment was usually never tested on enough people to say whether it works. The stop says more about the trial's design and feasibility than about the drug.",
+      },
+    ],
+  };
+}
+
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "recruitment-vs-efficacy-clinical-trial-stops-by-disease-area") {
+    return hydrateRecruitmentVsBiologicalArticle(article, stats);
+  }
   if (article.slug === "clinical-trial-failures-dataset-download") {
     return hydrateDatasetDownloadArticle(article, stats);
   }
