@@ -1,6 +1,7 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
 import briefsIndex from "../data/briefs_index.json";
-import type { InsightStats, MechanismBriefSnapshot } from "./insights";
+import { atlasGroup } from "./atlas";
+import type { InsightStats, MechanismBriefSnapshot, RecruitmentVsBiologicalArea, RecruitmentVsBiologicalSlice } from "./insights";
 import { slugify, trialPath } from "./seoUrls";
 import { loadIndexServer, readJsonServerAsset } from "./server-data";
 import type { EndpointResult, TrialIndexRow } from "./types";
@@ -716,6 +717,41 @@ export function countryScaleSignalSlice(rows: TrialIndexRow[]) {
   return { bands, phaseComparisons, areaComparisons, matchedComparisons, examples };
 }
 
+function recruitmentVsBiologicalCounts(rows: TrialIndexRow[]): Omit<RecruitmentVsBiologicalArea, "label"> {
+  const counts = { total: rows.length, recruitment: 0, efficacy: 0, safety: 0, biological: 0, unclear: 0 };
+  for (const row of rows) {
+    const group = atlasGroup(row);
+    if (group === "recruitment") counts.recruitment += 1;
+    else if (group === "efficacy") counts.efficacy += 1;
+    else if (group === "safety") counts.safety += 1;
+    else if (group === "unclear") counts.unclear += 1;
+  }
+  counts.biological = counts.efficacy + counts.safety;
+  return counts;
+}
+
+/**
+ * Stops for too few participants against stops for efficacy or safety, per disease area, using the
+ * same groups as /atlas so the article and the map show the same numbers. Areas below
+ * `minimumRecords` and the catch-all "Other" are left out; they are ordered by recruitment-to-
+ * biological ratio, highest first.
+ */
+export function recruitmentVsBiologicalSlice(rows: TrialIndexRow[], minimumRecords = 200): RecruitmentVsBiologicalSlice {
+  const grouped = new Map<string, TrialIndexRow[]>();
+  for (const row of rows) {
+    const label = row.disease_area || "Other";
+    const group = grouped.get(label) || [];
+    group.push(row);
+    grouped.set(label, group);
+  }
+  const ratio = (area: RecruitmentVsBiologicalArea) => area.recruitment / Math.max(1, area.biological);
+  const areas = [...grouped.entries()]
+    .filter(([label, areaRows]) => label !== "Other" && areaRows.length >= minimumRecords)
+    .map(([label, areaRows]) => ({ label, ...recruitmentVsBiologicalCounts(areaRows) }))
+    .sort((a, b) => ratio(b) - ratio(a) || b.total - a.total || a.label.localeCompare(b.label));
+  return { overall: recruitmentVsBiologicalCounts(rows), areas };
+}
+
 export function sponsorPortfolioSignalSlice(rows: TrialIndexRow[], minimumRecords = 100) {
   const stratumCounts = new Map<string, { total: number; biological: number }>();
   const stratumKey = (row: TrialIndexRow) => `${row.phases || "Unknown"}\u0000${row.disease_area || "Other"}`;
@@ -895,6 +931,7 @@ export async function buildInsightStats(): Promise<InsightStats> {
     phaseSignalComparison: phaseSignalComparison(rows),
     latestUpdates,
     postedEndpointResults: postedEndpointResultSlice(rows, endpointResults),
+    recruitmentVsBiological: recruitmentVsBiologicalSlice(rows),
     countryScaleSignals: countryScaleSignalSlice(rows),
     sponsorPortfolioSignals: sponsorPortfolioSignalSlice(rows),
     classificationV2: {
