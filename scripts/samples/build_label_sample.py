@@ -198,7 +198,9 @@ def main() -> int:
             "classified from the sponsor's stated reason into biological failure (efficacy, safety) and non-biological "
             "causes. This is a sample of the full, weekly-updated dataset at "
             "[clinicaltrialfailures.com](https://clinicaltrialfailures.com); validation at "
-            "[clinicaltrialfailures.com/validation](https://clinicaltrialfailures.com/validation).", ""]
+            "[clinicaltrialfailures.com/validation](https://clinicaltrialfailures.com/validation).", "",
+            "**Full dataset, every disease area, weekly updates and clinician-reviewed labels:** "
+            "[clinicaltrialfailures.com/pricing](https://clinicaltrialfailures.com/pricing) · contact@clinicaltrialfailures.com", ""]
            if args.huggingface else []),
          f"Release {meta.get('version')} (ClinicalTrials.gov snapshot, imported "
          f"{(meta.get('imported_at_utc') or '')[:10]}). Prepared {date.today().isoformat()}.", "",

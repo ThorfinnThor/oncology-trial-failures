@@ -101,6 +101,10 @@ export default function AboutPage() {
                 <a className="link" href="https://doi.org/10.5281/zenodo.23558833" rel="noopener">
                   10.5281/zenodo.23558833
                 </a>
+                . A labelled sample is on{" "}
+                <a className="link" href="https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-failures-sample" rel="noopener">
+                  Hugging Face
+                </a>
                 .
               </p>
             </section>

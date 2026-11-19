@@ -323,6 +323,8 @@ export default function HomePage({ stats, sampleTrials, browse }: HomePageProps)
       isAccessibleForFree: true,
       license: "https://creativecommons.org/licenses/by-nc/4.0/",
       identifier: "https://doi.org/10.5281/zenodo.23558833",
+      // The same dataset elsewhere, so Google Dataset Search can join the records.
+      sameAs: ["https://doi.org/10.5281/zenodo.23558833", "https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-failures-sample"],
       creator: [
         { "@type": "Person", name: "Schayan Yousefian" },
         { "@type": "Organization", name: SITE_NAME, url: SITE_URL },

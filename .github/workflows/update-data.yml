@@ -295,6 +295,31 @@ jobs:
           git pull --rebase --autostash origin main || true
           git push
 
+      # The public labelled sample on Hugging Face, rebuilt from this release so the dataset there
+      # never falls behind the site. Needs the repository secret HF_TOKEN (a fine-grained token with
+      # write access to the clinical-trial-failures organisation); without it the step does nothing.
+      - name: Refresh the Hugging Face sample
+        id: hf_sample
+        if: steps.signals.outcome == 'success'
+        continue-on-error: true
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: |
+          if [ -z "$HF_TOKEN" ]; then echo "No HF_TOKEN secret; the Hugging Face sample is not refreshed."; exit 0; fi
+          pip install -q huggingface_hub
+          python scripts/samples/build_label_sample.py --out "$RUNNER_TEMP/hf_sample" --huggingface
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          version = __import__("json").load(open("web/public/dataset_meta.json")).get("version")
+          HfApi(token=os.environ["HF_TOKEN"]).upload_folder(
+              folder_path=os.path.join(os.environ["RUNNER_TEMP"], "hf_sample"),
+              repo_id="clinical-trial-failures/clinical-trial-failures-sample", repo_type="dataset",
+              commit_message=f"Sample of release {version}")
+          print("Hugging Face sample refreshed for release", version)
+          PY
+
       # Each report's whole cohort as CSV, read by /api/report-export for buyers. Only after the
       # checks above passed (an implicit success() guards this step), so an export never runs
       # ahead of the report it belongs to. Kept in Workers KV, not in this public repository.
