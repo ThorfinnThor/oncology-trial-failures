@@ -27,7 +27,7 @@ jobs:
             echo "| Path | Status | Cache headers | Time (s) |"
             echo "| --- | --- | --- | ---: |"
           } >> "$GITHUB_STEP_SUMMARY"
-          for path in / /overview /validation /pricing /about /trial/NCT04409080 /trial/NCT00000000 /drugs; do
+          for path in / /overview /validation /pricing /about /datasets /datasets/stop-reason-labels /insights/clinical-trial-failures-dataset-download /samples/labels/stop_reason_labels_sample.csv /trial/NCT04409080 /trial/NCT00000000 /drugs; do
             hdr=$(curl -sS -o /dev/null -D - -w 'TIME %{time_total}\n' --max-time 30 "$SITE$path" || echo "HTTP/2 000")
             status=$(echo "$hdr" | awk 'toupper($1) ~ /^HTTP/ {s=$2} END {print s}')
             cache=$(echo "$hdr" | grep -i -E '^(x-opennext-cache|x-nextjs-cache|cf-cache-status|x-nextjs-prerender):' | tr -d '\r' | paste -sd ' ' -)
