@@ -28,21 +28,21 @@ Same sample, same weighting, same bootstrap; only the reference labels differ.
 
 Neither reference is clinical ground truth. Where they differ, the true value is not known until the disputed texts below have been decided by a person.
 
-## Disputed: biological or not (11 texts, 11 awaiting clinician review)
+## Disputed: biological or not (11 texts, 0 awaiting clinician review)
 
 | Sample | Stop reason | Published reference | Cross-check | Classifier | Status |
 | --- | --- | --- | --- | --- | --- |
-| HV-0002 | Sirolimus usage discontinued since black box warning | BIOLOGICAL_FAILURE | NON_BIOLOGICAL | BIOLOGICAL_FAILURE | AWAITING_CLINICIAN_REVIEW |
-| HV-0056 | possible lack of efficacy | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | AWAITING_CLINICIAN_REVIEW |
-| HV-0067 | unexpected histological findings | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | AWAITING_CLINICIAN_REVIEW |
-| HV-0082 | Preset pharmacokinetic stopping criteria met at lower doses than expected. | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | AWAITING_CLINICIAN_REVIEW |
-| HV-0109 | The decision is based on a change in the benefit risk assessment of this drug for the lupus population targeted in this study. | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | AWAITING_CLINICIAN_REVIEW |
-| HV-0118 | Interim analysis suggested a trend favoring ecallantide; observed response rate to placebo was substantially higher than described in medical literature. | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | AWAITING_CLINICIAN_REVIEW |
-| HV-0136 | Terminated due to nonclinical findings | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | AWAITING_CLINICIAN_REVIEW |
-| HV-0478 | The INHIBIT Trials IDSMB, in a letter dated 05-18-22, recommended, given the slow enrollment, that the INHIBIT Trials be discontinued due to futility. | NON_BIOLOGICAL | MIXED_CAUSES | MIXED_CAUSES | AWAITING_CLINICIAN_REVIEW |
-| HV-0492 | Removal of Adrénaline lots for safety reasons. | NON_BIOLOGICAL | BIOLOGICAL_FAILURE | MIXED_CAUSES | AWAITING_CLINICIAN_REVIEW |
-| HV-0508 | The patient passed before treatment could be started | NON_FAILURE_TRANSITION | BIOLOGICAL_FAILURE | UNKNOWN | AWAITING_CLINICIAN_REVIEW |
-| HV-0575 | Response rate in placebo group for primary outcome was 100% on interim analysis. | BIOLOGICAL_FAILURE | UNKNOWN | UNKNOWN | AWAITING_CLINICIAN_REVIEW |
+| HV-0002 | Sirolimus usage discontinued since black box warning | BIOLOGICAL_FAILURE | NON_BIOLOGICAL | BIOLOGICAL_FAILURE | DECIDED |
+| HV-0056 | possible lack of efficacy | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | DECIDED |
+| HV-0067 | unexpected histological findings | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | DECIDED |
+| HV-0082 | Preset pharmacokinetic stopping criteria met at lower doses than expected. | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | DECIDED |
+| HV-0109 | The decision is based on a change in the benefit risk assessment of this drug for the lupus population targeted in this study. | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | DECIDED |
+| HV-0118 | Interim analysis suggested a trend favoring ecallantide; observed response rate to placebo was substantially higher than described in medical literature. | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | DECIDED |
+| HV-0136 | Terminated due to nonclinical findings | BIOLOGICAL_FAILURE | UNKNOWN | BIOLOGICAL_FAILURE | DECIDED |
+| HV-0478 | The INHIBIT Trials IDSMB, in a letter dated 05-18-22, recommended, given the slow enrollment, that the INHIBIT Trials be discontinued due to futility. | NON_BIOLOGICAL | MIXED_CAUSES | MIXED_CAUSES | DECIDED |
+| HV-0492 | Removal of Adrénaline lots for safety reasons. | NON_BIOLOGICAL | BIOLOGICAL_FAILURE | MIXED_CAUSES | DECIDED |
+| HV-0508 | The patient passed before treatment could be started | NON_FAILURE_TRANSITION | BIOLOGICAL_FAILURE | UNKNOWN | DECIDED |
+| HV-0575 | Response rate in placebo group for primary outcome was 100% on interim analysis. | BIOLOGICAL_FAILURE | UNKNOWN | UNKNOWN | DECIDED |
 
 To record a reviewer's decision, add it to `validation/crosscheck_gpt61/decisions.json` and re-run: `{"HV-0056": {"status": "DECIDED", "verdict": {"outcome": "UNKNOWN", "primary_reason": "UNSPECIFIED", "reviewer": "clinician", "decided_at": "YYYY-MM-DD"}}}`. Decisions are kept across runs.
 

@@ -35,6 +35,13 @@ export default function ValidationPage() {
   const ci = v.estimates_ci95;
   const cc: any = v.crosscheck;
   const cr: any = v.clinician_review;
+  const BIO_REASONS = ["EFFICACY_FUTILITY", "SAFETY", "BIOLOGICAL_UNSPECIFIED"];
+  const verdictIsBio = (x: any) =>
+    x?.outcome === "BIOLOGICAL_FAILURE" ||
+    (x?.outcome === "MIXED_CAUSES" && (x?.secondary_reasons || []).some((r: string) => BIO_REASONS.includes(r)));
+  const ccSidedRef: number = cc
+    ? cc.disputed_biological.filter((d: any) => d.review_verdict && verdictIsBio(d.review_verdict) === d.biological_per_reference).length
+    : 0;
   const perOutcome: Record<string, any> = v.per_predicted_outcome;
   const confusion: { predicted: string; reference: string; count: number }[] = v.confusion_pred_vs_ref;
 
@@ -493,7 +500,7 @@ export default function ValidationPage() {
                       ? "all of them are awaiting review by clinicians, and the true figure is not known until they are decided."
                       : cc.disputed_awaiting_review > 0
                         ? `${cc.disputed_awaiting_review} of them are still awaiting review by clinicians.`
-                        : "all of them have been decided by clinicians."}
+                        : `a clinician has decided all of them, siding with the Claude reference on ${ccSidedRef} and with the cross-check on ${cc.disputed_biological.length - ccSidedRef}.`}
                   </p>
                 </div>
               </div>
@@ -504,7 +511,7 @@ export default function ValidationPage() {
                       <th>Stop reason as written</th>
                       <th>Claude reference</th>
                       <th>Cross-check</th>
-                      <th>Status</th>
+                      <th>Clinician</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -517,7 +524,11 @@ export default function ValidationPage() {
                         </td>
                         <td>{label(d.reference.outcome)}</td>
                         <td>{label(d.crosscheck.outcome)}</td>
-                        <td>{d.review_status === "AWAITING_CLINICIAN_REVIEW" ? "Awaiting clinician review" : label(d.review_status)}</td>
+                        <td>
+                          {d.review_status === "AWAITING_CLINICIAN_REVIEW" || !d.review_verdict
+                            ? "Awaiting clinician review"
+                            : label(d.review_verdict.outcome)}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

@@ -1,0 +1,127 @@
+{
+ "HV-0002": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "BIOLOGICAL_FAILURE",
+   "primary_reason": "SAFETY",
+   "secondary_reasons": [],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-18",
+   "discussed_with_maintainers_before_answer": true
+  }
+ },
+ "HV-0056": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "BIOLOGICAL_FAILURE",
+   "primary_reason": "EFFICACY_FUTILITY",
+   "secondary_reasons": [],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0067": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "UNKNOWN",
+   "primary_reason": "UNSPECIFIED",
+   "secondary_reasons": [],
+   "confidence": "LOW",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0082": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "BIOLOGICAL_FAILURE",
+   "primary_reason": "SAFETY",
+   "secondary_reasons": [],
+   "confidence": "LOW",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0109": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "BIOLOGICAL_FAILURE",
+   "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+   "secondary_reasons": [],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0118": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "BIOLOGICAL_FAILURE",
+   "primary_reason": "EFFICACY_FUTILITY",
+   "secondary_reasons": [],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0136": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "UNKNOWN",
+   "primary_reason": "UNSPECIFIED",
+   "secondary_reasons": [],
+   "confidence": "LOW",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0478": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "MIXED_CAUSES",
+   "primary_reason": "MULTIPLE",
+   "secondary_reasons": [
+    "EFFICACY_FUTILITY",
+    "RECRUITMENT"
+   ],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0492": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "BIOLOGICAL_FAILURE",
+   "primary_reason": "SAFETY",
+   "secondary_reasons": [],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0508": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "NON_BIOLOGICAL",
+   "primary_reason": "EXTERNAL_DISRUPTION",
+   "secondary_reasons": [],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ },
+ "HV-0575": {
+  "status": "DECIDED",
+  "verdict": {
+   "outcome": "BIOLOGICAL_FAILURE",
+   "primary_reason": "EFFICACY_FUTILITY",
+   "secondary_reasons": [],
+   "confidence": "MEDIUM",
+   "reviewer": "clinician 1 (clinician scientist)",
+   "decided_at": "2026-11-19"
+  }
+ }
+}

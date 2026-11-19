@@ -584,8 +584,16 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY",
+          "secondary_reasons": [],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-18",
+          "discussed_with_maintainers_before_answer": true
+        }
       },
       {
         "sample_id": "HV-0056",
@@ -606,8 +614,15 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY",
+          "secondary_reasons": [],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0067",
@@ -628,8 +643,15 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "secondary_reasons": [],
+          "confidence": "LOW",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0082",
@@ -650,8 +672,15 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY",
+          "secondary_reasons": [],
+          "confidence": "LOW",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0109",
@@ -672,8 +701,15 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "BIOLOGICAL_UNSPECIFIED",
+          "secondary_reasons": [],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0118",
@@ -694,8 +730,15 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY",
+          "secondary_reasons": [],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0136",
@@ -716,8 +759,15 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "UNKNOWN",
+          "primary_reason": "UNSPECIFIED",
+          "secondary_reasons": [],
+          "confidence": "LOW",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0478",
@@ -738,8 +788,18 @@
         },
         "biological_per_reference": false,
         "biological_per_crosscheck": true,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "MIXED_CAUSES",
+          "primary_reason": "MULTIPLE",
+          "secondary_reasons": [
+            "EFFICACY_FUTILITY",
+            "RECRUITMENT"
+          ],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0492",
@@ -760,8 +820,15 @@
         },
         "biological_per_reference": false,
         "biological_per_crosscheck": true,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "SAFETY",
+          "secondary_reasons": [],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0508",
@@ -782,8 +849,15 @@
         },
         "biological_per_reference": false,
         "biological_per_crosscheck": true,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "NON_BIOLOGICAL",
+          "primary_reason": "EXTERNAL_DISRUPTION",
+          "secondary_reasons": [],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       },
       {
         "sample_id": "HV-0575",
@@ -804,11 +878,18 @@
         },
         "biological_per_reference": true,
         "biological_per_crosscheck": false,
-        "review_status": "AWAITING_CLINICIAN_REVIEW",
-        "review_verdict": null
+        "review_status": "DECIDED",
+        "review_verdict": {
+          "outcome": "BIOLOGICAL_FAILURE",
+          "primary_reason": "EFFICACY_FUTILITY",
+          "secondary_reasons": [],
+          "confidence": "MEDIUM",
+          "reviewer": "clinician 1 (clinician scientist)",
+          "decided_at": "2026-11-19"
+        }
       }
     ],
-    "disputed_awaiting_review": 11
+    "disputed_awaiting_review": 0
   },
   "clinician_review": {
     "schema_version": 1,
