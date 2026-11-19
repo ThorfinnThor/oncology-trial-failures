@@ -189,7 +189,7 @@ def main() -> int:
                  "pretty_name: Clinical Trial Failures - why trials stopped (labelled sample)",
                  "task_categories:", "- text-classification", "size_categories:", "- n<1K",
                  "tags:", "- clinical-trials", "- drug-development", "- clinicaltrials-gov", "- oncology", "- biomedical",
-                 "configs:", "- config_name: stop_reasons", "  data_files: stop_reason_labels_sample.csv",
+                 "configs:", "- config_name: stop_reasons", "  data_files: stop_reason_labels_sample.csv", "  default: true",
                  "- config_name: endpoints", "  data_files: endpoint_labels_sample.csv", "---", ""]
     L = (hf_header if args.huggingface else []) + [
          ("# Clinical Trial Failures — why trials stopped (labelled sample)" if args.huggingface else
