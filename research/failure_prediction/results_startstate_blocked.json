@@ -1,0 +1,263 @@
+{
+ "A randomized": {
+  "task": "A randomized",
+  "n_train": 1387,
+  "n_test": 776,
+  "test_rate": 0.5914948453608248,
+  "auc": {
+   "base": 0.7441,
+   "gen": 0.7372,
+   "rec": 0.7493,
+   "gb": 0.7017
+  },
+  "brier": {
+   "base": 0.1993,
+   "gen": 0.2011,
+   "rec": 0.1973,
+   "gb": 0.2148
+  },
+  "gain_rec_vs_base": [
+   0.0058,
+   -0.0145,
+   0.0271
+  ],
+  "gain_rec_vs_gen": [
+   0.0122,
+   -0.0082,
+   0.0325
+  ],
+  "gain_gb_vs_base": [
+   -0.0428,
+   -0.073,
+   -0.0136
+  ],
+  "gain_gen_vs_base": [
+   -0.0069,
+   -0.0145,
+   0.0013
+  ],
+  "coefficients_standardized": {
+   "base_logit": 0.924,
+   "mapped": -0.113,
+   "gen": 0.209,
+   "gen_nononc": -0.423,
+   "rec_present": 0.0,
+   "rec_late": -0.172,
+   "log_planned_enrollment": -0.06,
+   "log_facilities": -0.139,
+   "us_facility": 0.014,
+   "n_arms": -0.146,
+   "dmc": 0.09,
+   "fda_regulated": 0.029,
+   "masking": -0.08,
+   "single_group": 0.0,
+   "purpose_treatment": -0.075,
+   "n_primary": 0.182,
+   "primary_survival": -0.155,
+   "primary_response": -0.025,
+   "log_planned_enrollment_missing": -0.16,
+   "log_facilities_missing": 0.07,
+   "masking_missing": 0.033
+  },
+  "fail_by_enrollment_tercile_within_phase": {
+   "2/small": [
+    0.728,
+    320
+   ],
+   "2/mid": [
+    0.747,
+    320
+   ],
+   "2/large": [
+    0.697,
+    320
+   ],
+   "3/small": [
+    0.419,
+    399
+   ],
+   "3/mid": [
+    0.344,
+    398
+   ],
+   "3/large": [
+    0.45,
+    398
+   ]
+  }
+ },
+ "A_endpoint": {
+  "task": "A_endpoint",
+  "n_train": 1148,
+  "n_test": 598,
+  "test_rate": 0.4698996655518395,
+  "auc": {
+   "base": 0.7626,
+   "gen": 0.7529,
+   "rec": 0.7498,
+   "gb": 0.7085
+  },
+  "brier": {
+   "base": 0.2004,
+   "gen": 0.204,
+   "rec": 0.2027,
+   "gb": 0.2201
+  },
+  "gain_rec_vs_base": [
+   -0.0125,
+   -0.0373,
+   0.0113
+  ],
+  "gain_rec_vs_gen": [
+   -0.0029,
+   -0.026,
+   0.0202
+  ],
+  "gain_gb_vs_base": [
+   -0.0538,
+   -0.0866,
+   -0.0218
+  ],
+  "gain_gen_vs_base": [
+   -0.0097,
+   -0.0185,
+   -0.0015
+  ],
+  "coefficients_standardized": {
+   "base_logit": 0.93,
+   "mapped": -0.224,
+   "gen": 0.247,
+   "gen_nononc": -0.26,
+   "rec_present": 0.0,
+   "rec_late": -0.169,
+   "log_planned_enrollment": -0.099,
+   "log_facilities": -0.097,
+   "us_facility": 0.124,
+   "n_arms": -0.198,
+   "dmc": 0.027,
+   "fda_regulated": 0.094,
+   "masking": -0.1,
+   "single_group": 0.0,
+   "purpose_treatment": -0.111,
+   "n_primary": 0.135,
+   "primary_survival": -0.113,
+   "primary_response": -0.032,
+   "log_planned_enrollment_missing": -0.15,
+   "log_facilities_missing": 0.157,
+   "masking_missing": 0.065
+  },
+  "fail_by_enrollment_tercile_within_phase": {
+   "2/small": [
+    0.647,
+    249
+   ],
+   "2/mid": [
+    0.677,
+    248
+   ],
+   "2/large": [
+    0.609,
+    248
+   ],
+   "3/small": [
+    0.326,
+    341
+   ],
+   "3/mid": [
+    0.255,
+    341
+   ],
+   "3/large": [
+    0.331,
+    341
+   ]
+  }
+ },
+ "B biological stop": {
+  "task": "B biological stop",
+  "n_train": 9225,
+  "n_test": 5541,
+  "test_rate": 0.044576791192925465,
+  "auc": {
+   "base": 0.5158,
+   "gen": 0.5298,
+   "rec": 0.6498,
+   "gb": 0.6143
+  },
+  "brier": {
+   "base": 0.043,
+   "gen": 0.0426,
+   "rec": 0.0421,
+   "gb": 0.0426
+  },
+  "gain_rec_vs_base": [
+   0.1339,
+   0.0883,
+   0.1817
+  ],
+  "gain_rec_vs_gen": [
+   0.1202,
+   0.0802,
+   0.161
+  ],
+  "gain_gb_vs_base": [
+   0.0994,
+   0.0472,
+   0.1529
+  ],
+  "gain_gen_vs_base": [
+   0.0148,
+   -0.0068,
+   0.0388
+  ],
+  "coefficients_standardized": {
+   "base_logit": 0.33,
+   "mapped": 0.171,
+   "gen": -0.011,
+   "gen_nononc": -0.529,
+   "rec_present": 0.0,
+   "rec_late": -0.024,
+   "log_planned_enrollment": 0.175,
+   "log_facilities": 0.05,
+   "us_facility": -0.025,
+   "n_arms": 0.002,
+   "dmc": 0.203,
+   "fda_regulated": 0.313,
+   "masking": 0.072,
+   "single_group": 0.0,
+   "purpose_treatment": 0.312,
+   "n_primary": 0.122,
+   "primary_survival": -0.032,
+   "primary_response": 0.13,
+   "log_planned_enrollment_missing": -0.041,
+   "log_facilities_missing": 0.002,
+   "masking_missing": 0.059
+  },
+  "fail_by_enrollment_tercile_within_phase": {
+   "2/small": [
+    0.035,
+    2777
+   ],
+   "2/mid": [
+    0.041,
+    2776
+   ],
+   "2/large": [
+    0.052,
+    2776
+   ],
+   "3/small": [
+    0.028,
+    1651
+   ],
+   "3/mid": [
+    0.038,
+    1650
+   ],
+   "3/large": [
+    0.057,
+    1650
+   ]
+  }
+ }
+}
