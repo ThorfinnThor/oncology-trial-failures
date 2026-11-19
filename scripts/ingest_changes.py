@@ -129,7 +129,9 @@ def build_ingest_change_report(
         changed_fields = [
             field for field in TRACKED_FIELDS if _text(old.get(field)) != _text(new.get(field))
         ]
-        if not changed_fields:
+        # A new classifier version re-stamps every record. The version alone is not a change to
+        # the record (18 Nov 2026: 24,082 "changed" records, a 54 MB report the site could not deploy).
+        if not changed_fields or set(changed_fields) <= {"classification_version"}:
             continue
 
         item = _compact(new)
@@ -155,7 +157,6 @@ def build_ingest_change_report(
             "classification_primary_reason_v2",
             "classification_secondary_reasons_v2",
             "classification_needs_review",
-            "classification_version",
         }
         if classification_fields.intersection(changed_fields):
             classification_item = dict(item)

@@ -72,6 +72,27 @@ jobs:
       - name: Publish public assets (web/public/*.json + dataset_meta.json)
         run: |
           python scripts/publish_public_assets.py
+          # Cloudflare deploys no asset over 25 MiB. A file that grew past it (ingest_changes.json,
+          # 54 MB on 18 Nov) stops every deploy without a word; stop here instead, before the commit.
+          python - <<'PY'
+          import os, sys
+          skip = {"all_stopped_trials.json", "all_stopped_trials.csv", "biological_failure_trials.json",
+                  "biological_failure_trials.csv", "biological_failure_oncology_trials.json",
+                  "biological_failure_oncology_trials.csv", "all_oncology_stopped_trials.json",
+                  "all_oncology_stopped_trials.csv", "trials-index.json"}
+          big = []
+          for root, dirs, files in os.walk("web/public"):
+              if root.startswith("web/public/data"):
+                  continue
+              for name in files:
+                  path = os.path.join(root, name)
+                  if name not in skip and os.path.getsize(path) > 24 * 1024 * 1024:
+                      big.append(f"{path}: {os.path.getsize(path) / 1048576:.1f} MiB")
+          if big:
+              print("Files too large for Cloudflare (max 25 MiB):\n  " + "\n  ".join(big))
+              sys.exit(1)
+          print("All deployable files are under 24 MiB.")
+          PY
 
       - name: Sync dataset into web/public/data (compat)
         run: |
