@@ -619,6 +619,16 @@ check("one unattributable stop reads as one stop",
 check("several unattributable stops are counted, not measured",
       any(x.startswith("For none of the 3 stops does the record say") for x in _reading(3)), True)
 
+from scripts.signals.check_coverage_regression import problems as _coverage_problems  # noqa: E402
+
+_prev = {"trials_with_focus_target_gene": 0.537, "trials_with_resolved_focus_asset": 0.739, "unique_assets": 588, "trial_count": 2060}
+check("coverage: an ordinary week passes",
+      _coverage_problems(_prev, {**_prev, "trials_with_focus_target_gene": 0.52, "unique_assets": 590}), [])
+check("coverage: losing the ChEMBL targets fails",
+      len(_coverage_problems(_prev, {**_prev, "trials_with_focus_target_gene": 0.0})), 1)
+check("coverage: losing a quarter of the assets fails",
+      len(_coverage_problems(_prev, {**_prev, "unique_assets": 400})), 1)
+
 if failures:
     print(f"{failures} signal test(s) failed")
     sys.exit(1)

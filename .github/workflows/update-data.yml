@@ -280,6 +280,9 @@ jobs:
           # report on one cohort must state the same numbers. A failure here stops the commit, so the
           # previous, checked versions stay online, and GitHub emails the owner.
           python scripts/check_generated_text.py
+          # A source that fails partly is still "green" (ChEMBL PARTIAL, 2 Nov): compare the coverage
+          # itself with last week's and stop the commit if it collapsed.
+          python scripts/signals/check_coverage_regression.py
           # Last week's verdicts, for next week's determinism check; and the reviewed diff when the
           # rules were changed on purpose.
           python scripts/signals/check_text_readers.py --write-snapshot
