@@ -57,3 +57,4 @@ next-env.d.ts
 
 # Local scratch scripts, never part of the site.
 .scratch/
+indexnow-state.json

@@ -1,0 +1,41 @@
+name: IndexNow
+
+# Tells Bing and the other IndexNow engines which pages are new, changed or gone since the last run
+# (web/scripts/indexnow.mjs). It reads the live site, so it runs on a timer rather than on push: by
+# 10:00 UTC the Monday data update (08:15 Berlin) and any merge from the day before are deployed.
+# Timing is not critical here, so the native schedule is used, not the Cloudflare scheduler.
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: indexnow
+  cancel-in-progress: false
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      # The sitemap as last submitted. Each run saves a new cache entry; restore-keys picks the newest.
+      - uses: actions/cache/restore@v4
+        with:
+          path: web/indexnow-state.json
+          key: indexnow-state-${{ github.run_id }}
+          restore-keys: indexnow-state-
+      - run: node scripts/indexnow.mjs indexnow-state.json
+      - uses: actions/cache/save@v4
+        if: success() && hashFiles('web/indexnow-state.json') != ''
+        with:
+          path: web/indexnow-state.json
+          key: indexnow-state-${{ github.run_id }}
