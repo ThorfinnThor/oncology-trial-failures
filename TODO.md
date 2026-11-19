@@ -171,7 +171,28 @@ Getting found, in this order:
 5. Marketplaces once there is demand: Defined.ai first (AI training data), AWS Data Exchange and
    Snowflake only when buyers ask for delivery there. First customers come direct.
 
+## Alerts (since 19 Nov)
+
+Mails to contact@clinicaltrialfailures.com (Brevo, `scripts/ops/notify_owner.py`): a red weekly run
+(which steps failed, link to the log; covers the coverage check and a failed newsletter); no
+successful weekly run since Monday (`watchdog.yml`, Tuesday 05:17 UTC — catches a scheduler that did
+not dispatch); a failed live site check (`live-site-check.yml`, Tuesday 05:41 UTC). Test mail sent
+19 Nov from the watchdog (Run workflow → "Send a test mail").
+
+## Batch 2 decided (19 Nov)
+
+The clinician decided the 11 texts the two model references disputed: with the Claude reference on
+7, with GPT-6.1 on 4 (`validation/crosscheck_gpt61/decisions.json`, shown on `/validation`). Two
+verdicts contradict our own guidance and need a decision by Schayan: "Removal of Adrénaline lots for
+safety reasons" → SAFETY (guidance: a lot recall is SUPPLY_MANUFACTURING) and "possible lack of
+efficacy" → EFFICACY_FUTILITY (guidance: a possible result is UNKNOWN). One clinician; HV-0002 was
+discussed beforehand.
+
 ## Getting found: next steps (decided 19 Nov)
+
+**Done 19 Nov:** the free sample on the site (`/samples/labels/`, rebuilt weekly) and the article
+`/insights/clinical-trial-failures-dataset-download` (what is in the data, how it is checked, where to
+download: site, Hugging Face, Zenodo, licence).
 
 1. **Google Dataset Search, done properly:** one indexable product page per dataset (stop-reason
    labels, endpoint labels, oncology failure signals, discontinuation rates), each with its own
