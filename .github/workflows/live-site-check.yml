@@ -1,0 +1,41 @@
+name: Live site check
+
+# Reads the deployed site the way a visitor and a crawler do: status codes, the cache layer
+# (#101: prerendered pages should come from the OpenNext static-asset cache, not be rendered
+# per request), the sitemap, and the cost of an unknown trial ID. Run by hand (Actions → Live
+# site check → Run workflow); it changes nothing.
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read the live site
+        run: |
+          set -u
+          SITE=https://clinicaltrialfailures.com
+          fail=0
+          {
+            echo "## Live site check"
+            echo
+            echo "| Path | Status | Cache headers | Time (s) |"
+            echo "| --- | --- | --- | ---: |"
+          } >> "$GITHUB_STEP_SUMMARY"
+          for path in / /overview /validation /pricing /about /trial/NCT04409080 /trial/NCT00000000 /drugs; do
+            hdr=$(curl -sS -o /dev/null -D - -w 'TIME %{time_total}\n' --max-time 30 "$SITE$path" || echo "HTTP/2 000")
+            status=$(echo "$hdr" | awk 'toupper($1) ~ /^HTTP/ {s=$2} END {print s}')
+            cache=$(echo "$hdr" | grep -i -E '^(x-opennext-cache|x-nextjs-cache|cf-cache-status|x-nextjs-prerender):' | tr -d '\r' | paste -sd ' ' -)
+            t=$(echo "$hdr" | awk '/^TIME/ {print $2}')
+            echo "$path -> $status | $cache | ${t}s"
+            echo "| \`$path\` | $status | ${cache:-—} | $t |" >> "$GITHUB_STEP_SUMMARY"
+            case "$status" in 5*|000) fail=1;; esac
+          done
+          urls=$(curl -sS --max-time 60 "$SITE/sitemap.xml" | grep -o '<loc>' | wc -l)
+          echo "sitemap.xml: $urls URLs"
+          { echo; echo "sitemap.xml lists **$urls** URLs."; } >> "$GITHUB_STEP_SUMMARY"
+          [ "$urls" -lt 1500 ] && { echo "::error::sitemap has only $urls URLs"; fail=1; }
+          exit $fail
