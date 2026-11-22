@@ -1,7 +1,14 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
 import briefsIndex from "../data/briefs_index.json";
-import { atlasGroup } from "./atlas";
-import type { InsightStats, MechanismBriefSnapshot, RecruitmentVsBiologicalArea, RecruitmentVsBiologicalSlice } from "./insights";
+import { ATLAS_GROUPS, atlasGroup } from "./atlas";
+import type {
+  InsightStats,
+  MechanismBriefSnapshot,
+  RecruitmentVsBiologicalArea,
+  RecruitmentVsBiologicalSlice,
+  StopReasonsByYearSlice,
+  TimeToStopSlice,
+} from "./insights";
 import { slugify, trialPath } from "./seoUrls";
 import { loadIndexServer, readJsonServerAsset } from "./server-data";
 import type { EndpointResult, TrialIndexRow } from "./types";
@@ -752,6 +759,97 @@ export function recruitmentVsBiologicalSlice(rows: TrialIndexRow[], minimumRecor
   return { overall: recruitmentVsBiologicalCounts(rows), areas };
 }
 
+const COVID_PATTERN = /covid|coronavirus|sars-cov|pandemic/i;
+
+function yearOf(date?: string): number {
+  const year = Number((date || "").slice(0, 4));
+  return Number.isInteger(year) && year > 1900 ? year : NaN;
+}
+
+/**
+ * Stop reasons by the year the registry records the trial as ended (completion date), from
+ * `fromYear` to `asOfYear`. Later dates are plans, not stops, and are left out; so are years with
+ * fewer than `minimumRecords` stops. The last year is usually incomplete.
+ */
+export function stopReasonsByYearSlice(
+  rows: TrialIndexRow[],
+  asOfYear = new Date().getUTCFullYear(),
+  fromYear = 2015,
+  minimumRecords = 300,
+): StopReasonsByYearSlice {
+  const byYear = new Map<number, Record<string, number>>();
+  for (const row of rows) {
+    const year = yearOf(row.completion_date);
+    if (!(year >= fromYear && year <= asOfYear)) continue;
+    const counts = byYear.get(year) || {};
+    const group = atlasGroup(row);
+    counts[group] = (counts[group] || 0) + 1;
+    byYear.set(year, counts);
+  }
+  const years = [...byYear.entries()]
+    .map(([year, counts]) => ({ year, total: Object.values(counts).reduce((sum, value) => sum + value, 0), counts }))
+    .filter((item) => item.total >= minimumRecords)
+    .sort((a, b) => a.year - b.year);
+
+  const covidRows = rows.filter((row) => COVID_PATTERN.test(row.why_stopped_short || ""));
+  const covidYears = new Map<number, number>();
+  for (const row of covidRows) {
+    const year = yearOf(row.completion_date);
+    if (year >= fromYear && year <= asOfYear) covidYears.set(year, (covidYears.get(year) || 0) + 1);
+  }
+  return {
+    years,
+    covidMentions: covidRows.length,
+    covidByYear: [...covidYears.entries()].map(([year, count]) => ({ year, count })).sort((a, b) => a.year - b.year),
+    covidOperational: covidRows.filter((row) => atlasGroup(row) === "operational").length,
+    covidRecruitment: covidRows.filter((row) => atlasGroup(row) === "recruitment").length,
+  };
+}
+
+function monthsBetween(start?: string, end?: string): number {
+  const a = /^(\d{4})-(\d{2})/.exec(start || "");
+  const b = /^(\d{4})-(\d{2})/.exec(end || "");
+  if (!a || !b) return NaN;
+  return (Number(b[1]) - Number(a[1])) * 12 + (Number(b[2]) - Number(a[2]));
+}
+
+function quantile(sorted: number[], p: number): number {
+  if (!sorted.length) return 0;
+  return sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))];
+}
+
+/**
+ * How long terminated trials ran before they stopped: months from start date to completion date,
+ * which for a terminated trial is the date it stopped. Withdrawn trials never started and suspended
+ * ones have not ended, so both are left out, as are missing, negative or implausible (30+ year) spans.
+ */
+export function timeToStopSlice(rows: TrialIndexRow[], minimumRecords = 200): TimeToStopSlice {
+  const spans = new Map<string, number[]>();
+  for (const row of rows) {
+    if ((row.overall_status || "").toUpperCase() !== "TERMINATED") continue;
+    const months = monthsBetween(row.start_date, row.completion_date);
+    if (!(months >= 0 && months < 360)) continue;
+    const group = atlasGroup(row);
+    const list = spans.get(group) || [];
+    list.push(months);
+    spans.set(group, list);
+  }
+  const groups = ATLAS_GROUPS.flatMap(({ key, label }) => {
+    const sorted = [...(spans.get(key) || [])].sort((a, b) => a - b);
+    if (sorted.length < minimumRecords) return [];
+    return [{
+      key,
+      label,
+      count: sorted.length,
+      median: quantile(sorted, 0.5),
+      q25: quantile(sorted, 0.25),
+      q75: quantile(sorted, 0.75),
+      withinYear: sorted.filter((months) => months < 12).length,
+    }];
+  }).sort((a, b) => a.median - b.median || a.key.localeCompare(b.key));
+  return { measured: [...spans.values()].reduce((sum, list) => sum + list.length, 0), groups };
+}
+
 export function sponsorPortfolioSignalSlice(rows: TrialIndexRow[], minimumRecords = 100) {
   const stratumCounts = new Map<string, { total: number; biological: number }>();
   const stratumKey = (row: TrialIndexRow) => `${row.phases || "Unknown"}\u0000${row.disease_area || "Other"}`;
@@ -932,6 +1030,8 @@ export async function buildInsightStats(): Promise<InsightStats> {
     latestUpdates,
     postedEndpointResults: postedEndpointResultSlice(rows, endpointResults),
     recruitmentVsBiological: recruitmentVsBiologicalSlice(rows),
+    stopReasonsByYear: stopReasonsByYearSlice(rows),
+    timeToStop: timeToStopSlice(rows),
     countryScaleSignals: countryScaleSignalSlice(rows),
     sponsorPortfolioSignals: sponsorPortfolioSignalSlice(rows),
     classificationV2: {
