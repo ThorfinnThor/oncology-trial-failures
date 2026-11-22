@@ -1,0 +1,651 @@
+{
+ "batch": "sec-evidence-2026-11",
+ "label": "SEC filings: trials with no stated cause",
+ "priority": 5,
+ "drawn_on": "2026-11-22",
+ "mode": "blind, with SEC evidence (step 0: is the filing about this trial)",
+ "design": "every trial labelled CAUSE_NOT_STATED or UNRESOLVED whose lead sponsor is an SEC registrant and whose filings hold an identity-matched stop passage (scripts/sources/sec_stop_evidence.py): 67 of 832 searched",
+ "labels_at_draw": "owner-only document qa/sec-evidence-2026-11-labels in the review page's database",
+ "cases": [
+  {
+   "case_id": "sec-evidence-2026-11-001",
+   "nct_id": "NCT03891420",
+   "why_stopped": "Sponsor decision to no longer pursue indications studied in this trial",
+   "ticker": "BCRX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/882796/000117184320008722/exh_991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-002",
+   "nct_id": "NCT04524689",
+   "why_stopped": "Sponsor decision, the decision is not related to any safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-003",
+   "nct_id": "NCT04565249",
+   "why_stopped": "Study halted and will not resume; participants are no longer being examined or receiving intervention",
+   "ticker": "PLRX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1746473/000174647321000017/a2q2021exhibit991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1746473/000156459021013589/plrx-10k_20201231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-004",
+   "nct_id": "NCT05153330",
+   "why_stopped": "Biomea Fusion, Inc., is no longer pursuing oncology indications for BMF-219. No safety concerns or efficacy observations led to this study closure.",
+   "ticker": "BMEA",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1840439/000095017024088581/bmea-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1840439/000095017024039304/bmea-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-005",
+   "nct_id": "NCT05245071",
+   "why_stopped": "Sponsor decision, the decision is not related to any safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-006",
+   "nct_id": "NCT05256810",
+   "why_stopped": "The Sponsor elected not to continue with the study",
+   "ticker": "ALNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1178670/000115752323000344/a53337940ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-007",
+   "nct_id": "NCT05996744",
+   "why_stopped": "Study was terminated by Sponsor; the decision was not due to any safety findings.",
+   "ticker": "GILD",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/882095/000088209524000025/exhibit991earningspressrel.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-008",
+   "nct_id": "NCT03823703",
+   "why_stopped": "Suspended by sponsor, pending investigation of abnormal laboratory values in patients with NASH",
+   "ticker": "CORT",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1088856/000162828021009309/exhibit991pressrelease05-0.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-009",
+   "nct_id": "NCT03881488",
+   "why_stopped": "The combination therapy arm of the study with pembrolizumab did not yield an efficacy signal, so enrollment into the combination therapy arm was terminated. The monotherapy arm of the study was fully enrolled and completed.",
+   "ticker": "CMPX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1738021/000117184324004669/exh_991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1738021/000117184324004669/exh_991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-010",
+   "nct_id": "NCT04264442",
+   "why_stopped": "Sponsor Decision",
+   "ticker": "FULC",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1680581/000119312524217822/d844807dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-011",
+   "nct_id": "NCT04382898",
+   "why_stopped": "Sponsor decision",
+   "ticker": "BNTX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1776985/000177698522000074/bnt_2022q3exhibit99x1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-012",
+   "nct_id": "NCT04417517",
+   "why_stopped": "While intended to be a Phase 1/2 clinical study, the study did not proceed to Phase 2.",
+   "ticker": "ALXO",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1810182/000095017023041287/alxo-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1810182/000095017023041287/alxo-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-013",
+   "nct_id": "NCT04659603",
+   "why_stopped": "Sponsor decision, the decision is not related to any safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-014",
+   "nct_id": "NCT04755244",
+   "why_stopped": "While intended to be a Phase 1/2 clinical study, the study never moved forward to Phase 2.",
+   "ticker": "ALXO",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1810182/000095017023041287/alxo-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1810182/000095017023041287/alxo-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-015",
+   "nct_id": "NCT05397470",
+   "why_stopped": "Sponsor Decision",
+   "ticker": "FULC",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1680581/000119312524217822/d844807dex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1680581/000119312524217822/d844807dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-016",
+   "nct_id": "NCT05418673",
+   "why_stopped": "Sponsor Decision",
+   "ticker": "BIIB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/875045/000087504524000009/biib-20231231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-017",
+   "nct_id": "NCT05631574",
+   "why_stopped": "Biomea Fusion, Inc., is no longer pursuing oncology indications for BMF-219. No safety concerns or efficacy observations led to this study closure.",
+   "ticker": "BMEA",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1840439/000095017024039304/bmea-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1840439/000095017023056335/bmea-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-018",
+   "nct_id": "NCT02695160",
+   "why_stopped": "",
+   "ticker": "SGMOQ",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1001233/000162828022003819/sgmo-20211231.htm",
+    "https://www.sec.gov/Archives/edgar/data/1001233/000162828023004666/sgmo-20221231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-019",
+   "nct_id": "NCT02992132",
+   "why_stopped": "",
+   "ticker": "ACAD",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1070494/000156459018003526/acad-10k_20171231.htm",
+    "https://www.sec.gov/Archives/edgar/data/1070494/000156459018003526/acad-10k_20171231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-020",
+   "nct_id": "NCT03033511",
+   "why_stopped": "Independent Data Monitoring Committee recommendation",
+   "ticker": "ABBV",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1551152/000155115219000030/abbv-20190930x10q.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-021",
+   "nct_id": "NCT00850577",
+   "why_stopped": "",
+   "ticker": "BMY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/14272/000001427215000233/q32015ex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/14272/000001427215000235/bmy-20150930x10q.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-022",
+   "nct_id": "NCT02606136",
+   "why_stopped": "Sponsor Decision",
+   "ticker": "KYNB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/921299/000095017023026748/fgen-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/921299/000095017023045111/fgen-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-023",
+   "nct_id": "NCT02628704",
+   "why_stopped": "",
+   "ticker": "KPTIQ",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1503802/000119312522030469/d311593dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-024",
+   "nct_id": "NCT02953509",
+   "why_stopped": "Study terminated early due to the magrolimab program discontinuation.",
+   "ticker": "GILD",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/882095/000088209523000029/exhibit991earningspressrel.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-025",
+   "nct_id": "NCT04118088",
+   "why_stopped": "Sponsor decision",
+   "ticker": "TAK",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1395064/000139506423000129/alofiseltoplineresults.htm",
+    "https://www.sec.gov/Archives/edgar/data/1395064/000139506424000086/tak-20240331.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-026",
+   "nct_id": "NCT04278144",
+   "why_stopped": "Sponsor Decision",
+   "ticker": "BOLT",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1641281/000095017024059524/bolt-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1641281/000095017024059524/bolt-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-027",
+   "nct_id": "NCT04419558",
+   "why_stopped": "Sponsor Decision",
+   "ticker": "KYNB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/921299/000095017023029736/fgen-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/921299/000095017023029736/fgen-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-028",
+   "nct_id": "NCT04701411",
+   "why_stopped": "Sponsor decision",
+   "ticker": "TAK",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1395064/000139506423000129/alofiseltoplineresults.htm",
+    "https://www.sec.gov/Archives/edgar/data/1395064/000139506424000086/tak-20240331.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-029",
+   "nct_id": "NCT04778410",
+   "why_stopped": "Sponsor decision to terminate the study.",
+   "ticker": "GILD",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/882095/000088209523000029/exhibit991earningspressrel.htm",
+    "https://www.sec.gov/Archives/edgar/data/882095/000088209523000031/gild-20230930.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-030",
+   "nct_id": "NCT05511519",
+   "why_stopped": "Sponsor decision",
+   "ticker": "ACRS",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1557746/000155837023018691/acrs-20231113xex99d1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1557746/000155837023018691/acrs-20231113xex99d1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-031",
+   "nct_id": "NCT05954143",
+   "why_stopped": "Sponsor Decision",
+   "ticker": "BOLT",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1641281/000095017024059524/bolt-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1641281/000095017024059524/bolt-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-032",
+   "nct_id": "NCT00796484",
+   "why_stopped": "Sponsor decision",
+   "ticker": "EXEL",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/939767/000093976715000013/exel2014123110-k.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-033",
+   "nct_id": "NCT02669849",
+   "why_stopped": "",
+   "ticker": "VRTX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/875320/000087532018000026/ex-991_q32018.htm",
+    "https://www.sec.gov/Archives/edgar/data/875320/000087532018000029/a2018q310-q.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-034",
+   "nct_id": "NCT02837991",
+   "why_stopped": "Development of CDX-014 discontinued",
+   "ticker": "CLDX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/744218/000117184318003787/exh_991.htm",
+    "https://www.sec.gov/Archives/edgar/data/744218/000117184318005867/exh_991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-035",
+   "nct_id": "NCT02862535",
+   "why_stopped": "Study was terminated due to sponsor's decision to not pursue further development of andecaliximab in oncology",
+   "ticker": "GILD",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/882095/000088209518000029/q318form10-q.htm",
+    "https://www.sec.gov/Archives/edgar/data/882095/000088209518000029/q318form10-q.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-036",
+   "nct_id": "NCT03013491",
+   "why_stopped": "Sponsor's decision",
+   "ticker": "CTMX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1501989/000095017023009991/ctmx-20221231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-037",
+   "nct_id": "NCT03140072",
+   "why_stopped": "Terminated based on interim review",
+   "ticker": "AZN",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/901832/000110465918015257/a18-6003_1ex15d5.htm",
+    "https://www.sec.gov/Archives/edgar/data/901832/000110465918015257/a18-6003_1ex15d1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-038",
+   "nct_id": "NCT03254927",
+   "why_stopped": "Sponsor decision based on emerging risk-benefit profile",
+   "ticker": "CLDX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/744218/000117184321002135/exh_991.htm",
+    "https://www.sec.gov/Archives/edgar/data/744218/000110465921100745/cldx-20210630x10q.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-039",
+   "nct_id": "NCT03284957",
+   "why_stopped": "Sponsor decision to prematurely stop the study, not linked to any safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140425000010/sny-20241231.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140424000009/sny-20231231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-040",
+   "nct_id": "NCT03496298",
+   "why_stopped": "Sponsor decision to cancel TRIAL, not related to safety concern",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312519309976/d836094dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-041",
+   "nct_id": "NCT03684642",
+   "why_stopped": "Sponsor decision to cancel TRIAL, not related to safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000119312519309976/d836094dex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140420000006/sanofi20-f2019.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-042",
+   "nct_id": "NCT03816839",
+   "why_stopped": "Sponsor decision to prematurely stop the study, not linked to any safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140425000010/sny-20241231.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140423000008/sny-20221231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-043",
+   "nct_id": "NCT03871348",
+   "why_stopped": "Sponsor terminated the study for non-safety reasons",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140423000021/pressreleaseq22023english.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-044",
+   "nct_id": "NCT04059484",
+   "why_stopped": "Sponsor decision to prematurely stop the study, not linked to any safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140425000010/sny-20241231.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140424000009/sny-20231231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-045",
+   "nct_id": "NCT04112199",
+   "why_stopped": "For reasons unrelated to safety or efficacy",
+   "ticker": "BIVI",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1580149/000152013824000105/bivi-20240311_8kex99z1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-046",
+   "nct_id": "NCT04167345",
+   "why_stopped": "at Sponsor's discretion",
+   "ticker": "VRTX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/875320/000087532020000041/ex-991q32020.htm",
+    "https://www.sec.gov/Archives/edgar/data/875320/000087532020000043/vrtx-20200930.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-047",
+   "nct_id": "NCT04245722",
+   "why_stopped": "The study was terminated by the Sponsor.",
+   "ticker": "FATE",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1434316/000119312523002504/d418503dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-048",
+   "nct_id": "NCT04410445",
+   "why_stopped": "(Sponsor decision)",
+   "ticker": "NKTR",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/906709/000121390022019858/ea158456ex99-1_nektarther.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-049",
+   "nct_id": "NCT04494256",
+   "why_stopped": "Sponsor's decision",
+   "ticker": "BIIB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/875045/000087504524000025/biib-20240630.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-050",
+   "nct_id": "NCT04541225",
+   "why_stopped": "Sponsor decision",
+   "ticker": "NUVB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1811063/000119312522145022/d293509dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-051",
+   "nct_id": "NCT04652518",
+   "why_stopped": "Part A of the study was completed; Part B of the study was terminated",
+   "ticker": "PTCHF",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1782999/000162828024017913/ex151puretechara2023_fin.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-052",
+   "nct_id": "NCT04702568",
+   "why_stopped": "Sponsor decision",
+   "ticker": "BCRX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/882796/000117184322006936/exh_991.htm",
+    "https://www.sec.gov/Archives/edgar/data/882796/000117184323001058/exh_991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-053",
+   "nct_id": "NCT04873869",
+   "why_stopped": "This study was prematurely terminated due to sponsor decision.",
+   "ticker": "NBIX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/914475/000091447524000054/nbix-20231231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-054",
+   "nct_id": "NCT04912856",
+   "why_stopped": "Sponsor decision; not a safety decision",
+   "ticker": "XENE",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1582313/000095017023019727/xene-ex99_1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1582313/000095017023061119/xene-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-055",
+   "nct_id": "NCT05128773",
+   "why_stopped": "Sponsor decision to prematurely stop the study, not linked to any safety concern",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140425000010/sny-20241231.htm",
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140424000009/sny-20231231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-056",
+   "nct_id": "NCT05191004",
+   "why_stopped": "Sponsor decision",
+   "ticker": "NUVB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1811063/000119312522145022/d293509dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-057",
+   "nct_id": "NCT05191017",
+   "why_stopped": "Sponsor decision",
+   "ticker": "NUVB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1811063/000119312522145022/d293509dex991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-058",
+   "nct_id": "NCT05260541",
+   "why_stopped": "No longer developing for this indication",
+   "ticker": "PRAX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1689548/000168954821000074/praxex-991q22021.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-059",
+   "nct_id": "NCT05348915",
+   "why_stopped": "Sponsor decision to terminate study based on results of parent study GBT2104-131.",
+   "ticker": "PFE",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/78003/000007800325000149/pfe-09282025xex99.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-060",
+   "nct_id": "NCT05387642",
+   "why_stopped": "Sponsor no longer pursuing indication.",
+   "ticker": "PRAX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1689548/000168954821000074/praxex-991q22021.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-061",
+   "nct_id": "NCT05741346",
+   "why_stopped": "Sponsor decision",
+   "ticker": "BCRX",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/882796/000117184323002790/exh_991.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-062",
+   "nct_id": "NCT05934097",
+   "why_stopped": "This study was withdrawn (Sponsor decision).",
+   "ticker": "FATE",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1434316/000095017023005067/fate-20221231.htm",
+    "https://www.sec.gov/Archives/edgar/data/1434316/000095017023005067/fate-20221231.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-063",
+   "nct_id": "NCT06028230",
+   "why_stopped": "Sponsor decision. Not related to safety concern.",
+   "ticker": "SNY",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1121404/000112140423000026/pressreleaseq32023english.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-064",
+   "nct_id": "NCT06035744",
+   "why_stopped": "Company decision",
+   "ticker": "CGEM",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1789972/000119312525268041/cgem-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-065",
+   "nct_id": "NCT06052852",
+   "why_stopped": "Sponsor decision",
+   "ticker": "BOLT",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1641281/000095017024059524/bolt-ex99_1.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-066",
+   "nct_id": "NCT06380907",
+   "why_stopped": "Sponsor decision",
+   "ticker": "ZLAB",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/1704292/000162828025023410/zlab-202558x8kex991.htm",
+    "https://www.sec.gov/Archives/edgar/data/1704292/000162828025023411/zlab-20250331.htm"
+   ]
+  },
+  {
+   "case_id": "sec-evidence-2026-11-067",
+   "nct_id": "NCT06630247",
+   "why_stopped": "Company Decision",
+   "ticker": "EXEL",
+   "filings": [
+    "https://www.sec.gov/Archives/edgar/data/939767/000093976725000111/exel20250630exhibit991.htm",
+    "https://www.sec.gov/Archives/edgar/data/939767/000093976725000074/exel20250331exhibit991.htm"
+   ]
+  }
+ ]
+}

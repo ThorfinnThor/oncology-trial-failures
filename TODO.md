@@ -189,6 +189,30 @@ safety reasons" → SAFETY (guidance: a lot recall is SUPPLY_MANUFACTURING) and 
 efficacy" → EFFICACY_FUTILITY (guidance: a possible result is UNKNOWN). One clinician; HV-0002 was
 discussed beforehand.
 
+## SEC filings as a source for trials with no stated cause (started 22 Nov)
+
+`scripts/sources/sec_stop_evidence.py` searches the sponsor's own SEC filings (8-K press releases,
+10-Q, 10-K, 6-K, 20-F) for trials labelled CAUSE_NOT_STATED / UNRESOLVED whose lead sponsor is an SEC
+registrant: a passage that names the drug tested, says it was stopped next to the name, and
+identifies the trial (acronym, NCT ID) or indication. It proposes, never labels. A first probe showed
+why: half the raw hits were about another trial, a programme, risk boilerplate or costs.
+**First full run (22 Nov):** 832 trials searched, **67 with a passage** (≈ 2/3 look usable on a skim:
+MERU/Rova-T, VX-210 after the DSMB, LIGHTHOUSE, andecaliximab, Pliant's ARDS trial, Sanofi's DCV exit).
+They are batch **sec-evidence-2026-11** (priority 5) in the review tool: registry text, the filing
+passage with link, step 0 "is the filing about this trial / the programme / another trial", then the
+label. Batch rows in the tool are now clickable. Network: this repo's sessions run in the cloud
+environment "oncology-trial-failures" (EDGAR and the live site allowed).
+
+**Next, after reviewing a part of the batch (Schayan's decision 22 Nov: points 1–2 first):**
+1. Per-trial decisions: accepted answers become a decision keyed by NCT ID with the filing as source
+   (today's reviewed decisions are keyed by text, and "sponsor decision" stands for 138 trials).
+2. Trial pages show "The sponsor's SEC filing of <date> says …" with the link.
+3. A curated sponsor → CIK table: subsidiaries (Novartis Pharmaceuticals 163 no-cause trials, Merck
+   Sharp & Dohme 139, GlaxoSmithKline 87, Janssen 28, Wyeth/Upjohn 42) and acquired companies with old
+   CIKs (Celgene, Allergan, Shire, Alexion, Genentech): roughly 600–700 more trials to search.
+4. Weekly: search only new no-cause trials (cache in .cache/sec).
+5. Programme stops counted apart (step 0 "the drug's programme").
+
 ## Getting found: next steps (decided 19 Nov)
 
 **Done 19 Nov:** the free sample on the site (`/samples/labels/`, rebuilt weekly) and the article
