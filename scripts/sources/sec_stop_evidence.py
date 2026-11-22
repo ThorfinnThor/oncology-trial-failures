@@ -49,6 +49,18 @@ UA = "ClinicalTrialFailures research contact@clinicaltrialfailures.com"
 FTS = "https://efts.sec.gov/LATEST/search-index"
 FORMS = "8-K,10-Q,10-K,6-K,20-F"
 NO_CAUSE = {"CAUSE_NOT_STATED", "UNRESOLVED"}
+# Registry sponsor names that are a group company or a company since acquired, with the SEC registrants
+# whose filings speak for them (the old company until its acquisition, then the buyer). Checked
+# against data.sec.gov; the automatic name match only knows today's registrants under their own name.
+SPONSOR_MAP = ROOT / "data/sec_sponsor_map.csv"
+
+
+def sponsor_ciks() -> dict[str, list[dict]]:
+    out: dict[str, list[dict]] = {}
+    if SPONSOR_MAP.exists():
+        for row in csv.DictReader(open(SPONSOR_MAP, encoding="utf-8")):
+            out.setdefault(row["lead_sponsor"], []).append({"cik": row["cik"], "registrant": row["registrant"]})
+    return out
 
 # Words that make an intervention name useless as a search term.
 GENERIC = re.compile(r"\b(placebo|saline|standard of care|best supportive care|observation|vehicle|"
@@ -248,27 +260,37 @@ def main() -> int:
     ap.add_argument("--nct", nargs="*", default=[])
     ap.add_argument("--min-score", type=int, default=4, help="drop trials whose best passage scores lower")
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--via", choices=["all", "name", "map"], default="all",
+                    help="only sponsors matched by name, only those from data/sec_sponsor_map.csv, or both")
     args = ap.parse_args()
     rows = list(csv.DictReader(open(ROOT / "data/all_stopped_trials.csv", encoding="utf-8")))
     trials = [r for r in rows if r["classification_final_outcome"] in NO_CAUSE and (not args.nct or r["nct_id"] in args.nct)]
-    issuers = {}
+    issuers: dict = {}
+    mapped = sponsor_ciks()
     cands = []
     for r in trials:
         name = r["lead_sponsor"]
         if name not in issuers:
-            issuers[name] = sec_issuer(name)
-        if issuers[name]:
+            if name in mapped:
+                issuers[name] = {"ciks": [m["cik"] for m in mapped[name]], "ticker": "", "via": "map",
+                                 "registrant": "; ".join(m["registrant"] for m in mapped[name])}
+            else:
+                hit = sec_issuer(name)
+                issuers[name] = hit and {"ciks": [hit["cik"]], "ticker": hit["ticker"], "via": "name",
+                                         "registrant": hit["sec_registrant_name"]}
+        if issuers[name] and (args.via in ("all", issuers[name]["via"])):
             cands.append((r, issuers[name]))
     if args.limit:
         cands = cands[: args.limit]
     print(f"{len(trials)} no-cause trials, {len(cands)} with an SEC-registered sponsor", file=sys.stderr)
     out = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        found = list(pool.map(lambda pair: passages_for(pair[0], pair[1]["cik"]), cands))
+        found = list(pool.map(lambda pair: passages_for(pair[0], ",".join(pair[1]["ciks"])), cands))
     for n, ((r, iss), ps) in enumerate(zip(cands, found), 1):
         if ps and ps[0]["score"] >= args.min_score:
             out.append({"nct_id": r["nct_id"], "brief_title": r["brief_title"], "lead_sponsor": r["lead_sponsor"],
-                        "ticker": iss["ticker"], "cik": iss["cik"], "why_stopped": r["why_stopped"],
+                        "ticker": iss["ticker"], "cik": ",".join(iss["ciks"]), "registrant": iss["registrant"],
+                        "why_stopped": r["why_stopped"],
                         "overall_status": r["overall_status"], "phases": r["phases"], "conditions": r["conditions"],
                         "intervention_names": r["intervention_names"], "registry_url": r["url"],
                         "label_now": {"outcome": r["classification_final_outcome"], "primary_reason": r["classification_final_category"]},

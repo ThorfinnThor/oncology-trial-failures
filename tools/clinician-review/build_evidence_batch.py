@@ -49,7 +49,7 @@ def main() -> int:
                              "window": p["window"][:900]} for p in shown],
                "suggested": shown[0]["suggested"]}
         (args.out / "cases" / f"{cid}.json").write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
-        frozen.append({"case_id": cid, "nct_id": t["nct_id"], "why_stopped": t["why_stopped"], "ticker": t["ticker"],
+        frozen.append({"case_id": cid, "nct_id": t["nct_id"], "why_stopped": t["why_stopped"], "ticker": t["ticker"], "registrant": t.get("registrant", ""),
                        "filings": [p["url"] for p in shown]})
         qa[cid] = {"label_now": t["label_now"], "suggested": shown[0]["suggested"], "score": shown[0]["score"],
                    "programme_level": shown[0]["programme_level"], "identity_strong": shown[0]["identity_strong"],
