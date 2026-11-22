@@ -207,9 +207,11 @@ environment "oncology-trial-failures" (EDGAR and the live site allowed).
 1. Per-trial decisions: accepted answers become a decision keyed by NCT ID with the filing as source
    (today's reviewed decisions are keyed by text, and "sponsor decision" stands for 138 trials).
 2. Trial pages show "The sponsor's SEC filing of <date> says …" with the link.
-3. A curated sponsor → CIK table: subsidiaries (Novartis Pharmaceuticals 163 no-cause trials, Merck
-   Sharp & Dohme 139, GlaxoSmithKline 87, Janssen 28, Wyeth/Upjohn 42) and acquired companies with old
-   CIKs (Celgene, Allergan, Shire, Alexion, Genentech): roughly 600–700 more trials to search.
+3. ~~A curated sponsor → CIK table~~ **done 22 Nov:** `data/sec_sponsor_map.csv`, 72 sponsor names →
+   86 registrants checked on data.sec.gov (subsidiaries → parent; acquired companies → own CIK for their
+   filing years + the buyer; renamed ones). 710 more no-cause trials searched, **34 with a passage**
+   (lower yield: big groups report programmes, not trials), batch **sec-evidence-2026-11b** (priority 6).
+   Not reachable through the SEC: Roche, Boehringer, Bayer, UCB, Eisai, Otsuka, Sun, Actelion.
 4. Weekly: search only new no-cause trials (cache in .cache/sec).
 5. Programme stops counted apart (step 0 "the drug's programme").
 
