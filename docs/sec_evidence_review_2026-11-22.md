@@ -38,4 +38,4 @@ as the reviewed decision "withdrawn based on new efficacy data from another stud
   (BIV201); reimbursement news (DEXYCU ×2); adverse-event tables and cost lines (ATI-450, CDX-3379, miricorilant,
   obeldesivir, selinexor, PRAX-114 ×2, LYT-100, AZD9898, NBI-921352).
 
-Nothing here changes a label yet. Applying the decisions per trial is the next step (TODO.md).
+**Applied 22 Nov** per trial (from the weekly run of 23 Nov): `docs/classification_change_2026-11-22_sec_filings.md`.
