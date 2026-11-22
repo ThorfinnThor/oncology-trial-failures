@@ -130,6 +130,8 @@ export type InsightStats = {
     }>;
   };
   recruitmentVsBiological: RecruitmentVsBiologicalSlice;
+  stopReasonsByYear: StopReasonsByYearSlice;
+  timeToStop: TimeToStopSlice;
   countryScaleSignals: {
     bands: Array<CountrySignalSlice & { key: string }>;
     phaseComparisons: Array<{
@@ -341,6 +343,21 @@ export type RecruitmentVsBiologicalArea = {
 export type RecruitmentVsBiologicalSlice = {
   overall: Omit<RecruitmentVsBiologicalArea, "label">;
   areas: RecruitmentVsBiologicalArea[];
+};
+
+/** Stop reasons (lib/atlas groups) per year the stop was recorded, from the registry completion date. */
+export type StopReasonsByYearSlice = {
+  years: Array<{ year: number; total: number; counts: Record<string, number> }>;
+  covidMentions: number;
+  covidByYear: Array<{ year: number; count: number }>;
+  covidOperational: number;
+  covidRecruitment: number;
+};
+
+/** Months from start to stop for terminated trials, per stop-reason group. */
+export type TimeToStopSlice = {
+  measured: number;
+  groups: Array<{ key: string; label: string; count: number; median: number; q25: number; q75: number; withinYear: number }>;
 };
 
 export type InsightSignalSlice = {
@@ -2948,6 +2965,110 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
         href: "/insights/safety-vs-efficacy-clinical-trial-signals-by-disease-area",
         label: "Safety vs efficacy by disease area",
         text: "Within the efficacy and safety stops, which areas lean toward each.",
+      },
+      {
+        href: "/methods",
+        label: "How stop reasons are classified",
+        text: "The rules, their validation and their limits.",
+      },
+    ],
+    faqs: [],
+  },
+  {
+    slug: "business-decisions-overtake-recruitment-as-clinical-trial-stop-reason",
+    title: "Business decisions now stop more clinical trials than recruitment problems",
+    metaDescription:
+      "How the stated reasons for stopping clinical trials have changed year by year: business and funding stops have grown while recruitment stops have fallen.",
+    eyebrow: "Stop reasons over time",
+    dek:
+      "For years, too few participants was the most common stated reason a clinical trial stopped. In recent years, business and funding decisions have taken that place.",
+    datePublished: "2026-11-22",
+    readingTime: "6 min read",
+    keyword: "why clinical trials are stopped business decision trend",
+    factsHeading: "Key numbers",
+    facts: [],
+    sections: [
+      { heading: "The trend", body: [] },
+      { heading: "What counts as a business stop", body: [
+        "A business stop is one where the sponsor says it ended the trial for strategic, portfolio or funding reasons: a changed development plan, a program deprioritised, a company acquired, or money that ran out. It says nothing about whether the treatment worked.",
+        "Recruitment stops are trials that could not enrol enough participants. Operational stops cover everything else that went wrong in running the trial, from staffing to supply to outside disruption.",
+      ] },
+      { heading: "The pandemic years", body: [] },
+      { heading: "Why this matters", body: [
+        "A business stop leaves the scientific question open, like a recruitment stop does. But it shifts where the risk sits: from whether a trial can find patients to whether its sponsor still wants the answer. For patients enrolled in such a trial, and for anyone reading the record later, the stop reason is often the only explanation they get.",
+        "It also matters for anyone counting failures. A rising number of stopped trials does not mean more drugs are failing. Most of the growth in this dataset is in stops that are not about the treatment at all.",
+      ] },
+      { heading: "Limits of the comparison", body: [
+        "The year is the one the registry gives as the trial's end. For terminated trials that is when they stopped; for withdrawn trials it is often a planned date that never happened. The dataset includes records updated on ClinicalTrials.gov since 2015, so the comparison starts there.",
+        "The most recent year is incomplete, and recent stops are more often recorded without a clear reason at first. The reason is the one the sponsor wrote; a business reason may sometimes cover weak interim data that the record does not mention.",
+      ] },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/atlas#business",
+        label: "Every business and funding stop on the atlas",
+        text: "All stopped trials as one map, filtered to business and funding decisions.",
+      },
+      {
+        href: "/insights/business-reasons-clinical-trial-termination",
+        label: "Business reasons for trial termination",
+        text: "What sponsors write when they stop a trial for strategic reasons.",
+      },
+      {
+        href: "/insights/recruitment-vs-efficacy-clinical-trial-stops-by-disease-area",
+        label: "Recruitment vs efficacy by disease area",
+        text: "How the two most debated stop reasons compare across therapeutic areas.",
+      },
+      {
+        href: "/methods",
+        label: "How stop reasons are classified",
+        text: "The rules, their validation and their limits.",
+      },
+    ],
+    faqs: [],
+  },
+  {
+    slug: "how-long-clinical-trials-run-before-they-stop",
+    title: "Safety stops come first: how long clinical trials run before they stop",
+    metaDescription:
+      "How many months terminated clinical trials ran before they stopped, by stop reason: safety, efficacy, recruitment, business and operational stops compared.",
+    eyebrow: "Time to stop",
+    dek:
+      "Trials stopped for safety concerns end sooner than trials stopped for any other reason. Recruitment stops tend to drag on the longest.",
+    datePublished: "2026-11-22",
+    readingTime: "5 min read",
+    keyword: "how long do clinical trials run before termination",
+    factsHeading: "Key numbers",
+    facts: [],
+    sections: [
+      { heading: "How the time is measured", body: [
+        "For each terminated trial, this counts the months from its start date to its completion date, which for a terminated trial is the date it stopped. Withdrawn trials never started and suspended trials have not ended, so neither is included. Records with missing dates or impossible spans are left out.",
+      ] },
+      { heading: "Safety stops come early", body: [] },
+      { heading: "Recruitment stops drag on", body: [] },
+      { heading: "Efficacy stops follow the data", body: [] },
+      { heading: "What this does and does not tell you", body: [
+        "The time to stop describes when a trial ended, not when the problem began. A recruitment problem may be visible in the first months and still take years to end a trial; a safety signal may only appear once enough patients have been treated.",
+        "Phase and disease area change the picture too: a large phase 3 outcome trial runs longer than a small phase 1 study whatever the reason it stops. The medians here are a first orientation, not a benchmark for a particular trial.",
+      ] },
+    ],
+    tables: [],
+    links: [
+      {
+        href: "/atlas#safety",
+        label: "Every safety stop on the atlas",
+        text: "All trials stopped for safety concerns, with the registry's own reason for each.",
+      },
+      {
+        href: "/insights/efficacy-vs-safety-clinical-trial-failure-signals",
+        label: "Efficacy vs safety signals",
+        text: "How the two biological stop reasons differ by phase, sponsor and area.",
+      },
+      {
+        href: "/insights/enrollment-failure-clinical-trials",
+        label: "Enrollment failure is not drug failure",
+        text: "What recruitment stops can and cannot tell you about a treatment.",
       },
       {
         href: "/methods",
@@ -6401,7 +6522,211 @@ function hydrateRecruitmentVsBiologicalArticle(article: InsightArticle, stats: I
   };
 }
 
+function hydrateStopReasonsByYearArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const { years, covidMentions, covidByYear, covidOperational, covidRecruitment } = stats.stopReasonsByYear;
+  if (years.length < 4) return article;
+  const share = (item: (typeof years)[number], key: string) => pctFromCounts(item.counts[key] || 0, item.total);
+  const pool = (items: typeof years) => {
+    const counts: Record<string, number> = {};
+    let total = 0;
+    for (const item of items) {
+      total += item.total;
+      for (const [key, value] of Object.entries(item.counts)) counts[key] = (counts[key] || 0) + value;
+    }
+    return { total, counts, label: `${items[0].year}–${items[items.length - 1].year}` };
+  };
+  const early = pool(years.slice(0, 3));
+  const late = pool(years.slice(-3));
+  const pooled = (p: typeof early, key: string) => pctFromCounts(p.counts[key] || 0, p.total);
+  const ahead = (item: (typeof years)[number]) => (item.counts.business || 0) > (item.counts.recruitment || 0);
+  // the first year from which business stops lead in every later year
+  let crossover: number | null = null;
+  for (let i = years.length - 1; i >= 0 && ahead(years[i]); i -= 1) crossover = years[i].year;
+  const last = years[years.length - 1];
+  const peakCovid = [...covidByYear].sort((a, b) => b.count - a.count)[0];
+  const y2019 = years.find((item) => item.year === 2019);
+  const y2020 = years.find((item) => item.year === 2020);
+
+  return {
+    ...article,
+    title: crossover ? article.title : "How the reasons clinical trials stop have changed since 2015",
+    dek: crossover
+      ? `For years, too few participants was the most common stated reason a clinical trial stopped. Since ${crossover}, business and funding decisions have stopped more trials than recruitment problems.`
+      : `Business and funding decisions account for a growing share of stopped clinical trials, while recruitment stops have become less common.`,
+    metaDescription: `Business and funding stops rose from ${pooled(early, "business")} of stopped clinical trials in ${early.label} to ${pooled(late, "business")} in ${late.label}; recruitment stops fell from ${pooled(early, "recruitment")} to ${pooled(late, "recruitment")}.`,
+    facts: [
+      `Business and funding decisions: ${pooled(early, "business")} of stops in ${early.label}, ${pooled(late, "business")} in ${late.label}.`,
+      `Too few participants: ${pooled(early, "recruitment")} of stops in ${early.label}, ${pooled(late, "recruitment")} in ${late.label}.`,
+      crossover
+        ? `Business stops have outnumbered recruitment stops every year since ${crossover}.`
+        : "Recruitment stops are still the more common of the two in the latest year.",
+      `Efficacy and safety together stayed between ${minShare(years, ["efficacy", "safety"])} and ${maxShare(years, ["efficacy", "safety"])} of stops in every year.`,
+      covidMentions ? `${n(covidMentions)} stop reasons mention COVID-19 or the pandemic.` : "No stop reasons mention COVID-19.",
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "The trend") {
+        return {
+          ...section,
+          body: [
+            `In ${early.label}, ${pooled(early, "recruitment")} of trials that stopped gave too few participants as the reason and ${pooled(early, "business")} gave a business or funding decision. In ${late.label}, it was ${pooled(late, "recruitment")} and ${pooled(late, "business")}.${crossover ? ` Business stops have been the more common of the two every year since ${crossover}.` : ""}`,
+            `The biological reasons barely moved. Efficacy and safety together stayed between ${minShare(years, ["efficacy", "safety"])} and ${maxShare(years, ["efficacy", "safety"])} of stops in every year, so the shift is between non-scientific reasons, not away from or towards failed treatments.`,
+          ],
+        };
+      }
+      if (section.heading === "The pandemic years") {
+        return {
+          ...section,
+          body: [
+            y2019 && y2020
+              ? `Operational stops jumped from ${share(y2019, "operational")} of stops in 2019 to ${share(y2020, "operational")} in 2020, when sites closed and travel stopped.`
+              : "Operational stops rose when sites closed and travel stopped in 2020.",
+            covidMentions
+              ? `${n(covidMentions)} stop reasons mention COVID-19 or the pandemic${peakCovid ? `, peaking among trials that ended in ${peakCovid.year} (${n(peakCovid.count)})` : ""}. ${n(covidOperational)} of them are classified as operational and ${n(covidRecruitment)} as recruitment problems. The business trend started before the pandemic and continued after it.`
+              : "The business trend started before the pandemic and continued after it.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Share of stops by year",
+        columns: ["Year (stops)", "Too few participants · business or funding · efficacy or safety"],
+        rows: years.map((item): [string, string] => [
+          `${item.year}${item === last ? ", so far" : ""} (${n(item.total)})`,
+          `${share(item, "recruitment")} · ${share(item, "business")} · ${pctFromCounts((item.counts.efficacy || 0) + (item.counts.safety || 0), item.total)}`,
+        ]),
+      },
+    ],
+    faqs: [
+      {
+        question: "What is the most common reason clinical trials are stopped?",
+        answer: crossover
+          ? `In recent years, business and funding decisions: ${pooled(late, "business")} of stops in ${late.label}, ahead of too few participants at ${pooled(late, "recruitment")}.`
+          : `Too few participants, at ${pooled(late, "recruitment")} of stops in ${late.label}, followed by business and funding decisions at ${pooled(late, "business")}.`,
+      },
+      {
+        question: "Are more clinical trials failing because the drugs don't work?",
+        answer: `Not in this data. Efficacy and safety together stayed between ${minShare(years, ["efficacy", "safety"])} and ${maxShare(years, ["efficacy", "safety"])} of stops in every year since ${years[0].year}.`,
+      },
+      {
+        question: "How did COVID-19 affect clinical trials?",
+        answer: covidMentions
+          ? `${n(covidMentions)} stop reasons in this dataset mention COVID-19 or the pandemic, most of them classified as operational or recruitment problems.`
+          : "No stop reasons in this dataset mention COVID-19.",
+      },
+    ],
+  };
+}
+
+function yearShares(years: InsightStats["stopReasonsByYear"]["years"], keys: string[]): number[] {
+  return years.map((item) => keys.reduce((sum, key) => sum + (item.counts[key] || 0), 0) / item.total);
+}
+
+function minShare(years: InsightStats["stopReasonsByYear"]["years"], keys: string[]): string {
+  return pctFromRatio(Math.min(...yearShares(years, keys)));
+}
+
+function maxShare(years: InsightStats["stopReasonsByYear"]["years"], keys: string[]): string {
+  return pctFromRatio(Math.max(...yearShares(years, keys)));
+}
+
+function hydrateTimeToStopArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  const { measured, groups } = stats.timeToStop;
+  if (groups.length < 3) return article;
+  const byKey = new Map(groups.map((group) => [group.key, group]));
+  const safety = byKey.get("safety");
+  const efficacy = byKey.get("efficacy");
+  const recruitment = byKey.get("recruitment");
+  // Extremes among the reasons that say why a trial stopped; "planned end" and "no clear reason" are context.
+  const reasons = groups.filter((group) => ["safety", "efficacy", "recruitment", "business", "operational"].includes(group.key));
+  if (reasons.length < 2) return article;
+  const first = reasons[0];
+  const lastGroup = reasons[reasons.length - 1];
+  const safetyFirst = first.key === "safety";
+  const yearShare = (group: (typeof groups)[number]) => pctFromCounts(group.withinYear, group.count);
+  const months = (value: number) => `${value} month${value === 1 ? "" : "s"}`;
+  const describe = (group: (typeof groups)[number]) =>
+    `a median of ${months(group.median)} (half between ${group.q25} and ${group.q75} months), and ${yearShare(group)} stopped within the first year`;
+
+  return {
+    ...article,
+    title: safetyFirst ? article.title : "How long clinical trials run before they stop, by reason",
+    dek: safetyFirst
+      ? `Trials stopped for safety concerns end sooner than trials stopped for any other reason. Trials stopped for ${lastGroup.label.toLowerCase()} run the longest before they end.`
+      : `How long a terminated trial runs before it stops depends on why it stopped. Trials stopped for ${first.label.toLowerCase()} end soonest; those stopped for ${lastGroup.label.toLowerCase()} run the longest.`,
+    metaDescription: `Terminated clinical trials ran a median of ${months(first.median)} before stopping for ${first.label.toLowerCase()} and ${months(lastGroup.median)} for ${lastGroup.label.toLowerCase()}, from ${n(measured)} trials with start and stop dates.`,
+    facts: [
+      `Measured on ${n(measured)} terminated trials with a start and a stop date.`,
+      ...(safety ? [`Safety stops: ${describe(safety)}.`] : []),
+      ...(efficacy ? [`Efficacy stops: ${describe(efficacy)}.`] : []),
+      ...(recruitment ? [`Recruitment stops: ${describe(recruitment)}.`] : []),
+    ],
+    sections: article.sections.map((section) => {
+      if (section.heading === "Safety stops come early" && safety) {
+        return {
+          heading: safetyFirst ? section.heading : "Safety stops",
+          body: [
+            `Trials stopped for safety concerns ran ${describe(safety)}.${safetyFirst ? " That is sooner than for any other stated reason." : ""}`,
+            "A safety signal usually forces a decision as soon as it appears: dosing is paused, a data monitoring committee meets, and the trial either changes or ends. There is little reason to keep a trial running once its risks look too high.",
+          ],
+        };
+      }
+      if (section.heading === "Recruitment stops drag on" && recruitment) {
+        const longest = lastGroup.key === "recruitment";
+        return {
+          heading: longest ? section.heading : "Recruitment stops",
+          body: [
+            `Trials stopped for too few participants ran ${describe(recruitment)}.`,
+            "Slow enrolment rarely ends a trial at once. Sponsors often add sites, extend timelines or amend eligibility first, and only stop when the trial can no longer finish in a useful time. A trial that was never going to recruit can therefore use years of patient and site effort before it ends.",
+          ],
+        };
+      }
+      if (section.heading === "Efficacy stops follow the data" && efficacy) {
+        return {
+          ...section,
+          body: [
+            `Trials stopped for too little benefit ran ${describe(efficacy)}.`,
+            "Efficacy stops are tied to the data: they often come after a planned interim analysis, once enough patients have been followed long enough to see whether the treatment is working. That puts them later than safety stops, which do not wait for a planned look.",
+          ],
+        };
+      }
+      return section;
+    }),
+    tables: [
+      {
+        heading: "Months from start to stop, terminated trials",
+        columns: ["Stop reason (trials)", "Median months (middle half) · stopped in year 1"],
+        rows: groups.map((group): [string, string] => [
+          `${group.label} (${n(group.count)})`,
+          `${group.median} (${group.q25}–${group.q75}) · ${yearShare(group)}`,
+        ]),
+      },
+    ],
+    faqs: [
+      {
+        question: "How long do clinical trials run before they are terminated?",
+        answer: `It depends on the reason. In this dataset, the median is ${months(first.median)} for trials stopped for ${first.label.toLowerCase()} and ${months(lastGroup.median)} for those stopped for ${lastGroup.label.toLowerCase()}.`,
+      },
+      ...(safety ? [{
+        question: "When are clinical trials stopped for safety?",
+        answer: `Trials stopped for safety concerns ran a median of ${months(safety.median)}, and ${yearShare(safety)} stopped within their first year.`,
+      }] : []),
+      {
+        question: "Why do recruitment problems take so long to stop a trial?",
+        answer: "Sponsors often try to rescue enrolment first, by adding sites, extending timelines or changing eligibility, and stop only when the trial can no longer finish in a useful time.",
+      },
+    ],
+  };
+}
+
 export function hydrateInsightArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
+  if (article.slug === "business-decisions-overtake-recruitment-as-clinical-trial-stop-reason") {
+    return hydrateStopReasonsByYearArticle(article, stats);
+  }
+  if (article.slug === "how-long-clinical-trials-run-before-they-stop") {
+    return hydrateTimeToStopArticle(article, stats);
+  }
   if (article.slug === "recruitment-vs-efficacy-clinical-trial-stops-by-disease-area") {
     return hydrateRecruitmentVsBiologicalArticle(article, stats);
   }
