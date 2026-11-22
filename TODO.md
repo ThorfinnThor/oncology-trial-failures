@@ -3,7 +3,7 @@
 Ordered by what stands between the site and its first paying customer. Everything above the line
 in each section is blocked on nothing but time.
 
-*Last reviewed 19 Nov 2026.*
+*Last reviewed 22 Nov 2026.*
 
 ---
 
@@ -26,6 +26,10 @@ in each section is blocked on nothing but time.
   three year period" is recruitment (2.7.6, 1 trial). **In the data since the manual run of 18 Nov**
   (run 44269445298, all steps green, no newsletter: the 12-day spacing held): 24,095 trials, all on
   classifier 2.7.6.
+- **SEC filings as a source** (22 Nov): 1,542 no-cause trials with an SEC-filing sponsor searched (832 by
+  name, 710 via the new sponsor → CIK table), **101 with a passage** in the review tool (batches
+  sec-evidence-2026-11 and -11b). Claude reviews them; per-trial decisions and the trial-page display
+  follow. See the SEC section below.
 - **`/validation` has a clinician section** (18 Nov) with the caveats. The Hugging Face card is built
   by `python scripts/samples/build_label_sample.py --out <dir> --huggingface`. **Public since 19 Nov:** https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-failures-sample
   (org `clinical-trial-failures`, owner account `ClinicalTrialFailures`; the write token is a network
@@ -203,7 +207,13 @@ passage with link, step 0 "is the filing about this trial / the programme / anot
 label. Batch rows in the tool are now clickable. Network: this repo's sessions run in the cloud
 environment "oncology-trial-failures" (EDGAR and the live site allowed).
 
-**Next, after reviewing a part of the batch (Schayan's decision 22 Nov: points 1–2 first):**
+**Review of the 101 SEC cases (decided 22 Nov):** Claude reviews all of them as an AI-assisted review,
+labelled as such (like the earlier reviewed decisions, not a clinician verdict): for each, whether the
+filing is about this trial, its programme or another trial, and the cause it states. Only clear cases
+become decisions; anything unsure stays "not established" (CLAUDE.md rule 5). Schayan spot-checks about
+ten. The two batches stay in the review tool for clinicians later.
+
+**Next (Schayan's decision 22 Nov: points 1–2 first, then the mapping table):**
 1. Per-trial decisions: accepted answers become a decision keyed by NCT ID with the filing as source
    (today's reviewed decisions are keyed by text, and "sponsor decision" stands for 138 trials).
 2. Trial pages show "The sponsor's SEC filing of <date> says …" with the link.
