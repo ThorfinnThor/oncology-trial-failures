@@ -207,7 +207,12 @@ passage with link, step 0 "is the filing about this trial / the programme / anot
 label. Batch rows in the tool are now clickable. Network: this repo's sessions run in the cloud
 environment "oncology-trial-failures" (EDGAR and the live site allowed).
 
-**Review of the 101 SEC cases (decided 22 Nov):** Claude reviews all of them as an AI-assisted review,
+**Reviewed 22 Nov (Claude, AI-assisted):** 50 of 101 accepted → `data/sec_evidence_decisions.csv`
+(30 efficacy/futility, 4 benefit–risk, 12 business, 2 recruitment, 2 programme action without cause; 20 about
+this trial, 30 about the drug's programme); 51 not accepted (another trial, result without direction, no
+reason). Details: `docs/sec_evidence_review_2026-11-22.md`. **Not yet applied to the labels.**
+
+**How the review was set up:** Claude reviews all of them as an AI-assisted review,
 labelled as such (like the earlier reviewed decisions, not a clinician verdict): for each, whether the
 filing is about this trial, its programme or another trial, and the cause it states. Only clear cases
 become decisions; anything unsure stays "not established" (CLAUDE.md rule 5). Schayan spot-checks about
