@@ -1,0 +1,402 @@
+{
+ "NCT04524689": {
+  "form": "6-K",
+  "filed": "2023-12-27",
+  "url": "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm",
+  "quote": "CARMEN-LC03 trial did not meet dual primary endpoint of improving progression-free survival; tusamitamab ravtansine clinical development program will be discontinued",
+  "about": "PROGRAMME",
+  "note": "Programme ended after the Phase 3 CARMEN-LC03 trial missed its primary endpoint."
+ },
+ "NCT04565249": {
+  "form": "8-K",
+  "filed": "2021-08-09",
+  "url": "https://www.sec.gov/Archives/edgar/data/1746473/000174647321000017/a2q2021exhibit991.htm",
+  "quote": "Given the declining number of addressable patients, the Company has discontinued enrollment in the PLN-74809 Phase 2a COVID-19-related ARDS trial allowing for resources to be directed toward our lead indications.",
+  "about": "THIS_TRIAL",
+  "note": "Enrolment stopped for lack of addressable patients; resources moved to lead indications."
+ },
+ "NCT05245071": {
+  "form": "6-K",
+  "filed": "2023-12-27",
+  "url": "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm",
+  "quote": "CARMEN-LC03 trial did not meet dual primary endpoint of improving progression-free survival; tusamitamab ravtansine clinical development program will be discontinued",
+  "about": "PROGRAMME",
+  "note": "Programme ended after CARMEN-LC03 missed its primary endpoint."
+ },
+ "NCT05256810": {
+  "form": "8-K",
+  "filed": "2023-02-23",
+  "url": "https://www.sec.gov/Archives/edgar/data/1178670/000115752323000344/a53337940ex99_1.htm",
+  "quote": "Announced pipeline prioritization decisions at 2022 R&D Day, including discontinuation of ALN-XDH in gout and lumasiran in recurrent renal stones, and pausing development of cemdisiran in IgA nephropathy.",
+  "about": "PROGRAMME",
+  "note": "Pipeline prioritisation: ALN-XDH in gout discontinued."
+ },
+ "NCT03881488": {
+  "form": "8-K",
+  "filed": "2024-08-12",
+  "url": "https://www.sec.gov/Archives/edgar/data/1738021/000117184324004669/exh_991.htm",
+  "quote": "Observed a suppression of proinflammatory cytokines in the Phase 1b study of CTX-471 in combination with KEYTRUDA ® (pembrolizumab) which was not observed with CTX-471 as a monotherapy; therefore, the combination study of CTX-471 and KEYTRUDA will be discontinued.",
+  "about": "THIS_TRIAL",
+  "note": "Combination arm: no efficacy signal (registry) and unexpected cytokine suppression (filing)."
+ },
+ "NCT04264442": {
+  "form": "8-K",
+  "filed": "2024-09-12",
+  "url": "https://www.sec.gov/Archives/edgar/data/1680581/000119312524217822/d844807dex991.htm",
+  "quote": "Losmapimod failed to show an improvement in relative surface area (RSA), a measure of reachable workspace (RWS), versus placebo at week 48 — Fulcrum to suspend future losmapimod development",
+  "about": "PROGRAMME",
+  "note": "Programme suspended after the Phase 3 REACH trial failed."
+ },
+ "NCT04417517": {
+  "form": "8-K",
+  "filed": "2023-08-10",
+  "url": "https://www.sec.gov/Archives/edgar/data/1810182/000095017023041287/alxo-ex99_1.htm",
+  "quote": "While well tolerated, the Company is terminating the ASPEN-02 program which evaluated evorpacept in combination with azacitidine for myelodysplastic syndromes (“MDS”), as the evorpacept combination did not substantially improve upon the historical activity of azacitidine alone.",
+  "about": "THIS_TRIAL",
+  "note": "ASPEN-02 terminated: no meaningful improvement over azacitidine; strategy shift."
+ },
+ "NCT04659603": {
+  "form": "6-K",
+  "filed": "2023-12-27",
+  "url": "https://www.sec.gov/Archives/edgar/data/1121404/000119312523303711/d467990dex991.htm",
+  "quote": "CARMEN-LC03 trial did not meet dual primary endpoint of improving progression-free survival; tusamitamab ravtansine clinical development program will be discontinued",
+  "about": "PROGRAMME",
+  "note": "Programme ended after CARMEN-LC03 missed its primary endpoint."
+ },
+ "NCT04755244": {
+  "form": "8-K",
+  "filed": "2023-08-10",
+  "url": "https://www.sec.gov/Archives/edgar/data/1810182/000095017023041287/alxo-ex99_1.htm",
+  "quote": "Moreover, based on the initial results of ASPEN-02 and the close connection between the mechanism of action with azacitidine in MDS and acute myeloid leukemia (“AML”), the Company will also terminate the ASPEN-05 program in AML and will not initiate a Phase 1b dose optimization clinical evaluation of evorpacept in combination with azacitidine and venetoclax.",
+  "about": "THIS_TRIAL",
+  "note": "ASPEN-05 terminated based on the ASPEN-02 results."
+ },
+ "NCT05397470": {
+  "form": "8-K",
+  "filed": "2024-09-12",
+  "url": "https://www.sec.gov/Archives/edgar/data/1680581/000119312524217822/d844807dex991.htm",
+  "quote": "Losmapimod failed to show an improvement in relative surface area (RSA), a measure of reachable workspace (RWS), versus placebo at week 48 — Fulcrum to suspend future losmapimod development",
+  "about": "THIS_TRIAL",
+  "note": "REACH topline: no improvement over placebo; programme suspended."
+ },
+ "NCT02695160": {
+  "form": "10-K",
+  "filed": "2022-02-24",
+  "url": "https://www.sec.gov/Archives/edgar/data/1001233/000162828022003819/sgmo-20211231.htm",
+  "quote": "We have stopped development of SB-318 and SB-FIX, genome editing product candidates for the treatment of MPS I and hemophilia B, respectively.",
+  "about": "PROGRAMME",
+  "note": "Development of SB-FIX stopped; no reason given."
+ },
+ "NCT02992132": {
+  "form": "10-K",
+  "filed": "2018-02-27",
+  "url": "https://www.sec.gov/Archives/edgar/data/1070494/000156459018003526/acad-10k_20171231.htm",
+  "quote": "As a result of potential overlap of clinical sites and study participants between the HARMONY study and our Phase 2 study evaluating pimavanserin for the treatment of Alzheimer's disease agitation and aggression, which we refer to as SERENE, we decided to discontinue enrollment of new patients in that study.",
+  "about": "THIS_TRIAL",
+  "note": "SERENE enrolment stopped because of overlapping sites and participants with the HARMONY study."
+ },
+ "NCT03033511": {
+  "form": "10-Q",
+  "filed": "2019-11-06",
+  "url": "https://www.sec.gov/Archives/edgar/data/1551152/000155115219000030/abbv-20190930x10q.htm",
+  "quote": "In August 2019, AbbVie announced the decision to terminate the MERU trial, a Phase 3 study evaluating rovalpituzumab tesirine (Rova-T) as a first-line maintenance therapy for advanced small-cell lung cancer (SCLC). An Independent Data Monitoring Committee recommended terminating the study after results demonstrated no survival benefit at a pre-planned interim analysis for patients receiving Rova-T as compared with placebo.",
+  "about": "THIS_TRIAL",
+  "note": "IDMC: no survival benefit at the pre-planned interim analysis."
+ },
+ "NCT02606136": {
+  "form": "8-K",
+  "filed": "2023-06-07",
+  "url": "https://www.sec.gov/Archives/edgar/data/921299/000095017023026748/fgen-ex99_1.htm",
+  "quote": "FibroGen Announces Topline Results from LELANTOS-1 Phase 3 Clinical Study of Pamrevlumab in Non-Ambulatory Patients with Duchenne Muscular Dystrophy – Study did not meet the primary endpoint",
+  "about": "PROGRAMME",
+  "note": "Pamrevlumab DMD programme: LELANTOS-1 and -2 missed their primary endpoints."
+ },
+ "NCT04118088": {
+  "form": "6-K",
+  "filed": "2023-10-18",
+  "url": "https://www.sec.gov/Archives/edgar/data/1395064/000139506423000129/alofiseltoplineresults.htm",
+  "quote": "The Phase 3 ADMIRE-CD II study, assessing the efficacy and safety of Alofisel® (darvadstrocel) for the treatment of complex Crohn's Perianal Fistulas (CPF), did not meet its primary endpoint of combined remission at 24 weeks",
+  "about": "PROGRAMME",
+  "note": "Darvadstrocel: Phase 3 ADMIRE-CD II missed its primary endpoint."
+ },
+ "NCT04278144": {
+  "form": "8-K",
+  "filed": "2024-05-14",
+  "url": "https://www.sec.gov/Archives/edgar/data/1641281/000095017024059524/bolt-ex99_1.htm",
+  "quote": "At Bolt, we set a high bar for advancing our programs, and while BDC-1001 provided clinical validation for the ISAC mechanism, it did not meet our high bar for advancement. With limited resources, we want to focus those resources on the best product candidates. […] we have decided to discontinue all BDC-1001 development and focus resources on BDC-3042 and BDC-4182, our next-gen ISAC targeting the clinically validated cancer antigen Claudin 18.2",
+  "about": "THIS_TRIAL",
+  "note": "All BDC-1001 development stopped: below the bar for advancement, resources to next-gen ISACs."
+ },
+ "NCT04419558": {
+  "form": "8-K",
+  "filed": "2023-06-26",
+  "url": "https://www.sec.gov/Archives/edgar/data/921299/000095017023029736/fgen-ex99_1.htm",
+  "quote": "ZEPHYRUS-1 Study of Pamrevlumab for the Treatment of Idiopathic Pulmonary Fibrosis  Study did not meet the primary endpoint  Pamrevlumab was generally safe and well tolerated  ZEPHYRUS-2 Phase 3 study will be discontinued",
+  "about": "THIS_TRIAL",
+  "note": "ZEPHYRUS-2 discontinued after ZEPHYRUS-1 missed its primary endpoint."
+ },
+ "NCT04701411": {
+  "form": "6-K",
+  "filed": "2023-10-18",
+  "url": "https://www.sec.gov/Archives/edgar/data/1395064/000139506423000129/alofiseltoplineresults.htm",
+  "quote": "The Phase 3 ADMIRE-CD II study, assessing the efficacy and safety of Alofisel® (darvadstrocel) for the treatment of complex Crohn's Perianal Fistulas (CPF), did not meet its primary endpoint of combined remission at 24 weeks",
+  "about": "PROGRAMME",
+  "note": "Darvadstrocel: Phase 3 ADMIRE-CD II missed its primary endpoint."
+ },
+ "NCT05954143": {
+  "form": "8-K",
+  "filed": "2024-05-14",
+  "url": "https://www.sec.gov/Archives/edgar/data/1641281/000095017024059524/bolt-ex99_1.htm",
+  "quote": "At Bolt, we set a high bar for advancing our programs, and while BDC-1001 provided clinical validation for the ISAC mechanism, it did not meet our high bar for advancement. With limited resources, we want to focus those resources on the best product candidates. […] we have decided to discontinue all BDC-1001 development and focus resources on BDC-3042 and BDC-4182, our next-gen ISAC targeting the clinically validated cancer antigen Claudin 18.2",
+  "about": "THIS_TRIAL",
+  "note": "All BDC-1001 development stopped; resources to next-gen ISACs."
+ },
+ "NCT00796484": {
+  "form": "10-K",
+  "filed": "2015-03-02",
+  "url": "https://www.sec.gov/Archives/edgar/data/939767/000093976715000013/exel2014123110-k.htm",
+  "quote": "After completing phase 1 testing of the compound, we deprioritized XL888 and our other pipeline assets to focus our limited resources on our lead compound, cabozantinib.",
+  "about": "PROGRAMME",
+  "note": "XL888 deprioritised to focus limited resources on cabozantinib."
+ },
+ "NCT02669849": {
+  "form": "10-Q",
+  "filed": "2018-10-25",
+  "url": "https://www.sec.gov/Archives/edgar/data/875320/000087532018000029/a2018q310-q.htm",
+  "quote": "However, based on interim data from a Phase 2b clinical trial of VX-210, the clinical trial's data monitoring safety board, or DSMB, has recommended that we stop the clinical trial early due to futility.",
+  "about": "THIS_TRIAL",
+  "note": "DSMB: stop early for futility; no safety concerns."
+ },
+ "NCT02837991": {
+  "form": "8-K",
+  "filed": "2018-05-10",
+  "url": "https://www.sec.gov/Archives/edgar/data/744218/000117184318003787/exh_991.htm",
+  "quote": "To conserve resources, Celldex is discontinuing development of: Glembatumumab vedotin, a targeted antibody-drug conjugate (ADC), across all indications, as previously disclosed; CDX-014, an ADC (which are typically more costly to develop than other therapeutics), in early Phase 1 development in renal cell and clear cell ovarian carcinomas",
+  "about": "PROGRAMME",
+  "note": "CDX-014 discontinued to conserve resources."
+ },
+ "NCT02862535": {
+  "form": "10-Q",
+  "filed": "2018-11-06",
+  "url": "https://www.sec.gov/Archives/edgar/data/882095/000088209518000029/q318form10-q.htm",
+  "quote": "For example, during 2018, we terminated our Phase 3 study of andecaliximab for the treatment of gastric cancer, after determining that study data showed insufficient evidence of treatment benefit.",
+  "about": "PROGRAMME",
+  "note": "Phase 3 gastric study terminated for insufficient evidence of benefit; development not pursued."
+ },
+ "NCT03013491": {
+  "form": "10-K",
+  "filed": "2023-03-27",
+  "url": "https://www.sec.gov/Archives/edgar/data/1501989/000095017023009991/ctmx-20221231.htm",
+  "quote": "In March 2020, we made the strategic decision to terminate this study. While Phase 1/2 data indicated that CX-072 monotherapy showed durable anti-tumor activity in patients with IO sensitive tumors and a favorable safety profile, the decision to terminate followed a re-evaluation of the evolving clinical, competitive and commercial landscapes in immuno-oncology, along with impact of the COVID-19 pandemic.",
+  "about": "THIS_TRIAL",
+  "note": "Re-evaluation of the clinical, competitive and commercial landscape, plus COVID-19."
+ },
+ "NCT03496298": {
+  "form": "6-K",
+  "filed": "2019-12-10",
+  "url": "https://www.sec.gov/Archives/edgar/data/1121404/000119312519309976/d836094dex991.htm",
+  "quote": "Regarding de-prioritized businesses, Sanofi is announcing a discontinuation of research in diabetes and cardiovascular (DCV) and will not pursue plans to launch efpeglenatide 6 .",
+  "about": "PROGRAMME",
+  "note": "Sanofi exited diabetes and cardiovascular research; efpeglenatide not launched."
+ },
+ "NCT03684642": {
+  "form": "6-K",
+  "filed": "2019-12-10",
+  "url": "https://www.sec.gov/Archives/edgar/data/1121404/000119312519309976/d836094dex991.htm",
+  "quote": "Regarding de-prioritized businesses, Sanofi is announcing a discontinuation of research in diabetes and cardiovascular (DCV) and will not pursue plans to launch efpeglenatide 6 .",
+  "about": "PROGRAMME",
+  "note": "Sanofi exited diabetes and cardiovascular research; efpeglenatide not launched."
+ },
+ "NCT04167345": {
+  "form": "8-K",
+  "filed": "2020-10-29",
+  "url": "https://www.sec.gov/Archives/edgar/data/875320/000087532020000041/ex-991q32020.htm",
+  "quote": "In October, Vertex discontinued development of VX-814 based on the safety and pharmacokinetic profile of VX-814 observed to date in the Phase 2 clinical study.",
+  "about": "PROGRAMME",
+  "note": "Discontinued on the safety and PK profile seen in the Phase 2 study."
+ },
+ "NCT04245722": {
+  "form": "10-K",
+  "filed": "2023-02-28",
+  "url": "https://www.sec.gov/Archives/edgar/data/1434316/000095017023005067/fate-20221231.htm",
+  "quote": "As a result of our NK cell program prioritization, our FT516, FT596, FT538, and FT536 NK cell programs are being discontinued.",
+  "about": "PROGRAMME",
+  "note": "FT596 programme discontinued in Fate's January 2023 NK-cell prioritisation (see the filing of case 062)."
+ },
+ "NCT04410445": {
+  "form": "8-K",
+  "filed": "2022-04-14",
+  "url": "https://www.sec.gov/Archives/edgar/data/906709/000121390022019858/ea158456ex99-1_nektarther.htm",
+  "quote": "The companies previously announced in March that two pivotal studies in melanoma would be discontinued based on results in the Phase 3 PIVOT IO-001 study in metastatic melanoma.",
+  "about": "THIS_TRIAL",
+  "note": "Pivotal melanoma studies discontinued after PIVOT IO-001 results."
+ },
+ "NCT04494256": {
+  "form": "10-Q",
+  "filed": "2024-08-01",
+  "url": "https://www.sec.gov/Archives/edgar/data/875045/000087504524000025/biib-20240630.htm",
+  "quote": "Phase 1/2 ALSpire study of BIIB105, an investigational ASO for the potential treatment of ALS, did not meet its endpoints. Based on these results, we discontinued our further development of BIIB105.",
+  "about": "THIS_TRIAL",
+  "note": "ALSpire did not meet its endpoints; development discontinued."
+ },
+ "NCT04912856": {
+  "form": "8-K",
+  "filed": "2023-05-09",
+  "url": "https://www.sec.gov/Archives/edgar/data/1582313/000095017023019727/xene-ex99_1.htm",
+  "quote": "Given the prioritized focus on the pediatric development plans for XEN1101, Xenon will no longer pursue the clinical development of XEN496.",
+  "about": "PROGRAMME",
+  "note": "XEN496 dropped to prioritise XEN1101."
+ },
+ "NCT05348915": {
+  "form": "8-K",
+  "filed": "2025-11-04",
+  "url": "https://www.sec.gov/Archives/edgar/data/78003/000007800325000149/pfe-09282025xex99.htm",
+  "quote": "The study did not meet its primary endpoint of significant reduction in the rate of vaso-occlusive crises (VOCs) in participants receiving inclacumab versus placebo every 12 weeks over 48 weeks.",
+  "about": "PROGRAMME",
+  "note": "Extension ended after the parent Phase 3 THRIVE-131 missed its primary endpoint."
+ },
+ "NCT05934097": {
+  "form": "10-K",
+  "filed": "2023-02-28",
+  "url": "https://www.sec.gov/Archives/edgar/data/1434316/000095017023005067/fate-20221231.htm",
+  "quote": "As a result of our NK cell program prioritization, our FT516, FT596, FT538, and FT536 NK cell programs are being discontinued.",
+  "about": "PROGRAMME",
+  "note": "FT596 discontinued in an NK-cell programme prioritisation."
+ },
+ "NCT04498247": {
+  "form": "10-K",
+  "filed": "2022-02-25",
+  "url": "https://www.sec.gov/Archives/edgar/data/310158/000031015822000003/mrk-20211231.htm",
+  "quote": "In these studies, both V590 and V591 were generally well tolerated, but the immune responses were inferior to those seen following natural infection and those reported for other SARS-CoV-2/COVID-19 vaccines.",
+  "about": "THIS_TRIAL",
+  "note": "Immune responses inferior to natural infection and other COVID-19 vaccines."
+ },
+ "NCT04569786": {
+  "form": "10-K",
+  "filed": "2022-02-25",
+  "url": "https://www.sec.gov/Archives/edgar/data/310158/000031015822000003/mrk-20211231.htm",
+  "quote": "In these studies, both V590 and V591 were generally well tolerated, but the immune responses were inferior to those seen following natural infection and those reported for other SARS-CoV-2/COVID-19 vaccines.",
+  "about": "THIS_TRIAL",
+  "note": "Immune responses inferior to natural infection and other COVID-19 vaccines."
+ },
+ "NCT01526928": {
+  "form": "10-K",
+  "filed": "2018-02-27",
+  "url": "https://www.sec.gov/Archives/edgar/data/1466301/000155837018001172/clvs-20171231x10k.htm",
+  "quote": "We terminated enrollment in all sponsored clinical studies, although we continue to provide drug to patients whose clinicians recommend continuing rociletinib therapy.",
+  "about": "PROGRAMME",
+  "note": "Enrolment in all rociletinib studies terminated; no reason given."
+ },
+ "NCT02596893": {
+  "form": "8-K",
+  "filed": "2017-10-19",
+  "url": "https://www.sec.gov/Archives/edgar/data/816284/000114420417053268/tv477363_ex99-1.htm",
+  "quote": "Celgene has decided to stop the trials following an October recommendation of the Data Monitoring Committee, which assessed overall benefit/risk during a recent interim futility analysis.",
+  "about": "THIS_TRIAL",
+  "note": "DMC recommendation after an interim futility analysis; no safety imbalance."
+ },
+ "NCT02685683": {
+  "form": "8-K",
+  "filed": "2017-10-19",
+  "url": "https://www.sec.gov/Archives/edgar/data/816284/000114420417053268/tv477363_ex99-1.htm",
+  "quote": "Celgene has decided to stop the trials following an October recommendation of the Data Monitoring Committee, which assessed overall benefit/risk during a recent interim futility analysis.",
+  "about": "PROGRAMME",
+  "note": "Mongersen Crohn programme stopped after the REVOLVE interim futility analysis."
+ },
+ "NCT01739348": {
+  "form": "10-K",
+  "filed": "2017-02-28",
+  "url": "https://www.sec.gov/Archives/edgar/data/310158/000031015817000010/mrk1231201610k.htm",
+  "quote": "In February 2017, Merck announced that its external Data Monitoring Committee (eDMC) recommended termination of the Phase 2/3 EPOCH study of verubecestat in mild-to-moderate Alzheimer's disease based on the low probability of success of this study.",
+  "about": "THIS_TRIAL",
+  "note": "eDMC: low probability of success."
+ },
+ "NCT02007720": {
+  "form": "6-K",
+  "filed": "2017-03-22",
+  "url": "https://www.sec.gov/Archives/edgar/data/1114448/000117184317001675/f6k_032217.htm",
+  "quote": "Phase III RELAX-AHF-2 study did not meet primary endpoints of reduced cardiovascular death or worsening heart failure in patients with acute heart failure",
+  "about": "PROGRAMME",
+  "note": "Serelaxin programme ended after RELAX-AHF-2 missed its primary endpoints."
+ },
+ "NCT02064868": {
+  "form": "6-K",
+  "filed": "2017-03-22",
+  "url": "https://www.sec.gov/Archives/edgar/data/1114448/000117184317001675/f6k_032217.htm",
+  "quote": "Phase III RELAX-AHF-2 study did not meet primary endpoints of reduced cardiovascular death or worsening heart failure in patients with acute heart failure",
+  "about": "PROGRAMME",
+  "note": "Serelaxin programme ended after RELAX-AHF-2 missed its primary endpoints."
+ },
+ "NCT02151383": {
+  "form": "6-K",
+  "filed": "2017-03-22",
+  "url": "https://www.sec.gov/Archives/edgar/data/1114448/000117184317001675/f6k_032217.htm",
+  "quote": "Phase III RELAX-AHF-2 study did not meet primary endpoints of reduced cardiovascular death or worsening heart failure in patients with acute heart failure",
+  "about": "PROGRAMME",
+  "note": "Serelaxin programme ended after RELAX-AHF-2 missed its primary endpoints."
+ },
+ "NCT02378038": {
+  "form": "10-Q",
+  "filed": "2021-11-05",
+  "url": "https://www.sec.gov/Archives/edgar/data/1290149/000156459021054732/srra-10q_20210930.htm",
+  "quote": "For example, in June 2016, we decided to suspend the development of our former lead product candidate PNT2258 after an interim analysis of data from a Phase 2 clinical trial of PNT2258 indicated only modest efficacy.",
+  "about": "PROGRAMME",
+  "note": "PNT2258 development suspended: interim Phase 2 data showed only modest efficacy."
+ },
+ "NCT02625922": {
+  "form": "6-K",
+  "filed": "2017-03-22",
+  "url": "https://www.sec.gov/Archives/edgar/data/1114448/000117184317001675/f6k_032217.htm",
+  "quote": "Phase III RELAX-AHF-2 study did not meet primary endpoints of reduced cardiovascular death or worsening heart failure in patients with acute heart failure",
+  "about": "PROGRAMME",
+  "note": "Serelaxin programme ended after RELAX-AHF-2 missed its primary endpoints."
+ },
+ "NCT03707678": {
+  "form": "6-K",
+  "filed": "2018-10-31",
+  "url": "https://www.sec.gov/Archives/edgar/data/1131399/000165495418011770/a8811f.htm",
+  "quote": "Data from a phase II study of GSK'035 in mild asthmatic patients showed it did not meet its pre-determined success criteria. Based on these data, GSK has taken the decision to stop ongoing development of GSK'035 in asthma due to lack of efficacy.",
+  "about": "PROGRAMME",
+  "note": "GSK2245035 in asthma stopped for lack of efficacy."
+ },
+ "NCT03893565": {
+  "form": "6-K",
+  "filed": "2021-02-03",
+  "url": "https://www.sec.gov/Archives/edgar/data/1131399/000165495421001129/a8915n.htm",
+  "quote": "Termination of GSK Study 204869 in patients with active ulcerative colitis as pre-determined futility criteria were met.",
+  "about": "THIS_TRIAL",
+  "note": "Study 204869 terminated: pre-determined futility criteria met."
+ },
+ "NCT05097989": {
+  "form": "6-K",
+  "filed": "2025-02-06",
+  "url": "https://www.sec.gov/Archives/edgar/data/901832/000165495425001189/a1107w.htm",
+  "quote": "This included vemircopan (ALXN2050) (acquired as part of the Alexion business combination in 2021 - $753m) which was terminated, the decision was based on safety and efficacy data from Phase II trials across multiple indications.",
+  "about": "PROGRAMME",
+  "note": "Vemircopan terminated on safety and efficacy data from Phase 2 trials."
+ },
+ "NCT05218096": {
+  "form": "6-K",
+  "filed": "2025-02-06",
+  "url": "https://www.sec.gov/Archives/edgar/data/901832/000165495425001189/a1107w.htm",
+  "quote": "This included vemircopan (ALXN2050) (acquired as part of the Alexion business combination in 2021 - $753m) which was terminated, the decision was based on safety and efficacy data from Phase II trials across multiple indications.",
+  "about": "PROGRAMME",
+  "note": "Vemircopan terminated on safety and efficacy data from Phase 2 trials."
+ },
+ "NCT05259085": {
+  "form": "6-K",
+  "filed": "2025-02-06",
+  "url": "https://www.sec.gov/Archives/edgar/data/901832/000165495425001189/a1107w.htm",
+  "quote": "This included vemircopan (ALXN2050) (acquired as part of the Alexion business combination in 2021 - $753m) which was terminated, the decision was based on safety and efficacy data from Phase II trials across multiple indications.",
+  "about": "PROGRAMME",
+  "note": "Vemircopan terminated on safety and efficacy data from Phase 2 trials."
+ },
+ "NCT05908396": {
+  "form": "8-K",
+  "filed": "2023-12-08",
+  "url": "https://www.sec.gov/Archives/edgar/data/1496323/000095017023069045/igms-ex99_1.htm",
+  "quote": "As a part of this strategic refocusing, the Company will halt the following clinical development activities: • Aplitabart in acute myeloid leukemia and in combination with birinapant • IGM-2644 (CD38 x CD3) in multiple myeloma",
+  "about": "THIS_TRIAL",
+  "note": "Strategic refocus: IGM-2644 in multiple myeloma halted."
+ }
+}

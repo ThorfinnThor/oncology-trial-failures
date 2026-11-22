@@ -33,7 +33,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-BASIS = {"RULE_V2": "rule", "REVIEWED_EXACT": "reviewed_decision",
+BASIS = {"RULE_V2": "rule", "REVIEWED_EXACT": "reviewed_decision", "SEC_FILING_REVIEWED": "sec_filing",
          "DESCRIPTION_FALLBACK": "rule_on_description", "UNCLASSIFIED": "unresolved"}
 
 # Share of the stop-reason sample per stratum. Rare classes are over-drawn on purpose.

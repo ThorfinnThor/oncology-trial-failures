@@ -28,8 +28,9 @@ in each section is blocked on nothing but time.
   classifier 2.7.6.
 - **SEC filings as a source** (22 Nov): 1,542 no-cause trials with an SEC-filing sponsor searched (832 by
   name, 710 via the new sponsor → CIK table), **101 with a passage** in the review tool (batches
-  sec-evidence-2026-11 and -11b). Claude reviews them; per-trial decisions and the trial-page display
-  follow. See the SEC section below.
+  sec-evidence-2026-11 and -11b). Claude reviewed them (AI-assisted): **50 accepted and applied** per
+  trial from the weekly run of 23 Nov (source `SEC_FILING_REVIEWED`; 34 → biological, 14 → non-biological,
+  2 → programme action without cause), with the filing sentence on the trial page. See the SEC section below.
 - **`/validation` has a clinician section** (18 Nov) with the caveats. The Hugging Face card is built
   by `python scripts/samples/build_label_sample.py --out <dir> --huggingface`. **Public since 19 Nov:** https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-failures-sample
   (org `clinical-trial-failures`, owner account `ClinicalTrialFailures`; the write token is a network
@@ -210,7 +211,10 @@ environment "oncology-trial-failures" (EDGAR and the live site allowed).
 **Reviewed 22 Nov (Claude, AI-assisted):** 50 of 101 accepted → `data/sec_evidence_decisions.csv`
 (30 efficacy/futility, 4 benefit–risk, 12 business, 2 recruitment, 2 programme action without cause; 20 about
 this trial, 30 about the drug's programme); 51 not accepted (another trial, result without direction, no
-reason). Details: `docs/sec_evidence_review_2026-11-22.md`. **Not yet applied to the labels.**
+reason). Details: `docs/sec_evidence_review_2026-11-22.md`. **Applied 22 Nov, in the data from the weekly run of
+23 Nov** (`docs/classification_change_2026-11-22_sec_filings.md`: CAUSE_NOT_STATED → BIO 21, UNRESOLVED → BIO
+13, CAUSE_NOT_STATED → NON_BIO 12, UNRESOLVED → NON_BIO 2, UNRESOLVED → CAUSE_NOT_STATED 2). Check after
+that run: 50 rows with source SEC_FILING_REVIEWED, the validator green, the box on e.g. /trial/NCT03033511.
 
 **How the review was set up:** Claude reviews all of them as an AI-assisted review,
 labelled as such (like the earlier reviewed decisions, not a clinician verdict): for each, whether the
@@ -219,16 +223,19 @@ become decisions; anything unsure stays "not established" (CLAUDE.md rule 5). Sc
 ten. The two batches stay in the review tool for clinicians later.
 
 **Next (Schayan's decision 22 Nov: points 1–2 first, then the mapping table):**
-1. Per-trial decisions: accepted answers become a decision keyed by NCT ID with the filing as source
-   (today's reviewed decisions are keyed by text, and "sponsor decision" stands for 138 trials).
-2. Trial pages show "The sponsor's SEC filing of <date> says …" with the link.
+1. ~~Per-trial decisions~~ **done 22 Nov:** `data/sec_evidence_decisions.csv`, keyed by NCT ID, read by
+   `reclassify_dataset_v2.py` ahead of the text rules (the text-keyed index would have relabelled all
+   138 "sponsor decision" trials).
+2. ~~Trial pages~~ **done 22 Nov:** "What the sponsor told investors" box with the quote, programme vs
+   this trial, "reviewed with AI assistance" and the filing link (`scripts/web/build_sec_evidence.py`
+   → `web/data/sec_evidence.json`, rebuilt weekly).
 3. ~~A curated sponsor → CIK table~~ **done 22 Nov:** `data/sec_sponsor_map.csv`, 72 sponsor names →
    86 registrants checked on data.sec.gov (subsidiaries → parent; acquired companies → own CIK for their
    filing years + the buyer; renamed ones). 710 more no-cause trials searched, **34 with a passage**
    (lower yield: big groups report programmes, not trials), batch **sec-evidence-2026-11b** (priority 6).
    Not reachable through the SEC: Roche, Boehringer, Bayer, UCB, Eisai, Otsuka, Sun, Actelion.
 4. Weekly: search only new no-cause trials (cache in .cache/sec).
-5. Programme stops counted apart (step 0 "the drug's programme").
+5. ~~Programme stops counted apart~~ **done:** evidence rule `sec.programme_filing` (30) vs `sec.trial_filing` (20).
 
 ## Getting found: next steps (decided 19 Nov)
 

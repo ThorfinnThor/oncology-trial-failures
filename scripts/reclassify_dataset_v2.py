@@ -17,6 +17,10 @@ from typing import Any, Dict, Iterable, List
 try:
     from classification_v2 import (
         CLASSIFIER_VERSION,
+        ClassificationV2,
+        Evidence,
+        normalize_reason,
+        text_hash,
         classification_source,
         classify_reason_v2,
         classify_with_v2_fallback,
@@ -29,6 +33,10 @@ try:
 except ImportError:
     from scripts.classification_v2 import (
         CLASSIFIER_VERSION,
+        ClassificationV2,
+        Evidence,
+        normalize_reason,
+        text_hash,
         classification_source,
         classify_reason_v2,
         classify_with_v2_fallback,
@@ -58,6 +66,33 @@ FINAL_FIELDS = (
 )
 
 PRESERVED_SOURCES = {"MANUAL_NCT_OVERRIDE", "DESCRIPTION_FALLBACK"}
+
+# Per-trial decisions from the sponsor's own SEC filings, reviewed (AI-assisted, 22 Nov 2026;
+# docs/sec_evidence_review_2026-11-22.md). They name a cause the registry text does not, so they take
+# precedence over the text rules and the text-keyed reviewed index for that one trial.
+SEC_DECISIONS = Path(__file__).resolve().parents[1] / "data" / "sec_evidence_decisions.csv"
+SEC_SOURCE = "SEC_FILING_REVIEWED"
+
+
+def load_sec_decisions(path: Path = SEC_DECISIONS) -> Dict[str, Dict[str, str]]:
+    if not path.exists():
+        return {}
+    with path.open(encoding="utf-8", newline="") as handle:
+        return {row["nct_id"].strip().upper(): row for row in csv.DictReader(handle) if row.get("nct_id")}
+
+
+def sec_classification(row: Dict[str, Any], decision: Dict[str, str]) -> ClassificationV2:
+    """The reviewed filing's label as a classification. The evidence names the filing and whether it
+    spoke of this trial or of the drug's programme (`sec.programme_filing`: a programme stop)."""
+    rule = "sec.programme_filing" if decision.get("filing_about") == "PROGRAMME" else "sec.trial_filing"
+    secondary = tuple(v.strip() for v in (decision.get("secondary_reasons") or "").replace("|", ";").split(";") if v.strip())
+    quote = f"{decision.get('source_form')} {decision.get('source_filed')} {decision.get('source_url')}: {decision.get('quote')}"
+    return ClassificationV2(
+        outcome=decision["outcome"], primary_reason=decision["primary_reason"], secondary_reasons=secondary,
+        confidence="MEDIUM", needs_review=False,
+        evidence=(Evidence(rule, decision["primary_reason"], quote, "MEDIUM"),),
+        normalized_text_hash=text_hash(normalize_reason(row.get("why_stopped"))),
+    )
 
 
 def revalidate_description_fallback(
@@ -126,6 +161,7 @@ def classify_rows(
     sources: Counter[str] = Counter()
     confidence: Counter[str] = Counter()
     review_groups: Dict[str, Dict[str, Any]] = {}
+    sec_decisions = load_sec_decisions()
 
     for row in rows:
         old_key = f"{row.get('classification_label', '')}/{row.get('classification_reason', '')}"
@@ -137,7 +173,20 @@ def classify_rows(
         revalidated_fallback = None
         if existing_source == "DESCRIPTION_FALLBACK" and not preserve_existing:
             revalidated_fallback = revalidate_description_fallback(row, reviewed_index)
-        if revalidated_fallback is not None:
+        sec_decision = sec_decisions.get(str(row.get("nct_id") or "").upper())
+        if sec_decision is not None:
+            result = sec_classification(row, sec_decision)
+            fields = result.as_record_fields()
+            source = SEC_SOURCE
+            fields["classification_source"] = source
+            outcome = result.outcome
+            primary_reason = result.primary_reason
+            needs_review = False
+            confidence_value = result.confidence
+            evidence_string = result.evidence_string()
+            text_digest = result.normalized_text_hash
+            secondary_reasons = list(result.secondary_reasons)
+        elif revalidated_fallback is not None:
             fields = revalidated_fallback
             source = "DESCRIPTION_FALLBACK"
             outcome = str(fields["classification_outcome_v2"])

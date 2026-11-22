@@ -18,6 +18,7 @@ import { buildTrialSeoMetadata } from "@/lib/seoMetadata";
 import type { SeoIndexingState } from "@/lib/seoIndexingPolicy";
 import { resolveTrialStopEvidence } from "@/lib/trialEvidence";
 import EvidenceStandard from "@/components/EvidenceStandard";
+import secEvidence from "@/data/sec_evidence.json";
 import PrimaryNav from "@/components/PrimaryNav";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -200,6 +201,12 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
   const reasonLabel = REASON_LABELS[reasonCode] || reasonCode.replace(/_/g, " ").toLowerCase();
   const stopEvidence = trial ? resolveTrialStopEvidence(trial) : null;
   const sourceReason = stopEvidence?.text || "";
+  // A cause from the sponsor's own SEC filing, where the registry text gives none (data/sec_evidence_decisions.csv).
+  const sec = trial
+    ? (secEvidence as Record<string, { form: string; filed: string; url: string; quote: string; about: string; note: string }>)[
+        trial.nct_id
+      ]
+    : undefined;
   const er = trial?.endpoint_result || null;
   const sourceUrl = trial?.url || (trialId ? `https://clinicaltrials.gov/study/${trialId}` : SITE_URL);
   const interpretation = classificationInterpretation(outcomeCode, reasonCode);
@@ -389,6 +396,22 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
                     <a className="trialSourceLink" href={sourceUrl} target="_blank" rel="noreferrer">
                       Verify the primary registry record <span aria-hidden="true">↗</span>
                     </a>
+                    {sec ? (
+                      <div className="trialSecEvidence">
+                        <div className="trialEyebrow">What the sponsor told investors</div>
+                        <blockquote>{sec.quote}</blockquote>
+                        <p className="trialEvidenceNote">
+                          {sec.about === "PROGRAMME"
+                            ? "The filing reports the end of the drug's development programme, which this trial was part of. "
+                            : "The filing speaks of this trial. "}
+                          The registry text gives no cause; our label rests on this filing (reviewed with AI
+                          assistance, not by a clinician).
+                        </p>
+                        <a className="trialSourceLink" href={sec.url} target="_blank" rel="noreferrer">
+                          SEC {sec.form} filed {sec.filed} <span aria-hidden="true">↗</span>
+                        </a>
+                      </div>
+                    ) : null}
                   </section>
 
                   <section className="card trialPanel trialInterpretationPanel">
@@ -700,6 +723,11 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
           color: var(--accent);
           font-size: 13px;
           font-weight: 750;
+        }
+        .trialSecEvidence {
+          margin-top: 18px;
+          padding-top: 16px;
+          border-top: 1px solid var(--border, #e2e8f0);
         }
         .trialEvidenceNote {
           margin: -5px 0 14px;
