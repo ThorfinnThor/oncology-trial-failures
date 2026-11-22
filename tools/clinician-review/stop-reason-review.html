@@ -69,7 +69,8 @@ fieldset.needs > legend::after { content: " · still to choose"; font-weight: 40
 .dots.compact .dot { width: 14px; height: 14px; border-radius: 3px; font-size: 0; }
 .batches { display: grid; gap: 8px; margin-bottom: 14px; }
 .batchrow { display: grid; grid-template-columns: minmax(0, 220px) minmax(120px, 1fr) max-content; gap: 6px 14px; align-items: center; font-size: 14px; }
-.batchrow .name { font-weight: 600; overflow-wrap: anywhere; }
+.batchrow .name { font-weight: 600; overflow-wrap: anywhere; text-align: left; color: var(--ink); text-decoration: none; }
+.batchrow .name:hover { text-decoration: underline; }
 .batchrow.cur .name::before { content: "▸ "; color: var(--accent); }
 .batchrow .cnt { font-variant-numeric: tabular-nums; color: var(--ink-2); font-size: 13px; }
 .batchrow.done .cnt { color: var(--ok); }
@@ -84,6 +85,12 @@ fieldset.needs > legend::after { content: " · still to choose"; font-weight: 40
 .quote.empty { font-style: italic; color: var(--ink-3); font-size: 18px; }
 .src { font-size: 12.5px; color: var(--ink-3); margin-bottom: 18px; }
 details.ctx { border-top: 1px solid var(--line); padding-top: 12px; }
+.evidence { margin: 0 0 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface-2); padding: 12px 14px; display: grid; gap: 12px; }
+.evidence[hidden], .confirm[hidden], fieldset[hidden] { display: none; }
+.evidence .label { display: block; margin-bottom: 2px; }
+.evidence .ev { font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+.evidence .evsrc { font-size: 12.5px; color: var(--ink-3); }
+.evidence .evhint { font-size: 12.5px; color: var(--ink-2); }
 details.ctx summary { cursor: pointer; font-weight: 600; color: var(--ink-2); }
 dl.facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; margin: 12px 0 0; font-size: 14px; }
 dl.facts dt { color: var(--ink-3); }
@@ -187,6 +194,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
         </div>
         <blockquote class="quote" id="quote"></blockquote>
         <div class="src">The sponsor's stop reason, as written in the ClinicalTrials.gov record.</div>
+        <section class="evidence" id="evidence" hidden aria-label="What the sponsor told investors"></section>
         <details class="ctx" id="ctx">
           <summary>Trial details</summary>
           <dl class="facts" id="facts"></dl>
@@ -204,6 +212,16 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
           <span class="hint">Some labels in this batch are deliberately wrong, to check that each one is read.</span>
         </section>
         <div id="fullForm">
+        <fieldset id="evMatchSet" hidden>
+          <legend>0 · Is the filing about this trial?</legend>
+          <div class="chips" id="evMatch">
+            <label class="chipopt"><input type="radio" name="evmatch" value="THIS_TRIAL"><span>Yes, this trial</span></label>
+            <label class="chipopt"><input type="radio" name="evmatch" value="PROGRAMME"><span>The drug's programme, incl. this trial</span></label>
+            <label class="chipopt"><input type="radio" name="evmatch" value="OTHER_TRIAL"><span>Another trial or drug</span></label>
+            <label class="chipopt"><input type="radio" name="evmatch" value="UNSURE"><span>Can't tell</span></label>
+          </div>
+          <span class="hint">Then label the cause the filing states (a programme ended after a failure elsewhere: Biological failure → Efficacy). If the filing is about another trial or drug, judge the registry text alone.</span>
+        </fieldset>
         <fieldset>
           <legend>1 · What does the text say ended the trial? <span class="hint">(keys 1–6)</span></legend>
           <div class="opts" id="outcomes"></div>
@@ -259,6 +277,7 @@ td.num { font-variant-numeric: tabular-nums; text-align: right; }
         <li>The sponsor is who decided, not a cause. A sponsor stopping for a business, portfolio or development reason (“to focus on another route of administration”, “portfolio prioritisation”) is <b>Not about the drug → Sponsor's business / strategy decision</b>. “Sponsor decision” with no reason is <b>Decision without a stated cause</b>, never Business. Who decided is not a second cause: “terminated by the sponsor due to inferior efficacy” is <b>Biological failure → Efficacy</b>, not Several causes. <b>Partner or funder withdrew support</b> is for someone other than the sponsor pulling out: a collaborator, a funder, a drug supplier.</li>
         <li>A new standard of care, a new approval or a changed treatment landscape that makes the study obsolete (“the research treatment is no longer the best option”) is <b>Not about the drug → Protocol / feasibility</b>, not a business decision. If the text says the change stopped enrolment (“impacted recruitment”), choose <b>Recruitment</b>. It is <b>Sponsor's business / strategy decision</b> only when a business reason is given (competition, strategy, portfolio).</li>
         <li>A recall or removal of product lots (contamination, a quality defect, “for safety reasons” about the batch) is <b>Not about the drug → Supply / manufacturing</b>. Safety means harm from the drug's effect in people.</li>
+        <li>Cases with SEC filings: first say whether the filing is about <b>this trial</b>, about the <b>drug's programme</b> (which this trial was part of), or about <b>another trial or drug</b>. Label the cause the filing states, as for a registry text: a programme ended because the drug failed in another trial is <b>Biological failure → Efficacy</b> (as “withdrawn based on new efficacy data from another study” already is); “pipeline prioritisation” is <b>Sponsor's business / strategy decision</b>. Step 0 records that it came from the programme, so programme stops can be counted apart. If the filing is about another trial or drug, judge the registry text alone.</li>
         <li>The trial details are there for orientation. When the text and the details disagree, judge the text.</li>
         <li>In batches marked “confirm”, our label is shown: press <b>Correct</b> if it fits the text, otherwise <b>Not correct</b> and choose the right one. About one label in twenty there is deliberately wrong, to check attention.</li>
         <li>Work in as many sittings as you like. Every answer is saved the moment you press Save; next time you start at the first open case. “Later” leaves a case open without answering it.</li>
@@ -296,7 +315,7 @@ const MIXED_CAUSES = [["EFFICACY_FUTILITY", "Efficacy / futility"], ["SAFETY", "
   ["RECRUITMENT", "Recruitment"], ["FUNDING", "Funding"], ["BUSINESS_STRATEGY", "Sponsor's business / strategy"], ["REGULATORY", "Regulatory"],
   ["SUPPLY_MANUFACTURING", "Supply"], ["STAFFING_RESOURCES", "Staff / resources"], ["PROTOCOL_FEASIBILITY", "Protocol"],
   ["SUPPORT_WITHDRAWAL", "Partner / funder withdrew"], ["EXTERNAL_DISRUPTION", "External event"], ["OPERATIONAL_OTHER", "Other administrative"]];
-const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-18b)";
+const GUIDE_VERSION = "LABELING_GUIDELINES v2 + review notes (2026-11-22)";
 
 const $ = (id) => document.getElementById(id);
 const S = { db: null, user: null, uid: null, canWrite: true, owner: false, profile: null,
@@ -349,13 +368,19 @@ function readForm() {
   const mixed = [...document.querySelectorAll('input[name="mixed"]:checked')].map(x => x.value);
   const confidence = (document.querySelector('input[name="conf"]:checked') || {}).value || "";
   const note = $("note").value.trim();
+  const evidence_match = (document.querySelector('input[name="evmatch"]:checked') || {}).value || "";
   let primary = reason;
   if (outcome === "MIXED_CAUSES") primary = "MULTIPLE";
   if (outcome === "UNKNOWN") primary = "UNSPECIFIED";
-  return { outcome, primary_reason: primary, secondary_reasons: outcome === "MIXED_CAUSES" ? mixed : [], confidence, note };
+  const f = { outcome, primary_reason: primary, secondary_reasons: outcome === "MIXED_CAUSES" ? mixed : [], confidence, note };
+  if (hasEvidence(S.cases[S.idx])) f.evidence_match = evidence_match;
+  return f;
 }
 
+function hasEvidence(c) { return !!(c && Array.isArray(c.evidence) && c.evidence.length); }
+
 function complete(f) {
+  if (hasEvidence(S.cases[S.idx]) && !f.evidence_match) return false;
   if (!f.outcome || !f.confidence) return false;
   if (f.outcome === "MIXED_CAUSES") return f.secondary_reasons.length >= 2;
   if (f.outcome === "UNKNOWN") return true;
@@ -366,6 +391,7 @@ function complete(f) {
 // sitting greyed out with no reason (a clinician could not tell why Save did nothing, 17 Nov).
 function missing(f) {
   const m = [];
+  if (hasEvidence(S.cases[S.idx]) && !f.evidence_match) m.push({ text: "step 0, whether the filing is about this trial", el: $("evMatchSet") });
   if (!f.outcome) m.push({ text: "step 1, what ended the trial", el: document.querySelector('input[name="outcome"]') });
   else if (f.outcome === "MIXED_CAUSES" && f.secondary_reasons.length < 2) m.push({ text: "step 2, at least two causes", el: $("mixedSet") });
   else if (f.outcome !== "MIXED_CAUSES" && f.outcome !== "UNKNOWN" && !f.primary_reason) m.push({ text: "step 2, the main reason", el: $("reasonSet") });
@@ -384,13 +410,14 @@ function refreshSave() {
 }
 
 function fillForm(a) {
-  document.querySelectorAll('input[name="outcome"], input[name="conf"], input[name="mixed"]').forEach(x => { x.checked = false; });
+  document.querySelectorAll('input[name="outcome"], input[name="conf"], input[name="mixed"], input[name="evmatch"]').forEach(x => { x.checked = false; });
   $("note").value = "";
   document.querySelectorAll("fieldset.needs").forEach(x => x.classList.remove("needs"));
   if (a) {
     const o = document.getElementById("out_" + a.outcome); if (o) o.checked = true;
     (a.secondary_reasons || []).forEach(v => { const m = document.getElementById("mix_" + v); if (m) m.checked = true; });
     const c = document.querySelector(`input[name="conf"][value="${a.confidence}"]`); if (c) c.checked = true;
+    const ev = a.evidence_match && document.querySelector(`input[name="evmatch"][value="${a.evidence_match}"]`); if (ev) ev.checked = true;
     $("note").value = a.note || "";
   }
   renderReasons(a ? a.outcome : "", a ? a.primary_reason : "");
@@ -411,6 +438,12 @@ function renderCase() {
     ["Conditions", esc(c.conditions || "—")], ["Interventions", esc(c.interventions || "—")],
     ["Record", c.registry_url ? `<a href="${esc(c.registry_url)}" target="_blank" rel="noopener">${esc(c.nct_id)} on ClinicalTrials.gov ↗</a>` : esc(c.nct_id || "—")]];
   $("facts").innerHTML = rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+  const evOn = hasEvidence(c);
+  $("evidence").hidden = !evOn; $("evMatchSet").hidden = !evOn;
+  $("evidence").innerHTML = evOn ? `<span class="label">What the sponsor told investors (SEC filings)</span>` + c.evidence.map(e => `
+      <div><div class="ev">${esc(e.window || e.sentence)}</div>
+      <div class="evsrc">${esc(e.form || "")} filed ${esc(e.filed || "")} · <a href="${esc(e.url)}" target="_blank" rel="noopener">open the filing ↗</a></div></div>`).join("")
+    + (c.suggested ? `<div class="evhint">Our rules read the passage as: <b>${labelHtml(c.suggested).replace("<small>", " → ").replace("</small>", "")}</b>. Check it; the rules are not tuned to filings.</div>` : "") : "";
   const shown = shownLabel(c), prev = S.answers[c._id];
   S.correcting = !!(shown && prev && prev.verdict === "corrected");
   $("confirmBox").hidden = !shown;
@@ -441,7 +474,7 @@ function renderProgress() {
   $("batches").innerHTML = batches().map(b => {
     const d = b.cases.filter(c => S.answers[c._id]).length, all = d === b.cases.length;
     return `<div class="batchrow ${curBatch && b.id === curBatch.id ? "cur" : ""} ${all ? "done" : ""}">
-      <span class="name">${esc(b.label)}</span>
+      <button type="button" class="name linkbtn batchjump" data-batch="${esc(b.id)}" title="Go to the first open case of this batch">${esc(b.label)}</button>
       <div class="bar" aria-hidden="true"><i style="width:${(100 * d / b.cases.length).toFixed(1)}%"></i></div>
       <span class="cnt">${all ? "✓ " : ""}${d} of ${b.cases.length}</span></div>`;
   }).join("");
@@ -552,6 +585,14 @@ function wire() {
     goTo(i >= 0 ? i : nextOpen(-1));
   });
   $("dots").addEventListener("click", (e) => { const b = e.target.closest(".dot"); if (b) goTo(+b.dataset.i); });
+  // Any batch can be opened from its row: its first open case, or its first case when all are done.
+  $("batches").addEventListener("click", (e) => {
+    const btn = e.target.closest(".batchjump"); if (!btn) return;
+    const id = btn.dataset.batch;
+    let i = S.cases.findIndex(c => (c.batch || "cases") === id && !S.answers[c._id]);
+    if (i < 0) i = S.cases.findIndex(c => (c.batch || "cases") === id);
+    if (i >= 0) goTo(i);
+  });
   document.addEventListener("keydown", (e) => {
     if ($("app").hidden || /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) && document.activeElement.type !== "radio" && document.activeElement.type !== "checkbox") return;
     if (e.metaKey || e.ctrlKey || e.altKey) return;
