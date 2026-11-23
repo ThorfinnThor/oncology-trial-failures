@@ -11,6 +11,8 @@ writes, per stopped trial in data/all_stopped_trials.csv:
   drugs_background   what the control arm received too (the shared backbone): never "tested"
   drugs_comparator   what only the control arms received
   drug_ncit_codes    NCI Thesaurus codes of the tested drugs, where one identifies the drug
+  drug_rxcuis        RxNorm ingredient codes, for drugs named from RxNorm
+  drugs_unresolved   tested drugs no terminology identified, as the registry lists them
   drug_resolution    RESOLVED (every tested drug identified by name), PARTIAL, CODE_OR_CLASS_ONLY
                      (a research code or a drug class, no standard name), UNRESOLVED, NO_DRUG, or
                      NOT_COVERED (outside the universe: Phase 1, Phase 4, or started before 2010)
@@ -40,9 +42,20 @@ EXTRA = ROOT / ".cache/universe/stopped_extra_resolved.jsonl.gz"
 STOPPED = ROOT / "data/all_stopped_trials.csv"
 OUT = ROOT / "data/trial_drugs.csv"
 PUBLIC = ROOT / "web/public/trial_drugs.csv"
-FIELDS = ["nct_id", "drugs_tested", "drugs_background", "drugs_comparator", "drug_ncit_codes",
-          "drug_resolution", "drug_name_source"]
-SKIP = {"GENERIC", "SUPPORTIVE"}
+FIELDS = ["nct_id", "drugs_tested", "drugs_background", "drugs_comparator", "drug_ncit_codes", "drug_rxcuis",
+          "drug_resolution", "drug_name_source", "drugs_unresolved"]
+SKIP = {"GENERIC", "SUPPORTIVE", "NON_DRUG"}
+# Registry "interventions" that are assays, samples, procedures or a standard-of-care placeholder: not a
+# drug, so neither tested nor unresolved (they made trials look unresolved: "gene expression analysis",
+# "polymerase chain reaction", "blood sample", "SOC").
+NON_DRUG_LABEL = re.compile(
+    r"\b(laboratory biomarker analysis|biomarker analysis|gene expression analysis|polymerase chain reaction|pcr|"
+    r"microarray analysis|flow cytometry|immunohistochemistry|immunoenzyme technique|sequencing|genotyping|"
+    r"pharmacological study|pharmacokinetic study|pharmacogenomic study|quality[- ]of[- ]life assessment|"
+    r"questionnaire administration|survey administration|blood samples?|biospecimen collection|tissue samples?|"
+    r"diagnostic imaging|computed tomography|magnetic resonance imaging|positron emission tomography|"
+    r"cognitive assessment|counseling|educational intervention|best available therapy|"
+    r"standard of care|standard[- ]of[- ]care|soc|usual care|no intervention|observation)\b", re.I)
 
 
 DRUG_COLUMNS = ["drugs_tested", "drugs_background", "drugs_comparator", "drug_ncit_codes", "drug_resolution"]
@@ -89,6 +102,22 @@ def ncit_code(component: dict, ncit: dict | None, norm) -> str:
     return ""
 
 
+def unresolved_status(c: dict) -> bool:
+    return c.get("status") in ("UNRESOLVED", "AMBIGUOUS")
+
+
+def prepare(rec: dict, rxmap: dict[str, dict]) -> None:
+    """Drop assays and placeholders, then name what ChEMBL and NCIt could not, from RxNorm."""
+    for iv in rec.get("interventions") or []:
+        for c in iv.get("components") or []:
+            label = c.get("label") or ""
+            if NON_DRUG_LABEL.search(label) and c.get("status") != "RESOLVED":
+                c["status"] = "NON_DRUG"
+            elif unresolved_status(c) and label.lower() in rxmap:
+                hit = rxmap[label.lower()]
+                c.update({"status": "RESOLVED", "name": hit["name"], "entity_source": "RXNORM", "rxcui": hit["rxcui"]})
+
+
 def summarise(rec: dict, ncit: dict | None, norm) -> dict:
     by_role: dict[str, list[dict]] = {"EXPERIMENTAL_ARM": [], "BACKGROUND_OR_BACKBONE": [], "COMPARATOR": []}
     for iv in rec.get("interventions") or []:
@@ -120,8 +149,12 @@ def summarise(rec: dict, ncit: dict | None, norm) -> dict:
         resolution = "CODE_OR_CLASS_ONLY"
     else:
         resolution = "UNRESOLVED"
-    sources = sorted({"ChEMBL" if (c.get("entity_source") or "").find("CHEMBL") >= 0 else "NCIt"
-                      for c in tested if c.get("status") == "RESOLVED"})
+    def source(c: dict) -> str:
+        s = c.get("entity_source") or ""
+        return "ChEMBL" if "CHEMBL" in s else ("RxNorm" if s == "RXNORM" else "NCIt")
+    sources = sorted({source(c) for c in tested if c.get("status") == "RESOLVED"})
+    rxcuis = sorted({"RXCUI:" + c["rxcui"] for c in tested if c.get("rxcui")})
+    unresolved = sorted({c.get("label", "") for c in tested if unresolved_status(c)} - {""})
     codes = []
     background_lower = {b.lower() for b in names(by_role["BACKGROUND_OR_BACKBONE"]) + names(by_role["COMPARATOR"])}
     for c in tested:
@@ -136,11 +169,47 @@ def summarise(rec: dict, ncit: dict | None, norm) -> dict:
     return {"nct_id": rec["nct_id"], "drugs_tested": "; ".join(tested_names),
             "drugs_background": "; ".join(names(by_role["BACKGROUND_OR_BACKBONE"])),
             "drugs_comparator": "; ".join(names(by_role["COMPARATOR"])),
-            "drug_ncit_codes": "; ".join(codes), "drug_resolution": resolution,
-            "drug_name_source": " + ".join(sources)}
+            "drug_ncit_codes": "; ".join(codes), "drug_rxcuis": "; ".join(rxcuis), "drug_resolution": resolution,
+            "drug_name_source": " + ".join(sources), "drugs_unresolved": "; ".join(unresolved)}
+
+
+def rxnorm_names(records, budget: float) -> dict[str, dict]:
+    """label (lower case) -> {"name", "rxcui"} for experimental-arm components ChEMBL and NCIt left
+    unresolved, from RxNorm (NLM): the ingredient a name normalises to. Cached by the HTTP cache, so a
+    later run only asks for new names; the time budget keeps a first run inside the weekly run."""
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+    from scripts.signals.build_oncology_failure_signals import rxnorm_lookup
+    labels = sorted({(c.get("label") or "").strip() for rec in records for iv in rec.get("interventions") or []
+                     if iv.get("role") == "EXPERIMENTAL_ARM" for c in iv.get("components") or []
+                     if unresolved_status(c) and not NON_DRUG_LABEL.search(c.get("label") or "")} - {""})
+    started, out, done = time.monotonic(), {}, 0
+
+    def one(label: str):
+        try:
+            hit = rxnorm_lookup(label)
+        except Exception:  # an RxNorm outage leaves the name unresolved, never fails the export
+            return label, None
+        ing = (hit or {}).get("ingredient") or {}
+        return label, ({"name": ing["name"][:1].upper() + ing["name"][1:], "rxcui": ing["rxcui"]} if ing.get("rxcui") else None)
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for i in range(0, len(labels), 200):
+            if time.monotonic() - started > budget:
+                break
+            for label, hit in pool.map(one, labels[i:i + 200]):
+                done += 1
+                if hit:
+                    out[label.lower()] = hit
+    print(json.dumps({"rxnorm_names_asked": done, "of": len(labels), "resolved": len(out)}))
+    return out
 
 
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rxnorm-seconds", type=float, default=1500, help="time budget for RxNorm lookups")
+    args = ap.parse_args()
     if not RESOLVED.exists():
         print(f"{RESOLVED.relative_to(ROOT)} missing (resolve.py has not run); trial_drugs.csv left as it is")
         return 0
@@ -153,7 +222,7 @@ def main() -> int:
         ncit = None
     stopped = [r["nct_id"] for r in csv.DictReader(open(STOPPED, encoding="utf-8"))]
     wanted = set(stopped)
-    found: dict[str, dict] = {}
+    records: dict[str, dict] = {}
     # The universe first, then the stopped trials outside it (resolve_stopped_extra.py).
     for path in (RESOLVED, EXTRA):
         if not path.exists():
@@ -161,10 +230,16 @@ def main() -> int:
         with gzip.open(path, "rt", encoding="utf-8") as fh:
             for line in fh:
                 rec = json.loads(line)
-                if rec.get("nct_id") in wanted and rec["nct_id"] not in found:
-                    found[rec["nct_id"]] = summarise(rec, ncit, norm)
+                if rec.get("nct_id") in wanted and rec["nct_id"] not in records:
+                    records[rec["nct_id"]] = rec
+    rxmap = rxnorm_names(records.values(), args.rxnorm_seconds)
+    found: dict[str, dict] = {}
+    for nct, rec in records.items():
+        prepare(rec, rxmap)
+        found[nct] = summarise(rec, ncit, norm)
     rows = [found.get(n) or {"nct_id": n, "drugs_tested": "", "drugs_background": "", "drugs_comparator": "",
-                             "drug_ncit_codes": "", "drug_resolution": "NOT_COVERED", "drug_name_source": ""}
+                             "drug_ncit_codes": "", "drug_rxcuis": "", "drug_resolution": "NOT_COVERED",
+                             "drug_name_source": "", "drugs_unresolved": ""}
             for n in stopped]
     for path in (OUT, PUBLIC):
         path.parent.mkdir(parents=True, exist_ok=True)

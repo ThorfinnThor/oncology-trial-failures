@@ -1,0 +1,62 @@
+name: Drug names table
+
+# Rebuilds data/trial_drugs.csv (scripts/universe/export_trial_drugs.py) outside the weekly run, from the
+# weekly run's resolved trials, with a longer RxNorm budget for names ChEMBL and NCIt did not resolve.
+# The weekly run does the same every Monday; this is for catch-ups.
+on:
+  workflow_dispatch:
+    inputs:
+      rxnorm_minutes:
+        description: "RxNorm lookup budget in minutes"
+        default: "60"
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore the weekly run's caches
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/signals
+            .cache/universe
+          key: signals-${{ github.run_id }}
+          restore-keys: signals-
+
+      - name: Export
+        run: |
+          python -u scripts/universe/export_trial_drugs.py --rxnorm-seconds $(( ${{ inputs.rxnorm_minutes }} * 60 ))
+
+      - name: Save the HTTP cache (RxNorm answers)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .cache/signals
+            .cache/universe
+          key: signals-${{ github.run_id }}
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/trial_drugs.csv web/public/trial_drugs.csv
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Update drug names table"
+          git pull --rebase --autostash origin main || true
+          git push
