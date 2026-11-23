@@ -104,10 +104,10 @@ test("with too few years the article keeps its neutral text", () => {
   assert.deepEqual(article.facts, []);
 });
 
-function spans(kind: string, months: number[]) {
+function spans(kind: string, months: number[], extra: Partial<TrialIndexRow> = {}) {
   return months.flatMap((m) => {
     const end = new Date(Date.UTC(2020, m, 1)).toISOString().slice(0, 10);
-    return make(kind, 1, { start_date: "2020-01-01", completion_date: end });
+    return make(kind, 1, { start_date: "2020-01-01", completion_date: end, primary_completion_date: end, ...extra });
   });
 }
 
@@ -121,22 +121,64 @@ test("time to stop counts terminated trials only, in months, and drops impossibl
     ...make("safety", 1, { start_date: "2020-05-01" }),
   ];
   const slice = timeToStopSlice(rows, 3);
+  assert.equal(slice.terminated, 17);
   assert.equal(slice.measured, 15);
   assert.deepEqual(slice.groups.map((group) => [group.key, group.median]), [["safety", 10], ["efficacy", 28], ["recruitment", 36]]);
   assert.equal(slice.groups[0].withinYear, 3);
+  assert.deepEqual(slice.byPhase, []);
 });
 
-test("the time-to-stop article compares stated reasons only", () => {
-  const rows = [
-    ...spans("safety", [2, 6, 10, 20, 30]),
-    ...spans("efficacy", [10, 20, 28, 36, 44]),
-    ...spans("recruitment", [12, 24, 36, 48, 60]),
-    ...spans("transition", [40, 50, 60, 70, 80]),
-  ];
-  const stats = { timeToStop: timeToStopSlice(rows, 3) } as InsightStats;
-  const article = getInsightBySlug("how-long-clinical-trials-run-before-they-stop", stats)!;
-  assert.equal(article.title, "Safety stops come first: how long clinical trials run before they stop");
-  assert.match(article.dek, /stopped for too few participants run the longest/);
-  assert.equal(article.sections[2].heading, "Recruitment stops drag on");
+const durationRows = [
+  ...spans("safety", [2, 6, 10, 20, 30]),
+  ...spans("efficacy", [10, 20, 28, 36, 44]),
+  ...spans("recruitment", [12, 24, 36, 48, 60]),
+  ...spans("transition", [40, 50, 60, 70, 80]),
+];
+function duration(rows: TrialIndexRow[], phaseMinimum = 50) {
+  const stats = { timeToStop: timeToStopSlice(rows, 3, phaseMinimum) } as InsightStats;
+  return getInsightBySlug("how-long-clinical-trials-run-before-they-stop", stats)!;
+}
+const bodyOf = (article: ReturnType<typeof duration>, heading: string) =>
+  article.sections.find((section) => section.heading === heading)!.body.join(" ");
+
+test("the time-to-stop article names the longest group, including planned ends", () => {
+  const article = duration(durationRows);
+  assert.equal(article.title, "Safety stops have the shortest median run among terminated drug trials");
+  assert.match(bodyOf(article, "By stop reason"), /The longest is planned end or replaced \(60 months\)/);
+  assert.match(bodyOf(article, "By phase"), /No phase has enough trials/);
+  assert.equal(article.tables.length, 1);
   assert.equal(article.tables[0].rows.length, 4);
+});
+
+test("no ranking is claimed when safety ties or the second date disagrees", () => {
+  const neutral = "How long drug trials ran before they were terminated, by stop reason";
+  const tied = duration([...durationRows, ...spans("operational", [2, 6, 10, 20, 30])]);
+  assert.equal(tied.title, neutral);
+  assert.doesNotMatch(bodyOf(tied, "By stop reason"), /shortest/);
+  const disagreeing = duration([
+    ...durationRows.filter((row) => row.classification_final_category !== "SAFETY"),
+    ...spans("safety", [2, 6, 10, 20, 30], { primary_completion_date: "2024-01-01" }),
+  ]);
+  assert.equal(disagreeing.title, neutral);
+  assert.doesNotMatch(bodyOf(disagreeing, "A second date"), /shortest/);
+});
+
+test("phases where safety stops are not shortest are named", () => {
+  const phase = (phases: string, safety: number) => [
+    ...spans("safety", [safety, safety, safety], { phases }),
+    ...["efficacy", "recruitment", "business", "operational"].flatMap((kind) => spans(kind, [20, 20, 20], { phases })),
+  ];
+  const article = duration([...phase("PHASE1", 10), ...phase("PHASE3", 20), ...phase("PHASE4", 5).slice(1)], 3);
+  const text = bodyOf(article, "By phase");
+  assert.match(text, /shortest median of the five in phase 1\. They do not in phase 3\./);
+  assert.doesNotMatch(text, /phase 4/);
+  assert.match(article.dek, /do not have the shortest median in phase 3\./);
+  assert.deepEqual(article.tables[1].rows.map((row) => row[0]), ["Phase 1 (15)", "Phase 3 (15)"]);
+});
+
+test("the time-to-stop article makes no claim about causes or the stop date", () => {
+  const article = duration(durationRows);
+  const text = JSON.stringify(article);
+  for (const claim of [/usually forces/, /often add sites/, /planned interim/, /is the date it stopped/, /drag on/]) assert.doesNotMatch(text, claim);
+  assert.match(text, /not the date of the decision to stop/);
 });

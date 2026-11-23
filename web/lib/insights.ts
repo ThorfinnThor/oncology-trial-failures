@@ -360,10 +360,23 @@ export type StopReasonsByYearSlice = {
   covidRecruitment: number;
 };
 
-/** Months from start to stop for terminated trials, per stop-reason group. */
+/** Months from registry start to completion date for terminated trials, per stop-reason group. */
 export type TimeToStopSlice = {
+  terminated: number;
   measured: number;
-  groups: Array<{ key: string; label: string; count: number; median: number; q25: number; q75: number; withinYear: number }>;
+  groups: Array<{
+    key: string;
+    label: string;
+    count: number;
+    median: number;
+    /** Median to the primary completion date, over the trials that have one. */
+    primaryMedian: number;
+    q25: number;
+    q75: number;
+    withinYear: number;
+  }>;
+  /** Medians per phase, only where each of the five stated reasons has enough trials. */
+  byPhase: Array<{ label: string; count: number; medians: Record<string, number> }>;
 };
 
 export type InsightSignalSlice = {
@@ -3037,12 +3050,12 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
   },
   {
     slug: "how-long-clinical-trials-run-before-they-stop",
-    title: "Safety stops come first: how long clinical trials run before they stop",
+    title: "How long drug trials ran before they were terminated, by stop reason",
     metaDescription:
-      "How many months terminated clinical trials ran before they stopped, by stop reason: safety, efficacy, recruitment, business and operational stops compared.",
-    eyebrow: "Time to stop",
+      "Months from start to completion date for terminated drug and biologic trials, by stated stop reason: safety, efficacy, recruitment, business and operational stops.",
+    eyebrow: "Trial duration",
     dek:
-      "Trials stopped for safety concerns end sooner than trials stopped for any other reason. Recruitment stops tend to drag on the longest.",
+      "Months from start to completion date for terminated drug and biologic trials, compared by the stated reason they stopped.",
     datePublished: "2026-11-22",
     readingTime: "5 min read",
     keyword: "how long do clinical trials run before termination",
@@ -3050,14 +3063,16 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     facts: [],
     sections: [
       { heading: "How the time is measured", body: [
-        "For each terminated trial, this counts the months from its start date to its completion date, which for a terminated trial is the date it stopped. Withdrawn trials never started and suspended trials have not ended, so neither is included. Records with missing dates or impossible spans are left out.",
+        "For each terminated trial, this counts the months from the registry start date to the registry completion date. ClinicalTrials.gov defines completion as the date the last participant was examined or treated for final data collection, also for a terminated trial. It is not the date of the decision to stop, which the registry does not record and which can be earlier.",
+        "Withdrawn trials enrolled nobody and suspended trials may resume, so neither is included. Records with missing dates or impossible spans are left out. Dates are compared by month.",
       ] },
-      { heading: "Safety stops come early", body: [] },
-      { heading: "Recruitment stops drag on", body: [] },
-      { heading: "Efficacy stops follow the data", body: [] },
+      { heading: "By stop reason", body: [] },
+      { heading: "By phase", body: [] },
+      { heading: "A second date", body: [] },
       { heading: "What this does and does not tell you", body: [
-        "The time to stop describes when a trial ended, not when the problem began. A recruitment problem may be visible in the first months and still take years to end a trial; a safety signal may only appear once enough patients have been treated.",
-        "Phase and disease area change the picture too: a large phase 3 outcome trial runs longer than a small phase 1 study whatever the reason it stops. The medians here are a first orientation, not a benchmark for a particular trial.",
+        "The time describes how long trials ran, not when the problem began and not why one reason takes longer than another. The groups also differ in phase, disease area and size, and none of that is adjusted for here beyond the split by phase.",
+        "The dataset holds interventional drug and biologic trials that were terminated, withdrawn or suspended and whose ClinicalTrials.gov record was updated since 2015. It is not every stopped trial on the registry, and a trial that started recently can only appear here if it stopped quickly.",
+        "Almost every reason is the sponsor's own wording, sorted into groups. Some trials give no clear reason; they are shown as their own group. The medians are a first orientation, not a benchmark for a particular trial.",
       ] },
     ],
     tables: [],
@@ -6650,62 +6665,77 @@ function maxShare(years: InsightStats["stopReasonsByYear"]["years"], keys: strin
 }
 
 function hydrateTimeToStopArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
-  const { measured, groups } = stats.timeToStop;
-  if (groups.length < 3) return article;
+  const { terminated, measured, groups, byPhase } = stats.timeToStop;
   const byKey = new Map(groups.map((group) => [group.key, group]));
   const safety = byKey.get("safety");
   const efficacy = byKey.get("efficacy");
   const recruitment = byKey.get("recruitment");
-  // Extremes among the reasons that say why a trial stopped; "planned end" and "no clear reason" are context.
-  const reasons = groups.filter((group) => ["safety", "efficacy", "recruitment", "business", "operational"].includes(group.key));
-  if (reasons.length < 2) return article;
-  const first = reasons[0];
-  const lastGroup = reasons[reasons.length - 1];
-  const safetyFirst = first.key === "safety";
+  if (!safety || !efficacy || !recruitment) return article;
+  const others = groups.filter((group) => group.key !== "safety");
+  // strictly the shortest median of every group, on both dates; otherwise no ranking is claimed
+  const safetyShortest = others.every((group) => safety.median < group.median && safety.primaryMedian < group.primaryMedian);
+  const last = groups[groups.length - 1];
+  const longest = groups.filter((group) => group.median === last.median);
   const yearShare = (group: (typeof groups)[number]) => pctFromCounts(group.withinYear, group.count);
   const months = (value: number) => `${value} month${value === 1 ? "" : "s"}`;
+  const range = (values: number[]) => {
+    const [low, high] = [Math.min(...values), Math.max(...values)];
+    return low === high ? months(low) : `${low} to ${months(high)}`;
+  };
   const describe = (group: (typeof groups)[number]) =>
-    `a median of ${months(group.median)} (half between ${group.q25} and ${group.q75} months), and ${yearShare(group)} stopped within the first year`;
+    `a median of ${months(group.median)}, the middle half between ${group.q25} and ${group.q75} months, and ${yearShare(group)} under 12 months`;
+  const otherRange = range(others.map((group) => group.median));
+  const longestText = `${longest.map((group) => group.label.toLowerCase()).join(" and ")} (${months(last.median)})`;
+  const excluded = terminated - measured;
+  const safetyFirstIn = (phase: (typeof byPhase)[number]) =>
+    Object.entries(phase.medians).every(([key, value]) => key === "safety" || phase.medians.safety < value);
+  const firstPhases = byPhase.filter(safetyFirstIn);
+  const otherPhases = byPhase.filter((phase) => !safetyFirstIn(phase));
+  const labels = (phases: typeof byPhase) => {
+    const names = phases.map((phase) => phase.label.toLowerCase());
+    return names.length < 2 ? names.join("") : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  };
+  const overlap = safety.q75 > recruitment.q25 && recruitment.q75 > safety.q25;
 
   return {
     ...article,
-    title: safetyFirst ? article.title : "How long clinical trials run before they stop, by reason",
-    dek: safetyFirst
-      ? `Trials stopped for safety concerns end sooner than trials stopped for any other reason. Trials stopped for ${lastGroup.label.toLowerCase()} run the longest before they end.`
-      : `How long a terminated trial runs before it stops depends on why it stopped. Trials stopped for ${first.label.toLowerCase()} end soonest; those stopped for ${lastGroup.label.toLowerCase()} run the longest.`,
-    metaDescription: `Terminated clinical trials ran a median of ${months(first.median)} before stopping for ${first.label.toLowerCase()} and ${months(lastGroup.median)} for ${lastGroup.label.toLowerCase()}, from ${n(measured)} trials with start and stop dates.`,
+    title: safetyShortest ? "Safety stops have the shortest median run among terminated drug trials" : article.title,
+    dek: `Terminated drug and biologic trials that stopped for safety concerns ran a median of ${months(safety.median)}. For the other groups the median is ${otherRange}.${otherPhases.length ? ` Safety stops do not have the shortest median in ${labels(otherPhases)}.` : ""}`,
+    metaDescription: `Terminated drug trials ran a median of ${months(safety.median)} when they stopped for safety concerns, ${months(efficacy.median)} for too little benefit and ${months(recruitment.median)} for too few participants, from ${n(measured)} trials.`,
     facts: [
-      `Measured on ${n(measured)} terminated trials with a start and a stop date.`,
-      ...(safety ? [`Safety stops: ${describe(safety)}.`] : []),
-      ...(efficacy ? [`Efficacy stops: ${describe(efficacy)}.`] : []),
-      ...(recruitment ? [`Recruitment stops: ${describe(recruitment)}.`] : []),
+      `Measured on ${n(measured)} of ${n(terminated)} terminated drug and biologic trials; ${n(excluded)} have no usable pair of dates.`,
+      `Safety concerns: ${describe(safety)}.`,
+      `Not enough benefit: ${describe(efficacy)}.`,
+      `Too few participants: ${describe(recruitment)}.`,
     ],
     sections: article.sections.map((section) => {
-      if (section.heading === "Safety stops come early" && safety) {
-        return {
-          heading: safetyFirst ? section.heading : "Safety stops",
-          body: [
-            `Trials stopped for safety concerns ran ${describe(safety)}.${safetyFirst ? " That is sooner than for any other stated reason." : ""}`,
-            "A safety signal usually forces a decision as soon as it appears: dosing is paused, a data monitoring committee meets, and the trial either changes or ends. There is little reason to keep a trial running once its risks look too high.",
-          ],
-        };
-      }
-      if (section.heading === "Recruitment stops drag on" && recruitment) {
-        const longest = lastGroup.key === "recruitment";
-        return {
-          heading: longest ? section.heading : "Recruitment stops",
-          body: [
-            `Trials stopped for too few participants ran ${describe(recruitment)}.`,
-            "Slow enrolment rarely ends a trial at once. Sponsors often add sites, extend timelines or amend eligibility first, and only stop when the trial can no longer finish in a useful time. A trial that was never going to recruit can therefore use years of patient and site effort before it ends.",
-          ],
-        };
-      }
-      if (section.heading === "Efficacy stops follow the data" && efficacy) {
+      if (section.heading === "By stop reason") {
         return {
           ...section,
           body: [
-            `Trials stopped for too little benefit ran ${describe(efficacy)}.`,
-            "Efficacy stops are tied to the data: they often come after a planned interim analysis, once enough patients have been followed long enough to see whether the treatment is working. That puts them later than safety stops, which do not wait for a planned look.",
+            `Trials that stopped for safety concerns have ${describe(safety)}.${safetyShortest ? " That is the shortest median of any group." : ""}`,
+            `The medians of the other groups are ${otherRange}. The longest is ${longestText}. Too few participants has ${describe(recruitment)}; not enough benefit has ${describe(efficacy)}.`,
+            ...(overlap ? ["The groups overlap widely. How long a trial ran does not identify why it stopped."] : []),
+          ],
+        };
+      }
+      if (section.heading === "By phase") {
+        return {
+          ...section,
+          body: byPhase.length ? [
+            `The comparison by phase covers the phases where each of five reasons (safety, benefit, recruitment, business or funding, operational) has at least 50 trials: ${labels(byPhase)}.`,
+            [
+              firstPhases.length ? `Safety stops have the shortest median of the five in ${labels(firstPhases)}.` : "Safety stops do not have the shortest median of the five in any of them.",
+              firstPhases.length && otherPhases.length ? `They do not in ${labels(otherPhases)}.` : "",
+            ].filter(Boolean).join(" "),
+          ] : ["No phase has enough trials for each reason to compare them."],
+        };
+      }
+      if (section.heading === "A second date") {
+        return {
+          ...section,
+          body: [
+            `The primary completion date marks the last data collection for the main outcome, which can come before the last follow-up visit. Measured to that date, the medians are ${months(safety.primaryMedian)} for safety concerns, ${months(efficacy.primaryMedian)} for not enough benefit and ${months(recruitment.primaryMedian)} for too few participants.${safetyShortest ? " Safety stops have the shortest median either way." : ""}`,
           ],
         };
       }
@@ -6713,26 +6743,34 @@ function hydrateTimeToStopArticle(article: InsightArticle, stats: InsightStats):
     }),
     tables: [
       {
-        heading: "Months from start to stop, terminated trials",
-        columns: ["Stop reason (trials)", "Median months (middle half) · stopped in year 1"],
+        heading: "Months from start to completion date, terminated trials",
+        columns: ["Stop reason (trials)", "Median (middle half) · to primary completion · under 12 months"],
         rows: groups.map((group): [string, string] => [
           `${group.label} (${n(group.count)})`,
-          `${group.median} (${group.q25}–${group.q75}) · ${yearShare(group)}`,
+          `${group.median} (${group.q25}–${group.q75}) · ${group.primaryMedian} · ${yearShare(group)}`,
         ]),
       },
+      ...(byPhase.length ? [{
+        heading: "Median months by phase",
+        columns: ["Phase (trials)", "Safety · benefit · recruitment · business or funding · operational"] as [string, string],
+        rows: byPhase.map((phase): [string, string] => [
+          `${phase.label} (${n(phase.count)})`,
+          ["safety", "efficacy", "recruitment", "business", "operational"].map((key) => phase.medians[key]).join(" · "),
+        ]),
+      }] : []),
     ],
     faqs: [
       {
         question: "How long do clinical trials run before they are terminated?",
-        answer: `It depends on the reason. In this dataset, the median is ${months(first.median)} for trials stopped for ${first.label.toLowerCase()} and ${months(lastGroup.median)} for those stopped for ${lastGroup.label.toLowerCase()}.`,
+        answer: `Among the terminated drug and biologic trials in this dataset, the median from start to completion date runs from ${range(groups.map((group) => group.median))}, depending on the stop reason.`,
       },
-      ...(safety ? [{
-        question: "When are clinical trials stopped for safety?",
-        answer: `Trials stopped for safety concerns ran a median of ${months(safety.median)}, and ${yearShare(safety)} stopped within their first year.`,
-      }] : []),
       {
-        question: "Why do recruitment problems take so long to stop a trial?",
-        answer: "Sponsors often try to rescue enrolment first, by adding sites, extending timelines or changing eligibility, and stop only when the trial can no longer finish in a useful time.",
+        question: "When are clinical trials stopped for safety?",
+        answer: `Terminated trials that stopped for safety concerns have ${describe(safety)}. The registry does not record the date of the decision.`,
+      },
+      {
+        question: "Do trials that cannot recruit run longer?",
+        answer: `Their median is ${months(recruitment.median)}, against ${months(safety.median)} for safety concerns and ${months(efficacy.median)} for not enough benefit. The groups overlap widely and differ in phase and disease area, so the data does not show that recruitment problems cause longer trials.`,
       },
     ],
   };
