@@ -269,11 +269,11 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
    `docs/classification_change_2026-11-23_publications.md`). Guideline: a stop because a related trial of
    the same intervention showed a stated result counts by that result (`pub.related_trial`), as the rules
    already do; without the direction, not established.
-2. **EU register (EudraCT / CTIS) by EudraCT number** (secondary ID on ClinicalTrials.gov): European
-   industry trials (Roche, Bayer, Boehringer, UCB: not reachable via the SEC). Under the EU regulation an
-   early termination is reported as affecting the benefit–risk balance (safety / lack of efficacy, Art. 38)
-   or not (Art. 37), with reasons. Whether the public pages show the reason is not yet checked (the hosts
-   are blocked here).
+2. **EU registers, probed 23 Nov** (`docs/eu_register_probe_2026-11-23.md`): **EudraCT not worth it** (no
+   reason field; 2–3 of 80 add a cause). **CTIS is:** a coded early-termination reason per member state,
+   80 no-cause trials linked today, ~10 gain a cause (mostly safety), the set grows with every new EU
+   trial. Next: a weekly CTIS step like SEC (ledger, review queue, per-trial decisions), and CTIS
+   categories as a validation check of trials that do state a cause.
 3. **Non-US company pipeline updates and press releases** (quarterly "removed from pipeline" tables):
    harder to search, no common API; after 1–2.
 4. **ClinicalTrials.gov record history:** an earlier version sometimes had a different stop text or a
