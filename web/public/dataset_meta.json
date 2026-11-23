@@ -1,18 +1,18 @@
 {
   "version": "2026-11-23",
-  "generated_at_utc": "2026-11-23T19:57:54Z",
-  "imported_at_utc": "2026-11-23T19:57:54Z",
-  "source_verified_at": "2026-11-23T19:57:54Z",
+  "generated_at_utc": "2026-11-23T21:58:58Z",
+  "imported_at_utc": "2026-11-23T21:58:58Z",
+  "source_verified_at": "2026-11-23T21:58:58Z",
   "latest_source_update_at": "2026-11-23",
-  "content_changed_at": "2026-11-23T19:57:53Z",
-  "source_snapshot_id": "sha256:0821758e9553d611ebdd4cd9c269776da6a62a81cc44c99690c4c1a13b6d7cdb",
+  "content_changed_at": "2026-11-23T21:58:58Z",
+  "source_snapshot_id": "sha256:6d511f0b9b8aa2ed0e194b0ed45be881cc93f4204f93f386b19b3c2802bce7ba",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 24132,
     "max_last_update_post_date": "2026-11-23"
   },
   "biological_failure": {
-    "record_count": 2484,
+    "record_count": 2584,
     "max_last_update_post_date": "2026-11-23"
   },
   "top_areas": [
@@ -60,36 +60,36 @@
   "classification_v2": {
     "version": "2.7.7",
     "outcomes": {
-      "NON_BIOLOGICAL": 14190,
-      "UNKNOWN": 3583,
-      "BIOLOGICAL_FAILURE": 2503,
-      "CAUSE_NOT_STATED": 1984,
-      "NON_FAILURE_TRANSITION": 1613,
-      "MIXED_CAUSES": 259
+      "NON_BIOLOGICAL": 14230,
+      "UNKNOWN": 3459,
+      "BIOLOGICAL_FAILURE": 2603,
+      "CAUSE_NOT_STATED": 1938,
+      "NON_FAILURE_TRANSITION": 1621,
+      "MIXED_CAUSES": 281
     },
     "primary_reasons": {
-      "RECRUITMENT": 6351,
-      "UNSPECIFIED": 3583,
-      "BUSINESS_STRATEGY": 2262,
+      "RECRUITMENT": 6371,
+      "UNSPECIFIED": 3459,
+      "BUSINESS_STRATEGY": 2269,
       "FUNDING": 1797,
-      "EFFICACY_FUTILITY": 1669,
-      "DECISION_WITHOUT_STATED_CAUSE": 1591,
+      "EFFICACY_FUTILITY": 1737,
+      "DECISION_WITHOUT_STATED_CAUSE": 1554,
       "NOT_INITIATED": 835,
       "STAFFING_RESOURCES": 825,
-      "PROTOCOL_FEASIBILITY": 704,
-      "SAFETY": 641,
+      "PROTOCOL_FEASIBILITY": 707,
+      "SAFETY": 666,
       "SUPPLY_MANUFACTURING": 624,
-      "REGULATORY": 516,
-      "EXTERNAL_DISRUPTION": 500,
-      "OPERATIONAL_OTHER": 424,
+      "REGULATORY": 520,
+      "EXTERNAL_DISRUPTION": 501,
+      "OPERATIONAL_OTHER": 427,
       "REPLACEMENT_TRANSITION": 415,
-      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 393,
-      "PLANNED_MILESTONE": 363,
-      "MULTIPLE": 259,
-      "BIOLOGICAL_UNSPECIFIED": 193,
-      "SUPPORT_WITHDRAWAL": 187
+      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 384,
+      "PLANNED_MILESTONE": 371,
+      "MULTIPLE": 281,
+      "BIOLOGICAL_UNSPECIFIED": 200,
+      "SUPPORT_WITHDRAWAL": 189
     },
-    "needs_review": 3625,
+    "needs_review": 3501,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,

@@ -1,6 +1,6 @@
 {
  "updated": "2026-11-23",
- "pending": 275,
+ "pending": 277,
  "trials": [
   {
    "nct_id": "NCT00073450",
@@ -9825,6 +9825,51 @@
    ]
   },
   {
+   "nct_id": "NCT04185311",
+   "brief_title": "Ipilimumab, Nivolumab, and Talimogene Laherparepvec Before Surgery in Treating Participants With Localized, Triple-Negative or Estrogen Receptor Positive, HER2 Negative Breast Cancer-deleted",
+   "lead_sponsor": "Jonsson Comprehensive Cancer Center",
+   "why_stopped": "enrollment",
+   "label_now": {
+    "outcome": "UNRESOLVED",
+    "primary_reason": "UNRESOLVED_ABBREVIATION_OR_FRAGMENT"
+   },
+   "found_on": "2026-11-23",
+   "passages": [
+    {
+     "pmid": "37621406",
+     "pmcid": "PMC10445661",
+     "doi": "10.1158/2767-9764.crc-23-0145",
+     "journal": "Cancer research communications",
+     "year": "2023",
+     "link": "registry_derived",
+     "where": "full_text",
+     "score": 4,
+     "suggested": {
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [
+       "EXTERNAL_DISRUPTION"
+      ]
+     }
+    },
+    {
+     "pmid": "37621406",
+     "pmcid": "PMC10445661",
+     "doi": "10.1158/2767-9764.crc-23-0145",
+     "journal": "Cancer research communications",
+     "year": "2023",
+     "link": "registry_derived",
+     "where": "full_text",
+     "score": 4,
+     "suggested": {
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": []
+     }
+    }
+   ]
+  },
+  {
    "nct_id": "NCT04186637",
    "brief_title": "An Open-label Study of ALPN-202 in Subjects With Advanced Malignancies",
    "lead_sponsor": "Alpine Immune Sciences, Inc.",
@@ -10408,6 +10453,66 @@
      "suggested": {
       "outcome": "BIOLOGICAL_FAILURE",
       "primary_reason": "EFFICACY_FUTILITY",
+      "secondary_reasons": []
+     }
+    }
+   ]
+  },
+  {
+   "nct_id": "NCT04443608",
+   "brief_title": "Patiromer Utility as an Adjunct Treatment in Patients Needing Urgent Hyperkalemia Management",
+   "lead_sponsor": "Comprehensive Research Associates",
+   "why_stopped": "Recruitment window ended",
+   "label_now": {
+    "outcome": "UNRESOLVED",
+    "primary_reason": "UNRESOLVED_ABBREVIATION_OR_FRAGMENT"
+   },
+   "found_on": "2026-11-23",
+   "passages": [
+    {
+     "pmid": "41730555",
+     "pmcid": "PMC12931543",
+     "doi": "10.1136/bmjopen-2025-105103",
+     "journal": "BMJ open",
+     "year": "2026",
+     "link": "registry_derived",
+     "where": "full_text",
+     "score": 4,
+     "suggested": {
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
+      "secondary_reasons": [
+       "EXTERNAL_DISRUPTION"
+      ]
+     }
+    },
+    {
+     "pmid": "41730555",
+     "pmcid": "PMC12931543",
+     "doi": "10.1136/bmjopen-2025-105103",
+     "journal": "BMJ open",
+     "year": "2026",
+     "link": "registry_derived",
+     "where": "full_text",
+     "score": 4,
+     "suggested": {
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "EXTERNAL_DISRUPTION",
+      "secondary_reasons": []
+     }
+    },
+    {
+     "pmid": "41730555",
+     "pmcid": "PMC12931543",
+     "doi": "10.1136/bmjopen-2025-105103",
+     "journal": "BMJ open",
+     "year": "2026",
+     "link": "registry_derived",
+     "where": "full_text",
+     "score": 4,
+     "suggested": {
+      "outcome": "NON_BIOLOGICAL",
+      "primary_reason": "RECRUITMENT",
       "secondary_reasons": []
      }
     }
