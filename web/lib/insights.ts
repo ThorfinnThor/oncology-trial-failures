@@ -411,6 +411,8 @@ export type InsightArticle = {
   eyebrow: string;
   dek: string;
   datePublished: string;
+  /** Date the text was last corrected or rewritten; a new date reaches the sitemap and IndexNow. Not for data refreshes. */
+  dateModified?: string;
   readingTime: string;
   keyword: string;
   factsHeading?: string;
@@ -3002,6 +3004,7 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     dek:
       "Stated reasons for stopping drug and biologic trials, by the year the trial ended, counted with and without trials that never started.",
     datePublished: "2026-11-22",
+    dateModified: "2026-11-23",
     readingTime: "6 min read",
     keyword: "why clinical trials are stopped business decision trend",
     factsHeading: "Key numbers",
@@ -3057,6 +3060,7 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     dek:
       "Months from start to completion date for terminated drug and biologic trials, compared by the stated reason they stopped.",
     datePublished: "2026-11-22",
+    dateModified: "2026-11-23",
     readingTime: "5 min read",
     keyword: "how long do clinical trials run before termination",
     factsHeading: "Key numbers",
@@ -3117,6 +3121,11 @@ function pctFromRatio(value: number): string {
 
 function b(stats: Pick<InsightStats, "buckets">, bucket: string): number {
   return stats.buckets[bucket] || 0;
+}
+
+/** The date of the last change to the article's text: its correction date, else its publication date. */
+export function insightModified(article: Pick<InsightArticle, "datePublished" | "dateModified">): string {
+  return article.dateModified || article.datePublished;
 }
 
 function insightDateTime(article: Pick<InsightArticle, "datePublished">): number {

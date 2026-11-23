@@ -3,7 +3,7 @@ import { serializeJsonLd } from "@/lib/serializeJsonLd";
 import Link from "next/link";
 
 import PrimaryNav from "@/components/PrimaryNav";
-import { INSIGHTS_BASE_URL, insightPath, type InsightArticle } from "@/lib/insights";
+import { INSIGHTS_BASE_URL, insightModified, insightPath, type InsightArticle } from "@/lib/insights";
 
 const OG_IMAGE = `${INSIGHTS_BASE_URL}/og-image.png`;
 
@@ -20,7 +20,7 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
       headline: article.title,
       description: article.metaDescription,
       datePublished: article.datePublished,
-      dateModified: article.datePublished,
+      dateModified: insightModified(article),
       author: {
         "@type": "Organization",
         name: "Clinical Trial Failures",
@@ -109,6 +109,7 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
               <p className="insightDek">{article.dek}</p>
               <div className="insightMeta">
                 <span>{article.datePublished}</span>
+                {article.dateModified ? <span>Updated {article.dateModified}</span> : null}
                 <span>{article.readingTime}</span>
                 <span>Keyword: {article.keyword}</span>
               </div>

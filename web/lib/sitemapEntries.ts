@@ -10,7 +10,7 @@ import briefsIndex from "@/data/briefs_index.json";
 
 import { latestBriefSitemapLastmod, selectBriefSitemapEntries } from "./briefSitemap";
 import type { DrugCatalogEntry } from "./drugPages";
-import { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } from "./insights";
+import { INSIGHT_ARTICLES, insightModified, insightPath, sortInsightArticlesByDate } from "./insights";
 import { ISSUES, issuePath } from "./newsletterIssues";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "./seoHubs";
 import { resolveSeoIndexingPolicy, type SeoIndexingFeatures } from "./seoIndexingPolicy";
@@ -117,7 +117,7 @@ export function buildSitemapData(rows: TrialIndexRow[], meta: DatasetMeta, drugC
     ...buildSponsorHubs(rows).map((hub) => ({ loc: `${SITE_URL}${hub.path}`, lastmod: null })),
     ...sortInsightArticlesByDate(INSIGHT_ARTICLES).map((article) => ({
       loc: `${SITE_URL}${insightPath(article)}`,
-      lastmod: new Date(article.datePublished).toISOString(),
+      lastmod: new Date(insightModified(article)).toISOString(),
     })),
   ];
 
