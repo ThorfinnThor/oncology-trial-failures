@@ -1,0 +1,89 @@
+name: Failure Signals, seven more areas
+
+# Builds the licensed Failure Signals product for the seven largest areas after oncology
+# (scripts/signals/build_oncology_failure_signals.py --scope more-areas) outside the weekly run, with a
+# long time budget, so a first build or a catch-up does not wait for Monday. Uses and refreshes the
+# weekly run's HTTP cache. Output uploaded encrypted (PACKAGE_PASSPHRASE), like the weekly product.
+on:
+  workflow_dispatch:
+    inputs:
+      max_minutes:
+        description: "Build budget in minutes"
+        default: "300"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: signals-more-areas
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore the weekly run's caches
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/signals
+            .cache/universe
+          key: signals-${{ github.run_id }}
+          restore-keys: signals-
+
+      - name: Build
+        id: build
+        env:
+          SIGNALS_CONTACT: ${{ secrets.SIGNALS_CONTACT }}
+          NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
+        run: |
+          python -u scripts/signals/build_oncology_failure_signals.py --scope more-areas --step all \
+            --max-seconds $(( ${{ inputs.max_minutes }} * 60 )) --workers 6
+          python - <<'PY'
+          import json
+          m = json.load(open("product/failure_signals_more_areas_v1_meta.json"))
+          keys = ["trial_count", "by_disease_area", "experimental_arm_drug_resolution_rate", "trials_with_resolved_focus_asset",
+                  "trials_with_focus_target_gene", "trials_with_focus_mechanism", "trials_with_pubmed_publication",
+                  "unique_assets", "source_status"]
+          print(json.dumps({k: m.get(k) for k in keys}, indent=1))
+          PY
+
+      - name: Save the caches
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .cache/signals
+            .cache/universe
+          key: signals-${{ github.run_id }}
+
+      - name: Encrypt
+        if: steps.build.outcome == 'success'
+        env:
+          PACKAGE_PASSPHRASE: ${{ secrets.PACKAGE_PASSPHRASE }}
+        run: |
+          [ -n "$PACKAGE_PASSPHRASE" ] || { echo "PACKAGE_PASSPHRASE not set; not uploading"; exit 1; }
+          mkdir -p "$RUNNER_TEMP/upload"
+          tar czf "$RUNNER_TEMP/p.tar.gz" -C product $(cd product && ls failure_signals_more_areas_v1*)
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -pass env:PACKAGE_PASSPHRASE \
+            -in "$RUNNER_TEMP/p.tar.gz" -out "$RUNNER_TEMP/upload/failure-signals-more-areas.tar.gz.enc"
+          cp product/failure_signals_more_areas_v1_meta.json "$RUNNER_TEMP/upload/"
+
+      - uses: actions/upload-artifact@v4
+        if: steps.build.outcome == 'success'
+        with:
+          name: failure-signals-more-areas
+          path: ${{ runner.temp }}/upload
+          retention-days: 30
