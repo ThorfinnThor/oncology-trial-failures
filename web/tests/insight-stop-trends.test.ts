@@ -57,22 +57,51 @@ test("stop reasons are counted per year from 2015 up to the build year, small ye
   assert.deepEqual(slice.covidByYear, [{ year: 2020, count: 3 }]);
 });
 
-test("the trend article names the first year from which business stops lead every year", () => {
-  const stats = { stopReasonsByYear: stopReasonsByYearSlice(yearRows, 2026, 2015, 50) } as InsightStats;
-  const article = getInsightBySlug("business-decisions-overtake-recruitment-as-clinical-trial-stop-reason", stats)!;
-  assert.equal(article.title, "Business decisions now stop more clinical trials than recruitment problems");
-  assert.match(article.dek, /Since 2018,/);
-  assert.equal(article.tables[0].rows.length, 6);
-  assert.match(article.tables[0].rows[5][0], /^2020, so far/);
-  assert.match(article.sections[2].body[0], /2019 to .* in 2020/);
+const TREND = "business-decisions-overtake-recruitment-as-clinical-trial-stop-reason";
+const trend = (rows: TrialIndexRow[], asOf = 2026) =>
+  getInsightBySlug(TREND, { stopReasonsByYear: stopReasonsByYearSlice(rows, asOf, 2015, 50) } as InsightStats)!;
+const withdrawn = (y: number, count: number) =>
+  make("business", count, { overall_status: "WITHDRAWN", completion_date: `${y}-06-01` });
+
+test("withdrawn trials count in the first table only, and each view gets its own crossover year", () => {
+  // 2017: recruitment 40, business 20 terminated + 30 withdrawn = 50
+  const rows = [...yearRows, ...withdrawn(2017, 30)];
+  const slice = stopReasonsByYearSlice(rows, 2026, 2015, 50);
+  assert.equal(slice.years[2].counts.business, 50);
+  assert.equal(slice.terminatedYears[2].counts.business, 20);
+  assert.equal(slice.years[2].counts.businessFunding, 50);
+  assert.equal(slice.years[2].total, 100, "the business parts are not added to the total");
+  const article = trend(rows);
+  assert.match(article.facts[3], /all stopped trials.*every year since 2017.*terminated trials alone.*since 2018/);
+  assert.equal(article.tables.length, 2);
 });
 
-test("without a lasting crossover the trend article does not claim one", () => {
-  const rows = [...yearRows, ...year(2021, 60, 10)];
-  const stats = { stopReasonsByYear: stopReasonsByYearSlice(rows, 2026, 2015, 50) } as InsightStats;
-  const article = getInsightBySlug("business-decisions-overtake-recruitment-as-clinical-trial-stop-reason", stats)!;
-  assert.equal(article.title, "How the reasons clinical trials stop have changed since 2015");
-  assert.doesNotMatch(article.dek, /Since \d{4}/);
+test("a lead that exists only with withdrawn trials is not claimed for terminated ones", () => {
+  const rows = [...yearRows, ...year(2021, 60, 10), ...withdrawn(2021, 80)];
+  const fact = trend(rows).facts[3];
+  assert.match(fact, /every year since 2018/);
+  assert.match(fact, /terminated trials alone, they do not lead in 2021/);
+});
+
+test("the headline claims doubling only when it holds with and without withdrawn trials", () => {
+  // 14% of terminated stops in the first three years, 40% in the last three
+  const doubling = [2015, 2016, 2017, 2018, 2019, 2020].flatMap((y) => year(y, 60, y < 2018 ? 10 : 40));
+  assert.equal(trend(doubling).title, "Business and funding stops of drug trials have more than doubled since 2015");
+  // the late years double only through withdrawn trials
+  const flat = [2015, 2016, 2017, 2018, 2019, 2020].flatMap((y) => year(y, 60, 20));
+  const inflated = [...flat, ...withdrawn(2018, 200), ...withdrawn(2019, 200), ...withdrawn(2020, 200)];
+  assert.equal(trend(inflated).title, "How the reasons drug trials stop have changed since 2015");
+});
+
+test("only the build year is marked incomplete", () => {
+  assert.match(trend(yearRows, 2020).tables[0].rows[5][0], /^2020, so far/);
+  assert.match(trend(yearRows, 2026).tables[0].rows[5][0], /^2020 \(/);
+});
+
+test("with too few years the article keeps its neutral text", () => {
+  const article = trend(year(2015, 60, 10));
+  assert.equal(article.title, "How the reasons drug trials stop have changed since 2015");
+  assert.deepEqual(article.facts, []);
 });
 
 function spans(kind: string, months: number[]) {
