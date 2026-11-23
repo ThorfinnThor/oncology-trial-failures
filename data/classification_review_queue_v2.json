@@ -10588,24 +10588,6 @@
     "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
   },
   {
-    "classification_text_hash": "5780259eaac7460bd509",
-    "why_stopped": "Results of interim analysis",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT02277132"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ANALYSIS_OR_REVIEW_WITHOUT_RESULT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
-  },
-  {
     "classification_text_hash": "57bb75f7288f22e7b328",
     "why_stopped": "Slow accrual and high levels of toxicity lead to early termination.",
     "record_count": 1,
@@ -17275,24 +17257,6 @@
     "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
   },
   {
-    "classification_text_hash": "a1ac3090f447c12549f6",
-    "why_stopped": "New treatments available, which prevents additional recruitment.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT01567540"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-    "review_priority": "HIGH",
-    "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-  },
-  {
     "classification_text_hash": "a1ad66281479d33e6cc5",
     "why_stopped": "Results from previous study DFA102 demonstrated neutralizing activity to metreleptin in invitro assay in 2 participants.",
     "record_count": 1,
@@ -18428,24 +18392,6 @@
     "review_disposition": "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE",
     "review_priority": "MEDIUM",
     "review_disposition_note": "The text says what did not cause the stop, such as no safety concern, but does not state what did cause it."
-  },
-  {
-    "classification_text_hash": "aef0f6fc4802d59da3d3",
-    "why_stopped": "Upon the Data Safety Monitoring Board review of the interim analysis (75% of participants have finished their follow-up) on November 17, 2023, they made a recommendation to stop recruitment into the trial.",
-    "record_count": 1,
-    "nct_ids": [
-      "NCT03954314"
-    ],
-    "current_v1_labels": {
-      "UNCLEAR/OTHER/UNKNOWN": 1
-    },
-    "suggested_outcome_v2": "UNKNOWN",
-    "suggested_primary_reason_v2": "UNSPECIFIED",
-    "suggested_secondary_reasons_v2": [],
-    "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-    "review_disposition": "ANALYSIS_OR_REVIEW_WITHOUT_RESULT",
-    "review_priority": "MEDIUM",
-    "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
   },
   {
     "classification_text_hash": "af558a4e47479ac13000",

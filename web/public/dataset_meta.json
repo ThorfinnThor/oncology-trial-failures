@@ -1,18 +1,18 @@
 {
   "version": "2026-11-23",
-  "generated_at_utc": "2026-11-23T13:58:46Z",
-  "imported_at_utc": "2026-11-23T13:58:46Z",
-  "source_verified_at": "2026-11-23T13:58:46Z",
+  "generated_at_utc": "2026-11-23T17:31:37Z",
+  "imported_at_utc": "2026-11-23T17:31:37Z",
+  "source_verified_at": "2026-11-23T17:31:37Z",
   "latest_source_update_at": "2026-11-23",
-  "content_changed_at": "2026-11-23T13:58:45Z",
-  "source_snapshot_id": "sha256:950ec3833d5bf0a1204255f30e1ab913f7bde90f397d492cb7b6bc7f9235e5f0",
+  "content_changed_at": "2026-11-23T17:31:37Z",
+  "source_snapshot_id": "sha256:eaa459996dcf56b43ee971d9edac694e64f49fb1c0589142aff1d4be5ac6d242",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 24132,
     "max_last_update_post_date": "2026-11-23"
   },
   "biological_failure": {
-    "record_count": 2479,
+    "record_count": 2480,
     "max_last_update_post_date": "2026-11-23"
   },
   "top_areas": [
@@ -60,16 +60,16 @@
   "classification_v2": {
     "version": "2.7.7",
     "outcomes": {
-      "NON_BIOLOGICAL": 14184,
-      "UNKNOWN": 3590,
-      "BIOLOGICAL_FAILURE": 2498,
+      "NON_BIOLOGICAL": 14185,
+      "UNKNOWN": 3587,
+      "BIOLOGICAL_FAILURE": 2499,
       "CAUSE_NOT_STATED": 1991,
       "NON_FAILURE_TRANSITION": 1613,
-      "MIXED_CAUSES": 256
+      "MIXED_CAUSES": 257
     },
     "primary_reasons": {
-      "RECRUITMENT": 6350,
-      "UNSPECIFIED": 3590,
+      "RECRUITMENT": 6351,
+      "UNSPECIFIED": 3587,
       "BUSINESS_STRATEGY": 2259,
       "FUNDING": 1796,
       "EFFICACY_FUTILITY": 1666,
@@ -77,7 +77,7 @@
       "NOT_INITIATED": 835,
       "STAFFING_RESOURCES": 825,
       "PROTOCOL_FEASIBILITY": 703,
-      "SAFETY": 639,
+      "SAFETY": 640,
       "SUPPLY_MANUFACTURING": 624,
       "REGULATORY": 516,
       "EXTERNAL_DISRUPTION": 500,
@@ -85,11 +85,11 @@
       "REPLACEMENT_TRANSITION": 415,
       "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 394,
       "PLANNED_MILESTONE": 363,
-      "MULTIPLE": 256,
+      "MULTIPLE": 257,
       "BIOLOGICAL_UNSPECIFIED": 193,
       "SUPPORT_WITHDRAWAL": 187
     },
-    "needs_review": 3633,
+    "needs_review": 3630,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,

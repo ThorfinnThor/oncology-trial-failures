@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "classifier_version": "2.7.7",
-  "review_group_count": 1272,
-  "review_record_count": 3633,
+  "review_group_count": 1269,
+  "review_record_count": 3630,
   "disposition_group_counts": {
-    "OTHER_AMBIGUOUS_TEXT": 429,
+    "OTHER_AMBIGUOUS_TEXT": 428,
     "ABBREVIATION_OR_FRAGMENT": 301,
-    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 150,
+    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 148,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 77,
     "PROVISIONAL_OR_FUTURE_PLAN": 61,
     "EXPLICIT_BUT_UNMAPPED_CAUSE": 45,
@@ -25,9 +25,9 @@
   },
   "disposition_record_counts": {
     "MISSING_STOP_REASON": 2143,
-    "OTHER_AMBIGUOUS_TEXT": 451,
+    "OTHER_AMBIGUOUS_TEXT": 450,
     "ABBREVIATION_OR_FRAGMENT": 357,
-    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 167,
+    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 165,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 93,
     "PROVISIONAL_OR_FUTURE_PLAN": 71,
     "STATUS_OR_ACTION_WITHOUT_CAUSE": 65,
@@ -44,14 +44,14 @@
     "SITE_OR_INSTITUTION_ADMIN_TEXT": 1
   },
   "priority_group_counts": {
-    "MEDIUM": 673,
-    "HIGH": 560,
+    "MEDIUM": 671,
+    "HIGH": 559,
     "LOW": 39
   },
   "priority_record_counts": {
     "LOW": 2258,
-    "MEDIUM": 779,
-    "HIGH": 596
+    "MEDIUM": 777,
+    "HIGH": 595
   },
   "disposition_notes": {
     "MISSING_STOP_REASON": "ClinicalTrials.gov supplies no stop-reason text. No semantic cause can be asserted without another explicit primary-source statement.",
@@ -10665,24 +10665,6 @@
       "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
     },
     {
-      "classification_text_hash": "5780259eaac7460bd509",
-      "why_stopped": "Results of interim analysis",
-      "record_count": 1,
-      "nct_ids": [
-        "NCT02277132"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 1
-      },
-      "suggested_outcome_v2": "UNKNOWN",
-      "suggested_primary_reason_v2": "UNSPECIFIED",
-      "suggested_secondary_reasons_v2": [],
-      "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-      "review_disposition": "ANALYSIS_OR_REVIEW_WITHOUT_RESULT",
-      "review_priority": "MEDIUM",
-      "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
-    },
-    {
       "classification_text_hash": "57bb75f7288f22e7b328",
       "why_stopped": "Slow accrual and high levels of toxicity lead to early termination.",
       "record_count": 1,
@@ -17352,24 +17334,6 @@
       "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
     },
     {
-      "classification_text_hash": "a1ac3090f447c12549f6",
-      "why_stopped": "New treatments available, which prevents additional recruitment.",
-      "record_count": 1,
-      "nct_ids": [
-        "NCT01567540"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 1
-      },
-      "suggested_outcome_v2": "UNKNOWN",
-      "suggested_primary_reason_v2": "UNSPECIFIED",
-      "suggested_secondary_reasons_v2": [],
-      "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-      "review_priority": "HIGH",
-      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-    },
-    {
       "classification_text_hash": "a1ad66281479d33e6cc5",
       "why_stopped": "Results from previous study DFA102 demonstrated neutralizing activity to metreleptin in invitro assay in 2 participants.",
       "record_count": 1,
@@ -18505,24 +18469,6 @@
       "review_disposition": "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE",
       "review_priority": "MEDIUM",
       "review_disposition_note": "The text says what did not cause the stop, such as no safety concern, but does not state what did cause it."
-    },
-    {
-      "classification_text_hash": "aef0f6fc4802d59da3d3",
-      "why_stopped": "Upon the Data Safety Monitoring Board review of the interim analysis (75% of participants have finished their follow-up) on November 17, 2023, they made a recommendation to stop recruitment into the trial.",
-      "record_count": 1,
-      "nct_ids": [
-        "NCT03954314"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 1
-      },
-      "suggested_outcome_v2": "UNKNOWN",
-      "suggested_primary_reason_v2": "UNSPECIFIED",
-      "suggested_secondary_reasons_v2": [],
-      "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-      "review_disposition": "ANALYSIS_OR_REVIEW_WITHOUT_RESULT",
-      "review_priority": "MEDIUM",
-      "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
     },
     {
       "classification_text_hash": "af558a4e47479ac13000",
