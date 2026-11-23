@@ -306,8 +306,13 @@ trials (their arms from ClinicalTrials.gov, then the same resolver), without tou
 **Backfill built 23 Nov** (`scripts/universe/resolve_stopped_extra.py`, 20 min per weekly run, batches of 100).
 **B built 23 Nov:** `build_oncology_failure_signals.py --scope more-areas` → product/failure_signals_more_areas_v1.*
 (930 trials: Infectious 217, Neurology 172, Gastro & Hepatology 148, Immunology 110, Cardiovascular 102,
-Endocrine 94, Respiratory 87), weekly step "Build Failure Signals for seven more areas". Not yet on the site or
-pricing page. **Found 23 Nov:** the weekly run uploaded product/ (the paid oncology product) unencrypted as a run
+Endocrine 94, Respiratory 87), weekly step "Build Failure Signals for seven more areas". **First build 23 Nov**
+(manual workflow, run 45268854766): 931 trials, 568 unique assets, experimental-arm drugs resolved 68 %, trials
+with a resolved tested drug 61 % (with a research code 75 %), mechanism 49 %, target gene 39 %, a publication
+37 %; all sources OK (oncology for comparison: resolved drug 73 %, target gene 54 %). The first weekly attempt
+hit its 50-minute budget (exit 3), which turned the run of 23 Nov red. Not yet on the site or pricing page.
+**Drug names, RxNorm pass 23 Nov:** 165 of 4,064 remaining names; 15,444 trials fully resolved (75.7 % of
+trials with a drug), 2,210 unresolved; procedures and class words now kept apart (from the next run). **Found 23 Nov:** the weekly run uploaded product/ (the paid oncology product) unencrypted as a run
 artifact, downloadable by any signed-in GitHub user on this public repo; now encrypted (PACKAGE_PASSPHRASE).
 All 33 earlier unencrypted product artifacts deleted 23 Nov (Schayan's go). Code stays public for now
 (decided 23 Nov; options if revisited: repo private, or a public data-only repo; Zenodo v1.0.0/v1.1.0 already
