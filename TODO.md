@@ -3,7 +3,7 @@
 Ordered by what stands between the site and its first paying customer. Everything above the line
 in each section is blocked on nothing but time.
 
-*Last reviewed 22 Nov 2026.*
+*Last reviewed 23 Nov 2026.*
 
 ---
 
@@ -213,8 +213,9 @@ environment "oncology-trial-failures" (EDGAR and the live site allowed).
 this trial, 30 about the drug's programme); 51 not accepted (another trial, result without direction, no
 reason). Details: `docs/sec_evidence_review_2026-11-22.md`. **Applied 22 Nov, in the data from the weekly run of
 23 Nov** (`docs/classification_change_2026-11-22_sec_filings.md`: CAUSE_NOT_STATED → BIO 21, UNRESOLVED → BIO
-13, CAUSE_NOT_STATED → NON_BIO 12, UNRESOLVED → NON_BIO 2, UNRESOLVED → CAUSE_NOT_STATED 2). Check after
-that run: 50 rows with source SEC_FILING_REVIEWED, the validator green, the box on e.g. /trial/NCT03033511.
+13, CAUSE_NOT_STATED → NON_BIO 12, UNRESOLVED → NON_BIO 2, UNRESOLVED → CAUSE_NOT_STATED 2). **Checked 23 Nov**
+(run 45129837484, green): 50 rows with source SEC_FILING_REVIEWED, 24,124 trials all on 2.7.7, the box live
+on /trial/NCT03033511. The run still logged "No HF_TOKEN secret": the Hugging Face sample is not refreshed.
 
 **How the review was set up:** Claude reviews all of them as an AI-assisted review,
 labelled as such (like the earlier reviewed decisions, not a clinician verdict): for each, whether the
