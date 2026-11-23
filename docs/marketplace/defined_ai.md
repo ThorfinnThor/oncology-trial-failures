@@ -19,7 +19,7 @@ terms, payment terms. Check them in the partner agreement before signing.
 
 - **Dated release only.** The weekly feed, custom scopes, clinician review and the drug/target fields stay
   direct sales (contact@clinicaltrialfailures.com).
-- **No ChEMBL fields, no SEC filing text, no PubMed abstracts** in the package
+- **Of ChEMBL only standard drug names (no IDs, mechanisms or targets), no SEC filing text, no PubMed abstracts** in the package
   (`docs/provenance_and_rights.md`). The builder checks the SEC part and fails if filing text is left.
 - **Non-exclusive.** Do not grant Defined.ai exclusivity: the same data is sold directly and is public
   under CC BY-NC.
@@ -45,7 +45,8 @@ blind annotation and a clinician review.
 > supply or regulatory reasons (14,177), planned transitions (1,613), and trials whose reason is
 > missing or ambiguous (5,642), which are kept apart rather than guessed.
 >
-> Each row carries the registry fields (phase, conditions, interventions, sponsor, dates), the sponsor's
+> Each row carries the registry fields (phase, conditions, interventions, sponsor, dates), the drugs tested
+> under their standard name, kept apart from the background the control arm also received, the sponsor's
 > verbatim stop reason, the label, secondary causes, and a machine-readable trace of the rule and the
 > text span it matched. For 50 trials whose registry entry gives no cause, the label comes from the
 > sponsor's own SEC filing (reviewed per trial; filing linked).
@@ -99,8 +100,9 @@ sample: https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-f
   results documents are included.
 - **Our work:** labels, evidence traces, disease-area assignment, endpoint verdicts and documentation
   are created by Clinical Trial Failures. We hold the rights and can grant a commercial licence.
-- **Excluded third-party content:** no ChEMBL (CC BY-SA) fields, no PubMed abstracts, no SEC filing
-  text (only links to public filings).
+- **Third-party content:** of ChEMBL (CC BY-SA) only the standard names of drugs (facts), attributed; NCI
+  Thesaurus codes (CC BY 4.0), attributed; no PubMed abstracts; no SEC filing text in the package (only
+  links to public filings).
 - **Personal data:** none. Trial-level records; sponsor and organisation names only. No patient data,
   no investigator contact details.
 - **Human review:** AI-assisted review decisions and one clinician reviewer so far; individual

@@ -41,11 +41,13 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.samples.build_label_sample import BASIS, STOP_COLUMNS, fmt, pct  # noqa: E402
+from scripts.universe.export_trial_drugs import RESOLVED, drug_fields, load_trial_drugs, summarise  # noqa: E402
 
 UNIVERSE = ROOT / ".cache/universe/universe_v1.jsonl.gz"
 SEC_EVIDENCE = re.compile(r"(sec\.(?:programme|trial)_filing):(\S+ \S+ https://www\.sec\.gov/\S+?):\s.*$")
 ENDPOINT_COLUMNS = ["nct_id", "brief_title", "overall_status", "phases", "disease_area", "lead_sponsor",
-                    "conditions", "intervention_names", "intervention_types",
+                    "conditions", "intervention_names", "intervention_types", "drugs_tested", "drugs_background",
+                    "drug_ncit_codes", "drug_resolution",
                     "start_date", "primary_completion_date", "endpoint_label", "endpoint_label_basis",
                     "sponsor_statement", "primary_comparisons_read", "stop_label_outcome",
                     "stop_label_primary_reason", "why_stopped", "results_url"]
@@ -81,6 +83,14 @@ def endpoint_rows(stopped: dict[str, dict]) -> tuple[list[list], dict]:
     if not verdicts or not UNIVERSE.exists():
         return [], {}
     stale = sum(1 for v in verdicts.values() if v.get("reader_version") != READER_VERSION)
+    drug_of: dict[str, dict] = {}
+    if RESOLVED.exists():
+        from scripts.universe.chembl_index import norm
+        with gzip.open(RESOLVED, "rt", encoding="utf-8") as fh:
+            for line in fh:
+                rec = json.loads(line)
+                if rec.get("nct_id") in verdicts:
+                    drug_of[rec["nct_id"]] = summarise(rec, None, norm)
     reg: dict[str, dict] = {}
     with gzip.open(UNIVERSE, "rt", encoding="utf-8") as fh:
         for line in fh:
@@ -97,6 +107,7 @@ def endpoint_rows(stopped: dict[str, dict]) -> tuple[list[list], dict]:
         out.append([nct, r.get("brief_title"), r.get("overall_status"), "|".join(r.get("phases") or []),
                     r.get("disease_area"), r.get("lead_sponsor"), "; ".join(r.get("conditions") or []),
                     "; ".join(i.get("name") or "" for i in ivs), "; ".join(sorted({i.get("type") or "" for i in ivs})),
+                    *[drug_fields(drug_of, nct)[k] for k in ("drugs_tested", "drugs_background", "drug_ncit_codes", "drug_resolution")],
                     r.get("start_date"), r.get("primary_completion_date"),
                     ev["verdict"], ev["basis"], ev.get("statement") or "", " || ".join(ev["lines"]),
                     s.get("classification_final_outcome", ""), s.get("classification_final_category", ""),
@@ -113,6 +124,9 @@ def main() -> int:
     meta = json.loads((ROOT / "web/public/dataset_meta.json").read_text())
     release = meta.get("version") or date.today().isoformat()
     rows = list(csv.DictReader(open(ROOT / "data/all_stopped_trials.csv", encoding="utf-8")))
+    drugs = load_trial_drugs()
+    for r in rows:
+        r.update(drug_fields(drugs, r["nct_id"]))
 
     # 1. Stop-reason labels: every row, the sample's columns.
     stop_cols = [c for c, _ in STOP_COLUMNS]
@@ -188,6 +202,12 @@ def main() -> int:
           "`intervention_types`, `lead_sponsor`, `start_date`, `primary_completion_date`, `why_stopped`, "
           "`registry_url` | Registry fields as filed (`why_stopped` verbatim) | ClinicalTrials.gov |",
           "| `disease_area` | One of the areas above, from conditions and MeSH terms (keyword-based) | Ours |",
+          "| `drugs_tested`, `drugs_background` | The drugs the experimental arms received and the control arms did not, "
+          "under their standard name; and what the control arms received too (background, never the drug tested) | "
+          "Ours; names from ChEMBL and the NCI Thesaurus |",
+          "| `drug_ncit_codes`, `drug_resolution` | NCI Thesaurus codes of the tested drugs; how far they were identified "
+          "(`RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, `NOT_COVERED`: only interventional "
+          "Phase 2/3 trials started 2010 or later are resolved today) | Ours; NCI Thesaurus |",
           "| `label_outcome`, `label_primary_reason`, `label_secondary_reasons` (`; `-separated) | The label | Ours |",
           "| `label_evidence` | Trace: classifier version, outcome, reason, each rule that fired and the text it "
           "matched. For `sec_filing` rows: the filing's form, date and URL | Ours |",
@@ -242,10 +262,13 @@ def main() -> int:
           "| Source | What is used | Terms |", "| --- | --- | --- |",
           "| ClinicalTrials.gov (US National Library of Medicine) | Registry fields and posted results, as filed | "
           "ClinicalTrials.gov terms of use; registry fields stay under them |",
+          "| ChEMBL (EMBL-EBI), NCI Thesaurus (NCI) | Standard drug names only (no identifiers, mechanisms or targets "
+          "from ChEMBL); NCI Thesaurus codes | ChEMBL CC BY-SA 3.0, NCI Thesaurus CC BY 4.0; attribution here |",
           "| SEC EDGAR | For `sec_filing` rows: the filing's identity and URL (no filing text) | Public filings |",
           "| Clinical Trial Failures | All labels, evidence traces, disease areas, the datasheet | Licensed under the agreement "
           "this package is delivered with |", "",
-          "No ChEMBL, PubMed or other third-party database content is included.", "",
+          "Of ChEMBL only the standard names of drugs are used (a drug's name is a fact); no ChEMBL identifiers, "
+          "mechanisms, targets or tables. No PubMed text.", "",
           "## Licence", "",
           "Delivered under a commercial licence (the agreement or marketplace terms it was obtained under), covering "
           "training, evaluation and deployment of models, with no restriction on the trained models or their outputs. "

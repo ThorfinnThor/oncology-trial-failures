@@ -28,10 +28,13 @@ import collections
 import csv
 import json
 import random
+import sys
 from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+from scripts.universe.export_trial_drugs import drug_fields, load_trial_drugs  # noqa: E402
 
 BASIS = {"RULE_V2": "rule", "REVIEWED_EXACT": "reviewed_decision", "SEC_FILING_REVIEWED": "sec_filing",
          "PUBLICATION_REVIEWED": "publication", "CTIS_REVIEWED": "eu_register",
@@ -54,6 +57,8 @@ STOP_COLUMNS = [
     ("nct_id", "nct_id"), ("brief_title", "brief_title"), ("overall_status", "overall_status"),
     ("phases", "phases"), ("disease_area", "disease_area"), ("conditions", "conditions"),
     ("intervention_names", "intervention_names"), ("intervention_types", "intervention_types"),
+    ("drugs_tested", "drugs_tested"), ("drugs_background", "drugs_background"),
+    ("drug_ncit_codes", "drug_ncit_codes"), ("drug_resolution", "drug_resolution"),
     ("lead_sponsor", "lead_sponsor"), ("start_date", "start_date"),
     ("primary_completion_date", "primary_completion_date"), ("why_stopped", "why_stopped"),
     ("label_outcome", "classification_final_outcome"),
@@ -64,7 +69,7 @@ STOP_COLUMNS = [
     ("registry_url", "url"),
 ]
 ENDPOINT_COLUMNS = ["nct_id", "brief_title", "overall_status", "phases", "disease_area", "lead_sponsor",
-                    "intervention_names", "endpoint_label", "endpoint_label_basis", "sponsor_statement",
+                    "intervention_names", "drugs_tested", "drug_resolution", "endpoint_label", "endpoint_label_basis", "sponsor_statement",
                     "sponsor_statement_location", "primary_comparisons_read", "stop_label_outcome",
                     "stop_label_primary_reason", "why_stopped", "results_url"]
 
@@ -121,6 +126,9 @@ def main() -> int:
     areas, phases = set(args.area), set(args.phase or ["2", "3"])
     rng = random.Random(args.seed)
     rows = list(csv.DictReader(open(ROOT / "data/all_stopped_trials.csv", encoding="utf-8")))
+    drugs = load_trial_drugs()
+    for r in rows:
+        r.update(drug_fields(drugs, r["nct_id"]))
     known_areas = {r["disease_area"] for r in rows}
     unknown = areas - known_areas
     if unknown:
@@ -166,7 +174,7 @@ def main() -> int:
             v, r = ep["trials"][nct], by_id[nct]
             st = v.get("statement") or {}
             w.writerow([nct, r["brief_title"], r["overall_status"], r["phases"], r["disease_area"], r["lead_sponsor"],
-                        r["intervention_names"], v["verdict"], v["basis"], st.get("text", ""), st.get("where", ""),
+                        r["intervention_names"], r["drugs_tested"], r["drug_resolution"], v["verdict"], v["basis"], st.get("text", ""), st.get("where", ""),
                         " || ".join(v["lines"]), r["classification_final_outcome"], r["classification_final_category"],
                         r["why_stopped"], v["results_url"]])
 
@@ -244,6 +252,14 @@ def main() -> int:
           "| `nct_id`, `brief_title`, `overall_status`, `phases`, `conditions`, `intervention_names`, `intervention_types`, "
           "`lead_sponsor`, `start_date`, `primary_completion_date` | Registry fields as filed | ClinicalTrials.gov |",
           "| `disease_area` | One of 15 areas, derived from conditions and MeSH terms | Ours |",
+          "| `drugs_tested` | The drugs the experimental arms received and the control arms did not, under their standard "
+          "name (\"Pembrolizumab\" for \"MK-3475\"); a drug we could not identify appears as filed | Ours; names from ChEMBL "
+          "(CC BY-SA 3.0) and the NCI Thesaurus (CC BY 4.0) |",
+          "| `drugs_background` | What the control arms received too: the background a drug was tested on, never the drug "
+          "tested | Ours, as above |",
+          "| `drug_ncit_codes` | NCI Thesaurus codes of the tested drugs, where one identifies the drug | NCI Thesaurus |",
+          "| `drug_resolution` | `RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, or `NOT_COVERED` (only "
+          "interventional Phase 2/3 trials started 2010 or later are resolved today) | Ours |",
           "| `why_stopped` | The sponsor's stop reason, verbatim | ClinicalTrials.gov |",
           "| `label_outcome`, `label_primary_reason` | See above | Ours |",
           "| `label_secondary_reasons` | Further explicit causes, separated by `; ` | Ours |",
