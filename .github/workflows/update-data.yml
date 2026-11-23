@@ -188,6 +188,19 @@ jobs:
           # Diffs against the snapshot in .cache/signals, then refreshes it for the next run.
           python scripts/signals/build_change_report.py
 
+      # The same product for the seven largest areas after oncology (by biological stops): Infectious
+      # Disease, Neurology, Gastroenterology & Hepatology, Immunology & Autoimmune, Cardiovascular,
+      # Endocrine & Metabolic, Respiratory. Licensed, never published; product/failure_signals_more_areas_v1.*
+      # Exit code 3 = time budget reached: the HTTP cache keeps what was fetched and the next run resumes.
+      - name: Build Failure Signals for seven more areas
+        id: signals_more
+        continue-on-error: true
+        env:
+          SIGNALS_CONTACT: ${{ secrets.SIGNALS_CONTACT }}
+          NCBI_API_KEY: ${{ secrets.NCBI_API_KEY }}
+        run: |
+          python -u scripts/signals/build_oncology_failure_signals.py --scope more-areas --step all --max-seconds 3000 --workers 6
+
       - name: Build trial universe and discontinuation rates
         id: discontinuation_rates
         continue-on-error: true
@@ -298,12 +311,31 @@ jobs:
             .cache/universe
           key: signals-${{ github.run_id }}
 
-      - name: Upload Oncology Failure Signals release
+      # The licensed products are uploaded encrypted (repository secret PACKAGE_PASSPHRASE): the
+      # repository is public, and so are its run artifacts to any signed-in GitHub user. Until 23 Nov
+      # 2026 this folder was uploaded in the clear. Decrypt as in marketplace-package.yml.
+      - name: Encrypt the product release
+        id: product_encrypt
         if: steps.signals.outcome == 'success' || steps.discontinuation_rates.outcome == 'success'
+        env:
+          PACKAGE_PASSPHRASE: ${{ secrets.PACKAGE_PASSPHRASE }}
+        run: |
+          if [ -z "$PACKAGE_PASSPHRASE" ]; then
+            echo "No PACKAGE_PASSPHRASE secret; the product release is not uploaded."
+            exit 0
+          fi
+          mkdir -p "$RUNNER_TEMP/product_upload"
+          tar czf "$RUNNER_TEMP/product.tar.gz" -C product .
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -pass env:PACKAGE_PASSPHRASE \
+            -in "$RUNNER_TEMP/product.tar.gz" -out "$RUNNER_TEMP/product_upload/product.tar.gz.enc"
+          echo "ready=1" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the product release (encrypted)
+        if: steps.product_encrypt.outputs.ready == '1'
         uses: actions/upload-artifact@v4
         with:
-          name: oncology-failure-signals-${{ github.run_id }}
-          path: product/
+          name: failure-signals-products-${{ github.run_id }}
+          path: ${{ runner.temp }}/product_upload
           retention-days: 90
 
       - name: Commit public product summary and sample
@@ -523,6 +555,7 @@ jobs:
           EXPORTS: ${{ steps.cohort_exports.outcome }}
           NEWSLETTER: ${{ steps.newsletter.outcome }}
           NEWSLETTER_COMMIT: ${{ steps.newsletter_commit.outcome }}
+          SIGNALS_MORE: ${{ steps.signals_more.outcome }}
           SEC_SEARCH: ${{ steps.sec_search.outcome }}
           PUB_SEARCH: ${{ steps.pub_search.outcome }}
           CTIS_SEARCH: ${{ steps.ctis_search.outcome }}
@@ -539,7 +572,7 @@ jobs:
                       "Trial universe and rates:$RATES" "Brief PDFs:$BRIEF_PDFS" \
                       "Product summary, packages, asset index:$PRODUCT" "Cohort exports:$EXPORTS" \
                       "Newsletter:$NEWSLETTER" "Newsletter archive commit:$NEWSLETTER_COMMIT" \
-                      "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "CTIS search:$CTIS_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
+                      "Failure Signals, seven more areas:$SIGNALS_MORE" "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "CTIS search:$CTIS_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
             name="${pair%%:*}"; outcome="${pair##*:}"
             echo "| $name | ${outcome:-not reached} |" >> "$GITHUB_STEP_SUMMARY"
             if [ "$outcome" = "failure" ]; then
@@ -567,6 +600,7 @@ jobs:
           HF: ${{ steps.hf_sample.outcome }}
           NEWSLETTER: ${{ steps.newsletter.outcome }}
           NEWSLETTER_COMMIT: ${{ steps.newsletter_commit.outcome }}
+          SIGNALS_MORE: ${{ steps.signals_more.outcome }}
           SEC_SEARCH: ${{ steps.sec_search.outcome }}
           PUB_SEARCH: ${{ steps.pub_search.outcome }}
           CTIS_SEARCH: ${{ steps.ctis_search.outcome }}
@@ -580,7 +614,7 @@ jobs:
                         "Trial universe and rates:$RATES" "Brief PDFs:$BRIEF_PDFS" \
                         "Product summary, packages, asset index:$PRODUCT" "Cohort exports:$EXPORTS" \
                         "Hugging Face sample:$HF" "Newsletter:$NEWSLETTER" "Newsletter archive commit:$NEWSLETTER_COMMIT" \
-                        "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "CTIS search:$CTIS_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
+                        "Failure Signals, seven more areas:$SIGNALS_MORE" "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "CTIS search:$CTIS_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
               echo "  - ${pair%%:*}: ${pair##*:}"
             done
             echo

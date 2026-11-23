@@ -302,7 +302,14 @@ Oncology 3,779 of 4,758 covered fully resolved; other areas 50–68 %. Fixed the
 arm also got no longer counts as tested (243 rows), "anhydrous" dropped.
 **Next:** resolve the 12,298 not covered (Phase 1, Phase 4, before 2010) with a separate pass over the stopped
 trials (their arms from ClinicalTrials.gov, then the same resolver), without touching the rate denominators.
-B (signals product for 7 more areas) not started.
+**Backfill built 23 Nov** (`scripts/universe/resolve_stopped_extra.py`, 20 min per weekly run, batches of 100).
+**B built 23 Nov:** `build_oncology_failure_signals.py --scope more-areas` → product/failure_signals_more_areas_v1.*
+(930 trials: Infectious 217, Neurology 172, Gastro & Hepatology 148, Immunology 110, Cardiovascular 102,
+Endocrine 94, Respiratory 87), weekly step "Build Failure Signals for seven more areas". Not yet on the site or
+pricing page. **Found 23 Nov:** the weekly run uploaded product/ (the paid oncology product) unencrypted as a run
+artifact, downloadable by any signed-in GitHub user on this public repo; now encrypted (PACKAGE_PASSPHRASE).
+The three earlier artifacts (runs 45129837484, 45185646900, 45225115695, 90-day retention) still exist:
+delete them (Schayan's decision).
 
 ## Getting found: next steps (decided 19 Nov)
 

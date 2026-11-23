@@ -39,6 +39,19 @@ from scripts.signals.external_sources import chembl_mechanisms, chembl_molecule,
 
 SOURCE = ROOT / "data/all_oncology_stopped_trials.json"
 OUT = ROOT / "product"
+# --scope more-areas builds the same product for the seven largest therapeutic areas after oncology
+# (by biological stops, 23 Nov 2026). The oncology files, names and consumers are unchanged.
+MORE_AREAS = ["Infectious Disease", "Neurology", "Gastroenterology & Hepatology", "Immunology & Autoimmune",
+              "Cardiovascular", "Endocrine & Metabolic", "Respiratory"]
+SCOPES = {
+    "oncology": {"source": SOURCE, "areas": None, "prefix": "oncology_failure_signals",
+                 "product": "Oncology Failure Signals",
+                 "scope": "Stopped oncology trials with BIOLOGICAL_FAILURE, or MIXED_CAUSES including an efficacy/safety/biological cause"},
+    "more-areas": {"source": ROOT / "data/all_stopped_trials.json", "areas": MORE_AREAS,
+                   "prefix": "failure_signals_more_areas", "product": "Clinical Trial Failure Signals: seven more areas",
+                   "scope": "Stopped trials in " + ", ".join(MORE_AREAS) + " (primary disease area) with BIOLOGICAL_FAILURE, "
+                            "or MIXED_CAUSES including an efficacy/safety/biological cause"},
+}
 PRODUCT_VERSION = "1.0.0"
 BIO_REASONS = {"EFFICACY_FUTILITY", "SAFETY", "BIOLOGICAL_UNSPECIFIED"}
 DRUG_TYPES = {"DRUG", "BIOLOGICAL", "GENETIC", "COMBINATION_PRODUCT"}
@@ -267,10 +280,16 @@ def main() -> int:
     ap.add_argument("--max-seconds", type=float, default=150.0)
     ap.add_argument("--workers", type=int, default=4)
     ap.add_argument("--chembl-workers", type=int, default=12, help="ChEMBL latency is high; more parallel requests")
+    ap.add_argument("--scope", choices=sorted(SCOPES), default="oncology")
     args = ap.parse_args()
     started = time.monotonic()
+    scope = SCOPES[args.scope]
 
-    records = [r for r in json.loads(SOURCE.read_text()) if in_scope(r)]
+    # The module-level SOURCE is read at call time for oncology: the smoke test points it at a subset.
+    source = SOURCE if args.scope == "oncology" else scope["source"]
+    records = [r for r in json.loads(source.read_text()) if in_scope(r)
+               and (scope["areas"] is None or r.get("disease_area") in scope["areas"])]
+    area_of = {r["nct_id"]: r.get("disease_area") for r in records}
     ncts = sorted({r["nct_id"] for r in records})
     source_status: dict[str, str] = {}
 
@@ -594,8 +613,12 @@ def main() -> int:
     for row in out_rows:
         row["focus_asset_signal_trial_counts"] = {aid: assets[aid]["focus_signal_trial_count"] for aid in row["focus_asset_ids"]}
 
+    if scope["areas"]:  # the oncology rows stay exactly as they were (the change report diffs them)
+        for row in out_rows:
+            row["disease_area"] = area_of.get(row["nct_id"])
+    prefix = scope["prefix"]
     OUT.mkdir(exist_ok=True)
-    with open(OUT / "oncology_failure_signals_v1.jsonl", "w", encoding="utf-8") as fh:
+    with open(OUT / f"{prefix}_v1.jsonl", "w", encoding="utf-8") as fh:
         for row in out_rows:
             fh.write(json.dumps(row, ensure_ascii=False) + "\n")
     focus_cov = sum(1 for r in out_rows if r["focus_asset_ids"] or r["focus_research_codes"]) / max(1, len(out_rows))
@@ -603,20 +626,23 @@ def main() -> int:
                  "stop_reason_text", "stop_reason_source", "sponsor_group", "lead_sponsor_raw", "sponsor_class_ctgov", "is_industry", "focus_assets", "focus_asset_ids",
                  "focus_research_codes", "focus_mechanisms", "focus_targets", "focus_target_genes", "focus_max_phase_chembl", "focus_pharmacologic_classes", "publication_count", "focus_includes_non_us_marketed", "conditions",
                  "enrollment_count", "enrollment_type", "start_date", "primary_completion_date", "last_update_post_date", "registry_url"]
-    with open(OUT / "oncology_failure_signals_v1.csv", "w", newline="", encoding="utf-8") as fh:
+    if scope["areas"]:
+        flat_cols.insert(flat_cols.index("conditions"), "disease_area")
+    with open(OUT / f"{prefix}_v1.csv", "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=flat_cols)
         w.writeheader()
         for row in out_rows:
             w.writerow({k: "; ".join(map(str, row[k])) if isinstance(row[k], list) else row[k] for k in flat_cols})
-    (OUT / "oncology_failure_signals_assets_v1.json").write_text(json.dumps(sorted(assets.values(), key=lambda a: -a["focus_signal_trial_count"]), indent=1, ensure_ascii=False) + "\n")
+    (OUT / f"{prefix}_assets_v1.json").write_text(json.dumps(sorted(assets.values(), key=lambda a: -a["focus_signal_trial_count"]), indent=1, ensure_ascii=False) + "\n")
 
     focus_iv = [c for r in out_rows for i in r["interventions"] if i["role"] == "EXPERIMENTAL_ARM" for c in i["components"]]
     meta = {
-        "product": "Oncology Failure Signals",
+        "product": scope["product"],
         "product_version": PRODUCT_VERSION,
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "dataset_version": json.loads((ROOT / "web/public/dataset_meta.json").read_text()).get("version"),
-        "scope": "Stopped oncology trials with BIOLOGICAL_FAILURE, or MIXED_CAUSES including an efficacy/safety/biological cause",
+        "scope": scope["scope"],
+        **({"by_disease_area": dict(Counter(r["disease_area"] for r in out_rows))} if scope["areas"] else {}),
         "trial_count": len(out_rows),
         "industry_trial_count": sum(r["is_industry"] for r in out_rows),
         "industry_phase2_3_trial_count": sum(r["is_industry"] and bool({"PHASE2", "PHASE3"} & set(r["phases"])) for r in out_rows),
@@ -655,7 +681,7 @@ def main() -> int:
             "Stop reasons are sponsor-reported registry text; when the registry reason is blank, a direct sentence from the registry description is used (stop_reason_source).",
         ],
     }
-    (OUT / "oncology_failure_signals_v1_meta.json").write_text(json.dumps(meta, indent=2) + "\n")
+    (OUT / f"{prefix}_v1_meta.json").write_text(json.dumps(meta, indent=2) + "\n")
     print(json.dumps({k: meta[k] for k in ["trial_count", "industry_trial_count", "industry_phase2_3_trial_count", "experimental_arm_drug_resolution_rate",
                                            "trials_with_resolved_focus_asset", "trials_with_focus_research_code", "trials_with_focus_asset_or_research_code", "trials_with_focus_target_gene", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer", "unique_assets", "unique_assets_chembl", "source_status"]}, indent=2))
     return 0
