@@ -453,6 +453,234 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     faqs: [],
   },
   {
+    slug: "clinical-trial-outcome-data-for-machine-learning",
+    title: "Clinical trial outcome data for machine learning: which labels can you trust?",
+    metaDescription:
+      "Training a model on clinical trial outcomes? Registry status is not an outcome. What a usable failure label needs, which trials to leave out, and how to check labels before you train on them.",
+    eyebrow: "Data for AI",
+    dek:
+      "Most trial-outcome models are trained on registry status: completed means success, terminated means failure. Both halves of that are wrong often enough to matter. Here is what a label has to say before a model should learn from it.",
+    datePublished: "2026-11-23",
+    readingTime: "8 min read",
+    keyword: "clinical trial outcome dataset machine learning",
+    factsHeading: "In short",
+    facts: [
+      "A terminated trial is not a failed drug: most stopped trials stop for recruitment, funding or business reasons, not because the drug did not work.",
+      "A completed trial is not a success: many completed Phase 2 and 3 trials posted a primary analysis that missed.",
+      "Usable labels say why a trial stopped or whether its primary endpoint was met, and keep the evidence they rest on.",
+      "Trials that stopped for non-biological reasons are not negatives for a success model; leave them out rather than call them successes or failures.",
+    ],
+    sections: [
+      {
+        heading: "Status is a process field, not an outcome",
+        body: [
+          "ClinicalTrials.gov records where a trial is in its life: recruiting, completed, terminated, withdrawn, suspended. It does not record whether the drug worked. A trial is “terminated” when it stops early for any reason, and in our data of more than 24,000 stopped trials about one in ten stopped because of the drug’s effect (efficacy, futility, safety or benefit–risk). The rest stopped because enrolment was too slow, money ran out, the sponsor changed its portfolio, a regulator or supplier intervened, or the trial was replaced by another.",
+          "Withdrawn trials are mostly trials that never enrolled anyone. Labelling them as failures teaches a model that an administrative event is a pharmacological one. Completed trials have the opposite problem: completing a protocol says nothing about the result, and a large share of completed confirmatory trials posted a primary analysis that missed.",
+        ],
+      },
+      {
+        heading: "Two labels that do carry an outcome",
+        body: [
+          "A stop-reason label reads the sponsor’s stated reason for stopping and says whether it is about the drug’s effect. It turns the registry’s least structured field into a class you can train on, and it can be checked against the sentence it came from.",
+          "An endpoint label reads the posted primary analysis and says whether it met or missed. It covers the trials a stop-reason label cannot: those that ran to the end. It needs care: a result can only be called against a threshold the record states or its interval implies, non-inferiority tests are a different question, and a statistically significant result is not an approval.",
+          "Used together they give a failure class that does not depend on whether the sponsor stopped early or finished and posted.",
+        ],
+      },
+      {
+        heading: "What to leave out, and why",
+        body: [
+          "For a probability-of-success model, the failure class is clear: stopped for efficacy, futility, safety or benefit–risk, or completed with a missed primary endpoint. The success class is harder. Trials stopped for recruitment, funding or strategy are neither: the experiment was not finished, so the drug’s effect is unknown. Counting them as successes or failures adds noise in a direction that correlates with sponsor size and disease area.",
+          "Trials whose stated reason is missing or ambiguous should be kept apart rather than guessed. A label set that forces every trial into a class will look more complete and train a worse model.",
+        ],
+      },
+      {
+        heading: "How to check labels before training on them",
+        body: [
+          "Ask for the evidence span: the exact text the label was read from. Without it you cannot audit a sample, find systematic errors, or explain a prediction to a reviewer.",
+          "Ask how negation is handled. “Not due to safety concerns” contains the words of a safety stop; a keyword reader will label it one. Ask for a held-out validation set that was never used to build the rules, with precision and recall for the failure class, and for a record of every rule change and the labels it moved.",
+          "Ask what a human checked. Model-labelled data can be good, but a clinician confirming a sample of the failure labels is a different kind of evidence than a second model agreeing with the first.",
+        ],
+      },
+      {
+        heading: "Licensing a training set",
+        body: [
+          "Open registry data is public, but a labelled dataset is someone’s work and comes with a licence. A licence that forbids commercial use (such as CC BY-NC) covers research; a model used in a product or in a company’s own pipeline decisions needs a commercial licence. Check also what third-party content travels with the file: drug and target databases often carry share-alike terms.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "Registry status and what it can be used for",
+        columns: ["Status or label", "Use in a success/failure model"],
+        rows: [
+          ["Terminated, reason about efficacy, futility or safety", "Failure label"],
+          ["Terminated, reason about recruitment, funding or strategy", "Leave out: the drug’s effect is unknown"],
+          ["Withdrawn", "Usually never enrolled: leave out"],
+          ["Completed, primary analysis met", "Success for that endpoint, not approval"],
+          ["Completed, primary analysis missed", "Failure label"],
+          ["Completed, nothing posted or not assessable", "Unknown: leave out"],
+        ],
+      },
+    ],
+    links: [
+      { href: "/insights/clinical-trial-failures-dataset-download", label: "The Clinical Trial Failures dataset", text: "What is in it, how it is checked and where to download the free sample." },
+      { href: "/insights/clinical-trial-failure-datasets-compared", label: "Clinical trial failure datasets compared", text: "Registry status, predicted stop reasons, weak outcome labels and evidence-backed labels side by side." },
+      { href: "/datasets", label: "Datasets and free samples", text: "Stop-reason labels, endpoint labels and failure signals, with data dictionaries." },
+      { href: "/validation", label: "How the labels are validated", text: "Held-out evaluation, cross-check and clinician review, with their limits." },
+    ],
+    faqs: [
+      { question: "Can I use trial status as an outcome label?", answer: "Not on its own. Most terminated trials stopped for non-biological reasons, withdrawn trials usually never enrolled, and many completed trials missed their primary endpoint." },
+      { question: "Should trials stopped for recruitment count as failures?", answer: "Not for a model of whether a drug works. The experiment was not finished, so leave them out rather than label them." },
+      { question: "What makes a label auditable?", answer: "The exact text it was read from, a rule or model version, and a record of how labels changed when the rules did." },
+    ],
+  },
+  {
+    slug: "clinical-trial-failure-datasets-compared",
+    title: "Clinical trial failure datasets compared: status, predicted reasons, weak labels and evidence",
+    metaDescription:
+      "Comparing data sources for clinical trial failure and outcome labels: ClinicalTrials.gov and AACT, Open Targets stop reasons, CTO outcome labels, commercial trial databases and evidence-backed labels.",
+    eyebrow: "Data for AI",
+    dek:
+      "If you need failure labels for clinical trials, you have more options than a few years ago, and they answer different questions. A fair look at what each source gives you, and what to check before you choose.",
+    datePublished: "2026-11-23",
+    readingTime: "7 min read",
+    keyword: "clinical trial failure dataset comparison",
+    factsHeading: "In short",
+    facts: [
+      "Raw registry data gives status and free-text stop reasons, not labels.",
+      "Open research datasets add model-predicted stop-reason categories or weakly supervised outcome labels under permissive licences.",
+      "Commercial trial databases add curated context, at subscription prices.",
+      "Evidence-backed labels keep the sentence each label rests on, so a buyer can audit them.",
+    ],
+    sections: [
+      {
+        heading: "The registry itself: ClinicalTrials.gov and AACT",
+        body: [
+          "Every source starts here. ClinicalTrials.gov, and its relational copy AACT, give you each trial’s status, dates, phases, interventions and, for stopped trials, the sponsor’s free-text reason. It is complete, current and free, and it has no outcome labels: you build them yourself, and the stop-reason field is short, inconsistent and often empty.",
+        ],
+      },
+      {
+        heading: "Predicted stop-reason categories (Open Targets)",
+        body: [
+          "Open Targets published stop-reason categories for stopped trials: a curated training set and a language model that assigns each stopped trial to categories such as insufficient enrolment, negative results or safety, released as an open dataset under a permissive licence. It was built to study how genetic evidence relates to why trials stop, and it is a strong starting point for research.",
+          "What to check for training use: each prediction is a category, not a quote, so an error cannot be traced to the sentence that caused it; and how the model handles negated statements (“not due to safety”) is worth testing on your own sample.",
+        ],
+      },
+      {
+        heading: "Weakly supervised outcome labels (CTO)",
+        body: [
+          "The CTO project labels trial outcomes at large scale by combining weak signals: language-model reading of publications, links to later-phase trials, news and market data. It covers far more trials than any manually curated set, under an open licence, and its authors report good agreement with manual labels.",
+          "What to check: weak supervision trades precision on individual trials for coverage, and a trial’s label can rest on signals such as stock moves or phase progression that are themselves business decisions. For a model meant to learn whether a drug works, that is a different target.",
+        ],
+      },
+      {
+        heading: "Commercial trial intelligence",
+        body: [
+          "Commercial databases (for example Citeline Trialtrove or GlobalData) curate trial records with analyst-written context, sponsor pipelines and outcomes, and are sold as organisation-wide subscriptions. Public procurement records show institutional subscriptions in the tens of thousands of dollars a year. They are built for portfolio and competitive analysis; a licence that permits training models is a separate question to ask.",
+        ],
+      },
+      {
+        heading: "Evidence-backed labels",
+        body: [
+          "This is the approach we take: a versioned rule set reads the sponsor’s stated stop reason and labels it, every label keeps the text it was read from, and where the registry gives no reason, reviewed per-trial decisions from the sponsor’s SEC filing, the trial’s own publication or the EU trial register supply it, each linked to its source. Posted primary analyses are read for met or missed against stated thresholds. The labels are validated on a held-out set and in part by a clinician.",
+          "The trade-off is coverage: a rule set says “unresolved” rather than guess, so fewer trials get a label than in a predicted or weakly supervised set.",
+        ],
+      },
+      {
+        heading: "How to choose",
+        body: [
+          "For exploratory research, start with the open datasets and the registry. For a model whose predictions someone will act on, you need labels you can audit: test any source on a sample of a few hundred trials you read yourself, check negations and empty reasons, and check the licence for the use you have in mind.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "What each source gives you",
+        columns: ["Source", "What you get, and what to check"],
+        rows: [
+          ["ClinicalTrials.gov / AACT", "Status and free-text reasons, no labels; free and current"],
+          ["Open Targets stop reasons", "Model-predicted categories, open licence; no evidence span per label"],
+          ["CTO outcome labels", "Weakly supervised outcomes at scale, open licence; signals mix business and biology"],
+          ["Commercial trial databases", "Curated context, subscription; ask about training rights"],
+          ["Clinical Trial Failures", "Rule-based labels with evidence and sources, validated; commercial licence for training"],
+        ],
+      },
+    ],
+    links: [
+      { href: "/insights/clinical-trial-outcome-data-for-machine-learning", label: "Clinical trial outcome data for machine learning", text: "Which labels a model should learn from, and which trials to leave out." },
+      { href: "/insights/clinical-trial-failures-dataset-download", label: "Download the free sample", text: "240 stop-reason and 120 endpoint labels with a data dictionary." },
+      { href: "https://huggingface.co/datasets/opentargets/clinical_trial_reason_to_stop", label: "Open Targets stop-reason dataset", text: "The open dataset of predicted stop-reason categories." },
+      { href: "https://chufangao.github.io/CTOD", label: "CTO: clinical trial outcome labels", text: "The weakly supervised outcome dataset and its documentation." },
+      { href: "/validation", label: "How our labels are validated", text: "Held-out evaluation, cross-check and clinician review." },
+    ],
+    faqs: [
+      { question: "Is there a free clinical trial outcome dataset?", answer: "Yes: the registry itself, Open Targets’ stop-reason predictions and the CTO outcome labels are open, and our sample is free for non-commercial use. They differ in what a label means and how it can be checked." },
+      { question: "Which source is best for a probability-of-success model?", answer: "One whose failure class is about the drug’s effect and whose labels you can audit. Test any source on a sample you read yourself before training." },
+    ],
+  },
+  {
+    slug: "clinicaltrials-gov-drug-names-tested-vs-background",
+    title: "Which drug did the trial test? Normalising ClinicalTrials.gov interventions",
+    metaDescription:
+      "ClinicalTrials.gov lists interventions as sponsors type them: codes, brands, doses. How to get one standard name per drug, and why the drug a trial tested is the difference between its arms.",
+    eyebrow: "Data for AI",
+    dek:
+      "“MK-3475”, “Keytruda 200 mg” and “pembrolizumab inj.” are one drug. And in a trial that gives pembrolizumab to both arms, pembrolizumab was not what was tested. Getting both right is most of the work of linking trials to drugs.",
+    datePublished: "2026-11-23",
+    readingTime: "6 min read",
+    keyword: "clinicaltrials.gov drug name normalization",
+    factsHeading: "In short",
+    facts: [
+      "Registry intervention names mix research codes, brands, doses and formulations; the same drug appears under many names.",
+      "Standard names come from drug terminologies such as ChEMBL, the NCI Thesaurus and RxNorm.",
+      "The drug a trial tested is what the experimental arms received and the control arms did not; the rest is background.",
+      "Every stopped trial in our dataset now carries its tested drugs under a standard name, kept apart from the background.",
+    ],
+    sections: [
+      {
+        heading: "Why intervention names are messy",
+        body: [
+          "Sponsors type intervention names into ClinicalTrials.gov as they please: a research code before approval, a brand after it, a dose or a formulation in the name, a regimen acronym for several drugs at once. Counting trials per drug from the raw field splits one drug into many and merges different things that share a word.",
+          "A standard name per drug fixes that. Matching each name, its registry aliases and a cleaned form against a drug terminology resolves most of them; research codes that no terminology knows yet can still be kept as stable identifiers, so a programme’s trials stay linked before its drug gets a name.",
+        ],
+      },
+      {
+        heading: "The drug tested is the difference between the arms",
+        body: [
+          "In an add-on trial, both arms receive a backbone and only one receives the new drug. CANOPY-1 gave pembrolizumab and chemotherapy to everyone and tested canakinumab against placebo on top. A dataset that lists pembrolizumab as “tested” in that trial will put it into the wrong cohort, and a model trained on it will learn that PD-1 inhibitors fail when they did not.",
+          "So we separate three things per trial: the drugs tested (what experimental arms received that control arms did not), the background (what control arms received too), and the comparator (what only control arms received). Background never counts as tested, even when an experimental arm lists it again inside a combination.",
+        ],
+      },
+      {
+        heading: "How far it gets",
+        body: [
+          "In our first build, about two thirds of the stopped trials we resolved had every tested drug identified by a standard name, and resolution is highest in oncology, where drugs are best covered by terminologies. Investigational codes, cell therapies and devices remain the hardest. Each trial carries a status saying how far its drugs were resolved, so you can filter rather than trust blanks.",
+          "Standard names come from ChEMBL and the NCI Thesaurus and are attributed in every file; NCI Thesaurus codes are included where one identifies the drug. Mechanisms and targets are a separate layer, in the licensed failure-signals product.",
+        ],
+      },
+    ],
+    tables: [
+      {
+        heading: "One trial, three roles",
+        columns: ["Role", "Example (an add-on trial)"],
+        rows: [
+          ["Tested", "Canakinumab"],
+          ["Background", "Pembrolizumab, carboplatin (both arms)"],
+          ["Comparator", "Placebo (not listed as a drug)"],
+        ],
+      },
+    ],
+    links: [
+      { href: "/insights/clinical-trial-outcome-data-for-machine-learning", label: "Clinical trial outcome data for machine learning", text: "Which labels to train on and which trials to leave out." },
+      { href: "/trial_drugs.csv", label: "Download the drug table (CSV)", text: "Tested drugs, background, comparator and resolution status for every stopped trial; CC BY-NC 4.0." },
+      { href: "/datasets", label: "Datasets and samples", text: "All labels, the drug columns and the data dictionaries." },
+    ],
+    faqs: [
+      { question: "Why not just use the intervention names as filed?", answer: "The same drug appears under codes, brands and doses, and drugs given to both arms are not what the trial tested." },
+      { question: "Which terminologies are used?", answer: "ChEMBL and the NCI Thesaurus for names, with NCI Thesaurus codes where they identify the drug; both are attributed." },
+    ],
+  },
+  {
     slug: "5-ht2a-agonist-antagonist-clinical-trial-results",
     title: "One 5-HT2A label hides two opposite pharmacologies",
     metaDescription:
@@ -6444,6 +6672,8 @@ function hydrateDatasetDownloadArticle(article: InsightArticle, stats: InsightSt
       { href: HF, label: "Open the sample on Hugging Face", text: "Browse it in the dataset viewer or load it in Python." },
       { href: ZENODO, label: "Cite the dataset on Zenodo", text: "Versioned, archived releases with a DOI." },
       { href: "/validation", label: "How the labels are validated", text: "Held-out evaluation, the cross-check and the clinician review, with their limits." },
+      { href: "/insights/clinical-trial-outcome-data-for-machine-learning", label: "Using the labels for machine learning", text: "Which labels a model should learn from, and which trials to leave out." },
+      { href: "/insights/clinical-trial-failure-datasets-compared", label: "How this compares with other datasets", text: "Registry status, predicted stop reasons, weak outcome labels and evidence-backed labels." },
       { href: "/pricing", label: "Licence the full dataset", text: "All disease areas, weekly updates and clinician-reviewed labels." },
     ],
     faqs: [
