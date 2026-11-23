@@ -315,7 +315,7 @@ Next: submit the sitemap in Search Console and check the pages in the Rich Resul
 3. **AWS Data Exchange / Snowflake Marketplace:** check only once a buyer asks for delivery there.
 
 **Hugging Face (public since 19 Nov):** the card points to `/pricing`; the weekly run refreshes the
-sample once Schayan adds the repository secret **HF_TOKEN** (GitHub → Settings → Secrets and
+sample with the repository secret **HF_TOKEN** (**set 23 Nov**, fine-grained, write, org `clinical-trial-failures`; first use in the run of 30 Nov: check its log for "No HF_TOKEN secret") (GitHub → Settings → Secrets and
 variables → Actions → New repository secret; a fine-grained token with write access to the
 `clinical-trial-failures` organisation). Downloads are anonymous on Hugging Face and Zenodo; gating
 was considered and left off (19 Nov) to keep reach.
