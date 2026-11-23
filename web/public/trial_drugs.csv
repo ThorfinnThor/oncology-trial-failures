@@ -76,7 +76,7 @@ NCT04940299,Ipilimumab; Nivolumab; Tocilizumab,,,NCIT:C2654; NCIT:C68814; NCIT:C
 NCT06379217,"Gozetotide; [68Ga]GA-DOTA-TATE; Gallium; PSMA-617; Lutetium oxodotreotide; [177Lu]Lu-NeoB; L-Lysine HCl-L-Arginine HCl, 2.5 %,; Gonadorelin; GnRH antagonists; Antiemetics & antinauseants; Metoclopramide",,,NCIT:C189044; NCIT:C613; NCIT:C62046,,PARTIAL,ChEMBL,"Antiemetics & antinauseants; GnRH antagonists; L-Lysine HCl-L-Arginine HCl, 2.5 %,; [177Lu]Lu-NeoB; [68Ga]GA-DOTA-TATE"
 NCT06931626,Itareparib; Temozolomide,,,NCIT:C215740; NCIT:C1244,,RESOLVED,ChEMBL + NCIt,
 NCT05551273,Selgantolimod,,,NCIT:C170376,,RESOLVED,ChEMBL,
-NCT07199192,Corticosteroid,,,,,UNRESOLVED,,Corticosteroid
+NCT07199192,Corticosteroid,,,,,CODE_OR_CLASS_ONLY,,
 NCT06772415,GenSci122 tablet 50mg; GenSci122 tablet 250mg,,,,,UNRESOLVED,,GenSci122 tablet 250mg; GenSci122 tablet 50mg
 NCT07495813,RO7763505,,,,,CODE_OR_CLASS_ONLY,,
 NCT00434226,Sunitinib,Bevacizumab; Carboplatin; Paclitaxel,,,,RESOLVED,ChEMBL,
@@ -191,7 +191,7 @@ NCT04519879,White Button Mushroom Extract,,,NCIT:C78490,,RESOLVED,NCIt,
 NCT06573294,GEN1057,,,,,CODE_OR_CLASS_ONLY,,
 NCT04803006,TCD601,,,,,CODE_OR_CLASS_ONLY,,
 NCT06622694,Anti-CD7 CAR-T Cells RD13-02,,,NCIT:C200796,,RESOLVED,NCIt,
-NCT00788125,Carboplatin; Dasatinib; Etoposide phosphate; Ifosfamide; western blotting,,,NCIT:C1282; NCIT:C74556; NCIT:C1093; NCIT:C564,,PARTIAL,ChEMBL,western blotting
+NCT00788125,Carboplatin; Dasatinib; Etoposide phosphate; Ifosfamide,,,NCIT:C1282; NCIT:C74556; NCIT:C1093; NCIT:C564,,RESOLVED,ChEMBL,
 NCT06212154,Allogeneic Anti-CD19 T-cells ThisCART19A,,,NCIT:C199286,,RESOLVED,NCIt,
 NCT06961370,RO7669330; Pegcetacoplan; Avacincaptad pegol sodium,,,NCIT:C121135; NCIT:C142940,,PARTIAL,ChEMBL,
 NCT04752696,Onvansertib; Irinotecan Sucrosofate; Leucovorin; Fluorouracil,,,NCIT:C143162; NCIT:C82676; NCIT:C505,,RESOLVED,ChEMBL + NCIt,
@@ -232,7 +232,7 @@ NCT02706704,,,Adalimumab,,,NO_DRUG,,
 NCT03588754,Propranolol,,,NCIT:C62073,,RESOLVED,NCIt,
 NCT06501924,DA-002,,Topical minoxidil 5%,,,CODE_OR_CLASS_ONLY,,
 NCT05262673,Antigen-specific T cells CART/CTL; DCvac,,,,,UNRESOLVED,,Antigen-specific T cells CART/CTL; DCvac
-NCT02962661,Mesenchymal Stem Cell Transplantation,,,,,UNRESOLVED,,Mesenchymal Stem Cell Transplantation
+NCT02962661,,,,,,NO_DRUG,,
 NCT04085159,Antigen-specific T cells CART/CTL; DCvac,,,,,UNRESOLVED,,Antigen-specific T cells CART/CTL; DCvac
 NCT04430530,Infusion of 4SCAR-T specific to CD22/CD123/CD38/ CD10/CD20,,,,,UNRESOLVED,,Infusion of 4SCAR-T specific to CD22/CD123/CD38/ CD10/CD20
 NCT04010877,"CLL-1, CD33 and/or CD123-specific CAR gene-engineered T cells",,,,,UNRESOLVED,,"CLL-1, CD33 and/or CD123-specific CAR gene-engineered T cells"
@@ -314,7 +314,7 @@ NCT06480565,Allogeneic Anti-CD70 CAR/dnTGF-BRII-expressing Gamma Delta T-cells A
 NCT05167448,Tovecimig,,,NCIT:C185865,,RESOLVED,NCIt,
 NCT03954314,,,Tranexamic acid,,,NO_DRUG,,
 NCT06697431,Anakinra,,"Intravenous Immunoglobulins, Human",NCIT:C38717,,RESOLVED,ChEMBL,
-NCT03279094,Hematopoietic stem cell transplantation,,,,,UNRESOLVED,,Hematopoietic stem cell transplantation
+NCT03279094,,,,,,NO_DRUG,,
 NCT03627403,Selinexor,,,NCIT:C102546,,RESOLVED,ChEMBL,
 NCT06712433,2% intranasal mupirocin ointment; Chlorhexidine,,,NCIT:C364,,PARTIAL,ChEMBL,2% intranasal mupirocin ointment
 NCT06608472,N0877,,Olmesartan medoxomil,,,CODE_OR_CLASS_ONLY,,
@@ -424,7 +424,7 @@ NCT06195891,Fludarabine; Melphalan; Partially Engineered T-regulatory Cell Donor
 NCT07361094,Autologous CD19-BCMA Dual-Target CAR T-Cell Therapy,,,,,CODE_OR_CLASS_ONLY,,
 NCT07448298,AFN50,,,,,CODE_OR_CLASS_ONLY,,
 NCT07039422,Ianalumab,,,NCIT:C116788,,RESOLVED,ChEMBL,
-NCT06661811,CAR-T,,,,,UNRESOLVED,,CAR-T
+NCT06661811,CAR-T,,,,,CODE_OR_CLASS_ONLY,,
 NCT06652958,VH4527079,,,,,CODE_OR_CLASS_ONLY,,
 NCT05144334,Cereblon Modulator BTX-1188,,,NCIT:C187349,,RESOLVED,NCIt,
 NCT03460704,Colistimethate,,,NCIT:C72729,,RESOLVED,ChEMBL,
@@ -501,7 +501,7 @@ NCT07225777,Dronabinol,,,NCIT:C867,,RESOLVED,ChEMBL,
 NCT07027111,Human IgG1 Fc-F241A Fragment NVG-2089,,,NCIT:C224883,,RESOLVED,NCIt,
 NCT05518149,Aticaprant,,,NCIT:C170144,,RESOLVED,ChEMBL,
 NCT06034262,SclerFIX-IP,,,,,UNRESOLVED,,SclerFIX-IP
-NCT07287371,oral sucrosomial iron,,Treatment; intravenous iron,,,UNRESOLVED,,Treatment; oral sucrosomial iron
+NCT07287371,oral sucrosomial iron,,Treatment; intravenous iron,,,CODE_OR_CLASS_ONLY,,oral sucrosomial iron
 NCT06568692,Eniluracil,,Capecitabine,NCIT:C1773,,RESOLVED,ChEMBL,
 NCT06820957,Irinotecan; Regorafenib,Cyclophosphamide; Doxorubicin; Etoposide; Ifosfamide; Vincristine,,NCIT:C62040,,RESOLVED,ChEMBL,
 NCT06559072,Atorvastatin,,,NCIT:C61527,,RESOLVED,ChEMBL,
@@ -819,7 +819,7 @@ NCT03442556,Carboplatin; Docetaxel; Rucaparib,,,NCIT:C1282; NCIT:C61734; NCIT:C1
 NCT00642603,Capecitabine; Bevacizumab; Oxaliplatin; Irinotecan,,,NCIT:C1794; NCIT:C2039; NCIT:C1181; NCIT:C62040,,RESOLVED,ChEMBL,
 NCT04631601,Acapatamab; Enzalutamide; Abiraterone,AMG-404,,NCIT:C175736; NCIT:C71744; NCIT:C77333,,RESOLVED,ChEMBL,
 NCT07431541,CO2 gel mask,,,,,UNRESOLVED,,CO2 gel mask
-NCT07338357,CAR-T,,,,,UNRESOLVED,,CAR-T
+NCT07338357,CAR-T,,,,,CODE_OR_CLASS_ONLY,,
 NCT05328908,Nivolumab/Relatlimab-rmbw,,Regorafenib; Trifluridine and Tipiracil Hydrochloride,NCIT:C186440,,RESOLVED,NCIt,
 NCT05718219,Anti-TIGIT/Anti-PVRIG Bispecific Antibody SIM0348; Sintilimab,,,NCIT:C200115; NCIT:C132992,,RESOLVED,ChEMBL + NCIt,
 NCT01216371,,,Sunitinib,,,NO_DRUG,,
@@ -1131,7 +1131,7 @@ NCT07357766,Cagrisema,,,,,UNRESOLVED,,Cagrisema
 NCT04318327,Autologous Anti-BCMA CAR T-cells PHE885,,,NCIT:C174124,,RESOLVED,NCIt,
 NCT04568304,Toripalimab,Gemcitabine; Cisplatin; Carboplatin,,NCIT:C131334,,RESOLVED,ChEMBL,
 NCT03114319,Batoprotafib; Nazartinib,,,NCIT:C139559; NCIT:C115109,,RESOLVED,ChEMBL,
-NCT02432378,Cisplatin; Celecoxib; DC vaccine; CKM,,,NCIT:C376; NCIT:C1728,,PARTIAL,ChEMBL,CKM; DC Vaccine; DC vaccine
+NCT02432378,Cisplatin; Celecoxib; DC vaccine; CKM,,,NCIT:C376; NCIT:C1728,,PARTIAL,ChEMBL,CKM
 NCT06585488,Pan-KRAS Inhibitor BGB-53038; Tislelizumab; Cetuximab,,,NCIT:C215026; NCIT:C121775; NCIT:C1723,,RESOLVED,ChEMBL + NCIt,
 NCT04311502,Rifapentine; Clofazimine,Isoniazid; Pyrazinamide; Ethambutol,Rifampin,NCIT:C66516; NCIT:C47456,,RESOLVED,ChEMBL,
 NCT05714631,Lidocaine,,,NCIT:C614,RXCUI:6387,RESOLVED,RxNorm,
@@ -1233,7 +1233,7 @@ NCT07100925,Tolododekin Alfa,,,NCIT:C203514,,RESOLVED,NCIt,
 NCT07006805,Autologous Anti-CD19 CAR-T Cells CABA-201,,,NCIT:C203740,,RESOLVED,NCIt,
 NCT05712694,Pegargiminase,,,NCIT:C91702,,RESOLVED,ChEMBL,
 NCT02695641,Bevacizumab,,,NCIT:C2039,,RESOLVED,ChEMBL,
-NCT02577094,"90Y-DOTA-Epratuzumab IgG; Epratuzumab; Busulfan; allogeneic stem cell transplantation.; Fludarabine; Lymphocyte immune globulin, anti-thymocyte globulin",,,NCIT:C1887; NCIT:C321; NCIT:C1094; NCIT:C80824,RXCUI:1011,PARTIAL,ChEMBL + RxNorm,90Y-DOTA-Epratuzumab IgG; allogeneic stem cell transplantation.
+NCT02577094,"90Y-DOTA-Epratuzumab IgG; Epratuzumab; Busulfan; Fludarabine; Lymphocyte immune globulin, anti-thymocyte globulin",,,NCIT:C1887; NCIT:C321; NCIT:C1094; NCIT:C80824,RXCUI:1011,PARTIAL,ChEMBL + RxNorm,90Y-DOTA-Epratuzumab IgG
 NCT02104011,Propranolol,,,NCIT:C62073,,RESOLVED,NCIt,
 NCT03630640,Nivolumab,,,NCIT:C68814,,RESOLVED,ChEMBL,
 NCT06869278,LCAR-AIO T cells,,,,,UNRESOLVED,,LCAR-AIO T cells
@@ -1269,7 +1269,7 @@ NCT07524257,Drug: Nogapendekin alfa inbakicept (NAI),Pembrolizumab; Cisplatin; N
 NCT04254549,Rifaximin,,,NCIT:C61926,,RESOLVED,ChEMBL,
 NCT02675374,Dexchlorpheniramine,,,NCIT:C61707,,RESOLVED,ChEMBL,
 NCT05325866,Bemarituzumab,,,NCIT:C120040,,RESOLVED,ChEMBL,
-NCT04458129,Treatment; Polyethylene glycol,,,NCIT:C762,,PARTIAL,ChEMBL,Treatment
+NCT04458129,Treatment; Polyethylene glycol,,,NCIT:C762,,PARTIAL,ChEMBL,
 NCT03699202,Ziresovir,,,NCIT:C170395,,RESOLVED,ChEMBL,
 NCT05130255,Anti-GD2 scFv/Anti-DOTA scFv Fusion Protein GD2-SADA; Lutetium Lu 177-DOTA,,,NCIT:C190828; NCIT:C190827,,RESOLVED,NCIt,
 NCT06035744,IL-2/IL-12-based Fusion Protein CLN-617; Pembrolizumab,,,NCIT:C201584; NCIT:C106432,,RESOLVED,ChEMBL + NCIt,
@@ -1309,7 +1309,7 @@ NCT05498545,B68,,,,,CODE_OR_CLASS_ONLY,,
 NCT05008926,Naloxegol,,,NCIT:C97506,,RESOLVED,ChEMBL,
 NCT06447506,GSK-1070806,,,,,RESOLVED,ChEMBL,
 NCT07049081,LUCAR-G79 T cells,,,,,UNRESOLVED,,LUCAR-G79 T cells
-NCT05789589,Azeliragon; Corticosteroid,,,NCIT:C174675,,PARTIAL,ChEMBL,Corticosteroid
+NCT05789589,Azeliragon; Corticosteroid,,,NCIT:C174675,,PARTIAL,ChEMBL,
 NCT06842589,anti-CD19 CAR-T cells,,,,,UNRESOLVED,,anti-CD19 CAR-T cells
 NCT06902246,Regorafenib,,,,,RESOLVED,ChEMBL,
 NCT05597878,,,Oxycodone; Acetaminophen; Ketamine; Ketorolac,,,NO_DRUG,,
@@ -1474,7 +1474,7 @@ NCT05997277,Cravacitinib,,,,,RESOLVED,ChEMBL,
 NCT05992896,Bupivacaine,,,NCIT:C62011,,RESOLVED,ChEMBL,
 NCT07410377,UCAR-T cells,,,,,UNRESOLVED,,UCAR-T cells
 NCT07313774,Linaprazan glurate,,Lansoprazole,NCIT:C188508,,RESOLVED,ChEMBL,
-NCT07152210,CAR-T,,,,,UNRESOLVED,,CAR-T
+NCT07152210,CAR-T,,,,,CODE_OR_CLASS_ONLY,,
 NCT07196111,BAFFR CAR-T,,,,,UNRESOLVED,,BAFFR CAR-T
 NCT07195617,BCMA-GPRC5D CART,,,,,CODE_OR_CLASS_ONLY,,
 NCT07196124,BCMA; GPRC5D CAR-T,,,,,CODE_OR_CLASS_ONLY,,BCMA
@@ -1484,9 +1484,9 @@ NCT06878248,CLBR001; Antibody/PNE-based Biologic Agent ABBV-461,,,NCIT:C215159,,
 NCT06932393,exosomes,,,,,UNRESOLVED,,exosomes
 NCT05644496,"Bupivacaine-Meloxicam 400 Mg-12 Mg/14 mL Injectable Solution, Extended Release",,,,,UNRESOLVED,,"Bupivacaine-Meloxicam 400 Mg-12 Mg/14 mL Injectable Solution, Extended Release"
 NCT07123662,Gamma-Delta T cell injection,,,,,UNRESOLVED,,Gamma-Delta T cell injection
-NCT07152223,CAR-T,,,,,UNRESOLVED,,CAR-T
+NCT07152223,CAR-T,,,,,CODE_OR_CLASS_ONLY,,
 NCT05289986,,Doravirine/Lamivudine/Tenofovir Disoproxil Fumarate,,,,NO_DRUG,,
-NCT07152236,CAR-T,,,,,UNRESOLVED,,CAR-T
+NCT07152236,CAR-T,,,,,CODE_OR_CLASS_ONLY,,
 NCT04815967,Rimabotulinumtoxinb,,,NCIT:C87453,,RESOLVED,ChEMBL,
 NCT05972681,Bupivacaine; Epinephrine,,,NCIT:C62011,,RESOLVED,ChEMBL + NCIt,
 NCT03794583,Inhaled treprostinil solution,,,,,UNRESOLVED,,Inhaled treprostinil solution
@@ -1761,7 +1761,7 @@ NCT03504774,Cashew or Shrimp Oral Immunotherapy,,,,,UNRESOLVED,,Cashew or Shrimp
 NCT03301558,,,Bicarbonate,,,NO_DRUG,,
 NCT05729399,Autologous Tumor Infiltrating Lymphocytes GT201,,,NCIT:C200139,,RESOLVED,NCIt,
 NCT02633514,Cisplatin; Etoposide,,,NCIT:C376; NCIT:C491,,RESOLVED,ChEMBL,
-NCT05660421,Itacitinib; Corticosteroid,,,NCIT:C116855,,PARTIAL,ChEMBL,Corticosteroid
+NCT05660421,Itacitinib; Corticosteroid,,,NCIT:C116855,,PARTIAL,ChEMBL,
 NCT06589271,human umbilical cord mesenchymal stem cell suspension,,,,,UNRESOLVED,,human umbilical cord mesenchymal stem cell suspension
 NCT06191900,GT201,,,,,CODE_OR_CLASS_ONLY,,
 NCT06834542,GT201,,,,,CODE_OR_CLASS_ONLY,,
@@ -1840,15 +1840,15 @@ NCT05605119,PRMT5 Inhibitor AUR-105,,,NCIT:C192819,,RESOLVED,NCIt,
 NCT06422351,L301,,,,,CODE_OR_CLASS_ONLY,,
 NCT05075811,Ossium vBM-MSC,,,,,UNRESOLVED,,Ossium vBM-MSC
 NCT02988297,RNS60,,,,,CODE_OR_CLASS_ONLY,,
-NCT04519684,Mesenchymal stem cells,,,,,UNRESOLVED,,Mesenchymal stem cells
-NCT04519671,Mesenchymal Stem Cells,,,,,UNRESOLVED,,Mesenchymal Stem Cells
+NCT04519684,Mesenchymal stem cells,,,,,CODE_OR_CLASS_ONLY,,
+NCT04519671,Mesenchymal Stem Cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT03646188,25 µg doxorubicin-containing MNA; 50 µg doxorubicin-containing MNA; 100 µg doxorubicin-containing MNA; 200 µg doxorubicin-containing MNA,,,,,UNRESOLVED,,100 µg doxorubicin-containing MNA; 200 µg doxorubicin-containing MNA; 25 µg doxorubicin-containing MNA; 50 µg doxorubicin-containing MNA
 NCT04548583,Remestemcel-l,,,NCIT:C67082,,RESOLVED,ChEMBL,
 NCT05272735,Hepatitis b virus hbsag surface protein antigen,,,NCIT:C62786,,RESOLVED,ChEMBL,
 NCT04543994,Remestemcel-l,,,NCIT:C67082,,RESOLVED,ChEMBL,
 NCT06444022,Human amniotic epithelial stem cells（hAESCs）,,,,,UNRESOLVED,,Human amniotic epithelial stem cells（hAESCs）
-NCT04519697,Mesenchymal Stem Cells,,,,,UNRESOLVED,,Mesenchymal Stem Cells
-NCT04791878,Mesenchymal stem cells,,,,,UNRESOLVED,,Mesenchymal stem cells
+NCT04519697,Mesenchymal Stem Cells,,,,,CODE_OR_CLASS_ONLY,,
+NCT04791878,Mesenchymal stem cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT05498220,Polatuzumab vedotin; Rituximab; Hyaluronidase; Gemcitabine; Cisplatin; Dexamethasone,,,NCIT:C104153; NCIT:C1702; NCIT:C66876; NCIT:C376; NCIT:C422,,RESOLVED,ChEMBL,
 NCT05578508,Mesenchymal Stem Cells (MSCs),,,,,UNRESOLVED,,Mesenchymal Stem Cells (MSCs)
 NCT05397093,Anti-FOLR1 CoStAR-expressing Autologous Tumor-infiltrating Lymphocytes ITIL-306,,,NCIT:C188248,,RESOLVED,NCIt,
@@ -2025,7 +2025,7 @@ NCT04432207,IMU-201 (administered as PD1-Vaxx) - Regimen 1; IMU-201 (administere
 NCT05845125,OF-40MG; 7cc of 0.5% Bupivacaine coupled; physiotherapy,,,,,CODE_OR_CLASS_ONLY,,7cc of 0.5% Bupivacaine coupled; physiotherapy
 NCT04394416,Imatinib,,,NCIT:C62035,,RESOLVED,ChEMBL,
 NCT03288545,Enfortumab vedotin; Pembrolizumab; Cisplatin; Carboplatin; Gemcitabine,,,NCIT:C114500; NCIT:C106432; NCIT:C376; NCIT:C1282; NCIT:C66876,,RESOLVED,ChEMBL,
-NCT05123040,"Ruxolitinib; Gonadotropin, chorionic; Corticosteroids",,,NCIT:C77888; NCIT:C528,,PARTIAL,ChEMBL,Corticosteroids
+NCT05123040,"Ruxolitinib; Gonadotropin, chorionic; Corticosteroids",,,NCIT:C77888; NCIT:C528,,PARTIAL,ChEMBL,
 NCT01453088,Bortezomib,,Melphalan,NCIT:C1851,,RESOLVED,ChEMBL,
 NCT06425159,,,BHV-7000,,,NO_DRUG,,
 NCT04520607,,Lorecivivint,,,,NO_DRUG,,
@@ -2905,7 +2905,7 @@ NCT03822117,Pemigatinib,,,NCIT:C121553,,RESOLVED,ChEMBL,
 NCT04958785,Sacituzumab govitecan,Magrolimab; Paclitaxel,,NCIT:C102783,,RESOLVED,ChEMBL,
 NCT04042714,TAS-102,,,,,CODE_OR_CLASS_ONLY,,
 NCT03764774,LY3463251,,,,,CODE_OR_CLASS_ONLY,,
-NCT03721965,Itacitinib; Corticosteroids,,,NCIT:C116855,,PARTIAL,ChEMBL,Corticosteroids
+NCT03721965,Itacitinib; Corticosteroids,,,NCIT:C116855,,PARTIAL,ChEMBL,
 NCT02574910,Abiraterone acetate,,,NCIT:C68845,,RESOLVED,ChEMBL,
 NCT03837509,Numidargistat,Daratumumab,,NCIT:C142866,,RESOLVED,ChEMBL,
 NCT02712905,INCB-059872; Tretinoin; Azacitidine; Nivolumab,,,NCIT:C126421; NCIT:C900; NCIT:C288; NCIT:C68814,,RESOLVED,ChEMBL,
@@ -4072,7 +4072,7 @@ NCT00699842,Lenalidomide,,,NCIT:C2668,,RESOLVED,ChEMBL,
 NCT02810873,Copper Cu 64 TP3805,,,NCIT:C98289,,RESOLVED,NCIt,
 NCT05388435,SKL-27969,,,NCIT:C200044,,RESOLVED,ChEMBL,
 NCT02569957,Acetylcysteine,,Topotecan,NCIT:C200,,RESOLVED,ChEMBL,
-NCT01532635,Donor Lymphocyte Infusion (DLI); Cyclophosphamide; Tacrolimus; Mycophenolate mofetil; Hematopoietic Stem Cell Transplant (HSCT),,,NCIT:C61694; NCIT:C76066; NCIT:C1468,,PARTIAL,ChEMBL,Donor Lymphocyte Infusion (DLI); Hematopoietic Stem Cell Transplant (HSCT)
+NCT01532635,Donor Lymphocyte Infusion (DLI); Cyclophosphamide; Tacrolimus; Mycophenolate mofetil,,,NCIT:C61694; NCIT:C76066; NCIT:C1468,,PARTIAL,ChEMBL,Donor Lymphocyte Infusion (DLI)
 NCT01555489,Ascorbic acid,,,NCIT:C285,,RESOLVED,ChEMBL,
 NCT05611749,Duloxetine,,,NCIT:C65495,,RESOLVED,ChEMBL,
 NCT01349088,Ixabepilone; Capecitabine; Motesanib,,,NCIT:C37452; NCIT:C1794; NCIT:C71896,,RESOLVED,ChEMBL,
@@ -4080,7 +4080,7 @@ NCT06644079,Tranexamic acid,,,NCIT:C47765,,RESOLVED,ChEMBL,
 NCT04217317,Cpi 613; Bendamustine,,,NCIT:C80039; NCIT:C73261,,RESOLVED,ChEMBL,
 NCT02548468,Fludarabine; T Cell-Depleted Donor Lymphocyte Infusion; Cyclophosphamide; Mycophenolate mofetil; Tacrolimus,,,NCIT:C1094; NCIT:C61694; NCIT:C1468; NCIT:C76066,,PARTIAL,ChEMBL,T Cell-Depleted Donor Lymphocyte Infusion
 NCT02992756,Growth Factors,,,,,UNRESOLVED,,Growth Factors
-NCT01660347,Allogeneic hematopoietic stem cell transplantation; Peripheral blood stem cell transplantation,,,,,UNRESOLVED,,Allogeneic hematopoietic stem cell transplantation; Peripheral blood stem cell transplantation
+NCT01660347,,,,,,NO_DRUG,,
 NCT03638466,,,Molindone,,,NO_DRUG,,
 NCT02671552,Perflutren,,,,,RESOLVED,ChEMBL,
 NCT05593770,Fostamatinib,,,NCIT:C95222,,RESOLVED,ChEMBL,
@@ -4241,7 +4241,7 @@ NCT03192215,Apixaban,,Aspirin,NCIT:C61308,,RESOLVED,ChEMBL,
 NCT05355597,Bupivacaine; Epinephrine,,,NCIT:C62011,,RESOLVED,ChEMBL,
 NCT03975387,MDM2 Antagonist ASTX295,,,NCIT:C162749,,RESOLVED,NCIt,
 NCT05940844,OB-002,,,,,RESOLVED,ChEMBL,
-NCT05904236,Treatment; ICVB-1042,,,,,CODE_OR_CLASS_ONLY,,Treatment
+NCT05904236,Treatment; ICVB-1042,,,,,CODE_OR_CLASS_ONLY,,
 NCT04001647,,Acetylcholine; Nitroprusside; Ascorbic acid,,,,NO_DRUG,,
 NCT04556617,Zavabresib; Olaparib; Abiraterone acetate; Prednisone,,,NCIT:C224806; NCIT:C71721; NCIT:C68845; NCIT:C770,,RESOLVED,ChEMBL + NCIt,
 NCT03690869,Cemiplimab,,,NCIT:C121540,,RESOLVED,ChEMBL,
@@ -4811,7 +4811,7 @@ NCT05589363,,,ABC block; Bupivacaine,,,NO_DRUG,,
 NCT04492033,Asciminib; Paclitaxel; Irinotecan,,,NCIT:C114494; NCIT:C1411; NCIT:C62040,,RESOLVED,ChEMBL,
 NCT04271306,Pfs25-IMX313 (10ug); MATRIX-M1 adjuvant; Pfs25-IMX313 (50ug); Matrix-M (50ug) & Pfs25-IMX313 (10ug),,,NCIT:C172744,,PARTIAL,ChEMBL,Matrix-M (50ug) & Pfs25-IMX313 (10ug); Pfs25-IMX313 (10ug); Pfs25-IMX313 (50ug)
 NCT05057897,ChAdOx1 nCoV-19 Vaccine,,,NCIT:C173021,,RESOLVED,NCIt,
-NCT02986698,in utero hematopoietic stem cell transplantation,,,,,UNRESOLVED,,in utero hematopoietic stem cell transplantation
+NCT02986698,,,,,,NO_DRUG,,
 NCT03047837,Aspirin; Metformin,,,NCIT:C287; NCIT:C61612,RXCUI:1191,RESOLVED,ChEMBL + RxNorm,
 NCT06532136,,,Cravacitinib,,,NO_DRUG,,
 NCT04916236,Vociprotafib; Temuterkib,,,NCIT:C155850; NCIT:C131335,,RESOLVED,ChEMBL,
@@ -5114,7 +5114,7 @@ NCT02403323,Etrolizumab,,,NCIT:C97944,,RESOLVED,ChEMBL,
 NCT04612790,Benralizumab,,,NCIT:C88594,,RESOLVED,ChEMBL,
 NCT04508140,Nanoplexed Poly I:C BO-112; Pembrolizumab,,,NCIT:C177439; NCIT:C106432,,RESOLVED,ChEMBL + NCIt,
 NCT03472872,Ketorolac; Acetaminophen,,,NCIT:C1219; NCIT:C198,,RESOLVED,ChEMBL,
-NCT02585622,Mesenchymal Stromal Cells,,,,,UNRESOLVED,,Mesenchymal Stromal Cells
+NCT02585622,Mesenchymal Stromal Cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT05249790,Recommended treatment schedule,,,,,UNRESOLVED,,Recommended treatment schedule
 NCT05501912,ABM-1310,,,NCIT:C170951,,RESOLVED,ChEMBL,
 NCT03923322,Botanical Tincture,,,,,UNRESOLVED,,Botanical Tincture
@@ -5140,7 +5140,7 @@ NCT05607446,TQC3564; Montelukast,,,NCIT:C66189,,PARTIAL,ChEMBL,
 NCT05113394,HDM sublingual Immunotherapy,,,,,UNRESOLVED,,HDM sublingual Immunotherapy
 NCT05604521,,,PfSPZ Vaccine; PfSPZ Challenge (7G8),,,NO_DRUG,,
 NCT03397966,Nesiritide,,,NCIT:C47636,,RESOLVED,ChEMBL,
-NCT06207786,Antibiotic,,,,,UNRESOLVED,,Antibiotic
+NCT06207786,Antibiotic,,,,,CODE_OR_CLASS_ONLY,,
 NCT02864953,BIIB093,,,,,CODE_OR_CLASS_ONLY,,
 NCT03009058,Heat-treated bacterium Mycobacterium obuense IMM-101; Gemcitabine; Paclitaxel; Capecitabine; Leucovorin; Fluorouracil; Irinotecan; Oxaliplatin; Cetuximab; Anti-PD1; Ipilimumab; Cyclophosphamide,,,NCIT:C173535; NCIT:C66876; NCIT:C1411; NCIT:C1794; NCIT:C505; NCIT:C62040; NCIT:C1181; NCIT:C1723; NCIT:C2654; NCIT:C61694,,PARTIAL,ChEMBL + NCIt,Anti-PD1
 NCT04764825,Methadone,,Morphine,NCIT:C62044,,RESOLVED,NCIt,
@@ -5279,7 +5279,7 @@ NCT05216510,,TNX-2110; TNX-2120; TNX-2130; Candida albicans Antigen Injection; D
 NCT02281838,,Labetalol; Hydralazine; Enalapril,,,,NO_DRUG,,
 NCT05607589,DWP213388,,,,,CODE_OR_CLASS_ONLY,,
 NCT03635996,Etripamil,,,NCIT:C169972,,RESOLVED,ChEMBL,
-NCT04989218,Novel combination of chemotherapy; immunotherapy,,,,,UNRESOLVED,,Novel combination of chemotherapy; immunotherapy
+NCT04989218,Novel combination of chemotherapy; immunotherapy,,,,,CODE_OR_CLASS_ONLY,,Novel combination of chemotherapy
 NCT05371288,,"Lipoic acid, alpha",,,,NO_DRUG,,
 NCT04629196,,Ustekinumab,Ustekinumab,,,RESOLVED,ChEMBL,
 NCT05510245,Lotiglipron,,,NCIT:C199066,,RESOLVED,ChEMBL,
@@ -5365,7 +5365,7 @@ NCT04776850,Bortezomib; Busulfan; Cyclophosphamide; Dexamethasone; Fludarabine p
 NCT03417765,Fe 203799,,,,,RESOLVED,ChEMBL,
 NCT04358458,Ivicentamab; Epcoritamab,,,NCIT:C172443; NCIT:C163022,,RESOLVED,ChEMBL + NCIt,
 NCT06107829,Valbenazine,,,NCIT:C152815,,RESOLVED,ChEMBL,
-NCT04513158,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT04513158,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT03311126,Bendamustine; Obinutuzumab,,,NCIT:C73261; NCIT:C70741,,RESOLVED,ChEMBL,
 NCT05047523,Tiomolibdate choline,,,NCIT:C62514,,RESOLVED,ChEMBL,
 NCT03809624,INBRX-105; Pembrolizumab,,,NCIT:C106432,,PARTIAL,ChEMBL,
@@ -5432,7 +5432,7 @@ NCT01854762,Raltegravir,,Lopinavir; Ritonavir,NCIT:C72837,,RESOLVED,ChEMBL,
 NCT05516875,JM-010,,,,,CODE_OR_CLASS_ONLY,,
 NCT03396861,Aflibercept,,,NCIT:C2682,,RESOLVED,ChEMBL,
 NCT06264596,Epinephrine,,,,,RESOLVED,ChEMBL,
-NCT06199882,SBRT Sequential Surufatinib Combined; Immunotherapy,,,,,UNRESOLVED,,Immunotherapy; SBRT Sequential Surufatinib Combined
+NCT06199882,SBRT Sequential Surufatinib Combined; Immunotherapy,,,,,CODE_OR_CLASS_ONLY,,SBRT Sequential Surufatinib Combined
 NCT02033941,,,IH636 Grape Seed Proanthocyanidin Extract,,,NO_DRUG,,
 NCT05867056,I109V; HBV HCC Module MAD,,,,,CODE_OR_CLASS_ONLY,,HBV HCC Module MAD
 NCT05392751,EA-2353,,,,,CODE_OR_CLASS_ONLY,,
@@ -5514,7 +5514,7 @@ NCT04521621,Gebasaxturev; Pembrolizumab,,,NCIT:C61493; NCIT:C106432,,RESOLVED,Ch
 NCT05397171,Anti-GDF-15 Monoclonal Antibody AZD8853; Zirconium-89 crefmirlimab berdoxam,,,NCIT:C188242,,PARTIAL,NCIt,Zirconium-89 crefmirlimab berdoxam
 NCT04086212,Carnitine,,Icodextrin,,,RESOLVED,ChEMBL,
 NCT01246869,Fludeoxyglucose; Fluoromisonidazole; Water,,,,,RESOLVED,ChEMBL,
-NCT04982354,Liposome-encapsulated Daunorubicin-Cytarabine; Midostaurin; Busulfan; Melphalan; Fludarabine; CD34; selected allogeneic stem cell transplant from an HLA-compatible donor,,,NCIT:C67504; NCIT:C1872; NCIT:C321; NCIT:C633; NCIT:C1094,,PARTIAL,ChEMBL + NCIt,CD34; selected allogeneic stem cell transplant from an HLA-compatible donor
+NCT04982354,Liposome-encapsulated Daunorubicin-Cytarabine; Midostaurin; Busulfan; Melphalan; Fludarabine; CD34,,,NCIT:C67504; NCIT:C1872; NCIT:C321; NCIT:C633; NCIT:C1094,,PARTIAL,ChEMBL + NCIt,CD34
 NCT03808740,Atomoxetine,,,NCIT:C74141,,RESOLVED,ChEMBL,
 NCT05528861,Lirentelimab,,,NCIT:C129591,,RESOLVED,ChEMBL,
 NCT04776746,Trofinetide,,,NCIT:C152757,,RESOLVED,ChEMBL,
@@ -6096,11 +6096,11 @@ NCT03578354,Dalfampridine; Atenolol,,,NCIT:C76777,RXCUI:1202,RESOLVED,ChEMBL + R
 NCT03631641,Nivolumab,,,NCIT:C68814,,RESOLVED,ChEMBL,
 NCT05481489,Atropine,,,,,RESOLVED,ChEMBL,
 NCT03448978,Autologous Anti-BCMA-CAR-mRNA-transfected CD8+ T-lymphocytes; Fludarabine; Cyclophosphamide,,,NCIT:C156706; NCIT:C1094; NCIT:C61694,,RESOLVED,ChEMBL + NCIt,
-NCT02872272,Treatment; Amikacin,,,NCIT:C61615,,PARTIAL,ChEMBL,Treatment
+NCT02872272,Treatment; Amikacin,,,NCIT:C61615,,PARTIAL,ChEMBL,
 NCT03704298,Cyclophosphamide; Fludarabine; Axicabtagene ciloleucel; Utomilumab,,,NCIT:C61694; NCIT:C1094; NCIT:C120309; NCIT:C116619,,RESOLVED,ChEMBL,
 NCT04478994,,,Teprotumumab,,,NO_DRUG,,
 NCT04680637,Efavaleukin alfa,,,NCIT:C169929,,RESOLVED,ChEMBL,
-NCT02949843,Immunotherapy; Nivolumab; Pembrolizumab; Targeted Molecular Therapy; Tyrosine,,,NCIT:C68814; NCIT:C106432; NCIT:C61997,,PARTIAL,ChEMBL,Immunotherapy; Targeted Molecular Therapy
+NCT02949843,Immunotherapy; Nivolumab; Pembrolizumab; Targeted Molecular Therapy; Tyrosine,,,NCIT:C68814; NCIT:C106432; NCIT:C61997,,PARTIAL,ChEMBL,Targeted Molecular Therapy
 NCT01395953,,,Buspirone,,,NO_DRUG,,
 NCT05000450,Allogeneic Anti-BCMA CAR T Cells ALLO-605; Alemtuzumab; Fludarabine; Cyclophosphamide,,,NCIT:C182066; NCIT:C1681; NCIT:C1094; NCIT:C61694,,RESOLVED,ChEMBL + NCIt,
 NCT04908956,Osimertinib,,,NCIT:C116377,,RESOLVED,ChEMBL,
@@ -6112,7 +6112,7 @@ NCT00330564,Sunitinib,,,,,RESOLVED,ChEMBL,
 NCT05062083,11C-MC1; PS13; Ketoprofen; Celecoxib,,,NCIT:C1728,,PARTIAL,ChEMBL,11C-MC1
 NCT04002037,,,Triamcinolone; Dexamethasone,,,NO_DRUG,,
 NCT04814433,Tranexamic acid; Aminocaproic acid; Recombinant Human Thrombin; Lidocaine; Epinephrine; Bupivacaine,,,NCIT:C47765; NCIT:C47391; NCIT:C614; NCIT:C62011,,PARTIAL,ChEMBL,Recombinant Human Thrombin
-NCT00875004,Epoetin beta; systemic chemotherapy,,,NCIT:C26639,,PARTIAL,ChEMBL,systemic chemotherapy
+NCT00875004,Epoetin beta; systemic chemotherapy,,,NCIT:C26639,,PARTIAL,ChEMBL,
 NCT06093503,Telisotuzumab vedotin; Osimertinib; Cisplatin; Carboplatin; Pemetrexed,,,NCIT:C118571; NCIT:C116377; NCIT:C376; NCIT:C1282; NCIT:C61614,,RESOLVED,ChEMBL,
 NCT02581059,,Regorafenib,,,,NO_DRUG,,
 NCT01034670,fluorescent Peptide; Fluorescein; Indocyanine green acid form,,,,,PARTIAL,ChEMBL,fluorescent Peptide
@@ -6309,7 +6309,7 @@ NCT00442104,Ganaxolone,,,NCIT:C72793,,RESOLVED,ChEMBL,
 NCT05195762,NFX-179,,,,,CODE_OR_CLASS_ONLY,,
 NCT02668783,Etonogestrel; 17β-estradiol (E2) 300 μg vaginal ring,Ibuprofen,,NCIT:C47528,,PARTIAL,ChEMBL,17β-estradiol (E2) 300 μg vaginal ring
 NCT05324852,Midazolam,,Loxapine,,,RESOLVED,ChEMBL,
-NCT05116917,Nivolumab; Ipilimumab; Influenza vaccine,,,NCIT:C68814; NCIT:C2654,,PARTIAL,ChEMBL,Influenza vaccine
+NCT05116917,Nivolumab; Ipilimumab; Influenza vaccine,,,NCIT:C68814; NCIT:C2654,,PARTIAL,ChEMBL,
 NCT05267574,Mavodelpar,,,NCIT:C190454,,RESOLVED,ChEMBL,
 NCT05631327,Long-acting Recombinant Erwinia asparaginase JZP-341,,,NCIT:C198981,,RESOLVED,NCIt,
 NCT02025881,Carboplatin; Etoposide; Thiotepa; Cyclophosphamide; Busulfan; Temozolimide; Irinotecan; Temozolomide,,,NCIT:C1282; NCIT:C491; NCIT:C875; NCIT:C61694; NCIT:C321; NCIT:C62040; NCIT:C1244,,PARTIAL,ChEMBL,Temozolimide
@@ -6319,7 +6319,7 @@ NCT00687531,Mometasone furoate,,,NCIT:C29268,,RESOLVED,ChEMBL,
 NCT04938180,Anti-CSF1R Monoclonal Antibody AMB-05X,,,NCIT:C179168,,RESOLVED,NCIt,
 NCT03450018,SLC-0111; Gemcitabine,,,NCIT:C117728; NCIT:C66876,,RESOLVED,ChEMBL,
 NCT06142461,,,"Human papillomavirus, L1 protein virus like particles",,,RESOLVED,ChEMBL,
-NCT03730948,DC vaccine,,,,,UNRESOLVED,,DC vaccine
+NCT03730948,DC vaccine,,,,,CODE_OR_CLASS_ONLY,,
 NCT03954938,,Cocaine,,,,NO_DRUG,,
 NCT04090697,Oxandrolone,,,NCIT:C29306,,RESOLVED,ChEMBL,
 NCT04655157,Encorafenib; Nivolumab; Ipilimumab; Binimetinib,,,NCIT:C98283; NCIT:C68814; NCIT:C2654; NCIT:C84865,,RESOLVED,ChEMBL,
@@ -6357,7 +6357,7 @@ NCT04190628,ABM-1310; Cobimetinib,,,NCIT:C170951; NCIT:C68923,,RESOLVED,ChEMBL,
 NCT03175978,IGF/MTX,,,,,UNRESOLVED,,IGF/MTX
 NCT04429685,Ketamine,,,,RXCUI:6130,RESOLVED,RxNorm,
 NCT04698915,GC4711,,,,,CODE_OR_CLASS_ONLY,,
-NCT00423176,MFNS; antibiotic,,,,,UNRESOLVED,,MFNS; antibiotic
+NCT00423176,MFNS; antibiotic,,,,,CODE_OR_CLASS_ONLY,,MFNS
 NCT03887702,,Entecavir; Tenofovir alafenamide; Tenofovir disoproxil,,,,NO_DRUG,,
 NCT03562507,CEP-11981; Nivolumab,,,NCIT:C82379; NCIT:C68814,,RESOLVED,ChEMBL,
 NCT04089904,Pembrolizumab,,,NCIT:C106432,,RESOLVED,ChEMBL,
@@ -6839,7 +6839,7 @@ NCT04469725,Erfonrilimab,,,NCIT:C157632,,RESOLVED,ChEMBL,
 NCT02737306,Leronlimab,,,NCIT:C137824,,RESOLVED,ChEMBL,
 NCT04371666,Pamrevlumab,Corticosteroids,,NCIT:C92577,,RESOLVED,ChEMBL,
 NCT04102436,Fludarabine; Cyclophosphamide; Aldesleukin; Sleeping Beauty Transposed PBL,,,NCIT:C1094; NCIT:C61694; NCIT:C1498,,PARTIAL,ChEMBL,Sleeping Beauty Transposed PBL
-NCT02700841,T Cell-Depleted Hematopoietic Stem Cell Transplantation,Melphalan; Tetanus toxoid,,,,UNRESOLVED,,T Cell-Depleted Hematopoietic Stem Cell Transplantation
+NCT02700841,,Melphalan; Tetanus toxoid,,,,NO_DRUG,,
 NCT01953926,Neratinib; Fulvestrant; Trastuzumab; Paclitaxel,,,NCIT:C49094; NCIT:C1379; NCIT:C1647; NCIT:C1411,,RESOLVED,ChEMBL,
 NCT06160609,Belantamab mafodotin; GSK-3174998,,,NCIT:C114299; NCIT:C124783,,RESOLVED,ChEMBL,
 NCT05532046,BAY2413555,,,,,CODE_OR_CLASS_ONLY,,
@@ -7285,7 +7285,7 @@ NCT02351063,Changes of heart failure medications,,,,,UNRESOLVED,,Changes of hear
 NCT06188104,Trichloroacetic acid,,,,,RESOLVED,ChEMBL,
 NCT03864419,Rituximab; Hyaluronidase (human recombinant); Cyclophosphamide; Vincristine; Methotrexate; Doxorubicin; Prednisone; Etoposide,,,NCIT:C1702; NCIT:C61504; NCIT:C61694; NCIT:C933; NCIT:C642; NCIT:C456; NCIT:C770; NCIT:C491,,RESOLVED,ChEMBL,
 NCT00439946,Treprostinil,,,NCIT:C61983,,RESOLVED,ChEMBL,
-NCT04558684,Immunotherapy,,,,,UNRESOLVED,,Immunotherapy
+NCT04558684,Immunotherapy,,,,,CODE_OR_CLASS_ONLY,,
 NCT05156671,Enibarcimab,,,NCIT:C175779,,RESOLVED,ChEMBL,
 NCT03193814,Rivoceranib,,,NCIT:C152237,,RESOLVED,ChEMBL,
 NCT02661464,AD26; MVA-BN-Filo,,,,,CODE_OR_CLASS_ONLY,,MVA-BN-Filo
@@ -7435,7 +7435,7 @@ NCT03733067,Abatacept,,,NCIT:C28898,,RESOLVED,ChEMBL,
 NCT04690855,Talazoparib; Atezolizumab,,,NCIT:C95733; NCIT:C106250,,RESOLVED,ChEMBL,
 NCT03870334,Omilancor,,,NCIT:C184905,,RESOLVED,ChEMBL,
 NCT04596267,Pitolisant,,,NCIT:C166747,,RESOLVED,ChEMBL,
-NCT05321940,STING-dependent Activators-loaded Autologous Leukemic Cells; Dendritic Cell Vaccine,,,NCIT:C187299,,PARTIAL,NCIt,Dendritic Cell Vaccine
+NCT05321940,STING-dependent Activators-loaded Autologous Leukemic Cells; Dendritic Cell Vaccine,,,NCIT:C187299,,PARTIAL,NCIt,
 NCT03711929,DE-109,,,,,CODE_OR_CLASS_ONLY,,
 NCT00592280,Two-Layer Method pancreas preservation system drug,,,,,UNRESOLVED,,Two-Layer Method pancreas preservation system drug
 NCT03458728,Copanlisib,,,NCIT:C96796,,RESOLVED,ChEMBL,
@@ -7752,7 +7752,7 @@ NCT05788185,RVM-V001 30 µg; RVM-V002 30 µg; RVM-V001 (15 µg); RVM-V002 (15 µ
 NCT02416128,Euphrasia,,Prednisolone acetate,,,UNRESOLVED,,Euphrasia
 NCT04854486,,,,,,NO_DRUG,,
 NCT04994990,,,Onabotulinumtoxina,,,RESOLVED,ChEMBL,
-NCT06084351,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT06084351,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT04790487,Lomustine; Methotrexate; Procarbazine,,,NCIT:C617; NCIT:C642; NCIT:C62072,,RESOLVED,ChEMBL,
 NCT04858620,Xlear Nasal Spray,,,,,UNRESOLVED,,Xlear Nasal Spray
 NCT04607148,Galegenimab,,,NCIT:C184864,,RESOLVED,ChEMBL,
@@ -7786,7 +7786,7 @@ NCT03190967,Temozolomide,Trastuzumab emtansine,,NCIT:C1244,,RESOLVED,ChEMBL,
 NCT04840784,ETH-155008,,,,,CODE_OR_CLASS_ONLY,,
 NCT04511026,Technetium Tc 99m-labeled Tilmanocept; Indocyanine green acid form,,,NCIT:C77898,,RESOLVED,ChEMBL + NCIt,
 NCT04629651,Captopril,,,NCIT:C340,,RESOLVED,ChEMBL,
-NCT04456413,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT04456413,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT05085574,Famotidine; Celecoxib,,,NCIT:C29045; NCIT:C1728,,RESOLVED,ChEMBL,
 NCT03122106,Personalized neoantigen DNA vaccine,,,,,UNRESOLVED,,Personalized neoantigen DNA vaccine
 NCT04269395,,,MAL Cream,,,NO_DRUG,,
@@ -7864,7 +7864,7 @@ NCT05321498,Pegipanermin,,,NCIT:C183319,,RESOLVED,ChEMBL,
 NCT05092750,Indocyanine green acid form,,,,,RESOLVED,ChEMBL,
 NCT03140670,Rucaparib,,,NCIT:C137800,,RESOLVED,ChEMBL,
 NCT05261646,Rafutrombopag,,,NCIT:C188548,,RESOLVED,ChEMBL,
-NCT04222257,,,Antibiotics,,,UNRESOLVED,,Antibiotics
+NCT04222257,,,Antibiotics,,,CODE_OR_CLASS_ONLY,,
 NCT04792970,,,Talc,,,NO_DRUG,,
 NCT02945280,Apixaban,,,NCIT:C61308,,RESOLVED,ChEMBL,
 NCT04768010,Misoprostol,,,NCIT:C1313,,RESOLVED,ChEMBL,
@@ -7940,7 +7940,7 @@ NCT01295099,,,Fluorouracil; Triamcinolone,,,NO_DRUG,,
 NCT04790916,Melredableukin alfa,,,NCIT:C184904,,RESOLVED,ChEMBL,
 NCT04894123,Trifluridine; Tipiracil; Oxaliplatin,,,NCIT:C905; NCIT:C152646; NCIT:C1181,,RESOLVED,ChEMBL,
 NCT03654755,Gusacitinib,,,NCIT:C166736,,RESOLVED,ChEMBL,
-NCT04343755,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT04343755,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT00934895,Everolimus; Paclitaxel,,,NCIT:C48387; NCIT:C1411,,RESOLVED,ChEMBL,
 NCT01076400,Adavosertib,Topotecan; Cisplatin,,NCIT:C91725,,RESOLVED,ChEMBL,
 NCT04427306,Talimogene laherparepvec,,,NCIT:C61314,,RESOLVED,ChEMBL,
@@ -7993,7 +7993,7 @@ NCT04145700,Ramucirumab,Gemcitabine; Docetaxel,,NCIT:C70792,,RESOLVED,ChEMBL,
 NCT03737123,Carboplatin; Gemcitabine; Atezolizumab; Docetaxel,,,NCIT:C1282; NCIT:C66876; NCIT:C106250; NCIT:C61734,,RESOLVED,ChEMBL,
 NCT00483561,Gefitinib; Etoposide,,,NCIT:C1855; NCIT:C491,,RESOLVED,ChEMBL,
 NCT03860207,Nivatrotamab,,,NCIT:C158436,,RESOLVED,ChEMBL,
-NCT00665457,Filgrastim; Capecitabine; Celecoxib; Cyclophosphamide; Docetaxel; Doxorubicin; polymorphism analysis; protein expression analysis,,,NCIT:C1474; NCIT:C1794; NCIT:C1728; NCIT:C61694; NCIT:C61734; NCIT:C456,,PARTIAL,ChEMBL,polymorphism analysis; protein expression analysis
+NCT00665457,Filgrastim; Capecitabine; Celecoxib; Cyclophosphamide; Docetaxel; Doxorubicin; polymorphism analysis,,,NCIT:C1474; NCIT:C1794; NCIT:C1728; NCIT:C61694; NCIT:C61734; NCIT:C456,,PARTIAL,ChEMBL,polymorphism analysis
 NCT04099888,Fimaporfin,Gemcitabine; Cisplatin,,NCIT:C165601,,RESOLVED,ChEMBL,
 NCT05201001,,Sotigalimab,,,,NO_DRUG,,
 NCT03912818,Carboplatin; Cisplatin; Doxorubicin; Durvalumab; Gemcitabine; Methotrexate; Vinblastine,,,NCIT:C1282; NCIT:C376; NCIT:C456; NCIT:C103194; NCIT:C66876; NCIT:C642; NCIT:C930,,RESOLVED,ChEMBL,
@@ -8002,7 +8002,7 @@ NCT01977417,Salsalate,,,NCIT:C62636,,RESOLVED,ChEMBL,
 NCT00745316,Tonapofylline,,,NCIT:C96194,,RESOLVED,ChEMBL,
 NCT05438498,Cilgavimab/Tixagevimab; cilgavimab) IM or IV,,,NCIT:C175229,,PARTIAL,NCIt,cilgavimab) IM or IV
 NCT02976701,DLBS1033,Standard therapy,,,,CODE_OR_CLASS_ONLY,,
-NCT04088760,TCRαβ; /CD19; depleted allogeneic hematopoietic stem cell transplant (HSCT),,,,,UNRESOLVED,,/CD19; TCRαβ; depleted allogeneic hematopoietic stem cell transplant (HSCT)
+NCT04088760,TCRαβ; /CD19,,,,,UNRESOLVED,,/CD19; TCRαβ
 NCT00742157,Somatropin,,,NCIT:C837,,RESOLVED,ChEMBL,
 NCT01033565,Melatonin,,,NCIT:C632,,RESOLVED,ChEMBL,
 NCT05125978,Canadá,,Metamizole; Tramadol,,,UNRESOLVED,,Canadá
@@ -8030,7 +8030,7 @@ NCT05491603,DBI-001; DBI-002,,Aqueous Gel,,,CODE_OR_CLASS_ONLY,,
 NCT05758298,Nicotine,,,NCIT:C691,,RESOLVED,ChEMBL,
 NCT05439941,EDP1815,,,,,CODE_OR_CLASS_ONLY,,
 NCT05273658,,Marijuana; Alcohol,,,,NO_DRUG,,
-NCT01044745,"Rituximab; Mycophenolate mofetil; Tacrolimus; Lymphocyte immune globulin, anti-thymocyte globulin; graft versus host disease prophylaxis; therapy; Cyclophosphamide; Fludarabine phosphate; Busulfan; graft-versus-tumor induction therapy; immunosuppressive therapy",,,NCIT:C1702; NCIT:C1468; NCIT:C76066; NCIT:C80824; NCIT:C61694; NCIT:C1102; NCIT:C321,RXCUI:1011,PARTIAL,ChEMBL + RxNorm,graft versus host disease prophylaxis; graft-versus-tumor induction therapy; immunosuppressive therapy; therapy
+NCT01044745,"Rituximab; Mycophenolate mofetil; Tacrolimus; Lymphocyte immune globulin, anti-thymocyte globulin; graft versus host disease prophylaxis; therapy; Cyclophosphamide; Fludarabine phosphate; Busulfan; graft-versus-tumor induction therapy; immunosuppressive therapy",,,NCIT:C1702; NCIT:C1468; NCIT:C76066; NCIT:C80824; NCIT:C61694; NCIT:C1102; NCIT:C321,RXCUI:1011,PARTIAL,ChEMBL + RxNorm,graft versus host disease prophylaxis; graft-versus-tumor induction therapy; immunosuppressive therapy
 NCT03822962,,,Ibuprofen,,,NO_DRUG,,
 NCT04176978,Rosuvastatin,,,NCIT:C66523,,RESOLVED,ChEMBL,
 NCT05618691,GFH312,,,,,CODE_OR_CLASS_ONLY,,
@@ -8554,7 +8554,7 @@ NCT05886257,Candonilimab; Bevacizumab,,,NCIT:C2039,,PARTIAL,ChEMBL,Candonilimab
 NCT04193904,Enterococcus gallinarum Strain MRx0518,,,NCIT:C160293,,RESOLVED,NCIt,
 NCT02601365,Sargramostim; dose,,,NCIT:C1492,,PARTIAL,ChEMBL,dose
 NCT03145480,Obinutuzumab; Ibrutinib,,,NCIT:C70741; NCIT:C81934,,RESOLVED,ChEMBL,
-NCT02012153,Mesenchymal Stromal Cells,,,,,UNRESOLVED,,Mesenchymal Stromal Cells
+NCT02012153,Mesenchymal Stromal Cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT03519256,Nivolumab; Bcg live; Linrodostat,,,NCIT:C68814; NCIT:C141135,,RESOLVED,ChEMBL,
 NCT04106362,Cetuximab,Cisplatin,,NCIT:C1723,,RESOLVED,ChEMBL,
 NCT05375604,ASO-STAT6-loaded PTGFRN-expressing Exosomes CDK-004,,,NCIT:C188120,,RESOLVED,NCIt,
@@ -9066,7 +9066,7 @@ NCT00978822,Clevidipine,,,NCIT:C72727,,RESOLVED,ChEMBL,
 NCT04748848,Pulrodemstat; Venetoclax; Azacitidine,,,NCIT:C131303; NCIT:C103147; NCIT:C288,,RESOLVED,ChEMBL,
 NCT01478035,Phenytoin,,,NCIT:C741,,RESOLVED,ChEMBL,
 NCT04332107,Azithromycin,,Placebo,NCIT:C28844,,RESOLVED,ChEMBL,
-NCT04650490,Immunotherapy,,,,,UNRESOLVED,,Immunotherapy
+NCT04650490,Immunotherapy,,,,,CODE_OR_CLASS_ONLY,,
 NCT05048940,Janssen vaccine,,Elasomeran,,,UNRESOLVED,,Janssen vaccine
 NCT03838848,Erfonrilimab; Carboplatin; Pemetrexed; Ningetinib,,,NCIT:C157632; NCIT:C1282; NCIT:C61614; NCIT:C214441,,RESOLVED,ChEMBL,
 NCT01649388,FCR001,,,,,CODE_OR_CLASS_ONLY,,
@@ -9206,7 +9206,7 @@ NCT02624479,Thiosulfuric acid,,,,,RESOLVED,ChEMBL,
 NCT02721979,Apalutamide,,,NCIT:C92574,,RESOLVED,ChEMBL,
 NCT05545683,VLA-2001,,,,,CODE_OR_CLASS_ONLY,,
 NCT03891849,Octreotide,,,NCIT:C711,,RESOLVED,ChEMBL,
-NCT02543749,DC vaccine,,,,,UNRESOLVED,,DC vaccine
+NCT02543749,DC vaccine,,,,,CODE_OR_CLASS_ONLY,,
 NCT03743103,Esmolol,Nitroprusside,,NCIT:C72617,,RESOLVED,ChEMBL,
 NCT04606576,ORMD-0801,,,,,CODE_OR_CLASS_ONLY,,
 NCT04531878,Phenylbutyrate,,,NCIT:C1440,RXCUI:81647,RESOLVED,RxNorm,
@@ -9664,7 +9664,7 @@ NCT00868179,Dabigatran etexilate,,,NCIT:C87480,,RESOLVED,ChEMBL,
 NCT04208997,Antiarrhythmic drug,,,,,UNRESOLVED,,Antiarrhythmic drug
 NCT04349774,,,Control Group - ESP block; SAP block,,,NO_DRUG,,
 NCT05444153,Semaglutide,,Empagliflozin,NCIT:C152328,,RESOLVED,ChEMBL,
-NCT04408040,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT04408040,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT02956785,,,"Dinoprostone; 3 mg Dinoprostone vaginal tablet; Pfizer, UK; Aquacryl hydrogel rod; HPSRx Enterprises, USA",,,NO_DRUG,,
 NCT01362998,,,Morphine; Fentanyl,,,NO_DRUG,,
 NCT03214666,GTB-3550,,,,,CODE_OR_CLASS_ONLY,,
@@ -9698,7 +9698,7 @@ NCT02933073,OncoImmunome,,,,,UNRESOLVED,,OncoImmunome
 NCT04329572,Hydroxychloroquine; Azithromycin,,,NCIT:C557; NCIT:C28844,,RESOLVED,ChEMBL,
 NCT05371275,Palbociclib,,,NCIT:C49176,,RESOLVED,ChEMBL,
 NCT02124902,Docetaxel; Carboplatin,,,NCIT:C61734; NCIT:C1282,,RESOLVED,ChEMBL,
-NCT03658629,NanoFlu (Quad-NIV); Trivalent Influenza Vaccine; Influenza Vaccine,,,NCIT:C2643,,PARTIAL,NCIt,Influenza Vaccine; NanoFlu (Quad-NIV)
+NCT03658629,NanoFlu (Quad-NIV); Trivalent Influenza Vaccine; Influenza Vaccine,,,NCIT:C2643,,PARTIAL,NCIt,NanoFlu (Quad-NIV)
 NCT04639843,Azacitidine; Duvelisib; Romidepsin; Doxorubicin,,,NCIT:C288; NCIT:C99225; NCIT:C1544; NCIT:C456,,RESOLVED,ChEMBL,
 NCT04348474,Hydroxychloroquine; Azithromycin,,,NCIT:C557; NCIT:C28844,,RESOLVED,ChEMBL,
 NCT03824847,,,Clarithromycin; Placebo,,,NO_DRUG,,
@@ -9933,7 +9933,7 @@ NCT04746131,IMM-0306,,,NCIT:C179653,,RESOLVED,ChEMBL,
 NCT04330079,Dapagliflozin,,,NCIT:C78126,,RESOLVED,ChEMBL,
 NCT03218683,AZD-5991; Venetoclax,,,NCIT:C137989; NCIT:C103147,,RESOLVED,ChEMBL,
 NCT03500939,Medical oxygen,,,,,UNRESOLVED,,Medical oxygen
-NCT04539275,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT04539275,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT04418531,Anti-coronavirus antibodies (immunoglobulins) obtained; DFPP form convalescent patients,,,,,UNRESOLVED,,Anti-coronavirus antibodies (immunoglobulins) obtained; DFPP form convalescent patients
 NCT04643886,Lusacomfar alfa,,,NCIT:C190421,,RESOLVED,ChEMBL,
 NCT02943733,Trifluridine and Tipiracil Hydrochloride; Temozolomide; Filgrastim; Pegfilgrastim,,,NCIT:C102554; NCIT:C1244; NCIT:C1474; NCIT:C1854,,RESOLVED,ChEMBL + NCIt,
@@ -10209,7 +10209,7 @@ NCT04253236,Batoclimab; weekly,,,NCIT:C171826,,PARTIAL,ChEMBL,weekly
 NCT05178485,Triamcinolone acetonide,,,NCIT:C48027,,RESOLVED,ChEMBL,
 NCT03928015,Dronabinol,,Systemic analgesics,NCIT:C867,,RESOLVED,ChEMBL,
 NCT05477498,Ferric carboxymaltose,,,NCIT:C166915,,RESOLVED,ChEMBL,
-NCT03208127,Treatment; Direct Acting Antiviral tablet,,,,,UNRESOLVED,,Direct Acting Antiviral tablet; Treatment
+NCT03208127,Treatment; Direct Acting Antiviral tablet,,,,,CODE_OR_CLASS_ONLY,,Direct Acting Antiviral tablet
 NCT04953052,Imatinib,,,NCIT:C62035,,RESOLVED,ChEMBL,
 NCT04124367,,,Cerebrolysin,,,NO_DRUG,,
 NCT04822701,Lomtegovimab; BI-767551,,,NCIT:C183320,,PARTIAL,NCIt,
@@ -10861,7 +10861,7 @@ NCT02420795,Akt/ERK Inhibitor ONC201,,,,,UNRESOLVED,,Akt/ERK Inhibitor ONC201
 NCT04683224,UB-612,,,,,CODE_OR_CLASS_ONLY,,
 NCT03660657,Ozone,,Oxygen,,,RESOLVED,ChEMBL,
 NCT03336372,Ingenol mebutate,,,NCIT:C48398,,RESOLVED,ChEMBL,
-NCT04342182,Convalescent plasma,,,,,UNRESOLVED,,Convalescent plasma
+NCT04342182,Convalescent plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT03418805,Ibuprofen,,Advil Ibuprofen table 200 mg; Motrin IB Ibuprofen Tablets 200 mg,NCIT:C561,,RESOLVED,ChEMBL,
 NCT04589949,ConvP,,FFP,,,UNRESOLVED,,ConvP
 NCT04973982,,,Tacrolimus,,,NO_DRUG,,
@@ -10967,7 +10967,7 @@ NCT04065087,Efineptakin alfa,,,NCIT:C151927,,RESOLVED,ChEMBL,
 NCT02981082,,,Dimethyl fumarate,,,NO_DRUG,,
 NCT03745690,Indocyanine green acid form,,,,,RESOLVED,ChEMBL,
 NCT01584466,Paliperidone,,,NCIT:C66293,,RESOLVED,ChEMBL,
-NCT04971005,Autologous Hematopoietic Stem Cell Transplantation,,Ocrelizumab; Alemtuzumab,,,UNRESOLVED,,Autologous Hematopoietic Stem Cell Transplantation
+NCT04971005,,,Ocrelizumab; Alemtuzumab,,,NO_DRUG,,
 NCT01790035,LGG,,,,,UNRESOLVED,,LGG
 NCT02707055,,PF-5190457,,,,NO_DRUG,,
 NCT02932579,Ibuprofen; hydroxycontin; acetominophen; Oxycodone,,,NCIT:C561; NCIT:C29309,,PARTIAL,ChEMBL,acetominophen; hydroxycontin
@@ -11042,7 +11042,7 @@ NCT04393311,Ulinastatin,,,NCIT:C102851,,RESOLVED,ChEMBL,
 NCT04470674,Carboplatin; Pemetrexed,Durvalumab,,NCIT:C1282; NCIT:C61614,,RESOLVED,ChEMBL,
 NCT03779295,Clindamycin,,,NCIT:C377,,RESOLVED,ChEMBL,
 NCT05029609,Intranasal Foralumab Solution,,,,,UNRESOLVED,,Intranasal Foralumab Solution
-NCT04348656,Convalescent plasma,,,,,UNRESOLVED,,Convalescent plasma
+NCT04348656,Convalescent plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT04705844,Adalimumab,,,NCIT:C65216,,RESOLVED,ChEMBL,
 NCT01408641,Topiramate,,,NCIT:C47764,,RESOLVED,ChEMBL,
 NCT03202147,,,Cromolyn,,,NO_DRUG,,
@@ -11699,7 +11699,7 @@ NCT00000856,Foscarnet; Ganciclovir,,,NCIT:C71630; NCIT:C517,,RESOLVED,ChEMBL,
 NCT04531592,Valproic acid,,,NCIT:C29536,,RESOLVED,ChEMBL,
 NCT04379024,Conjugated Estrogens/Bazedoxifene,,,NCIT:C125604,,RESOLVED,NCIt,
 NCT00000881,Cidofovir; Probenecid,,,NCIT:C77925; NCIT:C772,,RESOLVED,ChEMBL,
-NCT01246752,Human Stem Cell Transplantation,,"Consolidation chemotherapy, i.e. High-dose Cytarabine (HiDAC)",,,UNRESOLVED,,Human Stem Cell Transplantation
+NCT01246752,,,"Consolidation chemotherapy, i.e. High-dose Cytarabine (HiDAC)",,,NO_DRUG,,
 NCT00900562,PM-00104,,,NCIT:C62763,,RESOLVED,ChEMBL,
 NCT02792192,Atezolizumab; BCG Vaccine,,,NCIT:C106250; NCIT:C298,,RESOLVED,ChEMBL + NCIt,
 NCT05026801,,,Azithromycin; Hydroxychloroquine,,,NO_DRUG,,
@@ -11996,7 +11996,7 @@ NCT01439347,Vincristine,,,NCIT:C933,,RESOLVED,ChEMBL,
 NCT04411316,Catheter directed thrombolysis,,Anticoagulation,,,UNRESOLVED,,Catheter directed thrombolysis; anticoagulation
 NCT04082858,Ketamine,,Midazolam,,,RESOLVED,ChEMBL,
 NCT03567694,HA115,,,,,CODE_OR_CLASS_ONLY,,
-NCT01045382,Mesenchymal stem cells,,,,,UNRESOLVED,,Mesenchymal stem cells
+NCT01045382,Mesenchymal stem cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT02959554,Nivolumab,,Sunitinib; Pazopanib,NCIT:C68814,,RESOLVED,ChEMBL,
 NCT03679845,Sarilumab,,,NCIT:C152302,,RESOLVED,ChEMBL,
 NCT03866317,Secukinumab,,,NCIT:C152315,,RESOLVED,ChEMBL,
@@ -12064,7 +12064,7 @@ NCT02105116,Fludarabine phosphate; Cytarabine; Donor Lymphocytes,,,NCIT:C1102; N
 NCT01659177,Pomaglumetad methionil,,,NCIT:C166703,,RESOLVED,ChEMBL,
 NCT05016440,,,Lisinopril,,,NO_DRUG,,
 NCT04584307,Elotuzumab; Pomalidomide,,,NCIT:C66982; NCIT:C72560,,RESOLVED,ChEMBL,
-NCT03551847,Antibiotic,,No antibiotics,,,UNRESOLVED,,Antibiotic
+NCT03551847,Antibiotic,,No antibiotics,,,CODE_OR_CLASS_ONLY,,
 NCT04464148,Pregnenolone,,,NCIT:C82315,,RESOLVED,NCIt,
 NCT01256905,Armodafinil,,,NCIT:C65241,,RESOLVED,ChEMBL,
 NCT03318484,Sonodynamic therapy,Optimal Medical Care,,,,UNRESOLVED,,Sonodynamic therapy
@@ -12201,7 +12201,7 @@ NCT01440062,Verum arm receiving Vitamin D oil; low dose arm receiving neutral oi
 NCT00860379,Selenium1; Selenium2,,,,,UNRESOLVED,,Selenium1; Selenium2
 NCT01812135,EV71; adjuvant,,,,,CODE_OR_CLASS_ONLY,,adjuvant
 NCT03381833,,,LJPC-401,,,NO_DRUG,,
-NCT02038478,Donor Stem Cell Transplantation,,,,,UNRESOLVED,,Donor Stem Cell Transplantation
+NCT02038478,,,,,,NO_DRUG,,
 NCT04764383,,Histidine; Carbidopa,,,,NO_DRUG,,
 NCT03245177,Pembrolizumab,,,NCIT:C106432,,RESOLVED,ChEMBL,
 NCT04827589,Tirabrutinib,,,NCIT:C102876,,RESOLVED,ChEMBL,
@@ -12599,7 +12599,7 @@ NCT04338074,Tranexamic acid,,,NCIT:C47765,,RESOLVED,ChEMBL,
 NCT03447730,SYNB1020,,,,,CODE_OR_CLASS_ONLY,,
 NCT03786419,Atezolizumab,,,NCIT:C106250,,RESOLVED,ChEMBL,
 NCT02429934,,,Abatacept,,,NO_DRUG,,
-NCT01429012,Mesenchymal Stem Cells,,,,,UNRESOLVED,,Mesenchymal Stem Cells
+NCT01429012,Mesenchymal Stem Cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT04854044,Akt/ERK Inhibitor ONC201,,,,,UNRESOLVED,,Akt/ERK Inhibitor ONC201
 NCT02097732,,Ipilimumab,,,,NO_DRUG,,
 NCT02274038,"Baseline 18F-thymidine (FLT) PET/CT; Post-therapy 18F-thymidine (FLT) PET/CT to assess for pemetrexed induced tumor FLT ""flare""; Post-therapy 18F-thymidine (FLT) PET/CT to assess for pemetrexed induced changes in tumor proliferation",,,,,UNRESOLVED,,"Baseline 18F-thymidine (FLT) PET/CT; Post-therapy 18F-thymidine (FLT) PET/CT to assess for pemetrexed induced changes in tumor proliferation; Post-therapy 18F-thymidine (FLT) PET/CT to assess for pemetrexed induced tumor FLT ""flare"""
@@ -12682,7 +12682,7 @@ NCT03376854,Neuromuscular Blocking Agents,,,,,UNRESOLVED,,Neuromuscular Blocking
 NCT04385524,Adjuvanted Hepatitis B Vaccine,,,,,UNRESOLVED,,Adjuvanted Hepatitis B Vaccine
 NCT02817113,Demplatin pegraglumer; Cetuximab; Fluorouracil,,,NCIT:C85476; NCIT:C1723; NCIT:C505,,RESOLVED,ChEMBL,
 NCT00317356,Tetomilast,,,NCIT:C90922,,RESOLVED,ChEMBL,
-NCT00492947,dendritic cell vaccine,,,,,UNRESOLVED,,dendritic cell vaccine
+NCT00492947,dendritic cell vaccine,,,,,CODE_OR_CLASS_ONLY,,
 NCT03802994,PPV23; Pneumococcal 7-Valent Conjugate Vaccine,,,NCIT:C38141,,PARTIAL,NCIt,
 NCT02038699,Dordaviprone,,,NCIT:C113792,,RESOLVED,ChEMBL,
 NCT02102841,Tuberculin,,,,,RESOLVED,ChEMBL,
@@ -12783,8 +12783,8 @@ NCT03929211,Cpi 613; Hydroxychloroquine,,,NCIT:C80039; NCIT:C557,,RESOLVED,ChEMB
 NCT02064010,SNC-102,,,,,CODE_OR_CLASS_ONLY,,
 NCT00438204,Bevacizumab; Gemcitabine; Pemetrexed,,,NCIT:C2039; NCIT:C66876; NCIT:C61614,,RESOLVED,ChEMBL,
 NCT02217007,SNC-102,,,,,CODE_OR_CLASS_ONLY,,
-NCT01685411,Allopurinol; Levetiracetam; Busulfan; Cyclophosphamide; Tacrolimus; Mycophenolate mofetil; Allogeneic hematopoietic stem cell transplant; Filgrastim; antithymocyte globulin,,,NCIT:C224; NCIT:C47581; NCIT:C321; NCIT:C61694; NCIT:C76066; NCIT:C1468; NCIT:C1474,,PARTIAL,ChEMBL,Allogeneic hematopoietic stem cell transplant; antithymocyte globulin
-NCT01253668,Brivanib alaninate; Protein expression analysis,,,NCIT:C53397,,PARTIAL,ChEMBL,Protein expression analysis
+NCT01685411,Allopurinol; Levetiracetam; Busulfan; Cyclophosphamide; Tacrolimus; Mycophenolate mofetil; Filgrastim; antithymocyte globulin,,,NCIT:C224; NCIT:C47581; NCIT:C321; NCIT:C61694; NCIT:C76066; NCIT:C1468; NCIT:C1474,,PARTIAL,ChEMBL,antithymocyte globulin
+NCT01253668,Brivanib alaninate,,,NCIT:C53397,,RESOLVED,ChEMBL,
 NCT03452527,Factor VII-targeting Immunoconjugate Protein ICON-1; Aflibercept,,,NCIT:C129313; NCIT:C2682,,RESOLVED,ChEMBL + NCIt,
 NCT01759303,Pazopanib,,,NCIT:C74547,,RESOLVED,ChEMBL,
 NCT01535196,,Cholecalciferol; MCT oil,,,,NO_DRUG,,
@@ -12939,7 +12939,7 @@ NCT03723824,Grazoprevir; Elbasvir,,,NCIT:C175724; NCIT:C166892,,RESOLVED,ChEMBL,
 NCT04289558,Nitrous acid,,,,,RESOLVED,ChEMBL,
 NCT03839355,,,Apixaban; Warfarin,,,NO_DRUG,,
 NCT04421209,Propranolol,,,NCIT:C62073,,RESOLVED,NCIt,
-NCT01280643,Fluorouracil; Leucovorin; Oxaliplatin; Irinotecan; Bevacizumab; Cetuximab; Capecitabine; mutation analysis; protein expression analysis; DNA analysis,,,NCIT:C505; NCIT:C1181; NCIT:C62040; NCIT:C2039; NCIT:C1723; NCIT:C1794,,PARTIAL,ChEMBL,DNA analysis; mutation analysis; protein expression analysis
+NCT01280643,Fluorouracil; Leucovorin; Oxaliplatin; Irinotecan; Bevacizumab; Cetuximab; Capecitabine; mutation analysis; DNA analysis,,,NCIT:C505; NCIT:C1181; NCIT:C62040; NCIT:C2039; NCIT:C1723; NCIT:C1794,,PARTIAL,ChEMBL,DNA analysis; mutation analysis
 NCT03549689,Dolutegravir; Lamivudine,,Current tenofovir alafenamide (TAF)-containing ART regimen,NCIT:C121543; NCIT:C1471,,RESOLVED,ChEMBL,
 NCT02528708,"Fibrinogen, human",,,NCIT:C81126,,RESOLVED,ChEMBL,
 NCT02985801,Pancrelipase,,,NCIT:C29345,,RESOLVED,ChEMBL,
@@ -13133,7 +13133,7 @@ NCT04409483,Lopinavir-Ritonavir Drug Combination,,,,,UNRESOLVED,,Lopinavir-Riton
 NCT04466826,Sphenopalatine Block,,,,,UNRESOLVED,,Sphenopalatine Block
 NCT00546455,Fenretinide,,,NCIT:C1098,,RESOLVED,ChEMBL,
 NCT02433158,Rivipansel,,,NCIT:C102786,,RESOLVED,ChEMBL,
-NCT04333355,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT04333355,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT04409327,Dactolisib,,,NCIT:C74072,,RESOLVED,ChEMBL,
 NCT02341105,,,Amiodarone,,,NO_DRUG,,
 NCT02697162,Octenidine,,,NCIT:C174821,,RESOLVED,ChEMBL,
@@ -13165,7 +13165,7 @@ NCT04361344,,,,,,NO_DRUG,,
 NCT02187822,Taxane Analogue TPI 287,,,NCIT:C48424,,RESOLVED,NCIt,
 NCT04398927,Fluorouracil; Leucovorin; Irinotecan; Oxaliplatin; Sintilimab,,,NCIT:C505; NCIT:C62040; NCIT:C1181; NCIT:C132992,,RESOLVED,ChEMBL,
 NCT04607655,Selvigaltin,,,NCIT:C190361,,RESOLVED,ChEMBL,
-NCT04682249,Systemic Chemotherapy; Sintilimab; Rivoceranib,,,NCIT:C132992; NCIT:C152237,,PARTIAL,ChEMBL,Systemic Chemotherapy
+NCT04682249,Systemic Chemotherapy; Sintilimab; Rivoceranib,,,NCIT:C132992; NCIT:C152237,,PARTIAL,ChEMBL,
 NCT03319823,Thiazide Treatment Group; Intensified Thiazide Treatment Group; Combination Medication Treatment Group,,,,,UNRESOLVED,,Combination Medication Treatment Group; Intensified Thiazide Treatment Group; Thiazide Treatment Group
 NCT03998592,Streptococcus pyogenes vaccine (50 µg); Streptococcus pyogenes vaccine (100 µg); Streptococcus pyogenes vaccine (200 µg),,,,,UNRESOLVED,,Streptococcus pyogenes vaccine (100 µg); Streptococcus pyogenes vaccine (200 µg); Streptococcus pyogenes vaccine (50 µg)
 NCT00863772,Tanezumab,,,NCIT:C71522,,RESOLVED,ChEMBL,
@@ -13280,7 +13280,7 @@ NCT03646916,,,Dexamethasone,,,NO_DRUG,,
 NCT02267772,Acetaminophen,,Morphine,NCIT:C198,,RESOLVED,ChEMBL,
 NCT03149679,Cyclophosphamide,,,NCIT:C61694,,RESOLVED,ChEMBL,
 NCT02446886,,Corticotropin,,,,NO_DRUG,,
-NCT00176930,Stem Cell Transplant; Cyclophosphamide; Busulfan; Antilymphocyte immunoglobulin (horse); CD4; /CD25; cells,,,NCIT:C61694; NCIT:C321,,PARTIAL,ChEMBL,/CD25; CD4; Stem Cell Transplant; cells
+NCT00176930,Cyclophosphamide; Busulfan; Antilymphocyte immunoglobulin (horse); CD4; /CD25; cells,,,NCIT:C61694; NCIT:C321,,PARTIAL,ChEMBL,/CD25; CD4; cells
 NCT00738777,Fulvestrant,,Anastrozole; Tamoxifen,NCIT:C1379,,RESOLVED,ChEMBL,
 NCT01702558,,Trastuzumab emtansine; Capecitabine,,,,RESOLVED,ChEMBL,
 NCT00448266,Carboplatin; Thiotepa,,dose dense adriamycine; Cyclophosphamide,NCIT:C1282; NCIT:C875,,RESOLVED,ChEMBL,
@@ -13566,7 +13566,7 @@ NCT03042780,Fluorouracil; Leucovorin; Irinotecan; Oxaliplatin; Filgrastim,,,NCIT
 NCT02151903,DI-LEU16-IL2,,,NCIT:C78451,,RESOLVED,ChEMBL,
 NCT02435095,Intermittent treatment,,Maintenance treatment,,,UNRESOLVED,,Intermittent treatment
 NCT03538015,Carvedilol,,,NCIT:C28906,,RESOLVED,ChEMBL,
-NCT01522716,Mesenchymal stromal cells,,,,,UNRESOLVED,,Mesenchymal stromal cells
+NCT01522716,Mesenchymal stromal cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT02538614,Idelalisib; BI-836826,,,NCIT:C78825; NCIT:C122833,,RESOLVED,ChEMBL,
 NCT01687413,,,Cisplatin,,,NO_DRUG,,
 NCT02878694,Myoblast autologous graft,,,,,UNRESOLVED,,Myoblast autologous graft
@@ -13643,7 +13643,7 @@ NCT02458482,,,Albuterol; Ipratropium,,,NO_DRUG,,
 NCT02109653,Encorafenib,,,NCIT:C98283,,RESOLVED,ChEMBL,
 NCT02897830,Ixazomib; Lenalidomide; Dexamethasone,,,NCIT:C97940; NCIT:C2668; NCIT:C422,,RESOLVED,ChEMBL,
 NCT01511055,EC-17,,,NCIT:C62479,,RESOLVED,ChEMBL,
-NCT04393727,CONVALESCENT PLASMA,,,,,UNRESOLVED,,CONVALESCENT PLASMA
+NCT04393727,CONVALESCENT PLASMA,,,,,CODE_OR_CLASS_ONLY,,
 NCT01925378,Nelfinavir,,,NCIT:C29285,,RESOLVED,ChEMBL,
 NCT04493099,Alvocidib; Decitabine; Venetoclax,,,NCIT:C74940; NCIT:C981; NCIT:C103147,,RESOLVED,ChEMBL,
 NCT03312114,Avelumab,,,NCIT:C116870,,RESOLVED,ChEMBL,
@@ -13653,7 +13653,7 @@ NCT03037580,Treprostinil,,,NCIT:C61983,,RESOLVED,ChEMBL,
 NCT03105219,Ivabradine,,,NCIT:C65995,,RESOLVED,ChEMBL,
 NCT03275792,D5-0.9%NS,,Routine home oral rehydration,,,UNRESOLVED,,D5-0.9%NS
 NCT04183634,,Rotigotine,,,,NO_DRUG,,
-NCT02057211,,,autologous mesenchymal stem cell transplantation,,,NO_DRUG,,
+NCT02057211,,,,,,NO_DRUG,,
 NCT04339816,Azithromycin,Hydroxychloroquine,,NCIT:C28844,,RESOLVED,ChEMBL,
 NCT03033316,Dexamethasone,,,NCIT:C422,,RESOLVED,ChEMBL,
 NCT04364815,Hydroxychloroquine; standard preventive measures,,,NCIT:C557,,PARTIAL,ChEMBL,standard preventive measures
@@ -14083,7 +14083,7 @@ NCT02857309,,,Angiotensin,,,NO_DRUG,,
 NCT00182455,Topiramate,,,NCIT:C47764,,RESOLVED,ChEMBL,
 NCT01905605,Phosphatidylcholine,,,,,RESOLVED,ChEMBL,
 NCT00936234,,,Vildagliptin,,,NO_DRUG,,
-NCT04350086,Treatment; Dexmedetomidine,,,NCIT:C47479,,PARTIAL,ChEMBL,Treatment
+NCT04350086,Treatment; Dexmedetomidine,,,NCIT:C47479,,PARTIAL,ChEMBL,
 NCT01590082,Doxycycline; Ipilimumab; Temozolomide,,,NCIT:C76990; NCIT:C2654; NCIT:C1244,,RESOLVED,ChEMBL,
 NCT03225924,Entospletinib; Rituximab; Cyclophosphamide; Doxorubicin; Vincristine; Prednisone,,,NCIT:C105402; NCIT:C1702; NCIT:C61694; NCIT:C456; NCIT:C933; NCIT:C770,,RESOLVED,ChEMBL,
 NCT03833596,,Prednisone,,,,NO_DRUG,,
@@ -14144,12 +14144,12 @@ NCT01079793,Ixabepilone,,,NCIT:C37452,,RESOLVED,ChEMBL,
 NCT02767934,Pembrolizumab,,,NCIT:C106432,,RESOLVED,ChEMBL,
 NCT03847922,Nitrous oxide; Oxygen Gas (Product),Lidocaine,,NCIT:C73617,,PARTIAL,ChEMBL,Oxygen Gas (Product)
 NCT03126461,Ipilimumab; Nivolumab,,,NCIT:C2654; NCIT:C68814,,RESOLVED,ChEMBL,
-NCT00914940,Fludarabine phosphate; Tacrolimus; Thiotepa; T Cell-Depleted Hematopoietic Stem Cell Transplantation,,,NCIT:C1102; NCIT:C76066; NCIT:C875,,PARTIAL,ChEMBL,T Cell-Depleted Hematopoietic Stem Cell Transplantation
+NCT00914940,Fludarabine phosphate; Tacrolimus; Thiotepa,,,NCIT:C1102; NCIT:C76066; NCIT:C875,,RESOLVED,ChEMBL,
 NCT02416102,,Losartan,,,,NO_DRUG,,
 NCT04355039,Pomalidomide; Dexamethasone; Uzansertib,,,NCIT:C72560; NCIT:C422; NCIT:C124226,,RESOLVED,ChEMBL + NCIt,
 NCT03719300,Inodiftagene vixteplasmid,,,NCIT:C157333,,RESOLVED,ChEMBL,
 NCT04398290,Inhaled nitric oxide (iNO),Oxygen gas,Nitrogen,,,UNRESOLVED,,Inhaled nitric oxide (iNO)
-NCT03509870,mesenchymal stromal cells,,,,,UNRESOLVED,,mesenchymal stromal cells
+NCT03509870,mesenchymal stromal cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT00915928,,,Perindopril,,,NO_DRUG,,
 NCT03679975,Riluzole,,,NCIT:C47704,,RESOLVED,ChEMBL,
 NCT04273191,Brexanolone,,,NCIT:C169815,,RESOLVED,ChEMBL,
@@ -14201,7 +14201,7 @@ NCT01755858,Elamipretide,,,NCIT:C171874,,RESOLVED,ChEMBL,
 NCT03119428,Etigilimab; Nivolumab,,,NCIT:C142821; NCIT:C68814,,RESOLVED,ChEMBL,
 NCT03324828,,Hydroxyzine,,,,NO_DRUG,,
 NCT04502069,ABC-294640,,,NCIT:C98278,,RESOLVED,ChEMBL,
-NCT01818479,stem cell transplant,,,,,UNRESOLVED,,stem cell transplant
+NCT01818479,,,,,,NO_DRUG,,
 NCT01225172,BMS-754807; Letrozole,,,NCIT:C74043; NCIT:C1527,,RESOLVED,ChEMBL,
 NCT03449524,,,CXA-10,,,NO_DRUG,,
 NCT02974686,,,Everolimus; Mycophenolic acid,,,NO_DRUG,,
@@ -14243,7 +14243,7 @@ NCT02845336,Celecoxib,artificial tears,,NCIT:C1728,,RESOLVED,ChEMBL,
 NCT04220892,Pembrolizumab; Pemetrexed; Abemaciclib,,,NCIT:C106432; NCIT:C61614; NCIT:C97660,,RESOLVED,ChEMBL,
 NCT00234000,Arsenic trioxide; Azacitidine,,,NCIT:C1005; NCIT:C288,,RESOLVED,ChEMBL,
 NCT00093704,Bortezomib; Ganciclovir,,,NCIT:C1851; NCIT:C517,,RESOLVED,ChEMBL,
-NCT00601289,Temozolomide; DNA methylation analysis; protein expression analysis; proteomic profiling,,,NCIT:C1244,,PARTIAL,ChEMBL,DNA methylation analysis; protein expression analysis; proteomic profiling
+NCT00601289,Temozolomide; DNA methylation analysis; proteomic profiling,,,NCIT:C1244,,PARTIAL,ChEMBL,DNA methylation analysis; proteomic profiling
 NCT00004878,therapeutic allogeneic lymphocytes; Cytarabine; Fludarabine phosphate; Idarubicin; Methotrexate; Tacrolimus,,,NCIT:C408; NCIT:C1102; NCIT:C562; NCIT:C642; NCIT:C76066,,PARTIAL,ChEMBL,therapeutic allogeneic lymphocytes
 NCT02229175,,Bevacizumab,,,,NO_DRUG,,
 NCT03619005,,,Prasterone,,,NO_DRUG,,
@@ -14375,7 +14375,7 @@ NCT03231228,,,Cefazolin,,,NO_DRUG,,
 NCT03881995,,,IGlarLixi; Insulin human,,,NO_DRUG,,
 NCT01757899,,,Methylprednisolone,,,NO_DRUG,,
 NCT02909504,Lithium,,,NCIT:C1318,,RESOLVED,ChEMBL,
-NCT02323477,,stem cell transplantation,,,,NO_DRUG,,
+NCT02323477,,,,,,NO_DRUG,,
 NCT02101554,Ages 7-11; AGES-12-17,,,,,CODE_OR_CLASS_ONLY,,Ages 7-11
 NCT03003728,Elotuzumab; Melphalan; Expanded Natural Killer (ENK) Cells; Nogapendekin alfa,,,NCIT:C66982; NCIT:C633; NCIT:C107503,,PARTIAL,ChEMBL,Expanded Natural Killer (ENK) Cells
 NCT03460964,Pilocarpine,,,NCIT:C62068,,RESOLVED,ChEMBL,
@@ -14434,7 +14434,7 @@ NCT02985554,Nivolumab,,,NCIT:C68814,,RESOLVED,ChEMBL,
 NCT04354441,Hydroxychloroquine,,,NCIT:C557,,RESOLVED,ChEMBL,
 NCT04105985,Kovanaze Nasal Spray,,Articaine,,,UNRESOLVED,,Kovanaze Nasal Spray
 NCT03836885,Apremilast,,,,,RESOLVED,ChEMBL,
-NCT03051698,Human C1-ESTERASE inhibitor; Antibiotics,,,NCIT:C87730,,PARTIAL,ChEMBL,Antibiotics
+NCT03051698,Human C1-ESTERASE inhibitor; Antibiotics,,,NCIT:C87730,,PARTIAL,ChEMBL,
 NCT02369744,,,Silodosin; Tamsulosin,,,NO_DRUG,,
 NCT02202746,Lucitanib,,,NCIT:C95726,,RESOLVED,ChEMBL,
 NCT02004184,,,Pemetrexed,,,RESOLVED,ChEMBL,
@@ -14728,7 +14728,7 @@ NCT02503501,Insulin glulisine,,,NCIT:C65921,,RESOLVED,ChEMBL,
 NCT02162433,,,Dexmedetomidine,,,NO_DRUG,,
 NCT01060345,Sinecatechins,,,NCIT:C76005,,RESOLVED,ChEMBL,
 NCT03093272,Leuprolide; Prednisone; Docetaxel; Apalutamide,,,NCIT:C62042; NCIT:C770; NCIT:C61734; NCIT:C92574,,RESOLVED,ChEMBL,
-NCT04325672,Convalescent Plasma,,,,,UNRESOLVED,,Convalescent Plasma
+NCT04325672,Convalescent Plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT03572257,Quetiapine,,,NCIT:C61917,,RESOLVED,ChEMBL,
 NCT03427021,,Oxaliplatin,,,,NO_DRUG,,
 NCT02608905,Dapagliflozin,,,NCIT:C78126,,RESOLVED,ChEMBL,
@@ -14801,12 +14801,12 @@ NCT00207831,,Tegafur; Uracil,,,,NO_DRUG,,
 NCT02450045,,,0.5% Ropivacaine/0.125% Bupivacaine local anesthetic mixture,,,NO_DRUG,,
 NCT02463812,Fat Emulsion,,,NCIT:C2575,,RESOLVED,NCIt,
 NCT04290858,Nitric oxide,,,,,RESOLVED,ChEMBL,
-NCT03349827,Systemic chemotherapy; Rivoceranib,,,NCIT:C152237,,PARTIAL,ChEMBL,Systemic chemotherapy
+NCT03349827,Systemic chemotherapy; Rivoceranib,,,NCIT:C152237,,PARTIAL,ChEMBL,
 NCT03740243,Naloxone,,Buprenorphine,NCIT:C62054,,RESOLVED,ChEMBL,
 NCT02956005,Tacrolimus,,,NCIT:C76066,,RESOLVED,ChEMBL,
 NCT01059682,Dalcetrapib,,,NCIT:C81529,,RESOLVED,ChEMBL,
 NCT02109627,Ficlatuzumab; Cytarabine,,,NCIT:C78844; NCIT:C408,,RESOLVED,ChEMBL,
-NCT03398512,Systemic chemotherapy,,,,,UNRESOLVED,,Systemic chemotherapy
+NCT03398512,Systemic chemotherapy,,,,,CODE_OR_CLASS_ONLY,,
 NCT02999100,IH Oxytocin; IM Oxytocin; Oxytocin,,,NCIT:C724,,PARTIAL,ChEMBL,IH Oxytocin; IM Oxytocin
 NCT00539617,Erlotinib; Fluorouracil; Leucovorin; Oxaliplatin,,,NCIT:C65530; NCIT:C505; NCIT:C1181,,RESOLVED,ChEMBL,
 NCT04121143,,,Vunakizumab; Placebo,,,NO_DRUG,,
@@ -15244,7 +15244,7 @@ NCT03119467,Calcium Release-activated Channels Inhibitor RP4010,,,NCIT:C136828,,
 NCT02544152,Lubiprostone,,,NCIT:C66040,,RESOLVED,ChEMBL,
 NCT02014116,LY-3009120,,,NCIT:C116861,,RESOLVED,ChEMBL,
 NCT03471351,Tenalisib; Pembrolizumab,,,NCIT:C113433; NCIT:C106432,,RESOLVED,ChEMBL,
-NCT02145039,Fludarabine; Cyclophosphamide; Haploidentical stem cell transplant,,,NCIT:C1094; NCIT:C61694,,PARTIAL,ChEMBL,Haploidentical stem cell transplant
+NCT02145039,Fludarabine; Cyclophosphamide,,,NCIT:C1094; NCIT:C61694,,RESOLVED,ChEMBL,
 NCT03018067,RDX227675,,,,,CODE_OR_CLASS_ONLY,,
 NCT02115048,Afatinib,Letrozole,,NCIT:C66940,,RESOLVED,ChEMBL,
 NCT01532804,Bevacizumab; 5FU combination; Raltitrexed,,,NCIT:C2039; NCIT:C1804,,PARTIAL,ChEMBL,5FU combination
@@ -15706,7 +15706,7 @@ NCT03373422,BAY1128688,,,,,CODE_OR_CLASS_ONLY,,
 NCT00261196,,Collagenase clostridium histolyticum,,,,NO_DRUG,,
 NCT02722603,Gabapentin,,Tramadol,NCIT:C1108,,RESOLVED,ChEMBL,
 NCT01253642,Docetaxel; Phenelzine,,,NCIT:C61734; NCIT:C61888,,RESOLVED,ChEMBL,
-NCT02080195,Cyclophosphamide; Fludarabine; Tacrolimus; Mycophenolate mofetil; Lapine T-Lymphocyte Immune Globulin; Allogeneic bone marrow transplant,,,NCIT:C61694; NCIT:C1094; NCIT:C76066; NCIT:C1468; NCIT:C80833,,PARTIAL,ChEMBL + NCIt,Allogeneic bone marrow transplant
+NCT02080195,Cyclophosphamide; Fludarabine; Tacrolimus; Mycophenolate mofetil; Lapine T-Lymphocyte Immune Globulin,,,NCIT:C61694; NCIT:C1094; NCIT:C76066; NCIT:C1468; NCIT:C80833,,RESOLVED,ChEMBL + NCIt,
 NCT03372603,GSK2798745,,,,,RESOLVED,ChEMBL,
 NCT01482559,Dopamine,,Dextrose,NCIT:C81078,,RESOLVED,ChEMBL,
 NCT03478423,Codeine; Oxycodone; Hydromorphone,,,NCIT:C383; NCIT:C29309,,RESOLVED,ChEMBL,
@@ -15749,7 +15749,7 @@ NCT03738111,Zotiraciclib,,,NCIT:C171725,,RESOLVED,ChEMBL,
 NCT01794000,Prasugrel,,,NCIT:C81566,,RESOLVED,ChEMBL,
 NCT01289210,,,,,,NO_DRUG,,
 NCT00989937,,Oxytocin,,,,NO_DRUG,,
-NCT03245385,Treatment; Halobetasol propionate,,,NCIT:C47553,,PARTIAL,ChEMBL,Treatment
+NCT03245385,Treatment; Halobetasol propionate,,,NCIT:C47553,,PARTIAL,ChEMBL,
 NCT02559492,Itacitinib; Epacadostat; Parsaclisib,,,NCIT:C116855; NCIT:C92582; NCIT:C113434,,RESOLVED,ChEMBL,
 NCT02979392,TENPA (Targeting-Enhancing Nanoparticles of Paclitaxel),,,,,UNRESOLVED,,TENPA (Targeting-Enhancing Nanoparticles of Paclitaxel)
 NCT00506909,Oxytocin,,,NCIT:C724,,RESOLVED,ChEMBL,
@@ -15881,7 +15881,7 @@ NCT02914015,Ropivacaine,Morphine,,NCIT:C61932,,RESOLVED,ChEMBL,
 NCT01803607,Odanacatib,,,NCIT:C66981,,RESOLVED,ChEMBL,
 NCT01938664,Candesartan; CBT,,,NCIT:C65284,,PARTIAL,ChEMBL,CBT
 NCT03481894,Kabiven®,,Compounded standard parenteral nutrition,,,UNRESOLVED,,Kabiven®
-NCT02132884,targeted therapy,,,,,UNRESOLVED,,targeted therapy
+NCT02132884,targeted therapy,,,,,CODE_OR_CLASS_ONLY,,
 NCT00276159,CPG-52852,,,NCIT:C61104,,RESOLVED,ChEMBL,
 NCT02803515,,,,,,NO_DRUG,,
 NCT00589329,Erythromycin; Metronidazole,,,NCIT:C476; NCIT:C651,,RESOLVED,ChEMBL,
@@ -15982,7 +15982,7 @@ NCT00949988,,,Dasatinib; Rituximab,,,NO_DRUG,,
 NCT00089284,Rituximab; Motexafin gadolinium; Indium in 111 ibritumomab tiuxetan; 90Yttrium-Zevalin,,,NCIT:C1702; NCIT:C1881; NCIT:C2579,,PARTIAL,ChEMBL,90Yttrium-Zevalin
 NCT03657420,Sirolimus; Pomalidomide; Dexamethasone,,,NCIT:C1212; NCIT:C72560; NCIT:C422,,RESOLVED,ChEMBL,
 NCT02322281,Rociletinib,,Pemetrexed,NCIT:C99905,,RESOLVED,ChEMBL,
-NCT02055625,Mesenchymal stromal cells,,,,,UNRESOLVED,,Mesenchymal stromal cells
+NCT02055625,Mesenchymal stromal cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT01659021,Idelalisib,Ofatumumab,,NCIT:C78825,,RESOLVED,ChEMBL,
 NCT02579733,,,Azathioprine,,,NO_DRUG,,
 NCT02949492,Aldesleukin,,,NCIT:C1498,,RESOLVED,ChEMBL,
@@ -16046,7 +16046,7 @@ NCT03832816,Vaporized THC alone; Vaporized CBD alone; Vaporized CBD; Dronabinol,
 NCT00455637,Botulinum toxin type a,,,NCIT:C82623,,RESOLVED,ChEMBL,
 NCT02007720,Serelaxin,,,NCIT:C152342,,RESOLVED,ChEMBL,
 NCT00363753,Aspirin,,,NCIT:C287,,RESOLVED,ChEMBL,
-NCT00387530,Oral Sodium Phenylbutyrate; Valganciclovir; protein expression analysis,,,NCIT:C67083; NCIT:C2629,,PARTIAL,ChEMBL + NCIt,protein expression analysis
+NCT00387530,Oral Sodium Phenylbutyrate; Valganciclovir,,,NCIT:C67083; NCIT:C2629,,RESOLVED,ChEMBL + NCIt,
 NCT01675960,Gabapentin,,,NCIT:C1108,,RESOLVED,ChEMBL,
 NCT00935753,Sapropterin,,,NCIT:C78087,,RESOLVED,ChEMBL,
 NCT03781375,,Etanercept; Methotrexate,,,,NO_DRUG,,
@@ -16326,7 +16326,7 @@ NCT02527772,Doxorubicin liposome; Gemcitabine,,FOLFOX4,NCIT:C66876,RXCUI:214525,
 NCT02585479,,Pirarubicin; Oxaliplatin,Ethiodized oil,,,NO_DRUG,,
 NCT03339726,New Formulation Phenylephrine HCl,,Marketed Phenylephrine HCl,,,UNRESOLVED,,New Formulation Phenylephrine HCl
 NCT00327379,Aprotinin,,,NCIT:C47402,,RESOLVED,ChEMBL,
-NCT02584556,systemic chemotherapy,,Transcatheter Arterial Chemoembolization,,,UNRESOLVED,,systemic chemotherapy
+NCT02584556,systemic chemotherapy,,Transcatheter Arterial Chemoembolization,,,CODE_OR_CLASS_ONLY,,
 NCT03623568,Glecaprevir; Pibrentasvir,,,NCIT:C170029; NCIT:C166601,,RESOLVED,ChEMBL,
 NCT03919383,Lenvatinib; Toripalimab,,,NCIT:C95124; NCIT:C131334,,RESOLVED,ChEMBL,
 NCT00303134,Islet Cell Transplantation,,,,,UNRESOLVED,,Islet Cell Transplantation
@@ -16657,7 +16657,7 @@ NCT02836353,Somatostatin; Rifaximin,,,NCIT:C61926,,RESOLVED,ChEMBL,
 NCT01475383,,,PF-03654746,,,NO_DRUG,,
 NCT03384524,,,Bromocriptine; Metoprolol; Tamsulosin,,,NO_DRUG,,
 NCT02675556,Allo-hMSCs,,,,,UNRESOLVED,,Allo-hMSCs
-NCT01233479,systemic chemotherapy,,,,,UNRESOLVED,,systemic chemotherapy
+NCT01233479,systemic chemotherapy,,,,,CODE_OR_CLASS_ONLY,,
 NCT02037412,Ticagrelor,,Clopidogrel,NCIT:C76404,,RESOLVED,ChEMBL,
 NCT01066702,NeoCart,,,,,UNRESOLVED,,NeoCart
 NCT03046901,Vancomycin,,,NCIT:C925,,RESOLVED,ChEMBL,
@@ -17092,7 +17092,7 @@ NCT00287456,Insulin human,,,NCIT:C65922,,RESOLVED,ChEMBL,
 NCT01413854,,,sugar pill; Diclofenac,,,NO_DRUG,,
 NCT02657447,Tetulomab tetraxetan LU-177; Lilotomab,,,NCIT:C105403; NCIT:C165685,,RESOLVED,ChEMBL,
 NCT00256555,Somatropin,,,NCIT:C837,,RESOLVED,ChEMBL,
-NCT01892293,Treatment; NY-ESO-1c259-modified T cells,,,,,UNRESOLVED,,NY-ESO-1c259-modified T cells; Treatment
+NCT01892293,Treatment; NY-ESO-1c259-modified T cells,,,,,CODE_OR_CLASS_ONLY,,NY-ESO-1c259-modified T cells
 NCT01284335,Gemcitabine; Docetaxel; Temozolomide; Cisplatin; Erlotinib; Tasisulam,,,NCIT:C66876; NCIT:C61734; NCIT:C1244; NCIT:C376; NCIT:C65530; NCIT:C62794,,RESOLVED,ChEMBL,
 NCT03600896,INTERLEUKIN-7,,,,,RESOLVED,ChEMBL,
 NCT03066115,Tilarginine; Ketorolac; Ascorbic acid,,,NCIT:C1178; NCIT:C1219; NCIT:C285,,RESOLVED,ChEMBL,
@@ -17252,7 +17252,7 @@ NCT00991029,,,Clopidogrel,,,NO_DRUG,,
 NCT00257829,Methazolamide; Cisplatin,,,NCIT:C61318; NCIT:C376,,RESOLVED,ChEMBL,
 NCT03455777,Vupanorsen,,,NCIT:C174612,,RESOLVED,ChEMBL,
 NCT01188369,Levosimendan,,,NCIT:C174653,,RESOLVED,ChEMBL,
-NCT02403947,Mesenchymal stem cells,,Suspension media,,,UNRESOLVED,,Mesenchymal stem cells
+NCT02403947,Mesenchymal stem cells,,Suspension media,,,CODE_OR_CLASS_ONLY,,
 NCT03162419,Plasma Exchange,Standard Medical Therapy,,,,UNRESOLVED,,Plasma Exchange
 NCT00924209,Gemcitabine; Cisplatin; Bevacizumab; Etoposide,,,NCIT:C66876; NCIT:C376; NCIT:C2039; NCIT:C491,,RESOLVED,ChEMBL,
 NCT00657449,,,Valdecoxib; Rofecoxib,,,NO_DRUG,,
@@ -17289,7 +17289,7 @@ NCT03300362,MVA-NP+M1,Quadrivalent Inactivated Influenza Vaccine,Sodium chloride
 NCT02694289,Metformin; Insulin glargine,,,NCIT:C61612; NCIT:C47564,,RESOLVED,ChEMBL,
 NCT00760318,Levetiracetam,,,NCIT:C47581,,RESOLVED,ChEMBL,
 NCT01493154,Detox; Cyclophosphamide,,,NCIT:C1799; NCIT:C61694,,RESOLVED,ChEMBL + NCIt,
-NCT02190799,Convalescent plasma,,,,,UNRESOLVED,,Convalescent plasma
+NCT02190799,Convalescent plasma,,,,,CODE_OR_CLASS_ONLY,,
 NCT00353275,Strict Glycemic control; Conventional Glycemic Control,,,,,UNRESOLVED,,Conventional Glycemic Control; Strict Glycemic control
 NCT03438344,Multi-peptide CMV-Modified Vaccinia Ankara Vaccine,,,NCIT:C111036,,RESOLVED,NCIt,
 NCT02966171,HMPL-453,,,NCIT:C150383,,RESOLVED,ChEMBL,
@@ -17325,7 +17325,7 @@ NCT03502694,Lumicitabine,,,NCIT:C174641,,RESOLVED,ChEMBL,
 NCT00310388,Ezogabine,,,NCIT:C72839,,RESOLVED,ChEMBL,
 NCT01901341,Bevenopran,,,NCIT:C169810,,RESOLVED,ChEMBL,
 NCT00543335,Sorafenib,,,,,RESOLVED,ChEMBL,
-NCT03163784,Fecal Inoculum Capsule; Antibiotic,,,,,UNRESOLVED,,Antibiotic; Fecal Inoculum Capsule
+NCT03163784,Fecal Inoculum Capsule; Antibiotic,,,,,CODE_OR_CLASS_ONLY,,Fecal Inoculum Capsule
 NCT00102635,Fenretinide; Lonafarnib,,,NCIT:C1098; NCIT:C1829,,RESOLVED,ChEMBL,
 NCT01901328,Bevenopran,,,NCIT:C169810,,RESOLVED,ChEMBL,
 NCT03161041,Bevacizumab; HIPEC (Oxaliplatin 360 mg/m2).,,,NCIT:C2039,,PARTIAL,ChEMBL,HIPEC (Oxaliplatin 360 mg/m2).
@@ -17415,7 +17415,7 @@ NCT00038701,O-chloroacetylcarbamoylfumagillol,,,NCIT:C1298,,RESOLVED,ChEMBL,
 NCT00041782,Dalteparin sodium,,,NCIT:C75767,,RESOLVED,ChEMBL,
 NCT02767024,Nitroprusside,Furosemide,Dobutamine,NCIT:C77153,,RESOLVED,ChEMBL,
 NCT00043810,Busulfan; Fludarabine,,,NCIT:C321; NCIT:C1094,,RESOLVED,ChEMBL,
-NCT00048100,Stem Cell Transplant,,,,,UNRESOLVED,,Stem Cell Transplant
+NCT00048100,,,,,,NO_DRUG,,
 NCT00038415,CLL vaccine using DNA plasmid vector,,,,,UNRESOLVED,,CLL vaccine using DNA plasmid vector
 NCT01956604,Clonidine,,,NCIT:C380,,RESOLVED,ChEMBL,
 NCT00038805,Gemtuzumab ozogamicin,,,NCIT:C1806,,RESOLVED,ChEMBL,
@@ -17444,27 +17444,27 @@ NCT02050776,Autologous bone marrow mononuclear cell transplantation,,,,,UNRESOLV
 NCT00796510,Sitaxentan; Sildenafil,,,NCIT:C73038,,RESOLVED,ChEMBL,
 NCT02028104,Autologous bone marrow mononuclear cell transplantation,,,,,UNRESOLVED,,Autologous bone marrow mononuclear cell transplantation
 NCT02266797,,,Dexamethasone,,,NO_DRUG,,
-NCT02245776,Stem Cell,,,,,UNRESOLVED,,Stem Cell
+NCT02245776,Stem Cell,,,,,CODE_OR_CLASS_ONLY,,
 NCT01606800,Peginterferon ALFA-2B; Ribavirin,,,NCIT:C1845; NCIT:C807,,RESOLVED,ChEMBL,
 NCT00038870,Dendritic Cell Activated Lymphocyte,,,,,UNRESOLVED,,Dendritic Cell Activated Lymphocyte
 NCT02992860,Talacotuzumab; Cytogenetic analysis,,,NCIT:C102784,,PARTIAL,ChEMBL,Cytogenetic analysis
 NCT03431272,Lifitegrast,,,NCIT:C175726,,RESOLVED,ChEMBL,
-NCT02242071,Stem Cell,,,,,UNRESOLVED,,Stem Cell
-NCT02245711,Stem Cell,,,,,UNRESOLVED,,Stem Cell
-NCT02241434,Stem Cell,,,,,UNRESOLVED,,Stem Cell
-NCT02245724,Stem Cell,,,,,UNRESOLVED,,Stem Cell
-NCT02245698,Stem cell,,,,,UNRESOLVED,,Stem cell
+NCT02242071,Stem Cell,,,,,CODE_OR_CLASS_ONLY,,
+NCT02245711,Stem Cell,,,,,CODE_OR_CLASS_ONLY,,
+NCT02241434,Stem Cell,,,,,CODE_OR_CLASS_ONLY,,
+NCT02245724,Stem Cell,,,,,CODE_OR_CLASS_ONLY,,
+NCT02245698,Stem cell,,,,,CODE_OR_CLASS_ONLY,,
 NCT00254436,Epoetin alfa,,,NCIT:C2695,,RESOLVED,ChEMBL,
 NCT02027246,Autologous bone marrow mononuclear cell transplantation,,,,,UNRESOLVED,,Autologous bone marrow mononuclear cell transplantation
 NCT02009124,Autologous bone marrow mononuclear cell transplantation,,,,,UNRESOLVED,,Autologous bone marrow mononuclear cell transplantation
-NCT01984814,Stem cell,,,,,UNRESOLVED,,Stem cell
-NCT02241928,Stem Cell,,,,,UNRESOLVED,,Stem Cell
+NCT01984814,Stem cell,,,,,CODE_OR_CLASS_ONLY,,
+NCT02241928,Stem Cell,,,,,CODE_OR_CLASS_ONLY,,
 NCT02065778,Autologous bone marrow mononuclear cell transplantation,,,,,UNRESOLVED,,Autologous bone marrow mononuclear cell transplantation
 NCT03414450,Tinodasertib; Dasatinib,,,NCIT:C153262; NCIT:C74556,,RESOLVED,ChEMBL,
 NCT02241395,Intrathecal autologous bone marrow mononuclear cell transplantation,,,,,UNRESOLVED,,Intrathecal autologous bone marrow mononuclear cell transplantation
 NCT00672009,Ixabepilone,,,NCIT:C37452,,RESOLVED,ChEMBL,
 NCT02774317,,Plasma,,,,NO_DRUG,,
-NCT00790842,Lenalidomide; Dexamethasone; Anticoagulants,,,NCIT:C2668; NCIT:C422,,PARTIAL,ChEMBL,Anticoagulants
+NCT00790842,Lenalidomide; Dexamethasone; Anticoagulants,,,NCIT:C2668; NCIT:C422,,PARTIAL,ChEMBL,
 NCT00626600,Oxycodone,,,NCIT:C29309,,RESOLVED,ChEMBL,
 NCT01777854,,,Omeprazole,,,NO_DRUG,,
 NCT03208712,Atezolizumab; Radium,,,NCIT:C106250,,RESOLVED,ChEMBL,
@@ -17640,7 +17640,7 @@ NCT00742105,BGT-226 free base,,,,,RESOLVED,ChEMBL,
 NCT00818259,MK-0869; MK-0517,Dexamethasone,Ondansetron,,,PARTIAL,ChEMBL,
 NCT01901224,Metformin,,,NCIT:C61612,,RESOLVED,ChEMBL,
 NCT02291237,Eleclazine,,,NCIT:C174857,,RESOLVED,ChEMBL,
-NCT02029638,Lapine T-Lymphocyte Immune Globulin; Fludarabine; Cyclophosphamide; Acetaminophen; Diphenhydramine; Methylprednisolone; bone marrow transplant; 2-MERCAPTOETHANESULFONIC acid; Mycophenolate mofetil; Prednisone; Filgrastim,,,NCIT:C80833; NCIT:C1094; NCIT:C61694; NCIT:C198; NCIT:C61728; NCIT:C647; NCIT:C1468; NCIT:C770; NCIT:C1474,,PARTIAL,ChEMBL + NCIt,bone marrow transplant
+NCT02029638,Lapine T-Lymphocyte Immune Globulin; Fludarabine; Cyclophosphamide; Acetaminophen; Diphenhydramine; Methylprednisolone; 2-MERCAPTOETHANESULFONIC acid; Mycophenolate mofetil; Prednisone; Filgrastim,,,NCIT:C80833; NCIT:C1094; NCIT:C61694; NCIT:C198; NCIT:C61728; NCIT:C647; NCIT:C1468; NCIT:C770; NCIT:C1474,,RESOLVED,ChEMBL + NCIt,
 NCT02826018,,,ALN-HBV,,,NO_DRUG,,
 NCT03603626,Pregabalin,,,NCIT:C64625,,RESOLVED,ChEMBL,
 NCT03602287,,,Lidocaine,,,NO_DRUG,,
@@ -17655,7 +17655,7 @@ NCT02625922,Serelaxin,,,NCIT:C152342,,RESOLVED,ChEMBL,
 NCT02415608,Ibrutinib,,,NCIT:C81934,,RESOLVED,ChEMBL,
 NCT00193726,Ethinyl estradiol,,,NCIT:C486,,RESOLVED,ChEMBL,
 NCT03385057,,,Ibuprofen; Acetaminophen,,,NO_DRUG,,
-NCT01924169,Lenalidomide; Influenza Vaccine; Pneumovax Vaccine,,,NCIT:C2668,,PARTIAL,ChEMBL,Influenza Vaccine; Pneumovax Vaccine
+NCT01924169,Lenalidomide; Influenza Vaccine; Pneumovax Vaccine,,,NCIT:C2668,,PARTIAL,ChEMBL,Pneumovax Vaccine
 NCT03106155,Vistusertib,,,NCIT:C88329,,RESOLVED,ChEMBL,
 NCT01607320,Raloxifene,,Clomiphene,NCIT:C1518,,RESOLVED,ChEMBL,
 NCT01164098,,,Rituximab,,,NO_DRUG,,
@@ -17761,7 +17761,7 @@ NCT00370942,,,GW823093C,,,NO_DRUG,,
 NCT02824913,P-321,,,,,CODE_OR_CLASS_ONLY,,
 NCT01842334,,Nicotine,,,,NO_DRUG,,
 NCT00918463,Dasatinib,,,NCIT:C74556,,RESOLVED,ChEMBL,
-NCT00424489,Hematopoietic Stem Cell Transplantation; Cyclophosphamide; ATG (rabbit); 2-MERCAPTOETHANESULFONIC acid; Methylprednisolone,,,NCIT:C61694; NCIT:C647,,PARTIAL,ChEMBL,ATG (rabbit); Hematopoietic Stem Cell Transplantation
+NCT00424489,Cyclophosphamide; ATG (rabbit); 2-MERCAPTOETHANESULFONIC acid; Methylprednisolone,,,NCIT:C61694; NCIT:C647,,PARTIAL,ChEMBL,ATG (rabbit)
 NCT00240227,,,Prazosin,,,NO_DRUG,,
 NCT02794519,Sirukumab,,,NCIT:C152371,,RESOLVED,ChEMBL,
 NCT02671188,GSK-3050002,,,,,RESOLVED,ChEMBL,
@@ -17773,7 +17773,7 @@ NCT02254161,BI-1181181,,,,,CODE_OR_CLASS_ONLY,,
 NCT02198313,BIIX 1 XX - D1; BIIX 1 XX - D2; BIIX 1 XX - D3,,,,,UNRESOLVED,,BIIX 1 XX - D1; BIIX 1 XX - D2; BIIX 1 XX - D3
 NCT00936767,Artemisone; Mefloquine,,Artesunate,NCIT:C87431; NCIT:C61827,,RESOLVED,ChEMBL + NCIt,
 NCT01267825,CT-guided corticosteroid; Bupivacaine,,Standard medical care,NCIT:C62011,RXCUI:1815,PARTIAL,RxNorm,CT-guided corticosteroid
-NCT00282438,Autologous hematopoietic stem cell transplantation; Allogeneic stem cell transplantation,,,,,UNRESOLVED,,Allogeneic stem cell transplantation; Autologous hematopoietic stem cell transplantation
+NCT00282438,,,,,,NO_DRUG,,
 NCT01695733,Trivalent Influenza Vaccine,,,NCIT:C2643,,RESOLVED,NCIt,
 NCT01015677,MK-6913,,17-β estradiol,,,RESOLVED,ChEMBL,
 NCT02464306,Fidaxomicin,,,NCIT:C66979,,RESOLVED,ChEMBL,
@@ -17811,7 +17811,7 @@ NCT00631137,,,Testosterone,,,NO_DRUG,,
 NCT00427297,AZT/3TC/NVP (zidovudine; d4T/3TC/NVP (stavudine; ABC/3TC/NVP (abacavir,,AZT/3TC/ABC (zidovudine; Lamivudine; Abacavir; d4T/3TC/ABC (stavudine; ddI/ABC/LPV/r (didanosine; Lopinavir/Ritonavir; ABC/ ddI or TDF / NVP or EFV (abacavir; Didanosine; Nevirapine,,,PARTIAL,ChEMBL,ABC/3TC/NVP (abacavir; AZT/3TC/NVP (zidovudine; d4T/3TC/NVP (stavudine
 NCT00907517,SCH-900776; Cytarabine,,,NCIT:C79867; NCIT:C408,,RESOLVED,ChEMBL,
 NCT01033370,Clevidipine,,,NCIT:C72727,,RESOLVED,ChEMBL,
-NCT00946023,Fludarabine; Cyclophosphamide; Tacrolimus; Mycophenolate mofetil; Rituximab; Allogeneic Bone Marrow Transplant (BMT),,,NCIT:C1094; NCIT:C61694; NCIT:C76066; NCIT:C1468; NCIT:C1702,,PARTIAL,ChEMBL,Allogeneic Bone Marrow Transplant (BMT)
+NCT00946023,Fludarabine; Cyclophosphamide; Tacrolimus; Mycophenolate mofetil; Rituximab,,,NCIT:C1094; NCIT:C61694; NCIT:C76066; NCIT:C1468; NCIT:C1702,,RESOLVED,ChEMBL,
 NCT01756105,Metformin,Rapid acting analog insulin Intermediate acting NPH Insulin,,NCIT:C61612,,RESOLVED,ChEMBL,
 NCT02643719,,,Topiramate; Abortive Medication (Naproxen; Sumatriptan,,,NO_DRUG,,
 NCT02483598,,Buspirone; Grapefruit juice,,,,NO_DRUG,,
@@ -17920,7 +17920,7 @@ NCT01923311,Elvitegravir; Background regimen,,,NCIT:C76493,,PARTIAL,ChEMBL,Backg
 NCT00124579,Bortezomib; Dexamethasone; Thalidomide,,,NCIT:C1851; NCIT:C422; NCIT:C870,,RESOLVED,ChEMBL,
 NCT00527124,Cediranib,Docetaxel; Prednisone,,NCIT:C80867,,RESOLVED,ChEMBL,
 NCT00012298,Rituximab; Yttrium y 90 ibritumomab tiuxetan; Indium in 111 ibritumomab tiuxetan; Oprelvekin; Filgrastim,,,NCIT:C1702; NCIT:C1812; NCIT:C2579; NCIT:C1303; NCIT:C1474,,RESOLVED,ChEMBL,
-NCT01598025,"Thiotepa; Fludarabine phosphate; Melphalan; Lymphocyte immune globulin, anti-thymocyte globulin; peripheral blood stem cell transplantation",,,NCIT:C875; NCIT:C1102; NCIT:C633; NCIT:C80824,RXCUI:1011,PARTIAL,ChEMBL + RxNorm,peripheral blood stem cell transplantation
+NCT01598025,"Thiotepa; Fludarabine phosphate; Melphalan; Lymphocyte immune globulin, anti-thymocyte globulin",,,NCIT:C875; NCIT:C1102; NCIT:C633; NCIT:C80824,RXCUI:1011,RESOLVED,ChEMBL + RxNorm,
 NCT02721875,Volasertib; Azacitidine,,,NCIT:C79844; NCIT:C288,,RESOLVED,ChEMBL,
 NCT00215553,Lucinactant,,,NCIT:C172611,,RESOLVED,ChEMBL,
 NCT03112122,autologous bone marrow concentrate; bone substitute i-FactorTM,,,,,UNRESOLVED,,autologous bone marrow concentrate; bone substitute i-FactorTM
@@ -17941,7 +17941,7 @@ NCT01325584,Fish oil triglycerides,,,NCIT:C104273,,RESOLVED,ChEMBL,
 NCT02654639,Trifluridine and Tipiracil Hydrochloride; Bevacizumab,,,NCIT:C102554; NCIT:C2039,,RESOLVED,ChEMBL + NCIt,
 NCT00728585,Palifermin,,,NCIT:C2455,,RESOLVED,ChEMBL,
 NCT01288053,Allogeneic Stem Cell Therapy,,,,,UNRESOLVED,,Allogeneic Stem Cell Therapy
-NCT00278564,Hematopoietic stem cell transplantation; Cyclophosphamide; 2-MERCAPTOETHANESULFONIC acid; ATG(rabbit); Methylprednisolone; Rituximab,,,NCIT:C61694; NCIT:C647; NCIT:C1702,,PARTIAL,ChEMBL,ATG(rabbit); Hematopoietic stem cell transplantation
+NCT00278564,Cyclophosphamide; 2-MERCAPTOETHANESULFONIC acid; ATG(rabbit); Methylprednisolone; Rituximab,,,NCIT:C61694; NCIT:C647; NCIT:C1702,,PARTIAL,ChEMBL,ATG(rabbit)
 NCT03613558,Dexmedetomidine,,,NCIT:C47479,,RESOLVED,ChEMBL,
 NCT00449150,Cetrorelix; 78 mg; 52 mg,,,NCIT:C2481,,PARTIAL,ChEMBL,52 mg; 78 mg
 NCT01445392,Multicycle SS1P; Pemetrexed; Cisplatin; Single cycle SS1P,,,NCIT:C61614; NCIT:C376,,PARTIAL,ChEMBL,Multicycle SS1P; Single cycle SS1P
@@ -17951,7 +17951,7 @@ NCT03465345,Metformin; Oligomeric Procyanidin Complex,,,NCIT:C61612; NCIT:C13133
 NCT03196401,Durvalumab,,,NCIT:C103194,,RESOLVED,ChEMBL,
 NCT02425813,Budesonide; Methylprednisolone hemisuccinate,,,NCIT:C1027; NCIT:C87234,,RESOLVED,ChEMBL,
 NCT01804530,Fms/Trk Tyrosine Kinase Inhibitor PLX7486 Tosylate,,,NCIT:C105804,,RESOLVED,NCIt,
-NCT00278512,Autologous Stem Cell Transplant; Allogeneic Stem Cell Transplant; Cyclophosphamide; Lapine T-Lymphocyte Immune Globulin; Alemtuzumab; Fludarabine; Tacrolimus; 2-MERCAPTOETHANESULFONIC acid,,,NCIT:C61694; NCIT:C80833; NCIT:C1681; NCIT:C1094; NCIT:C76066,,PARTIAL,ChEMBL + NCIt,Allogeneic Stem Cell Transplant; Autologous Stem Cell Transplant
+NCT00278512,Cyclophosphamide; Lapine T-Lymphocyte Immune Globulin; Alemtuzumab; Fludarabine; Tacrolimus; 2-MERCAPTOETHANESULFONIC acid,,,NCIT:C61694; NCIT:C80833; NCIT:C1681; NCIT:C1094; NCIT:C76066,,RESOLVED,ChEMBL + NCIt,
 NCT00200382,Bortezomib,,,NCIT:C1851,,RESOLVED,ChEMBL,
 NCT02846766,Lenvatinib,,,NCIT:C95124,,RESOLVED,ChEMBL,
 NCT01755520,Ticagrelor,,Aspirin,NCIT:C76404,,RESOLVED,ChEMBL,
@@ -17960,7 +17960,7 @@ NCT02162225,Beetroot Juice,,,NCIT:C114297,,RESOLVED,NCIt,
 NCT02806141,Aerosolized,,Colistin,,,PARTIAL,ChEMBL,Aerosolized
 NCT03081247,BGF 320/14.4/9.6 µg MDI; BFF 320/9.6 µg,,,,,UNRESOLVED,,BFF 320/9.6 µg; BGF 320/14.4/9.6 µg MDI
 NCT02747797,Lucitanib,,,NCIT:C95726,,RESOLVED,ChEMBL,
-NCT01103375,Erlotinib; Isotretinoin; protein expression analysis,,,NCIT:C65530; NCIT:C603,,PARTIAL,ChEMBL,protein expression analysis
+NCT01103375,Erlotinib; Isotretinoin,,,NCIT:C65530; NCIT:C603,,RESOLVED,ChEMBL,
 NCT01051401,Rosuvastatin,,,NCIT:C66523,,RESOLVED,ChEMBL,
 NCT01292265,Certolizumab pegol,,,NCIT:C80972,,RESOLVED,ChEMBL,
 NCT02486796,,,Reishi mushroom extract; Ubidecarenone; Melatonin,,,NO_DRUG,,
@@ -17980,7 +17980,7 @@ NCT00383071,,,H5N1 vaccine,,,NO_DRUG,,
 NCT02152930,,,OMEGA-3 fatty acids,,,NO_DRUG,,
 NCT02053311,,,Orteronel,,,NO_DRUG,,
 NCT02316847,Diazepam,,,,,RESOLVED,ChEMBL,
-NCT00282412,Hematopoietic Stem Cell Transplantation; Fludarabine; Cyclophosphamide; Alemtuzumab; Cyclosporine; Mycophenolate mofetil,,,NCIT:C1094; NCIT:C61694; NCIT:C1681; NCIT:C1468,RXCUI:3008,PARTIAL,ChEMBL + RxNorm,Hematopoietic Stem Cell Transplantation
+NCT00282412,Fludarabine; Cyclophosphamide; Alemtuzumab; Cyclosporine; Mycophenolate mofetil,,,NCIT:C1094; NCIT:C61694; NCIT:C1681; NCIT:C1468,RXCUI:3008,RESOLVED,ChEMBL + RxNorm,
 NCT02914327,Snx 5422; Ibrutinib,,,NCIT:C81934,,RESOLVED,ChEMBL,
 NCT01378377,Pimasertib; Temsirolimus,,,NCIT:C84864; NCIT:C1844,,RESOLVED,ChEMBL,
 NCT00225758,Lapatinib,,,NCIT:C26653,,RESOLVED,ChEMBL,
@@ -18248,7 +18248,7 @@ NCT02420210,Bendamustine; Obinutuzumab; Dexamethasone,,,NCIT:C73261; NCIT:C70741
 NCT01979276,Romidepsin; Pomalidomide; Dexamethasone,,,NCIT:C1544; NCIT:C72560; NCIT:C422,,RESOLVED,ChEMBL,
 NCT00871741,GSK2202083A,,Diphtheria Toxoid/Tetanus Toxoid/Acellular Pertussis Vaccine Adsorbed; Menjugate,,,CODE_OR_CLASS_ONLY,,
 NCT02667561,Testosterone,,,,,RESOLVED,ChEMBL,
-NCT00686842,PTC299; protein expression analysis,,,,,CODE_OR_CLASS_ONLY,,protein expression analysis
+NCT00686842,PTC299,,,,,CODE_OR_CLASS_ONLY,,
 NCT02957435,Eplerenone,,,NCIT:C47513,,RESOLVED,ChEMBL,
 NCT01812005,Alisertib; Rituximab,,,NCIT:C71717; NCIT:C1702,,RESOLVED,ChEMBL,
 NCT00955305,Cixutumumab,Bevacizumab; Carboplatin; Paclitaxel,,NCIT:C79828,,RESOLVED,ChEMBL,
@@ -18891,7 +18891,7 @@ NCT02202070,Onabotulinumtoxina,,,NCIT:C82623,,RESOLVED,ChEMBL,
 NCT02326285,Gefitinib; Docetaxel; Cisplatin,,,NCIT:C1855; NCIT:C61734; NCIT:C376,,RESOLVED,ChEMBL,
 NCT02578719,,,Bupivacaine,,,NO_DRUG,,
 NCT00779142,Methotrexate,,,NCIT:C642,,RESOLVED,ChEMBL,
-NCT02415166,INFLUENZA VACCINE,,,,,UNRESOLVED,,INFLUENZA VACCINE
+NCT02415166,INFLUENZA VACCINE,,,,,CODE_OR_CLASS_ONLY,,
 NCT01469988,,Testosterone,,,,NO_DRUG,,
 NCT00522548,,,Mycophenolic acid; Mycophenolate mofetil,,,NO_DRUG,,
 NCT03018106,Ospemifene,,"Estrogens, conjugated",NCIT:C76958,,RESOLVED,ChEMBL,
@@ -19135,7 +19135,7 @@ NCT01071993,,,Atorvastatin,,,NO_DRUG,,
 NCT00376519,Cyclophosphamide; Cyclosporine; Fludarabine phosphate; Mycophenolate mofetil,,,NCIT:C61694; NCIT:C1102; NCIT:C1468,,RESOLVED,ChEMBL,
 NCT01200810,,gamma-secretase; RO4929097; Bicalutamide,,,,NO_DRUG,,
 NCT02118311,CD4+ CD25+ Regulatory T Cells; Fludarabine; Cyclophosphamide,,,NCIT:C78829; NCIT:C1094; NCIT:C61694,,RESOLVED,ChEMBL + NCIt,
-NCT02410239,Mesenchymal Stem Cells,,,,,UNRESOLVED,,Mesenchymal Stem Cells
+NCT02410239,Mesenchymal Stem Cells,,,,,CODE_OR_CLASS_ONLY,,
 NCT01946399,Dexamethasone,,,NCIT:C422,,RESOLVED,ChEMBL,
 NCT00855114,Everolimus,,,NCIT:C48387,,RESOLVED,ChEMBL,
 NCT02482948,,,Collagenase clostridium histolyticum,,,NO_DRUG,,
@@ -19219,7 +19219,7 @@ NCT00562185,Carboplatin; Doxorubicin,,,NCIT:C1282; NCIT:C456,,RESOLVED,ChEMBL,
 NCT00657553,,,Bortezomib,,,NO_DRUG,,
 NCT02700022,Alisertib,,,NCIT:C71717,,RESOLVED,ChEMBL,
 NCT02899026,Sirukumab,,,NCIT:C152371,,RESOLVED,ChEMBL,
-NCT00524589,Dexamethasone; protein expression analysis,,,NCIT:C422,,PARTIAL,ChEMBL,protein expression analysis
+NCT00524589,Dexamethasone,,,NCIT:C422,,RESOLVED,ChEMBL,
 NCT02510950,Personalized peptide vaccine; Hiltonol; Temozolomide,,,NCIT:C1198; NCIT:C1244,,PARTIAL,ChEMBL,Personalized peptide vaccine
 NCT01339039,Plerixafor; Bevacizumab,,,NCIT:C1777; NCIT:C2039,,RESOLVED,ChEMBL,
 NCT01978535,Iron,,,,RXCUI:90176,RESOLVED,RxNorm,
@@ -19445,7 +19445,7 @@ NCT00003491,Antineoplaston therapy (Atengenal; Antineoplaston AS2-1,,,NCIT:C1613
 NCT00003522,Antineoplaston therapy (Atengenal; Antineoplaston AS2-1,,,NCIT:C1613,,PARTIAL,NCIt,Antineoplaston therapy (Atengenal
 NCT02672202,,,Duloxetine; Pregabalin,,,NO_DRUG,,
 NCT00003485,Antineoplaston A10,,,NCIT:C1004,,RESOLVED,ChEMBL,
-NCT02653495,Influenza vaccine,,,,,UNRESOLVED,,Influenza vaccine
+NCT02653495,Influenza vaccine,,,,,CODE_OR_CLASS_ONLY,,
 NCT01251172,RG-4733; Melphalan,,,NCIT:C88333; NCIT:C633,,RESOLVED,ChEMBL,
 NCT02831179,Capecitabine; Temozolomide; Veliparib,,,NCIT:C1794; NCIT:C1244; NCIT:C60768,,RESOLVED,ChEMBL,
 NCT00003495,Antineoplaston therapy (Atengenal; Antineoplaston AS2-1,,,NCIT:C1613,,PARTIAL,NCIt,Antineoplaston therapy (Atengenal
@@ -19704,7 +19704,7 @@ NCT02765815,,,Bupivacaine; Epinephrine; Ketorolac; Morphine,,,NO_DRUG,,
 NCT02310581,Buprenorphine,,,NCIT:C61656,,RESOLVED,ChEMBL,
 NCT00914316,,,Ranolazine,,,NO_DRUG,,
 NCT02576119,,,,,,NO_DRUG,,
-NCT01383447,Entinostat; Imatinib; western blotting,,,NCIT:C1863; NCIT:C62035,,PARTIAL,ChEMBL,western blotting
+NCT01383447,Entinostat; Imatinib,,,NCIT:C1863; NCIT:C62035,,RESOLVED,ChEMBL,
 NCT01085656,OXI-4503,,,NCIT:C84867,,RESOLVED,ChEMBL,
 NCT02460107,,,Botulinum toxin type a,,,NO_DRUG,,
 NCT00483535,GW273225; COC,,,,,CODE_OR_CLASS_ONLY,,COC
@@ -19893,7 +19893,7 @@ NCT01419548,Veliparib; Carboplatin; Paclitaxel,,,NCIT:C60768; NCIT:C1282; NCIT:C
 NCT00512616,Ceftriaxone,,,NCIT:C62020,,RESOLVED,ChEMBL,
 NCT03181880,,,Aclidinium; Formoterol,,,NO_DRUG,,
 NCT01170325,Valproic acid,,,NCIT:C29536,,RESOLVED,ChEMBL,
-NCT00514982,Mesalamine; Infliximab; Corticosteroids; Mercaptopurine; Tacrolimus; Adalimumab,,,NCIT:C29249; NCIT:C1789; NCIT:C61832; NCIT:C76066; NCIT:C65216,,PARTIAL,ChEMBL,Corticosteroids
+NCT00514982,Mesalamine; Infliximab; Corticosteroids; Mercaptopurine; Tacrolimus; Adalimumab,,,NCIT:C29249; NCIT:C1789; NCIT:C61832; NCIT:C76066; NCIT:C65216,,PARTIAL,ChEMBL,
 NCT02408159,"Varicella zoster virus, live attenuated",,,,,RESOLVED,ChEMBL,
 NCT00686972,Glucagon-like peptide 1,,,,,RESOLVED,ChEMBL,
 NCT01913535,,,Aticaprant,,,NO_DRUG,,
@@ -19931,7 +19931,7 @@ NCT02521077,Ascorbic acid,,,NCIT:C285,,RESOLVED,ChEMBL,
 NCT01756586,Dexamethasone,Bupivacaine,,NCIT:C422,,RESOLVED,ChEMBL,
 NCT01257802,,,Leuprolide,,,NO_DRUG,,
 NCT00598923,Topiramate,,Phenytoin,NCIT:C47764,,RESOLVED,ChEMBL,
-NCT00636935,Antibiotics only,,Corticosteroids; antibiotics,,,UNRESOLVED,,Antibiotics; Antibiotics only; Corticosteroids
+NCT00636935,Antibiotics only,,Corticosteroids; antibiotics,,,CODE_OR_CLASS_ONLY,,Antibiotics only
 NCT01918306,Pictilisib,Cisplatin,,NCIT:C165479,,RESOLVED,ChEMBL,
 NCT02925533,Vofatamab; Pembrolizumab,,,NCIT:C116863; NCIT:C106432,,RESOLVED,ChEMBL,
 NCT03016949,IPV; f-IPV,,,,,UNRESOLVED,,IPV; f-IPV
@@ -20090,7 +20090,7 @@ NCT00436345,Remifentanil,,Propofol,NCIT:C66513,,RESOLVED,ChEMBL,
 NCT01982318,,,VitroGro® ECM,,,NO_DRUG,,
 NCT02538081,,,Risperidone; GTS-21,,,NO_DRUG,,
 NCT00102778,Aplaviroc; Lopinavir/Ritonavir; Ritonavir,,,NCIT:C78043; NCIT:C2096; NCIT:C1609,,RESOLVED,ChEMBL + NCIt,
-NCT00145587,Systemic chemotherapy; antibodies,,,,,UNRESOLVED,,Systemic chemotherapy; antibodies
+NCT00145587,Systemic chemotherapy; antibodies,,,,,CODE_OR_CLASS_ONLY,,antibodies
 NCT01913483,Bivalirudin,,Heparin,NCIT:C47415,,RESOLVED,ChEMBL,
 NCT02259348,Cyclophosphamide; Fludarabine; Aldesleukin; Melphalan; Thiotepa; Rituximab; Natural killer cell therapy; T-cell depleted HPC transplant; CD45RA-depleted HPC transplant,,,NCIT:C61694; NCIT:C1094; NCIT:C1498; NCIT:C633; NCIT:C875; NCIT:C1702,,PARTIAL,ChEMBL,CD45RA-depleted HPC transplant; Natural killer cell therapy; T-cell depleted HPC transplant
 NCT02429804,Fludeoxyglucose; Sodium fluoride,,,NCIT:C832,,RESOLVED,ChEMBL,
@@ -20232,8 +20232,8 @@ NCT03117166,Lidocaine,,,NCIT:C614,,RESOLVED,ChEMBL,
 NCT03146325,BISMUTH TETRACYCLINE METRONIDAZOLE OMEPRAZOLE,,,,,UNRESOLVED,,BISMUTH TETRACYCLINE METRONIDAZOLE OMEPRAZOLE
 NCT02469376,[18F]-GP1,,,,,UNRESOLVED,,[18F]-GP1
 NCT01361945,Luminespib,,,NCIT:C71467,,RESOLVED,ChEMBL,
-NCT01969942,allogeneic stem cell transplantation; Clyclophosphamide; Fludarabine; Busulfan; Melphalan,,,NCIT:C1094; NCIT:C321; NCIT:C633,,PARTIAL,ChEMBL,Clyclophosphamide; allogeneic stem cell transplantation
-NCT01031953,Fosaprepitant; systemic chemotherapy,,,NCIT:C72787,,PARTIAL,ChEMBL,systemic chemotherapy
+NCT01969942,Clyclophosphamide; Fludarabine; Busulfan; Melphalan,,,NCIT:C1094; NCIT:C321; NCIT:C633,,PARTIAL,ChEMBL,Clyclophosphamide
+NCT01031953,Fosaprepitant; systemic chemotherapy,,,NCIT:C72787,,PARTIAL,ChEMBL,
 NCT01665950,Simvastatin,,,NCIT:C29454,,RESOLVED,ChEMBL,
 NCT01773837,Methylphenidate,,,NCIT:C62045,,RESOLVED,ChEMBL,
 NCT02856867,,,Nintedanib; Fluorouracil; Leucovorin; Oxaliplatin,,,NO_DRUG,,
@@ -20695,7 +20695,7 @@ NCT00993642,Panobinostat,,,NCIT:C66948,,RESOLVED,ChEMBL,
 NCT02087527,Dexamethasone,,,NCIT:C422,,RESOLVED,ChEMBL,
 NCT00140660,Rituximab,,,NCIT:C1702,,RESOLVED,ChEMBL,
 NCT01547325,NanoDOX 1% doxycycline monohydrate Hydrogel,,,,,UNRESOLVED,,NanoDOX 1% doxycycline monohydrate Hydrogel
-NCT01902771,Dendritic Cell Vaccine; Tumor Lysate,,,,,UNRESOLVED,,Dendritic Cell Vaccine; Tumor Lysate
+NCT01902771,Dendritic Cell Vaccine; Tumor Lysate,,,,,CODE_OR_CLASS_ONLY,,Tumor Lysate
 NCT00366080,GSK189254,,,,,RESOLVED,ChEMBL,
 NCT02341079,Bupivacaine,,Indwelling femoral nerve block,NCIT:C62011,,RESOLVED,ChEMBL,
 NCT00816348,Fish oil triglycerides,,,NCIT:C104273,,RESOLVED,ChEMBL,
@@ -20773,7 +20773,7 @@ NCT00101075,Capecitabine; Oxaliplatin,,,NCIT:C1794; NCIT:C1181,,RESOLVED,ChEMBL,
 NCT01705392,Bevacizumab; Propranolol; Enalapril,,Dacarbazine,NCIT:C2039; NCIT:C62073; NCIT:C62027,,RESOLVED,ChEMBL + NCIt,
 NCT00171938,Imatinib,,,NCIT:C62035,,RESOLVED,ChEMBL,
 NCT02876003,Mipsagargin,,,NCIT:C90554,,RESOLVED,ChEMBL,
-NCT01899690,antibiotic,,,,,UNRESOLVED,,antibiotic
+NCT01899690,antibiotic,,,,,CODE_OR_CLASS_ONLY,,
 NCT01269684,Everolimus,,,NCIT:C48387,,RESOLVED,ChEMBL,
 NCT01120158,Bevacizumab; Paclitaxel,,,NCIT:C2039; NCIT:C1411,,RESOLVED,ChEMBL,
 NCT01493505,,,Trebananib; Paclitaxel; Carboplatin,,,NO_DRUG,,
@@ -20800,7 +20800,7 @@ NCT02976441,Temozolomide,,,NCIT:C1244,,RESOLVED,ChEMBL,
 NCT00799448,Repaglinide; biphasic human insulin 30; Insulin human,,,NCIT:C47703; NCIT:C65922,,PARTIAL,ChEMBL,biphasic human insulin 30
 NCT02907320,CYCLO 3 ® FORT,,MPFF,,,UNRESOLVED,,CYCLO 3 ® FORT
 NCT02723981,,,Clopidogrel,,,RESOLVED,ChEMBL,
-NCT01621477,Clofarabine; Cytarabine; Busulfan; Plerixafor; Cyclophosphamide; Lapine T-Lymphocyte Immune Globulin; stem cells; Tacrolimus; Mycophenolate mofetil,,,NCIT:C26638; NCIT:C408; NCIT:C321; NCIT:C1777; NCIT:C61694; NCIT:C80833; NCIT:C76066; NCIT:C1468,,PARTIAL,ChEMBL + NCIt,stem cells
+NCT01621477,Clofarabine; Cytarabine; Busulfan; Plerixafor; Cyclophosphamide; Lapine T-Lymphocyte Immune Globulin; stem cells; Tacrolimus; Mycophenolate mofetil,,,NCIT:C26638; NCIT:C408; NCIT:C321; NCIT:C1777; NCIT:C61694; NCIT:C80833; NCIT:C76066; NCIT:C1468,,PARTIAL,ChEMBL + NCIt,
 NCT01574248,Icatibant,,,NCIT:C98883,,RESOLVED,ChEMBL,
 NCT01817738,,,mRNA-derived Prostate Cancer Vaccine CV9104,,,NO_DRUG,,
 NCT00250692,Nitrous oxide,,,NCIT:C73617,,RESOLVED,ChEMBL,
@@ -21003,7 +21003,7 @@ NCT01566370,Zonisamide,,,NCIT:C47790,,RESOLVED,ChEMBL,
 NCT00293735,,,Labetalol; Magnesium sulfate,,,NO_DRUG,,
 NCT00812812,Paroxetine,,,NCIT:C61879,,RESOLVED,ChEMBL,
 NCT02841358,Blood sampling; Biopsy,,,,,UNRESOLVED,,Biopsy; Blood sampling
-NCT00278590,Allogeneic Stem Cell Transplantation,,,,,UNRESOLVED,,Allogeneic Stem Cell Transplantation
+NCT00278590,,,,,,NO_DRUG,,
 NCT01689337,Sprifermin,,,NCIT:C152422,,RESOLVED,ChEMBL,
 NCT00711542,,,autologous bone marrow-derived progenitor cells,,,NO_DRUG,,
 NCT01221740,Milnacipran,,,NCIT:C78021,,RESOLVED,ChEMBL,
@@ -21115,14 +21115,14 @@ NCT00977145,A combination of intratumoral IFN-gamma; systemic vaccination; MELIT
 NCT01577199,Clomiphene,,High dose gonadotropins,NCIT:C61607,,RESOLVED,ChEMBL,
 NCT00081224,Capecitabine; Celecoxib,,,NCIT:C1794; NCIT:C1728,,RESOLVED,ChEMBL,
 NCT02597556,,,Albendazole,,,NO_DRUG,,
-NCT00504101,Arsenic trioxide; Bortezomib; Melphalan; Autologous hematopoietic stem cell transplantation,,,NCIT:C1005; NCIT:C1851; NCIT:C633,,PARTIAL,ChEMBL,Autologous hematopoietic stem cell transplantation
+NCT00504101,Arsenic trioxide; Bortezomib; Melphalan,,,NCIT:C1005; NCIT:C1851; NCIT:C633,,RESOLVED,ChEMBL,
 NCT02861040,Vincristine; Volasertib,,,NCIT:C933; NCIT:C79844,,RESOLVED,ChEMBL,
 NCT00881387,Rituximab; Gemcitabine; Vinorelbine,,,NCIT:C1702; NCIT:C66876; NCIT:C1275,,RESOLVED,ChEMBL,
 NCT02552862,,,Vivomixx®,,,NO_DRUG,,
 NCT01600053,Lenalidomide,,,NCIT:C2668,,RESOLVED,ChEMBL,
 NCT02282891,Propofol-Ketamine,,Propofol,,,UNRESOLVED,,Propofol-Ketamine
 NCT01386372,Tolvaptan,,,NCIT:C77082,,RESOLVED,ChEMBL,
-NCT00513188,Denileukin diftitox; Cyclophosphamide; Cytarabine; Doxorubicin; Leucovorin; Methotrexate; Prednisone; Vincristine; protein expression analysis,,,NCIT:C1476; NCIT:C61694; NCIT:C408; NCIT:C456; NCIT:C642; NCIT:C770; NCIT:C933,,PARTIAL,ChEMBL,protein expression analysis
+NCT00513188,Denileukin diftitox; Cyclophosphamide; Cytarabine; Doxorubicin; Leucovorin; Methotrexate; Prednisone; Vincristine,,,NCIT:C1476; NCIT:C61694; NCIT:C408; NCIT:C456; NCIT:C642; NCIT:C770; NCIT:C933,,RESOLVED,ChEMBL,
 NCT00068666,Temozolomide,,,NCIT:C1244,,RESOLVED,ChEMBL,
 NCT00452920,Docetaxel,,,NCIT:C61734,,RESOLVED,ChEMBL,
 NCT01521143,Cvac,,,,,UNRESOLVED,,Cvac
@@ -21364,7 +21364,7 @@ NCT01307618,NA17.A2 Peptide Vaccine; Melanoma-associated antigen 3; Edodekin alf
 NCT00098371,Alvocidib,,,NCIT:C74940,,RESOLVED,ChEMBL,
 NCT01186458,Fludarabine; Bortezomib; Rituximab,,,NCIT:C1094; NCIT:C1851; NCIT:C1702,,RESOLVED,ChEMBL,
 NCT01517347,Aldesleukin,,,NCIT:C1498,,RESOLVED,ChEMBL,
-NCT02558361,Treatment; Apremilast,,,,,PARTIAL,ChEMBL,Treatment
+NCT02558361,Treatment; Apremilast,,,,,PARTIAL,ChEMBL,
 NCT02667223,Cohort 1: bococizumab 150 mg; Hyaluronidase (human recombinant); Cohort 3: bococizumab 300 mg; Cohort 5: bococizumab 450 mg; Cohort 4: bococizumab 300 mg,,Cohort 2: bococizumab 300 mg,NCIT:C61504,,PARTIAL,ChEMBL,Cohort 1: bococizumab 150 mg; Cohort 3: bococizumab 300 mg; Cohort 4: bococizumab 300 mg; Cohort 5: bococizumab 450 mg
 NCT02094651,Valproic acid,,,NCIT:C29536,,RESOLVED,ChEMBL,
 NCT00429039,L-Leucyl-L-Leucine Methyl Ester,,,NCIT:C2377,,RESOLVED,NCIt,
@@ -21636,7 +21636,7 @@ NCT01937715,Gedatolisib; FOLFIRI regimen,,Bevacizumab; Fluorouracil; Leucovorin;
 NCT00750581,,,Indomethacin,,,NO_DRUG,,
 NCT00442416,Methoxy polyethylene glycol-epoetin beta,,Epoetin alfa,NCIT:C87201,,RESOLVED,ChEMBL,
 NCT02621190,Cabazitaxel,,,NCIT:C66937,,RESOLVED,ChEMBL,
-NCT00814164,Clofarabine; Daunorubicin; cytogenetic analysis; protein expression analysis,,,NCIT:C26638; NCIT:C62091,,PARTIAL,ChEMBL,cytogenetic analysis; protein expression analysis
+NCT00814164,Clofarabine; Daunorubicin; cytogenetic analysis,,,NCIT:C26638; NCIT:C62091,,PARTIAL,ChEMBL,cytogenetic analysis
 NCT01132664,Buparlisib; Trastuzumab; Capecitabine,,,NCIT:C90565; NCIT:C1647; NCIT:C1794,,RESOLVED,ChEMBL,
 NCT00837135,GI-4000 Vaccine; Activated T Cells,,,NCIT:C61489,,PARTIAL,NCIt,Activated T Cells
 NCT01217632,Pamrevlumab,Entecavir,,NCIT:C92577,,RESOLVED,ChEMBL,
@@ -21668,7 +21668,7 @@ NCT02627820,Inotersen,,,NCIT:C121667,,RESOLVED,ChEMBL,
 NCT02522910,Roniciclib; Docetaxel,,,NCIT:C92579; NCIT:C61734,,RESOLVED,ChEMBL,
 NCT02083536,Docetaxel,,,NCIT:C61734,,RESOLVED,ChEMBL,
 NCT01210521,,,Ergocalciferol,,,NO_DRUG,,
-NCT02539017,Immunotherapy,Chemo,,,,UNRESOLVED,,Immunotherapy
+NCT02539017,Immunotherapy,Chemo,,,,CODE_OR_CLASS_ONLY,,
 NCT02082067,,Ropivacaine; Levobupivacaine; Ketorolac; Morphine,,,,NO_DRUG,,
 NCT01815723,,,Dimethyl fumarate,,,RESOLVED,ChEMBL,
 NCT02478229,Sofosbuvir; Ledipasvir,,,NCIT:C101263; NCIT:C129019,,RESOLVED,ChEMBL,
@@ -21972,7 +21972,7 @@ NCT00498485,,,Oxybate,,,NO_DRUG,,
 NCT02320318,Ibodutant,,,NCIT:C166502,,RESOLVED,ChEMBL,
 NCT00766636,Gemcitabine; Erlotinib,,,NCIT:C66876; NCIT:C65530,,RESOLVED,ChEMBL,
 NCT01843452,Panitumumab; Mitomycin; Capecitabine,,,NCIT:C1857; NCIT:C1820; NCIT:C1794,,RESOLVED,ChEMBL,
-NCT02630563,Corticosteroids; Cyclosporine; Mycophenolate mofetil,,,NCIT:C1468,,PARTIAL,ChEMBL,Corticosteroids
+NCT02630563,Corticosteroids; Cyclosporine; Mycophenolate mofetil,,,NCIT:C1468,,PARTIAL,ChEMBL,
 NCT00290537,Vandetanib; Carboplatin; Paclitaxel,,,NCIT:C2737; NCIT:C1282; NCIT:C1411,,RESOLVED,ChEMBL,
 NCT01727167,200ppm CO for one hour,,,,,UNRESOLVED,,200ppm CO for one hour
 NCT00325650,Rimonabant,,,NCIT:C73244,,RESOLVED,ChEMBL,
@@ -22159,7 +22159,7 @@ NCT02384369,,SNC-102 sustained release tablet,,,,NO_DRUG,,
 NCT01955629,Aflibercept; Oxaliplatin; Capecitabine,,,NCIT:C2682; NCIT:C1181; NCIT:C1794,,RESOLVED,ChEMBL,
 NCT01578343,Fludarabine,,,NCIT:C1094,,RESOLVED,ChEMBL,
 NCT01489046,Censavudine; Tenofovir,Efavirenz; Lamivudine,,NCIT:C166942; NCIT:C170540,,RESOLVED,ChEMBL,
-NCT01932658,Hematopoietic stem cell transplantation,,,,,UNRESOLVED,,Hematopoietic stem cell transplantation
+NCT01932658,,,,,,NO_DRUG,,
 NCT00233090,Modafinil,,,NCIT:C26661,,RESOLVED,ChEMBL,
 NCT00912912,Sunitinib,,,,,RESOLVED,ChEMBL,
 NCT02315235,,,stem-cell,,,NO_DRUG,,
@@ -22352,7 +22352,7 @@ NCT01615185,,Amisulpride,,,,NO_DRUG,,
 NCT02243787,COVA322,,,,,CODE_OR_CLASS_ONLY,,
 NCT00522301,Sorafenib,,,,,RESOLVED,ChEMBL,
 NCT02148107,BI-691751,,,,,CODE_OR_CLASS_ONLY,,
-NCT01631916,corticosteroid,,,,,UNRESOLVED,,corticosteroid
+NCT01631916,corticosteroid,,,,,CODE_OR_CLASS_ONLY,,
 NCT01990326,XAF5 Gel,,,,,UNRESOLVED,,XAF5 Gel
 NCT02362321,Dexamethasone,,,NCIT:C422,,RESOLVED,ChEMBL,
 NCT01453595,Dactolisib,,,NCIT:C74072,,RESOLVED,ChEMBL,
@@ -22726,7 +22726,7 @@ NCT01600963,,TMC207,,,,CODE_OR_CLASS_ONLY,,
 NCT01953744,Fluconazole,,Meglumine antimonate,NCIT:C500,,RESOLVED,ChEMBL,
 NCT01497119,JNJ-39758979,,,,,RESOLVED,ChEMBL,
 NCT01730495,Etanercept,,,NCIT:C2381,,RESOLVED,ChEMBL,
-NCT00913913,DC vaccine; Bevacizumab; IL-2; Gamma-interferon,,,NCIT:C2039,RXCUI:1421648,PARTIAL,ChEMBL + RxNorm,DC vaccine; IL-2
+NCT00913913,DC vaccine; Bevacizumab; IL-2; Gamma-interferon,,,NCIT:C2039,RXCUI:1421648,PARTIAL,ChEMBL + RxNorm,IL-2
 NCT01709162,Ipilimumab,,,NCIT:C2654,,RESOLVED,ChEMBL,
 NCT01391039,Perflutren,,,,,RESOLVED,ChEMBL,
 NCT00589862,Clopidogrel,,,NCIT:C61686,,RESOLVED,ChEMBL,
@@ -22802,9 +22802,9 @@ NCT01159327,Sorafenib,,,,,RESOLVED,ChEMBL,
 NCT00505791,,,Nesiritide,,,NO_DRUG,,
 NCT01878136,,,Alteplase,,,NO_DRUG,,
 NCT01458639,,,,,,NO_DRUG,,
-NCT01071486,Hematological Stem Cell Transplantation,,,,,UNRESOLVED,,Hematological Stem Cell Transplantation
+NCT01071486,,,,,,NO_DRUG,,
 NCT00533390,,Efavirenz,,,,NO_DRUG,,
-NCT00550498,Autologous Stem Cell Transplantation,,,,,UNRESOLVED,,Autologous Stem Cell Transplantation
+NCT00550498,,,,,,NO_DRUG,,
 NCT01497197,"Follitropin alfa; Lutropin alfa; Gonadotropin, chorionic",,,NCIT:C203026; NCIT:C61818; NCIT:C528,,RESOLVED,ChEMBL,
 NCT01856881,,,Efruxifermin,,,NO_DRUG,,
 NCT02599090,Temozolomide; Sorafenib,,,NCIT:C1244,,RESOLVED,ChEMBL,
@@ -22894,7 +22894,7 @@ NCT01372813,Vandetanib,,,NCIT:C2737,,RESOLVED,ChEMBL,
 NCT01856322,,,Sulindac,,,NO_DRUG,,
 NCT02433236,Fostamatinib,,,NCIT:C95222,,RESOLVED,ChEMBL,
 NCT00895882,Vaniprevir,Comparator: Pegylated Interferon (peg-IFN) alfa-2a; Comparator: Ribavirin,,NCIT:C152828,,RESOLVED,ChEMBL,
-NCT00747305,Sunitinib; western blotting,,,,,PARTIAL,ChEMBL,western blotting
+NCT00747305,Sunitinib,,,,,RESOLVED,ChEMBL,
 NCT01809171,Cholecalciferol,,,NCIT:C48194,,RESOLVED,ChEMBL,
 NCT01702415,Zoledronic acid,,,NCIT:C80120,,RESOLVED,ChEMBL,
 NCT00494156,Heparin; Aspirin; Clopidogrel,,,NCIT:C539; NCIT:C287; NCIT:C61686,,RESOLVED,ChEMBL,
@@ -23043,7 +23043,7 @@ NCT01262729,Xenon Inhalation,,,,,UNRESOLVED,,Xenon Inhalation
 NCT01026363,Ergocalciferol; Calcitriol,,,NCIT:C330,,RESOLVED,ChEMBL,
 NCT00056979,Alemtuzumab; Anti-CD45; Tacrolimus; Fludarabine,,,NCIT:C1681; NCIT:C76066; NCIT:C1094,,PARTIAL,ChEMBL,Anti-CD45
 NCT01734824,,,Denosumab; Teriparatide,,,NO_DRUG,,
-NCT01341106,Treatment; Entecavir,,,NCIT:C76494,,PARTIAL,ChEMBL,Treatment
+NCT01341106,Treatment; Entecavir,,,NCIT:C76494,,PARTIAL,ChEMBL,
 NCT00377780,Trastuzumab,,,NCIT:C1647,,RESOLVED,ChEMBL,
 NCT02112630,Peginterferon ALFA-2A; Peginterferon ALFA-2B; Ribavirin; Boceprevir,,,NCIT:C33987; NCIT:C1845; NCIT:C807; NCIT:C117292,,RESOLVED,ChEMBL,
 NCT02180204,Tenecteplase,,Alteplase,NCIT:C29489,,RESOLVED,ChEMBL,
@@ -23157,7 +23157,7 @@ NCT00526838,XL-228,,,NCIT:C68929,,RESOLVED,ChEMBL,
 NCT01172509,,Arbaclofen,,,,NO_DRUG,,
 NCT00572689,Exenatide; Buccal,,,NCIT:C65611,,PARTIAL,ChEMBL,Buccal
 NCT00475917,XL-844; Gemcitabine,,,NCIT:C61102; NCIT:C66876,,RESOLVED,ChEMBL,
-NCT01285934,Autologous Hematopoietic Stem Cell Transplantation; intensive insulin therapy,,,,,UNRESOLVED,,Autologous Hematopoietic Stem Cell Transplantation; intensive insulin therapy
+NCT01285934,intensive insulin therapy,,,,,UNRESOLVED,,intensive insulin therapy
 NCT00796484,XL-888,,,NCIT:C79835,,RESOLVED,ChEMBL,
 NCT00679068,Bosentan,,,NCIT:C47417,,RESOLVED,ChEMBL,
 NCT01260714,Azacitidine; Etoposide; Mitoxantrone,,,NCIT:C288; NCIT:C491; NCIT:C62050,,RESOLVED,ChEMBL,
@@ -23175,7 +23175,7 @@ NCT00004040,recombinant interferon alfa; Rituximab,,,NCIT:C1702,,PARTIAL,ChEMBL,
 NCT00985998,Nimotuzumab,,,NCIT:C2733,,RESOLVED,ChEMBL,
 NCT01122381,Ethosuximide,,,NCIT:C47523,,RESOLVED,ChEMBL,
 NCT00726804,Discontinuation of TNF-alpha inhibitor; Etanercept,,,NCIT:C2381,,PARTIAL,ChEMBL,
-NCT00954005,Therapy; Rituximab; Oxaliplatin,,,NCIT:C1702; NCIT:C1181,,PARTIAL,ChEMBL,Therapy
+NCT00954005,Therapy; Rituximab; Oxaliplatin,,,NCIT:C1702; NCIT:C1181,,PARTIAL,ChEMBL,
 NCT01071928,Docetaxel; Vadimezan,,,NCIT:C61734; NCIT:C2504,,RESOLVED,ChEMBL,
 NCT02527577,Ropivacaine,,,NCIT:C61932,,RESOLVED,ChEMBL,
 NCT02202707,Gabapentin,,,NCIT:C1108,,RESOLVED,ChEMBL,
@@ -23522,7 +23522,7 @@ NCT01814904,Colestilan chloride,,CBPB,NCIT:C171752,,RESOLVED,ChEMBL,
 NCT00100152,MK-0752,,,NCIT:C49175,,RESOLVED,ChEMBL,
 NCT00002999,Cisplatin; Fluorouracil,,,NCIT:C376; NCIT:C505,,RESOLVED,ChEMBL,
 NCT01818687,Colestilan chloride,,,NCIT:C171752,,RESOLVED,ChEMBL,
-NCT01238965,Panobinostat; Fluorouracil; Leucovorin; western blotting; RNA analysis; polymorphism analysis,,,NCIT:C66948; NCIT:C505,,PARTIAL,ChEMBL,RNA analysis; polymorphism analysis; western blotting
+NCT01238965,Panobinostat; Fluorouracil; Leucovorin; RNA analysis; polymorphism analysis,,,NCIT:C66948; NCIT:C505,,PARTIAL,ChEMBL,RNA analysis; polymorphism analysis
 NCT00375557,,,Valproic acid; Quetiapine,,,NO_DRUG,,
 NCT02314416,,Amniotic Stem Cells; Collagen Matrix,,,,NO_DRUG,,
 NCT00584155,Lactated Ringer's; 0.03% Ofloxacin,,,,,UNRESOLVED,,0.03% Ofloxacin; Lactated Ringer's
@@ -23786,7 +23786,7 @@ NCT00449865,,,Creatine,,,NO_DRUG,,
 NCT00885547,Tripterygium wilfordii whole extract,,,,RXCUI:1440289,RESOLVED,RxNorm,
 NCT00930345,Sunitinib,,,,,RESOLVED,ChEMBL,
 NCT01654328,Sodium chloride,,,NCIT:C29974,,RESOLVED,ChEMBL,
-NCT00233948,Nelfinavir; western blotting,,,NCIT:C29285,,PARTIAL,ChEMBL,western blotting
+NCT00233948,Nelfinavir,,,NCIT:C29285,,RESOLVED,ChEMBL,
 NCT00283400,,,25% human albumin,,,NO_DRUG,,
 NCT02254915,,,Bcg live,,,NO_DRUG,,
 NCT01170442,Cholecalciferol,,,NCIT:C48194,,RESOLVED,ChEMBL,
