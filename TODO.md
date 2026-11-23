@@ -308,8 +308,9 @@ trials (their arms from ClinicalTrials.gov, then the same resolver), without tou
 Endocrine 94, Respiratory 87), weekly step "Build Failure Signals for seven more areas". Not yet on the site or
 pricing page. **Found 23 Nov:** the weekly run uploaded product/ (the paid oncology product) unencrypted as a run
 artifact, downloadable by any signed-in GitHub user on this public repo; now encrypted (PACKAGE_PASSPHRASE).
-The three earlier artifacts (runs 45129837484, 45185646900, 45225115695, 90-day retention) still exist:
-delete them (Schayan's decision).
+All 33 earlier unencrypted product artifacts deleted 23 Nov (Schayan's go). Code stays public for now
+(decided 23 Nov; options if revisited: repo private, or a public data-only repo; Zenodo v1.0.0/v1.1.0 already
+hold the code under MIT).
 
 ## Getting found: next steps (decided 19 Nov)
 
