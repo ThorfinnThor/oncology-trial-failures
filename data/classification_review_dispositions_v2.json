@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "classifier_version": "2.7.7",
-  "review_group_count": 1269,
-  "review_record_count": 3630,
+  "review_group_count": 1266,
+  "review_record_count": 3625,
   "disposition_group_counts": {
-    "OTHER_AMBIGUOUS_TEXT": 428,
+    "OTHER_AMBIGUOUS_TEXT": 427,
     "ABBREVIATION_OR_FRAGMENT": 301,
-    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 148,
+    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 147,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 77,
     "PROVISIONAL_OR_FUTURE_PLAN": 61,
     "EXPLICIT_BUT_UNMAPPED_CAUSE": 45,
@@ -14,7 +14,7 @@
     "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE": 39,
     "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 39,
     "STATUS_OR_ACTION_WITHOUT_CAUSE": 27,
-    "MULTIPLE_EXPLICIT_CAUSES": 22,
+    "MULTIPLE_EXPLICIT_CAUSES": 21,
     "BIOLOGICAL_DOMAIN_UNSPECIFIED": 18,
     "PLACEHOLDER_WITHOUT_EXPLICIT_SOURCE_CAUSE": 9,
     "INSUFFICIENT_OR_LOW_QUALITY_DATA": 6,
@@ -24,10 +24,10 @@
     "SITE_OR_INSTITUTION_ADMIN_TEXT": 1
   },
   "disposition_record_counts": {
-    "MISSING_STOP_REASON": 2143,
-    "OTHER_AMBIGUOUS_TEXT": 450,
+    "MISSING_STOP_REASON": 2142,
+    "OTHER_AMBIGUOUS_TEXT": 448,
     "ABBREVIATION_OR_FRAGMENT": 357,
-    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 165,
+    "ANALYSIS_OR_REVIEW_WITHOUT_RESULT": 164,
     "PROGRAM_ACTION_WITHOUT_UNDERLYING_CAUSE": 93,
     "PROVISIONAL_OR_FUTURE_PLAN": 71,
     "STATUS_OR_ACTION_WITHOUT_CAUSE": 65,
@@ -36,7 +36,7 @@
     "DOMAIN_MENTION_WITHOUT_DIRECTIONAL_RESULT": 44,
     "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE": 43,
     "COMPLETION_OR_TRANSITION_CONTEXT_UNCLEAR": 42,
-    "MULTIPLE_EXPLICIT_CAUSES": 24,
+    "MULTIPLE_EXPLICIT_CAUSES": 23,
     "BIOLOGICAL_DOMAIN_UNSPECIFIED": 19,
     "INSUFFICIENT_OR_LOW_QUALITY_DATA": 13,
     "RETENTION_OR_FOLLOW_UP_LIMITATION": 5,
@@ -44,14 +44,14 @@
     "SITE_OR_INSTITUTION_ADMIN_TEXT": 1
   },
   "priority_group_counts": {
-    "MEDIUM": 671,
-    "HIGH": 559,
+    "MEDIUM": 670,
+    "HIGH": 557,
     "LOW": 39
   },
   "priority_record_counts": {
-    "LOW": 2258,
-    "MEDIUM": 777,
-    "HIGH": 595
+    "LOW": 2257,
+    "MEDIUM": 776,
+    "HIGH": 592
   },
   "disposition_notes": {
     "MISSING_STOP_REASON": "ClinicalTrials.gov supplies no stop-reason text. No semantic cause can be asserted without another explicit primary-source statement.",
@@ -79,7 +79,7 @@
     {
       "classification_text_hash": "e3b0c44298fc1c149afb",
       "why_stopped": "",
-      "record_count": 2143,
+      "record_count": 2142,
       "nct_ids": [
         "NCT04175613",
         "NCT00693433",
@@ -143,7 +143,6 @@
         "NCT02597036",
         "NCT00146094",
         "NCT04242147",
-        "NCT05013554",
         "NCT04802057",
         "NCT05231668",
         "NCT03121586",
@@ -2226,7 +2225,7 @@
         "NCT01868685"
       ],
       "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 2143
+        "UNCLEAR/OTHER/UNKNOWN": 2142
       },
       "suggested_outcome_v2": "UNKNOWN",
       "suggested_primary_reason_v2": "UNSPECIFIED",
@@ -2846,26 +2845,6 @@
       "review_disposition_note": "The text reports a stop, withdrawal, closure, or status change without an affirmative causal explanation."
     },
     {
-      "classification_text_hash": "5b7bc00bb65361957be8",
-      "why_stopped": "participants are no longer being examined or receiving intervention",
-      "record_count": 3,
-      "nct_ids": [
-        "NCT03765983",
-        "NCT03944512",
-        "NCT05951842"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 3
-      },
-      "suggested_outcome_v2": "UNKNOWN",
-      "suggested_primary_reason_v2": "UNSPECIFIED",
-      "suggested_secondary_reasons_v2": [],
-      "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-      "review_priority": "HIGH",
-      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-    },
-    {
       "classification_text_hash": "6fefc35fa1988fd6c7cc",
       "why_stopped": "Dosing stopped",
       "record_count": 3,
@@ -3310,6 +3289,25 @@
       "review_disposition": "NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE",
       "review_priority": "MEDIUM",
       "review_disposition_note": "The text says what did not cause the stop, such as no safety concern, but does not state what did cause it."
+    },
+    {
+      "classification_text_hash": "5b7bc00bb65361957be8",
+      "why_stopped": "participants are no longer being examined or receiving intervention",
+      "record_count": 2,
+      "nct_ids": [
+        "NCT03944512",
+        "NCT05951842"
+      ],
+      "current_v1_labels": {
+        "UNCLEAR/OTHER/UNKNOWN": 2
+      },
+      "suggested_outcome_v2": "UNKNOWN",
+      "suggested_primary_reason_v2": "UNSPECIFIED",
+      "suggested_secondary_reasons_v2": [],
+      "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
+      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
+      "review_priority": "HIGH",
+      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
     },
     {
       "classification_text_hash": "5ebe1fac397821954beb",
@@ -7757,27 +7755,6 @@
       "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
     },
     {
-      "classification_text_hash": "328cb73319c80e29151e",
-      "why_stopped": "Study was stopped after interim analysis for all 4 cohorts with results either not fulfilling the pre-planned interim analysis criteria or fulfilling the criteria but as per sponsor decision. It was not due to any safety concern",
-      "record_count": 1,
-      "nct_ids": [
-        "NCT03769181"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 1
-      },
-      "suggested_outcome_v2": "MIXED_CAUSES",
-      "suggested_primary_reason_v2": "MULTIPLE",
-      "suggested_secondary_reasons_v2": [
-        "EFFICACY_FUTILITY",
-        "BUSINESS_STRATEGY"
-      ],
-      "evidence": "v=2.7.7;outcome=MIXED_CAUSES;primary=MULTIPLE;secondary=EFFICACY_FUTILITY|BUSINESS_STRATEGY;reviewed.exact_reason:Study was stopped after interim analysis for all 4 cohorts with results either not fulfilling the pre-planned interim analysis criteria or fulfilling the criteria but as per sponso",
-      "review_disposition": "MULTIPLE_EXPLICIT_CAUSES",
-      "review_priority": "HIGH",
-      "review_disposition_note": "The text states causes from more than one semantic domain. The causes are preserved and require adjudication instead of forced precedence."
-    },
-    {
       "classification_text_hash": "329bab0f92ea6c70c214",
       "why_stopped": "Cynata Therapeutics has taken the decision to discontinue the study following the Primary Evaluation period analysis. The results did not demonstrate the anticipated clinical benefit of CYP-001 in combination with corticosteroids in HR-aGVHD.",
       "record_count": 1,
@@ -9725,24 +9702,6 @@
       "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
     },
     {
-      "classification_text_hash": "4a778095886c6b21f826",
-      "why_stopped": "The collaborator EsoBiotec was acquired by AstraZeneca.",
-      "record_count": 1,
-      "nct_ids": [
-        "NCT06691685"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 1
-      },
-      "suggested_outcome_v2": "UNKNOWN",
-      "suggested_primary_reason_v2": "UNSPECIFIED",
-      "suggested_secondary_reasons_v2": [],
-      "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-      "review_disposition": "OTHER_AMBIGUOUS_TEXT",
-      "review_priority": "HIGH",
-      "review_disposition_note": "The available wording is ambiguous, incomplete, or not a direct causal statement under the conservative V2 evidence policy."
-    },
-    {
       "classification_text_hash": "4b2e043ba3a843a0b866",
       "why_stopped": "Funding was not provided",
       "record_count": 1,
@@ -9849,24 +9808,6 @@
       "review_disposition": "PROVISIONAL_OR_FUTURE_PLAN",
       "review_priority": "MEDIUM",
       "review_disposition_note": "The text describes a pending, temporary, or future state rather than a completed causal finding."
-    },
-    {
-      "classification_text_hash": "4c034b2c60e024d3f0d3",
-      "why_stopped": "After the 1st interim analysis, on the recommendation of the DSMC, the steering committee decided to stop enrollment of new patients. The study is ongoing for the currently enrolled patients. More info to follow when available for public disclosure.",
-      "record_count": 1,
-      "nct_ids": [
-        "NCT04138394"
-      ],
-      "current_v1_labels": {
-        "UNCLEAR/OTHER/UNKNOWN": 1
-      },
-      "suggested_outcome_v2": "UNKNOWN",
-      "suggested_primary_reason_v2": "UNSPECIFIED",
-      "suggested_secondary_reasons_v2": [],
-      "evidence": "v=2.7.7;outcome=UNKNOWN;primary=UNSPECIFIED",
-      "review_disposition": "ANALYSIS_OR_REVIEW_WITHOUT_RESULT",
-      "review_priority": "MEDIUM",
-      "review_disposition_note": "The text mentions analysis, review, data, or a committee without a directional result that supports a causal category."
     },
     {
       "classification_text_hash": "4c179091bf79127938b9",
