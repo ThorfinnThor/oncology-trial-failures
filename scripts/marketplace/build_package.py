@@ -190,7 +190,8 @@ def main() -> int:
           "| `label_basis` | `rule`; `reviewed_decision` (the exact text was decided in an earlier AI-assisted review "
           "and the decision is reused); `sec_filing` (the registry gives no cause; the sponsor's own SEC filing "
           "states it, reviewed per trial with AI assistance, not by a clinician); `publication` (the same from the "
-          "trial's own paper, PMID given, our summary); `rule_on_description`; `unresolved` | Ours |",
+          "trial's own paper, PMID given, our summary); `eu_register` (the same from the EU Clinical Trials "
+          "Information System's coded early-termination category); `rule_on_description`; `unresolved` | Ours |",
           "| `needs_review`, `classifier_version` | Review flag; rule version | Ours |", "",
           "By basis: " + " · ".join(f"`{k}` {fmt(v)}" for k, v in basis.most_common()) + ".", ""]
     if ep:

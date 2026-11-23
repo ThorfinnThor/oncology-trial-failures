@@ -20,6 +20,7 @@ import { resolveTrialStopEvidence } from "@/lib/trialEvidence";
 import EvidenceStandard from "@/components/EvidenceStandard";
 import secEvidence from "@/data/sec_evidence.json";
 import pubEvidence from "@/data/pub_evidence.json";
+import ctisEvidence from "@/data/ctis_evidence.json";
 import PrimaryNav from "@/components/PrimaryNav";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -211,6 +212,12 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
   // A cause from the trial's own publication (data/pub_evidence_decisions.csv): our summary and the PMID.
   const pub = trial
     ? (pubEvidence as Record<string, { pmid: string; journal: string; year: string; summary: string; about: string }>)[
+        trial.nct_id
+      ]
+    : undefined;
+  // A cause from the EU Clinical Trials Information System (data/ctis_evidence_decisions.csv).
+  const ctis = trial
+    ? (ctisEvidence as Record<string, { ctis_id: string; categories: string; countries: string; summary: string }>)[
         trial.nct_id
       ]
     : undefined;
@@ -416,6 +423,20 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
                         </p>
                         <a className="trialSourceLink" href={sec.url} target="_blank" rel="noreferrer">
                           SEC {sec.form} filed {sec.filed} <span aria-hidden="true">↗</span>
+                        </a>
+                      </div>
+                    ) : null}
+                    {ctis ? (
+                      <div className="trialSecEvidence">
+                        <div className="trialEyebrow">What the EU trial register records</div>
+                        <p>{ctis.summary}</p>
+                        <p className="trialEvidenceNote">
+                          Early-termination category in the EU Clinical Trials Information System: {ctis.categories}
+                          {ctis.countries ? ` (${ctis.countries})` : ""}. The registry text gives no cause; our label rests
+                          on this record (reviewed with AI assistance, not by a clinician).
+                        </p>
+                        <a className="trialSourceLink" href={`https://euclinicaltrials.eu/ctis-public/view/${ctis.ctis_id}`} target="_blank" rel="noreferrer">
+                          CTIS {ctis.ctis_id} <span aria-hidden="true">↗</span>
                         </a>
                       </div>
                     ) : null}

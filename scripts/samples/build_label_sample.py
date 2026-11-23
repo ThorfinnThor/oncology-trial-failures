@@ -34,7 +34,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 
 BASIS = {"RULE_V2": "rule", "REVIEWED_EXACT": "reviewed_decision", "SEC_FILING_REVIEWED": "sec_filing",
-         "PUBLICATION_REVIEWED": "publication",
+         "PUBLICATION_REVIEWED": "publication", "CTIS_REVIEWED": "eu_register",
          "DESCRIPTION_FALLBACK": "rule_on_description", "UNCLASSIFIED": "unresolved"}
 
 # Share of the stop-reason sample per stratum. Rare classes are over-drawn on purpose.
@@ -252,7 +252,8 @@ def main() -> int:
           "| `label_basis` | `rule`, `reviewed_decision` (this exact text was decided in an earlier review — AI-assisted, a few "
           "by the maintainer — not by clinicians, and the decision is reused), `sec_filing` (the registry gives no cause; the sponsor's own SEC "
           "filing states it, reviewed per trial with AI assistance, not by a clinician), `publication` (the same, "
-          "from the trial's own paper; the PMID is given), `rule_on_description` "
+          "from the trial's own paper; the PMID is given), `eu_register` (the same, from the early-termination "
+          "category the EU Clinical Trials Information System records), `rule_on_description` "
           "(no stop reason; a description sentence was used), `unresolved` | Ours |",
           "| `needs_review` | `True` where the classifier flags the row | Ours |",
           "| `classifier_version` | Version of the rules | Ours |",

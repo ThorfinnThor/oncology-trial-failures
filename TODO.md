@@ -272,8 +272,10 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
 2. **EU registers, probed 23 Nov** (`docs/eu_register_probe_2026-11-23.md`): **EudraCT not worth it** (no
    reason field; 2–3 of 80 add a cause). **CTIS is:** a coded early-termination reason per member state,
    80 no-cause trials linked today, ~10 gain a cause (mostly safety), the set grows with every new EU
-   trial. Next: a weekly CTIS step like SEC (ledger, review queue, per-trial decisions), and CTIS
-   categories as a validation check of trials that do state a cause.
+   trial. **Weekly since 23 Nov** (`scripts/sources/ctis_stop_evidence.py`, `docs/ctis_weekly.md`): all 5,642
+   no-cause trials checked, 96 with a CTIS number, **26 waiting for review** (9 safety, 4 recruitment, 2
+   business, 11 other categories or flags); decisions apply as source `CTIS_REVIEWED` with a box "What the EU
+   trial register records". Later: CTIS categories as a validation check of trials that do state a cause.
 3. **Non-US company pipeline updates and press releases** (quarterly "removed from pipeline" tables):
    harder to search, no common API; after 1–2.
 4. **ClinicalTrials.gov record history:** an earlier version sometimes had a different stop text or a
@@ -305,7 +307,11 @@ Next: submit the sitemap in Search Console and check the pages in the Rich Resul
    not below the direct one. **Kit ready 23 Nov:** `docs/marketplace/defined_ai.md` (listing texts A/B,
    application text, rights statement, who does what); package builder `scripts/marketplace/build_package.py`
    and the manual workflow **Marketplace package** (encrypted artifact, needs the secret `PACKAGE_PASSPHRASE`).
-   Schayan: prices, the secret, submit the partner form, review the agreement.
+   Schayan: prices, the secret, submit the partner form, review the agreement. **Market research 23 Nov**
+   (search snippets, sources in the session): free commercial substitutes exist (Open Targets stop reasons,
+   Apache 2.0, ~28.8k trials predicted; CTO outcome labels, MIT, ~125k trials), institutional anchors
+   Trialtrove $18.9k/yr (NCI), Cortellis ~$35k/yr (NIH), GlobalData ~$68k/yr median; Defined.ai's split
+   unpublished (one unverified claim: providers get 65–75%).
 3. **AWS Data Exchange / Snowflake Marketplace:** check only once a buyer asks for delivery there.
 
 **Hugging Face (public since 19 Nov):** the card points to `/pricing`; the weekly run refreshes the

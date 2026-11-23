@@ -259,6 +259,7 @@ jobs:
           python scripts/web/build_dataset_facts.py
           python scripts/web/build_sec_evidence.py
           python scripts/web/build_pub_evidence.py
+          python scripts/web/build_ctis_evidence.py
           python scripts/briefs/build_briefs_index.py
           python scripts/build_validation_public.py
           python scripts/universe/cohort_flow.py
@@ -315,7 +316,7 @@ jobs:
           python scripts/signals/check_text_readers.py --write-snapshot
           git add data/attribution_snapshot.json
           [ -f data/attribution_changes.md ] && git add data/attribution_changes.md
-          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/data/cohort_flow.json web/data/reporting_quality.json web/data/event_ascertainment.json web/data/evidence_catalogue.json web/data/watch_terms.json web/data/private web/public/samples web/public/briefs web/public/trial_endpoints.json web/data/home_outcomes.json web/data/dataset_facts.json web/data/sec_evidence.json web/data/pub_evidence.json
+          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/data/cohort_flow.json web/data/reporting_quality.json web/data/event_ascertainment.json web/data/evidence_catalogue.json web/data/watch_terms.json web/data/private web/public/samples web/public/briefs web/public/trial_endpoints.json web/data/home_outcomes.json web/data/dataset_facts.json web/data/sec_evidence.json web/data/pub_evidence.json web/data/ctis_evidence.json
           git diff --cached --quiet && echo "No product summary changes" && exit 0
           git commit -m "Update product summary, sample and briefs"
           # main may have moved during a 40-minute run (a person or another step pushed).
@@ -460,6 +461,25 @@ jobs:
               --body "The weekly publication search failed; labels are unaffected. Run log: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" || true
           fi
 
+      # The EU Clinical Trials Information System: the coded early-termination category for trials
+      # that list a CTIS number (docs/ctis_weekly.md). Fast (one registry call per due trial).
+      - name: Search the EU register (CTIS) for no-cause trials
+        id: ctis_search
+        continue-on-error: true
+        timeout-minutes: 30
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+        run: |
+          if python scripts/sources/ctis_stop_evidence.py --weekly --max-seconds 1200 --out "$RUNNER_TEMP/ctis"; then
+            head -1 "$RUNNER_TEMP/ctis/summary.txt"
+            if [ "$(cat "$RUNNER_TEMP/ctis/new_count")" != "0" ]; then
+              python scripts/ops/notify_owner.py --subject "New EU register (CTIS) records to review" --body-file "$RUNNER_TEMP/ctis/summary.txt" || true
+            fi
+          else
+            python scripts/ops/notify_owner.py --subject "CTIS search failed in the weekly run" \
+              --body "The weekly CTIS search failed; labels are unaffected. Run log: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" || true
+          fi
+
       - name: Save the source-search cache
         if: always()
         uses: actions/cache/save@v4
@@ -473,7 +493,7 @@ jobs:
         id: sources_commit
         continue-on-error: true
         run: |
-          git add data/sec_searched.csv data/sec_pending_review.json data/pub_searched.csv data/pub_pending_review.json
+          git add data/sec_searched.csv data/sec_pending_review.json data/pub_searched.csv data/pub_pending_review.json data/ctis_searched.csv data/ctis_pending_review.json
           git diff --cached --quiet && echo "No source-search changes" && exit 0
           git commit -m "Update SEC and publication search ledgers"
           git pull --rebase --autostash origin main || true
@@ -499,6 +519,7 @@ jobs:
           NEWSLETTER_COMMIT: ${{ steps.newsletter_commit.outcome }}
           SEC_SEARCH: ${{ steps.sec_search.outcome }}
           PUB_SEARCH: ${{ steps.pub_search.outcome }}
+          CTIS_SEARCH: ${{ steps.ctis_search.outcome }}
           SOURCES_COMMIT: ${{ steps.sources_commit.outcome }}
         run: |
           failed=0
@@ -512,7 +533,7 @@ jobs:
                       "Trial universe and rates:$RATES" "Brief PDFs:$BRIEF_PDFS" \
                       "Product summary, packages, asset index:$PRODUCT" "Cohort exports:$EXPORTS" \
                       "Newsletter:$NEWSLETTER" "Newsletter archive commit:$NEWSLETTER_COMMIT" \
-                      "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
+                      "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "CTIS search:$CTIS_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
             name="${pair%%:*}"; outcome="${pair##*:}"
             echo "| $name | ${outcome:-not reached} |" >> "$GITHUB_STEP_SUMMARY"
             if [ "$outcome" = "failure" ]; then
@@ -542,6 +563,7 @@ jobs:
           NEWSLETTER_COMMIT: ${{ steps.newsletter_commit.outcome }}
           SEC_SEARCH: ${{ steps.sec_search.outcome }}
           PUB_SEARCH: ${{ steps.pub_search.outcome }}
+          CTIS_SEARCH: ${{ steps.ctis_search.outcome }}
           SOURCES_COMMIT: ${{ steps.sources_commit.outcome }}
         run: |
           {
@@ -552,7 +574,7 @@ jobs:
                         "Trial universe and rates:$RATES" "Brief PDFs:$BRIEF_PDFS" \
                         "Product summary, packages, asset index:$PRODUCT" "Cohort exports:$EXPORTS" \
                         "Hugging Face sample:$HF" "Newsletter:$NEWSLETTER" "Newsletter archive commit:$NEWSLETTER_COMMIT" \
-                        "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
+                        "SEC search:$SEC_SEARCH" "Publication search:$PUB_SEARCH" "CTIS search:$CTIS_SEARCH" "Search ledgers commit:$SOURCES_COMMIT"; do
               echo "  - ${pair%%:*}: ${pair##*:}"
             done
             echo

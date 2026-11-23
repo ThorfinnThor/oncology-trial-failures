@@ -115,6 +115,23 @@ def pub_classification(row: Dict[str, Any], decision: Dict[str, str]) -> Classif
     )
 
 
+# Per-trial decisions from the EU Clinical Trials Information System (docs/ctis_weekly.md): the coded
+# early-termination category CTIS records, reviewed per trial. Taken after SEC and publications.
+CTIS_DECISIONS = Path(__file__).resolve().parents[1] / "data" / "ctis_evidence_decisions.csv"
+CTIS_SOURCE = "CTIS_REVIEWED"
+
+
+def ctis_classification(row: Dict[str, Any], decision: Dict[str, str]) -> ClassificationV2:
+    secondary = tuple(v.strip() for v in (decision.get("secondary_reasons") or "").replace("|", ";").split(";") if v.strip())
+    quote = f"CTIS {decision.get('ctis_id')}: {decision.get('categories')} ({decision.get('our_summary')})"
+    return ClassificationV2(
+        outcome=decision["outcome"], primary_reason=decision["primary_reason"], secondary_reasons=secondary,
+        confidence="MEDIUM", needs_review=False,
+        evidence=(Evidence("ctis.early_termination", decision["primary_reason"], quote, "MEDIUM"),),
+        normalized_text_hash=text_hash(normalize_reason(row.get("why_stopped"))),
+    )
+
+
 def revalidate_description_fallback(
     row: Dict[str, Any],
     reviewed_index: Dict[str, Dict[str, Any]],
@@ -183,6 +200,7 @@ def classify_rows(
     review_groups: Dict[str, Dict[str, Any]] = {}
     sec_decisions = load_sec_decisions()
     pub_decisions = load_sec_decisions(PUB_DECISIONS)
+    ctis_decisions = load_sec_decisions(CTIS_DECISIONS)
 
     for row in rows:
         old_key = f"{row.get('classification_label', '')}/{row.get('classification_reason', '')}"
@@ -197,13 +215,17 @@ def classify_rows(
         nct_key = str(row.get("nct_id") or "").upper()
         sec_decision = sec_decisions.get(nct_key)
         pub_decision = pub_decisions.get(nct_key) if sec_decision is None else None
-        if sec_decision is not None or pub_decision is not None:
-            # A sponsor's filing and a trial's paper are both per-trial reviewed decisions; the filing
-            # is taken where both exist (none do today).
-            result = (sec_classification(row, sec_decision) if sec_decision is not None
-                      else pub_classification(row, pub_decision))
+        ctis_decision = ctis_decisions.get(nct_key) if sec_decision is None and pub_decision is None else None
+        if sec_decision is not None or pub_decision is not None or ctis_decision is not None:
+            # Per-trial reviewed decisions from three sources; where more than one exists the order is
+            # the sponsor's filing, the trial's paper, then CTIS (no trial has two today).
+            if sec_decision is not None:
+                result, source = sec_classification(row, sec_decision), SEC_SOURCE
+            elif pub_decision is not None:
+                result, source = pub_classification(row, pub_decision), PUB_SOURCE
+            else:
+                result, source = ctis_classification(row, ctis_decision), CTIS_SOURCE
             fields = result.as_record_fields()
-            source = SEC_SOURCE if sec_decision is not None else PUB_SOURCE
             fields["classification_source"] = source
             outcome = result.outcome
             primary_reason = result.primary_reason

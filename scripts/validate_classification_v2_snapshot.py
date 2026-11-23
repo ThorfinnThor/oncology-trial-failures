@@ -92,6 +92,7 @@ ALLOWED_SOURCES = {
     "MANUAL_NCT_OVERRIDE",
     "SEC_FILING_REVIEWED",
     "PUBLICATION_REVIEWED",
+    "CTIS_REVIEWED",
 }
 V2_COMPARE_FIELDS = (
     "classification_label",
