@@ -310,7 +310,9 @@ Endocrine 94, Respiratory 87), weekly step "Build Failure Signals for seven more
 (manual workflow, run 45268854766): 931 trials, 568 unique assets, experimental-arm drugs resolved 68 %, trials
 with a resolved tested drug 61 % (with a research code 75 %), mechanism 49 %, target gene 39 %, a publication
 37 %; all sources OK (oncology for comparison: resolved drug 73 %, target gene 54 %). The first weekly attempt
-hit its 50-minute budget (exit 3), which turned the run of 23 Nov red. Not yet on the site or pricing page.
+hit its 50-minute budget (exit 3), which turned the run of 23 Nov red. **Manual data run 23 Nov 21:37 UTC (45271511264) green:**
+2,584 biological labels (publication decisions live), Hugging Face refreshed, newsletter held for 30 Nov. Mechanism known:
+oncology 62.0 % of trials (target gene 53.7 %), seven areas 48.1 % (target gene 38.3 %). Not yet on the site or pricing page.
 **Drug names, RxNorm pass 23 Nov:** 165 of 4,064 remaining names; 15,444 trials fully resolved (75.7 % of
 trials with a drug), 2,210 unresolved; procedures and class words now kept apart (from the next run). **Found 23 Nov:** the weekly run uploaded product/ (the paid oncology product) unencrypted as a run
 artifact, downloadable by any signed-in GitHub user on this public repo; now encrypted (PACKAGE_PASSPHRASE).
