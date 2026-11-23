@@ -38,13 +38,16 @@ Ask in a session on this repository: "review the pending publication passages". 
    Read the paper's title.
 3. **Does the sentence state why this trial stopped?** Futility at an interim analysis, harm in the
    treatment arm, poor accrual. "Terminated early" alone is not a cause (rule 5: not established).
-4. **Stopped because of another trial's results** ("after other studies reported inferior outcomes"):
-   not accepted until the owner decides how to count it. Three such cases were left open in the
-   probe.
+4. **Stopped because of a related trial's results:** if the other trial tested the same intervention
+   and the paper says what it showed (futility, inferior outcomes, harm), label it by that result and
+   set `about = RELATED_TRIAL` (as the rules already do for registry text). Without the direction
+   ("in consideration of the results of trial X"), not accepted.
 5. A decision row: `nct_id, outcome, primary_reason, secondary_reasons, pmid, link, our_summary,
    decided_by, decided_at`. `our_summary` is a short paraphrase in our words, never the paper's
    sentence. Accepted rows are listed with their transitions in a dated
    `docs/classification_change_*.md` and in the commit message (CLAUDE.md rule 3).
 
-Applying the decisions to the labels (a `PUBLICATION_REVIEWED` source next to `SEC_FILING_REVIEWED`
-in `scripts/reclassify_dataset_v2.py`) is built with the first accepted decisions.
+Accepted decisions are applied by `scripts/reclassify_dataset_v2.py` in the weekly run (source
+`PUBLICATION_REVIEWED`; a SEC decision wins where both exist) and shown on the trial page as "What
+the trial's publication reports" (`scripts/web/build_pub_evidence.py`). First 9 on 23 Nov:
+`docs/classification_change_2026-11-23_publications.md`.

@@ -19,6 +19,7 @@ import type { SeoIndexingState } from "@/lib/seoIndexingPolicy";
 import { resolveTrialStopEvidence } from "@/lib/trialEvidence";
 import EvidenceStandard from "@/components/EvidenceStandard";
 import secEvidence from "@/data/sec_evidence.json";
+import pubEvidence from "@/data/pub_evidence.json";
 import PrimaryNav from "@/components/PrimaryNav";
 
 const SITE_URL = "https://clinicaltrialfailures.com";
@@ -204,6 +205,12 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
   // A cause from the sponsor's own SEC filing, where the registry text gives none (data/sec_evidence_decisions.csv).
   const sec = trial
     ? (secEvidence as Record<string, { form: string; filed: string; url: string; quote: string; about: string; note: string }>)[
+        trial.nct_id
+      ]
+    : undefined;
+  // A cause from the trial's own publication (data/pub_evidence_decisions.csv): our summary and the PMID.
+  const pub = trial
+    ? (pubEvidence as Record<string, { pmid: string; journal: string; year: string; summary: string; about: string }>)[
         trial.nct_id
       ]
     : undefined;
@@ -409,6 +416,22 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
                         </p>
                         <a className="trialSourceLink" href={sec.url} target="_blank" rel="noreferrer">
                           SEC {sec.form} filed {sec.filed} <span aria-hidden="true">↗</span>
+                        </a>
+                      </div>
+                    ) : null}
+                    {pub ? (
+                      <div className="trialSecEvidence">
+                        <div className="trialEyebrow">What the trial's publication reports</div>
+                        <p>{pub.summary}</p>
+                        <p className="trialEvidenceNote">
+                          {pub.about === "RELATED_TRIAL"
+                            ? "The paper reports that a related trial of the same treatment led to this stop. "
+                            : "The paper reports why this trial stopped. "}
+                          The registry text gives no cause; our label rests on this publication (our summary,
+                          reviewed with AI assistance, not by a clinician).
+                        </p>
+                        <a className="trialSourceLink" href={`https://pubmed.ncbi.nlm.nih.gov/${pub.pmid}/`} target="_blank" rel="noreferrer">
+                          {pub.journal} {pub.year}, PMID {pub.pmid} <span aria-hidden="true">↗</span>
                         </a>
                       </div>
                     ) : null}

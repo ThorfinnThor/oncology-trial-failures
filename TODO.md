@@ -262,8 +262,12 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
    carry the PMID. Network: www.ebi.ac.uk and clinicaltrials.gov added to the environment.
    **Weekly since 23 Nov:** `--weekly --max-seconds 2400` in the weekly run (ledger `data/pub_searched.csv`,
    queue `data/pub_pending_review.json` without paper text, mail "New publication passages to review");
-   backlog ~5,400 trials over several weeks. **11 waiting for review** (the probe's hits). How:
-   `docs/pub_weekly.md`. Applying decisions (`PUBLICATION_REVIEWED`) is built with the first accepted ones.
+   backlog ~5,400 trials over several weeks. How: `docs/pub_weekly.md`. **Reviewed 23 Nov:** 9 of the 11
+   accepted, 2 rejected; applied from the weekly run of 30 Nov (source `PUBLICATION_REVIEWED`, all 9
+   biological, box "What the trial's publication reports" on the trial page;
+   `docs/classification_change_2026-11-23_publications.md`). Guideline: a stop because a related trial of
+   the same intervention showed a stated result counts by that result (`pub.related_trial`), as the rules
+   already do; without the direction, not established.
 2. **EU register (EudraCT / CTIS) by EudraCT number** (secondary ID on ClinicalTrials.gov): European
    industry trials (Roche, Bayer, Boehringer, UCB: not reachable via the SEC). Under the EU regulation an
    early termination is reported as affecting the benefit–risk balance (safety / lack of efficacy, Art. 38)

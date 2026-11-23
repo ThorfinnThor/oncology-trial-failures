@@ -189,7 +189,8 @@ def main() -> int:
           "matched. For `sec_filing` rows: the filing's form, date and URL | Ours |",
           "| `label_basis` | `rule`; `reviewed_decision` (the exact text was decided in an earlier AI-assisted review "
           "and the decision is reused); `sec_filing` (the registry gives no cause; the sponsor's own SEC filing "
-          "states it, reviewed per trial with AI assistance, not by a clinician); `rule_on_description`; `unresolved` | Ours |",
+          "states it, reviewed per trial with AI assistance, not by a clinician); `publication` (the same from the "
+          "trial's own paper, PMID given, our summary); `rule_on_description`; `unresolved` | Ours |",
           "| `needs_review`, `classifier_version` | Review flag; rule version | Ours |", "",
           "By basis: " + " · ".join(f"`{k}` {fmt(v)}" for k, v in basis.most_common()) + ".", ""]
     if ep:
@@ -229,7 +230,7 @@ def main() -> int:
           "## 4. Limits", "",
           "- A stop reason is what the sponsor wrote, not independent proof of why a drug failed.",
           "- Safety failures are labelled from stop reasons only; adverse-event tables are not analysed.",
-          "- Only ClinicalTrials.gov; trials registered elsewhere only are not included. Publications are not read.",
+          "- Only ClinicalTrials.gov; trials registered elsewhere only are not included. Publications are read only for trials whose registry entry gives no cause (`publication` rows).",
           "- `disease_area` is keyword-based. Registry fields are as filed, including sponsors' errors.", "",
           "## 5. Sources and terms", "",
           "| Source | What is used | Terms |", "| --- | --- | --- |",

@@ -1,0 +1,65 @@
+{
+ "NCT00265382": {
+  "pmid": "24111983",
+  "journal": "Journal of child and adolescent psychopharmacology",
+  "year": "2013",
+  "summary": "The companion randomised trial of the same drug was stopped for futility at its planned interim analysis, and this study was stopped with it.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT00321100": {
+  "pmid": "22294255",
+  "journal": "Journal of gastrointestinal cancer",
+  "year": "2012",
+  "summary": "Stopped after other trials reported worse outcomes when the two antibodies were combined; the authors conclude the combination is detrimental.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT01204333": {
+  "pmid": "32421159",
+  "journal": "JAMA neurology",
+  "year": "2020",
+  "summary": "Halted for futility after the first interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01523171": {
+  "pmid": "28602585",
+  "journal": "The Lancet. Haematology",
+  "year": "2017",
+  "summary": "Terminated after suspected cases of Wernicke's encephalopathy in other trials of the same drug.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT01856257": {
+  "pmid": "32558199",
+  "journal": "American journal of transplantation : official journal of the American Society of Transplantation and the American Society of Transplant Surgeons",
+  "year": "2020",
+  "summary": "Halted early because of graft rejection in the treatment groups.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01870726": {
+  "pmid": "31776899",
+  "journal": "Journal of neuro-oncology",
+  "year": "2020",
+  "summary": "Enrolment halted after a pre-planned futility analysis showed limited activity of the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02138825": {
+  "pmid": "31416769",
+  "journal": "The Lancet. Respiratory medicine",
+  "year": "2019",
+  "summary": "Terminated at the data monitoring committee's request because of more serious adverse events and deaths with the drug, and no sign of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02434549": {
+  "pmid": "34484101",
+  "journal": "Frontiers in neurology",
+  "year": "2021",
+  "summary": "Stopped at the interim analysis for futility (low probability of a positive primary outcome).",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03604445": {
+  "pmid": "39617530",
+  "journal": "ESMO open",
+  "year": "2024",
+  "summary": "Terminated early for minimal antitumour activity and a narrow therapeutic range, although tolerable.",
+  "about": "THIS_TRIAL"
+ }
+}

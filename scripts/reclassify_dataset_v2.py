@@ -95,6 +95,26 @@ def sec_classification(row: Dict[str, Any], decision: Dict[str, str]) -> Classif
     )
 
 
+# Per-trial decisions from the trial's own publication (docs/pub_weekly.md), reviewed the same way.
+# The decision carries the PMID and our summary, never the paper's words (docs/provenance_and_rights.md).
+PUB_DECISIONS = Path(__file__).resolve().parents[1] / "data" / "pub_evidence_decisions.csv"
+PUB_SOURCE = "PUBLICATION_REVIEWED"
+
+
+def pub_classification(row: Dict[str, Any], decision: Dict[str, str]) -> ClassificationV2:
+    """The reviewed publication's label. `pub.related_trial` marks a trial stopped because a related
+    trial of the same intervention failed (the existing rules count that as biological too)."""
+    rule = "pub.related_trial" if decision.get("about") == "RELATED_TRIAL" else "pub.trial_paper"
+    secondary = tuple(v.strip() for v in (decision.get("secondary_reasons") or "").replace("|", ";").split(";") if v.strip())
+    quote = f"PMID {decision.get('pmid')} ({decision.get('year')}): {decision.get('our_summary')}"
+    return ClassificationV2(
+        outcome=decision["outcome"], primary_reason=decision["primary_reason"], secondary_reasons=secondary,
+        confidence="MEDIUM", needs_review=False,
+        evidence=(Evidence(rule, decision["primary_reason"], quote, "MEDIUM"),),
+        normalized_text_hash=text_hash(normalize_reason(row.get("why_stopped"))),
+    )
+
+
 def revalidate_description_fallback(
     row: Dict[str, Any],
     reviewed_index: Dict[str, Dict[str, Any]],
@@ -162,6 +182,7 @@ def classify_rows(
     confidence: Counter[str] = Counter()
     review_groups: Dict[str, Dict[str, Any]] = {}
     sec_decisions = load_sec_decisions()
+    pub_decisions = load_sec_decisions(PUB_DECISIONS)
 
     for row in rows:
         old_key = f"{row.get('classification_label', '')}/{row.get('classification_reason', '')}"
@@ -173,11 +194,16 @@ def classify_rows(
         revalidated_fallback = None
         if existing_source == "DESCRIPTION_FALLBACK" and not preserve_existing:
             revalidated_fallback = revalidate_description_fallback(row, reviewed_index)
-        sec_decision = sec_decisions.get(str(row.get("nct_id") or "").upper())
-        if sec_decision is not None:
-            result = sec_classification(row, sec_decision)
+        nct_key = str(row.get("nct_id") or "").upper()
+        sec_decision = sec_decisions.get(nct_key)
+        pub_decision = pub_decisions.get(nct_key) if sec_decision is None else None
+        if sec_decision is not None or pub_decision is not None:
+            # A sponsor's filing and a trial's paper are both per-trial reviewed decisions; the filing
+            # is taken where both exist (none do today).
+            result = (sec_classification(row, sec_decision) if sec_decision is not None
+                      else pub_classification(row, pub_decision))
             fields = result.as_record_fields()
-            source = SEC_SOURCE
+            source = SEC_SOURCE if sec_decision is not None else PUB_SOURCE
             fields["classification_source"] = source
             outcome = result.outcome
             primary_reason = result.primary_reason
