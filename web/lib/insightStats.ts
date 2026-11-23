@@ -777,19 +777,35 @@ export function stopReasonsByYearSlice(
   fromYear = 2015,
   minimumRecords = 300,
 ): StopReasonsByYearSlice {
-  const byYear = new Map<number, Record<string, number>>();
-  for (const row of rows) {
-    const year = yearOf(row.completion_date);
-    if (!(year >= fromYear && year <= asOfYear)) continue;
-    const counts = byYear.get(year) || {};
-    const group = atlasGroup(row);
-    counts[group] = (counts[group] || 0) + 1;
-    byYear.set(year, counts);
-  }
-  const years = [...byYear.entries()]
-    .map(([year, counts]) => ({ year, total: Object.values(counts).reduce((sum, value) => sum + value, 0), counts }))
-    .filter((item) => item.total >= minimumRecords)
-    .sort((a, b) => a.year - b.year);
+  const countYears = (source: TrialIndexRow[]) => {
+    const byYear = new Map<number, Record<string, number>>();
+    for (const row of source) {
+      const year = yearOf(row.completion_date);
+      if (!(year >= fromYear && year <= asOfYear)) continue;
+      const counts = byYear.get(year) || {};
+      const group = atlasGroup(row);
+      counts[group] = (counts[group] || 0) + 1;
+      byYear.set(year, counts);
+      // the two large parts of a business stop, counted next to the groups and not part of the total
+      if (group === "business") {
+        const category = v2FinalCategory(row);
+        if (category === "BUSINESS_STRATEGY") counts.businessStrategy = (counts.businessStrategy || 0) + 1;
+        if (category === "FUNDING") counts.businessFunding = (counts.businessFunding || 0) + 1;
+      }
+    }
+    return [...byYear.entries()]
+      .map(([year, counts]) => ({
+        year,
+        total: ATLAS_GROUPS.reduce((sum, { key }) => sum + (counts[key] || 0), 0),
+        counts,
+      }))
+      .filter((item) => item.total >= minimumRecords)
+      .sort((x, y) => x.year - y.year);
+  };
+  const years = countYears(rows);
+  // Withdrawn trials never started and often carry a planned end date, so the same table is also
+  // counted on terminated trials alone.
+  const terminatedYears = countYears(rows.filter((row) => (row.overall_status || "").toUpperCase() === "TERMINATED"));
 
   const covidRows = rows.filter((row) => COVID_PATTERN.test(row.why_stopped_short || ""));
   const covidYears = new Map<number, number>();
@@ -798,7 +814,10 @@ export function stopReasonsByYearSlice(
     if (year >= fromYear && year <= asOfYear) covidYears.set(year, (covidYears.get(year) || 0) + 1);
   }
   return {
+    total: rows.length,
+    asOfYear,
     years,
+    terminatedYears,
     covidMentions: covidRows.length,
     covidByYear: [...covidYears.entries()].map(([year, count]) => ({ year, count })).sort((a, b) => a.year - b.year),
     covidOperational: covidRows.filter((row) => atlasGroup(row) === "operational").length,

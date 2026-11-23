@@ -345,9 +345,15 @@ export type RecruitmentVsBiologicalSlice = {
   areas: RecruitmentVsBiologicalArea[];
 };
 
+export type StopReasonYear = { year: number; total: number; counts: Record<string, number> };
+
 /** Stop reasons (lib/atlas groups) per year the stop was recorded, from the registry completion date. */
 export type StopReasonsByYearSlice = {
-  years: Array<{ year: number; total: number; counts: Record<string, number> }>;
+  total: number;
+  asOfYear: number;
+  years: StopReasonYear[];
+  /** The same years counted on terminated trials only. */
+  terminatedYears: StopReasonYear[];
   covidMentions: number;
   covidByYear: Array<{ year: number; count: number }>;
   covidOperational: number;
@@ -2976,12 +2982,12 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
   },
   {
     slug: "business-decisions-overtake-recruitment-as-clinical-trial-stop-reason",
-    title: "Business decisions now stop more clinical trials than recruitment problems",
+    title: "How the reasons drug trials stop have changed since 2015",
     metaDescription:
-      "How the stated reasons for stopping clinical trials have changed year by year: business and funding stops have grown while recruitment stops have fallen.",
+      "How the stated reasons for stopping drug and biologic trials have changed year by year: recruitment, business and funding, operational, efficacy and safety stops.",
     eyebrow: "Stop reasons over time",
     dek:
-      "For years, too few participants was the most common stated reason a clinical trial stopped. In recent years, business and funding decisions have taken that place.",
+      "Stated reasons for stopping drug and biologic trials, by the year the trial ended, counted with and without trials that never started.",
     datePublished: "2026-11-22",
     readingTime: "6 min read",
     keyword: "why clinical trials are stopped business decision trend",
@@ -2990,17 +2996,18 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     sections: [
       { heading: "The trend", body: [] },
       { heading: "What counts as a business stop", body: [
-        "A business stop is one where the sponsor says it ended the trial for strategic, portfolio or funding reasons: a changed development plan, a program deprioritised, a company acquired, or money that ran out. It says nothing about whether the treatment worked.",
-        "Recruitment stops are trials that could not enrol enough participants. Operational stops cover everything else that went wrong in running the trial, from staffing to supply to outside disruption.",
+        "A business stop is one where the sponsor says it ended the trial for strategic, portfolio or funding reasons: a changed development plan, a program deprioritised, support withdrawn, or money that ran out. A bare “sponsor decision” with no cause is not counted here; it is kept with the unclear stops.",
+        "Recruitment stops are trials that could not enrol enough participants. Operational stops cover other problems in running a trial, from staffing to supply to outside disruption. A trial recorded only as never having enrolled anyone is not a recruitment stop.",
       ] },
       { heading: "The pandemic years", body: [] },
       { heading: "Why this matters", body: [
-        "A business stop leaves the scientific question open, like a recruitment stop does. But it shifts where the risk sits: from whether a trial can find patients to whether its sponsor still wants the answer. For patients enrolled in such a trial, and for anyone reading the record later, the stop reason is often the only explanation they get.",
-        "It also matters for anyone counting failures. A rising number of stopped trials does not mean more drugs are failing. Most of the growth in this dataset is in stops that are not about the treatment at all.",
+        "A trial stopped for a stated business reason usually leaves its scientific question open, like a trial that could not recruit. Reading it as evidence against the treatment would be a mistake, and so would reading it as evidence for it.",
+        "These are shares of stopped trials. They do not say how many trials stop out of all that start, or how often treatments fail: a trial that runs to the end and misses its endpoint is not counted.",
       ] },
       { heading: "Limits of the comparison", body: [
-        "The year is the one the registry gives as the trial's end. For terminated trials that is when they stopped; for withdrawn trials it is often a planned date that never happened. The dataset includes records updated on ClinicalTrials.gov since 2015, so the comparison starts there.",
-        "The most recent year is incomplete, and recent stops are more often recorded without a clear reason at first. The reason is the one the sponsor wrote; a business reason may sometimes cover weak interim data that the record does not mention.",
+        "The dataset holds interventional drug and biologic trials that were terminated, withdrawn or suspended and whose ClinicalTrials.gov record was updated since 2015. It is not every stopped trial on the registry.",
+        "The year comes from the registry completion date. For withdrawn trials that is often a planned date for a trial that never started, so the second table counts terminated trials alone. Where the two tables disagree, read the difference as uncertainty.",
+        "Almost every reason is the sponsor's own wording, and a business reason may cover weak data that the record does not mention. The tables show how many stops each year give no clear reason; a change in what sponsors write can look like a change in why trials stop. All years are classified with the same version of the rules.",
       ] },
     ],
     tables: [],
@@ -6523,53 +6530,72 @@ function hydrateRecruitmentVsBiologicalArticle(article: InsightArticle, stats: I
 }
 
 function hydrateStopReasonsByYearArticle(article: InsightArticle, stats: InsightStats): InsightArticle {
-  const { years, covidMentions, covidByYear, covidOperational, covidRecruitment } = stats.stopReasonsByYear;
-  if (years.length < 4) return article;
-  const share = (item: (typeof years)[number], key: string) => pctFromCounts(item.counts[key] || 0, item.total);
-  const pool = (items: typeof years) => {
+  const { total, asOfYear, years, terminatedYears, covidMentions, covidByYear, covidOperational, covidRecruitment } = stats.stopReasonsByYear;
+  if (years.length < 6 || terminatedYears.length < 6) return article;
+  const biological = ["efficacy", "safety"];
+  const count = (item: { counts: Record<string, number> }, keys: string[]) => keys.reduce((sum, key) => sum + (item.counts[key] || 0), 0);
+  const share = (item: { total: number; counts: Record<string, number> }, ...keys: string[]) => pctFromCounts(count(item, keys), item.total);
+  const pool = (items: StopReasonYear[]) => {
     const counts: Record<string, number> = {};
-    let total = 0;
+    let sum = 0;
     for (const item of items) {
-      total += item.total;
+      sum += item.total;
       for (const [key, value] of Object.entries(item.counts)) counts[key] = (counts[key] || 0) + value;
     }
-    return { total, counts, label: `${items[0].year}–${items[items.length - 1].year}` };
+    return { total: sum, counts, label: `${items[0].year}–${items[items.length - 1].year}` };
+  };
+  // the first year from which business stops lead in every later year
+  const crossoverOf = (items: StopReasonYear[]) => {
+    let year: number | null = null;
+    for (let i = items.length - 1; i >= 0 && count(items[i], ["business"]) > count(items[i], ["recruitment"]); i -= 1) year = items[i].year;
+    return year;
   };
   const early = pool(years.slice(0, 3));
   const late = pool(years.slice(-3));
-  const pooled = (p: typeof early, key: string) => pctFromCounts(p.counts[key] || 0, p.total);
-  const ahead = (item: (typeof years)[number]) => (item.counts.business || 0) > (item.counts.recruitment || 0);
-  // the first year from which business stops lead in every later year
-  let crossover: number | null = null;
-  for (let i = years.length - 1; i >= 0 && ahead(years[i]); i -= 1) crossover = years[i].year;
-  const last = years[years.length - 1];
-  const peakCovid = [...covidByYear].sort((a, b) => b.count - a.count)[0];
+  const earlyTerminated = pool(terminatedYears.slice(0, 3));
+  const lateTerminated = pool(terminatedYears.slice(-3));
+  const crossover = crossoverOf(years);
+  const terminatedCrossover = crossoverOf(terminatedYears);
+  const ratioOf = (item: { total: number; counts: Record<string, number> }, key: string) => count(item, [key]) / item.total;
+  const doubled = [[early, late], [earlyTerminated, lateTerminated]].every(([from, to]) => ratioOf(to, "business") > 2 * ratioOf(from, "business"));
+  const recruitmentFell = [[early, late], [earlyTerminated, lateTerminated]].every(([from, to]) => ratioOf(to, "recruitment") < ratioOf(from, "recruitment"));
+  const lead = crossover === null
+    ? `Counting all stopped trials, business stops do not lead recruitment stops in ${late.label.slice(-4)}.`
+    : `Counting all stopped trials, business stops outnumber recruitment stops in every year since ${crossover}.`;
+  const terminatedLead = terminatedCrossover === null
+    ? `Counting terminated trials alone, they do not lead in ${lateTerminated.label.slice(-4)}.`
+    : `Counting terminated trials alone, they have led ${terminatedCrossover === terminatedYears[terminatedYears.length - 1].year ? `only in ${terminatedCrossover}` : `since ${terminatedCrossover}`}.`;
+  const biologicalFact = `Efficacy and safety together: ${share(early, ...biological)} of stops in ${early.label}, ${share(late, ...biological)} in ${late.label}, and between ${minShare(years, biological)} and ${maxShare(years, biological)} in single years.`;
+  const peakCovid = [...covidByYear].sort((x, y) => y.count - x.count)[0];
   const y2019 = years.find((item) => item.year === 2019);
   const y2020 = years.find((item) => item.year === 2020);
+  const row = (item: StopReasonYear): [string, string] => [
+    `${item.year}${item.year === asOfYear ? ", so far" : ""} (${n(item.total)})`,
+    `${share(item, "recruitment")} · ${share(item, "business")} · ${share(item, ...biological)} · ${share(item, "unclear")}`,
+  ];
+  const columns: [string, string] = ["Year (stops)", "Too few participants · business or funding · efficacy or safety · unclear"];
 
   return {
     ...article,
-    title: crossover ? article.title : "How the reasons clinical trials stop have changed since 2015",
-    dek: crossover
-      ? `For years, too few participants was the most common stated reason a clinical trial stopped. Since ${crossover}, business and funding decisions have stopped more trials than recruitment problems.`
-      : `Business and funding decisions account for a growing share of stopped clinical trials, while recruitment stops have become less common.`,
-    metaDescription: `Business and funding stops rose from ${pooled(early, "business")} of stopped clinical trials in ${early.label} to ${pooled(late, "business")} in ${late.label}; recruitment stops fell from ${pooled(early, "recruitment")} to ${pooled(late, "recruitment")}.`,
+    title: doubled ? "Business and funding stops of drug trials have more than doubled since 2015" : article.title,
+    dek: `Business and funding reasons: ${share(early, "business")} of stopped drug and biologic trials in ${early.label}, ${share(late, "business")} in ${late.label}. Too few participants: ${share(early, "recruitment")}, then ${share(late, "recruitment")}.`,
+    metaDescription: `Business and funding reasons went from ${share(early, "business")} of stopped drug trials in ${early.label} to ${share(late, "business")} in ${late.label}; recruitment stops from ${share(early, "recruitment")} to ${share(late, "recruitment")}.`,
     facts: [
-      `Business and funding decisions: ${pooled(early, "business")} of stops in ${early.label}, ${pooled(late, "business")} in ${late.label}.`,
-      `Too few participants: ${pooled(early, "recruitment")} of stops in ${early.label}, ${pooled(late, "recruitment")} in ${late.label}.`,
-      crossover
-        ? `Business stops have outnumbered recruitment stops every year since ${crossover}.`
-        : "Recruitment stops are still the more common of the two in the latest year.",
-      `Efficacy and safety together stayed between ${minShare(years, ["efficacy", "safety"])} and ${maxShare(years, ["efficacy", "safety"])} of stops in every year.`,
-      covidMentions ? `${n(covidMentions)} stop reasons mention COVID-19 or the pandemic.` : "No stop reasons mention COVID-19.",
+      `The dataset holds ${n(total)} stopped drug and biologic trials with records updated since 2015.`,
+      `Business or funding: ${share(early, "business")} of stops in ${early.label}, ${share(late, "business")} in ${late.label}. Terminated trials alone: ${share(earlyTerminated, "business")}, then ${share(lateTerminated, "business")}.`,
+      `Too few participants: ${share(early, "recruitment")} of stops in ${early.label}, ${share(late, "recruitment")} in ${late.label}. Terminated trials alone: ${share(earlyTerminated, "recruitment")}, then ${share(lateTerminated, "recruitment")}.`,
+      `${lead} ${terminatedLead}`,
+      biologicalFact,
     ],
     sections: article.sections.map((section) => {
       if (section.heading === "The trend") {
         return {
           ...section,
           body: [
-            `In ${early.label}, ${pooled(early, "recruitment")} of trials that stopped gave too few participants as the reason and ${pooled(early, "business")} gave a business or funding decision. In ${late.label}, it was ${pooled(late, "recruitment")} and ${pooled(late, "business")}.${crossover ? ` Business stops have been the more common of the two every year since ${crossover}.` : ""}`,
-            `The biological reasons barely moved. Efficacy and safety together stayed between ${minShare(years, ["efficacy", "safety"])} and ${maxShare(years, ["efficacy", "safety"])} of stops in every year, so the shift is between non-scientific reasons, not away from or towards failed treatments.`,
+            `In ${early.label}, ${share(early, "recruitment")} of stopped trials gave too few participants as the reason and ${share(early, "business")} a business or funding reason. In ${late.label}, it was ${share(late, "recruitment")} and ${share(late, "business")}.`,
+            `The two large parts of the business group: strategy went from ${share(early, "businessStrategy")} to ${share(late, "businessStrategy")} of all stops, lack of funding from ${share(early, "businessFunding")} to ${share(late, "businessFunding")}.`,
+            `${doubled && recruitmentFell ? "Leaving out trials that never started does not change the direction" : "Leaving out trials that never started"}: among terminated trials, recruitment went from ${share(earlyTerminated, "recruitment")} to ${share(lateTerminated, "recruitment")} and business or funding from ${share(earlyTerminated, "business")} to ${share(lateTerminated, "business")}. ${lead} ${terminatedLead}`,
+            biologicalFact,
           ],
         };
       }
@@ -6577,42 +6603,34 @@ function hydrateStopReasonsByYearArticle(article: InsightArticle, stats: Insight
         return {
           ...section,
           body: [
-            y2019 && y2020
-              ? `Operational stops jumped from ${share(y2019, "operational")} of stops in 2019 to ${share(y2020, "operational")} in 2020, when sites closed and travel stopped.`
-              : "Operational stops rose when sites closed and travel stopped in 2020.",
+            ...(y2019 && y2020 ? [
+              `Operational stops were ${share(y2019, "operational")} of stops in 2019 and ${share(y2020, "operational")} in 2020. Business or funding stood at ${share(years[0], "business")} in ${years[0].year} and ${share(y2019, "business")} in 2019, before the pandemic.`,
+            ] : []),
             covidMentions
-              ? `${n(covidMentions)} stop reasons mention COVID-19 or the pandemic${peakCovid ? `, peaking among trials that ended in ${peakCovid.year} (${n(peakCovid.count)})` : ""}. ${n(covidOperational)} of them are classified as operational and ${n(covidRecruitment)} as recruitment problems. The business trend started before the pandemic and continued after it.`
-              : "The business trend started before the pandemic and continued after it.",
+              ? `${n(covidMentions)} stop reasons mention COVID-19 or the pandemic${peakCovid ? `; the most common end year among them is ${peakCovid.year} (${n(peakCovid.count)})` : ""}. ${n(covidOperational)} are classified as operational and ${n(covidRecruitment)} as recruitment.`
+              : "No stop reasons mention COVID-19.",
           ],
         };
       }
       return section;
     }),
     tables: [
-      {
-        heading: "Share of stops by year",
-        columns: ["Year (stops)", "Too few participants · business or funding · efficacy or safety"],
-        rows: years.map((item): [string, string] => [
-          `${item.year}${item === last ? ", so far" : ""} (${n(item.total)})`,
-          `${share(item, "recruitment")} · ${share(item, "business")} · ${pctFromCounts((item.counts.efficacy || 0) + (item.counts.safety || 0), item.total)}`,
-        ]),
-      },
+      { heading: "All stopped trials, by year", columns, rows: years.map(row) },
+      { heading: "Terminated trials only, by year", columns, rows: terminatedYears.map(row) },
     ],
     faqs: [
       {
-        question: "What is the most common reason clinical trials are stopped?",
-        answer: crossover
-          ? `In recent years, business and funding decisions: ${pooled(late, "business")} of stops in ${late.label}, ahead of too few participants at ${pooled(late, "recruitment")}.`
-          : `Too few participants, at ${pooled(late, "recruitment")} of stops in ${late.label}, followed by business and funding decisions at ${pooled(late, "business")}.`,
+        question: "Have business reasons overtaken recruitment as the reason trials stop?",
+        answer: `${lead} ${terminatedLead}`,
       },
       {
         question: "Are more clinical trials failing because the drugs don't work?",
-        answer: `Not in this data. Efficacy and safety together stayed between ${minShare(years, ["efficacy", "safety"])} and ${maxShare(years, ["efficacy", "safety"])} of stops in every year since ${years[0].year}.`,
+        answer: `This data cannot say: it holds stopped trials only. ${biologicalFact}`,
       },
       {
         question: "How did COVID-19 affect clinical trials?",
         answer: covidMentions
-          ? `${n(covidMentions)} stop reasons in this dataset mention COVID-19 or the pandemic, most of them classified as operational or recruitment problems.`
+          ? `${n(covidMentions)} stop reasons in this dataset mention COVID-19 or the pandemic: ${n(covidOperational)} classified as operational and ${n(covidRecruitment)} as recruitment.`
           : "No stop reasons in this dataset mention COVID-19.",
       },
     ],
