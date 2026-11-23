@@ -290,6 +290,20 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
 4. **ClinicalTrials.gov record history:** an earlier version sometimes had a different stop text or a
    "suspended" reason; same host as now, cheap to probe.
 
+## Standard drug names in the public dataset (decided 23 Nov, variant 2)
+
+`scripts/universe/export_trial_drugs.py` → `data/trial_drugs.csv` (+ web/public): per stopped trial the drugs
+tested under their standard name, the background (control arms too), comparator, NCIt codes, resolution.
+ChEMBL names only, no ChEMBL IDs/mechanisms/targets (`docs/provenance_and_rights.md`; confirm with a lawyer
+before the first paid delivery). In the label sample, Hugging Face card and the marketplace package.
+**First build 23 Nov:** 11,834 of 24,132 trials covered (the universe: interventional Phase 2/3 from 2010);
+7,904 fully resolved, 619 partly, 753 code or class only, 1,050 unresolved, 1,508 no drug; 12,298 not covered.
+Oncology 3,779 of 4,758 covered fully resolved; other areas 50–68 %. Fixed the same day: a drug the control
+arm also got no longer counts as tested (243 rows), "anhydrous" dropped.
+**Next:** resolve the 12,298 not covered (Phase 1, Phase 4, before 2010) with a separate pass over the stopped
+trials (their arms from ClinicalTrials.gov, then the same resolver), without touching the rate denominators.
+B (signals product for 7 more areas) not started.
+
 ## Getting found: next steps (decided 19 Nov)
 
 **Done 19 Nov:** the free sample on the site (`/samples/labels/`, rebuilt weekly) and the article

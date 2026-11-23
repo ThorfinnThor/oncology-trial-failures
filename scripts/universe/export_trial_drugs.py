@@ -73,7 +73,7 @@ def display_name(component: dict) -> str:
         words = [w if re.search(r"\d", w) else w.lower() for w in name.split()]
         name = " ".join(words)
         name = name[:1].upper() + name[1:]
-    return name
+    return re.sub(r"\s+anhydrous$", "", name, flags=re.I)
 
 
 def ncit_code(component: dict, ncit: dict | None, norm) -> str:
@@ -122,12 +122,17 @@ def summarise(rec: dict, ncit: dict | None, norm) -> dict:
     sources = sorted({"ChEMBL" if (c.get("entity_source") or "").find("CHEMBL") >= 0 else "NCIt"
                       for c in tested if c.get("status") == "RESOLVED"})
     codes = []
+    background_lower = {b.lower() for b in names(by_role["BACKGROUND_OR_BACKBONE"]) + names(by_role["COMPARATOR"])}
     for c in tested:
-        if c.get("status") == "RESOLVED":
+        if c.get("status") == "RESOLVED" and display_name(c).lower() not in background_lower:
             code = ncit_code(c, ncit, norm)
             if code and code not in codes:
                 codes.append(code)
-    return {"nct_id": rec["nct_id"], "drugs_tested": "; ".join(names(tested)),
+    # A drug the control arms received too is background, also when an experimental arm lists it
+    # again in a combination ("Deferasirox + Azacitidine" against "Azacitidine"): rule 8.
+    background = names(by_role["BACKGROUND_OR_BACKBONE"]) + names(by_role["COMPARATOR"])
+    tested_names = [n for n in names(tested) if n.lower() not in {b.lower() for b in background}]
+    return {"nct_id": rec["nct_id"], "drugs_tested": "; ".join(tested_names),
             "drugs_background": "; ".join(names(by_role["BACKGROUND_OR_BACKBONE"])),
             "drugs_comparator": "; ".join(names(by_role["COMPARATOR"])),
             "drug_ncit_codes": "; ".join(codes), "drug_resolution": resolution,
