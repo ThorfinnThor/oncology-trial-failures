@@ -6,8 +6,10 @@ survive until the next. They are accumulated in KV rather than recomputed: a cha
 exactly one release, and a mail that only ever carried the latest one would silently drop half of
 what happened.
 
-Cadence is measured, not assumed. "Every other run" breaks the first time a run is skipped or
-re-run; "at least twelve days since the last send" does not.
+Cadence is measured, not assumed: every second Monday (Europe/Berlin), the morning of the weekly
+run. A mail goes out on a Monday when at least twelve days have passed since the last one, so a
+re-run on another weekday never shifts the rhythm. Only a mail that is overdue (fourteen days or
+more, e.g. because the Monday run failed and was re-run on Tuesday) goes out on another day.
 
 Nobody is in the loop. This runs at the end of the weekly workflow, reads the subscribers straight
 from KV, and sends. With no API key it writes the mail to a file instead and says so, so the
@@ -35,6 +37,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -66,6 +69,8 @@ CONTACT_EMAIL = "contact@clinicaltrialfailures.com"
 
 PENDING_KEY = "newsletter:pending"
 DAYS_BETWEEN = 12          # a fortnight, with room for a run that starts late
+OVERDUE_DAYS = 14          # past this, send on any weekday: a Monday run that failed and is re-run later
+SEND_WEEKDAY = 0           # Monday, in Europe/Berlin
 MAX_ROWS = 15              # a mail is a summary; the site is the list. Also Gmail clips a mail
                            # over 102 KB, and 2 × 15 rows stays well under it.
 
@@ -218,7 +223,15 @@ def due(pending: dict, force: bool) -> bool:
         when = datetime.fromisoformat(last.replace("Z", "+00:00"))
     except ValueError:
         return True
-    return datetime.now(timezone.utc) - when >= timedelta(days=DAYS_BETWEEN)
+    return is_due(when, datetime.now(timezone.utc))
+
+
+def is_due(last_sent: datetime, now: datetime) -> bool:
+    """Every second Monday: twelve days since the last mail and a Monday in Berlin, or overdue."""
+    since = now - last_sent
+    if since >= timedelta(days=OVERDUE_DAYS):
+        return True
+    return since >= timedelta(days=DAYS_BETWEEN) and now.astimezone(ZoneInfo("Europe/Berlin")).weekday() == SEND_WEEKDAY
 
 
 # ---------------------------------------------------------------------------
@@ -732,7 +745,8 @@ def main() -> int:
 
     if not due(pending, args.force):
         last = pending.get("last_sent_at")
-        print(f"last mail went out {last}; nothing due for {DAYS_BETWEEN} days. Holding.")
+        print(f"last mail went out {last}; the next goes out on the first Monday {DAYS_BETWEEN} or more days "
+              "later. Holding.")
         kv_write(base, PENDING_KEY, token, pending)
         return 0
 
