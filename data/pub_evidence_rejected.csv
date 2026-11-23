@@ -7,3 +7,15 @@ NCT04816604,40788460,"A rate of patients discontinuing for adverse events, not t
 NCT04855253,38022532,"The matched sentences are from mouse experiments (""study termination after 100 days"").",Claude (AI-assisted review),2026-11-23
 NCT05551273,37744732,A hypothetical sentence about sample size and stopping rules; the registry names funding disruptions.,Claude (AI-assisted review),2026-11-23
 NCT06192160,40817073,"Protocol rules for stopping a participant's study drugs, not the trial.",Claude (AI-assisted review),2026-11-23
+NCT01380028,33787345,"Discontinued at the midpoint, without a stated cause; the registry cites a successful interim analysis.",Claude (AI-assisted review),2026-11-23
+NCT01420523,24535278,"Discontinued on the data monitoring board's recommendation, without a stated cause.",Claude (AI-assisted review),2026-11-23
+NCT01875003,35846226,The sponsor ended the drug programme; the paper gives no cause for that decision.,Claude (AI-assisted review),2026-11-23
+NCT02842086,32711800,"The sentence is about participants stopping study drug, not the trial.",Claude (AI-assisted review),2026-11-23
+NCT02967692,42585631,"""At the time of study termination"" is a time point, not a cause.",Claude (AI-assisted review),2026-11-23
+NCT03281369,36940261,"The sentence is about data cut-offs, not the stop.",Claude (AI-assisted review),2026-11-23
+NCT03590574,39528665,The sentence is about another CAR T cell study.,Claude (AI-assisted review),2026-11-23
+NCT04106492,,"Source is a preprint (medRxiv), not a peer-reviewed paper with a PubMed record; revisit when published.",Claude (AI-assisted review),2026-11-23
+NCT04300309,41199347,"The paper gives two different reasons (recruitment, and higher than expected drug exposure); not established.",Claude (AI-assisted review),2026-11-23
+NCT04904549,37936652,"Adverse events leading individual participants to discontinue, not the trial stopping.",Claude (AI-assisted review),2026-11-23
+NCT04985604,42826365,"""At study closure"" is a time point, not a cause.",Claude (AI-assisted review),2026-11-23
+NCT05111626,38308771,"Reasons individual participants discontinued, not the trial.",Claude (AI-assisted review),2026-11-23

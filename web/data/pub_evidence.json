@@ -82,5 +82,89 @@
   "year": "2024",
   "summary": "Stopped for safety after the data and safety monitoring board recommended termination at the last planned interim analysis.",
   "about": "THIS_TRIAL"
+ },
+ "NCT01604889": {
+  "pmid": "30894212",
+  "journal": "Journal for immunotherapy of cancer",
+  "year": "2019",
+  "summary": "Ended after its first phase because the treatment landscape changed: PD-1 inhibitors had become the standard to build on in melanoma.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02363946": {
+  "pmid": "29572094",
+  "journal": "Journal of hepatology",
+  "year": "2018",
+  "summary": "Terminated early because of toxicity of the drug's delivery vehicle found in a non-human primate study.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03284957": {
+  "pmid": "35840573",
+  "journal": "Nature communications",
+  "year": "2022",
+  "summary": "Accrual to the expansion part was stopped because it did not reach the prespecified number of responders.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03765983": {
+  "pmid": "42895898",
+  "journal": "Cancer research communications",
+  "year": "2026",
+  "summary": "Closed for futility: no confirmed responses in the brain at the recommended dose, so the criterion for the second stage was not met.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03769181": {
+  "pmid": "36251503",
+  "journal": "Hematological oncology",
+  "year": "2023",
+  "summary": "Stopped after interim analyses that did not meet their criteria in some cohorts, with more effective treatments available for these patients.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04019327": {
+  "pmid": "40906325",
+  "journal": "Investigational new drugs",
+  "year": "2025",
+  "summary": "Closed early for low accrual and an evaluation of the risk-benefit profile, as evidence grew that the drug class works mainly in a genetic subgroup.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04138394": {
+  "pmid": "42267875",
+  "journal": "JAMA",
+  "year": "2026",
+  "summary": "Stopped at the first interim analysis after crossing the prespecified futility/harm threshold (more primary outcome events with the drug than with placebo).",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04614467": {
+  "pmid": "34066713",
+  "journal": "Cells",
+  "year": "2021",
+  "summary": "Stopped early because of the sponsor's financial problems.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05013554": {
+  "pmid": "42705861",
+  "journal": "Journal for immunotherapy of cancer",
+  "year": "2026",
+  "summary": "Terminated for the sponsor's portfolio reprioritisation, not for safety or efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05026177": {
+  "pmid": "41500915",
+  "journal": "The journal of prevention of Alzheimer's disease",
+  "year": "2026",
+  "summary": "Terminated when the companion phase 3 trial of the same drug reported negative topline results.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT05712278": {
+  "pmid": "41963545",
+  "journal": "Cancer immunology, immunotherapy : CII",
+  "year": "2026",
+  "summary": "Terminated for the sponsor's business portfolio reprioritisation, not for safety or efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT06691685": {
+  "pmid": "42839103",
+  "journal": "Nature medicine",
+  "year": "2026",
+  "summary": "Discontinued after the sponsor company was acquired.",
+  "about": "THIS_TRIAL"
  }
 }

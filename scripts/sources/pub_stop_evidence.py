@@ -79,7 +79,9 @@ WHOLE_TRIAL = re.compile(r"\b(the|this|our) (trial|study)\b[^.;]{0,60}\b(termina
 # a time point ("until study termination"), a participant's drugs being stopped, a rate of patients
 # discontinuing, protocol rules and plans ("should", "will", "must"), animal experiments.
 NOT_TRIAL_STOP = re.compile(
-    r"\b(?:until|at|before|after|by) (?:the )?(?:study|trial) (?:termination|completion|end)\b"
+    r"\b(?:until|at|before|after|by) (?:the )?(?:time of (?:the )?)?(?:study|trial) (?:termination|completion|end|closure)\b"
+    r"|\bdue to (?:the )?(?:early )?(?:study|trial) closure\b|\b(?:primary |main )?reasons? for (?:study )?discontinuation\b"
+    r"|\bled to (?:study )?discontinuation\b|\bparticipants? (?:who )?discontinued the (?:trial|study)\b"
     r"|\bearly[- ]termination visit\b|\bstudy (?:drug|treatment)s? (?:(?:was|were|will be|is|are) )?(?:permanently )?discontinu"
     r"|\b(?:drug|treatment) discontinuation\b|\bresult(?:ing|ed)? in (?:study )?(?:drug )?discontinuation\b"
     r"|\brates? of (?:study )?discontinuation\b|\b(?:mice|mouse|murine|rats?|xenografts?)\b"

@@ -1,6 +1,6 @@
 {
  "updated": "2026-11-23",
- "pending": 299,
+ "pending": 275,
  "trials": [
   {
    "nct_id": "NCT00073450",
@@ -2890,34 +2890,6 @@
    ]
   },
   {
-   "nct_id": "NCT01380028",
-   "brief_title": "Interest of Oral Corticosteroids in the Treatment of Chronic Subdural Hematomas",
-   "lead_sponsor": "University Hospital, Montpellier",
-   "why_stopped": "successfull Interim Analysis",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_ANALYSIS_OR_REVIEW_WITHOUT_RESULT"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "33787345",
-     "pmcid": null,
-     "doi": "10.1089/neu.2020.7560",
-     "journal": "Journal of neurotrauma",
-     "year": "2021",
-     "link": "registry_result",
-     "where": "abstract",
-     "score": 4,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT01390220",
    "brief_title": "Study to Evaluate the Safety and Efficacy of USL261 (Intranasal Midazolam) in Patients With Seizure Clusters",
    "lead_sponsor": "UCB Biopharma S.P.R.L.",
@@ -2969,34 +2941,6 @@
      "link": "registry_derived",
      "where": "full_text",
      "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT01420523",
-   "brief_title": "Evaluation of Raltegravir Plus Maraviroc Therapy in Controlled HIV Patients Presenting With Lipohypertrophy",
-   "lead_sponsor": "ANRS, Emerging Infectious Diseases",
-   "why_stopped": "",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_MISSING_STOP_REASON"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "24535278",
-     "pmcid": null,
-     "doi": "10.1093/jac/dkt536",
-     "journal": "The Journal of antimicrobial chemotherapy",
-     "year": "2014",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 3,
      "suggested": {
       "outcome": "UNKNOWN",
       "primary_reason": "UNSPECIFIED",
@@ -3313,64 +3257,6 @@
      "link": "nct_in_abstract",
      "where": "abstract",
      "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT01604889",
-   "brief_title": "A Phase 1/2 Randomized, Blinded, Placebo Controlled Study of Ipilimumab in Combination With Epacadostat or Placebo in Subjects With Unresectable or Metastatic Melanoma",
-   "lead_sponsor": "Incyte Corporation",
-   "why_stopped": "Further development of this compound with ipilimumab in the treatment of melanoma is no longer being pursued.",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "30894212",
-     "pmcid": "PMC6425606",
-     "doi": "10.1186/s40425-019-0562-8",
-     "journal": "Journal for immunotherapy of cancer",
-     "year": "2019",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 4,
-     "suggested": {
-      "outcome": "NON_FAILURE_TRANSITION",
-      "primary_reason": "NOT_INITIATED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "30894212",
-     "pmcid": "PMC6425606",
-     "doi": "10.1186/s40425-019-0562-8",
-     "journal": "Journal for immunotherapy of cancer",
-     "year": "2019",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 3,
-     "suggested": {
-      "outcome": "CAUSE_NOT_STATED",
-      "primary_reason": "DECISION_WITHOUT_STATED_CAUSE",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "30894212",
-     "pmcid": "PMC6425606",
-     "doi": "10.1186/s40425-019-0562-8",
-     "journal": "Journal for immunotherapy of cancer",
-     "year": "2019",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
      "suggested": {
       "outcome": "UNKNOWN",
       "primary_reason": "UNSPECIFIED",
@@ -4044,64 +3930,6 @@
      "link": "registry_derived",
      "where": "abstract",
      "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT01875003",
-   "brief_title": "A Study of Lebrikizumab in Adolescent Participants With Uncontrolled Asthma Who Are on Inhaled Corticosteroids and a Second Controller Medication",
-   "lead_sponsor": "Hoffmann-La Roche",
-   "why_stopped": "Sponsor decision to discontinue lebrikizumab development for the treatment of asthma.",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "35846226",
-     "pmcid": "PMC9281483",
-     "doi": "10.1002/clt2.12176",
-     "journal": "Clinical and translational allergy",
-     "year": "2022",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 5,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "SAFETY",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "35846226",
-     "pmcid": "PMC9281483",
-     "doi": "10.1002/clt2.12176",
-     "journal": "Clinical and translational allergy",
-     "year": "2022",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 3,
-     "suggested": {
-      "outcome": "CAUSE_NOT_STATED",
-      "primary_reason": "DECISION_WITHOUT_STATED_CAUSE",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "35846226",
-     "pmcid": "PMC9281483",
-     "doi": "10.1002/clt2.12176",
-     "journal": "Clinical and translational allergy",
-     "year": "2022",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
      "suggested": {
       "outcome": "UNKNOWN",
       "primary_reason": "UNSPECIFIED",
@@ -5778,34 +5606,6 @@
    ]
   },
   {
-   "nct_id": "NCT02363946",
-   "brief_title": "A Study of ARC-AAT in Healthy Volunteer Subjects and Patients With Alpha-1 Antitrypsin Deficiency (AATD)",
-   "lead_sponsor": "Arrowhead Pharmaceuticals",
-   "why_stopped": "Company decision to terminate the trial",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "29572094",
-     "pmcid": null,
-     "doi": "10.1016/j.jhep.2018.03.012",
-     "journal": "Journal of hepatology",
-     "year": "2018",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 5,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "SAFETY",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT02365493",
    "brief_title": "Combination Antibiotic Therapy for Methicillin Resistant Staphylococcus Aureus Infection",
    "lead_sponsor": "Menzies School of Health Research",
@@ -7135,34 +6935,6 @@
    ]
   },
   {
-   "nct_id": "NCT02842086",
-   "brief_title": "Study to Evaluate the Safety and Efficacy of Emtricitabine and Tenofovir Alafenamide (F/TAF) Fixed-Dose Combination Once Daily for Pre-Exposure Prophylaxis in Men and Transgender Women Who Have Sex With Men and Are At Risk of HIV-1 Infection",
-   "lead_sponsor": "Gilead Sciences",
-   "why_stopped": "Following review of accumulated safety data from DISCOVER and real-world use of F/TAF, the sponsor determined that the long-term safety of F/TAF had been demonstrated and no further safety monitoring within the study was required.",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_NEGATED_SIGNAL_WITHOUT_AFFIRMATIVE_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "32711800",
-     "pmcid": "PMC9665936",
-     "doi": "10.1016/s0140-6736(20)31065-5",
-     "journal": "Lancet (London, England)",
-     "year": "2020",
-     "link": "registry_result",
-     "where": "full_text",
-     "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT02893826",
    "brief_title": "Safety/Pharmacokinetic Study Comparing Intracisternal EG-1962 to Standard of Care Enteral Nimodipine in Adults With aSAH",
    "lead_sponsor": "Edge Therapeutics Inc",
@@ -7296,64 +7068,6 @@
      "link": "registry_derived",
      "where": "abstract",
      "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT02967692",
-   "brief_title": "A Study of the Anti-PD1 Antibody PDR001, in Combination With Dabrafenib and Trametinib in Advanced Melanoma",
-   "lead_sponsor": "Novartis Pharmaceuticals",
-   "why_stopped": "Sponsor decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "42585631",
-     "pmcid": "PMC13557475",
-     "doi": "10.1200/jco-26-00528",
-     "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42585631",
-     "pmcid": "PMC13557475",
-     "doi": "10.1200/jco-26-00528",
-     "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42585631",
-     "pmcid": "PMC13557475",
-     "doi": "10.1200/jco-26-00528",
-     "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
      "suggested": {
       "outcome": "UNKNOWN",
       "primary_reason": "UNSPECIFIED",
@@ -8045,62 +7759,6 @@
      "suggested": {
       "outcome": "CAUSE_NOT_STATED",
       "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT03281369",
-   "brief_title": "A Study of Multiple Immunotherapy-Based Treatment Combinations in Patients With Locally Advanced Unresectable or Metastatic Gastric or Gastroesophageal Junction Cancer (G/GEJ) or Esophageal Cancer (Morpheus-Gastric and Esophageal Cancer)",
-   "lead_sponsor": "Hoffmann-La Roche",
-   "why_stopped": "The study was closed because the sponsor decided not to continue the development of certain treatment combinations.",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "PROGRAM_ACTION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "36940261",
-     "pmcid": "PMC10243783",
-     "doi": "10.1093/oncolo/oyad022",
-     "journal": "The oncologist",
-     "year": "2023",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT03284957",
-   "brief_title": "Phase 1/2 Study of Amcenestrant (SAR439859) Single Agent and in Combination With Other Anti-cancer Therapies in Postmenopausal Women With Estrogen Receptor Positive Advanced Breast Cancer",
-   "lead_sponsor": "Sanofi",
-   "why_stopped": "Sponsor decision to prematurely stop the study, not linked to any safety concern.",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "35840573",
-     "pmcid": "PMC9284491",
-     "doi": "10.1038/s41467-022-31668-8",
-     "journal": "Nature communications",
-     "year": "2022",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
       "secondary_reasons": []
      }
     }
@@ -9039,34 +8697,6 @@
    ]
   },
   {
-   "nct_id": "NCT03590574",
-   "brief_title": "Phase I/II Study Evaluating AUTO4 in Patients With T Cell Receptor Beta Constant (TRBC)1 Positive T Cell Lymphoma",
-   "lead_sponsor": "Autolus Limited",
-   "why_stopped": "Only Phase I of the study was conducted.",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_OTHER_AMBIGUOUS_TEXT"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "39528665",
-     "pmcid": "PMC11750712",
-     "doi": "10.1038/s41591-024-03326-7",
-     "journal": "Nature medicine",
-     "year": "2025",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT03594955",
    "brief_title": "First in Human Testing of Dose-escalation of SAR440234 in Patients With Acute Myeloid Leukemia, Acute Lymphoid Leukemia and Myelodysplastic Syndrome",
    "lead_sponsor": "Sanofi",
@@ -9499,107 +9129,6 @@
    ]
   },
   {
-   "nct_id": "NCT03765983",
-   "brief_title": "GDC-0084 in Combination With Trastuzumab for Patients With HER2-Positive Breast Cancer Brain Metastases",
-   "lead_sponsor": "Dana-Farber Cancer Institute",
-   "why_stopped": "participants are no longer being examined or receiving intervention",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_OTHER_AMBIGUOUS_TEXT"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "42895898",
-     "pmcid": "PMC13741795",
-     "doi": "10.1158/2767-9764.crc-26-0571",
-     "journal": "Cancer research communications",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 5,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "EFFICACY_FUTILITY",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42895898",
-     "pmcid": "PMC13741795",
-     "doi": "10.1158/2767-9764.crc-26-0571",
-     "journal": "Cancer research communications",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 4,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "EFFICACY_FUTILITY",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42895898",
-     "pmcid": "PMC13741795",
-     "doi": "10.1158/2767-9764.crc-26-0571",
-     "journal": "Cancer research communications",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 4,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "EFFICACY_FUTILITY",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT03769181",
-   "brief_title": "A Study of Isatuximab-based Therapy in Participants With Lymphoma",
-   "lead_sponsor": "Sanofi",
-   "why_stopped": "Study was stopped after interim analysis for all 4 cohorts with results either not fulfilling the pre-planned interim analysis criteria or fulfilling the criteria but as per sponsor decision. It was not due to any safety concern",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_MULTIPLE_EXPLICIT_CAUSES"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "36251503",
-     "pmcid": "PMC10092787",
-     "doi": "10.1002/hon.3089",
-     "journal": "Hematological oncology",
-     "year": "2023",
-     "link": "nct_in_abstract",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "36251503",
-     "pmcid": "PMC10092787",
-     "doi": "10.1002/hon.3089",
-     "journal": "Hematological oncology",
-     "year": "2023",
-     "link": "nct_in_abstract",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT03780543",
    "brief_title": "A Study of ABI-H0731 + Nucleos(t)Ide as Finite Treatment for Chronic Hepatitis B Patients",
    "lead_sponsor": "Assembly Biosciences",
@@ -9944,49 +9473,6 @@
    ]
   },
   {
-   "nct_id": "NCT04019327",
-   "brief_title": "A Study of the Drugs Talazoparib and Temozolomide in Prostate Cancer",
-   "lead_sponsor": "Memorial Sloan Kettering Cancer Center",
-   "why_stopped": "Study terminated by sponsor",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "40906325",
-     "pmcid": "PMC12515242",
-     "doi": "10.1007/s10637-025-01580-1",
-     "journal": "Investigational new drugs",
-     "year": "2025",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "40906325",
-     "pmcid": "PMC12515242",
-     "doi": "10.1007/s10637-025-01580-1",
-     "journal": "Investigational new drugs",
-     "year": "2025",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT04035668",
    "brief_title": "A Phase 2 Study to Evaluate the Safety and Efficacy of LOU064 in Patients With Moderate to Severe Sjögren's Syndrome",
    "lead_sponsor": "Novartis Pharmaceuticals",
@@ -10223,34 +9709,6 @@
    ]
   },
   {
-   "nct_id": "NCT04106492",
-   "brief_title": "Phase 1/2a Study of SQ3370 in Patients With Advanced Solid Tumors",
-   "lead_sponsor": "Shasqi, Inc.",
-   "why_stopped": "Sponsor's decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": null,
-     "pmcid": null,
-     "doi": "10.1101/2025.06.02.25328445",
-     "journal": null,
-     "year": "2025",
-     "link": "nct_in_abstract",
-     "where": "abstract",
-     "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT04128696",
    "brief_title": "Study of GSK3359609 and Pembrolizumab in Programmed Death Receptor 1-ligand 1 (PD-L1) Positive Recurrent or Metastatic Head and Neck Squamous Cell Carcinoma",
    "lead_sponsor": "GlaxoSmithKline",
@@ -10318,49 +9776,6 @@
      "suggested": {
       "outcome": "UNKNOWN",
       "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT04138394",
-   "brief_title": "VItamin C in Thermal injuRY: The VICToRY Trial",
-   "lead_sponsor": "Clinical Evaluation Research Unit at Kingston General Hospital",
-   "why_stopped": "After the 1st interim analysis, on the recommendation of the DSMC, the steering committee decided to stop enrollment of new patients. The study is ongoing for the currently enrolled patients. More info to follow when available for public disclosure.",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_ANALYSIS_OR_REVIEW_WITHOUT_RESULT"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "42267875",
-     "pmcid": null,
-     "doi": "10.1001/jama.2026.10616",
-     "journal": "JAMA",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 5,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "EFFICACY_FUTILITY",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42267875",
-     "pmcid": null,
-     "doi": "10.1001/jama.2026.10616",
-     "journal": "JAMA",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 5,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "EFFICACY_FUTILITY",
       "secondary_reasons": []
      }
     }
@@ -10576,49 +9991,6 @@
      "suggested": {
       "outcome": "BIOLOGICAL_FAILURE",
       "primary_reason": "EFFICACY_FUTILITY",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT04300309",
-   "brief_title": "Pharmacokinetics, Safety, Tolerability and Efficacy of a New Artemether-lumefantrine Dispersible Tablet in Infants and Neonates <5 kg Body Weight With Acute Uncomplicated Plasmodium Falciparum Malaria",
-   "lead_sponsor": "Novartis Pharmaceuticals",
-   "why_stopped": "Sponsor decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "41199347",
-     "pmcid": "PMC12590907",
-     "doi": "10.1186/s41182-025-00828-z",
-     "journal": "Tropical medicine and health",
-     "year": "2025",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 4,
-     "suggested": {
-      "outcome": "NON_BIOLOGICAL",
-      "primary_reason": "RECRUITMENT",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "41199347",
-     "pmcid": "PMC12590907",
-     "doi": "10.1186/s41182-025-00828-z",
-     "journal": "Tropical medicine and health",
-     "year": "2025",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
       "secondary_reasons": []
      }
     }
@@ -11550,34 +10922,6 @@
    ]
   },
   {
-   "nct_id": "NCT04614467",
-   "brief_title": "A Placebo-Controlled Trial of CLBS16 in Subjects With Coronary Microvascular Dysfunction",
-   "lead_sponsor": "Lisata Therapeutics, Inc.",
-   "why_stopped": "Sponsor decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "34066713",
-     "pmcid": "PMC8151216",
-     "doi": "10.3390/cells10051137",
-     "journal": "Cells",
-     "year": "2021",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 4,
-     "suggested": {
-      "outcome": "NON_BIOLOGICAL",
-      "primary_reason": "FUNDING",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT04778410",
    "brief_title": "Study of Magrolimab Combinations in Participants With Myeloid Malignancies",
    "lead_sponsor": "Gilead Sciences",
@@ -11808,34 +11152,6 @@
    ]
   },
   {
-   "nct_id": "NCT04904549",
-   "brief_title": "Study of Monovalent and Bivalent Recombinant Protein Vaccines Against COVID-19 in Adults 18 Years of Age and Older",
-   "lead_sponsor": "Sanofi Pasteur, a Sanofi Company",
-   "why_stopped": "The study was terminated as per Sponsor decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "37936652",
-     "pmcid": "PMC10626161",
-     "doi": "10.1016/j.eclinm.2023.102168",
-     "journal": "EClinicalMedicine",
-     "year": "2023",
-     "link": "nct_in_abstract",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT04905407",
    "brief_title": "Tamibarotene Plus Venetoclax/Azacitidine in Participants With Newly Diagnosed Acute Myeloid Leukemia (AML)",
    "lead_sponsor": "Syros Pharmaceuticals",
@@ -12023,64 +11339,6 @@
    ]
   },
   {
-   "nct_id": "NCT04985604",
-   "brief_title": "Tovorafenib (DAY101) Monotherapy for Patients With Melanoma and Other Solid Tumors",
-   "lead_sponsor": "Day One Biopharmaceuticals, Inc.",
-   "why_stopped": "Sponsor decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "42826365",
-     "pmcid": "PMC13657394",
-     "doi": "10.1200/po-25-01187",
-     "journal": "JCO precision oncology",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42826365",
-     "pmcid": "PMC13657394",
-     "doi": "10.1200/po-25-01187",
-     "journal": "JCO precision oncology",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42826365",
-     "pmcid": "PMC13657394",
-     "doi": "10.1200/po-25-01187",
-     "journal": "JCO precision oncology",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT04990440",
    "brief_title": "A Study of Bermekimab for the Treatment of Adult Participants With Moderate-to-Severe Atopic Dermatitis",
    "lead_sponsor": "Janssen Research & Development, LLC",
@@ -12203,107 +11461,6 @@
    ]
   },
   {
-   "nct_id": "NCT05013554",
-   "brief_title": "Dose Escalation and Expansion Study of SAR443216 in Participants With Relapsed/Refractory HER2 Expressing Solid Tumors",
-   "lead_sponsor": "Sanofi",
-   "why_stopped": "",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_MISSING_STOP_REASON"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "42705861",
-     "pmcid": "PMC13561007",
-     "doi": "10.1136/jitc-2025-014309",
-     "journal": "Journal for immunotherapy of cancer",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 4,
-     "suggested": {
-      "outcome": "NON_BIOLOGICAL",
-      "primary_reason": "BUSINESS_STRATEGY",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42705861",
-     "pmcid": "PMC13561007",
-     "doi": "10.1136/jitc-2025-014309",
-     "journal": "Journal for immunotherapy of cancer",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT05026177",
-   "brief_title": "Simufilam 50 mg or 100 mg for Mild-to-Moderate Alzheimer's Disease",
-   "lead_sponsor": "Cassava Sciences, Inc.",
-   "why_stopped": "Sponsor decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "41500915",
-     "pmcid": "PMC12988371",
-     "doi": "10.1016/j.tjpad.2025.100469",
-     "journal": "The journal of prevention of Alzheimer's disease",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 4,
-     "suggested": {
-      "outcome": "BIOLOGICAL_FAILURE",
-      "primary_reason": "SAFETY",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "41500915",
-     "pmcid": "PMC12988371",
-     "doi": "10.1016/j.tjpad.2025.100469",
-     "journal": "The journal of prevention of Alzheimer's disease",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "abstract",
-     "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "41500915",
-     "pmcid": "PMC12988371",
-     "doi": "10.1016/j.tjpad.2025.100469",
-     "journal": "The journal of prevention of Alzheimer's disease",
-     "year": "2026",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT05044234",
    "brief_title": "A Study to Assess Adverse Events and Disease Activity With Cedirogant (ABBV-157) in Adult Participants With Moderate to Severe Psoriasis",
    "lead_sponsor": "AbbVie",
@@ -12323,34 +11480,6 @@
      "link": "nct_in_abstract",
      "where": "abstract",
      "score": 3,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT05111626",
-   "brief_title": "Bemarituzumab Plus Chemotherapy and Nivolumab Versus Chemotherapy and Nivolumab for FGFR2b Overexpressed Untreated Advanced Gastric and Gastroesophageal Junction Cancer.",
-   "lead_sponsor": "Amgen",
-   "why_stopped": "Study was terminated by sponsor",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "38308771",
-     "pmcid": "PMC11016503",
-     "doi": "10.1007/s10120-024-01466-w",
-     "journal": "Gastric cancer : official journal of the International Gastric Cancer Association and the Japanese Gastric Cancer Association",
-     "year": "2024",
-     "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
      "suggested": {
       "outcome": "UNKNOWN",
       "primary_reason": "UNSPECIFIED",
@@ -12637,64 +11766,6 @@
    ]
   },
   {
-   "nct_id": "NCT05712278",
-   "brief_title": "A Study to Investigate Use of Off-the-shelf Natural Killer (NK) Cells (SAR445419) in Relapsed/Refractory Acute Myeloid Leukemia",
-   "lead_sponsor": "Sanofi",
-   "why_stopped": "Sponsor's decision",
-   "label_now": {
-    "outcome": "CAUSE_NOT_STATED",
-    "primary_reason": "DECISION_WITHOUT_STATED_CAUSE"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "41963545",
-     "pmcid": "PMC13069070",
-     "doi": "10.1007/s00262-026-04333-y",
-     "journal": "Cancer immunology, immunotherapy : CII",
-     "year": "2026",
-     "link": "registry_result",
-     "where": "full_text",
-     "score": 5,
-     "suggested": {
-      "outcome": "NON_BIOLOGICAL",
-      "primary_reason": "BUSINESS_STRATEGY",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "41963545",
-     "pmcid": "PMC13069070",
-     "doi": "10.1007/s00262-026-04333-y",
-     "journal": "Cancer immunology, immunotherapy : CII",
-     "year": "2026",
-     "link": "registry_result",
-     "where": "abstract",
-     "score": 4,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "41963545",
-     "pmcid": "PMC13069070",
-     "doi": "10.1007/s00262-026-04333-y",
-     "journal": "Cancer immunology, immunotherapy : CII",
-     "year": "2026",
-     "link": "registry_result",
-     "where": "full_text",
-     "score": 3,
-     "suggested": {
-      "outcome": "CAUSE_NOT_STATED",
-      "primary_reason": "DECISION_WITHOUT_STATED_CAUSE",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
    "nct_id": "NCT05769959",
    "brief_title": "Study of RO7515629 in Participants With HLA-G Positive Solid Tumors",
    "lead_sponsor": "Hoffmann-La Roche",
@@ -12800,49 +11871,6 @@
      "journal": "Clinical infectious diseases : an official publication of the Infectious Diseases Society of America",
      "year": "2026",
      "link": "registry_derived",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    }
-   ]
-  },
-  {
-   "nct_id": "NCT06691685",
-   "brief_title": "A Clinical Study to Evaluate the Safety and Efficacy of ESO-T01 in Treating Relapsed/Refractory Multiple Myeloma.",
-   "lead_sponsor": "Union Hospital, Tongji Medical College, Huazhong University of Science and Technology",
-   "why_stopped": "The collaborator EsoBiotec was acquired by AstraZeneca.",
-   "label_now": {
-    "outcome": "UNRESOLVED",
-    "primary_reason": "UNRESOLVED_OTHER_AMBIGUOUS_TEXT"
-   },
-   "found_on": "2026-11-23",
-   "passages": [
-    {
-     "pmid": "42839103",
-     "pmcid": "PMC13768183",
-     "doi": "10.1038/s41591-026-04704-z",
-     "journal": "Nature medicine",
-     "year": "2026",
-     "link": "nct_in_abstract",
-     "where": "full_text",
-     "score": 2,
-     "suggested": {
-      "outcome": "UNKNOWN",
-      "primary_reason": "UNSPECIFIED",
-      "secondary_reasons": []
-     }
-    },
-    {
-     "pmid": "42839103",
-     "pmcid": "PMC13768183",
-     "doi": "10.1038/s41591-026-04704-z",
-     "journal": "Nature medicine",
-     "year": "2026",
-     "link": "nct_in_abstract",
      "where": "full_text",
      "score": 2,
      "suggested": {
