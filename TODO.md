@@ -307,7 +307,9 @@ Next: submit the sitemap in Search Console and check the pages in the Rich Resul
    not below the direct one. **Kit ready 23 Nov:** `docs/marketplace/defined_ai.md` (listing texts A/B,
    application text, rights statement, who does what); package builder `scripts/marketplace/build_package.py`
    and the manual workflow **Marketplace package** (encrypted artifact, needs the secret `PACKAGE_PASSPHRASE`).
-   Schayan: prices, the secret, submit the partner form, review the agreement. **Market research 23 Nov**
+   `PACKAGE_PASSPHRASE` set 23 Nov; **first package built 23 Nov** (run 45182482795): 24,124 stop-reason rows, 5,559
+   endpoint rows (MET 2,545, MISSED 2,518, MIXED 496), encrypted artifact 9 MB, kept 7 days.
+   Schayan: prices, submit the partner form, review the agreement. **Market research 23 Nov**
    (search snippets, sources in the session): free commercial substitutes exist (Open Targets stop reasons,
    Apache 2.0, ~28.8k trials predicted; CTO outcome labels, MIT, ~125k trials), institutional anchors
    Trialtrove $18.9k/yr (NCI), Cortellis ~$35k/yr (NIH), GlobalData ~$68k/yr median; Defined.ai's split

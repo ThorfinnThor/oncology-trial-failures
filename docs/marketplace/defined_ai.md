@@ -13,7 +13,7 @@ terms, payment terms. Check them in the partner agreement before signing.
 | | Listing A: stop-reason labels | Listing B: endpoint labels |
 | --- | --- | --- |
 | Content | Every stopped trial on ClinicalTrials.gov (24,124 on release 2026-11-20), labelled by why it stopped, with the text each label rests on | Trials whose posted primary superiority analysis reads as met or missed, completed and stopped |
-| Rows | ~24,100 | several thousand: ~5,200 completed Phase 2/3 trials started 2015–2024 alone (exact count from the first package build) |
+| Rows | 24,124 | **5,559** (first package build, 23 Nov: MET 2,545, MISSED 2,518, MIXED 496; reader v3, read 23 Nov) |
 | Public already? | Yes, under CC BY-NC 4.0 (site, Zenodo, Hugging Face sample). The marketplace sells the **commercial** right. Say so in the listing. | Only for stopped trials (576) and a 120-row sample; the completed-trial labels are not public |
 | Format | CSV + JSONL + datasheet (README) + manifest with checksums | same |
 
