@@ -683,7 +683,7 @@ def main() -> int:
     }
     (OUT / f"{prefix}_v1_meta.json").write_text(json.dumps(meta, indent=2) + "\n")
     print(json.dumps({k: meta[k] for k in ["trial_count", "industry_trial_count", "industry_phase2_3_trial_count", "experimental_arm_drug_resolution_rate",
-                                           "trials_with_resolved_focus_asset", "trials_with_focus_research_code", "trials_with_focus_asset_or_research_code", "trials_with_focus_target_gene", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer", "unique_assets", "unique_assets_chembl", "source_status"]}, indent=2))
+                                           "trials_with_resolved_focus_asset", "trials_with_focus_research_code", "trials_with_focus_asset_or_research_code", "trials_with_focus_target_gene", "trials_with_focus_mechanism", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer", "unique_assets", "unique_assets_chembl", "source_status"]}, indent=2))
     return 0
 
 

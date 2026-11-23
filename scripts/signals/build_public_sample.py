@@ -108,7 +108,7 @@ def main() -> int:
 
     summary = {k: meta[k] for k in ["product", "product_version", "dataset_version", "trial_count", "industry_trial_count",
                                      "industry_phase2_3_trial_count", "by_primary_reason", "trials_with_resolved_focus_asset",
-                                     "trials_with_focus_target_gene", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer",
+                                     "trials_with_focus_target_gene", "trials_with_focus_mechanism", "trials_with_pubmed_publication", "industry_trials_with_sec_issuer",
                                      "unique_assets", "assets_with_repeated_safety_signal", "assets_with_repeated_efficacy_signal"]}
     # The rate pack is built by a later, separately-failing workflow step. If it is missing,
     # carry the previous release's figures instead of dropping them: the licensing page
