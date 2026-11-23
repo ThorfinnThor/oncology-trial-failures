@@ -1,6 +1,6 @@
 import { isLikelyScientificFailure, parsePhases, phaseLabel, reasonBucket } from "./filtering";
 import briefsIndex from "../data/briefs_index.json";
-import { ATLAS_GROUPS, atlasGroup } from "./atlas";
+import { ATLAS_GROUPS, ATLAS_PHASES, atlasGroup } from "./atlas";
 import type {
   InsightStats,
   MechanismBriefSnapshot,
@@ -837,36 +837,63 @@ function quantile(sorted: number[], p: number): number {
   return sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * p))];
 }
 
+/** The stop-reason groups that name a cause, without "planned end or replaced" and "no clear reason". */
+const STATED_REASONS = new Set(["safety", "efficacy", "recruitment", "business", "operational"]);
+
 /**
- * How long terminated trials ran before they stopped: months from start date to completion date,
- * which for a terminated trial is the date it stopped. Withdrawn trials never started and suspended
- * ones have not ended, so both are left out, as are missing, negative or implausible (30+ year) spans.
+ * How long terminated trials ran: months from the registry start date to its completion date, the last
+ * participant's final data collection, which can fall after the decision to stop. The same span to the
+ * primary completion date is a check. Withdrawn trials enrolled nobody and suspended ones may resume, so
+ * both are left out, as are missing, negative or implausible (30+ year) spans. Phases are listed only
+ * when every stated reason has enough trials in them.
  */
-export function timeToStopSlice(rows: TrialIndexRow[], minimumRecords = 200): TimeToStopSlice {
+export function timeToStopSlice(rows: TrialIndexRow[], minimumRecords = 200, minimumPhaseRecords = 50): TimeToStopSlice {
   const spans = new Map<string, number[]>();
+  const primary = new Map<string, number[]>();
+  const phases = new Map<string, Map<string, number[]>>();
+  const push = (map: Map<string, number[]>, key: string, months: number) => {
+    const list = map.get(key) || [];
+    list.push(months);
+    map.set(key, list);
+  };
+  const usable = (months: number) => months >= 0 && months < 360;
+  let terminated = 0;
   for (const row of rows) {
     if ((row.overall_status || "").toUpperCase() !== "TERMINATED") continue;
-    const months = monthsBetween(row.start_date, row.completion_date);
-    if (!(months >= 0 && months < 360)) continue;
+    terminated += 1;
     const group = atlasGroup(row);
-    const list = spans.get(group) || [];
-    list.push(months);
-    spans.set(group, list);
+    const toPrimary = monthsBetween(row.start_date, row.primary_completion_date);
+    if (usable(toPrimary)) push(primary, group, toPrimary);
+    const months = monthsBetween(row.start_date, row.completion_date);
+    if (!usable(months)) continue;
+    push(spans, group, months);
+    const phase = phases.get(row.phases || "") || new Map<string, number[]>();
+    push(phase, group, months);
+    phases.set(row.phases || "", phase);
   }
+  const sortedOf = (map: Map<string, number[]>, key: string) => [...(map.get(key) || [])].sort((a, b) => a - b);
   const groups = ATLAS_GROUPS.flatMap(({ key, label }) => {
-    const sorted = [...(spans.get(key) || [])].sort((a, b) => a - b);
+    const sorted = sortedOf(spans, key);
     if (sorted.length < minimumRecords) return [];
     return [{
       key,
       label,
       count: sorted.length,
       median: quantile(sorted, 0.5),
+      primaryMedian: quantile(sortedOf(primary, key), 0.5),
       q25: quantile(sorted, 0.25),
       q75: quantile(sorted, 0.75),
       withinYear: sorted.filter((months) => months < 12).length,
     }];
   }).sort((a, b) => a.median - b.median || a.key.localeCompare(b.key));
-  return { measured: [...spans.values()].reduce((sum, list) => sum + list.length, 0), groups };
+  const byPhase = ATLAS_PHASES.flatMap(({ key, label }) => {
+    const phase = phases.get(key);
+    if (!phase || [...STATED_REASONS].some((reason) => (phase.get(reason) || []).length < minimumPhaseRecords)) return [];
+    const medians = Object.fromEntries([...STATED_REASONS].map((reason) => [reason, quantile(sortedOf(phase, reason), 0.5)]));
+    const counted = [...STATED_REASONS].reduce((sum, reason) => sum + (phase.get(reason) || []).length, 0);
+    return [{ label, count: counted, medians }];
+  });
+  return { terminated, measured: [...spans.values()].reduce((sum, list) => sum + list.length, 0), groups, byPhase };
 }
 
 export function sponsorPortfolioSignalSlice(rows: TrialIndexRow[], minimumRecords = 100) {
