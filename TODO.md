@@ -250,9 +250,12 @@ ten. The two batches stay in the review tool for clinicians later.
 For the ~5,700 trials with no stated or an unresolved cause; ~1,535 have an SEC-registered sponsor, the
 rest are academic or non-US industry. Each source only proposes; decisions are reviewed per trial like
 SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
-1. **Publications (Europe PMC / PubMed) by NCT ID:** the results paper of a stopped trial often says why
-   ("closed early for futility"). Biggest gap it fills: academic trials, which the SEC never covers. Open
-   API, linked by NCT ID. Needs the Europe PMC host in the environment.
+1. **Publications (Europe PMC / PubMed) by NCT ID:** **probed 23 Nov** (`scripts/sources/pub_stop_evidence.py`,
+   `docs/pub_evidence_probe_2026-11-23.md`): 200 random no-cause trials, 26 with a linked paper, **8 with a
+   clear cause (4%), all biological**, 3 arguable ("other trials' results"). Projected ~230 trials (110–440).
+   Covers academic and European sponsors the SEC does not. Paper text is read for review only; decisions
+   carry the PMID. Network: www.ebi.ac.uk and clinicaltrials.gov added to the environment. **Next:** a
+   `--weekly` ledger mode with a time budget (Europe PMC is slow: 3–5 h for all), review like SEC.
 2. **EU register (EudraCT / CTIS) by EudraCT number** (secondary ID on ClinicalTrials.gov): European
    industry trials (Roche, Bayer, Boehringer, UCB: not reachable via the SEC). Under the EU regulation an
    early termination is reported as affecting the benefit–risk balance (safety / lack of efficacy, Art. 38)
