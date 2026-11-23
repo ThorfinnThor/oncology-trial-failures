@@ -235,7 +235,12 @@ ten. The two batches stay in the review tool for clinicians later.
    filing years + the buyer; renamed ones). 710 more no-cause trials searched, **34 with a passage**
    (lower yield: big groups report programmes, not trials), batch **sec-evidence-2026-11b** (priority 6).
    Not reachable through the SEC: Roche, Boehringer, Bayer, UCB, Eisai, Otsuka, Sun, Actelion.
-4. Weekly: search only new no-cause trials (cache in .cache/sec).
+4. ~~Weekly search~~ **done 23 Nov:** `--weekly` in the weekly run searches only trials not yet in the ledger
+   `data/sec_searched.csv` (seeded with the 1,535 of 22 Nov), with a changed stop text, or whose window
+   (270 days after the last update) is still open (recheck every 28 days). New passages →
+   `data/sec_pending_review.json` + a mail "New SEC passages to review"; decisions go to
+   `data/sec_evidence_decisions.csv` / `data/sec_evidence_rejected.csv`. How to review: `docs/sec_weekly.md`.
+   First test 23 Nov: 7 trials due, no passage.
 5. ~~Programme stops counted apart~~ **done:** evidence rule `sec.programme_filing` (30) vs `sec.trial_filing` (20).
 
 ## Getting found: next steps (decided 19 Nov)

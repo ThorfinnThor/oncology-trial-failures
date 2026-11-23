@@ -14,6 +14,15 @@ for 15 and a usable reason for about 6. CLAUDE.md applies: a word is not a claim
 and text_guards.denied() as a registry text.
 
   python scripts/sources/sec_stop_evidence.py --out <dir> [--limit N] [--nct NCT...]
+  python scripts/sources/sec_stop_evidence.py --weekly --out <dir>      (the weekly run)
+
+--weekly searches only what is new: a no-cause trial not yet in the ledger data/sec_searched.csv (or
+whose stop text changed), plus trials whose search window (up to 270 days after the registry's last
+update) was still open when last searched and has not been searched for 28 days, since the filing
+that explains a stop often comes a quarter or two later. Trials with a passage that has not been
+reviewed are kept in data/sec_pending_review.json until a decision lands in
+data/sec_evidence_decisions.csv (accepted) or data/sec_evidence_rejected.csv (not accepted).
+docs/sec_weekly.md says how they are reviewed.
 
 Writes <dir>/sec_evidence.json (one entry per trial with passages, ranked). Cached under
 .cache/sec/ so reruns only fetch what is new. EDGAR asks for a descriptive User-Agent with a
@@ -53,6 +62,41 @@ NO_CAUSE = {"CAUSE_NOT_STATED", "UNRESOLVED"}
 # whose filings speak for them (the old company until its acquisition, then the buyer). Checked
 # against data.sec.gov; the automatic name match only knows today's registrants under their own name.
 SPONSOR_MAP = ROOT / "data/sec_sponsor_map.csv"
+LEDGER = ROOT / "data/sec_searched.csv"
+LEDGER_FIELDS = ["nct_id", "text_hash", "searched_on", "window_end", "best_score"]
+PENDING = ROOT / "data/sec_pending_review.json"
+DECISIONS = ROOT / "data/sec_evidence_decisions.csv"
+REJECTED = ROOT / "data/sec_evidence_rejected.csv"
+RECHECK_DAYS = 28
+
+
+def _csv_by_nct(path: Path) -> dict[str, dict]:
+    if not path.exists():
+        return {}
+    with path.open(encoding="utf-8", newline="") as handle:
+        return {r["nct_id"].strip().upper(): r for r in csv.DictReader(handle) if r.get("nct_id")}
+
+
+def stop_hash(why_stopped: str) -> str:
+    return clf.text_hash(clf.normalize_reason(why_stopped))
+
+
+def window_end(trial: dict) -> str:
+    """The last day a filing about this stop is searched for (the search window's end)."""
+    anchor = (trial.get("last_update_post_date") or trial.get("primary_completion_date") or "")[:7]
+    if not re.fullmatch(r"\d{4}-\d{2}", anchor):
+        return ""
+    return (date(int(anchor[:4]), int(anchor[5:7]), 1) + timedelta(days=270)).isoformat()
+
+
+def due(trial: dict, ledger: dict[str, dict], today: date) -> bool:
+    """A weekly search is due for a trial never searched, whose stop text changed, or whose window
+    was still open at the last search and was not searched in the last RECHECK_DAYS days."""
+    seen = ledger.get(trial["nct_id"].upper())
+    if seen is None or seen["text_hash"] != stop_hash(trial["why_stopped"]):
+        return True
+    last = date.fromisoformat(seen["searched_on"])
+    return bool(seen["window_end"]) and seen["window_end"] > seen["searched_on"] and (today - last).days >= RECHECK_DAYS
 
 
 def sponsor_ciks() -> dict[str, list[dict]]:
@@ -262,9 +306,15 @@ def main() -> int:
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--via", choices=["all", "name", "map"], default="all",
                     help="only sponsors matched by name, only those from data/sec_sponsor_map.csv, or both")
+    ap.add_argument("--weekly", action="store_true",
+                    help="search only what is due (ledger), update the ledger and the pending-review file")
     args = ap.parse_args()
+    today = date.today()
     rows = list(csv.DictReader(open(ROOT / "data/all_stopped_trials.csv", encoding="utf-8")))
     trials = [r for r in rows if r["classification_final_outcome"] in NO_CAUSE and (not args.nct or r["nct_id"] in args.nct)]
+    ledger = _csv_by_nct(LEDGER) if args.weekly else {}
+    if args.weekly:
+        trials = [r for r in trials if due(r, ledger, today)]
     issuers: dict = {}
     mapped = sponsor_ciks()
     cands = []
@@ -282,7 +332,8 @@ def main() -> int:
             cands.append((r, issuers[name]))
     if args.limit:
         cands = cands[: args.limit]
-    print(f"{len(trials)} no-cause trials, {len(cands)} with an SEC-registered sponsor", file=sys.stderr)
+    print(f"{len(trials)} no-cause trials{' due' if args.weekly else ''}, {len(cands)} with an SEC-registered sponsor",
+          file=sys.stderr)
     out = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         found = list(pool.map(lambda pair: passages_for(pair[0], ",".join(pair[1]["ciks"])), cands))
@@ -299,10 +350,47 @@ def main() -> int:
             print(f"  {n}/{len(cands)} searched, {len(out)} with evidence", file=sys.stderr)
     args.out.mkdir(parents=True, exist_ok=True)
     (args.out / "sec_evidence.json").write_text(json.dumps({"searched": len(cands), "with_evidence": len(out),
-                                                             "generated": date.today().isoformat(), "trials": out},
+                                                             "generated": today.isoformat(), "trials": out},
                                                             indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"{len(out)} of {len(cands)} trials have evidence; wrote {args.out / 'sec_evidence.json'}", file=sys.stderr)
+    if args.weekly:
+        update_weekly(cands, found, out, ledger, today, args.out)
     return 0
+
+
+def update_weekly(cands, found, out, ledger, today, out_dir: Path) -> None:
+    """Record every searched trial in the ledger and keep unreviewed passages in the pending file.
+    A trial with a review decision (accepted or rejected) is never pending again, even if a later
+    search finds the same passage; a new search result replaces an older pending one."""
+    for (r, _iss), ps in zip(cands, found):
+        ledger[r["nct_id"].upper()] = {"nct_id": r["nct_id"], "text_hash": stop_hash(r["why_stopped"]),
+                                       "searched_on": today.isoformat(), "window_end": window_end(r),
+                                       "best_score": str(ps[0]["score"]) if ps else "0"}
+    with LEDGER.open("w", encoding="utf-8", newline="") as handle:
+        w = csv.DictWriter(handle, fieldnames=LEDGER_FIELDS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(sorted(ledger.values(), key=lambda x: x["nct_id"]))
+    decided = set(_csv_by_nct(DECISIONS)) | set(_csv_by_nct(REJECTED))
+    pending = {t["nct_id"].upper(): t for t in (json.loads(PENDING.read_text())["trials"] if PENDING.exists() else [])}
+    new = [t for t in out if t["nct_id"].upper() not in decided and t["nct_id"].upper() not in pending]
+    for t in out:
+        if t["nct_id"].upper() not in decided:
+            pending[t["nct_id"].upper()] = {**t, "found_on": pending.get(t["nct_id"].upper(), {}).get("found_on", today.isoformat())}
+    pending = {k: v for k, v in pending.items() if k not in decided}
+    PENDING.write_text(json.dumps({"updated": today.isoformat(), "pending": len(pending),
+                                   "trials": sorted(pending.values(), key=lambda t: (t["found_on"], t["nct_id"]))},
+                                  indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    lines = [f"SEC search {today.isoformat()}: {len(cands)} trials searched, {len(out)} with a passage, "
+             f"{len(new)} new for review, {len(pending)} waiting in total (data/sec_pending_review.json)."]
+    for t in new:
+        p = t["passages"][0]
+        lines.append(f"- {t['nct_id']} ({t['lead_sponsor']}): {p['form']} {p['filed']}: {p['sentence'][:220]}")
+    if pending:
+        lines.append("\nTo review: open a Claude Code session on the repository and ask it to review the pending "
+                     "SEC passages (docs/sec_weekly.md). Nothing changes a label before that review.")
+    (out_dir / "summary.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (out_dir / "new_count").write_text(str(len(new)), encoding="utf-8")
+    print(lines[0], file=sys.stderr)
 
 
 if __name__ == "__main__":
