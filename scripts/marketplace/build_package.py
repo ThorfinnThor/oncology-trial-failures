@@ -45,6 +45,7 @@ from scripts.samples.build_label_sample import BASIS, STOP_COLUMNS, fmt, pct  # 
 UNIVERSE = ROOT / ".cache/universe/universe_v1.jsonl.gz"
 SEC_EVIDENCE = re.compile(r"(sec\.(?:programme|trial)_filing):(\S+ \S+ https://www\.sec\.gov/\S+?):\s.*$")
 ENDPOINT_COLUMNS = ["nct_id", "brief_title", "overall_status", "phases", "disease_area", "lead_sponsor",
+                    "conditions", "intervention_names", "intervention_types",
                     "start_date", "primary_completion_date", "endpoint_label", "endpoint_label_basis",
                     "sponsor_statement", "primary_comparisons_read", "stop_label_outcome",
                     "stop_label_primary_reason", "why_stopped", "results_url"]
@@ -92,8 +93,11 @@ def endpoint_rows(stopped: dict[str, dict]) -> tuple[list[list], dict]:
         if not ev or nct not in reg:
             continue
         r, s = reg[nct], stopped.get(nct, {})
+        ivs = (r.get("arms_interventions") or {}).get("interventions") or []
         out.append([nct, r.get("brief_title"), r.get("overall_status"), "|".join(r.get("phases") or []),
-                    r.get("disease_area"), r.get("lead_sponsor"), r.get("start_date"), r.get("primary_completion_date"),
+                    r.get("disease_area"), r.get("lead_sponsor"), "; ".join(r.get("conditions") or []),
+                    "; ".join(i.get("name") or "" for i in ivs), "; ".join(sorted({i.get("type") or "" for i in ivs})),
+                    r.get("start_date"), r.get("primary_completion_date"),
                     ev["verdict"], ev["basis"], ev.get("statement") or "", " || ".join(ev["lines"]),
                     s.get("classification_final_outcome", ""), s.get("classification_final_category", ""),
                     s.get("why_stopped", ""), ev["results_url"]])
@@ -148,8 +152,8 @@ def main() -> int:
     est, ci = val["weighted_estimates"], val["weighted_estimates_ci95"]
     cc = json.loads((ROOT / "validation/crosscheck_gpt61/summary.json").read_text())
     cr = json.loads((ROOT / "validation/clinician_review/oncology-2026-11.json").read_text())
-    epc = collections.Counter(r[8] for r in ep)
-    ep_completed = sum(1 for r in ep if r[2] == "COMPLETED")
+    epc = collections.Counter(r[ENDPOINT_COLUMNS.index("endpoint_label")] for r in ep)
+    ep_completed = sum(1 for r in ep if r[ENDPOINT_COLUMNS.index("overall_status")] == "COMPLETED")
     bio = cats["BIOLOGICAL_FAILURE"]
     L = [f"# Clinical Trial Failures: labelled stopped trials and trial outcomes (release {release})", "",
          f"ClinicalTrials.gov snapshot imported {(meta.get('imported_at_utc') or '')[:10]}; package built "
@@ -208,7 +212,8 @@ def main() -> int:
               "- `MET` means statistically significant, not approval and not the direction of benefit. `MISSED` can "
               "reflect dose, population, endpoint or comparator, not only the molecule.", "",
               "| Column | Content |", "| --- | --- |",
-              "| registry columns | As in section 1 (ClinicalTrials.gov) |",
+              "| registry columns, incl. `conditions`, `intervention_names`, `intervention_types` | As in section 1 "
+              "(ClinicalTrials.gov, as filed; `; `-separated) |",
               "| `endpoint_label`, `endpoint_label_basis` | `MET`/`MISSED`/`MIXED`; `posted_analysis` or `sponsor_statement` |",
               "| `sponsor_statement` | The sponsor's sentence in the posted results, where the label rests on one |",
               "| `primary_comparisons_read` | Each comparison read, `||`-separated: measure, p or interval, threshold and why |",
