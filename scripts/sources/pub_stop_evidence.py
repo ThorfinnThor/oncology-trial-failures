@@ -75,7 +75,19 @@ TRIAL_STOP = re.compile(
 PATIENT_STOP = re.compile(r"\b(patients?|participants?|subjects?)\b[^.;]{0,80}\b(discontinu\w*|withdr[ae]w\w*)"
                           r"|\b(discontinued|withdrawn|removed) from (?:the )?(?:study|trial)\b", re.I)
 WHOLE_TRIAL = re.compile(r"\b(the|this|our) (trial|study)\b[^.;]{0,60}\b(terminat|stopp|halt|clos|discontinu|suspend)", re.I)
-NON_RESULT_TYPES = re.compile(r"review|meta-analysis|systematic|editorial|comment|letter", re.I)
+# Sentences that use the words without saying the trial stopped (review of 23 Nov 2026: 6 of 9 hits):
+# a time point ("until study termination"), a participant's drugs being stopped, a rate of patients
+# discontinuing, protocol rules and plans ("should", "will", "must"), animal experiments.
+NOT_TRIAL_STOP = re.compile(
+    r"\b(?:until|at|before|after|by) (?:the )?(?:study|trial) (?:termination|completion|end)\b"
+    r"|\bearly[- ]termination visit\b|\bstudy (?:drug|treatment)s? (?:(?:was|were|will be|is|are) )?(?:permanently )?discontinu"
+    r"|\b(?:drug|treatment) discontinuation\b|\bresult(?:ing|ed)? in (?:study )?(?:drug )?discontinuation\b"
+    r"|\brates? of (?:study )?discontinuation\b|\b(?:mice|mouse|murine|rats?|xenografts?)\b"
+    r"|\b(?:should|could|would|might|must|will|can) (?:\w+ )?(?:pause|lead|be|result|stop|terminat|discontinu)"
+    r"|\bwill (?:occur|take place)\b|\bunscheduled visits?\b"
+    r"|\bto allow (?:for )?(?:early )?(?:discontinuation|stopping|termination)\b|\b(?:designed|devised) (?:to|a)\b"
+    r"|\bif (?:they|it|there|the|a|any)\b", re.I)
+NON_RESULT_TYPES = re.compile(r"review|meta-analysis|systematic|editorial|comment|letter|protocol", re.I)
 
 _rate = threading.Lock()
 _last = [0.0]
@@ -121,7 +133,13 @@ def epmc_search(query: str, page_size: int = 25) -> list[dict]:
 
 
 def full_text(pmcid: str) -> str:
-    xml = _get(f"{EPMC}/{pmcid}/fullTextXML", kind="fulltext")
+    """The open-access body text, or "" when it cannot be fetched: the abstract is still read, so an
+    outage of the full-text service costs a passage, not the whole trial."""
+    try:
+        xml = _get(f"{EPMC}/{pmcid}/fullTextXML", kind="fulltext")
+    except Exception as exc:
+        print(f"  full text {pmcid} not fetched: {exc}", file=sys.stderr)
+        return ""
     if not xml:
         return ""
     try:
@@ -139,6 +157,9 @@ def papers_for(nct: str, search_text: bool = True) -> list[dict]:
     papers: dict[str, dict] = {}
     for ref in registry_refs(nct):
         for p in epmc_search(f"EXT_ID:{ref['pmid']} AND SRC:MED", 1):
+            types = " ".join((p.get("pubTypeList") or {}).get("pubType") or [])
+            if re.search(r"protocol", types + " " + (p.get("title") or ""), re.I):
+                continue  # a protocol paper describes the stopping rules, not the stop
             papers[p["id"]] = {**p, "link": f"registry_{ref['link'].lower()}"}
     for p in (epmc_search(f'"{nct}"') if search_text else []):
         if p.get("id") in papers or nct.lower() not in (p.get("abstractText") or "").lower():
@@ -159,7 +180,8 @@ def sentences_for(trial: dict, papers: Optional[list[dict]] = None) -> list[dict
             texts.append(("full_text", full_text(p["pmcid"])))
         for where, text in texts:
             for s in SPLIT.split(" ".join(text.split())):
-                if len(s) > 900 or not TRIAL_STOP.search(s) or (PATIENT_STOP.search(s) and not WHOLE_TRIAL.search(s)):
+                if len(s) > 900 or not TRIAL_STOP.search(s) or NOT_TRIAL_STOP.search(s) \
+                        or (PATIENT_STOP.search(s) and not WHOLE_TRIAL.search(s)):
                     continue
                 if {m.lower() for m in NCT.findall(s)} - {nct.lower()}:
                     continue  # another trial
@@ -235,14 +257,23 @@ def main() -> int:
     ap.add_argument("--weekly", action="store_true", help="search what is due, update the ledger and the review queue")
     ap.add_argument("--max-seconds", type=int, default=2700, help="time budget of a weekly run")
     ap.add_argument("--show", nargs="+", metavar="NCT", help="print the sentences of these trials' papers")
+    ap.add_argument("--merge-from", type=Path, metavar="DIR",
+                    help="merge a ledger and review queue saved in DIR into the current ones (backlog runs)")
     args = ap.parse_args()
+    if args.merge_from:
+        return merge_from(args.merge_from)
     rows = list(csv.DictReader(open(ROOT / "data/all_stopped_trials.csv", encoding="utf-8")))
     by_id = {r["nct_id"]: r for r in rows}
     if args.show:
         for nct in args.show:
             t = by_id[nct]
             print(f"\n{nct} | {t['brief_title']} | {t['overall_status']} | registry: {t['why_stopped']!r}")
-            for p in sentences_for(t, papers_for(nct, search_text=t["overall_status"] != "WITHDRAWN")):
+            try:
+                found = sentences_for(t, papers_for(nct, search_text=t["overall_status"] != "WITHDRAWN"))
+            except Exception as exc:
+                print(f"  not fetched: {exc}")
+                continue
+            for p in found:
                 print(f"  PMID {p['pmid']} ({p['journal']} {p['year']}, {p['link']}, {p['where']}), rules: "
                       f"{p['suggested']['outcome']}/{p['suggested']['primary_reason']}\n    {p['sentence']}")
         return 0
@@ -287,6 +318,32 @@ def main() -> int:
         lines = update_weekly(results, out, ledger, today, len(trials), args.out) + lines
     (args.out / "summary.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines), file=sys.stderr)
+    return 0
+
+
+def merge_from(src: Path) -> int:
+    """Fold another run's ledger and queue into the current files: per trial the later search wins,
+    and nothing already decided stays in the queue. Lets the backlog workflow commit on top of
+    whatever the weekly run committed meanwhile."""
+    ledger = _csv_by_nct(LEDGER)
+    for key, row in _csv_by_nct(src / LEDGER.name).items():
+        if key not in ledger or row["searched_on"] >= ledger[key]["searched_on"]:
+            ledger[key] = row
+    with LEDGER.open("w", encoding="utf-8", newline="") as handle:
+        w = csv.DictWriter(handle, fieldnames=LEDGER_FIELDS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(sorted(ledger.values(), key=lambda x: x["nct_id"]))
+    decided = set(_csv_by_nct(DECISIONS)) | set(_csv_by_nct(REJECTED))
+    pending: dict[str, dict] = {}
+    for path in (PENDING, src / PENDING.name):
+        if path.exists():
+            for t in json.loads(path.read_text())["trials"]:
+                pending.setdefault(t["nct_id"].upper(), t)
+    pending = {k: v for k, v in pending.items() if k not in decided}
+    PENDING.write_text(json.dumps({"updated": date.today().isoformat(), "pending": len(pending),
+                                   "trials": sorted(pending.values(), key=lambda t: (t["found_on"], t["nct_id"]))},
+                                  indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"merged: {len(ledger)} trials in the ledger, {len(pending)} waiting for review", file=sys.stderr)
     return 0
 
 

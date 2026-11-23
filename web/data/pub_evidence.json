@@ -61,5 +61,26 @@
   "year": "2024",
   "summary": "Terminated early for minimal antitumour activity and a narrow therapeutic range, although tolerable.",
   "about": "THIS_TRIAL"
+ },
+ "NCT01567540": {
+  "pmid": "27137491",
+  "journal": "EMBO molecular medicine",
+  "year": "2016",
+  "summary": "Terminated early after a new treatment for the same infection was approved, which, as the registry says, stopped further recruitment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02277132": {
+  "pmid": "32585017",
+  "journal": "JAMA network open",
+  "year": "2020",
+  "summary": "Stopped early for a safety concern (pulmonary hypertension in newborns in the treatment group) while benefit on the primary outcome had become unlikely.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03954314": {
+  "pmid": "38587333",
+  "journal": "Circulation",
+  "year": "2024",
+  "summary": "Stopped for safety after the data and safety monitoring board recommended termination at the last planned interim analysis.",
+  "about": "THIS_TRIAL"
  }
 }

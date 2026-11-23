@@ -1,3 +1,9 @@
 nct_id,pmid,reason,decided_by,decided_at
 NCT00585221,22198309,The paper says the trial closed to prepare a larger trial; the registry names the DSMC and IRB. No stated cause that both agree on.,Claude (AI-assisted review),2026-11-23
 NCT00720512,25600568,"Stopped in consideration of another trial's results, without saying what they showed (rule 5: not established).",Claude (AI-assisted review),2026-11-23
+NCT03307980,41734390,"The sentence is about serious adverse events during follow-up, not about the stop; the registry says the stop was not for safety or efficacy.",Claude (AI-assisted review),2026-11-23
+NCT03444701,42203677,"Sentences about dose reductions and patient-level discontinuation, not about why the trial stopped.",Claude (AI-assisted review),2026-11-23
+NCT04816604,40788460,"A rate of patients discontinuing for adverse events, not the trial stopping.",Claude (AI-assisted review),2026-11-23
+NCT04855253,38022532,"The matched sentences are from mouse experiments (""study termination after 100 days"").",Claude (AI-assisted review),2026-11-23
+NCT05551273,37744732,A hypothetical sentence about sample size and stopping rules; the registry names funding disruptions.,Claude (AI-assisted review),2026-11-23
+NCT06192160,40817073,"Protocol rules for stopping a participant's study drugs, not the trial.",Claude (AI-assisted review),2026-11-23

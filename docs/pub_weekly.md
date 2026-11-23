@@ -15,7 +15,10 @@ backlog of ~5,400 trials takes several weeks):
 2. then trials searched 180 or more days ago whose registry entry changed in the last four years
    (results papers often come years after the stop).
 
-A failed search is not recorded and is retried the next week. The ledger was seeded on 23 Nov with
+A failed search is not recorded and is retried the next week. **Backlog:** the weekly 40 minutes searched
+only 192 trials on 23 Nov (Europe PMC answers in 4–30 s); the manual workflow **Publication search
+backlog** (`.github/workflows/pub-backlog.yml`, up to 5.5 h, 10 trials in parallel) works the backlog off
+and merges its ledger with the weekly run's (`--merge-from`). The ledger was seeded on 23 Nov with
 the 197 trials of the probe; 11 of them are in the review queue.
 
 ## What happens to a passage

@@ -1,0 +1,100 @@
+name: Publication search backlog
+
+# Works off the backlog of the publication search (scripts/sources/pub_stop_evidence.py) in one long
+# run, instead of 40 minutes a week: Europe PMC answers slowly, and at that pace the ~5,200 no-cause
+# trials not yet searched would take half a year. Run by hand (Actions > Publication search backlog >
+# Run workflow), again if trials are still due. It proposes, never labels: new passages wait in
+# data/pub_pending_review.json and the owner is mailed. Its ledger is merged with whatever the weekly
+# run committed meanwhile.
+on:
+  workflow_dispatch:
+    inputs:
+      max_minutes:
+        description: "Search budget in minutes (the job stops at 350)"
+        default: "320"
+      workers:
+        description: "Parallel trials"
+        default: "10"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pub-backlog
+  cancel-in-progress: false
+
+jobs:
+  backlog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore the source-search cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/sec
+            .cache/pub
+          key: sources-${{ github.run_id }}
+          restore-keys: sources-
+
+      - name: Search publications
+        id: search
+        continue-on-error: true
+        run: |
+          python scripts/sources/pub_stop_evidence.py --weekly --out "$RUNNER_TEMP/pub" \
+            --max-seconds $(( ${{ inputs.max_minutes }} * 60 )) --workers ${{ inputs.workers }}
+          head -1 "$RUNNER_TEMP/pub/summary.txt"
+
+      - name: Save the source-search cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .cache/sec
+            .cache/pub
+          key: sources-${{ github.run_id }}
+
+      - name: Commit the ledger and the review queue
+        if: always()
+        run: |
+          mkdir -p "$RUNNER_TEMP/ours"
+          cp data/pub_searched.csv data/pub_pending_review.json "$RUNNER_TEMP/ours/"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for attempt in 1 2 3; do
+            git fetch -q origin main
+            git reset -q --hard origin/main
+            python scripts/sources/pub_stop_evidence.py --merge-from "$RUNNER_TEMP/ours"
+            git add data/pub_searched.csv data/pub_pending_review.json
+            git diff --cached --quiet && echo "No changes" && exit 0
+            git commit -q -m "Publication search backlog: ledger and review queue"
+            git push -q origin HEAD:main && exit 0
+            sleep 15
+          done
+          exit 1
+
+      - name: Mail the owner
+        if: always()
+        env:
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          OUTCOME: ${{ steps.search.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          if [ "$OUTCOME" = "success" ] && [ -f "$RUNNER_TEMP/pub/summary.txt" ]; then
+            if [ "$(cat "$RUNNER_TEMP/pub/new_count")" != "0" ]; then
+              python scripts/ops/notify_owner.py --subject "Publication backlog: new passages to review" --body-file "$RUNNER_TEMP/pub/summary.txt"
+            fi
+          else
+            python scripts/ops/notify_owner.py --subject "Publication backlog run failed" --body "The publication backlog search failed or was cut off; the ledger keeps what was searched. Log: $RUN_URL"
+          fi
