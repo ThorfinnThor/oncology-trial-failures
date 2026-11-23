@@ -6,7 +6,7 @@ import test from "node:test";
 import briefsIndex from "../data/briefs_index.json";
 import { latestBriefSitemapLastmod, selectBriefSitemapEntries } from "../lib/briefSitemap";
 import type { DrugCatalogEntry } from "../lib/drugPages";
-import { INSIGHT_ARTICLES, insightModified, insightPath, sortInsightArticlesByDate } from "../lib/insights";
+import { INSIGHT_ARTICLES, INSIGHTS_BASE_URL, insightModified, insightPath, sortInsightArticlesByDate } from "../lib/insights";
 import { ISSUES, issuePath } from "../lib/newsletterIssues";
 import { loadDrugCatalogServer, loadIndexServer, loadMetaServer } from "../lib/server-data";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "../lib/seoHubs";
@@ -181,7 +181,7 @@ test("a corrected insight article carries its correction date in the sitemap, ot
   const lastmodOf = (url: string) => xml.split("<url>").find((block) => block.includes(`<loc>${url}</loc>`))?.match(/<lastmod>(\d{4}-\d{2}-\d{2})/)?.[1];
   assert.ok(INSIGHT_ARTICLES.some((article) => article.dateModified));
   for (const article of INSIGHT_ARTICLES) {
-    assert.equal(lastmodOf(`${SITE_URL}${insightPath(article)}`), article.dateModified ?? article.datePublished, article.slug);
+    assert.equal(lastmodOf(`${INSIGHTS_BASE_URL}${insightPath(article)}`), article.dateModified ?? article.datePublished, article.slug);
     assert.ok(insightModified(article) >= article.datePublished, article.slug);
   }
 });
