@@ -421,7 +421,7 @@ export default function TrialPage({ initialMeta, initialTrial, initialSeoState, 
                     ) : null}
                     {pub ? (
                       <div className="trialSecEvidence">
-                        <div className="trialEyebrow">What the trial's publication reports</div>
+                        <div className="trialEyebrow">What the trial&apos;s publication reports</div>
                         <p>{pub.summary}</p>
                         <p className="trialEvidenceNote">
                           {pub.about === "RELATED_TRIAL"

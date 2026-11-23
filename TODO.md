@@ -14,7 +14,8 @@ in each section is blocked on nothing but time.
   and the newsletter (see 9); the manual run of **16 Nov, 23:23 UTC, did everything**: signals
   build, 65 packages incl. LAG-3, target genes back (53.7 %), newsletter. A failed step now turns
   the run red. The database holds about 24,000 stopped trials.
-- **The newsletter sends.** Issue 1 on 26 Oct ("100 new stopped trials, 12 records changed"),
+- **The newsletter goes out every second Monday** (decided 23 Nov: Monday morning, fortnightly; next 30 Nov,
+  ~08:45 Berlin, at the end of the weekly run). **The newsletter sends.** Issue 1 on 26 Oct ("100 new stopped trials, 12 records changed"),
   issue 2 on **16 Nov** ("106 new stopped trials, 11 records changed", 5 subscribers, the skipped
   weeks included). Archived at `/newsletter` (`web/data/newsletter_issues/`).
 - **The first clinician finished the 150 oncology cases** (17–18 Nov): biological yes/no agrees
