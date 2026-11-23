@@ -19,3 +19,100 @@ NCT04300309,41199347,"The paper gives two different reasons (recruitment, and hi
 NCT04904549,37936652,"Adverse events leading individual participants to discontinue, not the trial stopping.",Claude (AI-assisted review),2026-11-23
 NCT04985604,42826365,"""At study closure"" is a time point, not a cause.",Claude (AI-assisted review),2026-11-23
 NCT05111626,38308771,"Reasons individual participants discontinued, not the trial.",Claude (AI-assisted review),2026-11-23
+NCT00995150,30531565,"Sentences about discontinuation rates of participants, not the trial stopping.",Claude (AI-assisted review),2026-11-23
+NCT01090414,31723767,"The sentence describes adverse events in another trial, not why this one stopped.",Claude (AI-assisted review),2026-11-23
+NCT01390220,31140596,"The sentences describe the protocol's stopping rules, not the stop.",Claude (AI-assisted review),2026-11-23
+NCT02228382,39164407,"Sentences about treatment duration, not the stop.",Claude (AI-assisted review),2026-11-23
+NCT02574156,18184958,"Two papers give different reasons (safety, protocol violations); not established.",Claude (AI-assisted review),2026-11-23
+NCT03060629,40190112,The sentence is about another trial; this one ended after its planned follow-up.,Claude (AI-assisted review),2026-11-23
+NCT03160339,37376480,"A safety summary, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03572062,35543281,The sponsor terminated the study; the paper gives no cause.,Claude (AI-assisted review),2026-11-23
+NCT04186637,39097413,"Sentences about treatment duration and dose-limiting toxicities, not a stated reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT04892446,40485906,"Reasons individual participants discontinued, not the trial.",Claude (AI-assisted review),2026-11-23
+NCT04920383,39097413,"The sentences describe dose-limiting toxicities and treatment duration, not a stated reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT05178342,42749863,The paper reports two trials with different reasons and does not say which is which.,Claude (AI-assisted review),2026-11-23
+NCT02221674,33542653,"A general statement about paediatric recruitment, not the reason this trial stopped.",Claude (AI-assisted review),2026-11-23
+NCT02593851,32201897,"A safety summary, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02972294,38689774,"Sentences about the pandemic period and enrolment, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03201445,37137672,"Sentences about participant discontinuation and study design, not the stop.",Claude (AI-assisted review),2026-11-23
+NCT03259308,38096402,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03259334,38096402,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03559517,38096402,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03566823,38096402,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03627091,38096402,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03594955,33527351,"A sentence about dose-escalation rules, not the stop.",Claude (AI-assisted review),2026-11-23
+NCT03720418,31127735,The sentence is about another product's trial.,Claude (AI-assisted review),2026-11-23
+NCT03739840,36176044,The paper describes a pandemic pause but gives no cause for the termination.,Claude (AI-assisted review),2026-11-23
+NCT04097821,40334082,Mentions an enrolment halt without its cause.,Claude (AI-assisted review),2026-11-23
+NCT04152161,40334156,"A pandemic enrolment pause and a safety summary, not the reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT04241068,42841310,The paper says the programme closed but gives no cause for the trial's termination.,Claude (AI-assisted review),2026-11-23
+NCT04866017,42648750,"A protocol amendment history, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT00109109,18297527,"Early termination by sponsor decision, without a cause.",Claude (AI-assisted review),2026-11-23
+NCT01186328,24276047,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT02029495,33106286,"Early termination by sponsor decision, without a cause.",Claude (AI-assisted review),2026-11-23
+NCT02322281,34589984,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03871348,40152791,"Terminated for non-safety reasons, without a positive cause.",Claude (AI-assisted review),2026-11-23
+NCT04963270,39862880,The paper says the programme was stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT00078897,30899530,The sentence is about an earlier arm of another protocol.,Claude (AI-assisted review),2026-11-23
+NCT00093652,18845990,Enrolment halted without a stated cause.,Claude (AI-assisted review),2026-11-23
+NCT00190476,25378648,Stopped on ethical grounds after a subgroup interaction; not clearly a cause in our categories.,Claude (AI-assisted review),2026-11-23
+NCT00405054,25127392,"Sentences about treatment at the time of discontinuation, not the cause.",Claude (AI-assisted review),2026-11-23
+NCT00476996,24498318,States the termination without a cause.,Claude (AI-assisted review),2026-11-23
+NCT00880009,24674874,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT00886769,30269054,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT00923247,30297385,The paper says development or the trial stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT00991029,29766750,"Halted with both a lower risk of ischaemic events and a higher risk of bleeding: a result, not a cause in our categories.",Claude (AI-assisted review),2026-11-23
+NCT01039545,29113968,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT01123161,27834742,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT01220128,28176175,The paper names only a sponsor decision.,Claude (AI-assisted review),2026-11-23
+NCT01284335,25260842,The paper says development or the trial stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT01310855,27232884,The paper says development or the trial stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT01332331,37332660,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT01440062,32047645,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT01702558,32584367,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT01716234,30913226,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT01755520,31145798,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT01957644,35597904,"Discontinued ""for non-clinical reasons"", without a cause.",Claude (AI-assisted review),2026-11-23
+NCT02086513,29296838,Toxicity not attributed to the drug and patient decisions; not established.,Claude (AI-assisted review),2026-11-23
+NCT02150473,,No PubMed record for the source.,Claude (AI-assisted review),2026-11-23
+NCT02187848,37645622,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02192697,29972716,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02193867,33407676,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02247479,39758130,The sentences are from unrelated machine-learning papers.,Claude (AI-assisted review),2026-11-23
+NCT02247531,39758130,The sentences are from unrelated machine-learning papers.,Claude (AI-assisted review),2026-11-23
+NCT02258607,30087028,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02370095,33095030,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02421354,,No PubMed record for the source.,Claude (AI-assisted review),2026-11-23
+NCT02437916,30253804,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02466243,39403556,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02721875,35597904,"Discontinued ""for non-clinical reasons"", without a cause.",Claude (AI-assisted review),2026-11-23
+NCT02760719,25389139,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02833766,36879012,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02907593,32006953,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT02959554,37758574,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03245840,36890134,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03287245,34933330,The paper says development or the trial stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03333317,37467213,A health-authority request concerned neonates only; no cause for the termination.,Claude (AI-assisted review),2026-11-23
+NCT03386214,38481947,The paper says development or the trial stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT03414008,39175217,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03435458,36996264,The source is a review of other trials.,Claude (AI-assisted review),2026-11-23
+NCT03587129,28596446,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03635996,37753718,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03780543,38510983,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03816839,36977973,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03829657,42475649,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03868540,39175217,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT03970694,39364270,Stopped for a significant difference between arms without saying which was better.,Claude (AI-assisted review),2026-11-23
+NCT04035668,37932009,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT04128696,41427951,Refers to another trial of a different drug.,Claude (AI-assisted review),2026-11-23
+NCT04217447,40888725,Stopped for excess deaths in one arm; how that bears on the strategy tested is not stated.,Claude (AI-assisted review),2026-11-23
+NCT04322396,33081817,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT04342182,34013969,The source is a review of other trials.,Claude (AI-assisted review),2026-11-23
+NCT04377620,36226977,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT04502706,37206279,The paper says development or the trial stopped but gives no cause beyond the registry text.,Claude (AI-assisted review),2026-11-23
+NCT04778410,40364806,Explains the early closure of one arm only.,Claude (AI-assisted review),2026-11-23
+NCT04893551,40696160,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23
+NCT04990440,39214920,"""Consequently terminated"" without the cause in the sentence.",Claude (AI-assisted review),2026-11-23
+NCT05241873,42126003,"Discontinued by sponsor decision, without a cause.",Claude (AI-assisted review),2026-11-23
+NCT05314517,41819539,Refers to findings of the double-blind study without stating them.,Claude (AI-assisted review),2026-11-23
+NCT05769959,42851436,"A sentence about the trial's course or results, not a reason for the stop.",Claude (AI-assisted review),2026-11-23

@@ -274,8 +274,9 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
    already do; without the direction, not established.
    **Weekly queue of 23 Nov:** 9 found, 3 accepted (STRIDER safety + futility, DEPOSITION safety, a new HCV
    approval → recruitment), 6 false hits rejected; filter tightened (`NOT_TRIAL_STOP`, protocol papers out;
-   all 12 accepted still pass). **Backlog:** 5,244 trials still due; workflow "Publication search backlog"
-   (manual, 5.5 h) works it off.
+   all 12 accepted still pass). **Backlog done 23 Nov** (one run of the backlog workflow, all 5,623 trials):
+   275 queued, **267 reviewed the same day: 170 accepted, 97 rejected**, 2 queued (fetch errors). Publication
+   decisions total 194. Applied from the next run (`docs/classification_change_2026-11-23_publications.md`).
 2. **EU registers, probed 23 Nov** (`docs/eu_register_probe_2026-11-23.md`): **EudraCT not worth it** (no
    reason field; 2–3 of 80 add a cause). **CTIS is:** a coded early-termination reason per member state,
    80 no-cause trials linked today, ~10 gain a cause (mostly safety), the set grows with every new EU

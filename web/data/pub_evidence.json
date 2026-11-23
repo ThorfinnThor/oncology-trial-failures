@@ -166,5 +166,1195 @@
   "year": "2026",
   "summary": "Discontinued after the sponsor company was acquired.",
   "about": "THIS_TRIAL"
+ },
+ "NCT00073450": {
+  "pmid": "19433965",
+  "journal": "American journal of clinical oncology",
+  "year": "2009",
+  "summary": "Closed to further accrual under its predefined criteria after no objective responses in the first 15 patients.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00257192": {
+  "pmid": "24111983",
+  "journal": "Journal of child and adolescent psychopharmacology",
+  "year": "2013",
+  "summary": "Terminated early for futility at the planned interim analysis of the primary endpoint.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00384865": {
+  "pmid": "21593252",
+  "journal": "Circulation",
+  "year": "2011",
+  "summary": "Terminated by the data safety and monitoring board after an interim analysis showed futility for the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00391066": {
+  "pmid": "25130401",
+  "journal": "British journal of haematology",
+  "year": "2014",
+  "summary": "Stopped early for lack of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00486512": {
+  "pmid": "26404953",
+  "journal": "Gastroenterology",
+  "year": "2016",
+  "summary": "Stopped for futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00529503": {
+  "pmid": "25651427",
+  "journal": "Leukemia & lymphoma",
+  "year": "2015",
+  "summary": "Enrolment stopped after a futility analysis showed no higher complete-response rate with the drug than with placebo.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00559988": {
+  "pmid": "25908774",
+  "journal": "European heart journal",
+  "year": "2015",
+  "summary": "Stopped for futility of finding a difference in the primary endpoints between groups.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00632203": {
+  "pmid": "25069747",
+  "journal": "Clinical lung cancer",
+  "year": "2014",
+  "summary": "Closed early on the basis of a futility analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00695643": {
+  "pmid": "28543263",
+  "journal": "Alimentary pharmacology & therapeutics",
+  "year": "2017",
+  "summary": "Stopped for futility at a planned interim analysis on the data monitoring committee's recommendation.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00767000": {
+  "pmid": "21994424",
+  "journal": "Diabetes care",
+  "year": "2011",
+  "summary": "Terminated for lack of sustained efficacy (glycaemic control).",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00816166": {
+  "pmid": "25803346",
+  "journal": "JAMA",
+  "year": "2015",
+  "summary": "Enrolment halted when an early analysis suggested futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00832208": {
+  "pmid": "24454970",
+  "journal": "PLoS neglected tropical diseases",
+  "year": "2014",
+  "summary": "Terminated after an interim analysis because of low efficacy of both regimens.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00872001": {
+  "pmid": "22782417",
+  "journal": "JAMA",
+  "year": "2012",
+  "summary": "Stopped after a prespecified futility analysis showed a very low likelihood of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01041781": {
+  "pmid": "28489511",
+  "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
+  "year": "2017",
+  "summary": "Halted for futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01098981": {
+  "pmid": "30878103",
+  "journal": "The Lancet. Neurology",
+  "year": "2019",
+  "summary": "Stopped early after the second interim analysis because of futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01103063": {
+  "pmid": "27326859",
+  "journal": "PloS one",
+  "year": "2016",
+  "summary": "Terminated early for futility at a prespecified interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01103713": {
+  "pmid": "27861509",
+  "journal": "PloS one",
+  "year": "2016",
+  "summary": "Terminated after a pre-planned interim analysis crossed the futility boundary for efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01123915": {
+  "pmid": "24069230",
+  "journal": "PloS one",
+  "year": "2013",
+  "summary": "Terminated early after a serious adverse event following a single administration.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01210378": {
+  "pmid": "32021913",
+  "journal": "Clinical and translational radiation oncology",
+  "year": "2020",
+  "summary": "Stopped after a futility analysis; benefit was judged highly unlikely.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01227434": {
+  "pmid": "30151703",
+  "journal": "Journal of neuro-oncology",
+  "year": "2018",
+  "summary": "Stopped early for lack of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01310738": {
+  "pmid": "28662034",
+  "journal": "PLoS neglected tropical diseases",
+  "year": "2017",
+  "summary": "Terminated because of low efficacy of the tested regimens.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01345669": {
+  "pmid": "31194247",
+  "journal": "JAMA oncology",
+  "year": "2019",
+  "summary": "Recruitment stopped after a preplanned interim futility analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01370044": {
+  "pmid": "41433250",
+  "journal": "PloS one",
+  "year": "2025",
+  "summary": "Stopped for futility after an interim analysis negative for efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01465464": {
+  "pmid": "28988687",
+  "journal": "The lancet. Gastroenterology & hepatology",
+  "year": "2018",
+  "summary": "Ended at the interim analysis for futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01659658": {
+  "pmid": "34168284",
+  "journal": "Leukemia",
+  "year": "2022",
+  "summary": "Enrolment stopped because the first primary endpoint was not met at the first interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01739790": {
+  "pmid": "27143871",
+  "journal": "International journal of chronic obstructive pulmonary disease",
+  "year": "2016",
+  "summary": "Terminated prematurely because new external information suggested a possible safety issue.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01928446": {
+  "pmid": "34787653",
+  "journal": "JAMA psychiatry",
+  "year": "2022",
+  "summary": "Stopped for futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01952847": {
+  "pmid": "33580845",
+  "journal": "Investigational new drugs",
+  "year": "2021",
+  "summary": "Terminated for futility after an interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01953601": {
+  "pmid": "30970186",
+  "journal": "The New England journal of medicine",
+  "year": "2019",
+  "summary": "Terminated for futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01998828": {
+  "pmid": "28622623",
+  "journal": "Leukemia research",
+  "year": "2017",
+  "summary": "Terminated for limited efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02087176": {
+  "pmid": "41212474",
+  "journal": "Targeted oncology",
+  "year": "2025",
+  "summary": "Terminated after an interim analysis showed increased toxicity and limited efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02087241": {
+  "pmid": "41212474",
+  "journal": "Targeted oncology",
+  "year": "2025",
+  "summary": "Terminated after the first-line standard of care changed.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02106520": {
+  "pmid": "27599328",
+  "journal": "JAMA",
+  "year": "2016",
+  "summary": "Terminated before phase 3 for futility after the interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02142725": {
+  "pmid": "37806372",
+  "journal": "Clinical gastroenterology and hepatology : the official clinical practice journal of the American Gastroenterological Association",
+  "year": "2024",
+  "summary": "Terminated early for futility after a prespecified interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02158936": {
+  "pmid": "30305280",
+  "journal": "Blood",
+  "year": "2018",
+  "summary": "Stopped on the data monitoring committee's recommendation because efficacy crossed the futility threshold and for safety reasons.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02161419": {
+  "pmid": "30677506",
+  "journal": "Journal of thoracic oncology : official publication of the International Association for the Study of Lung Cancer",
+  "year": "2019",
+  "summary": "Terminated prematurely for an unfavourable risk-benefit profile.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02221037": {
+  "pmid": "32467417",
+  "journal": "European journal of anaesthesiology",
+  "year": "2020",
+  "summary": "Stopped for futility at the second planned interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02244073": {
+  "pmid": "34590159",
+  "journal": "Intensive care medicine",
+  "year": "2021",
+  "summary": "Stopped early for a low likelihood of benefit and possible harm (hypoglycaemia).",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02369029": {
+  "pmid": "30711772",
+  "journal": "European journal of cancer (Oxford, England : 1990)",
+  "year": "2019",
+  "summary": "Terminated because dose-limiting toxicities occurred below the targeted drug exposure.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02387229": {
+  "pmid": "41501492",
+  "journal": "Nature medicine",
+  "year": "2026",
+  "summary": "Halted after meeting the futility criterion at a planned interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02388165": {
+  "pmid": "37125490",
+  "journal": "Clinical infectious diseases : an official publication of the Infectious Diseases Society of America",
+  "year": "2023",
+  "summary": "Enrolment halted when the prespecified interim efficacy analysis met the futility criteria.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02394106": {
+  "pmid": "31993781",
+  "journal": "Pediatric nephrology (Berlin, Germany)",
+  "year": "2020",
+  "summary": "Terminated for futility on the data safety and monitoring board's recommendation.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02442492": {
+  "pmid": "35799272",
+  "journal": "BMC research notes",
+  "year": "2022",
+  "summary": "Stopped when a sister trial of the same drug signalled possible harm, and for futility.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT02543086": {
+  "pmid": "33199389",
+  "journal": "Antimicrobial agents and chemotherapy",
+  "year": "2021",
+  "summary": "Terminated after serious adverse events, including liver function changes, following the first dosing.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02565511": {
+  "pmid": "41319675",
+  "journal": "The lancet. Healthy longevity",
+  "year": "2025",
+  "summary": "Terminated early because of safety concerns with the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02588261": {
+  "pmid": "31070709",
+  "journal": "Annals of oncology : official journal of the European Society for Medical Oncology",
+  "year": "2019",
+  "summary": "Discontinued because of increased toxicity and limited predicted efficacy compared with the control drugs.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02649673": {
+  "pmid": "37129455",
+  "journal": "The oncologist",
+  "year": "2023",
+  "summary": "Terminated early because the combination did not improve outcomes.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02702492": {
+  "pmid": "41824279",
+  "journal": "Targeted oncology",
+  "year": "2026",
+  "summary": "Enrolment halted for lack of observable efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02787304": {
+  "pmid": "32234329",
+  "journal": "Journal of hepatology",
+  "year": "2020",
+  "summary": "Terminated for lack of efficacy after missing its interim endpoints.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02808247": {
+  "pmid": "34062484",
+  "journal": "European journal of cancer (Oxford, England : 1990)",
+  "year": "2021",
+  "summary": "Stopped for futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02834793": {
+  "pmid": "39576191",
+  "journal": "Epilepsia",
+  "year": "2025",
+  "summary": "Terminated by the sponsor because of recruitment problems, made worse by the COVID-19 pandemic.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02893826": {
+  "pmid": "32985652",
+  "journal": "Neurosurgery",
+  "year": "2020",
+  "summary": "Halted when the phase 3 trial of the same drug stopped because it was unlikely to meet its primary endpoint.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT02980705": {
+  "pmid": "37162744",
+  "journal": "Journal of clinical rheumatology : practical reports on rheumatic & musculoskeletal diseases",
+  "year": "2023",
+  "summary": "Terminated after the week-24 interim analysis for lack of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02989675": {
+  "pmid": "33038950",
+  "journal": "The Lancet. Global health",
+  "year": "2020",
+  "summary": "Terminated after an interim analysis indicated futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03006562": {
+  "pmid": "32444264",
+  "journal": "European urology",
+  "year": "2020",
+  "summary": "Stopped at the second interim analysis after meeting the futility threshold.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03496623": {
+  "pmid": "38811045",
+  "journal": "The European respiratory journal",
+  "year": "2024",
+  "summary": "Terminated on the safety committee's advice: increased serious adverse events and possibly mortality with the treatment, slow recruitment and missing data.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03517722": {
+  "pmid": "35798534",
+  "journal": "Annals of the rheumatic diseases",
+  "year": "2022",
+  "summary": "Discontinued early for lack of efficacy at a prespecified interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03614728": {
+  "pmid": "39290981",
+  "journal": "Therapeutic advances in hematology",
+  "year": "2024",
+  "summary": "Terminated after meeting prespecified efficacy futility criteria at the second interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03615924": {
+  "pmid": "35849650",
+  "journal": "Blood",
+  "year": "2022",
+  "summary": "Terminated four months early for lack of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03632109": {
+  "pmid": "31712813",
+  "journal": "Clinical infectious diseases : an official publication of the Infectious Diseases Society of America",
+  "year": "2020",
+  "summary": "Stopped early for poor efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03678506": {
+  "pmid": "35914222",
+  "journal": "Blood advances",
+  "year": "2022",
+  "summary": "Inclusion stopped at a planned interim analysis because patients left without anticoagulation had an unacceptably higher rate of recurrence than those on the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03956550": {
+  "pmid": "38099276",
+  "journal": "Neurobiology of pain (Cambridge, Mass.)",
+  "year": "2023",
+  "summary": "Terminated prematurely for lack of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04299438": {
+  "pmid": "37290102",
+  "journal": "Obstetrics and gynecology",
+  "year": "2023",
+  "summary": "Stopped for futility at a planned interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04400799": {
+  "pmid": "35779558",
+  "journal": "The Lancet. Haematology",
+  "year": "2022",
+  "summary": "Stopped for futility under predefined rules for the primary outcome.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04416399": {
+  "pmid": "38746861",
+  "journal": "ERJ open research",
+  "year": "2024",
+  "summary": "Stopped early because further enrolment would not change the outcome, which favoured the treatment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04417036": {
+  "pmid": "41131549",
+  "journal": "Critical care (London, England)",
+  "year": "2025",
+  "summary": "Terminated after Part A for lack of efficacy.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04421664": {
+  "pmid": "32492293",
+  "journal": "The New England journal of medicine",
+  "year": "2020",
+  "summary": "Halted at the third interim analysis because continuing was futile (conditional power below 1%).",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04472897": {
+  "pmid": "42139005",
+  "journal": "Journal of clinical pharmacology",
+  "year": "2026",
+  "summary": "Terminated because unexpected pharmacokinetic variability and exposure-related adverse events narrowed the therapeutic window.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04511026": {
+  "pmid": "35958955",
+  "journal": "Gynecologic oncology reports",
+  "year": "2022",
+  "summary": "Discontinued for futility: the tracer did not map any sentinel lymph node in the first six patients.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04539275": {
+  "pmid": "37560085",
+  "journal": "Contemporary clinical trials communications",
+  "year": "2023",
+  "summary": "Terminated for futility because enrolment languished as the pandemic wave declined.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04604184": {
+  "pmid": "37024277",
+  "journal": "Thorax",
+  "year": "2023",
+  "summary": "Stopped on the data monitoring committee's advice for lack of efficacy and an imbalance of fatal events.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04605159": {
+  "pmid": "38477988",
+  "journal": "The New England journal of medicine",
+  "year": "2024",
+  "summary": "Enrolment stopped early because of safety concerns.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04905407": {
+  "pmid": "42761251",
+  "journal": "Blood neoplasia",
+  "year": "2026",
+  "summary": "Discontinued early after meeting prespecified futility criteria.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05977868": {
+  "pmid": "41419216",
+  "journal": "Clinical infectious diseases : an official publication of the Infectious Diseases Society of America",
+  "year": "2026",
+  "summary": "Stopped early at two-thirds enrolment because the experimental arm showed a significant safety benefit.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00235495": {
+  "pmid": "24076337",
+  "journal": "The Lancet. Neurology",
+  "year": "2013",
+  "summary": "Stopped early for futility.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02170025": {
+  "pmid": "34419414",
+  "journal": "Journal of cystic fibrosis : official journal of the European Cystic Fibrosis Society",
+  "year": "2021",
+  "summary": "Terminated for lack of efficacy and the changing landscape of therapies for the disease.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02659631": {
+  "pmid": "35493516",
+  "journal": "Frontiers in immunology",
+  "year": "2022",
+  "summary": "Terminated for lack of antitumour activity.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03376321": {
+  "pmid": "39172627",
+  "journal": "The Journal of infectious diseases",
+  "year": "2025",
+  "summary": "Terminated by a strategic decision after futility was seen in the companion trial of the same drug.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT03413891": {
+  "pmid": "33939696",
+  "journal": "PLoS medicine",
+  "year": "2021",
+  "summary": "Stopped prematurely after a futility analysis by the data safety monitoring board.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04059094": {
+  "pmid": "34385272",
+  "journal": "The European respiratory journal",
+  "year": "2022",
+  "summary": "Terminated after the stopping rules of the futility analysis were met.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00128115": {
+  "pmid": "21067829",
+  "journal": "Archives of gerontology and geriatrics",
+  "year": "2011",
+  "summary": "Terminated early because of a safety signal of congestive heart failure.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00381095": {
+  "pmid": "25135035",
+  "journal": "Pain and therapy",
+  "year": "2013",
+  "summary": "Terminated early because slow enrolment would have required a much longer study.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00430716": {
+  "pmid": "28228114",
+  "journal": "BMC pulmonary medicine",
+  "year": "2017",
+  "summary": "Terminated on the data monitoring committee's advice after another trial showed the drug's benefit, with recruitment problems.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00893789": {
+  "pmid": "25325609",
+  "journal": "Journal of clinical sleep medicine : JCSM : official publication of the American Academy of Sleep Medicine",
+  "year": "2014",
+  "summary": "Terminated early because of low enrolment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00963547": {
+  "pmid": "24252402",
+  "journal": "Breast cancer research : BCR",
+  "year": "2013",
+  "summary": "Terminated early when the drug's company withdrew support.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00983437": {
+  "pmid": "25325609",
+  "journal": "Journal of clinical sleep medicine : JCSM : official publication of the American Academy of Sleep Medicine",
+  "year": "2014",
+  "summary": "Terminated early because of low enrolment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01064037": {
+  "pmid": "22713287",
+  "journal": "European journal of heart failure",
+  "year": "2012",
+  "summary": "Terminated early because of an excess of non-fatal hypotension and recruitment difficulties.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01065077": {
+  "pmid": "22713287",
+  "journal": "European journal of heart failure",
+  "year": "2012",
+  "summary": "Terminated early because of an excess of non-fatal hypotension and recruitment difficulties.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01067859": {
+  "pmid": "22713287",
+  "journal": "European journal of heart failure",
+  "year": "2012",
+  "summary": "Terminated early because of an excess of non-fatal hypotension and recruitment difficulties.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01078051": {
+  "pmid": "30813758",
+  "journal": "Circulation",
+  "year": "2019",
+  "summary": "Stopped before completion because of slow recruitment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01101100": {
+  "pmid": "31493163",
+  "journal": "American journal of clinical dermatology",
+  "year": "2019",
+  "summary": "Stopped early by the sponsor for administrative reasons.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01190241": {
+  "pmid": "30018133",
+  "journal": "The oncologist",
+  "year": "2018",
+  "summary": "Halted after 11 patients for lack of clinical activity, with less than a 1% chance of reaching stage II.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01194960": {
+  "pmid": "23877659",
+  "journal": "Cancer immunology, immunotherapy : CII",
+  "year": "2013",
+  "summary": "Terminated early because of recruitment problems.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01328002": {
+  "pmid": "26112278",
+  "journal": "Pediatric rheumatology online journal",
+  "year": "2015",
+  "summary": "Terminated early because of low enrolment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01347866": {
+  "pmid": "29067643",
+  "journal": "Targeted oncology",
+  "year": "2017",
+  "summary": "Two arms closed early because of safety concerns and greater antitumour activity in other arms.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01351792": {
+  "pmid": "33060632",
+  "journal": "Scientific reports",
+  "year": "2020",
+  "summary": "Terminated prematurely because of slow inclusion.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01517165": {
+  "pmid": "30079432",
+  "journal": "Psychopharmacology",
+  "year": "2018",
+  "summary": "Terminated prematurely because of slow enrolment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01531387": {
+  "pmid": "26414435",
+  "journal": "American journal of hematology",
+  "year": "2015",
+  "summary": "Terminated early because of slow accrual and administrative delays.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01639131": {
+  "pmid": "33811727",
+  "journal": "Clinical and translational science",
+  "year": "2021",
+  "summary": "Closed because of poor accrual before the first interim assessment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01648465": {
+  "pmid": "32182791",
+  "journal": "Biology",
+  "year": "2020",
+  "summary": "Terminated prematurely because of a low accrual rate.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01658826": {
+  "pmid": "27997653",
+  "journal": "JAMA",
+  "year": "2016",
+  "summary": "Stopped when the US Food and Drug Administration placed the trial on clinical hold.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01790295": {
+  "pmid": "30205231",
+  "journal": "Biology of blood and marrow transplantation : journal of the American Society for Blood and Marrow Transplantation",
+  "year": "2019",
+  "summary": "Terminated for poor accrual and a significant number of treatment failures.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01838174": {
+  "pmid": "37261907",
+  "journal": "Journal of neuro-ophthalmology : the official journal of the North American Neuro-Ophthalmology Society",
+  "year": "2023",
+  "summary": "Recruitment halted before the planned enrolment because of the COVID-19 pandemic.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01961804": {
+  "pmid": "40315031",
+  "journal": "European journal of emergency medicine : official journal of the European Society for Emergency Medicine",
+  "year": "2025",
+  "summary": "Stopped prematurely for logistic reasons.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02055781": {
+  "pmid": "39400386",
+  "journal": "European journal of haematology",
+  "year": "2025",
+  "summary": "Terminated early because of a clinical hold.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02088450": {
+  "pmid": "25090617",
+  "journal": "PloS one",
+  "year": "2014",
+  "summary": "Stopped after the second interim analysis because active treatment showed a significant benefit on stroke.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02131272": {
+  "pmid": "30014302",
+  "journal": "European journal of pediatrics",
+  "year": "2018",
+  "summary": "Enrolment terminated after 17 months because of very slow recruitment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02203513": {
+  "pmid": "38555285",
+  "journal": "Nature communications",
+  "year": "2024",
+  "summary": "Stopped early because of the COVID-19 pandemic and because the company ended investigational drug supply.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02365493": {
+  "pmid": "32044943",
+  "journal": "JAMA",
+  "year": "2020",
+  "summary": "Terminated early on the data and safety monitoring board's recommendation because of safety.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02947152": {
+  "pmid": "34515215",
+  "journal": "Oncology research and treatment",
+  "year": "2021",
+  "summary": "Terminated early after neurological adverse events whose mechanism could not be identified.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03207815": {
+  "pmid": "39023880",
+  "journal": "JAMA ophthalmology",
+  "year": "2024",
+  "summary": "Terminated early for business reasons.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03339336": {
+  "pmid": "37152360",
+  "journal": "EClinicalMedicine",
+  "year": "2023",
+  "summary": "Terminated early by the sponsor for business reasons, not related to safety.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03431311": {
+  "pmid": "38582964",
+  "journal": "Molecular therapy : the journal of the American Society of Gene Therapy",
+  "year": "2024",
+  "summary": "Recruitment became too difficult after another treatment was approved for first-line use, and the study was terminated.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03502681": {
+  "pmid": "33741296",
+  "journal": "European urology focus",
+  "year": "2022",
+  "summary": "Terminated because the free study drug from the funder became unavailable.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04049617": {
+  "pmid": "38604815",
+  "journal": "Journal for immunotherapy of cancer",
+  "year": "2024",
+  "summary": "Discontinued for business reasons.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04083898": {
+  "pmid": "39227452",
+  "journal": "Annals of hematology",
+  "year": "2024",
+  "summary": "Discontinued because of slow accrual.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04128956": {
+  "pmid": "39874026",
+  "journal": "Circulation",
+  "year": "2025",
+  "summary": "Halted after an interim analysis showed too little chance of demonstrating superiority, with slow recruitment during the pandemic.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04564417": {
+  "pmid": "41737913",
+  "journal": "BMJ oncology",
+  "year": "2026",
+  "summary": "Terminated in dose escalation because of a business decision by the sponsor.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04589949": {
+  "pmid": "35546145",
+  "journal": "Nature communications",
+  "year": "2022",
+  "summary": "Discontinued because vaccination uptake slowed recruitment and specific antibody treatments were authorised, so further enrolment was unlikely to change the results.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04614246": {
+  "pmid": "38890641",
+  "journal": "BMC women's health",
+  "year": "2024",
+  "summary": "Terminated early for safety reasons; treatment and enrolment stopped immediately.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05006573": {
+  "pmid": "42639375",
+  "journal": "ERJ open research",
+  "year": "2026",
+  "summary": "Terminated early because of recruitment problems related to the COVID-19 pandemic.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05129280": {
+  "pmid": "42079663",
+  "journal": "Frontiers in immunology",
+  "year": "2026",
+  "summary": "Discontinued mainly because a high rate of persistent anti-drug antibodies reduced drug exposure, and for strategic reasons.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05342623": {
+  "pmid": "41686509",
+  "journal": "Kidney360",
+  "year": "2026",
+  "summary": "Terminated because of a corporate decision.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01163253": {
+  "pmid": "36777695",
+  "journal": "Therapeutic advances in musculoskeletal disease",
+  "year": "2023",
+  "summary": "The programme ended when its objective, characterising long-term safety, had been met.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01975376": {
+  "pmid": "28304242",
+  "journal": "The New England journal of medicine",
+  "year": "2017",
+  "summary": "Stopped early when the sponsor ended the drug's development, in part because of high rates of anti-drug antibodies seen in the programme.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT01975389": {
+  "pmid": "28304242",
+  "journal": "The New England journal of medicine",
+  "year": "2017",
+  "summary": "Stopped early when the sponsor ended the drug's development, in part because of high rates of anti-drug antibodies seen in the programme.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT02324491": {
+  "pmid": "29992370",
+  "journal": "Diabetologia",
+  "year": "2018",
+  "summary": "Terminated early when the drug's development stopped because of an imbalance of venous thromboembolism events.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00153777": {
+  "pmid": "23657072",
+  "journal": "BMC infectious diseases",
+  "year": "2013",
+  "summary": "Closed prematurely after an interim analysis suggested an increased risk of HIV infection in the active arm.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00287495": {
+  "pmid": "28341759",
+  "journal": "The oncologist",
+  "year": "2017",
+  "summary": "Accrual terminated after review of safety and efficacy data: active but too toxic as given.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00404313": {
+  "pmid": "21945511",
+  "journal": "Respiratory medicine",
+  "year": "2012",
+  "summary": "Optional study periods were terminated because of the relative benefit-risk ratio.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00524030": {
+  "pmid": "24415567",
+  "journal": "Neurology",
+  "year": "2014",
+  "summary": "Stopped early for positive efficacy after an interim analysis.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00527943": {
+  "pmid": "22077816",
+  "journal": "The New England journal of medicine",
+  "year": "2012",
+  "summary": "Follow-up terminated early after a safety review.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00718809": {
+  "pmid": "26009269",
+  "journal": "Lung cancer (Amsterdam, Netherlands)",
+  "year": "2015",
+  "summary": "Accrual halted after the first stage per protocol because there were no responses.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00794417": {
+  "pmid": "24292447",
+  "journal": "British journal of cancer",
+  "year": "2014",
+  "summary": "Closed prematurely after cases of reversible posterior leukoencephalopathy syndrome.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00798213": {
+  "pmid": "23949430",
+  "journal": "Cancer chemotherapy and pharmacology",
+  "year": "2013",
+  "summary": "Terminated because the study sponsor changed.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00831441": {
+  "pmid": "21780946",
+  "journal": "The New England journal of medicine",
+  "year": "2011",
+  "summary": "Terminated because of more major bleeding with the drug without a reduction in ischaemic events.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT00977145": {
+  "pmid": "36746511",
+  "journal": "Journal for immunotherapy of cancer",
+  "year": "2023",
+  "summary": "Closed short of its enrolment goal because enrolment was slow; the paper lists the obstacles.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01168908": {
+  "pmid": "25042693",
+  "journal": "Annals of neurology",
+  "year": "2014",
+  "summary": "Terminated early on the safety board's advice because more participants worsened on the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01377376": {
+  "pmid": "26153496",
+  "journal": "Annals of oncology : official journal of the European Society for Medical Oncology",
+  "year": "2015",
+  "summary": "Enrolment stopped because of more interstitial lung disease with the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01522443": {
+  "pmid": "30528222",
+  "journal": "European urology",
+  "year": "2019",
+  "summary": "Enrolment terminated because the companion trial of the same drug showed no survival benefit.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT01539291": {
+  "pmid": "30995176",
+  "journal": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
+  "year": "2019",
+  "summary": "The parent trial was stopped early because the drug was clearly superior.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT01601340": {
+  "pmid": "24677033",
+  "journal": "American journal of hematology",
+  "year": "2014",
+  "summary": "Terminated after an interim analysis showed no increase in fetal haemoglobin and a trend to more pain crises with the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01601704": {
+  "pmid": "26954408",
+  "journal": "JAMA",
+  "year": "2016",
+  "summary": "Terminated after the sponsor publicly released confidential interim data, compromising the trial.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01610570": {
+  "pmid": "28735378",
+  "journal": "Cancer chemotherapy and pharmacology",
+  "year": "2017",
+  "summary": "Closed to enrolment because the desired drug exposure could not be reached safely.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01627379": {
+  "pmid": "31959339",
+  "journal": "Annals of oncology : official journal of the European Society for Medical Oncology",
+  "year": "2020",
+  "summary": "Stopped early when interim results showed worse survival with the added drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01656577": {
+  "pmid": "27595147",
+  "journal": "Psychopharmacology",
+  "year": "2016",
+  "summary": "Stopped early because of an administrative interpretation of US federal law, unrelated to safety or outcome.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01685021": {
+  "pmid": "34343354",
+  "journal": "Cancer",
+  "year": "2021",
+  "summary": "Terminated because of a low proportion of responses to the drug alone.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01745692": {
+  "pmid": "27756804",
+  "journal": "Journal of neurology, neurosurgery, and psychiatry",
+  "year": "2017",
+  "summary": "Recruitment halted after other trials showed the benefit of the treatment being tested here.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT01853384": {
+  "pmid": "29037354",
+  "journal": "Journal of vascular surgery. Venous and lymphatic disorders",
+  "year": "2017",
+  "summary": "Terminated after the first trial of the same product failed to show a benefit over placebo.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT01892345": {
+  "pmid": "31050279",
+  "journal": "The New England journal of medicine",
+  "year": "2019",
+  "summary": "Stopped after 23 of the 24 prespecified relapses, essentially at its planned end.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02189668": {
+  "pmid": "27018085",
+  "journal": "Journal of pediatric surgery",
+  "year": "2016",
+  "summary": "Stopped because of concerns over patient safety.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02192541": {
+  "pmid": "29853657",
+  "journal": "The oncologist",
+  "year": "2018",
+  "summary": "Terminated because the company stopped development and the regimen was poorly tolerated.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02227368": {
+  "pmid": "29629845",
+  "journal": "Vascular medicine (London, England)",
+  "year": "2018",
+  "summary": "Terminated prematurely because protocol changes did not lift recruitment.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02368951": {
+  "pmid": "31502117",
+  "journal": "Targeted oncology",
+  "year": "2019",
+  "summary": "Terminated early because the drug was poorly tolerated, with a maximum tolerated dose below the therapeutic threshold.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02479490": {
+  "pmid": "28546463",
+  "journal": "The oncologist",
+  "year": "2017",
+  "summary": "Terminated before completion because of toxicity (poorly tolerated).",
+  "about": "THIS_TRIAL"
+ },
+ "NCT02629094": {
+  "pmid": "29509992",
+  "journal": "Liver international : official journal of the International Association for the Study of the Liver",
+  "year": "2018",
+  "summary": "Stopped early after unexpected significant increases in liver fat with the drug.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03042312": {
+  "pmid": "34272322",
+  "journal": "Journal of nuclear medicine : official publication, Society of Nuclear Medicine",
+  "year": "2021",
+  "summary": "Closed early because of a transfer of sponsorship.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03052517": {
+  "pmid": "34895218",
+  "journal": "Respiratory research",
+  "year": "2021",
+  "summary": "Terminated when the phase 3 trials of the same drug did not support further development.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT03119701": {
+  "pmid": "35115574",
+  "journal": "Scientific reports",
+  "year": "2022",
+  "summary": "Stopped after evidence that concomitant glucocorticoids block the drug's mechanism (a drug-drug interaction).",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03166631": {
+  "pmid": "41408891",
+  "journal": "Cancer medicine",
+  "year": "2025",
+  "summary": "Ended early because efficacy was not promising enough to continue.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03212352": {
+  "pmid": "33681738",
+  "journal": "EClinicalMedicine",
+  "year": "2021",
+  "summary": "Halted because the interim analysis met the predefined stopping rule with highly significant results.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03442985": {
+  "pmid": "41188357",
+  "journal": "Scientific reports",
+  "year": "2025",
+  "summary": "Recruitment and dosing stopped under a regulatory hold.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03456700": {
+  "pmid": "41114938",
+  "journal": "American journal of clinical oncology",
+  "year": "2026",
+  "summary": "Terminated early per design because there were no tumour responses in the first 21 patients.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT03912831": {
+  "pmid": "42266673",
+  "journal": "Frontiers in oncology",
+  "year": "2026",
+  "summary": "Stopped before all dose levels were explored, partly because narrow enrolment criteria made recruitment difficult.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04327401": {
+  "pmid": "32876695",
+  "journal": "JAMA",
+  "year": "2020",
+  "summary": "Stopped early after a related trial established the treatment's effect.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04607668": {
+  "pmid": "39579142",
+  "journal": "JNCI cancer spectrum",
+  "year": "2025",
+  "summary": "Discontinued because early antitumour efficacy favoured placebo.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT04980391": {
+  "pmid": "41766205",
+  "journal": "Human vaccines & immunotherapeutics",
+  "year": "2026",
+  "summary": "Enrolment stopped after an increased risk of preterm birth was seen in another trial of the same vaccine.",
+  "about": "RELATED_TRIAL"
+ },
+ "NCT05044234": {
+  "pmid": "38699939",
+  "journal": "Clinical and experimental dermatology",
+  "year": "2024",
+  "summary": "Terminated early because of preclinical findings.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05176080": {
+  "pmid": "42421507",
+  "journal": "Chinese medical journal",
+  "year": "2026",
+  "summary": "Enrolment terminated after an assessment of the regimen's benefit-risk profile.",
+  "about": "THIS_TRIAL"
+ },
+ "NCT05643573": {
+  "pmid": "39225267",
+  "journal": "The New England journal of medicine",
+  "year": "2025",
+  "summary": "Stopped on the monitoring committee's advice: the drug led to more strokes or systemic embolism than the comparator.",
+  "about": "THIS_TRIAL"
  }
 }
