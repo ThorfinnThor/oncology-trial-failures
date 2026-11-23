@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_trials": 1050,
+  "source_trials": 1094,
   "groups": [
     {
       "key": "assets",
@@ -36,7 +36,7 @@
         },
         {
           "term": "cisplatin",
-          "trials": 13
+          "trials": 14
         },
         {
           "term": "vorinostat",
@@ -69,12 +69,12 @@
       "label": "Targets",
       "terms": [
         {
-          "term": "PDCD1",
+          "term": "TUBB",
           "trials": 52
         },
         {
-          "term": "TUBB",
-          "trials": 51
+          "term": "PDCD1",
+          "trials": 52
         },
         {
           "term": "CD274",
@@ -82,35 +82,39 @@
         },
         {
           "term": "TYMS",
-          "trials": 32
+          "trials": 33
         },
         {
           "term": "EGFR",
-          "trials": 27
-        },
-        {
-          "term": "KIT",
-          "trials": 27
-        },
-        {
-          "term": "PIK3CD",
-          "trials": 27
+          "trials": 29
         },
         {
           "term": "KDR",
-          "trials": 26
+          "trials": 28
+        },
+        {
+          "term": "KIT",
+          "trials": 28
+        },
+        {
+          "term": "PIK3CD",
+          "trials": 28
         },
         {
           "term": "FLT3",
-          "trials": 24
+          "trials": 26
         },
         {
           "term": "VEGFA",
-          "trials": 20
+          "trials": 21
         },
         {
           "term": "NR3C1",
-          "trials": 18
+          "trials": 19
+        },
+        {
+          "term": "HDAC1",
+          "trials": 17
         },
         {
           "term": "ERBB2",
@@ -118,10 +122,6 @@
         },
         {
           "term": "SEM1",
-          "trials": 16
-        },
-        {
-          "term": "HDAC1",
           "trials": 16
         }
       ]
@@ -132,15 +132,11 @@
       "terms": [
         {
           "term": "DNA inhibitor",
-          "trials": 80
+          "trials": 83
         },
         {
           "term": "Programmed cell death protein 1 inhibitor",
           "trials": 40
-        },
-        {
-          "term": "Nucleic Acid Synthesis Inhibitors",
-          "trials": 36
         },
         {
           "term": "RNA inhibitor",
@@ -148,42 +144,46 @@
         },
         {
           "term": "Thymidylate synthase inhibitor",
-          "trials": 32
+          "trials": 33
+        },
+        {
+          "term": "Nucleic Acid Synthesis Inhibitors",
+          "trials": 33
         },
         {
           "term": "Tubulin inhibitor",
-          "trials": 32
+          "trials": 33
         },
         {
           "term": "Stem cell growth factor receptor inhibitor",
-          "trials": 27
+          "trials": 28
+        },
+        {
+          "term": "Tyrosine-protein kinase receptor FLT3 inhibitor",
+          "trials": 26
         },
         {
           "term": "Programmed cell death 1 ligand 1 inhibitor",
           "trials": 26
         },
         {
-          "term": "Tyrosine-protein kinase receptor FLT3 inhibitor",
-          "trials": 24
-        },
-        {
           "term": "Epidermal growth factor receptor erbB1 inhibitor",
-          "trials": 21
+          "trials": 23
         },
         {
           "term": "Vascular endothelial growth factor A inhibitor",
-          "trials": 20
+          "trials": 21
         },
         {
           "term": "PI3-kinase class I inhibitor",
-          "trials": 20
+          "trials": 21
         },
         {
           "term": "Tubulin stabiliser",
           "trials": 19
         },
         {
-          "term": "Alkylating Activity",
+          "term": "Glucocorticoid receptor agonist",
           "trials": 18
         }
       ]
@@ -194,34 +194,34 @@
       "terms": [
         {
           "term": "National Cancer Institute (NCI)",
-          "trials": 38
+          "trials": 42
         },
         {
           "term": "M.D. Anderson Cancer Center",
-          "trials": 29
+          "trials": 30
         },
         {
           "term": "Novartis",
-          "trials": 29
+          "trials": 30
         },
         {
           "term": "Roche",
-          "trials": 25
+          "trials": 26
+        },
+        {
+          "term": "Pfizer",
+          "trials": 21
+        },
+        {
+          "term": "GSK",
+          "trials": 19
         },
         {
           "term": "Eli Lilly",
           "trials": 19
         },
         {
-          "term": "GSK",
-          "trials": 18
-        },
-        {
           "term": "Sanofi",
-          "trials": 18
-        },
-        {
-          "term": "Pfizer",
           "trials": 18
         },
         {
@@ -241,12 +241,12 @@
           "trials": 14
         },
         {
-          "term": "Merck KGaA",
+          "term": "Merck & Co.",
           "trials": 13
         },
         {
-          "term": "Merck & Co.",
-          "trials": 11
+          "term": "Merck KGaA",
+          "trials": 13
         }
       ]
     }

@@ -9,12 +9,12 @@
    "WITHDRAWN": 6962
   },
   "by_outcome": {
-   "UNRESOLVED": 3625,
-   "NON_BIOLOGICAL": 14190,
-   "BIOLOGICAL_FAILURE": 2484,
-   "CAUSE_NOT_STATED": 1984,
-   "NON_FAILURE_TRANSITION": 1613,
-   "MIXED_CAUSES": 236
+   "UNRESOLVED": 3501,
+   "NON_BIOLOGICAL": 14230,
+   "BIOLOGICAL_FAILURE": 2584,
+   "CAUSE_NOT_STATED": 1938,
+   "NON_FAILURE_TRANSITION": 1621,
+   "MIXED_CAUSES": 258
   },
   "disease_areas": 15,
   "start_year_min": "1990",
@@ -33,12 +33,12 @@
   "sample_rows": 120
  },
  "signals": {
-  "trials": 1050,
+  "trials": 1094,
   "columns": 30,
-  "unique_assets": 594,
-  "target_gene_share": 0.5371428571428571,
-  "sample_file": "/samples/oncology-failure-signals-sample-2026-11-23-1cfecddcea2ddeb0.csv",
-  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-11-23-1cfecddcea2ddeb0-README.txt",
+  "unique_assets": 615,
+  "target_gene_share": 0.5365630712979891,
+  "sample_file": "/samples/oncology-failure-signals-sample-2026-11-23-3788d31061ad363e.csv",
+  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-11-23-3788d31061ad363e-README.txt",
   "sample_rows": 100
  }
 }
