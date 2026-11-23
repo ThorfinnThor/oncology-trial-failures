@@ -46,8 +46,10 @@ in each section is blocked on nothing but time.
 - **First data-licence lead:** DEEPCISION (BasGenBio, Korea) asked on 7 Nov for labelled
   success/failure data for model training. Reply **sent 7 Nov**; waiting for their answer.
   Details under *Blocking revenue → The DEEPCISION lead*.
-- **Citable:** Zenodo DOI 10.5281/zenodo.23558833 (v1.0.0, 22 Oct; **v1.1.0 prepared 23 Nov**: metadata in `.zenodo.json` /
-  `CITATION.cff`, notes in `docs/releases/v1.1.0.md`; Schayan creates the GitHub release, Zenodo archives it); MIT for code, CC BY-NC 4.0 for derived data.
+- **Citable:** Zenodo DOI 10.5281/zenodo.23558833 = the **concept DOI**, which always resolves to the latest version
+  (site and CITATION.cff use it). **v1.1.0 published 23 Nov** (GitHub release 16:16 UTC, archived by Zenodo):
+  version DOI **10.5281/zenodo.24472454**, notes `docs/releases/v1.1.0.md`. Next release: Schayan creates it on
+  GitHub (this session may not create releases); MIT for code, CC BY-NC 4.0 for derived data.
 
 ---
 
