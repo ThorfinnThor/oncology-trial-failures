@@ -1,13 +1,29 @@
 {
  "schema_version": 2,
- "release": "2026-11-18",
- "generated_at_utc": "2026-11-18T09:31:39Z",
+ "release": "2026-11-23",
+ "generated_at_utc": "2026-11-23T07:43:06Z",
  "last_sent_at": "2026-11-16T23:48:45Z",
  "counts": {
-  "added": 13,
-  "changed": 0
+  "added": 45,
+  "changed": 1
  },
  "added": [
+  {
+   "nct_id": "NCT06744920",
+   "title": "A Study to Investigate the Efficacy, Safety and Tolerability of Remibrutinib Versus Placebo in Adult Patients With Generalized Myasthenia…",
+   "sponsor": "Novartis Pharmaceuticals",
+   "area": "Other",
+   "reason": "Efficacy / futility",
+   "detail": "Sponsor decision based on pre-specified futility efficacy criteria being met."
+  },
+  {
+   "nct_id": "NCT07119398",
+   "title": "Oxytocin/Foley vs. Oxytocin for Induction in Patients With PPROM",
+   "sponsor": "Eastern Virginia Medical School",
+   "area": "Other",
+   "reason": "Recruitment",
+   "detail": "poor accrual"
+  },
   {
    "nct_id": "NCT07199192",
    "title": "Steroid Treatment for Severe Acute Respiratory Infection (STAR) Trial",
@@ -17,62 +33,55 @@
    "detail": "elected not to move forward"
   },
   {
-   "nct_id": "NCT06810375",
-   "title": "Erector Spinae Versus Intercostal Nerve Blocks With Liposomal Bupivacaine for Analgesia in Thoracic Surgery",
-   "sponsor": "George Washington University",
-   "area": "Oncology",
-   "reason": "Staffing resources",
-   "detail": "The IRB for this study has been closed and the PI left the institution."
-  },
-  {
-   "nct_id": "NCT00434226",
-   "title": "A Study of Sunitinib in Combination With Bevacizumab, Carboplatin, and Paclitaxel in Patients With Advanced Non-Small Cell Lung Cancer…",
-   "sponsor": "Genentech, Inc.",
-   "area": "Oncology",
+   "nct_id": "NCT04175613",
+   "title": "A Long-term Extension Study of Apremilast (CC-10004) in Pediatric Subjects From 6 Through 17 Years of Age With Moderate to Severe Plaque…",
+   "sponsor": "Amgen",
+   "area": "Dermatology",
    "reason": "Reason not stated",
-   "detail": "Based on data collected, the combination appeared to be poorly tolearated."
+   "detail": ""
   },
   {
-   "nct_id": "NCT02893618",
-   "title": "A 5 Treatment Period Pharmacokinetic Study Evaluating Dose Proportionality and Food Effects of Diazoxide Choline Controlled-Release Tablet…",
-   "sponsor": "Essentialis, Inc.",
-   "area": "Other",
-   "reason": "Decision, cause not stated",
-   "detail": "Sponsor decision"
+   "nct_id": "NCT05251493",
+   "title": "Ferric Derisomaltose (Iron Isomaltoside) Versus Iron Sucrose for Treatment of Iron Deficiency in Pregnancy",
+   "sponsor": "Saskatchewan Health Authority - Regina Area",
+   "area": "Hematology (non-onc)",
+   "reason": "Reason not stated",
+   "detail": "The monograph for the investigational drug (derisomaltose) was updated to include pregnancy as an indication for infusion. Enrollment significantly decreased and the study was stopped."
   },
   {
-   "nct_id": "NCT04910022",
-   "title": "Ph I/II Study of NMS-03305293+TMZ in Adult Patients With Recurrent Glioblastoma",
-   "sponsor": "Nerviano Medical Sciences",
-   "area": "Oncology",
-   "reason": "Operational other",
-   "detail": "Per the protocol, the sponsor reserves the right to discontinue the trial for valid scientific or administrative reasons. The discontinuation of the study is not related to safety issues."
+   "nct_id": "NCT05600777",
+   "title": "A 24-Week Study of the Efficacy and Safety of BLU-5937 in Adults With Refractory Chronic Cough",
+   "sponsor": "Bellus Health Inc. - a GSK company",
+   "area": "Respiratory",
+   "reason": "Programme stopped, cause not stated",
+   "detail": "The study has been terminated due to the decision to cease further development of camlipixant in refractory chronic cough (RCC), based on the results of the Phase 3 program"
   },
   {
-   "nct_id": "NCT04940299",
-   "title": "Tocilizumab, Ipilimumab, and Nivolumab for the Treatment of Advanced Melanoma, Non-Small Cell Lung Cancer, or Urothelial Carcinoma",
-   "sponsor": "M.D. Anderson Cancer Center",
+   "nct_id": "NCT05760612",
+   "title": "Adjuvant Trastuzumab Plus Neratinib in Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Positive Breast Cancer After…",
+   "sponsor": "Sun Yat-Sen Memorial Hospital of Sun Yat-Sen University",
    "area": "Oncology",
    "reason": "Recruitment",
-   "detail": "\\<75% participation"
+   "detail": "Poor accrual"
   },
   {
-   "nct_id": "NCT05551273",
-   "title": "Study of Oral TLR8 Agonist Selgantolimod on HBsAg in Participants With Both Chronic Hepatitis B and HIV",
-   "sponsor": "National Institute of Allergy and Infectious Diseases (NIAID)",
-   "area": "Infectious Disease",
-   "reason": "Reason not stated",
-   "detail": "ACTG Network funding disruptions"
-  },
-  {
-   "nct_id": "NCT06484920",
-   "title": "A Phase II Study of the Combination of Pembrolizumab and ATRA Combination Treatment of Relapsed HL and B-NHL",
-   "sponsor": "Rita Assi",
-   "area": "Oncology",
-   "reason": "Reason not stated",
-   "detail": "Loss of research support"
+   "nct_id": "NCT06404775",
+   "title": "External Mastalgia-oil Versus Oral Tamoxifen in Premenopausal Women With Severe Mastalgia",
+   "sponsor": "Sun Yat-Sen Memorial Hospital of Sun Yat-Sen University",
+   "area": "Other",
+   "reason": "Funding",
+   "detail": "Funding issues"
   }
  ],
- "changed": [],
+ "changed": [
+  {
+   "nct_id": "NCT07274774",
+   "title": "SBRT Plus Systemic Therapy vs Systemic Therapy Alone in BCLC C Hepatocellular Carcinoma",
+   "sponsor": "Shandong Cancer Hospital and Institute",
+   "area": "Oncology",
+   "reason": "",
+   "detail": "Status: Suspended → Terminated; Stop reason: “Difficult to recruit patients” → “Poor accrual”"
+  }
+ ],
  "recent": []
 }
