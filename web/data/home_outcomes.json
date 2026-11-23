@@ -6,7 +6,7 @@
    "key": "stopped_efficacy",
    "status": "Stopped",
    "label": "Efficacy or futility",
-   "count": 1666,
+   "count": 1669,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT05746559",
@@ -24,7 +24,7 @@
    "key": "stopped_safety",
    "status": "Stopped",
    "label": "Safety",
-   "count": 640,
+   "count": 641,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT04921358",

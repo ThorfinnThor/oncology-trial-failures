@@ -1,5 +1,5 @@
 Oncology Failure Signals - evaluation sample
-100 of 1047 records, dataset 2026-11-23.
+100 of 1050 records, dataset 2026-11-23.
 
 Sources: ClinicalTrials.gov (U.S. National Library of Medicine); RxNorm and RxClass (NLM);
 ChEMBL (EMBL-EBI, CC BY-SA 3.0); NCI Thesaurus (NCI); PubMed (NCBI); SEC EDGAR.
