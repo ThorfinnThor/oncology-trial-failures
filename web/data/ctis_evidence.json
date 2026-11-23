@@ -1,1 +1,80 @@
-{}
+{
+ "NCT05159388": {
+  "ctis_id": "2023-510046-25-00",
+  "categories": "Safety Related (early termination); safety-related halt",
+  "countries": "Belgium, France; halt Belgium, Spain",
+  "summary": "Ended early for safety-related reasons, recorded by the sponsor in the EU register after a safety-related halt."
+ },
+ "NCT05900050": {
+  "ctis_id": "2024-513706-56-00",
+  "categories": "Safety Related (early termination); urgent safety measure",
+  "countries": "France, Germany, Spain, Hungary, Italy (Belgium: Sponsor Decision)",
+  "summary": "Ended early for safety-related reasons in five of six EU countries, after an urgent safety measure."
+ },
+ "NCT06142383": {
+  "ctis_id": "2023-504678-39-00",
+  "categories": "Safety-related halt in every country, never lifted; urgent safety measure; then early termination",
+  "countries": "Bulgaria, Czechia, France, Germany, Hungary, Italy, Portugal, Slovakia, Spain",
+  "summary": "Recruitment and dosing were halted for safety-related reasons in every EU country, with an urgent safety measure, and the trial was ended without restarting."
+ },
+ "NCT06488716": {
+  "ctis_id": "2024-513391-17-00",
+  "categories": "Safety-related halt (related grade 5 event, stopping criteria met)",
+  "countries": "Spain; ended France, Italy, Spain",
+  "summary": "Halted after a treatment-related fatal adverse event met the protocol stopping criteria, then ended; the registry cites the safety review and the overall benefit-risk."
+ },
+ "NCT06509906": {
+  "ctis_id": "2024-514155-15-00",
+  "categories": "Safety Related (early termination); halt on the safety committee's recommendation",
+  "countries": "Spain",
+  "summary": "Halted on the safety committee's advice after poor tolerance and febrile neutropenia in the first participants on the combination, then ended for safety-related reasons."
+ },
+ "NCT06528093": {
+  "ctis_id": "2023-508998-85-00",
+  "categories": "Safety Related (early termination)",
+  "countries": "Belgium, France, Germany, Spain",
+  "summary": "Ended early for safety-related reasons in every EU country."
+ },
+ "NCT06607484": {
+  "ctis_id": "2023-507753-15-00",
+  "categories": "Safety-related recruitment halt, never lifted; then early termination",
+  "countries": "Austria",
+  "summary": "Recruitment was halted for safety-related reasons and the trial was ended without restarting."
+ },
+ "NCT06987968": {
+  "ctis_id": "2025-521029-34-00",
+  "categories": "Safety Related (early termination); urgent safety measure",
+  "countries": "Belgium, France, Germany, Spain",
+  "summary": "Ended early for safety-related reasons in every EU country, after an urgent safety measure."
+ },
+ "NCT06882746": {
+  "ctis_id": "2024-519301-36-00",
+  "categories": "Feasibility (early termination); safety-related halt, never lifted",
+  "countries": "Germany, Spain",
+  "summary": "Halted for safety-related reasons, then ended for feasibility (recruitment) reasons; both are recorded in the EU register."
+ },
+ "NCT06055075": {
+  "ctis_id": "2023-503689-21-00",
+  "categories": "Reprioritisation of Trial",
+  "countries": "Denmark, Germany, Italy (France, Spain: Sponsor Decision)",
+  "summary": "Ended as a reprioritisation; the registry adds that the sponsor stopped developing the drug."
+ },
+ "NCT06679582": {
+  "ctis_id": "2023-506240-16-00",
+  "categories": "Reprioritisation of Trial",
+  "countries": "Austria, Denmark, France, Germany, Italy, Netherlands, Spain",
+  "summary": "Ended as a reprioritisation in every EU country."
+ },
+ "NCT05856526": {
+  "ctis_id": "2022-501104-10-00",
+  "categories": "Feasibility (recruitment issues, etc)",
+  "countries": "Belgium, Spain (Austria, Czechia: Sponsor Decision)",
+  "summary": "Ended for feasibility (recruitment) reasons in two of four EU countries; the others give no reason."
+ },
+ "NCT06716853": {
+  "ctis_id": "2024-512898-27-00",
+  "categories": "Feasibility (recruitment issues, etc)",
+  "countries": "Italy",
+  "summary": "Ended for feasibility (recruitment) reasons, matching the registry text on persistent recruitment problems."
+ }
+}

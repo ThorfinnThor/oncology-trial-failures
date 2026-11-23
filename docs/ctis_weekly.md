@@ -35,14 +35,21 @@ NCT...` prints each record, with the sponsor's justification for halts.
    justifications: accept when they name the safety finding or no state contradicts it.
 2. **Reprioritisation of Trial** → BUSINESS_STRATEGY. **Feasibility (recruitment issues, etc)** →
    RECRUITMENT, unless the justification names another feasibility problem.
-3. **A halt with the benefit–risk flag but category "Sponsor Decision"** is not enough on its own: the
+3. **A halt coded "Safety related"** (not only flagged) that was never lifted before the early
+   termination (no RESTART_OF_TRIAL event), with no member state recording a different cause → SAFETY.
+   If a state records another category for the termination (e.g. Feasibility), both causes:
+   MIXED_CAUSES. Decided 23 Nov (NCT06142383, NCT06607484, NCT06882746).
+4. **A halt with the benefit–risk flag but category "Sponsor Decision"** is not enough on its own: the
    flag has been set for halts "to reduce the burden of the trial". Accept only when the justification
    names the safety or efficacy finding.
-4. **Medicinal Product Related**, **Study Related**: read the justification; without a cause, not
+5. **Medicinal Product Related**, **Study Related**: read the justification; without a cause, not
    established (rule 5).
-5. A decision row: `nct_id, outcome, primary_reason, secondary_reasons, ctis_id, categories, countries,
+6. A decision row: `nct_id, outcome, primary_reason, secondary_reasons, ctis_id, categories, countries,
    our_summary, decided_by, decided_at`; `our_summary` in our words. Accepted rows go into a dated
    `docs/classification_change_*.md` and the commit message (CLAUDE.md rule 3).
+
+An urgent safety measure alone is not a cause: its content is not public. First review 23 Nov: 13 of 26
+accepted (`docs/classification_change_2026-11-23_ctis.md`), 13 rejected with reasons.
 
 Accepted decisions are applied by `scripts/reclassify_dataset_v2.py` (source `CTIS_REVIEWED`, after a
 SEC filing or a publication for the same trial) and shown on the trial page as "What the EU trial

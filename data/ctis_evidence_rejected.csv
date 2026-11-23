@@ -1,1 +1,14 @@
 nct_id,ctis_id,reason,decided_by,decided_at
+NCT02615184,2022-501350-11-00,"""Study Related"" with a halt over lab-test (IVDR) compliance; no cause for the termination itself.",Claude (AI-assisted review),2026-11-23
+NCT04222972,2023-505035-12-00,"Only an urgent safety measure, content not public; the registry text already gives a business reason (a rule gap, see TODO).",Claude (AI-assisted review),2026-11-23
+NCT05171049,2023-509569-19-00,"""Sponsor Decision"" everywhere; the benefit-risk flag on the halt comes without a reason.",Claude (AI-assisted review),2026-11-23
+NCT05386550,2023-508528-36-00,"Only an urgent safety measure, content not public.",Claude (AI-assisted review),2026-11-23
+NCT05462990,2023-509274-28-00,"""Sponsor Decision""; the halt justification refers to an attached document that is not public.",Claude (AI-assisted review),2026-11-23
+NCT05492500,2023-509747-27-00,"""Sponsor Decision"" and an urgent safety measure whose content is not public.",Claude (AI-assisted review),2026-11-23
+NCT05839600,2022-502125-17-00,"A study-management hold for a planned analysis; termination ""Sponsor Decision"".",Claude (AI-assisted review),2026-11-23
+NCT05999357,2023-505721-13-00,"""Medicinal Product Related"" in one country without detail; the registry says development stopped.",Claude (AI-assisted review),2026-11-23
+NCT06032546,2023-505900-53-00,"Feasibility in one of five countries; the others ""Sponsor Decision"".",Claude (AI-assisted review),2026-11-23
+NCT06084689,2023-506823-28-00,"Feasibility in France, but the registry says development of the molecule stopped; the two do not agree.",Claude (AI-assisted review),2026-11-23
+NCT06139328,2022-502788-39-00,"Halt to reduce the burden and await interim results; ""Sponsor Decision"". Not established (rule 5).",Claude (AI-assisted review),2026-11-23
+NCT06515002,2023-503281-23-00,"""Sponsor Decision""; the benefit-risk flag on the halt comes without a reason.",Claude (AI-assisted review),2026-11-23
+NCT06716190,2024-517209-95-00,"""Medicinal Product Related"" in one country without detail.",Claude (AI-assisted review),2026-11-23

@@ -274,7 +274,9 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
    80 no-cause trials linked today, ~10 gain a cause (mostly safety), the set grows with every new EU
    trial. **Weekly since 23 Nov** (`scripts/sources/ctis_stop_evidence.py`, `docs/ctis_weekly.md`): all 5,642
    no-cause trials checked, 96 with a CTIS number, **26 waiting for review** (9 safety, 4 recruitment, 2
-   business, 11 other categories or flags); decisions apply as source `CTIS_REVIEWED` with a box "What the EU
+   business, 11 other categories or flags). **Reviewed 23 Nov: 13 accepted** (8 safety, 1 safety + recruitment, 2
+   business, 2 recruitment), 13 rejected (`docs/classification_change_2026-11-23_ctis.md`). Two rule gaps found
+   (NCT04222972 business, NCT06716853 recruitment): golden cases + rule fix still to do. Decisions apply as source `CTIS_REVIEWED` with a box "What the EU
    trial register records". Later: CTIS categories as a validation check of trials that do state a cause.
 3. **Non-US company pipeline updates and press releases** (quarterly "removed from pipeline" tables):
    harder to search, no common API; after 1–2.
