@@ -1,13 +1,21 @@
 {
  "schema_version": 2,
  "release": "2026-11-23",
- "generated_at_utc": "2026-11-23T07:43:06Z",
+ "generated_at_utc": "2026-11-23T14:08:54Z",
  "last_sent_at": "2026-11-16T23:48:45Z",
  "counts": {
-  "added": 45,
+  "added": 55,
   "changed": 1
  },
  "added": [
+  {
+   "nct_id": "NCT06509191",
+   "title": "The Use of Melatonin for Delirium Prevention in Medically Hospitalized Patients",
+   "sponsor": "Sultan Qaboos University",
+   "area": "Other",
+   "reason": "Efficacy / futility",
+   "detail": "Stopped early for futility after interim analysis showed a very low delirium incidence and a low likelihood of demonstrating benefit with the planned sample size."
+  },
   {
    "nct_id": "NCT06744920",
    "title": "A Study to Investigate the Efficacy, Safety and Tolerability of Remibrutinib Versus Placebo in Adult Patients With Generalized Myasthenia…",
@@ -15,6 +23,30 @@
    "area": "Other",
    "reason": "Efficacy / futility",
    "detail": "Sponsor decision based on pre-specified futility efficacy criteria being met."
+  },
+  {
+   "nct_id": "NCT04255602",
+   "title": "A Study of Low and Standard-dose Ticagrelor After Intervention for ACS Patients",
+   "sponsor": "Shanghai Tong Ren Hospital",
+   "area": "Cardiovascular",
+   "reason": "Funding",
+   "detail": "funding issues"
+  },
+  {
+   "nct_id": "NCT04307485",
+   "title": "A Study of Low Dose vs Standard Ticagrelor on Platelet Function After Intervention for Acute Coronary Syndrome in Senior Patients",
+   "sponsor": "Shanghai Tong Ren Hospital",
+   "area": "Cardiovascular",
+   "reason": "Funding",
+   "detail": "funding issues"
+  },
+  {
+   "nct_id": "NCT04307511",
+   "title": "A sTudy of Low Dose vs Standard Dose of tIcaGrelor on Platelet Function After intErvention for Acute Coronary syndRome in Diabetes Mellitus…",
+   "sponsor": "Shanghai Tong Ren Hospital",
+   "area": "Cardiovascular",
+   "reason": "Funding",
+   "detail": "funding issues"
   },
   {
    "nct_id": "NCT07119398",
@@ -39,38 +71,6 @@
    "area": "Dermatology",
    "reason": "Reason not stated",
    "detail": ""
-  },
-  {
-   "nct_id": "NCT05251493",
-   "title": "Ferric Derisomaltose (Iron Isomaltoside) Versus Iron Sucrose for Treatment of Iron Deficiency in Pregnancy",
-   "sponsor": "Saskatchewan Health Authority - Regina Area",
-   "area": "Hematology (non-onc)",
-   "reason": "Reason not stated",
-   "detail": "The monograph for the investigational drug (derisomaltose) was updated to include pregnancy as an indication for infusion. Enrollment significantly decreased and the study was stopped."
-  },
-  {
-   "nct_id": "NCT05600777",
-   "title": "A 24-Week Study of the Efficacy and Safety of BLU-5937 in Adults With Refractory Chronic Cough",
-   "sponsor": "Bellus Health Inc. - a GSK company",
-   "area": "Respiratory",
-   "reason": "Programme stopped, cause not stated",
-   "detail": "The study has been terminated due to the decision to cease further development of camlipixant in refractory chronic cough (RCC), based on the results of the Phase 3 program"
-  },
-  {
-   "nct_id": "NCT05760612",
-   "title": "Adjuvant Trastuzumab Plus Neratinib in Hormone Receptor-Positive/Human Epidermal Growth Factor Receptor 2-Positive Breast Cancer After…",
-   "sponsor": "Sun Yat-Sen Memorial Hospital of Sun Yat-Sen University",
-   "area": "Oncology",
-   "reason": "Recruitment",
-   "detail": "Poor accrual"
-  },
-  {
-   "nct_id": "NCT06404775",
-   "title": "External Mastalgia-oil Versus Oral Tamoxifen in Premenopausal Women With Severe Mastalgia",
-   "sponsor": "Sun Yat-Sen Memorial Hospital of Sun Yat-Sen University",
-   "area": "Other",
-   "reason": "Funding",
-   "detail": "Funding issues"
   }
  ],
  "changed": [
