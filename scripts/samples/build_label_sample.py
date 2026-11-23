@@ -258,8 +258,8 @@ def main() -> int:
           "| `drugs_background` | What the control arms received too: the background a drug was tested on, never the drug "
           "tested | Ours, as above |",
           "| `drug_ncit_codes` | NCI Thesaurus codes of the tested drugs, where one identifies the drug | NCI Thesaurus |",
-          "| `drug_resolution` | `RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, or `NOT_COVERED` (only "
-          "interventional Phase 2/3 trials started 2010 or later are resolved today) | Ours |",
+          "| `drug_resolution` | `RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, or `NOT_COVERED` (not "
+          "resolved yet) | Ours |",
           "| `why_stopped` | The sponsor's stop reason, verbatim | ClinicalTrials.gov |",
           "| `label_outcome`, `label_primary_reason` | See above | Ours |",
           "| `label_secondary_reasons` | Further explicit causes, separated by `; ` | Ours |",

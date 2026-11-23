@@ -36,6 +36,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 RESOLVED = ROOT / ".cache/universe/universe_resolved_v1.jsonl.gz"
+EXTRA = ROOT / ".cache/universe/stopped_extra_resolved.jsonl.gz"
 STOPPED = ROOT / "data/all_stopped_trials.csv"
 OUT = ROOT / "data/trial_drugs.csv"
 PUBLIC = ROOT / "web/public/trial_drugs.csv"
@@ -153,11 +154,15 @@ def main() -> int:
     stopped = [r["nct_id"] for r in csv.DictReader(open(STOPPED, encoding="utf-8"))]
     wanted = set(stopped)
     found: dict[str, dict] = {}
-    with gzip.open(RESOLVED, "rt", encoding="utf-8") as fh:
-        for line in fh:
-            rec = json.loads(line)
-            if rec.get("nct_id") in wanted:
-                found[rec["nct_id"]] = summarise(rec, ncit, norm)
+    # The universe first, then the stopped trials outside it (resolve_stopped_extra.py).
+    for path in (RESOLVED, EXTRA):
+        if not path.exists():
+            continue
+        with gzip.open(path, "rt", encoding="utf-8") as fh:
+            for line in fh:
+                rec = json.loads(line)
+                if rec.get("nct_id") in wanted and rec["nct_id"] not in found:
+                    found[rec["nct_id"]] = summarise(rec, ncit, norm)
     rows = [found.get(n) or {"nct_id": n, "drugs_tested": "", "drugs_background": "", "drugs_comparator": "",
                              "drug_ncit_codes": "", "drug_resolution": "NOT_COVERED", "drug_name_source": ""}
             for n in stopped]

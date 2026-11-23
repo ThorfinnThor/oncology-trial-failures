@@ -199,6 +199,9 @@ jobs:
           python -u scripts/universe/resolve.py
           # The standard names of every stopped trial's drugs (tested vs background), for the public dataset
           # and the packages: names only, no ChEMBL identifiers, mechanisms or targets.
+          # Stopped trials outside the universe (Phase 1, Phase 4, before 2010): fetched in batches and
+          # resolved the same way into a separate file the rates never read. Time-limited, resumes weekly.
+          python -u scripts/universe/resolve_stopped_extra.py --max-seconds 1200 || true
           python scripts/universe/export_trial_drugs.py
           # The other half of the evidence: trials that ran to the end and missed. Before the
           # briefs, which carry the count as a second number; resumable by year slice, and every

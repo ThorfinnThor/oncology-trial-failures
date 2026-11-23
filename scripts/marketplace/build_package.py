@@ -206,8 +206,7 @@ def main() -> int:
           "under their standard name; and what the control arms received too (background, never the drug tested) | "
           "Ours; names from ChEMBL and the NCI Thesaurus |",
           "| `drug_ncit_codes`, `drug_resolution` | NCI Thesaurus codes of the tested drugs; how far they were identified "
-          "(`RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, `NOT_COVERED`: only interventional "
-          "Phase 2/3 trials started 2010 or later are resolved today) | Ours; NCI Thesaurus |",
+          "(`RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, `NOT_COVERED`: not resolved yet) | Ours; NCI Thesaurus |",
           "| `label_outcome`, `label_primary_reason`, `label_secondary_reasons` (`; `-separated) | The label | Ours |",
           "| `label_evidence` | Trace: classifier version, outcome, reason, each rule that fired and the text it "
           "matched. For `sec_filing` rows: the filing's form, date and URL | Ours |",
