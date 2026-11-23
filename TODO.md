@@ -65,7 +65,9 @@ pricing; a sample and data dictionary.
 
 **Status:** reply sent 7 Nov 2026, no answer yet. **Follow-up drafted 19 Nov** (Claude, in the session):
 new since 7 Nov — clinician check of 150 oncology trials (101 of 103 biological labels confirmed), the
-public sample on Hugging Face, classifier 2.7.7. Send around 21 Nov.
+public sample on Hugging Face, classifier 2.7.7. Send around 21 Nov. **Updated 23 Nov** (in the session): adds
+the 11 disputed cases decided by the clinician, 50 trials with a cause from the sponsor's SEC filing, the
+free samples on /datasets, 24,124 trials.
 
 **What the reply (sent 7 Nov) says:** two label types (stop reasons, 24,023 trials; posted endpoint
 met/missed, ~5,200 assessable 2015–2024, ~1,960 missed); validation by two model families, 98.2 %
@@ -243,6 +245,24 @@ ten. The two batches stay in the review tool for clinicians later.
    First test 23 Nov: 7 trials due, no passage.
 5. ~~Programme stops counted apart~~ **done:** evidence rule `sec.programme_filing` (30) vs `sec.trial_filing` (20).
 
+## More sources like SEC (proposed 23 Nov, not started)
+
+For the ~5,700 trials with no stated or an unresolved cause; ~1,535 have an SEC-registered sponsor, the
+rest are academic or non-US industry. Each source only proposes; decisions are reviewed per trial like
+SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
+1. **Publications (Europe PMC / PubMed) by NCT ID:** the results paper of a stopped trial often says why
+   ("closed early for futility"). Biggest gap it fills: academic trials, which the SEC never covers. Open
+   API, linked by NCT ID. Needs the Europe PMC host in the environment.
+2. **EU register (EudraCT / CTIS) by EudraCT number** (secondary ID on ClinicalTrials.gov): European
+   industry trials (Roche, Bayer, Boehringer, UCB: not reachable via the SEC). Under the EU regulation an
+   early termination is reported as affecting the benefit–risk balance (safety / lack of efficacy, Art. 38)
+   or not (Art. 37), with reasons. Whether the public pages show the reason is not yet checked (the hosts
+   are blocked here).
+3. **Non-US company pipeline updates and press releases** (quarterly "removed from pipeline" tables):
+   harder to search, no common API; after 1–2.
+4. **ClinicalTrials.gov record history:** an earlier version sometimes had a different stop text or a
+   "suspended" reason; same host as now, cheap to probe.
+
 ## Getting found: next steps (decided 19 Nov)
 
 **Done 19 Nov:** the free sample on the site (`/samples/labels/`, rebuilt weekly) and the article
@@ -264,7 +284,10 @@ Next: submit the sitemap in Search Console and check the pages in the Rich Resul
    Then check with Google's Rich Results test and Search Console. Started 19 Nov: the home page's
    Dataset markup already points to Zenodo and Hugging Face (`sameAs`).
 2. **Defined.ai:** apply for a data partnership (AI training-data marketplace) with the Hugging Face
-   sample and `/validation` as evidence.
+   sample and `/validation` as evidence. Plan of 23 Nov: list only the stop-reason and endpoint labels
+   (no ChEMBL fields: CC BY-SA), non-exclusive, a dated release (the weekly feed stays a direct sale), price
+   not below the direct one. Claude drafts the listing, datasheet and rights statement; Schayan submits
+   the partner form and signs.
 3. **AWS Data Exchange / Snowflake Marketplace:** check only once a buyer asks for delivery there.
 
 **Hugging Face (public since 19 Nov):** the card points to `/pricing`; the weekly run refreshes the
