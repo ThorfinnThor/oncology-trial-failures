@@ -17,6 +17,17 @@ reviewer, but no paper text goes into an export or onto a page; a decision carri
 and the label only.
 
   python scripts/sources/pub_stop_evidence.py --out <dir> --sample 100 [--seed N] [--nct NCT...]
+  python scripts/sources/pub_stop_evidence.py --weekly --out <dir> [--max-seconds 2700]
+  python scripts/sources/pub_stop_evidence.py --show NCT...        (the sentences, for the reviewer)
+
+--weekly searches what is due within a time budget: a no-cause trial not yet in the ledger
+data/pub_searched.csv or whose stop text changed (terminated and suspended trials first, the most
+recently updated first), and trials searched more than 180 days ago whose registry entry changed in
+the last four years (papers come years after a stop). Trials with a sentence wait in
+data/pub_pending_review.json until a decision lands in data/pub_evidence_decisions.csv (accepted) or
+data/pub_evidence_rejected.csv. The pending file holds PMIDs, where the sentence is and the rules'
+suggestion, never the paper's words (public repository); --show prints the sentences from the
+papers for the review. docs/pub_weekly.md says how to review.
 
 Writes <dir>/pub_evidence.json and <dir>/summary.txt. Cached under .cache/pub/.
 """
@@ -35,6 +46,7 @@ import time
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from datetime import date, timedelta
 from typing import Optional
 from xml.etree import ElementTree
 
@@ -120,13 +132,15 @@ def full_text(pmcid: str) -> str:
     return " ".join(" ".join(p.itertext()) for p in (body.iter("p") if body is not None else []))
 
 
-def papers_for(nct: str) -> list[dict]:
-    """The trial's own papers, each with how it is linked and its abstract (and OA full text)."""
+def papers_for(nct: str, search_text: bool = True) -> list[dict]:
+    """The trial's own papers, each with how it is linked and its abstract (and OA full text).
+    search_text=False looks only at the registry's own references (fast; used for withdrawn trials,
+    which never enrolled and almost never have a paper)."""
     papers: dict[str, dict] = {}
     for ref in registry_refs(nct):
         for p in epmc_search(f"EXT_ID:{ref['pmid']} AND SRC:MED", 1):
             papers[p["id"]] = {**p, "link": f"registry_{ref['link'].lower()}"}
-    for p in epmc_search(f'"{nct}"'):
+    for p in (epmc_search(f'"{nct}"') if search_text else []):
         if p.get("id") in papers or nct.lower() not in (p.get("abstractText") or "").lower():
             continue
         types = " ".join((p.get("pubTypeList") or {}).get("pubType") or [])
@@ -136,10 +150,10 @@ def papers_for(nct: str) -> list[dict]:
     return list(papers.values())
 
 
-def sentences_for(trial: dict) -> list[dict]:
+def sentences_for(trial: dict, papers: Optional[list[dict]] = None) -> list[dict]:
     nct = trial["nct_id"]
     found = []
-    for p in papers_for(nct):
+    for p in (papers_for(nct) if papers is None else papers):
         texts = [("abstract", re.sub(r"<[^>]+>", " ", p.get("abstractText") or ""))]
         if p.get("pmcid") and p.get("isOpenAccess") == "Y":
             texts.append(("full_text", full_text(p["pmcid"])))
@@ -167,20 +181,89 @@ def sentences_for(trial: dict) -> list[dict]:
     return sorted(best.values(), key=lambda f: -f["score"])[:3]
 
 
+LEDGER = ROOT / "data/pub_searched.csv"
+LEDGER_FIELDS = ["nct_id", "text_hash", "searched_on", "papers", "best_score"]
+PENDING = ROOT / "data/pub_pending_review.json"
+DECISIONS = ROOT / "data/pub_evidence_decisions.csv"
+REJECTED = ROOT / "data/pub_evidence_rejected.csv"
+RECHECK_DAYS = 180
+
+
+def _csv_by_nct(path: Path) -> dict[str, dict]:
+    if not path.exists():
+        return {}
+    with path.open(encoding="utf-8", newline="") as handle:
+        return {r["nct_id"].strip().upper(): r for r in csv.DictReader(handle) if r.get("nct_id")}
+
+
+def stop_hash(why: str) -> str:
+    return clf.text_hash(clf.normalize_reason(why))
+
+
+def due_order(trials: list[dict], ledger: dict[str, dict], today: date) -> list[dict]:
+    """What a weekly run should search, most useful first: never searched (terminated and
+    suspended before withdrawn, recently updated first), then rechecks."""
+    new, recheck = [], []
+    four_years_ago = (today - timedelta(days=4 * 365)).isoformat()
+    for t in trials:
+        seen = ledger.get(t["nct_id"].upper())
+        if seen is None or seen["text_hash"] != stop_hash(t["why_stopped"]):
+            new.append(t)
+        elif (today - date.fromisoformat(seen["searched_on"])).days >= RECHECK_DAYS \
+                and (t.get("last_update_post_date") or "") >= four_years_ago:
+            recheck.append(t)
+    new.sort(key=lambda t: (t["overall_status"] == "WITHDRAWN", -int(re.sub(r"\D", "", t.get("last_update_post_date") or "0") or 0)))
+    return new + recheck
+
+
+def pending_entry(t: dict, ps: list[dict], found_on: str) -> dict:
+    """A trial waiting for review, without the paper's words."""
+    return {"nct_id": t["nct_id"], "brief_title": t["brief_title"], "lead_sponsor": t["lead_sponsor"],
+            "why_stopped": t["why_stopped"], "label_now": t["label_now"], "found_on": found_on,
+            "passages": [{"pmid": p["pmid"], "pmcid": p["pmcid"], "doi": p["doi"], "journal": p["journal"],
+                          "year": p["year"], "link": p["link"], "where": p["where"], "score": p["score"],
+                          "suggested": p["suggested"]} for p in ps]}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--out", type=Path)
     ap.add_argument("--sample", type=int, default=100, help="random no-cause trials to probe (0 = all)")
     ap.add_argument("--seed", type=int, default=20261123)
     ap.add_argument("--nct", nargs="*", default=[])
-    ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--workers", type=int, default=3)
+    ap.add_argument("--weekly", action="store_true", help="search what is due, update the ledger and the review queue")
+    ap.add_argument("--max-seconds", type=int, default=2700, help="time budget of a weekly run")
+    ap.add_argument("--show", nargs="+", metavar="NCT", help="print the sentences of these trials' papers")
     args = ap.parse_args()
     rows = list(csv.DictReader(open(ROOT / "data/all_stopped_trials.csv", encoding="utf-8")))
+    by_id = {r["nct_id"]: r for r in rows}
+    if args.show:
+        for nct in args.show:
+            t = by_id[nct]
+            print(f"\n{nct} | {t['brief_title']} | {t['overall_status']} | registry: {t['why_stopped']!r}")
+            for p in sentences_for(t, papers_for(nct, search_text=t["overall_status"] != "WITHDRAWN")):
+                print(f"  PMID {p['pmid']} ({p['journal']} {p['year']}, {p['link']}, {p['where']}), rules: "
+                      f"{p['suggested']['outcome']}/{p['suggested']['primary_reason']}\n    {p['sentence']}")
+        return 0
+    if args.out is None:
+        ap.error("--out is required")
+    today = date.today()
     trials = [r for r in rows if r["classification_final_outcome"] in NO_CAUSE and (not args.nct or r["nct_id"] in args.nct)]
-    if args.sample and not args.nct:
+    ledger = _csv_by_nct(LEDGER) if args.weekly else {}
+    if args.weekly:
+        trials = due_order(trials, ledger, today)
+    elif args.sample and not args.nct:
         trials = random.Random(args.seed).sample(trials, min(args.sample, len(trials)))
+    deadline = time.time() + args.max_seconds if args.weekly else float("inf")
+    results = []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        results = list(pool.map(lambda t: (t, _safe(t)), trials))
+        step = args.workers * 4
+        for i in range(0, len(trials), step):
+            if time.time() > deadline:
+                break
+            chunk = trials[i:i + step]
+            results += list(zip(chunk, pool.map(_safe, chunk)))
     out, stats = [], Counter()
     for t, (ps, n_papers, err) in results:
         stats["searched"] += 1
@@ -200,15 +283,54 @@ def main() -> int:
     (args.out / "pub_evidence.json").write_text(json.dumps({"stats": dict(stats), "trials": out}, indent=1,
                                                            ensure_ascii=False) + "\n", encoding="utf-8")
     lines = [f"{k}: {v}" for k, v in sorted(stats.items())]
+    if args.weekly:
+        lines = update_weekly(results, out, ledger, today, len(trials), args.out) + lines
     (args.out / "summary.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines), file=sys.stderr)
     return 0
 
 
+def update_weekly(results, out, ledger, today, due, out_dir: Path) -> list[str]:
+    for t, (ps, n_papers, err) in results:
+        if err:
+            continue  # a failed search is retried next week
+        ledger[t["nct_id"].upper()] = {"nct_id": t["nct_id"], "text_hash": stop_hash(t["why_stopped"]),
+                                       "searched_on": today.isoformat(), "papers": str(n_papers),
+                                       "best_score": str(ps[0]["score"]) if ps else "0"}
+    with LEDGER.open("w", encoding="utf-8", newline="") as handle:
+        w = csv.DictWriter(handle, fieldnames=LEDGER_FIELDS, lineterminator="\n")
+        w.writeheader()
+        w.writerows(sorted(ledger.values(), key=lambda x: x["nct_id"]))
+    decided = set(_csv_by_nct(DECISIONS)) | set(_csv_by_nct(REJECTED))
+    pending = {t["nct_id"].upper(): t for t in (json.loads(PENDING.read_text())["trials"] if PENDING.exists() else [])}
+    new = [t for t in out if t["nct_id"].upper() not in decided and t["nct_id"].upper() not in pending]
+    for t in out:
+        key = t["nct_id"].upper()
+        if key not in decided:
+            pending[key] = pending_entry(t, t["passages"], pending.get(key, {}).get("found_on", today.isoformat()))
+    pending = {k: v for k, v in pending.items() if k not in decided}
+    PENDING.write_text(json.dumps({"updated": today.isoformat(), "pending": len(pending),
+                                   "trials": sorted(pending.values(), key=lambda t: (t["found_on"], t["nct_id"]))},
+                                  indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    left = due - len(results)
+    lines = [f"Publication search {today.isoformat()}: {len(results)} trials searched ({left} still due), "
+             f"{len(out)} with a sentence about the stop, {len(new)} new for review, {len(pending)} waiting "
+             "in total (data/pub_pending_review.json)."]
+    for t in new:
+        p = t["passages"][0]
+        lines.append(f"- {t['nct_id']} ({t['lead_sponsor']}): PMID {p['pmid']} ({p['journal']} {p['year']}); "
+                     f"rules read {p['suggested']['outcome']}/{p['suggested']['primary_reason']}")
+    if pending:
+        lines.append("\nTo review: open a Claude Code session on the repository and ask it to review the pending "
+                     "publication passages (docs/pub_weekly.md). Nothing changes a label before that review.")
+    (out_dir / "new_count").write_text(str(len(new)), encoding="utf-8")
+    return lines
+
+
 def _safe(trial: dict) -> tuple[list[dict], int, str]:
     try:
-        n = len(papers_for(trial["nct_id"]))
-        return (sentences_for(trial) if n else []), n, ""
+        papers = papers_for(trial["nct_id"], search_text=trial["overall_status"] != "WITHDRAWN")
+        return (sentences_for(trial, papers) if papers else []), len(papers), ""
     except Exception as exc:  # one failed trial must not end the probe
         print(f"  {trial['nct_id']}: {exc}", file=sys.stderr)
         return [], 0, str(exc)

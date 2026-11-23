@@ -18,14 +18,19 @@ acts and are recorded separately below.
 | NCI Thesaurus (NCI) | CC BY 4.0, with a separate trademark position on the NCI Thesaurus name itself. | Concept codes and preferred terms used to resolve drug names. | Any presentation that implies our terminology is an NCI-issued thesaurus. Attribution is carried; the name is not used as a badge. |
 | RxNorm / RxClass (NLM) | US government terminology. | Normalised drug names and class assignments used during resolution. | Redistribution of the source files. |
 | PubMed / NCBI (NLM) | Indexing is public; **publishers or authors may retain copyright in the abstracts**. | Counts and identifiers only — `publication_count` and PMIDs. | Abstract text, title text beyond a bibliographic reference, and any full text. This is a deliberate product decision: no abstract text has ever been in an export, and none should be added. |
-| SEC EDGAR | US government filing system; filings themselves are company-authored. | Issuer identity and ticker, matched to a sponsor. | Filing text and exhibits. |
+| SEC EDGAR | US government filing system; filings themselves are company-authored. The SEC states that "EDGAR public filing content" is "free to access and reuse" (sec.gov Webmaster FAQ, checked 23 Nov 2026). | Issuer identity and ticker, matched to a sponsor. For a label taken from a reviewed filing (`label_basis` `sec_filing`): the one sentence it rests on, quoted with form, filing date and a link to the filing. | Whole filings or exhibits, and any passage beyond the sentence a label rests on. |
 | Our own work | Ours | Classification labels and evidence spans from registry text, mechanism-class definitions, cohort rules, rates, intervals, cumulative-incidence estimates, concentration statistics and written interpretation. | — |
 
 ## Rules this register imposes on the pipeline
 
-1. **No source text beyond the registry's own stop reason appears in an export.** Registry
+1. **No source text beyond the evidence a label rests on appears in an export.** Registry
    `why_stopped` text is quoted verbatim because it is the evidence the classification rests
-   on and the customer has to be able to check it. Nothing else is quoted.
+   on and the customer has to be able to check it. The same holds for the one sentence of a
+   reviewed SEC filing behind a `sec_filing` label (attributed and linked; decided 23 Nov 2026
+   on the SEC's reuse statement). Nothing else is quoted: in particular no publication text —
+   a label taken from a trial's paper carries the PMID, never the paper's words. The
+   marketplace package (`scripts/marketplace/build_package.py`) is narrower still and carries
+   only the filing reference.
 2. **Facts, arrangement and database rights are separate questions.** A calculated aggregate
    is not automatically an adaptation of a source database, but a joined extract is not
    automatically free of obligations either because we called it "derived". Where a field

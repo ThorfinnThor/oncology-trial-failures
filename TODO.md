@@ -245,7 +245,12 @@ ten. The two batches stay in the review tool for clinicians later.
    First test 23 Nov: 7 trials due, no passage.
 5. ~~Programme stops counted apart~~ **done:** evidence rule `sec.programme_filing` (30) vs `sec.trial_filing` (20).
 
-## More sources like SEC (proposed 23 Nov, not started)
+## More sources like SEC (proposed 23 Nov)
+
+**SEC text (decided 23 Nov):** the SEC says EDGAR filing content is free to reuse (Webmaster FAQ); the one
+sentence a `sec_filing` label rests on stays on the trial page and in `classification_evidence`, recorded
+in `docs/provenance_and_rights.md`. The marketplace package carries only the filing reference.
+
 
 For the ~5,700 trials with no stated or an unresolved cause; ~1,535 have an SEC-registered sponsor, the
 rest are academic or non-US industry. Each source only proposes; decisions are reviewed per trial like
@@ -254,8 +259,11 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
    `docs/pub_evidence_probe_2026-11-23.md`): 200 random no-cause trials, 26 with a linked paper, **8 with a
    clear cause (4%), all biological**, 3 arguable ("other trials' results"). Projected ~230 trials (110–440).
    Covers academic and European sponsors the SEC does not. Paper text is read for review only; decisions
-   carry the PMID. Network: www.ebi.ac.uk and clinicaltrials.gov added to the environment. **Next:** a
-   `--weekly` ledger mode with a time budget (Europe PMC is slow: 3–5 h for all), review like SEC.
+   carry the PMID. Network: www.ebi.ac.uk and clinicaltrials.gov added to the environment.
+   **Weekly since 23 Nov:** `--weekly --max-seconds 2400` in the weekly run (ledger `data/pub_searched.csv`,
+   queue `data/pub_pending_review.json` without paper text, mail "New publication passages to review");
+   backlog ~5,400 trials over several weeks. **11 waiting for review** (the probe's hits). How:
+   `docs/pub_weekly.md`. Applying decisions (`PUBLICATION_REVIEWED`) is built with the first accepted ones.
 2. **EU register (EudraCT / CTIS) by EudraCT number** (secondary ID on ClinicalTrials.gov): European
    industry trials (Roche, Bayer, Boehringer, UCB: not reachable via the SEC). Under the EU regulation an
    early termination is reported as affecting the benefit–risk balance (safety / lack of efficacy, Art. 38)
