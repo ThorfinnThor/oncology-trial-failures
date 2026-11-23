@@ -9,12 +9,12 @@
    "WITHDRAWN": 6962
   },
   "by_outcome": {
-   "UNRESOLVED": 3633,
-   "NON_BIOLOGICAL": 14184,
-   "BIOLOGICAL_FAILURE": 2479,
+   "UNRESOLVED": 3630,
+   "NON_BIOLOGICAL": 14185,
+   "BIOLOGICAL_FAILURE": 2480,
    "CAUSE_NOT_STATED": 1991,
    "NON_FAILURE_TRANSITION": 1613,
-   "MIXED_CAUSES": 232
+   "MIXED_CAUSES": 233
   },
   "disease_areas": 15,
   "start_year_min": "1990",

@@ -24,18 +24,18 @@ The full dataset holds 24,132 trials with status TERMINATED, WITHDRAWN or SUSPEN
 
 | `label_outcome` | Full dataset | In this sample |
 | --- | ---: | ---: |
-| `BIOLOGICAL_FAILURE` | 2,479 | 86 |
-| `MIXED_CAUSES` | 232 | 20 |
-| `NON_BIOLOGICAL` | 14,184 | 70 |
+| `BIOLOGICAL_FAILURE` | 2,480 | 86 |
+| `MIXED_CAUSES` | 233 | 20 |
+| `NON_BIOLOGICAL` | 14,185 | 70 |
 | `NON_FAILURE_TRANSITION` | 1,613 | 20 |
 | `CAUSE_NOT_STATED` | 1,991 | 20 |
-| `UNRESOLVED` | 3,633 | 24 |
+| `UNRESOLVED` | 3,630 | 24 |
 
 ### Label definitions
 
 | `label_outcome` | Meaning | `label_primary_reason` values |
 | --- | --- | --- |
-| `BIOLOGICAL_FAILURE` | The sponsor's stated reason is about the drug's effect: efficacy/futility, safety, or an explicitly unfavourable benefit–risk | `EFFICACY_FUTILITY` (1,666), `SAFETY` (639), `BIOLOGICAL_UNSPECIFIED` (174) |
+| `BIOLOGICAL_FAILURE` | The sponsor's stated reason is about the drug's effect: efficacy/futility, safety, or an explicitly unfavourable benefit–risk | `EFFICACY_FUTILITY` (1,666), `SAFETY` (640), `BIOLOGICAL_UNSPECIFIED` (174) |
 | `MIXED_CAUSES` | Several explicit causes, kept together rather than forced into one. Not necessarily biological: check `label_secondary_reasons` for `EFFICACY_FUTILITY`, `SAFETY` or `BIOLOGICAL_UNSPECIFIED` | `MULTIPLE` |
 | `NON_BIOLOGICAL` | Stopped for a reason unrelated to the drug's effect | `RECRUITMENT`, `BUSINESS_STRATEGY`, `FUNDING`, `STAFFING_RESOURCES`, `PROTOCOL_FEASIBILITY`, `SUPPLY_MANUFACTURING`, `REGULATORY`, `EXTERNAL_DISRUPTION`, `OPERATIONAL_OTHER`, `SUPPORT_WITHDRAWAL` |
 | `NON_FAILURE_TRANSITION` | Not a failure: a planned milestone, a replacement study, or a trial that never started | `PLANNED_MILESTONE`, `REPLACEMENT_TRANSITION`, `NOT_INITIATED` |
@@ -50,6 +50,10 @@ For a success/failure model, `BIOLOGICAL_FAILURE` is the failure class. The othe
 | --- | --- | --- |
 | `nct_id`, `brief_title`, `overall_status`, `phases`, `conditions`, `intervention_names`, `intervention_types`, `lead_sponsor`, `start_date`, `primary_completion_date` | Registry fields as filed | ClinicalTrials.gov |
 | `disease_area` | One of 15 areas, derived from conditions and MeSH terms | Ours |
+| `drugs_tested` | The drugs the experimental arms received and the control arms did not, under their standard name ("Pembrolizumab" for "MK-3475"); a drug we could not identify appears as filed | Ours; names from ChEMBL (CC BY-SA 3.0) and the NCI Thesaurus (CC BY 4.0) |
+| `drugs_background` | What the control arms received too: the background a drug was tested on, never the drug tested | Ours, as above |
+| `drug_ncit_codes` | NCI Thesaurus codes of the tested drugs, where one identifies the drug | NCI Thesaurus |
+| `drug_resolution` | `RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, or `NOT_COVERED` (only interventional Phase 2/3 trials started 2010 or later are resolved today) | Ours |
 | `why_stopped` | The sponsor's stop reason, verbatim | ClinicalTrials.gov |
 | `label_outcome`, `label_primary_reason` | See above | Ours |
 | `label_secondary_reasons` | Further explicit causes, separated by `; ` | Ours |
@@ -59,7 +63,7 @@ For a success/failure model, `BIOLOGICAL_FAILURE` is the failure class. The othe
 | `classifier_version` | Version of the rules | Ours |
 | `registry_url` | Link to the trial record | ClinicalTrials.gov |
 
-Full dataset by `label_basis`: `rule` 14,056 · `reviewed_decision` 6,439 · `unresolved` 3,517 · `sec_filing` 50 · `rule_on_description` 48 · `eu_register` 13 · `publication` 9.
+Full dataset by `label_basis`: `rule` 14,056 · `reviewed_decision` 6,439 · `unresolved` 3,514 · `sec_filing` 50 · `rule_on_description` 48 · `eu_register` 13 · `publication` 12.
 
 ---
 

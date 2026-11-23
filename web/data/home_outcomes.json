@@ -24,7 +24,7 @@
    "key": "stopped_safety",
    "status": "Stopped",
    "label": "Safety",
-   "count": 639,
+   "count": 640,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT04921358",

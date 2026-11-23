@@ -327,7 +327,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:24Z",
+      "generated_at_utc": "2026-11-23T17:36:16Z",
       "open_access": false
     },
     {
@@ -706,7 +706,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:24Z",
+      "generated_at_utc": "2026-11-23T17:36:16Z",
       "open_access": false
     },
     {
@@ -1114,7 +1114,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:23Z",
+      "generated_at_utc": "2026-11-23T17:36:15Z",
       "open_access": false
     },
     {
@@ -1264,8 +1264,8 @@
           "Small molecule": 5,
           "Protein": 2,
           "Unknown": 2,
-          "Oncolytic virus": 1,
           "Oligosaccharide": 1,
+          "Oncolytic virus": 1,
           "Vaccine": 1
         },
         "top_assets": [
@@ -1488,7 +1488,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:46Z",
+      "generated_at_utc": "2026-11-23T17:35:43Z",
       "open_access": false
     },
     {
@@ -1947,7 +1947,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:39Z",
+      "generated_at_utc": "2026-11-23T17:35:37Z",
       "open_access": true
     },
     {
@@ -2286,7 +2286,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:03Z",
+      "generated_at_utc": "2026-11-23T17:35:58Z",
       "open_access": false
     },
     {
@@ -2679,7 +2679,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:38Z",
+      "generated_at_utc": "2026-11-23T17:35:36Z",
       "open_access": false
     },
     {
@@ -3110,7 +3110,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:47Z",
+      "generated_at_utc": "2026-11-23T17:35:44Z",
       "open_access": false
     },
     {
@@ -3484,7 +3484,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:41Z",
+      "generated_at_utc": "2026-11-23T17:35:39Z",
       "open_access": false
     },
     {
@@ -3843,7 +3843,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:57Z",
+      "generated_at_utc": "2026-11-23T17:36:42Z",
       "open_access": false
     },
     {
@@ -4289,7 +4289,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:40Z",
+      "generated_at_utc": "2026-11-23T17:35:38Z",
       "open_access": false
     },
     {
@@ -4672,7 +4672,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:43Z",
+      "generated_at_utc": "2026-11-23T17:35:40Z",
       "open_access": false
     },
     {
@@ -5063,7 +5063,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:48Z",
+      "generated_at_utc": "2026-11-23T17:36:35Z",
       "open_access": false
     },
     {
@@ -5216,8 +5216,8 @@
           "Unknown": 8,
           "Gene therapy": 4,
           "Cell therapy": 2,
-          "Oncolytic virus": 1,
           "Oligosaccharide": 1,
+          "Oncolytic virus": 1,
           "Bispecific antibody": 1,
           "Vaccine": 1
         },
@@ -5488,7 +5488,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:44Z",
+      "generated_at_utc": "2026-11-23T17:35:42Z",
       "open_access": false
     },
     {
@@ -5901,7 +5901,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:34Z",
+      "generated_at_utc": "2026-11-23T17:36:23Z",
       "open_access": false
     },
     {
@@ -6255,7 +6255,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:35Z",
+      "generated_at_utc": "2026-11-23T17:35:34Z",
       "open_access": false
     },
     {
@@ -6657,7 +6657,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:36Z",
+      "generated_at_utc": "2026-11-23T17:35:35Z",
       "open_access": false
     },
     {
@@ -7172,7 +7172,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:06Z",
+      "generated_at_utc": "2026-11-23T17:36:00Z",
       "open_access": false
     },
     {
@@ -7544,7 +7544,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:37Z",
+      "generated_at_utc": "2026-11-23T17:35:35Z",
       "open_access": false
     },
     {
@@ -8171,7 +8171,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:56Z",
+      "generated_at_utc": "2026-11-23T17:35:52Z",
       "open_access": false
     },
     {
@@ -8710,7 +8710,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:51Z",
+      "generated_at_utc": "2026-11-23T17:35:47Z",
       "open_access": false
     },
     {
@@ -9122,7 +9122,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:23Z",
+      "generated_at_utc": "2026-11-23T17:36:15Z",
       "open_access": false
     },
     {
@@ -9563,7 +9563,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:22Z",
+      "generated_at_utc": "2026-11-23T17:36:14Z",
       "open_access": false
     },
     {
@@ -10012,7 +10012,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:59Z",
+      "generated_at_utc": "2026-11-23T17:35:54Z",
       "open_access": false
     },
     {
@@ -10696,7 +10696,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:49Z",
+      "generated_at_utc": "2026-11-23T17:35:46Z",
       "open_access": false
     },
     {
@@ -11134,7 +11134,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:32Z",
+      "generated_at_utc": "2026-11-23T17:35:32Z",
       "open_access": false
     },
     {
@@ -11572,7 +11572,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:31Z",
+      "generated_at_utc": "2026-11-23T17:35:30Z",
       "open_access": false
     },
     {
@@ -11994,7 +11994,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:41Z",
+      "generated_at_utc": "2026-11-23T17:35:39Z",
       "open_access": false
     },
     {
@@ -12451,7 +12451,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:55Z",
+      "generated_at_utc": "2026-11-23T17:35:51Z",
       "open_access": false
     },
     {
@@ -13176,7 +13176,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:07Z",
+      "generated_at_utc": "2026-11-23T17:36:01Z",
       "open_access": false
     },
     {
@@ -13553,7 +13553,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:05:06Z",
+      "generated_at_utc": "2026-11-23T17:36:48Z",
       "open_access": false
     },
     {
@@ -14054,7 +14054,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:58Z",
+      "generated_at_utc": "2026-11-23T17:35:53Z",
       "open_access": false
     },
     {
@@ -14461,7 +14461,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:03Z",
+      "generated_at_utc": "2026-11-23T17:35:57Z",
       "open_access": false
     },
     {
@@ -14849,7 +14849,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:01Z",
+      "generated_at_utc": "2026-11-23T17:35:56Z",
       "open_access": false
     },
     {
@@ -15274,7 +15274,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:08Z",
+      "generated_at_utc": "2026-11-23T17:36:02Z",
       "open_access": false
     },
     {
@@ -15589,7 +15589,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:33Z",
+      "generated_at_utc": "2026-11-23T17:36:23Z",
       "open_access": false
     },
     {
@@ -16136,7 +16136,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:53Z",
+      "generated_at_utc": "2026-11-23T17:35:49Z",
       "open_access": false
     },
     {
@@ -17011,7 +17011,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:28Z",
+      "generated_at_utc": "2026-11-23T17:35:28Z",
       "open_access": false
     },
     {
@@ -17465,7 +17465,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:32Z",
+      "generated_at_utc": "2026-11-23T17:36:22Z",
       "open_access": false
     },
     {
@@ -17847,7 +17847,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:01Z",
+      "generated_at_utc": "2026-11-23T17:35:56Z",
       "open_access": false
     },
     {
@@ -18428,7 +18428,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:54Z",
+      "generated_at_utc": "2026-11-23T17:35:50Z",
       "open_access": false
     },
     {
@@ -18823,7 +18823,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:00Z",
+      "generated_at_utc": "2026-11-23T17:35:55Z",
       "open_access": false
     },
     {
@@ -19242,7 +19242,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:56Z",
+      "generated_at_utc": "2026-11-23T17:36:41Z",
       "open_access": false
     },
     {
@@ -20085,7 +20085,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:10Z",
+      "generated_at_utc": "2026-11-23T17:36:04Z",
       "open_access": false
     },
     {
@@ -20471,7 +20471,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:55Z",
+      "generated_at_utc": "2026-11-23T17:36:40Z",
       "open_access": false
     },
     {
@@ -21089,7 +21089,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:12Z",
+      "generated_at_utc": "2026-11-23T17:36:06Z",
       "open_access": false
     },
     {
@@ -21598,7 +21598,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:52Z",
+      "generated_at_utc": "2026-11-23T17:35:49Z",
       "open_access": false
     },
     {
@@ -22059,7 +22059,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:57Z",
+      "generated_at_utc": "2026-11-23T17:35:52Z",
       "open_access": false
     },
     {
@@ -22503,7 +22503,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:13Z",
+      "generated_at_utc": "2026-11-23T17:36:06Z",
       "open_access": false
     },
     {
@@ -23110,7 +23110,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:09Z",
+      "generated_at_utc": "2026-11-23T17:36:03Z",
       "open_access": false
     },
     {
@@ -23591,7 +23591,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:29Z",
+      "generated_at_utc": "2026-11-23T17:35:29Z",
       "open_access": false
     },
     {
@@ -24070,7 +24070,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:30Z",
+      "generated_at_utc": "2026-11-23T17:35:30Z",
       "open_access": false
     },
     {
@@ -24473,7 +24473,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:44Z",
+      "generated_at_utc": "2026-11-23T17:35:41Z",
       "open_access": false
     },
     {
@@ -24988,7 +24988,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:46Z",
+      "generated_at_utc": "2026-11-23T17:35:44Z",
       "open_access": false
     },
     {
@@ -25758,7 +25758,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:49Z",
+      "generated_at_utc": "2026-11-23T17:35:46Z",
       "open_access": false
     },
     {
@@ -26194,7 +26194,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:06Z",
+      "generated_at_utc": "2026-11-23T17:36:01Z",
       "open_access": false
     },
     {
@@ -26627,7 +26627,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:56Z",
+      "generated_at_utc": "2026-11-23T17:36:41Z",
       "open_access": false
     },
     {
@@ -27101,7 +27101,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:04Z",
+      "generated_at_utc": "2026-11-23T17:35:59Z",
       "open_access": false
     },
     {
@@ -27534,7 +27534,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:55Z",
+      "generated_at_utc": "2026-11-23T17:36:40Z",
       "open_access": false
     },
     {
@@ -28063,7 +28063,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:50Z",
+      "generated_at_utc": "2026-11-23T17:35:47Z",
       "open_access": false
     },
     {
@@ -28524,7 +28524,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:11Z",
+      "generated_at_utc": "2026-11-23T17:36:04Z",
       "open_access": false
     },
     {
@@ -28904,7 +28904,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:34Z",
+      "generated_at_utc": "2026-11-23T17:35:33Z",
       "open_access": false
     },
     {
@@ -29284,7 +29284,7 @@
         }
       ],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:03:33Z",
+      "generated_at_utc": "2026-11-23T17:35:32Z",
       "open_access": false
     },
     {
@@ -29601,7 +29601,7 @@
       "trial_count": 0,
       "trials_preview": [],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:05:06Z",
+      "generated_at_utc": "2026-11-23T17:36:49Z",
       "open_access": false
     },
     {
@@ -29861,7 +29861,7 @@
       "trial_count": 0,
       "trials_preview": [],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:05:05Z",
+      "generated_at_utc": "2026-11-23T17:36:48Z",
       "open_access": false
     },
     {
@@ -30197,7 +30197,7 @@
       "trial_count": 0,
       "trials_preview": [],
       "has_pdf": true,
-      "generated_at_utc": "2026-11-23T14:04:57Z",
+      "generated_at_utc": "2026-11-23T17:36:42Z",
       "open_access": false
     }
   ]
