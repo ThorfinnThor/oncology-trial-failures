@@ -249,8 +249,9 @@ def main() -> int:
           "| `label_evidence` | Machine-readable trace: classifier version, outcome, reason, and each rule that fired with "
           "the text it matched | Ours |",
           "| `label_basis` | `rule`, `reviewed_decision` (this exact text was decided in an earlier review — AI-assisted, a few "
-          "by the maintainer — not by clinicians, and the decision is reused), `rule_on_description` (no stop reason; a description sentence was "
-          "used), `unresolved` | Ours |",
+          "by the maintainer — not by clinicians, and the decision is reused), `sec_filing` (the registry gives no cause; the sponsor's own SEC "
+          "filing states it, reviewed per trial with AI assistance, not by a clinician), `rule_on_description` "
+          "(no stop reason; a description sentence was used), `unresolved` | Ours |",
           "| `needs_review` | `True` where the classifier flags the row | Ours |",
           "| `classifier_version` | Version of the rules | Ours |",
           "| `registry_url` | Link to the trial record | ClinicalTrials.gov |", "",

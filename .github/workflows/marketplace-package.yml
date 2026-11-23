@@ -1,0 +1,70 @@
+name: Marketplace package
+
+# Builds the full licensed dataset as a dated release (scripts/marketplace/build_package.py) for a
+# marketplace listing or a one-time licence, from the weekly run's caches (endpoint labels need
+# them). Run by hand: Actions → Marketplace package → Run workflow.
+#
+# The repository is public and so are its run artifacts, so the package is encrypted before upload
+# with the repository secret PACKAGE_PASSPHRASE. Decrypt after downloading and unzipping:
+#   openssl enc -d -aes-256-cbc -pbkdf2 -iter 200000 -in package.tar.gz.enc -out package.tar.gz
+#   tar xzf package.tar.gz
+on:
+  workflow_dispatch:
+    inputs:
+      require_endpoints:
+        description: "Fail if the endpoint labels cannot be built"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore the weekly run's caches
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/signals
+            .cache/universe
+          key: signals-${{ github.run_id }}
+          restore-keys: signals-
+
+      - name: Build the package
+        run: |
+          python scripts/marketplace/build_package.py --out "$RUNNER_TEMP/package" \
+            ${{ inputs.require_endpoints && '--require-endpoints' || '' }}
+          cat "$RUNNER_TEMP/package/manifest.json"
+
+      - name: Encrypt
+        env:
+          PACKAGE_PASSPHRASE: ${{ secrets.PACKAGE_PASSPHRASE }}
+        run: |
+          if [ -z "$PACKAGE_PASSPHRASE" ]; then
+            echo "The repository secret PACKAGE_PASSPHRASE is not set; refusing to upload the package unencrypted."
+            exit 1
+          fi
+          mkdir -p "$RUNNER_TEMP/upload"
+          tar czf "$RUNNER_TEMP/package.tar.gz" -C "$RUNNER_TEMP/package" .
+          openssl enc -aes-256-cbc -pbkdf2 -iter 200000 -salt -pass env:PACKAGE_PASSPHRASE \
+            -in "$RUNNER_TEMP/package.tar.gz" -out "$RUNNER_TEMP/upload/package.tar.gz.enc"
+          cp "$RUNNER_TEMP/package/manifest.json" "$RUNNER_TEMP/upload/manifest.json"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: clinical-trial-failures-package
+          path: ${{ runner.temp }}/upload
+          retention-days: 7

@@ -286,8 +286,10 @@ Next: submit the sitemap in Search Console and check the pages in the Rich Resul
 2. **Defined.ai:** apply for a data partnership (AI training-data marketplace) with the Hugging Face
    sample and `/validation` as evidence. Plan of 23 Nov: list only the stop-reason and endpoint labels
    (no ChEMBL fields: CC BY-SA), non-exclusive, a dated release (the weekly feed stays a direct sale), price
-   not below the direct one. Claude drafts the listing, datasheet and rights statement; Schayan submits
-   the partner form and signs.
+   not below the direct one. **Kit ready 23 Nov:** `docs/marketplace/defined_ai.md` (listing texts A/B,
+   application text, rights statement, who does what); package builder `scripts/marketplace/build_package.py`
+   and the manual workflow **Marketplace package** (encrypted artifact, needs the secret `PACKAGE_PASSPHRASE`).
+   Schayan: prices, the secret, submit the partner form, review the agreement.
 3. **AWS Data Exchange / Snowflake Marketplace:** check only once a buyer asks for delivery there.
 
 **Hugging Face (public since 19 Nov):** the card points to `/pricing`; the weekly run refreshes the
