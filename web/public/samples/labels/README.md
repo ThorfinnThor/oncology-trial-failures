@@ -4,7 +4,7 @@
 
 **Full dataset, every disease area, weekly updates and clinician-reviewed labels:** [clinicaltrialfailures.com/pricing](https://clinicaltrialfailures.com/pricing) · contact@clinicaltrialfailures.com
 
-Release 2026-11-20 (ClinicalTrials.gov snapshot, imported 2026-11-23). Prepared 2026-11-23.
+Release 2026-11-23 (ClinicalTrials.gov snapshot, imported 2026-11-23). Prepared 2026-11-23.
 
 This sample shows the two kinds of labels we produce, in the format we would deliver. The public sample is under CC BY-NC 4.0; the full, weekly-updated data is licensed commercially (see *Licence*).
 
@@ -20,22 +20,22 @@ Scope: interventional trials, 15 disease areas; phase 2/3. Both samples are draw
 
 ## 1. Stop-reason labels
 
-The full dataset holds 24,124 trials with status TERMINATED, WITHDRAWN or SUSPENDED on ClinicalTrials.gov, all disease areas, rebuilt every week.
+The full dataset holds 24,132 trials with status TERMINATED, WITHDRAWN or SUSPENDED on ClinicalTrials.gov, all disease areas, rebuilt every week.
 
 | `label_outcome` | Full dataset | In this sample |
 | --- | ---: | ---: |
-| `BIOLOGICAL_FAILURE` | 2,462 | 86 |
-| `MIXED_CAUSES` | 230 | 20 |
-| `NON_BIOLOGICAL` | 14,177 | 70 |
+| `BIOLOGICAL_FAILURE` | 2,479 | 86 |
+| `MIXED_CAUSES` | 232 | 20 |
+| `NON_BIOLOGICAL` | 14,184 | 70 |
 | `NON_FAILURE_TRANSITION` | 1,613 | 20 |
-| `CAUSE_NOT_STATED` | 1,999 | 20 |
-| `UNRESOLVED` | 3,643 | 24 |
+| `CAUSE_NOT_STATED` | 1,991 | 20 |
+| `UNRESOLVED` | 3,633 | 24 |
 
 ### Label definitions
 
 | `label_outcome` | Meaning | `label_primary_reason` values |
 | --- | --- | --- |
-| `BIOLOGICAL_FAILURE` | The sponsor's stated reason is about the drug's effect: efficacy/futility, safety, or an explicitly unfavourable benefit–risk | `EFFICACY_FUTILITY` (1,658), `SAFETY` (630), `BIOLOGICAL_UNSPECIFIED` (174) |
+| `BIOLOGICAL_FAILURE` | The sponsor's stated reason is about the drug's effect: efficacy/futility, safety, or an explicitly unfavourable benefit–risk | `EFFICACY_FUTILITY` (1,666), `SAFETY` (639), `BIOLOGICAL_UNSPECIFIED` (174) |
 | `MIXED_CAUSES` | Several explicit causes, kept together rather than forced into one. Not necessarily biological: check `label_secondary_reasons` for `EFFICACY_FUTILITY`, `SAFETY` or `BIOLOGICAL_UNSPECIFIED` | `MULTIPLE` |
 | `NON_BIOLOGICAL` | Stopped for a reason unrelated to the drug's effect | `RECRUITMENT`, `BUSINESS_STRATEGY`, `FUNDING`, `STAFFING_RESOURCES`, `PROTOCOL_FEASIBILITY`, `SUPPLY_MANUFACTURING`, `REGULATORY`, `EXTERNAL_DISRUPTION`, `OPERATIONAL_OTHER`, `SUPPORT_WITHDRAWAL` |
 | `NON_FAILURE_TRANSITION` | Not a failure: a planned milestone, a replacement study, or a trial that never started | `PLANNED_MILESTONE`, `REPLACEMENT_TRANSITION`, `NOT_INITIATED` |
@@ -54,12 +54,12 @@ For a success/failure model, `BIOLOGICAL_FAILURE` is the failure class. The othe
 | `label_outcome`, `label_primary_reason` | See above | Ours |
 | `label_secondary_reasons` | Further explicit causes, separated by `; ` | Ours |
 | `label_evidence` | Machine-readable trace: classifier version, outcome, reason, and each rule that fired with the text it matched | Ours |
-| `label_basis` | `rule`, `reviewed_decision` (this exact text was decided in an earlier review — AI-assisted, a few by the maintainer — not by clinicians, and the decision is reused), `rule_on_description` (no stop reason; a description sentence was used), `unresolved` | Ours |
+| `label_basis` | `rule`, `reviewed_decision` (this exact text was decided in an earlier review — AI-assisted, a few by the maintainer — not by clinicians, and the decision is reused), `sec_filing` (the registry gives no cause; the sponsor's own SEC filing states it, reviewed per trial with AI assistance, not by a clinician), `publication` (the same, from the trial's own paper; the PMID is given), `eu_register` (the same, from the early-termination category the EU Clinical Trials Information System records), `rule_on_description` (no stop reason; a description sentence was used), `unresolved` | Ours |
 | `needs_review` | `True` where the classifier flags the row | Ours |
 | `classifier_version` | Version of the rules | Ours |
 | `registry_url` | Link to the trial record | ClinicalTrials.gov |
 
-Full dataset by `label_basis`: `rule` 14,054 · `reviewed_decision` 6,446 · `unresolved` 3,526 · `sec_filing` 50 · `rule_on_description` 48.
+Full dataset by `label_basis`: `rule` 14,056 · `reviewed_decision` 6,439 · `unresolved` 3,517 · `sec_filing` 50 · `rule_on_description` 48 · `eu_register` 13 · `publication` 9.
 
 ---
 

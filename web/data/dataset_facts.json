@@ -1,20 +1,20 @@
 {
- "release": "2026-11-20",
- "source_updated": "2026-11-20",
+ "release": "2026-11-23",
+ "source_updated": "2026-11-23",
  "stop_reasons": {
-  "trials": 24124,
+  "trials": 24132,
   "by_status": {
-   "TERMINATED": 16578,
-   "WITHDRAWN": 6961,
-   "SUSPENDED": 585
+   "TERMINATED": 16586,
+   "SUSPENDED": 584,
+   "WITHDRAWN": 6962
   },
   "by_outcome": {
-   "CAUSE_NOT_STATED": 1999,
-   "NON_BIOLOGICAL": 14177,
-   "UNRESOLVED": 3643,
-   "BIOLOGICAL_FAILURE": 2462,
+   "UNRESOLVED": 3633,
+   "NON_BIOLOGICAL": 14184,
+   "BIOLOGICAL_FAILURE": 2479,
+   "CAUSE_NOT_STATED": 1991,
    "NON_FAILURE_TRANSITION": 1613,
-   "MIXED_CAUSES": 230
+   "MIXED_CAUSES": 232
   },
   "disease_areas": 15,
   "start_year_min": "1990",
@@ -23,22 +23,22 @@
   "sample_rows": 240
  },
  "endpoints": {
-  "stopped_trials_read": 576,
+  "stopped_trials_read": 579,
   "by_verdict": {
-   "MISSED": 462,
+   "MISSED": 464,
    "MET": 78,
-   "MIXED": 36
+   "MIXED": 37
   },
-  "read_on": "2026-11-18",
+  "read_on": "2026-11-23",
   "sample_rows": 120
  },
  "signals": {
-  "trials": 1039,
+  "trials": 1047,
   "columns": 30,
-  "unique_assets": 590,
-  "target_gene_share": 0.5389797882579404,
-  "sample_file": "/samples/oncology-failure-signals-sample-2026-11-20-a286896b9883d7d6.csv",
-  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-11-20-a286896b9883d7d6-README.txt",
+  "unique_assets": 591,
+  "target_gene_share": 0.5358166189111748,
+  "sample_file": "/samples/oncology-failure-signals-sample-2026-11-23-24ad23c7d6f93b70.csv",
+  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-11-23-24ad23c7d6f93b70-README.txt",
   "sample_rows": 100
  }
 }

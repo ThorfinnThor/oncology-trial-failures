@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_trials": 1039,
+  "source_trials": 1047,
   "groups": [
     {
       "key": "assets",
@@ -98,7 +98,7 @@
         },
         {
           "term": "PIK3CD",
-          "trials": 25
+          "trials": 26
         },
         {
           "term": "FLT3",
@@ -179,11 +179,11 @@
           "trials": 19
         },
         {
-          "term": "Alkylating Activity",
-          "trials": 18
+          "term": "PI3-kinase class I inhibitor",
+          "trials": 19
         },
         {
-          "term": "PI3-kinase class I inhibitor",
+          "term": "Alkylating Activity",
           "trials": 18
         }
       ]
@@ -202,7 +202,7 @@
         },
         {
           "term": "Novartis",
-          "trials": 28
+          "trials": 29
         },
         {
           "term": "Roche",
@@ -229,12 +229,12 @@
           "trials": 17
         },
         {
-          "term": "Dana-Farber Cancer Institute",
+          "term": "Bristol Myers Squibb",
           "trials": 16
         },
         {
-          "term": "Bristol Myers Squibb",
-          "trials": 15
+          "term": "Dana-Farber Cancer Institute",
+          "trials": 16
         },
         {
           "term": "Washington University School of Medicine",
@@ -242,7 +242,7 @@
         },
         {
           "term": "Merck KGaA",
-          "trials": 12
+          "trials": 13
         },
         {
           "term": "Merck & Co.",

@@ -1,21 +1,21 @@
 {
   "product": "Oncology Failure Signals",
   "product_version": "1.0.0",
-  "dataset_version": "2026-11-20",
-  "trial_count": 1039,
-  "industry_trial_count": 474,
-  "industry_phase2_3_trial_count": 318,
+  "dataset_version": "2026-11-23",
+  "trial_count": 1047,
+  "industry_trial_count": 481,
+  "industry_phase2_3_trial_count": 321,
   "by_primary_reason": {
-    "EFFICACY_FUTILITY": 603,
-    "SAFETY": 261,
-    "BIOLOGICAL_UNSPECIFIED": 67,
-    "MULTIPLE": 108
+    "EFFICACY_FUTILITY": 606,
+    "SAFETY": 266,
+    "BIOLOGICAL_UNSPECIFIED": 66,
+    "MULTIPLE": 109
   },
-  "trials_with_resolved_focus_asset": 0.739172281039461,
-  "trials_with_focus_target_gene": 0.5389797882579404,
-  "trials_with_pubmed_publication": 0.2897016361886429,
-  "industry_trials_with_sec_issuer": 0.4978902953586498,
-  "unique_assets": 590,
+  "trials_with_resolved_focus_asset": 0.7344794651384909,
+  "trials_with_focus_target_gene": 0.5358166189111748,
+  "trials_with_pubmed_publication": 0.2903533906399236,
+  "industry_trials_with_sec_issuer": 0.49480249480249483,
+  "unique_assets": 591,
   "assets_with_repeated_safety_signal": 73,
   "assets_with_repeated_efficacy_signal": 126,
   "discontinuation_rates": {
@@ -65,7 +65,7 @@
     }
   },
   "brief_count": 66,
-  "sample_file": "/samples/oncology-failure-signals-sample-2026-11-20-a286896b9883d7d6.csv",
+  "sample_file": "/samples/oncology-failure-signals-sample-2026-11-23-24ad23c7d6f93b70.csv",
   "sample_record_count": 100,
   "sample_columns": [
     "nct_id",
@@ -99,6 +99,6 @@
     "last_update_post_date",
     "registry_url"
   ],
-  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-11-20-a286896b9883d7d6-README.txt",
+  "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-11-23-24ad23c7d6f93b70-README.txt",
   "signals_column_count": 30
 }
