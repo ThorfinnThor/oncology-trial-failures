@@ -1,12 +1,12 @@
 {
- "read_on": "2026-11-18",
- "readable_completed": 4709,
+ "read_on": "2026-11-23",
+ "readable_completed": 4719,
  "cards": [
   {
    "key": "stopped_efficacy",
    "status": "Stopped",
    "label": "Efficacy or futility",
-   "count": 1627,
+   "count": 1658,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT05746559",
@@ -42,7 +42,7 @@
    "key": "completed_missed",
    "status": "Completed",
    "label": "Primary endpoint missed",
-   "count": 1957,
+   "count": 1961,
    "count_label": "completed trials",
    "example": {
     "nct_id": "NCT05093634",
@@ -60,17 +60,17 @@
    "key": "completed_met",
    "status": "Completed",
    "label": "Primary endpoint met",
-   "count": 2313,
+   "count": 2318,
    "count_label": "completed trials",
    "example": {
-    "nct_id": "NCT04578834",
-    "sponsor": "Novartis Pharmaceuticals",
+    "nct_id": "NCT04708782",
+    "sponsor": "United Therapeutics",
     "phase": "Phase 3",
-    "drugs": "Iptacopan",
-    "evidence": "Ratio to Baseline in UPCR at 9 Months - Interim Analysis — one-sided p <0.0001, no threshold stated; below 0.025, so significant at any one-sided threshold in use. Geometric mean ratio 0.617 (95% CI 0.514 to 0.74).",
+    "drugs": "Treprostinil",
+    "evidence": "Change in Absolute FVC From Baseline to Week 52 — p <0.0001, no threshold stated; below 0.01, so significant under any conventional threshold. Treatment difference 130.1 (95% CI 82.2 to 178.1).",
     "evidence_source": "the sponsor's posted comparison",
     "posted": null,
-    "href": "https://clinicaltrials.gov/study/NCT04578834?tab=results",
+    "href": "https://clinicaltrials.gov/study/NCT04708782?tab=results",
     "external": true
    }
   }

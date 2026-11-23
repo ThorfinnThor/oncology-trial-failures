@@ -1,6 +1,6 @@
 {
  "schema_version": 1,
- "universe_trials": 94997,
+ "universe_trials": 95089,
  "window": {
   "start_from": 2015,
   "start_to": 2024,
@@ -15,44 +15,44 @@
    "steps": [
     {
      "step": "Interventional Phase 2/3 trials registered since 2010",
-     "trials": 94997,
+     "trials": 95089,
      "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
     },
     {
      "step": "Tagged Oncology",
-     "trials": 34685,
+     "trials": 34720,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 34685,
+     "trials": 34720,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
      "step": "Started 2015–2024",
-     "trials": 21581,
+     "trials": 21582,
      "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
     },
     {
      "step": "Closed: completed or terminated",
-     "trials": 8008,
+     "trials": 8032,
      "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
     },
     {
      "step": "Terminated for an efficacy, safety or benefit–risk reason",
-     "trials": 359,
+     "trials": 365,
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
-   "closed": 8008,
-   "biological_stops": 359,
-   "rate": 0.04483016983016983,
+   "closed": 8032,
+   "biological_stops": 365,
+   "rate": 0.04544322709163347,
    "aside": {
-    "closed_with_resolved_target": 5831,
-    "closed_with_resolved_target_stops": 305,
-    "terminated_any_reason": 2490,
-    "terminated_with_no_readable_cause": 493,
-    "still_open_or_unknown": 13573
+    "closed_with_resolved_target": 5851,
+    "closed_with_resolved_target_stops": 310,
+    "terminated_any_reason": 2497,
+    "terminated_with_no_readable_cause": 485,
+    "still_open_or_unknown": 13550
    }
   },
   {
@@ -60,22 +60,22 @@
    "steps": [
     {
      "step": "Interventional Phase 2/3 trials registered since 2010",
-     "trials": 94997,
+     "trials": 95089,
      "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
     },
     {
      "step": "Tagged Neurology",
-     "trials": 5217,
+     "trials": 5223,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 4264,
+     "trials": 4268,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 4264,
+     "trials": 4268,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
@@ -85,24 +85,24 @@
     },
     {
      "step": "Closed: completed or terminated",
-     "trials": 1571,
+     "trials": 1574,
      "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
     },
     {
      "step": "Terminated for an efficacy, safety or benefit–risk reason",
-     "trials": 101,
+     "trials": 104,
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
-   "closed": 1571,
-   "biological_stops": 101,
-   "rate": 0.06429026098026734,
+   "closed": 1574,
+   "biological_stops": 104,
+   "rate": 0.06607369758576874,
    "aside": {
-    "closed_with_resolved_target": 678,
-    "closed_with_resolved_target_stops": 65,
+    "closed_with_resolved_target": 680,
+    "closed_with_resolved_target_stops": 67,
     "terminated_any_reason": 333,
-    "terminated_with_no_readable_cause": 80,
-    "still_open_or_unknown": 962
+    "terminated_with_no_readable_cause": 75,
+    "still_open_or_unknown": 959
    }
   },
   {
@@ -110,22 +110,22 @@
    "steps": [
     {
      "step": "Interventional Phase 2/3 trials registered since 2010",
-     "trials": 94997,
+     "trials": 95089,
      "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
     },
     {
      "step": "Tagged Immunology & Autoimmune",
-     "trials": 6095,
+     "trials": 6107,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 5533,
+     "trials": 5543,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 5533,
+     "trials": 5543,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
@@ -140,18 +140,18 @@
     },
     {
      "step": "Terminated for an efficacy, safety or benefit–risk reason",
-     "trials": 69,
+     "trials": 73,
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
    "closed": 2013,
-   "biological_stops": 69,
-   "rate": 0.03427719821162444,
+   "biological_stops": 73,
+   "rate": 0.03626428216592151,
    "aside": {
     "closed_with_resolved_target": 877,
-    "closed_with_resolved_target_stops": 30,
-    "terminated_any_reason": 350,
-    "terminated_with_no_readable_cause": 96,
+    "closed_with_resolved_target_stops": 31,
+    "terminated_any_reason": 351,
+    "terminated_with_no_readable_cause": 93,
     "still_open_or_unknown": 1205
    }
   },
@@ -160,32 +160,32 @@
    "steps": [
     {
      "step": "Interventional Phase 2/3 trials registered since 2010",
-     "trials": 94997,
+     "trials": 95089,
      "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
     },
     {
      "step": "Tagged Endocrine & Metabolic",
-     "trials": 5049,
+     "trials": 5056,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 4636,
+     "trials": 4642,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 4636,
+     "trials": 4642,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
      "step": "Started 2015–2024",
-     "trials": 2431,
+     "trials": 2432,
      "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
     },
     {
      "step": "Closed: completed or terminated",
-     "trials": 1686,
+     "trials": 1690,
      "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
     },
     {
@@ -194,15 +194,15 @@
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
-   "closed": 1686,
+   "closed": 1690,
    "biological_stops": 35,
-   "rate": 0.020759193357058125,
+   "rate": 0.020710059171597635,
    "aside": {
-    "closed_with_resolved_target": 764,
+    "closed_with_resolved_target": 766,
     "closed_with_resolved_target_stops": 14,
     "terminated_any_reason": 166,
-    "terminated_with_no_readable_cause": 32,
-    "still_open_or_unknown": 745
+    "terminated_with_no_readable_cause": 30,
+    "still_open_or_unknown": 742
    }
   },
   {
@@ -210,22 +210,22 @@
    "steps": [
     {
      "step": "Interventional Phase 2/3 trials registered since 2010",
-     "trials": 94997,
+     "trials": 95089,
      "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
     },
     {
      "step": "Tagged Gastroenterology & Hepatology",
-     "trials": 9873,
+     "trials": 9884,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 4673,
+     "trials": 4677,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 4673,
+     "trials": 4677,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
@@ -235,24 +235,24 @@
     },
     {
      "step": "Closed: completed or terminated",
-     "trials": 1663,
+     "trials": 1666,
      "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
     },
     {
      "step": "Terminated for an efficacy, safety or benefit–risk reason",
-     "trials": 67,
+     "trials": 71,
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
-   "closed": 1663,
-   "biological_stops": 67,
-   "rate": 0.04028863499699339,
+   "closed": 1666,
+   "biological_stops": 71,
+   "rate": 0.042617046818727494,
    "aside": {
-    "closed_with_resolved_target": 691,
+    "closed_with_resolved_target": 693,
     "closed_with_resolved_target_stops": 29,
-    "terminated_any_reason": 332,
-    "terminated_with_no_readable_cause": 88,
-    "still_open_or_unknown": 923
+    "terminated_any_reason": 333,
+    "terminated_with_no_readable_cause": 85,
+    "still_open_or_unknown": 920
    }
   },
   {
@@ -260,22 +260,22 @@
    "steps": [
     {
      "step": "Interventional Phase 2/3 trials registered since 2010",
-     "trials": 94997,
+     "trials": 95089,
      "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
     },
     {
      "step": "Tagged Psychiatry & Mental Health",
-     "trials": 2800,
+     "trials": 2804,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 2736,
+     "trials": 2739,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 2736,
+     "trials": 2739,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
@@ -285,7 +285,7 @@
     },
     {
      "step": "Closed: completed or terminated",
-     "trials": 1004,
+     "trials": 1005,
      "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
     },
     {
@@ -294,15 +294,15 @@
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
-   "closed": 1004,
+   "closed": 1005,
    "biological_stops": 29,
-   "rate": 0.02888446215139442,
+   "rate": 0.028855721393034824,
    "aside": {
     "closed_with_resolved_target": 399,
     "closed_with_resolved_target_stops": 15,
-    "terminated_any_reason": 158,
-    "terminated_with_no_readable_cause": 29,
-    "still_open_or_unknown": 445
+    "terminated_any_reason": 159,
+    "terminated_with_no_readable_cause": 30,
+    "still_open_or_unknown": 444
    }
   },
   {
@@ -310,69 +310,69 @@
    "steps": [
     {
      "step": "Interventional Phase 2/3 trials registered since 2010",
-     "trials": 94997,
+     "trials": 95089,
      "note": "Every eligible ClinicalTrials.gov record — the registry, not every trial ever run."
     },
     {
      "step": "Tagged Respiratory",
-     "trials": 9473,
+     "trials": 9482,
      "note": "Disease area is a multi-label tag from conditions and MeSH terms, not an exclusive bucket."
     },
     {
      "step": "Excluding trials also tagged Oncology",
-     "trials": 4914,
+     "trials": 4913,
      "note": "Cancer trials appear under most areas (brain metastases, lung cancer); counting them in another area's rate would measure oncology."
     },
     {
      "step": "Phase 2 or Phase 3",
-     "trials": 4914,
+     "trials": 4913,
      "note": "Phase 1/2 counts as Phase 2; Phase 2/3 counts as Phase 3."
     },
     {
      "step": "Started 2015–2024",
-     "trials": 2898,
+     "trials": 2894,
      "note": "Start date, not registration date. The window ends three years back so trials have had time to close."
     },
     {
      "step": "Closed: completed or terminated",
-     "trials": 1951,
+     "trials": 1955,
      "note": "The rate's denominator. Withdrawn (never enrolled), suspended, ongoing and unknown-status trials are excluded because their outcome is not yet observed."
     },
     {
      "step": "Terminated for an efficacy, safety or benefit–risk reason",
-     "trials": 82,
+     "trials": 83,
      "note": "The rate's numerator, from the registry's own stop-reason text."
     }
    ],
-   "closed": 1951,
-   "biological_stops": 82,
-   "rate": 0.04202972834443875,
+   "closed": 1955,
+   "biological_stops": 83,
+   "rate": 0.04245524296675192,
    "aside": {
-    "closed_with_resolved_target": 845,
-    "closed_with_resolved_target_stops": 35,
-    "terminated_any_reason": 408,
-    "terminated_with_no_readable_cause": 95,
-    "still_open_or_unknown": 947
+    "closed_with_resolved_target": 848,
+    "closed_with_resolved_target_stops": 36,
+    "terminated_any_reason": 410,
+    "terminated_with_no_readable_cause": 93,
+    "still_open_or_unknown": 939
    }
   }
  ],
  "signals_reconciliation": {
-  "dataset_rows": 1030,
+  "dataset_rows": 1039,
   "note": "The two products count different things and both counts are correct.",
   "steps": [
    {
     "step": "Oncology trials in the stopped-trial dataset",
-    "trials": 1030,
+    "trials": 1039,
     "note": "Every phase, every start year — the dataset is a catalogue of stopped trials."
    },
    {
     "step": "…restricted to Phase 2 or 3 registered since 2010",
-    "trials": 557,
+    "trials": 563,
     "note": "Phase 1 and Phase 4 trials, and trials predating the universe, drop out: a rate needs a denominator and the universe only carries Phase 2/3 since 2010."
    },
    {
     "step": "…started 2015–2024",
-    "trials": 359,
+    "trials": 365,
     "note": "The rate's window. This is the numerator behind the oncology headline."
    }
   ]

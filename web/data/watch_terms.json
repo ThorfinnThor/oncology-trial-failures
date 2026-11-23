@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "source_trials": 1030,
+  "source_trials": 1039,
   "groups": [
     {
       "key": "assets",
@@ -74,7 +74,7 @@
         },
         {
           "term": "TUBB",
-          "trials": 48
+          "trials": 51
         },
         {
           "term": "CD274",
@@ -152,7 +152,7 @@
         },
         {
           "term": "Tubulin inhibitor",
-          "trials": 29
+          "trials": 32
         },
         {
           "term": "Stem cell growth factor receptor inhibitor",
@@ -222,6 +222,10 @@
         },
         {
           "term": "Gilead Sciences",
+          "trials": 18
+        },
+        {
+          "term": "Sanofi",
           "trials": 17
         },
         {
@@ -231,10 +235,6 @@
         {
           "term": "Bristol Myers Squibb",
           "trials": 15
-        },
-        {
-          "term": "Sanofi",
-          "trials": 14
         },
         {
           "term": "Washington University School of Medicine",
