@@ -6,7 +6,7 @@ import test from "node:test";
 import briefsIndex from "../data/briefs_index.json";
 import { latestBriefSitemapLastmod, selectBriefSitemapEntries } from "../lib/briefSitemap";
 import type { DrugCatalogEntry } from "../lib/drugPages";
-import { INSIGHT_ARTICLES, insightPath, sortInsightArticlesByDate } from "../lib/insights";
+import { INSIGHT_ARTICLES, insightModified, insightPath, sortInsightArticlesByDate } from "../lib/insights";
 import { ISSUES, issuePath } from "../lib/newsletterIssues";
 import { loadDrugCatalogServer, loadIndexServer, loadMetaServer } from "../lib/server-data";
 import { buildFailureHubs, buildSponsorHubs, indexableTrialRows } from "../lib/seoHubs";
@@ -87,7 +87,7 @@ function legacySitemapXml(
     ...buildSponsorHubs(rows).map((hub) => ({ loc: `${SITE_URL}${hub.path}`, lastmod })),
     ...sortInsightArticlesByDate(INSIGHT_ARTICLES).map((article) => ({
       loc: `${SITE_URL}${insightPath(article)}`,
-      lastmod: new Date(article.datePublished).toISOString(),
+      lastmod: new Date(article.dateModified || article.datePublished).toISOString(),
     })),
     ...trialEntries,
     ...(drugEntries.length ? [{ loc: `${SITE_URL}/drugs`, lastmod }, ...drugEntries] : []),
@@ -173,5 +173,15 @@ test("missing or invalid trial dates and an empty drug catalog render as before"
     for (const [label, features] of FEATURE_SETS) {
       assert.equal(precomputedSitemapXml(rows, meta, [], features), legacySitemapXml(rows, meta, [], features, NOW), `${meta.version} ${label}`);
     }
+  }
+});
+
+test("a corrected insight article carries its correction date in the sitemap, others their publication date", () => {
+  const xml = precomputedSitemapXml([], { version: "2026-11-23", source: "ClinicalTrials.gov" }, [], REPORT_ONLY_FEATURES);
+  const lastmodOf = (url: string) => xml.split("<url>").find((block) => block.includes(`<loc>${url}</loc>`))?.match(/<lastmod>(\d{4}-\d{2}-\d{2})/)?.[1];
+  assert.ok(INSIGHT_ARTICLES.some((article) => article.dateModified));
+  for (const article of INSIGHT_ARTICLES) {
+    assert.equal(lastmodOf(`${SITE_URL}${insightPath(article)}`), article.dateModified ?? article.datePublished, article.slug);
+    assert.ok(insightModified(article) >= article.datePublished, article.slug);
   }
 });
