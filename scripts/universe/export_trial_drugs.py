@@ -55,7 +55,15 @@ NON_DRUG_LABEL = re.compile(
     r"questionnaire administration|survey administration|blood samples?|biospecimen collection|tissue samples?|"
     r"diagnostic imaging|computed tomography|magnetic resonance imaging|positron emission tomography|"
     r"cognitive assessment|counseling|educational intervention|best available therapy|"
-    r"standard of care|standard[- ]of[- ]care|soc|usual care|no intervention|observation)\b", re.I)
+    r"standard of care|standard[- ]of[- ]care|soc|usual care|no intervention|observation|"
+    r"protein expression analysis|western blotting|"
+    r"(?:autologous |allogeneic )?(?:hematopoietic |haematopoietic |peripheral blood )?stem cell transplant(?:ation)?|"
+    r"bone marrow transplant(?:ation)?)\b", re.I)
+# A class or a generic description, not one drug: identified as a class, not "unresolved".
+CLASS_LABEL = re.compile(
+    r"^(treatment|therapy|systemic chemotherapy|chemotherapy|immunotherapy|corticosteroids?|antibiotics?|"
+    r"antivirals?|vaccines?|influenza vaccine|stem cells?|mesenchymal (?:stem|stromal) cells|car-?t|dc vaccine|"
+    r"dendritic cell vaccine|convalescent plasma|targeted therapy|hormone therapy|anticoagulants?)$", re.I)
 
 
 DRUG_COLUMNS = ["drugs_tested", "drugs_background", "drugs_comparator", "drug_ncit_codes", "drug_resolution"]
@@ -113,6 +121,8 @@ def prepare(rec: dict, rxmap: dict[str, dict]) -> None:
             label = c.get("label") or ""
             if NON_DRUG_LABEL.search(label) and c.get("status") != "RESOLVED":
                 c["status"] = "NON_DRUG"
+            elif unresolved_status(c) and CLASS_LABEL.match(label.strip()):
+                c["status"] = "CLASS_ONLY"
             elif unresolved_status(c) and label.lower() in rxmap:
                 hit = rxmap[label.lower()]
                 c.update({"status": "RESOLVED", "name": hit["name"], "entity_source": "RXNORM", "rxcui": hit["rxcui"]})
