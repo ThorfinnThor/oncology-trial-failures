@@ -342,7 +342,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                   trials stopped for biological reasons: the drug tested ({pct(more.trials_with_resolved_focus_asset)} resolved),
                   mechanism ({pct(more.trials_with_focus_mechanism)}) and target genes ({pct(more.trials_with_focus_target_gene)}),
                   sponsor group, ticker and publications.{" "}
-                  <a href="/datasets/failure-signals-seven-areas">Details and sample</a>
+                  <Link href="/datasets/failure-signals-seven-areas">Details and sample</Link>
                 </p>
                 <div className="tagRow">
                   <span className="tag">{n(more.trial_count)} records</span>
