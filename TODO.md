@@ -301,8 +301,11 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
 tested under their standard name, the background (control arms too), comparator, NCIt codes, resolution.
 **Since 24 Nov no ChEMBL content at all** (CC BY-SA ShareAlike does not fit CC BY-NC or a commercial licence):
 ChEMBL only recognises a drug; names written are NCIt preferred names or RxNorm ingredients, else the registry
-label counted unresolved. Coverage 75.8 % → 72.8 % fully named (NCIt 15,166 trials, RxNorm 593, both 450). The
-Hugging Face sample still has the old ChEMBL names until the 30 Nov run rebuilds it: check it then. Open for the
+label counted unresolved. Coverage 75.8 % → 72.8 % → **74.2 %** after the recovery (e3a141c: NCIt variants, salt/base,
+NCIt concepts linked to the molecule, RxNorm by the matched name, registry research codes as CODE_ONLY): RESOLVED
+15,128, CODE_OR_CLASS_ONLY 1,699; of the 608 trials lost at midday 274 fully named again, 188 as a research code.
+Manual run 24 Nov green; the Hugging Face sample was rebuilt from the ChEMBL-free table in that run. The public
+Failure Signals samples (web/public/samples) still carry ChEMBL fields, declared CC BY-SA on the pricing page. Open for the
 lawyer: only the Failure Signals product (ChEMBL IDs, mechanisms, targets; direct sales only).
 In the label sample, Hugging Face card and the marketplace package.
 **First build 23 Nov:** 11,834 of 24,132 trials covered (the universe: interventional Phase 2/3 from 2010);
