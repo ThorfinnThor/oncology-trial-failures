@@ -1,12 +1,12 @@
 {
- "read_on": "2026-11-23",
+ "read_on": "2026-11-24",
  "readable_completed": 4719,
  "cards": [
   {
    "key": "stopped_efficacy",
    "status": "Stopped",
    "label": "Efficacy or futility",
-   "count": 1737,
+   "count": 1743,
    "count_label": "stopped trials",
    "example": {
     "nct_id": "NCT05746559",

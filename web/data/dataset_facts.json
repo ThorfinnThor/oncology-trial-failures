@@ -9,17 +9,17 @@
    "WITHDRAWN": 6962
   },
   "by_outcome": {
-   "UNRESOLVED": 3501,
-   "NON_BIOLOGICAL": 14230,
-   "BIOLOGICAL_FAILURE": 2584,
-   "CAUSE_NOT_STATED": 1938,
+   "UNRESOLVED": 3493,
+   "NON_BIOLOGICAL": 14233,
+   "BIOLOGICAL_FAILURE": 2590,
+   "CAUSE_NOT_STATED": 1937,
    "NON_FAILURE_TRANSITION": 1621,
    "MIXED_CAUSES": 258
   },
   "disease_areas": 15,
   "start_year_min": "1990",
   "start_year_max": "2027",
-  "classifier_version": "2.7.7",
+  "classifier_version": "2.7.9",
   "sample_rows": 240
  },
  "endpoints": {
@@ -43,21 +43,21 @@
   "mechanism_share": 0.6197440585009141
  },
  "signals_more": {
-  "trials": 983,
+  "trials": 986,
   "by_disease_area": {
    "Infectious Disease": 228,
-   "Respiratory": 94,
+   "Respiratory": 95,
    "Gastroenterology & Hepatology": 152,
    "Immunology & Autoimmune": 113,
-   "Cardiovascular": 123,
-   "Endocrine & Metabolic": 97,
+   "Cardiovascular": 124,
+   "Endocrine & Metabolic": 98,
    "Neurology": 176
   },
   "columns": 31,
   "unique_assets": 584,
-  "resolved_drug_share": 0.5991861648016277,
-  "mechanism_share": 0.4811800610376399,
-  "target_gene_share": 0.38250254323499494,
+  "resolved_drug_share": 0.5973630831643002,
+  "mechanism_share": 0.47971602434077076,
+  "target_gene_share": 0.3813387423935091,
   "sample_file": "/samples/failure-signals-seven-areas-sample-2026-11-23-5946b134f71e9461.csv",
   "sample_readme_file": "/samples/failure-signals-seven-areas-sample-2026-11-23-5946b134f71e9461-README.txt",
   "sample_rows": 56

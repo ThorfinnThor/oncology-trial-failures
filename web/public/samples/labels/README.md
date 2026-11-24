@@ -4,7 +4,7 @@
 
 **Full dataset, every disease area, weekly updates and clinician-reviewed labels:** [clinicaltrialfailures.com/pricing](https://clinicaltrialfailures.com/pricing) · contact@clinicaltrialfailures.com
 
-Release 2026-11-23 (ClinicalTrials.gov snapshot, imported 2026-11-23). Prepared 2026-11-23.
+Release 2026-11-23 (ClinicalTrials.gov snapshot, imported 2026-11-24). Prepared 2026-11-24.
 
 This sample shows the two kinds of labels we produce, in the format we would deliver. The public sample is under CC BY-NC 4.0; the full, weekly-updated data is licensed commercially (see *Licence*).
 
@@ -24,18 +24,18 @@ The full dataset holds 24,132 trials with status TERMINATED, WITHDRAWN or SUSPEN
 
 | `label_outcome` | Full dataset | In this sample |
 | --- | ---: | ---: |
-| `BIOLOGICAL_FAILURE` | 2,584 | 86 |
+| `BIOLOGICAL_FAILURE` | 2,590 | 86 |
 | `MIXED_CAUSES` | 258 | 20 |
-| `NON_BIOLOGICAL` | 14,230 | 70 |
+| `NON_BIOLOGICAL` | 14,233 | 70 |
 | `NON_FAILURE_TRANSITION` | 1,621 | 20 |
-| `CAUSE_NOT_STATED` | 1,938 | 20 |
-| `UNRESOLVED` | 3,501 | 24 |
+| `CAUSE_NOT_STATED` | 1,937 | 20 |
+| `UNRESOLVED` | 3,493 | 24 |
 
 ### Label definitions
 
 | `label_outcome` | Meaning | `label_primary_reason` values |
 | --- | --- | --- |
-| `BIOLOGICAL_FAILURE` | The sponsor's stated reason is about the drug's effect: efficacy/futility, safety, or an explicitly unfavourable benefit–risk | `EFFICACY_FUTILITY` (1,737), `SAFETY` (666), `BIOLOGICAL_UNSPECIFIED` (181) |
+| `BIOLOGICAL_FAILURE` | The sponsor's stated reason is about the drug's effect: efficacy/futility, safety, or an explicitly unfavourable benefit–risk | `EFFICACY_FUTILITY` (1,743), `SAFETY` (666), `BIOLOGICAL_UNSPECIFIED` (181) |
 | `MIXED_CAUSES` | Several explicit causes, kept together rather than forced into one. Not necessarily biological: check `label_secondary_reasons` for `EFFICACY_FUTILITY`, `SAFETY` or `BIOLOGICAL_UNSPECIFIED` | `MULTIPLE` |
 | `NON_BIOLOGICAL` | Stopped for a reason unrelated to the drug's effect | `RECRUITMENT`, `BUSINESS_STRATEGY`, `FUNDING`, `STAFFING_RESOURCES`, `PROTOCOL_FEASIBILITY`, `SUPPLY_MANUFACTURING`, `REGULATORY`, `EXTERNAL_DISRUPTION`, `OPERATIONAL_OTHER`, `SUPPORT_WITHDRAWAL` |
 | `NON_FAILURE_TRANSITION` | Not a failure: a planned milestone, a replacement study, or a trial that never started | `PLANNED_MILESTONE`, `REPLACEMENT_TRANSITION`, `NOT_INITIATED` |
@@ -63,7 +63,7 @@ For a success/failure model, `BIOLOGICAL_FAILURE` is the failure class. The othe
 | `classifier_version` | Version of the rules | Ours |
 | `registry_url` | Link to the trial record | ClinicalTrials.gov |
 
-Full dataset by `label_basis`: `rule` 14,029 · `reviewed_decision` 6,408 · `unresolved` 3,390 · `publication` 194 · `sec_filing` 50 · `rule_on_description` 48 · `eu_register` 13.
+Full dataset by `label_basis`: `rule` 14,037 · `reviewed_decision` 6,408 · `unresolved` 3,382 · `publication` 194 · `sec_filing` 50 · `rule_on_description` 48 · `eu_register` 13.
 
 ---
 

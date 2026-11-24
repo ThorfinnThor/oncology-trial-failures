@@ -1,5 +1,5 @@
 Clinical Trial Failure Signals, seven more areas - evaluation sample
-56 of 983 records (8 per area), dataset 2026-11-23.
+56 of 986 records (8 per area), dataset 2026-11-23.
 
 Areas: Infectious Disease, Neurology, Gastroenterology & Hepatology, Immunology & Autoimmune,
 Cardiovascular, Endocrine & Metabolic, Respiratory (the trial's primary disease area).
