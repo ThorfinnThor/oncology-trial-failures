@@ -1,10 +1,10 @@
 {
   "version": "2026-11-23",
-  "generated_at_utc": "2026-11-24T10:34:34Z",
-  "imported_at_utc": "2026-11-24T10:34:34Z",
-  "source_verified_at": "2026-11-24T10:34:34Z",
+  "generated_at_utc": "2026-11-24T12:58:45Z",
+  "imported_at_utc": "2026-11-24T12:58:45Z",
+  "source_verified_at": "2026-11-24T12:58:45Z",
   "latest_source_update_at": "2026-11-23",
-  "content_changed_at": "2026-11-24T10:34:33Z",
+  "content_changed_at": null,
   "source_snapshot_id": "sha256:b29afe57f0fa47bc8f703c8080145fc3a6b25da90084d451c321d560bd96aad1",
   "source": "ClinicalTrials.gov API v2",
   "all": {
