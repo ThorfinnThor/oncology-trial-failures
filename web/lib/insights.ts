@@ -632,7 +632,7 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     factsHeading: "In short",
     facts: [
       "Registry intervention names mix research codes, brands, doses and formulations; the same drug appears under many names.",
-      "Standard names come from drug terminologies such as ChEMBL, the NCI Thesaurus and RxNorm.",
+      "Standard names come from drug terminologies such as the NCI Thesaurus and RxNorm.",
       "The drug a trial tested is what the experimental arms received and the control arms did not; the rest is background.",
       "Every stopped trial in our dataset now carries its tested drugs under a standard name, kept apart from the background.",
     ],
@@ -655,7 +655,7 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
         heading: "How far it gets",
         body: [
           "In our first build, about two thirds of the stopped trials we resolved had every tested drug identified by a standard name, and resolution is highest in oncology, where drugs are best covered by terminologies. Investigational codes, cell therapies and devices remain the hardest. Each trial carries a status saying how far its drugs were resolved, so you can filter rather than trust blanks.",
-          "Standard names come from ChEMBL and the NCI Thesaurus and are attributed in every file; NCI Thesaurus codes are included where one identifies the drug. Mechanisms and targets are a separate layer, in the licensed failure-signals product.",
+          "Standard names come from the NCI Thesaurus and RxNorm and are attributed in every file; NCI Thesaurus codes are included where one identifies the drug. Mechanisms and targets are a separate layer, in the licensed failure-signals product.",
         ],
       },
     ],
@@ -677,7 +677,7 @@ export const INSIGHT_ARTICLES: InsightArticle[] = [
     ],
     faqs: [
       { question: "Why not just use the intervention names as filed?", answer: "The same drug appears under codes, brands and doses, and drugs given to both arms are not what the trial tested." },
-      { question: "Which terminologies are used?", answer: "ChEMBL and the NCI Thesaurus for names, with NCI Thesaurus codes where they identify the drug; both are attributed." },
+      { question: "Which terminologies are used?", answer: "The NCI Thesaurus and RxNorm for names, with NCI Thesaurus codes and RxNorm ingredient codes where they identify the drug; both are attributed." },
     ],
   },
   {

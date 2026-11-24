@@ -12,7 +12,8 @@ direct customer who buys a one-time licence.
   manifest.json                     release, row counts, SHA-256 of every file
 
 What it leaves out, on purpose (docs/provenance_and_rights.md):
-  * every ChEMBL-derived field (CC BY-SA: its ShareAlike condition would travel with the file);
+  * every ChEMBL-derived field, names included (CC BY-SA: its ShareAlike condition would travel with
+    the file); drug names come from the NCI Thesaurus and RxNorm (export_trial_drugs.py);
   * the text of SEC filings. For the 50 trials labelled from a reviewed filing, `label_evidence`
     names the filing (form, date, URL) instead of quoting it; the filing is public at that URL;
   * PubMed abstracts, protocols, results documents (linked, never copied).
@@ -213,7 +214,7 @@ def main() -> int:
           "| `disease_area` | One of the areas above, from conditions and MeSH terms (keyword-based) | Ours |",
           "| `drugs_tested`, `drugs_background` | The drugs the experimental arms received and the control arms did not, "
           "under their standard name; and what the control arms received too (background, never the drug tested) | "
-          "Ours; names from ChEMBL and the NCI Thesaurus |",
+          "Ours; names from the NCI Thesaurus and RxNorm |",
           "| `drug_ncit_codes`, `drug_resolution` | NCI Thesaurus codes of the tested drugs; how far they were identified "
           "(`RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, `NOT_COVERED`: not resolved yet) | Ours; NCI Thesaurus |",
           "| `label_outcome`, `label_primary_reason`, `label_secondary_reasons` (`; `-separated) | The label | Ours |",
@@ -270,13 +271,16 @@ def main() -> int:
           "| Source | What is used | Terms |", "| --- | --- | --- |",
           "| ClinicalTrials.gov (US National Library of Medicine) | Registry fields and posted results, as filed | "
           "ClinicalTrials.gov terms of use; registry fields stay under them |",
-          "| ChEMBL (EMBL-EBI), NCI Thesaurus (NCI) | Standard drug names only (no identifiers, mechanisms or targets "
-          "from ChEMBL); NCI Thesaurus codes | ChEMBL CC BY-SA 3.0, NCI Thesaurus CC BY 4.0; attribution here |",
+          "| NCI Thesaurus (National Cancer Institute) | Preferred drug names and NCI Thesaurus codes | CC BY 4.0; "
+          "attribution here |",
+          "| RxNorm (US National Library of Medicine) | Ingredient names and RxCUIs for drugs the NCI Thesaurus does not name | "
+          "Public domain; NLM is acknowledged as the source |",
           "| SEC EDGAR | For `sec_filing` rows: the filing's identity and URL (no filing text) | Public filings |",
           "| Clinical Trial Failures | All labels, evidence traces, disease areas, the datasheet | Licensed under the agreement "
           "this package is delivered with |", "",
-          "Of ChEMBL only the standard names of drugs are used (a drug's name is a fact); no ChEMBL identifiers, "
-          "mechanisms, targets or tables. No PubMed text.", "",
+          "No ChEMBL content: ChEMBL helps recognise a drug inside the build, but every name written is the NCI "
+          "Thesaurus or RxNorm name, or the registry's own text. No ChEMBL identifiers, names, mechanisms, targets or "
+          "tables. No PubMed text.", "",
           "## Licence", "",
           "Delivered under a commercial licence (the agreement or marketplace terms it was obtained under), covering "
           "training, evaluation and deployment of models, with no restriction on the trained models or their outputs. "

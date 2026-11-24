@@ -19,7 +19,7 @@ terms, payment terms. Check them in the partner agreement before signing.
 
 - **Dated release only.** The weekly feed, custom scopes, clinician review and the Failure Signals products
   (drug, mechanism, target) stay direct sales (contact@clinicaltrialfailures.com).
-- **Of ChEMBL only standard drug names (no IDs, mechanisms or targets), no SEC filing text, no PubMed abstracts** in the package
+- **No ChEMBL content (drug names from the NCI Thesaurus and RxNorm), no SEC filing text, no PubMed abstracts** in the package
   (`docs/provenance_and_rights.md`). The builder checks the SEC part and fails if filing text is left.
 - **Non-exclusive.** Do not grant Defined.ai exclusivity: the same data is sold directly and is public
   under CC BY-NC.
@@ -137,8 +137,9 @@ sample: https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-f
 > releases of both for AI training and evaluation (trial-outcome prediction, probability of success,
 > biomedical text classification), non-exclusively. Rights: the underlying records are public
 > registry data; the labels, evidence traces and documentation are our own work; no personal data;
-> of third-party databases only standard drug names (ChEMBL, attributed) and NCI Thesaurus codes are
-> included. A 360-row public sample with data dictionary is on
+> drug names and codes come from the NCI Thesaurus (CC BY 4.0, attributed) and RxNorm (US National
+> Library of Medicine, public domain); no content from databases under share-alike or
+> non-commercial terms. A 360-row public sample with data dictionary is on
 > Hugging Face (clinical-trial-failures/clinical-trial-failures-sample); a DOI release is on Zenodo
 > (10.5281/zenodo.23558833).
 
@@ -150,8 +151,8 @@ sample: https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-f
   results documents are included.
 - **Our work:** labels, evidence traces, disease-area assignment, endpoint verdicts and documentation
   are created by Clinical Trial Failures. We hold the rights and can grant a commercial licence.
-- **Third-party content:** of ChEMBL (CC BY-SA) only the standard names of drugs (facts), attributed; NCI
-  Thesaurus codes (CC BY 4.0), attributed; no PubMed abstracts; no SEC filing text in the package (only
+- **Third-party content:** drug names and codes from the NCI Thesaurus (CC BY 4.0, attributed) and RxNorm
+  (NLM, public domain); no ChEMBL content (used only internally to recognise drugs); no PubMed abstracts; no SEC filing text in the package (only
   links to public filings).
 - **Personal data:** none. Trial-level records; sponsor and organisation names only. No patient data,
   no investigator contact details.

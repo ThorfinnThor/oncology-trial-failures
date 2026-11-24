@@ -16,11 +16,14 @@ writes, per stopped trial in data/all_stopped_trials.csv:
   drug_resolution    RESOLVED (every tested drug identified by name), PARTIAL, CODE_OR_CLASS_ONLY
                      (a research code or a drug class, no standard name), UNRESOLVED, NO_DRUG, or
                      NOT_COVERED (outside the universe: Phase 1, Phase 4, or started before 2010)
-  drug_name_source   where the standard names come from: ChEMBL, NCIt, or both
+  drug_name_source   where the standard names come from: NCIt, RxNorm, or both
 
-Rights (docs/provenance_and_rights.md, decided 23 Nov 2026): the standard name of a drug (its INN)
-is a fact; the names are used, ChEMBL identifiers, mechanisms and targets are not. Mechanism and
-target stay in the licensed signals product. Names are attributed to their sources in the READMEs.
+Rights (docs/provenance_and_rights.md, decided 24 Nov 2026): nothing from ChEMBL leaves in this
+table, not even names. ChEMBL is CC BY-SA 3.0; its ShareAlike condition does not fit the CC BY-NC
+public dataset or a commercial licence, and 3.0 does not settle database rights. ChEMBL is used only
+inside the resolver, to recognise a drug; the name written out is the NCI Thesaurus preferred name
+(CC BY 4.0) or the RxNorm ingredient (NLM, public domain). A drug neither names is written as the
+registry lists it and counts as unresolved. Mechanism and target stay in the licensed signals product.
 
 Output: data/trial_drugs.csv (and web/public/trial_drugs.csv, published like the dataset).
 """
@@ -114,8 +117,41 @@ def unresolved_status(c: dict) -> bool:
     return c.get("status") in ("UNRESOLVED", "AMBIGUOUS")
 
 
+def from_chembl(c: dict) -> bool:
+    return c.get("status") == "RESOLVED" and "CHEMBL" in (c.get("entity_source") or "")
+
+
+def ncit_drug_codes(ncit: dict, name: str, norm) -> list[str]:
+    return [c for c in ncit["names"].get(norm(name), [])
+            if not ncit["concepts"][c]["is_regimen"]
+            and "Pharmacologic Substance" in set(ncit["concepts"][c]["semantic_types"])]
+
+
+def rename_from_ncit(rec: dict, ncit: dict | None, norm) -> None:
+    """Replace every ChEMBL name by the NCI Thesaurus preferred name of the same drug: the NCIt concept
+    ChEMBL's name points to, else the one the registry label points to, if exactly one. What NCIt does
+    not name loses its ChEMBL name and goes to RxNorm (prepare) as an unresolved label."""
+    for iv in rec.get("interventions") or []:
+        for c in iv.get("components") or []:
+            if not from_chembl(c):
+                continue
+            codes: list[str] = []
+            if ncit:
+                for key in (c.get("name") or "", c.get("label") or ""):
+                    codes = ncit_drug_codes(ncit, key, norm) if key else []
+                    if len(codes) == 1:
+                        break
+            if len(codes) == 1:
+                c.update({"name": ncit["concepts"][codes[0]]["name"], "ncit_code": codes[0],
+                          "entity_id": "NCIT:" + codes[0], "entity_source": "NCIT_RENAMED"})
+            else:
+                c.update({"status": "UNRESOLVED", "name": None, "entity_id": None, "entity_source": "NAME_NOT_WRITTEN"})
+            for k in ("chembl_id", "mechanisms", "target_ids", "target_names", "target_genes", "molecule_type"):
+                c.pop(k, None)
+
+
 def prepare(rec: dict, rxmap: dict[str, dict]) -> None:
-    """Drop assays and placeholders, then name what ChEMBL and NCIt could not, from RxNorm."""
+    """Drop assays and placeholders, then name what NCIt could not, from RxNorm."""
     for iv in rec.get("interventions") or []:
         for c in iv.get("components") or []:
             label = c.get("label") or ""
@@ -160,8 +196,9 @@ def summarise(rec: dict, ncit: dict | None, norm) -> dict:
     else:
         resolution = "UNRESOLVED"
     def source(c: dict) -> str:
-        s = c.get("entity_source") or ""
-        return "ChEMBL" if "CHEMBL" in s else ("RxNorm" if s == "RXNORM" else "NCIt")
+        if from_chembl(c) and not c.get("ncit_code"):
+            raise ValueError(f"{rec['nct_id']}: a ChEMBL name reached the export")  # rename_from_ncit runs first
+        return "RxNorm" if c.get("entity_source") == "RXNORM" else "NCIt"
     sources = sorted({source(c) for c in tested if c.get("status") == "RESOLVED"})
     rxcuis = sorted({"RXCUI:" + c["rxcui"] for c in tested if c.get("rxcui")})
     unresolved = sorted({c.get("label", "") for c in tested if unresolved_status(c)} - {""})
@@ -184,15 +221,17 @@ def summarise(rec: dict, ncit: dict | None, norm) -> dict:
 
 
 def rxnorm_names(records, budget: float) -> dict[str, dict]:
-    """label (lower case) -> {"name", "rxcui"} for experimental-arm components ChEMBL and NCIt left
-    unresolved, from RxNorm (NLM): the ingredient a name normalises to. Cached by the HTTP cache, so a
-    later run only asks for new names; the time budget keeps a first run inside the weekly run."""
+    """label (lower case) -> {"name", "rxcui"} for experimental-arm components NCIt left unresolved,
+    and for any component whose ChEMBL name was not written (rename_from_ncit), from RxNorm (NLM): the
+    ingredient a name normalises to. Cached by the HTTP cache, so a later run only asks for new names;
+    the time budget keeps a first run inside the weekly run."""
     import time
     from concurrent.futures import ThreadPoolExecutor
     from scripts.signals.build_oncology_failure_signals import rxnorm_lookup
     labels = sorted({(c.get("label") or "").strip() for rec in records for iv in rec.get("interventions") or []
-                     if iv.get("role") == "EXPERIMENTAL_ARM" for c in iv.get("components") or []
-                     if unresolved_status(c) and not NON_DRUG_LABEL.search(c.get("label") or "")} - {""})
+                     for c in iv.get("components") or []
+                     if unresolved_status(c) and not NON_DRUG_LABEL.search(c.get("label") or "")
+                     and (iv.get("role") == "EXPERIMENTAL_ARM" or c.get("entity_source") == "NAME_NOT_WRITTEN")} - {""})
     started, out, done = time.monotonic(), {}, 0
 
     def one(label: str):
@@ -227,8 +266,8 @@ def main() -> int:
     try:
         from scripts.universe.ncit_index import load as load_ncit
         ncit = load_ncit()
-    except Exception as exc:  # NCIt codes are a bonus; the names do not depend on them
-        print(f"NCIt index not available ({exc}); writing names without NCIt codes")
+    except Exception as exc:  # without NCIt only RxNorm names are written (no ChEMBL name ever is)
+        print(f"NCIt index not available ({exc}); writing RxNorm names only")
         ncit = None
     stopped = [r["nct_id"] for r in csv.DictReader(open(STOPPED, encoding="utf-8"))]
     wanted = set(stopped)
@@ -242,6 +281,8 @@ def main() -> int:
                 rec = json.loads(line)
                 if rec.get("nct_id") in wanted and rec["nct_id"] not in records:
                     records[rec["nct_id"]] = rec
+    for rec in records.values():
+        rename_from_ncit(rec, ncit, norm)
     rxmap = rxnorm_names(records.values(), args.rxnorm_seconds)
     found: dict[str, dict] = {}
     for nct, rec in records.items():
@@ -258,7 +299,8 @@ def main() -> int:
             w.writeheader()
             w.writerows(rows)
     tally = Counter(r["drug_resolution"] for r in rows)
-    print(json.dumps({"stopped_trials": len(rows), "covered": len(found), "drug_resolution": dict(tally)}))
+    print(json.dumps({"stopped_trials": len(rows), "covered": len(found), "drug_resolution": dict(tally),
+                      "drug_name_source": dict(Counter(r["drug_name_source"] for r in rows if r["drug_name_source"]))}))
     return 0
 
 

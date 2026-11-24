@@ -445,6 +445,35 @@ for _conds, _mesh, _area in [
 ]:
     check(f"disease area of {_conds[0]}", assign_disease_areas(_conds, _mesh)[0], _area)
 
+# Drug table (export_trial_drugs.py): no ChEMBL name is ever written. A ChEMBL match is renamed to the
+# NCI Thesaurus preferred name of the same drug, or written as the registry label and counted unresolved.
+from scripts.universe.export_trial_drugs import prepare, rename_from_ncit, summarise  # noqa: E402
+_norm = lambda x: x.lower().strip()  # noqa: E731
+_ncit = {"names": {"pembrolizumab": ["C106432"], "cisplatin": ["C376"]},
+         "concepts": {"C106432": {"name": "Pembrolizumab", "is_regimen": False, "semantic_types": ["Pharmacologic Substance"]},
+                      "C376": {"name": "Cisplatin", "is_regimen": False, "semantic_types": ["Pharmacologic Substance"]}}}
+_rec = {"nct_id": "NCT00000001", "interventions": [
+    {"role": "EXPERIMENTAL_ARM", "components": [
+        {"label": "MK-3475", "status": "RESOLVED", "entity_source": "CHEMBL", "name": "PEMBROLIZUMAB", "chembl_id": "CHEMBL3137343"},
+        {"label": "Zorbolin 5 mg", "status": "RESOLVED", "entity_source": "CHEMBL_VIA_OTHER_NAME", "name": "ZORBOLIN", "chembl_id": "CHEMBL1"}]},
+    {"role": "BACKGROUND_OR_BACKBONE", "components": [
+        {"label": "cisplatin", "status": "RESOLVED", "entity_source": "CHEMBL", "name": "CISPLATIN", "chembl_id": "CHEMBL11359"}]}]}
+rename_from_ncit(_rec, _ncit, _norm)
+prepare(_rec, {})
+_row = summarise(_rec, _ncit, _norm)
+check("ChEMBL match renamed from NCIt", _row["drugs_tested"], "Pembrolizumab; Zorbolin 5 mg")
+check("ChEMBL-only drug counts unresolved", (_row["drug_resolution"], _row["drugs_unresolved"]), ("PARTIAL", "Zorbolin 5 mg"))
+check("background renamed from NCIt", _row["drugs_background"], "Cisplatin")
+check("name source never ChEMBL", _row["drug_name_source"], "NCIt")
+check("NCIt code kept", _row["drug_ncit_codes"], "NCIT:C106432")
+check("no ChEMBL id left", "CHEMBL" in json.dumps(_rec), False)
+_rec2 = {"nct_id": "NCT00000002", "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [
+    {"label": "Zorbolin 5 mg", "status": "RESOLVED", "entity_source": "CHEMBL", "name": "ZORBOLIN", "chembl_id": "CHEMBL1"}]}]}
+rename_from_ncit(_rec2, _ncit, _norm)
+prepare(_rec2, {"zorbolin 5 mg": {"name": "Zorbolin", "rxcui": "123"}})
+check("ChEMBL-only drug named from RxNorm", (_row2 := summarise(_rec2, _ncit, _norm))["drugs_tested"], "Zorbolin")
+check("RxNorm source", (_row2["drug_name_source"], _row2["drug_rxcuis"]), ("RxNorm", "RXCUI:123"))
+
 if failures:
     print(f"{failures} universe test(s) failed")
     sys.exit(1)
