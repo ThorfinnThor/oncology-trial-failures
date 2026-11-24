@@ -173,7 +173,7 @@ test("phases where safety stops are not shortest are named", () => {
   assert.match(text, /shortest median of the five in phase 1\. They do not in phase 3\./);
   assert.doesNotMatch(text, /phase 4/);
   assert.match(article.dek, /do not have the shortest median in phase 3\./);
-  assert.deepEqual(article.tables[1].rows.map((row) => row[0]), ["Phase 1 (15)", "Phase 3 (15)"]);
+  assert.deepEqual(article.tables[1].rows, [["Phase 1 (15)", "10", "20", "20", "20", "20"], ["Phase 3 (15)", "20", "20", "20", "20", "20"]]);
 });
 
 test("the time-to-stop article makes no claim about causes or the stop date", () => {
@@ -181,4 +181,15 @@ test("the time-to-stop article makes no claim about causes or the stop date", ()
   const text = JSON.stringify(article);
   for (const claim of [/usually forces/, /often add sites/, /planned interim/, /is the date it stopped/, /drag on/]) assert.doesNotMatch(text, claim);
   assert.match(text, /not the date of the decision to stop/);
+});
+
+test("every row of every insight table has one cell per column", () => {
+  const articles = [
+    duration([...durationRows, ...spans("business", [5, 6, 7])], 3),
+    trend(yearRows),
+  ];
+  for (const article of articles) {
+    assert.ok(article.tables.length > 0);
+    for (const table of article.tables) for (const row of table.rows) assert.equal(row.length, table.columns.length, table.heading);
+  }
 });

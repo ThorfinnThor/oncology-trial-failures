@@ -137,22 +137,29 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
               {article.tables.map((table) => (
                 <div className="card p-4" key={table.heading}>
                   <h2>{table.heading}</h2>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>{table.columns[0]}</th>
-                        <th>{table.columns[1]}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {table.rows.map((row) => (
-                        <tr key={`${table.heading}-${row[0]}`}>
-                          <td>{row[0]}</td>
-                          <td>{row[1]}</td>
+                  <div
+                    className={table.columns.length > 2 ? "insightTableScroll" : undefined}
+                    {...(table.columns.length > 2 ? { role: "region", "aria-label": table.heading, tabIndex: 0 } : {})}
+                  >
+                    <table className={table.columns.length > 2 ? "insightTableWide" : undefined}>
+                      <thead>
+                        <tr>
+                          {table.columns.map((column) => (
+                            <th key={column}>{column}</th>
+                          ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {table.rows.map((row) => (
+                          <tr key={`${table.heading}-${row[0]}`}>
+                            {row.map((cell, index) => (
+                              <td key={table.columns[index]}>{cell}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               ))}
             </section>
@@ -289,6 +296,7 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
         }
         .insightPage .insightTables {
           display: grid;
+          grid-template-columns: minmax(0, 1fr);
           gap: 14px;
           margin-top: 24px;
         }
@@ -313,6 +321,38 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
         }
         .insightPage td:last-child {
           font-weight: 850;
+        }
+        .insightPage .insightTableScroll {
+          overflow-x: auto;
+        }
+        .insightPage .insightTableWide {
+          min-width: 560px;
+        }
+        .insightPage .insightTableWide th {
+          letter-spacing: 0.03em;
+          vertical-align: bottom;
+        }
+        @media (min-width: 761px) {
+          .insightPage .insightTableWide {
+            table-layout: fixed;
+          }
+          .insightPage .insightTableWide th:first-child {
+            width: 24%;
+          }
+        }
+        .insightPage .insightTableWide th:not(:first-child),
+        .insightPage .insightTableWide td:not(:first-child) {
+          text-align: right;
+          font-variant-numeric: tabular-nums;
+        }
+        .insightPage .insightTableWide td:last-child {
+          font-weight: inherit;
+        }
+        .insightPage .insightTableWide th:first-child,
+        .insightPage .insightTableWide td:first-child {
+          position: sticky;
+          left: 0;
+          background: var(--surface);
         }
         .insightPage .insightLinks {
           margin-top: 18px;
@@ -340,6 +380,7 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
         }
         .insightPage .insightLinkCard {
           display: grid;
+          align-content: start;
           gap: 6px;
           border: 1px solid var(--border);
           border-radius: 12px;

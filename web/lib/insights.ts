@@ -400,8 +400,9 @@ function formatInsightCount(value: number): string {
 
 export type InsightTable = {
   heading: string;
-  columns: [string, string];
-  rows: Array<[string, string]>;
+  /** Two text columns, or a label and several values; from three columns on, values are set as numbers. */
+  columns: [string, string, ...string[]];
+  rows: Array<[string, string, ...string[]]>;
 };
 
 export type InsightArticle = {
@@ -6750,10 +6751,12 @@ function hydrateRecruitmentVsBiologicalArticle(article: InsightArticle, stats: I
     tables: [
       {
         heading: "Stops for too few participants vs efficacy or safety",
-        columns: ["Disease area (stopped trials)", "Too few participants · efficacy or safety"],
-        rows: areas.map((area): [string, string] => [
+        columns: ["Disease area (stopped trials)", "Too few participants", "Efficacy or safety", "Ratio"],
+        rows: areas.map((area): InsightTable["rows"][number] => [
           `${area.label} (${n(area.total)})`,
-          `${share(area.recruitment, area.total)} · ${share(area.biological, area.total)} (${ratio(area)})`,
+          share(area.recruitment, area.total),
+          share(area.biological, area.total),
+          ratio(area),
         ]),
       },
     ],
@@ -6823,11 +6826,14 @@ function hydrateStopReasonsByYearArticle(article: InsightArticle, stats: Insight
   const peakCovid = [...covidByYear].sort((x, y) => y.count - x.count)[0];
   const y2019 = years.find((item) => item.year === 2019);
   const y2020 = years.find((item) => item.year === 2020);
-  const row = (item: StopReasonYear): [string, string] => [
+  const row = (item: StopReasonYear): InsightTable["rows"][number] => [
     `${item.year}${item.year === asOfYear ? ", so far" : ""} (${n(item.total)})`,
-    `${share(item, "recruitment")} · ${share(item, "business")} · ${share(item, ...biological)} · ${share(item, "unclear")}`,
+    share(item, "recruitment"),
+    share(item, "business"),
+    share(item, ...biological),
+    share(item, "unclear"),
   ];
-  const columns: [string, string] = ["Year (stops)", "Too few participants · business or funding · efficacy or safety · unclear"];
+  const columns: InsightTable["columns"] = ["Year (stops)", "Too few participants", "Business or funding", "Efficacy or safety", "No clear reason"];
 
   return {
     ...article,
@@ -6983,18 +6989,25 @@ function hydrateTimeToStopArticle(article: InsightArticle, stats: InsightStats):
     tables: [
       {
         heading: "Months from start to completion date, terminated trials",
-        columns: ["Stop reason (trials)", "Median (middle half) · to primary completion · under 12 months"],
-        rows: groups.map((group): [string, string] => [
+        columns: ["Stop reason (trials)", "Median", "Middle half", "Median to primary completion", "Under 12 months"],
+        rows: groups.map((group): InsightTable["rows"][number] => [
           `${group.label} (${n(group.count)})`,
-          `${group.median} (${group.q25}–${group.q75}) · ${group.primaryMedian} · ${yearShare(group)}`,
+          String(group.median),
+          `${group.q25}–${group.q75}`,
+          String(group.primaryMedian),
+          yearShare(group),
         ]),
       },
       ...(byPhase.length ? [{
         heading: "Median months by phase",
-        columns: ["Phase (trials)", "Safety · benefit · recruitment · business or funding · operational"] as [string, string],
-        rows: byPhase.map((phase): [string, string] => [
+        columns: ["Phase (trials)", "Safety", "Benefit", "Recruitment", "Business or funding", "Operational"] as InsightTable["columns"],
+        rows: byPhase.map((phase): InsightTable["rows"][number] => [
           `${phase.label} (${n(phase.count)})`,
-          ["safety", "efficacy", "recruitment", "business", "operational"].map((key) => phase.medians[key]).join(" · "),
+          String(phase.medians.safety),
+          String(phase.medians.efficacy),
+          String(phase.medians.recruitment),
+          String(phase.medians.business),
+          String(phase.medians.operational),
         ]),
       }] : []),
     ],
