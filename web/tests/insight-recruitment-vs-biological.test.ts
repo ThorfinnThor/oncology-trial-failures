@@ -53,7 +53,7 @@ test("the article states the numbers and does not claim 'everywhere' when an are
   assert.match(article.dek, /not in Ophthalmology/);
   assert.equal(article.sections[1].heading, "Recruitment comes first almost everywhere");
   assert.equal(article.tables[0].rows[0][0], "Cardiovascular (220)");
-  assert.match(article.tables[0].rows[0][1], /\(5\.0 to 1\)$/);
+  assert.equal(article.tables[0].rows[0][3], "5.0 to 1");
   assert.ok(article.links.some((link) => link.href === "/atlas#cardiovascular"));
   assert.equal(article.faqs.length, 3);
 });
