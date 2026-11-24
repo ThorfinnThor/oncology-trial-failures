@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.7"
+CLASSIFIER_VERSION = "2.7.8"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -10716,6 +10716,16 @@ def _dedupe_evidence(items: Iterable[Evidence]) -> Tuple[Evidence, ...]:
     return tuple(output)
 
 
+_DENIED_BIO_CLAUSE = re.compile(
+    r"\b(?:the )?(?:benefit\s*[-/:]?\s*risk|risk\s*[-/:]?\s*benefit)(?: profile| balance| ratio| assessment)?"
+    r"(?: of [^.;:]{1,40}?)? (?:(?:is |was |remains? |remained )?(?:unchanged|not (?:been )?changed|not affected|"
+    r"unaffected)|(?:has|have|did) not changed?)\b|"
+    r"\bnot (?:based on|due to|related to|driven by) (?:any |an? |the )?(?:safety|efficacy|benefit\s*[-/:]?\s*risk) "
+    r"(?:concerns?|issues?|reasons?|findings?)\b",
+    re.I,
+)
+
+
 def _requires_semantic_review(text: str, reasons: Sequence[str]) -> bool:
     """Keep directional or multi-causal ambiguity out of asserted classes."""
 
@@ -10770,10 +10780,14 @@ def _requires_semantic_review(text: str, reasons: Sequence[str]) -> bool:
     # clearly which one caused the stop. They stay reviewable rather than
     # being collapsed into whichever keyword happened to match first.
     recruitment = re.search(r"\b(?:recruitment|enrollment|enrolment|accrual)\b", text)
+    # 2.7.8: a benefit-risk mention the text itself denies ("benefit-risk profile of IP unchanged",
+    # "not based on any safety concerns") is not a second plausible domain (NCT06716853, CTIS
+    # review 23 Nov 2026). Only the undenied text is searched for one.
+    undenied = _DENIED_BIO_CLAUSE.sub(" ", text)
     if REASON_RECRUITMENT in reason_set and recruitment and re.search(
         r"\b(?:negative results?|clinical benefit|risk.?benefit|benefit.?risk|"
         r"endpoints?|hypothesis|clinical findings?|scientific)\b",
-        text,
+        undenied,
     ):
         return True
     if re.search(r"\barm\b[^.;:]{0,80}\breached goal\b", text) and re.search(
@@ -11015,12 +11029,15 @@ def classify_reason_v2(
         and not re.search(
             r"\b(?:portfolio|pipeline|resource allocation|reallocation|"
             r"re[- ]?prioriti[sz]|strateg(?:y|ic)|commercial potential|"
-            r"competitive landscape|standard of care|business (?:reason|objectives?))\b",
+            r"competitive landscape|standard of care|business (?:reason|objectives?)|"
+            r"commercial (?:decision|decisions|reason|reasons))\b",
             text,
         )
     ):
         # A discontinued program or indication states what the sponsor did,
         # not why. Keep it separate from a genuinely stated business cause.
+        # 2.7.8: "commercial decisions that led to the discontinuation of ... development" states the
+        # business cause of the programme action (NCT04222972, found in the CTIS review 23 Nov 2026).
         evidence = tuple(item for item in evidence if item.reason != REASON_BUSINESS)
     if (
         any(item.reason == REASON_BUSINESS for item in evidence)

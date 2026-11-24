@@ -1451,3 +1451,5 @@
 {"why_stopped":"not due to the lack of efficacy","outcome":"UNKNOWN","primary_reason":"UNSPECIFIED","needs_review":true}
 {"why_stopped":"Terminated, not due to an adverse event but because of slow accrual","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
 {"why_stopped":"was not continued due to safety concerns","outcome":"BIOLOGICAL_FAILURE","primary_reason":"SAFETY","needs_review":false}
+{"why_stopped":"Early termination of the study resulted from organizational and commercial decisions that led to the discontinuation of pralsetinib's global marketing and development in all territories (excluding US and Greater China).","outcome":"NON_BIOLOGICAL","primary_reason":"BUSINESS_STRATEGY","needs_review":false}
+{"why_stopped":"Persistent challenges have been encountered in patient recruitment, difficulty in identifying a sufficient number of eligible subjects. The decision to terminate the study was not based on any safety concerns. Benefit-risk profile of IP unchanged.","outcome":"NON_BIOLOGICAL","primary_reason":"RECRUITMENT","needs_review":false}
