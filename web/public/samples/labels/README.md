@@ -50,7 +50,7 @@ For a success/failure model, `BIOLOGICAL_FAILURE` is the failure class. The othe
 | --- | --- | --- |
 | `nct_id`, `brief_title`, `overall_status`, `phases`, `conditions`, `intervention_names`, `intervention_types`, `lead_sponsor`, `start_date`, `primary_completion_date` | Registry fields as filed | ClinicalTrials.gov |
 | `disease_area` | One of 15 areas, derived from conditions and MeSH terms | Ours |
-| `drugs_tested` | The drugs the experimental arms received and the control arms did not, under their standard name ("Pembrolizumab" for "MK-3475"); a drug we could not identify appears as filed | Ours; names from ChEMBL (CC BY-SA 3.0) and the NCI Thesaurus (CC BY 4.0) |
+| `drugs_tested` | The drugs the experimental arms received and the control arms did not, under their standard name ("Pembrolizumab" for "MK-3475"); a drug we could not identify appears as filed | Ours; names from the NCI Thesaurus (CC BY 4.0) and RxNorm (NLM) |
 | `drugs_background` | What the control arms received too: the background a drug was tested on, never the drug tested | Ours, as above |
 | `drug_ncit_codes` | NCI Thesaurus codes of the tested drugs, where one identifies the drug | NCI Thesaurus |
 | `drug_resolution` | `RESOLVED`, `PARTIAL`, `CODE_OR_CLASS_ONLY`, `UNRESOLVED`, `NO_DRUG`, or `NOT_COVERED` (not resolved yet) | Ours |
