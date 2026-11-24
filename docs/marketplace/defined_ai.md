@@ -17,8 +17,8 @@ terms, payment terms. Check them in the partner agreement before signing.
 | Public already? | Yes, under CC BY-NC 4.0 (site, Zenodo, Hugging Face sample). The marketplace sells the **commercial** right. Say so in the listing. | Only for stopped trials (576) and a 120-row sample; the completed-trial labels are not public |
 | Format | CSV + JSONL + datasheet (README) + manifest with checksums | same |
 
-- **Dated release only.** The weekly feed, custom scopes, clinician review and the drug/target fields stay
-  direct sales (contact@clinicaltrialfailures.com).
+- **Dated release only.** The weekly feed, custom scopes, clinician review and the Failure Signals products
+  (drug, mechanism, target) stay direct sales (contact@clinicaltrialfailures.com).
 - **Of ChEMBL only standard drug names (no IDs, mechanisms or targets), no SEC filing text, no PubMed abstracts** in the package
   (`docs/provenance_and_rights.md`). The builder checks the SEC part and fails if filing text is left.
 - **Non-exclusive.** Do not grant Defined.ai exclusivity: the same data is sold directly and is public
@@ -26,23 +26,29 @@ terms, payment terms. Check them in the partner agreement before signing.
 - **Price not below the direct price** for the same release, or the marketplace undercuts every direct
   offer.
 
-## Prices (market research 23 Nov 2026; list prices to enter in the partner form)
+## Prices (decided by Schayan 24 Nov 2026)
 
-Evidence (search snippets, sources in the session of 23 Nov): free commercial-use alternatives exist for
-the stop-reason class (Open Targets predicted stop reasons, Apache 2.0; CTO weak outcome labels, MIT);
-institutional subscriptions to trial databases run from about $19k/yr (Trialtrove, NCI) to $35k/yr
-(Cortellis, NIH) and a median of about $68k/yr (GlobalData); Defined.ai does not publish its revenue
-share (one unverified claim: providers keep 65–75 %). Judgement, not evidence:
+Decisions: **low entry prices so that it sells quickly**; the marketplace is **never cheaper than buying
+directly**; **Failure Signals (oncology and seven areas) only direct**, not on the marketplace; **subset
+listings** by disease area. Market evidence (23 Nov): free commercial-use alternatives for stop reasons
+(Open Targets, CTO), institutional trial-database subscriptions $19k–$68k/yr, Defined.ai's revenue share
+unpublished. Raise later rather than lower.
 
-| Listing | List price | ≈ per trial | Why |
-| --- | ---: | ---: | --- |
-| A: stop-reason labels (24,132) | **$9,500** | $0.40 | free substitutes cap it; the value is the evidence, the validation and the reviewed causes from SEC filings, publications and the EU register |
-| B: endpoint labels (5,559) | **$14,500** | $2.60 | scarcer; no equivalent open set with stated thresholds |
-| A + B | **$20,000** | | about one year of an institutional trial-database subscription, as a one-time purchase |
+| Defined.ai listing | List price | ≈ per trial |
+| --- | ---: | ---: |
+| A: stop-reason labels, all areas (24,132) | **$4,900** | $0.20 |
+| B: endpoint labels (5,559) | **$7,900** | $1.40 |
+| A + B | **$10,900** | |
+| A, oncology only (9,178) | **$2,900** | $0.32 |
+| A, one other disease area | **$1,500** | |
+| A + B, oncology only | **$4,900** | |
 
-Direct (never cheaper on the marketplace): pilot €2,500 for one or two areas, credited within three
-months; one-time A+B €18,000; annual with weekly updates €24,000 (A only €12,000); per record for small
-buyers A $0.75, B $4 (minimum $2,500). Raise later rather than lower.
+Direct (contact@clinicaltrialfailures.com), always a little below the marketplace: pilot €2,000 for one or
+two areas, credited in full within three months; one-time A+B €9,000; annual with weekly updates
+€15,000 (A only €7,500); Failure Signals and clinician review only direct, quoted per scope.
+
+Subset packages: Actions → Marketplace package → Run workflow, field "area" (e.g. `Oncology`,
+`Infectious Disease`); `scripts/marketplace/build_package.py --area ...`.
 
 ## How it differs from the free datasets (use in the listing and in replies)
 
@@ -157,7 +163,7 @@ sample: https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-f
 
 | Step | Who |
 | --- | --- |
-| Confirm the list prices above (A $9,500, B $14,500, A+B $20,000) and the minimum terms (non-exclusive, no sub-licensing, dated release) | Schayan |
+| Prices decided 24 Nov (above); confirm the minimum terms (non-exclusive, no sub-licensing, dated release) | Schayan |
 | Add the repository secret `PACKAGE_PASSPHRASE` (GitHub → Settings → Secrets and variables → Actions) | Schayan |
 | Build the package: Actions → **Marketplace package** → Run workflow; download the artifact; decrypt (command in the workflow file) | Schayan, or Claude can start the run |
 | Submit the partner application (defined.ai → Partnerships → Data partner) with the text above, company details, payout details | Schayan |

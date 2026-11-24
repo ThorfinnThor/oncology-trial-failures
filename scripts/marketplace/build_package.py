@@ -73,7 +73,7 @@ def write_table(base: Path, columns: list[str], rows: list[list]) -> None:
             fh.write(json.dumps(dict(zip(columns, r)), ensure_ascii=False) + "\n")
 
 
-def endpoint_rows(stopped: dict[str, dict]) -> tuple[list[list], dict]:
+def endpoint_rows(stopped: dict[str, dict], areas: set[str] | None = None) -> tuple[list[list], dict]:
     try:
         from scripts.universe.endpoint_outcomes import READER_VERSION, evidence_of, load_verdicts, read_on
     except Exception as exc:  # the reader imports heavy modules; a broken import loses the section only
@@ -100,7 +100,7 @@ def endpoint_rows(stopped: dict[str, dict]) -> tuple[list[list], dict]:
     out = []
     for nct in sorted(verdicts):
         ev = evidence_of(verdicts[nct], limit=6)
-        if not ev or nct not in reg:
+        if not ev or nct not in reg or (areas and reg[nct].get("disease_area") not in areas):
             continue
         r, s = reg[nct], stopped.get(nct, {})
         ivs = (r.get("arms_interventions") or {}).get("interventions") or []
@@ -119,11 +119,19 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--require-endpoints", action="store_true", help="fail if the endpoint cache is missing")
+    ap.add_argument("--area", action="append", default=[],
+                    help="only trials whose primary disease area is this (repeatable): a subset listing, e.g. Oncology")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
     meta = json.loads((ROOT / "web/public/dataset_meta.json").read_text())
     release = meta.get("version") or date.today().isoformat()
     rows = list(csv.DictReader(open(ROOT / "data/all_stopped_trials.csv", encoding="utf-8")))
+    areas = set(args.area)
+    if areas:
+        known = {r["disease_area"] for r in rows}
+        if areas - known:
+            raise SystemExit(f"unknown disease area(s) {sorted(areas - known)}; known: {sorted(known)}")
+        rows = [r for r in rows if r["disease_area"] in areas]
     drugs = load_trial_drugs()
     for r in rows:
         r.update(drug_fields(drugs, r["nct_id"]))
@@ -148,7 +156,7 @@ def main() -> int:
         raise SystemExit(f"filing text left in label_evidence for {leaked[:5]}")
 
     # 2. Endpoint labels, where the weekly run's cache is present.
-    ep, ep_meta = endpoint_rows({r["nct_id"]: r for r in rows})
+    ep, ep_meta = endpoint_rows({r["nct_id"]: r for r in rows}, areas or None)
     if args.require_endpoints and not ep:
         raise SystemExit("no endpoint labels: the endpoint cache is missing (run via marketplace-package.yml)")
     if ep:
@@ -169,7 +177,8 @@ def main() -> int:
     epc = collections.Counter(r[ENDPOINT_COLUMNS.index("endpoint_label")] for r in ep)
     ep_completed = sum(1 for r in ep if r[ENDPOINT_COLUMNS.index("overall_status")] == "COMPLETED")
     bio = cats["BIOLOGICAL_FAILURE"]
-    L = [f"# Clinical Trial Failures: labelled stopped trials and trial outcomes (release {release})", "",
+    scope_note = (f" — subset: {', '.join(sorted(areas))}" if areas else "")
+    L = [f"# Clinical Trial Failures: labelled stopped trials and trial outcomes (release {release}){scope_note}", "",
          f"ClinicalTrials.gov snapshot imported {(meta.get('imported_at_utc') or '')[:10]}; package built "
          f"{date.today().isoformat()}; classifier {rows[0]['classification_version']}. Publisher: Clinical Trial "
          "Failures, https://clinicaltrialfailures.com, contact@clinicaltrialfailures.com.", "",
@@ -277,7 +286,7 @@ def main() -> int:
     (args.out / "README.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
     files = sorted(p for p in args.out.iterdir() if p.is_file() and p.name != "manifest.json")
-    manifest = {"release": release, "built": date.today().isoformat(), "classifier": rows[0]["classification_version"],
+    manifest = {"release": release, "areas": sorted(areas) or "all", "built": date.today().isoformat(), "classifier": rows[0]["classification_version"],
                 "rows": {"stop_reason_labels": len(stop), "endpoint_labels": len(ep)}, "endpoint_reader": ep_meta,
                 "files": {p.name: {"bytes": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}
                           for p in files}}

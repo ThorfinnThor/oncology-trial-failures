@@ -352,7 +352,9 @@ Next: submit the sitemap in Search Console and check the pages in the Rich Resul
    and the manual workflow **Marketplace package** (encrypted artifact, needs the secret `PACKAGE_PASSPHRASE`).
    `PACKAGE_PASSPHRASE` set 23 Nov; **first package built 23 Nov** (run 45182482795): 24,124 stop-reason rows, 5,559
    endpoint rows (MET 2,545, MISSED 2,518, MIXED 496), encrypted artifact 9 MB, kept 7 days.
-   Schayan: prices, submit the partner form, review the agreement. **Market research 23 Nov**
+   **Prices decided 24 Nov:** A $4,900, B $7,900, A+B $10,900, oncology-only A $2,900, other single area A $1,500,
+   oncology A+B $4,900; direct below that (pilot €2,000, A+B €9,000, annual €15,000); Failure Signals only direct.
+   Subset packages via the workflow's "area" field. Schayan: submit the partner form, review the agreement. **Market research 23 Nov**
    (search snippets, sources in the session): free commercial substitutes exist (Open Targets stop reasons,
    Apache 2.0, ~28.8k trials predicted; CTO outcome labels, MIT, ~125k trials), institutional anchors
    Trialtrove $18.9k/yr (NCI), Cortellis ~$35k/yr (NIH), GlobalData ~$68k/yr median; Defined.ai's split
