@@ -137,7 +137,8 @@ sample: https://huggingface.co/datasets/clinical-trial-failures/clinical-trial-f
 > releases of both for AI training and evaluation (trial-outcome prediction, probability of success,
 > biomedical text classification), non-exclusively. Rights: the underlying records are public
 > registry data; the labels, evidence traces and documentation are our own work; no personal data;
-> no third-party licensed databases are included. A 360-row public sample with data dictionary is on
+> of third-party databases only standard drug names (ChEMBL, attributed) and NCI Thesaurus codes are
+> included. A 360-row public sample with data dictionary is on
 > Hugging Face (clinical-trial-failures/clinical-trial-failures-sample); a DOI release is on Zenodo
 > (10.5281/zenodo.23558833).
 
