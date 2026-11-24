@@ -121,31 +121,70 @@ def from_chembl(c: dict) -> bool:
     return c.get("status") == "RESOLVED" and "CHEMBL" in (c.get("entity_source") or "")
 
 
-def ncit_drug_codes(ncit: dict, name: str, norm) -> list[str]:
-    return [c for c in ncit["names"].get(norm(name), [])
-            if not ncit["concepts"][c]["is_regimen"]
-            and "Pharmacologic Substance" in set(ncit["concepts"][c]["semantic_types"])]
+def ncit_is_agent(concept: dict) -> bool:
+    from scripts.universe.resolve import Resolver
+    return Resolver._ncit_is_agent(concept)
 
 
-def rename_from_ncit(rec: dict, ncit: dict | None, norm) -> None:
-    """Replace every ChEMBL name by the NCI Thesaurus preferred name of the same drug: the NCIt concept
-    ChEMBL's name points to, else the one the registry label points to, if exactly one. What NCIt does
-    not name loses its ChEMBL name and goes to RxNorm (prepare) as an unresolved label."""
+def chembl_to_ncit(ncit: dict, chembl_names: dict) -> dict[str, list[str]]:
+    """ChEMBL parent ID -> NCIt agent concepts one of whose synonyms names that molecule and no other.
+    Used only to find the NCIt concept of a drug ChEMBL recognised; nothing of ChEMBL is written."""
+    from scripts.universe.chembl_index import norm
+    out: dict[str, list[str]] = {}
+    for code, concept in ncit["concepts"].items():
+        if not ncit_is_agent(concept):
+            continue
+        linked = {p for syn in concept["synonyms"] if len(norm(syn)) >= 5 for p in chembl_names.get(norm(syn), [])}
+        if len(linked) == 1:
+            out.setdefault(next(iter(linked)), []).append(code)
+    return out
+
+
+def pick_ncit(ncit: dict, codes: list[str]) -> str | None:
+    """One concept, or the base form when every candidate is the same molecule (salt and base:
+    "Sunitinib" before "Sunitinib Malate"): the shortest preferred name, if it is contained in the others."""
+    if len(codes) == 1:
+        return codes[0]
+    if not codes:
+        return None
+    names = sorted(((ncit["concepts"][c]["name"], c) for c in codes), key=lambda x: (len(x[0]), x[0]))
+    base = names[0][0].lower()
+    return names[0][1] if all(n.lower().startswith(base) for n, _ in names[1:]) else None
+
+
+def rename_from_ncit(rec: dict, ncit: dict | None, norm, chembl_names: dict | None = None,
+                     by_chembl: dict | None = None) -> None:
+    """Replace every ChEMBL name by the NCI Thesaurus preferred name of the same drug. Tried in order:
+    the NCIt concepts ChEMBL's name or the registry label point to (narrowed to those that name the same
+    ChEMBL molecule), then the NCIt concepts linked to that molecule. What NCIt does not name loses its
+    ChEMBL name; prepare() then tries RxNorm and the research code. Nothing of ChEMBL is written."""
+    from scripts.universe.resolve import Resolver
     for iv in rec.get("interventions") or []:
         for c in iv.get("components") or []:
             if not from_chembl(c):
                 continue
-            codes: list[str] = []
+            cid = c.get("chembl_id")
+            code = None
             if ncit:
-                for key in (c.get("name") or "", c.get("label") or ""):
-                    codes = ncit_drug_codes(ncit, key, norm) if key else []
-                    if len(codes) == 1:
+                keys = [v for key in (c.get("name") or "", c.get("label") or "") if key
+                        for v in [key, *Resolver._variants(None, key)] if v and len(norm(v)) >= 4]
+                for key in keys:
+                    codes = [x for x in ncit["names"].get(norm(key), []) if ncit_is_agent(ncit["concepts"][x])]
+                    if chembl_names is not None and cid and len(codes) > 1:
+                        same = [x for x in codes if cid in {p for syn in ncit["concepts"][x]["synonyms"]
+                                                            if len(norm(syn)) >= 5 for p in chembl_names.get(norm(syn), [])}]
+                        codes = same or codes
+                    code = pick_ncit(ncit, codes)
+                    if code:
                         break
-            if len(codes) == 1:
-                c.update({"name": ncit["concepts"][codes[0]]["name"], "ncit_code": codes[0],
-                          "entity_id": "NCIT:" + codes[0], "entity_source": "NCIT_RENAMED"})
+                if not code and by_chembl and cid:
+                    code = pick_ncit(ncit, by_chembl.get(cid, []))
+            if code:
+                c.update({"name": ncit["concepts"][code]["name"], "ncit_code": code, "entity_id": "NCIT:" + code,
+                          "entity_source": "NCIT_RENAMED"})
             else:
-                c.update({"status": "UNRESOLVED", "name": None, "entity_id": None, "entity_source": "NAME_NOT_WRITTEN"})
+                c.update({"status": "UNRESOLVED", "match_name": c.get("name"), "name": None, "entity_id": None,
+                          "entity_source": "NAME_NOT_WRITTEN"})
             for k in ("chembl_id", "mechanisms", "target_ids", "target_names", "target_genes", "molecule_type"):
                 c.pop(k, None)
 
@@ -159,9 +198,13 @@ def prepare(rec: dict, rxmap: dict[str, dict]) -> None:
                 c["status"] = "NON_DRUG"
             elif unresolved_status(c) and CLASS_LABEL.match(label.strip()):
                 c["status"] = "CLASS_ONLY"
-            elif unresolved_status(c) and label.lower() in rxmap:
-                hit = rxmap[label.lower()]
+            elif unresolved_status(c) and (label.lower() in rxmap or (c.get("match_name") or "").lower() in rxmap):
+                hit = rxmap.get(label.lower()) or rxmap[c["match_name"].lower()]
                 c.update({"status": "RESOLVED", "name": hit["name"], "entity_source": "RXNORM", "rxcui": hit["rxcui"]})
+            elif c.get("entity_source") == "NAME_NOT_WRITTEN" and len(c.get("research_codes") or []) == 1:
+                # A research code the registry itself gives ("MK-2206"): an identity, not a standard name.
+                c.update({"status": "CODE_ONLY", "entity_id": "CODE:" + c["research_codes"][0]})
+            c.pop("match_name", None)
 
 
 def summarise(rec: dict, ncit: dict | None, norm) -> dict:
@@ -228,8 +271,8 @@ def rxnorm_names(records, budget: float) -> dict[str, dict]:
     import time
     from concurrent.futures import ThreadPoolExecutor
     from scripts.signals.build_oncology_failure_signals import rxnorm_lookup
-    labels = sorted({(c.get("label") or "").strip() for rec in records for iv in rec.get("interventions") or []
-                     for c in iv.get("components") or []
+    labels = sorted({(key or "").strip() for rec in records for iv in rec.get("interventions") or []
+                     for c in iv.get("components") or [] for key in (c.get("label"), c.get("match_name"))
                      if unresolved_status(c) and not NON_DRUG_LABEL.search(c.get("label") or "")
                      and (iv.get("role") == "EXPERIMENTAL_ARM" or c.get("entity_source") == "NAME_NOT_WRITTEN")} - {""})
     started, out, done = time.monotonic(), {}, 0
@@ -281,8 +324,11 @@ def main() -> int:
                 rec = json.loads(line)
                 if rec.get("nct_id") in wanted and rec["nct_id"] not in records:
                     records[rec["nct_id"]] = rec
+    chembl_file = ROOT / ".cache/universe/chembl_index.json"  # read as it is; never rebuilt from here
+    chembl_names = json.loads(chembl_file.read_text())["names"] if chembl_file.exists() else None
+    by_chembl = chembl_to_ncit(ncit, chembl_names) if ncit and chembl_names else None
     for rec in records.values():
-        rename_from_ncit(rec, ncit, norm)
+        rename_from_ncit(rec, ncit, norm, chembl_names, by_chembl)
     rxmap = rxnorm_names(records.values(), args.rxnorm_seconds)
     found: dict[str, dict] = {}
     for nct, rec in records.items():

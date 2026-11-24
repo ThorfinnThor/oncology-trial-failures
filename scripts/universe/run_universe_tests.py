@@ -447,7 +447,7 @@ for _conds, _mesh, _area in [
 
 # Drug table (export_trial_drugs.py): no ChEMBL name is ever written. A ChEMBL match is renamed to the
 # NCI Thesaurus preferred name of the same drug, or written as the registry label and counted unresolved.
-from scripts.universe.export_trial_drugs import prepare, rename_from_ncit, summarise  # noqa: E402
+from scripts.universe.export_trial_drugs import chembl_to_ncit, pick_ncit, prepare, rename_from_ncit, summarise  # noqa: E402
 _norm = lambda x: x.lower().strip()  # noqa: E731
 _ncit = {"names": {"pembrolizumab": ["C106432"], "cisplatin": ["C376"]},
          "concepts": {"C106432": {"name": "Pembrolizumab", "is_regimen": False, "semantic_types": ["Pharmacologic Substance"]},
@@ -473,6 +473,28 @@ rename_from_ncit(_rec2, _ncit, _norm)
 prepare(_rec2, {"zorbolin 5 mg": {"name": "Zorbolin", "rxcui": "123"}})
 check("ChEMBL-only drug named from RxNorm", (_row2 := summarise(_rec2, _ncit, _norm))["drugs_tested"], "Zorbolin")
 check("RxNorm source", (_row2["drug_name_source"], _row2["drug_rxcuis"]), ("RxNorm", "RXCUI:123"))
+_ncit3 = {"names": {"sunitinib": ["C1", "C2"], "mk2206": ["C3"]},
+          "concepts": {"C1": {"name": "Sunitinib Malate", "is_regimen": False, "semantic_types": ["Pharmacologic Substance"],
+                              "synonyms": ["Sunitinib Malate", "SU11248 malate"]},
+                       "C2": {"name": "Sunitinib", "is_regimen": False, "semantic_types": ["Pharmacologic Substance"],
+                              "synonyms": ["Sunitinib", "SU11248"]},
+                       "C3": {"name": "Akt Inhibitor MK2206", "is_regimen": False, "semantic_types": ["Pharmacologic Substance"],
+                              "synonyms": ["MK2206", "Akt Inhibitor MK2206"]}}}
+check("salt and base: the base form", pick_ncit(_ncit3, ["C1", "C2"]), "C2")
+check("two different drugs: no pick", pick_ncit(_ncit3, ["C2", "C3"]), None)
+_chn = {"sunitinib": ["CHEMBL535"], "su11248": ["CHEMBL535"], "sunitinibmalate": ["CHEMBL535"], "mk2206": ["CHEMBL1079175"]}
+check("NCIt concepts by ChEMBL molecule", sorted(chembl_to_ncit(_ncit3, _chn)["CHEMBL535"]), ["C1", "C2"])
+_rec3 = {"nct_id": "NCT00000003", "interventions": [{"role": "EXPERIMENTAL_ARM", "components": [
+    {"label": "SU-011248", "status": "RESOLVED", "entity_source": "CHEMBL", "name": "SUNITINIB", "chembl_id": "CHEMBL535"},
+    {"label": "Drug X (ABC-123)", "status": "RESOLVED", "entity_source": "CHEMBL", "name": "BLORBINIB", "chembl_id": "CHEMBL9",
+     "research_codes": ["ABC-123"]},
+    {"label": "Glorb tablets", "status": "RESOLVED", "entity_source": "CHEMBL", "name": "GLORBAMIDE", "chembl_id": "CHEMBL8"}]}]}
+rename_from_ncit(_rec3, _ncit3, lambda x: __import__("re").sub(r"[^a-z0-9]", "", x.lower()), _chn, chembl_to_ncit(_ncit3, _chn))
+prepare(_rec3, {"glorbamide": {"name": "Glorbamide", "rxcui": "77"}})
+_row3 = summarise(_rec3, _ncit3, lambda x: x.lower())
+check("base form via ChEMBL name; code from the registry; RxNorm via the internal match name",
+      (_row3["drugs_tested"], _row3["drug_resolution"]), ("Sunitinib; ABC-123; Glorbamide", "PARTIAL"))
+check("no ChEMBL left (3)", "CHEMBL" in json.dumps(_rec3) or "BLORBINIB" in json.dumps(_rec3) or "GLORBAMIDE" in json.dumps(_rec3), False)
 
 if failures:
     print(f"{failures} universe test(s) failed")
