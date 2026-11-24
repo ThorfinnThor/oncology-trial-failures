@@ -297,6 +297,29 @@ def rxnorm_names(records, budget: float) -> dict[str, dict]:
     return out
 
 
+def drug_rows(records: dict[str, dict], rxnorm_seconds: float) -> dict[str, dict]:
+    """nct_id -> drug columns for resolved trial records, with no ChEMBL name or ID in them. The only
+    way to name drugs for an export: the packages call it too, so no export can skip the renaming."""
+    from scripts.universe.chembl_index import norm
+    try:
+        from scripts.universe.ncit_index import load as load_ncit
+        ncit = load_ncit()
+    except Exception as exc:  # without NCIt only RxNorm names are written (no ChEMBL name ever is)
+        print(f"NCIt index not available ({exc}); writing RxNorm names only")
+        ncit = None
+    chembl_file = ROOT / ".cache/universe/chembl_index.json"  # read as it is; never rebuilt from here
+    chembl_names = json.loads(chembl_file.read_text())["names"] if chembl_file.exists() else None
+    by_chembl = chembl_to_ncit(ncit, chembl_names) if ncit and chembl_names else None
+    for rec in records.values():
+        rename_from_ncit(rec, ncit, norm, chembl_names, by_chembl)
+    rxmap = rxnorm_names(records.values(), rxnorm_seconds)
+    found: dict[str, dict] = {}
+    for nct, rec in records.items():
+        prepare(rec, rxmap)
+        found[nct] = summarise(rec, ncit, norm)
+    return found
+
+
 def main() -> int:
     import argparse
     ap = argparse.ArgumentParser()
@@ -305,13 +328,6 @@ def main() -> int:
     if not RESOLVED.exists():
         print(f"{RESOLVED.relative_to(ROOT)} missing (resolve.py has not run); trial_drugs.csv left as it is")
         return 0
-    from scripts.universe.chembl_index import norm
-    try:
-        from scripts.universe.ncit_index import load as load_ncit
-        ncit = load_ncit()
-    except Exception as exc:  # without NCIt only RxNorm names are written (no ChEMBL name ever is)
-        print(f"NCIt index not available ({exc}); writing RxNorm names only")
-        ncit = None
     stopped = [r["nct_id"] for r in csv.DictReader(open(STOPPED, encoding="utf-8"))]
     wanted = set(stopped)
     records: dict[str, dict] = {}
@@ -324,16 +340,7 @@ def main() -> int:
                 rec = json.loads(line)
                 if rec.get("nct_id") in wanted and rec["nct_id"] not in records:
                     records[rec["nct_id"]] = rec
-    chembl_file = ROOT / ".cache/universe/chembl_index.json"  # read as it is; never rebuilt from here
-    chembl_names = json.loads(chembl_file.read_text())["names"] if chembl_file.exists() else None
-    by_chembl = chembl_to_ncit(ncit, chembl_names) if ncit and chembl_names else None
-    for rec in records.values():
-        rename_from_ncit(rec, ncit, norm, chembl_names, by_chembl)
-    rxmap = rxnorm_names(records.values(), args.rxnorm_seconds)
-    found: dict[str, dict] = {}
-    for nct, rec in records.items():
-        prepare(rec, rxmap)
-        found[nct] = summarise(rec, ncit, norm)
+    found = drug_rows(records, args.rxnorm_seconds)
     rows = [found.get(n) or {"nct_id": n, "drugs_tested": "", "drugs_background": "", "drugs_comparator": "",
                              "drug_ncit_codes": "", "drug_rxcuis": "", "drug_resolution": "NOT_COVERED",
                              "drug_name_source": "", "drugs_unresolved": ""}

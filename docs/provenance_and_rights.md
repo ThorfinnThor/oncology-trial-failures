@@ -77,12 +77,36 @@ permission. The sample and brief forms carry an optional, unticked box for futur
 recorded as its own field on the lead; leaving it unticked still delivers the file, and the
 only reply that follows is about that request.
 
+## Licence clause for Failure Signals deliveries (24 Nov 2026)
+
+The signals product keeps its ChEMBL fields (IDs, max phase, mechanisms, targets, gene symbols).
+Instead of restricting them, every delivery says they stay under ChEMBL's licence. Use this
+clause in every direct licence agreement and quote, unchanged; the product's meta file carries the
+same text (`licence_terms`):
+
+> Fields taken or derived from ChEMBL (EMBL-EBI) — molecule IDs, development phase, mechanisms of
+> action, targets and target genes, and the fields built from them — are provided under the
+> Creative Commons Attribution-ShareAlike 3.0 licence. The Customer may use and share those fields
+> under that licence, and nothing in this Agreement restricts them. All other content (stop-reason
+> labels, evidence, cohort and signal definitions, rates, sponsor groups, curation and
+> documentation) is licensed under this Agreement.
+
+Why this is enough, on the conservative reading: CC BY-SA 3.0 allows commercial use; ShareAlike
+requires that what is adapted from ChEMBL goes out under BY-SA, and the clause does exactly that
+for every ChEMBL-derived field. What the customer pays for is not derived from ChEMBL: our labels,
+the evidence, the cohorts and the rates. The worst case of a wider reading is that a customer may
+pass on more of the ChEMBL-derived layer, which is free at EMBL-EBI anyway. The 3.0 licences
+neutralise sui generis database rights (Creative Commons policy for 3.0), so the EU/UK database
+right adds no obligation here. EMBL-EBI's terms add no restriction beyond the data owner's licence
+and ask for attribution, which every file carries. ChEMBL's property calculations from commercial
+software are not used (`docs/provenance_and_rights.md` ChEMBL row lists the fields we take).
+
 ## Open questions
 
-- Whether the licensed signals product (which carries ChEMBL fields) constitutes a ShareAlike
-  adaptation of ChEMBL, and what that requires of its own terms, is the one question worth a
-  lawyer's time before the first paid signals delivery. The public dataset and the marketplace
-  packages carry no ChEMBL content since 24 Nov 2026. The narrow answer we operate on meanwhile: ship the aggregate and the
+- ChEMBL in the signals product: handled by the licence clause above (24 Nov 2026). Worth a
+  lawyer's look only if a customer's contract asks for exclusivity or for warranties over the
+  ChEMBL-derived fields. The public dataset and the marketplace packages carry no ChEMBL content
+  since 24 Nov 2026. The narrow answer we operate on meanwhile: ship the aggregate and the
   per-trial row, never a redistributable copy of the source database.
 - Sui generis database rights under 3.0 Unported, for customers in jurisdictions that
   recognise them.

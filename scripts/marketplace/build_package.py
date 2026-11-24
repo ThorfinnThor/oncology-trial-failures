@@ -42,9 +42,11 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from scripts.samples.build_label_sample import BASIS, STOP_COLUMNS, fmt, pct  # noqa: E402
-from scripts.universe.export_trial_drugs import RESOLVED, drug_fields, load_trial_drugs, summarise  # noqa: E402
+from scripts.universe.export_trial_drugs import RESOLVED, drug_fields, drug_rows, load_trial_drugs  # noqa: E402
 
 UNIVERSE = ROOT / ".cache/universe/universe_v1.jsonl.gz"
+# RxNorm answers are cached by the weekly run; new names for completed trials get this much time.
+RXNORM_SECONDS = 900
 SEC_EVIDENCE = re.compile(r"(sec\.(?:programme|trial)_filing):(\S+ \S+ https://www\.sec\.gov/\S+?):\s.*$")
 ENDPOINT_COLUMNS = ["nct_id", "brief_title", "overall_status", "phases", "disease_area", "lead_sponsor",
                     "conditions", "intervention_names", "intervention_types", "drugs_tested", "drugs_background",
@@ -86,12 +88,14 @@ def endpoint_rows(stopped: dict[str, dict], areas: set[str] | None = None) -> tu
     stale = sum(1 for v in verdicts.values() if v.get("reader_version") != READER_VERSION)
     drug_of: dict[str, dict] = {}
     if RESOLVED.exists():
-        from scripts.universe.chembl_index import norm
+        records: dict[str, dict] = {}
         with gzip.open(RESOLVED, "rt", encoding="utf-8") as fh:
             for line in fh:
                 rec = json.loads(line)
                 if rec.get("nct_id") in verdicts:
-                    drug_of[rec["nct_id"]] = summarise(rec, None, norm)
+                    records[rec["nct_id"]] = rec
+        # The same naming as data/trial_drugs.csv: NCIt or RxNorm names, never ChEMBL's.
+        drug_of = drug_rows(records, RXNORM_SECONDS)
     reg: dict[str, dict] = {}
     with gzip.open(UNIVERSE, "rt", encoding="utf-8") as fh:
         for line in fh:
@@ -290,6 +294,10 @@ def main() -> int:
     (args.out / "README.md").write_text("\n".join(L) + "\n", encoding="utf-8")
 
     files = sorted(p for p in args.out.iterdir() if p.is_file() and p.name != "manifest.json")
+    # No ChEMBL content in the package (docs/provenance_and_rights.md, 24 Nov 2026): fail on any ChEMBL ID.
+    chembl = [p.name for p in files if p.suffix in (".csv", ".jsonl") and re.search(r"CHEMBL\d", p.read_text(encoding="utf-8"), re.I)]
+    if chembl:
+        raise SystemExit(f"ChEMBL identifiers in {chembl}")
     manifest = {"release": release, "areas": sorted(areas) or "all", "built": date.today().isoformat(), "classifier": rows[0]["classification_version"],
                 "rows": {"stop_reason_labels": len(stop), "endpoint_labels": len(ep)}, "endpoint_reader": ep_meta,
                 "files": {p.name: {"bytes": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()}

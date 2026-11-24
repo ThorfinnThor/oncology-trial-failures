@@ -672,6 +672,13 @@ def main() -> int:
             "SEC EDGAR company tickers": "issuer CIK and ticker for sponsor groups by exact or unique-prefix normalized name",
         },
         "classification_validation": "docs/validation_heldout_v2.md",
+        # docs/provenance_and_rights.md, "Licence clause for Failure Signals deliveries" (24 Nov 2026).
+        "licence_terms": ("Fields taken or derived from ChEMBL (chembl_id, chembl_max_phase, chembl_first_approval, "
+                          "molecule_type, approved_chembl, chembl_mechanisms, targets, target_gene_symbols and the focus_* "
+                          "fields built from them) are provided under CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0/), "
+                          "source: ChEMBL, EMBL-EBI. The recipient may use and share those fields under that licence; nothing in "
+                          "the licence agreement restricts them. Everything else (stop-reason labels, evidence, cohort and signal "
+                          "definitions, rates, sponsor groups, curation) is licensed under the agreement it was delivered with."),
         "limitations": [
             "Assets resolve only on exact ChEMBL/RxNorm name or synonym matches; unmatched investigational codes are retained as research codes.",
             "PubMed links are publications that mention the NCT ID; they are not necessarily the primary results paper.",
