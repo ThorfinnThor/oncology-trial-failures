@@ -29,7 +29,7 @@
    "MET": 78,
    "MIXED": 37
   },
-  "read_on": "2026-11-23",
+  "read_on": "2026-11-24",
   "sample_rows": 120
  },
  "signals": {
@@ -65,11 +65,11 @@
  "drugs": {
   "trials": 24132,
   "by_resolution": {
-   "RESOLVED": 15462,
-   "PARTIAL": 1299,
-   "UNRESOLVED": 2129,
+   "RESOLVED": 14854,
+   "PARTIAL": 1355,
+   "UNRESOLVED": 2672,
    "NO_DRUG": 3742,
-   "CODE_OR_CLASS_ONLY": 1500
+   "CODE_OR_CLASS_ONLY": 1509
   }
  }
 }

@@ -90,7 +90,7 @@ blind annotation and a clinician review.
 > whose reason is missing or ambiguous (5,439), which are kept apart rather than guessed.
 >
 > Each row carries the registry fields (phase, conditions, interventions, sponsor, dates), the drugs tested
-> under their standard name (fully identified for 76 % of trials with a drug), kept apart from the
+> under their standard name (fully identified for 73 % of trials with a drug), kept apart from the
 > background the control arm also received, the sponsor's verbatim stop reason, the label, secondary
 > causes, and a machine-readable trace of the rule and the text it matched. For 257 trials whose
 > registry entry gives no cause, the label comes from a per-trial review of the sponsor's SEC filing
