@@ -1,0 +1,290 @@
+{
+ "A": {
+  "task": "Randomized: fails on biology vs meets endpoint",
+  "n_test": 1782,
+  "fail_rate": 0.569023569023569,
+  "coverage": [
+   {
+    "year": 2018,
+    "n_test": 457,
+    "covered": 0.975929978118162,
+    "train_covered": 0.0018770530267480056,
+    "n_train": 2131
+   },
+   {
+    "year": 2019,
+    "n_test": 463,
+    "covered": 0.9827213822894169,
+    "train_covered": 0.040504394344669466,
+    "n_train": 2617
+   },
+   {
+    "year": 2020,
+    "n_test": 451,
+    "covered": 0.9645232815964523,
+    "train_covered": 0.10208062418725618,
+    "n_train": 3076
+   },
+   {
+    "year": 2021,
+    "n_test": 411,
+    "covered": 0.829683698296837,
+    "train_covered": 0.18153846153846154,
+    "n_train": 3575
+   }
+  ],
+  "auc": {
+   "base": 0.7232,
+   "gen": 0.7213,
+   "rec": 0.5689,
+   "gb": 0.6725
+  },
+  "brier": {
+   "base": 0.2085,
+   "gen": 0.2088,
+   "rec": 0.3021,
+   "gb": 0.2308
+  },
+  "auc_covered": {
+   "base": 0.7239,
+   "gen": 0.7219,
+   "rec": 0.5635,
+   "gb": 0.6719
+  },
+  "gain_rec_vs_base": [
+   -0.1548,
+   -0.1864,
+   -0.1233
+  ],
+  "gain_gb_vs_base": [
+   -0.0509,
+   -0.0711,
+   -0.0289
+  ],
+  "gain_rec_vs_gen": [
+   -0.1521,
+   -0.1847,
+   -0.1204
+  ],
+  "gain_rec_vs_base_covered": [
+   -0.1612,
+   -0.1941,
+   -0.1283
+  ],
+  "last_year_coefficients": {
+   "base_logit": 0.985,
+   "mapped": -0.061,
+   "gen": 0.131,
+   "gen_nononc": -0.493,
+   "rec_present": -0.422,
+   "rec_late": -0.059,
+   "log_planned_enrollment": 0.071,
+   "log_facilities": -0.073,
+   "us_facility": -0.055,
+   "n_arms": -0.072,
+   "dmc": 0.09,
+   "fda_regulated": 0.008,
+   "masking": -0.032,
+   "single_group": 0.0,
+   "purpose_treatment": 0.054,
+   "n_primary": 0.141,
+   "primary_survival": -0.009,
+   "primary_response": 0.024,
+   "log_planned_enrollment_missing": -0.3,
+   "log_facilities_missing": 0.009,
+   "masking_missing": 0.005
+  }
+ },
+ "A_endpoint": {
+  "task": "Randomized, posted results: missed vs met",
+  "n_test": 1421,
+  "fail_rate": 0.4595355383532723,
+  "coverage": [
+   {
+    "year": 2018,
+    "n_test": 373,
+    "covered": 0.9731903485254692,
+    "train_covered": 0.0,
+    "n_train": 1836
+   },
+   {
+    "year": 2019,
+    "n_test": 381,
+    "covered": 0.9868766404199475,
+    "train_covered": 0.027256478999106343,
+    "n_train": 2238
+   },
+   {
+    "year": 2020,
+    "n_test": 350,
+    "covered": 0.9714285714285714,
+    "train_covered": 0.08298439284354778,
+    "n_train": 2627
+   },
+   {
+    "year": 2021,
+    "n_test": 317,
+    "covered": 0.8138801261829653,
+    "train_covered": 0.15917295700689202,
+    "n_train": 3047
+   }
+  ],
+  "auc": {
+   "base": 0.7249,
+   "gen": 0.7226,
+   "rec": 0.6695,
+   "gb": 0.6823
+  },
+  "brier": {
+   "base": 0.2103,
+   "gen": 0.2109,
+   "rec": 0.2523,
+   "gb": 0.2289
+  },
+  "auc_covered": {
+   "base": 0.7258,
+   "gen": 0.724,
+   "rec": 0.6683,
+   "gb": 0.6833
+  },
+  "gain_rec_vs_base": [
+   -0.0554,
+   -0.0841,
+   -0.025
+  ],
+  "gain_gb_vs_base": [
+   -0.0432,
+   -0.0643,
+   -0.0229
+  ],
+  "gain_rec_vs_gen": [
+   -0.0525,
+   -0.0776,
+   -0.0242
+  ],
+  "gain_rec_vs_base_covered": [
+   -0.0568,
+   -0.0884,
+   -0.0243
+  ],
+  "last_year_coefficients": {
+   "base_logit": 0.985,
+   "mapped": -0.114,
+   "gen": 0.092,
+   "gen_nononc": -0.352,
+   "rec_present": -0.323,
+   "rec_late": -0.018,
+   "log_planned_enrollment": 0.069,
+   "log_facilities": -0.049,
+   "us_facility": -0.095,
+   "n_arms": -0.15,
+   "dmc": 0.026,
+   "fda_regulated": 0.067,
+   "masking": -0.01,
+   "single_group": 0.0,
+   "purpose_treatment": 0.03,
+   "n_primary": 0.072,
+   "primary_survival": -0.009,
+   "primary_response": 0.03,
+   "log_planned_enrollment_missing": -0.221,
+   "log_facilities_missing": -0.009,
+   "masking_missing": 0.09
+  }
+ },
+ "B": {
+  "task": "Biological stop among closed trials",
+  "n_test": 13475,
+  "fail_rate": 0.040371057513914656,
+  "coverage": [
+   {
+    "year": 2018,
+    "n_test": 3539,
+    "covered": 0.8872562870867476,
+    "train_covered": 0.024084061744467176,
+    "n_train": 21508
+   },
+   {
+    "year": 2019,
+    "n_test": 3239,
+    "covered": 0.8836060512503859,
+    "train_covered": 0.07424085438750298,
+    "n_train": 25094
+   },
+   {
+    "year": 2020,
+    "n_test": 3443,
+    "covered": 0.8844031367993029,
+    "train_covered": 0.1354413610375122,
+    "n_train": 28684
+   },
+   {
+    "year": 2021,
+    "n_test": 3254,
+    "covered": 0.7670559311616472,
+    "train_covered": 0.193769586397344,
+    "n_train": 32229
+   }
+  ],
+  "auc": {
+   "base": 0.5432,
+   "gen": 0.5646,
+   "rec": 0.5844,
+   "gb": 0.6167
+  },
+  "brier": {
+   "base": 0.0389,
+   "gen": 0.0389,
+   "rec": 0.04,
+   "gb": 0.0387
+  },
+  "auc_covered": {
+   "base": 0.5383,
+   "gen": 0.5581,
+   "rec": 0.5701,
+   "gb": 0.603
+  },
+  "gain_rec_vs_base": [
+   0.0413,
+   0.0132,
+   0.0671
+  ],
+  "gain_gb_vs_base": [
+   0.0738,
+   0.0509,
+   0.0974
+  ],
+  "gain_rec_vs_gen": [
+   0.0206,
+   -0.0044,
+   0.0455
+  ],
+  "gain_rec_vs_base_covered": [
+   0.0316,
+   0.0039,
+   0.058
+  ],
+  "last_year_coefficients": {
+   "base_logit": 0.536,
+   "mapped": 0.494,
+   "gen": 0.196,
+   "gen_nononc": -0.754,
+   "rec_present": -0.081,
+   "rec_late": -0.021,
+   "log_planned_enrollment": 0.067,
+   "log_facilities": 0.02,
+   "us_facility": 0.06,
+   "n_arms": 0.017,
+   "dmc": 0.116,
+   "fda_regulated": 0.115,
+   "masking": -0.014,
+   "single_group": 0.0,
+   "purpose_treatment": 0.137,
+   "n_primary": 0.058,
+   "primary_survival": -0.032,
+   "primary_response": 0.068,
+   "log_planned_enrollment_missing": -0.362,
+   "log_facilities_missing": 0.117,
+   "masking_missing": 0.028
+  }
+ }
+}
