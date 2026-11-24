@@ -43,16 +43,24 @@
   "mechanism_share": 0.6197440585009141
  },
  "signals_more": {
-  "trials": null,
-  "by_disease_area": null,
-  "columns": null,
-  "unique_assets": null,
-  "resolved_drug_share": null,
-  "mechanism_share": null,
-  "target_gene_share": null,
-  "sample_file": null,
-  "sample_readme_file": null,
-  "sample_rows": null
+  "trials": 983,
+  "by_disease_area": {
+   "Infectious Disease": 228,
+   "Respiratory": 94,
+   "Gastroenterology & Hepatology": 152,
+   "Immunology & Autoimmune": 113,
+   "Cardiovascular": 123,
+   "Endocrine & Metabolic": 97,
+   "Neurology": 176
+  },
+  "columns": 31,
+  "unique_assets": 584,
+  "resolved_drug_share": 0.5991861648016277,
+  "mechanism_share": 0.4811800610376399,
+  "target_gene_share": 0.38250254323499494,
+  "sample_file": "/samples/failure-signals-seven-areas-sample-2026-11-23-5946b134f71e9461.csv",
+  "sample_readme_file": "/samples/failure-signals-seven-areas-sample-2026-11-23-5946b134f71e9461-README.txt",
+  "sample_rows": 56
  },
  "drugs": {
   "trials": 24132,
