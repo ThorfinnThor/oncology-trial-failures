@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 
-CLASSIFIER_VERSION = "2.7.8"
+CLASSIFIER_VERSION = "2.7.9"
 
 OUTCOME_BIOLOGICAL = "BIOLOGICAL_FAILURE"
 OUTCOME_NON_BIOLOGICAL = "NON_BIOLOGICAL"
@@ -10412,6 +10412,28 @@ RULES: Tuple[Rule, ...] = (
         r"\bchange of practice made further recruitment impossible\b",
         r"\bapproved as an indication drug\b.{0,160}\bdifficult [^.;:]{0,80}\benroll\b",
         r"\bnew treatment options?\b.{0,160}\brecruitment\b",
+    ),
+    # 2.7.9: three texts found in the registry-history probe of 24 Nov 2026 (docs/registry_history_probe_2026-11-24.md).
+    # At the end of RULES so no earlier primary reason moves.
+    _rule(
+        "v279.inadequate_response_no_further_enrolment",
+        REASON_EFFICACY,
+        "HIGH",
+        r"\b(?:inadequate|insufficient|poor|limited) (?:treatment |clinical |therapeutic |tumou?r )?(?:response|efficacy|activity)"
+        r"\b[^.;:]{0,80}\b(?:did|does) not justify (?:enrolling|enrollment|enrolment|continuing|continuation|further)\b",
+    ),
+    _rule(
+        "v279.reformulation_needed",
+        REASON_SUPPLY,
+        "HIGH",
+        r"^re-?formulation of (?:the )?(?:study|investigational) (?:product|drug) (?:is |was )?(?:needed|required|necessary)\.?$",
+    ),
+    _rule(
+        "v279.government_prohibition",
+        REASON_REGULATORY,
+        "HIGH",
+        r"\b(?:state council|government|ministry of health|national health commission) (?:order|regulation|decree|notice)"
+        r"(?: no\.? ?\d+)?\b[^.;:]{0,140}\bprohibited from (?:being )?conduct(?:ed|ing)?\b",
     ),
 )
 

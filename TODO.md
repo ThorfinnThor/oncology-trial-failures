@@ -291,7 +291,7 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
 4. **ClinicalTrials.gov record history, probed 24 Nov** (`docs/registry_history_probe_2026-11-24.md`): the site's
    history is closed to automated access (403); our own weekly snapshots (since 5 Oct) show 9 changed texts
    among no-cause trials, 1 sponsor softening a stated result (NCT05617313), and 4 rule gaps on today's text
-   (NCT05003908, NCT05147766, NCT03756389, NCT07555561) still to fix via golden cases. Worth building later:
+   (NCT05003908, NCT05147766, NCT03756389, NCT07555561): **fixed in 2.7.9** (24 Nov, 8 trials, `docs/classification_change_2026-11-24_v279.md`). Worth building later:
    keep earlier stop texts and flag rewrites that remove a cause.
 
 ## Standard drug names in the public dataset (decided 23 Nov, variant 2)
