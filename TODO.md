@@ -343,6 +343,9 @@ markup (distribution, license, coverage, variables, sameAs Hugging Face / Zenodo
 downloads without a form, and a three-step funnel (sample for your scope by mail → licence →
 newsletter). "Free data" is in the top bar. Figures from `web/data/dataset_facts.json`, rebuilt weekly.
 Next: submit the sitemap in Search Console and check the pages in the Rich Results test after deploy.
+**24 Nov:** IndexNow (Bing, Yandex, Seznam, Naver) run by hand: 140 new or changed URLs submitted (HTTP 200); it runs daily
+at 10:00 UTC anyway. Google takes no IndexNow and has no submission API for articles: Search Console stays with Schayan
+(sitemap + URL inspection for the three AI-training-data articles).
 
 1. ~~**Google Dataset Search, done properly:**~~ one indexable product page per dataset (stop-reason
    labels, endpoint labels, oncology failure signals, discontinuation rates), each with its own
@@ -361,7 +364,9 @@ Next: submit the sitemap in Search Console and check the pages in the Rich Resul
    endpoint rows (MET 2,545, MISSED 2,518, MIXED 496), encrypted artifact 9 MB, kept 7 days.
    **Prices decided 24 Nov:** A $4,900, B $7,900, A+B $10,900, oncology-only A $2,900, other single area A $1,500,
    oncology A+B $4,900; direct below that (pilot €2,000, A+B €9,000, annual €15,000); Failure Signals only direct.
-   Subset packages via the workflow's "area" field. Schayan: submit the partner form, review the agreement. **Market research 23 Nov**
+   Subset packages via the workflow's "area" field. **Package rebuilt 24 Nov without ChEMBL content** (run 45410658575:
+   24,132 stop-reason rows, 5,559 endpoint rows; artifact kept until 1 Dec; the build now fails on any ChEMBL ID).
+   Schayan: submit the partner form, review the agreement. **Market research 23 Nov**
    (search snippets, sources in the session): free commercial substitutes exist (Open Targets stop reasons,
    Apache 2.0, ~28.8k trials predicted; CTO outcome labels, MIT, ~125k trials), institutional anchors
    Trialtrove $18.9k/yr (NCI), Cortellis ~$35k/yr (NIH), GlobalData ~$68k/yr median; Defined.ai's split
