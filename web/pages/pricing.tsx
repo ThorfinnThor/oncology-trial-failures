@@ -8,6 +8,7 @@ import { FormEvent, useState } from "react";
 import PrimaryNav from "@/components/PrimaryNav";
 import SampleCallout from "@/components/SampleCallout";
 import productSummary from "@/data/product_summary.json";
+import productSummaryMore from "@/data/product_summary_more_areas.json";
 import briefsIndex from "@/data/briefs_index.json";
 import { trialsBeyondTheBrief } from "@/components/BriefVsPackage";
 import catalogue from "@/data/evidence_catalogue.json";
@@ -176,6 +177,7 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
   }
 
   const s: any = productSummary;
+  const more: any = productSummaryMore;
 
   const rates = s.discontinuation_rates;
   const featured = s.featured_segment;
@@ -329,6 +331,22 @@ export default function DataLicensingPage({ datasetVersion, totalRecords, biolog
                 <div className="tagRow">
                   <span className="tag">{n(s.trial_count)} records</span>
                   {s.signals_column_count ? <span className="tag">{s.signals_column_count} columns</span> : null}
+                  <span className="tag">CSV · JSON</span>
+                </div>
+              </div>
+
+              <div className="card dsCard">
+                <div className="dsTitle">Failure Signals: seven more areas</div>
+                <p className="dsBody">
+                  The same records for infectious disease, neurology, hepatology, immunology, cardiovascular, metabolic and respiratory
+                  trials stopped for biological reasons: the drug tested ({pct(more.trials_with_resolved_focus_asset)} resolved),
+                  mechanism ({pct(more.trials_with_focus_mechanism)}) and target genes ({pct(more.trials_with_focus_target_gene)}),
+                  sponsor group, ticker and publications.{" "}
+                  <a href="/datasets/failure-signals-seven-areas">Details and sample</a>
+                </p>
+                <div className="tagRow">
+                  <span className="tag">{n(more.trial_count)} records</span>
+                  <span className="tag">7 therapeutic areas</span>
                   <span className="tag">CSV · JSON</span>
                 </div>
               </div>

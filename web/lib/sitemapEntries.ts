@@ -36,6 +36,7 @@ const DATA_DRIVEN_PATHS = [
   "/datasets/stop-reason-labels",
   "/datasets/posted-endpoint-labels",
   "/datasets/oncology-failure-signals",
+  "/datasets/failure-signals-seven-areas",
   "/asset-check",
   "/packages",
   "/packages/sample",

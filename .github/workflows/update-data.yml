@@ -272,6 +272,8 @@ jobs:
         continue-on-error: true
         run: |
           python scripts/signals/build_public_sample.py
+          # The seven-area product's evaluation sample and summary (no-op without the product files).
+          python scripts/signals/build_more_areas_sample.py
           # The free labelled sample offered on the site (/samples/labels/), same draw as Hugging Face.
           python scripts/samples/build_label_sample.py --out web/public/samples/labels --public
           # Sizes, coverage and sample files for the dataset pages (/datasets).
@@ -354,7 +356,7 @@ jobs:
           python scripts/signals/check_text_readers.py --write-snapshot
           git add data/attribution_snapshot.json
           [ -f data/attribution_changes.md ] && git add data/attribution_changes.md
-          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/data/cohort_flow.json web/data/reporting_quality.json web/data/event_ascertainment.json web/data/evidence_catalogue.json web/data/watch_terms.json web/data/private web/public/samples web/public/briefs web/public/trial_endpoints.json web/data/home_outcomes.json web/data/dataset_facts.json data/trial_drugs.csv web/public/trial_drugs.csv web/data/sec_evidence.json web/data/pub_evidence.json web/data/ctis_evidence.json
+          git add -A web/data/product_summary.json web/data/briefs_index.json web/data/validation_v2.json web/data/cohort_flow.json web/data/reporting_quality.json web/data/event_ascertainment.json web/data/evidence_catalogue.json web/data/watch_terms.json web/data/private web/public/samples web/public/briefs web/public/trial_endpoints.json web/data/home_outcomes.json web/data/dataset_facts.json web/data/product_summary_more_areas.json data/trial_drugs.csv web/public/trial_drugs.csv web/data/sec_evidence.json web/data/pub_evidence.json web/data/ctis_evidence.json
           git diff --cached --quiet && echo "No product summary changes" && exit 0
           git commit -m "Update product summary, sample and briefs"
           # main may have moved during a 40-minute run (a person or another step pushed).

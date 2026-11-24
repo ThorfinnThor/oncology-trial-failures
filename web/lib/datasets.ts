@@ -34,6 +34,15 @@ const pct = (v: number | null | undefined) => (typeof v === "number" ? `${Math.r
 const sr = f.stop_reasons;
 const ep = f.endpoints;
 const sg = f.signals;
+const sm = f.signals_more || {};
+const dr = f.drugs || {};
+const drugShare = (() => {
+  const b = dr.by_resolution || {};
+  const withDrug = (dr.trials || 0) - (b.NO_DRUG || 0) - (b.NOT_COVERED || 0);
+  return withDrug > 0 ? (b.RESOLVED || 0) / withDrug : null;
+})();
+const areaList = (m: Record<string, number> | null | undefined) =>
+  m ? Object.entries(m).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${n(v)}`).join(", ") : "—";
 
 export const RELEASE: string = f.release;
 
@@ -60,9 +69,12 @@ export const DATASETS: DatasetPage[] = [
       { name: "label_primary_reason / label_secondary_reasons", text: "Efficacy or futility, safety, benefit–risk; recruitment, funding, business strategy, regulatory, supply, protocol, staffing, partner withdrawal, external events and more." },
       { name: "label_evidence / label_basis", text: "The rule that fired and the words it matched; whether a rule or a reviewed decision produced the label." },
       { name: "Registry fields", text: "NCT ID, title, status, phase, conditions, interventions, sponsor, dates, disease area." },
+      { name: "drugs_tested / drugs_background", text: `The drugs the experimental arms received and the control arms did not, under their standard name, kept apart from the background the control arm also got; fully resolved for ${pct(drugShare)} of trials with a drug.` },
+      { name: "drug_ncit_codes / drug_rxcuis / drug_resolution", text: "NCI Thesaurus and RxNorm codes of the tested drugs, and how far they were identified." },
     ],
     downloads: [
       { label: "Free sample (CSV)", href: "/samples/labels/stop_reason_labels_sample.csv", format: "text/csv", note: `${n(sr.sample_rows)} trials across all outcome classes and disease areas` },
+      { label: "Drug table (CSV)", href: "/trial_drugs.csv", format: "text/csv", note: `Tested drugs, background and resolution for all ${n(dr.trials)} trials` },
       { label: "Data dictionary", href: "/samples/labels/README.md", format: "text/markdown", note: "Label definitions, columns, method, validation, limits" },
     ],
     elsewhere: [
@@ -151,6 +163,49 @@ export const DATASETS: DatasetPage[] = [
       "Licensed for commercial use; the sample is for evaluation.",
     ],
     keywords: ["oncology clinical trial failures", "cancer drug failures", "drug target failure", "oncology trial termination"],
+    free: false,
+  },
+  {
+    slug: "failure-signals-seven-areas",
+    name: "Failure Signals in seven more areas: biological stops with drug and target context",
+    short: "Trials stopped for biological reasons in infectious disease, neurology, hepatology, immunology, cardiology, metabolism and respiratory, linked to the drug tested, its mechanism and target.",
+    description:
+      `${n(sm.trials)} stopped trials in the seven largest therapeutic areas after oncology whose stated reason is biological ` +
+      "(efficacy, safety, benefit–risk, or several causes including one), each linked to the drug actually tested (the difference " +
+      "between the arms), its mechanism, targets and gene symbols, maximum development phase, pharmacologic class, the sponsor group " +
+      "and ticker, and publications that cite the trial. The same build as Oncology Failure Signals.",
+    rowIs: "One stopped trial with a biological stop reason, in one of seven disease areas.",
+    size: `${n(sm.trials)} trials, ${n(sm.unique_assets)} distinct drugs, ${n(sm.columns)} columns: ${areaList(sm.by_disease_area)}.`,
+    coverage: [
+      "Infectious Disease, Neurology, Gastroenterology & Hepatology, Immunology & Autoimmune, Cardiovascular, Endocrine & Metabolic, Respiratory (the trial's primary area); all phases.",
+      `Tested drug resolved for ${pct(sm.resolved_drug_share)} of trials, mechanism for ${pct(sm.mechanism_share)}, target genes for ${pct(sm.target_gene_share)} (oncology: ${pct(sg.mechanism_share)} mechanism, ${pct(sg.target_gene_share)} target genes).`,
+      `Release ${RELEASE}; rebuilt weekly.`,
+    ],
+    variables: [
+      { name: "disease_area", text: "The trial's primary disease area." },
+      { name: "failure_outcome / failure_primary_reason", text: "The biological stop label and its reason." },
+      { name: "focus_assets / focus_mechanisms / focus_targets / focus_target_genes", text: "The drug tested and what it acts on; background therapy shared by the control arm is kept apart." },
+      { name: "sponsor_group / sponsor_ticker", text: "The sponsor's parent group and stock ticker where there is one." },
+      { name: "publication_count", text: "Publications that mention the trial's NCT ID." },
+    ],
+    downloads: sm.sample_file
+      ? [
+          { label: "Evaluation sample (CSV)", href: sm.sample_file, format: "text/csv", note: `${n(sm.sample_rows)} of ${n(sm.trials)} trials, 8 per area` },
+          { label: "About the sample", href: sm.sample_readme_file, format: "text/plain", note: "Sources and terms" },
+        ]
+      : [],
+    elsewhere: [{ label: "Oncology Failure Signals", href: "/datasets/oncology-failure-signals", text: "The same product for oncology." }],
+    uses: [
+      "Which mechanisms and targets keep failing outside oncology, and how (efficacy or safety).",
+      "Diligence on an asset or target in these areas: has it already failed, for whom, and why.",
+      "Features and failure labels for trial-outcome models beyond cancer.",
+    ],
+    limits: [
+      "Drug resolution is lower than in oncology: more device, vaccine, cell-therapy and old generic-drug trials, and fewer drugs in the terminologies.",
+      "Drugs resolve on exact name and synonym matches; unmatched investigational codes are kept as research codes.",
+      "Licensed for commercial use; the sample is for evaluation.",
+    ],
+    keywords: ["clinical trial failures neurology", "cardiovascular trial failures", "infectious disease trial termination", "drug target failure", "clinical trial failure dataset"],
     free: false,
   },
 ];

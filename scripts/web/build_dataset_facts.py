@@ -27,6 +27,11 @@ def main() -> int:
     verdicts = collections.Counter(t.get("verdict") for t in endpoints.get("trials", {}).values())
     signals = json.loads((ROOT / "web/data/product_summary.json").read_text())
     labels_dir = ROOT / "web/public/samples/labels"
+    more_path = ROOT / "web/data/product_summary_more_areas.json"
+    more = json.loads(more_path.read_text()) if more_path.exists() else {}
+    drugs_path = ROOT / "data/trial_drugs.csv"
+    drug_rows = list(csv.DictReader(open(drugs_path, encoding="utf-8"))) if drugs_path.exists() else []
+    resolution = collections.Counter(r["drug_resolution"] for r in drug_rows)
 
     def count(path: Path) -> int:
         return sum(1 for _ in csv.DictReader(open(path, encoding="utf-8"))) if path.exists() else 0
@@ -58,6 +63,23 @@ def main() -> int:
             "sample_file": signals.get("sample_file"),
             "sample_readme_file": signals.get("sample_readme_file"),
             "sample_rows": signals.get("sample_record_count"),
+            "mechanism_share": signals.get("trials_with_focus_mechanism"),
+        },
+        "signals_more": {
+            "trials": more.get("trial_count"),
+            "by_disease_area": more.get("by_disease_area"),
+            "columns": more.get("signals_column_count"),
+            "unique_assets": more.get("unique_assets"),
+            "resolved_drug_share": more.get("trials_with_resolved_focus_asset"),
+            "mechanism_share": more.get("trials_with_focus_mechanism"),
+            "target_gene_share": more.get("trials_with_focus_target_gene"),
+            "sample_file": more.get("sample_file"),
+            "sample_readme_file": more.get("sample_readme_file"),
+            "sample_rows": more.get("sample_record_count"),
+        },
+        "drugs": {
+            "trials": len(drug_rows),
+            "by_resolution": dict(resolution),
         },
     }
     out = ROOT / "web/data/dataset_facts.json"

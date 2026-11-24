@@ -39,6 +39,29 @@
   "target_gene_share": 0.5365630712979891,
   "sample_file": "/samples/oncology-failure-signals-sample-2026-11-23-3788d31061ad363e.csv",
   "sample_readme_file": "/samples/oncology-failure-signals-sample-2026-11-23-3788d31061ad363e-README.txt",
-  "sample_rows": 100
+  "sample_rows": 100,
+  "mechanism_share": 0.6197440585009141
+ },
+ "signals_more": {
+  "trials": null,
+  "by_disease_area": null,
+  "columns": null,
+  "unique_assets": null,
+  "resolved_drug_share": null,
+  "mechanism_share": null,
+  "target_gene_share": null,
+  "sample_file": null,
+  "sample_readme_file": null,
+  "sample_rows": null
+ },
+ "drugs": {
+  "trials": 24132,
+  "by_resolution": {
+   "RESOLVED": 15462,
+   "PARTIAL": 1299,
+   "UNRESOLVED": 2129,
+   "NO_DRUG": 3742,
+   "CODE_OR_CLASS_ONLY": 1500
+  }
  }
 }

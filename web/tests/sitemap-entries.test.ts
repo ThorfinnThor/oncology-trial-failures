@@ -36,7 +36,7 @@ function legacySitemapXml(
   };
   const dataDrivenPaths = [
     "/", "/explore", "/overview", "/atlas", "/failures", "/sponsors", "/insights", "/briefs", "/validation",
-    "/datasets", "/datasets/stop-reason-labels", "/datasets/posted-endpoint-labels", "/datasets/oncology-failure-signals",
+    "/datasets", "/datasets/stop-reason-labels", "/datasets/posted-endpoint-labels", "/datasets/oncology-failure-signals", "/datasets/failure-signals-seven-areas",
     "/asset-check",
     "/packages", "/packages/sample", "/reports/latest-two-week-stopped-trial-updates", "/sponsor-insights",
     "/top-entities", "/outliers", "/clinical-trial-failures", "/why-clinical-trials-fail", "/failed-clinical-trials",
