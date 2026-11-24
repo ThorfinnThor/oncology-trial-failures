@@ -299,8 +299,12 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
 
 `scripts/universe/export_trial_drugs.py` → `data/trial_drugs.csv` (+ web/public): per stopped trial the drugs
 tested under their standard name, the background (control arms too), comparator, NCIt codes, resolution.
-ChEMBL names only, no ChEMBL IDs/mechanisms/targets (`docs/provenance_and_rights.md`; confirm with a lawyer
-before the first paid delivery). In the label sample, Hugging Face card and the marketplace package.
+**Since 24 Nov no ChEMBL content at all** (CC BY-SA ShareAlike does not fit CC BY-NC or a commercial licence):
+ChEMBL only recognises a drug; names written are NCIt preferred names or RxNorm ingredients, else the registry
+label counted unresolved. Coverage 75.8 % → 72.8 % fully named (NCIt 15,166 trials, RxNorm 593, both 450). The
+Hugging Face sample still has the old ChEMBL names until the 30 Nov run rebuilds it: check it then. Open for the
+lawyer: only the Failure Signals product (ChEMBL IDs, mechanisms, targets; direct sales only).
+In the label sample, Hugging Face card and the marketplace package.
 **First build 23 Nov:** 11,834 of 24,132 trials covered (the universe: interventional Phase 2/3 from 2010);
 7,904 fully resolved, 619 partly, 753 code or class only, 1,050 unresolved, 1,508 no drug; 12,298 not covered.
 Oncology 3,779 of 4,758 covered fully resolved; other areas 50–68 %. Fixed the same day: a drug the control
