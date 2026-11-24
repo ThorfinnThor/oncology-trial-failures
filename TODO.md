@@ -288,8 +288,11 @@ SEC (`docs/sec_weekly.md`). Probe 100 trials first, as with SEC.
    trial register records". Later: CTIS categories as a validation check of trials that do state a cause.
 3. **Non-US company pipeline updates and press releases** (quarterly "removed from pipeline" tables):
    harder to search, no common API; after 1–2.
-4. **ClinicalTrials.gov record history:** an earlier version sometimes had a different stop text or a
-   "suspended" reason; same host as now, cheap to probe.
+4. **ClinicalTrials.gov record history, probed 24 Nov** (`docs/registry_history_probe_2026-11-24.md`): the site's
+   history is closed to automated access (403); our own weekly snapshots (since 5 Oct) show 9 changed texts
+   among no-cause trials, 1 sponsor softening a stated result (NCT05617313), and 4 rule gaps on today's text
+   (NCT05003908, NCT05147766, NCT03756389, NCT07555561) still to fix via golden cases. Worth building later:
+   keep earlier stop texts and flag rewrites that remove a cause.
 
 ## Standard drug names in the public dataset (decided 23 Nov, variant 2)
 
