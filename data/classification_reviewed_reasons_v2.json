@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "classifier_version": "2.7.7",
+  "classifier_version": "2.7.9",
   "normalization": "NFKC, lowercase, whitespace collapse, URL/NCT placeholders",
   "entry_count": 2503,
   "manual_entry_count": 132,

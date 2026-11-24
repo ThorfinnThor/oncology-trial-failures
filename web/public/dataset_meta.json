@@ -1,18 +1,18 @@
 {
   "version": "2026-11-23",
-  "generated_at_utc": "2026-11-23T21:58:58Z",
-  "imported_at_utc": "2026-11-23T21:58:58Z",
-  "source_verified_at": "2026-11-23T21:58:58Z",
+  "generated_at_utc": "2026-11-24T10:34:34Z",
+  "imported_at_utc": "2026-11-24T10:34:34Z",
+  "source_verified_at": "2026-11-24T10:34:34Z",
   "latest_source_update_at": "2026-11-23",
-  "content_changed_at": "2026-11-23T21:58:58Z",
-  "source_snapshot_id": "sha256:6d511f0b9b8aa2ed0e194b0ed45be881cc93f4204f93f386b19b3c2802bce7ba",
+  "content_changed_at": "2026-11-24T10:34:33Z",
+  "source_snapshot_id": "sha256:b29afe57f0fa47bc8f703c8080145fc3a6b25da90084d451c321d560bd96aad1",
   "source": "ClinicalTrials.gov API v2",
   "all": {
     "record_count": 24132,
     "max_last_update_post_date": "2026-11-23"
   },
   "biological_failure": {
-    "record_count": 2584,
+    "record_count": 2590,
     "max_last_update_post_date": "2026-11-23"
   },
   "top_areas": [
@@ -58,38 +58,38 @@
     }
   ],
   "classification_v2": {
-    "version": "2.7.7",
+    "version": "2.7.9",
     "outcomes": {
-      "NON_BIOLOGICAL": 14230,
-      "UNKNOWN": 3459,
-      "BIOLOGICAL_FAILURE": 2603,
-      "CAUSE_NOT_STATED": 1938,
+      "NON_BIOLOGICAL": 14233,
+      "UNKNOWN": 3451,
+      "BIOLOGICAL_FAILURE": 2609,
+      "CAUSE_NOT_STATED": 1937,
       "NON_FAILURE_TRANSITION": 1621,
       "MIXED_CAUSES": 281
     },
     "primary_reasons": {
       "RECRUITMENT": 6371,
-      "UNSPECIFIED": 3459,
-      "BUSINESS_STRATEGY": 2269,
+      "UNSPECIFIED": 3451,
+      "BUSINESS_STRATEGY": 2270,
       "FUNDING": 1797,
-      "EFFICACY_FUTILITY": 1737,
+      "EFFICACY_FUTILITY": 1743,
       "DECISION_WITHOUT_STATED_CAUSE": 1554,
       "NOT_INITIATED": 835,
       "STAFFING_RESOURCES": 825,
       "PROTOCOL_FEASIBILITY": 707,
       "SAFETY": 666,
-      "SUPPLY_MANUFACTURING": 624,
-      "REGULATORY": 520,
+      "SUPPLY_MANUFACTURING": 625,
+      "REGULATORY": 521,
       "EXTERNAL_DISRUPTION": 501,
       "OPERATIONAL_OTHER": 427,
       "REPLACEMENT_TRANSITION": 415,
-      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 384,
+      "PROGRAM_ACTION_WITHOUT_STATED_CAUSE": 383,
       "PLANNED_MILESTONE": 371,
       "MULTIPLE": 281,
       "BIOLOGICAL_UNSPECIFIED": 200,
       "SUPPORT_WITHDRAWAL": 189
     },
-    "needs_review": 3501,
+    "needs_review": 3493,
     "quality": {
       "legacy_accuracy_all_adjudicated": 0.9677,
       "assertion_coverage": 0.8996,
