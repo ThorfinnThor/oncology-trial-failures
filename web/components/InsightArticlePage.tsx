@@ -319,8 +319,24 @@ export default function InsightArticlePage({ article }: InsightArticlePageProps)
         }
         .insightPage .insightLinkGrid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
+          grid-template-columns: repeat(6, minmax(0, 1fr));
           gap: 10px;
+        }
+        /* Three cards a row, and no empty cells: two left over share the last row,
+           one left over makes the last four cards two rows of two. */
+        @media (min-width: 761px) {
+          .insightPage .insightLinkCard {
+            grid-column: span 2;
+          }
+          .insightPage .insightLinkCard:first-child:nth-last-child(2),
+          .insightPage .insightLinkCard:first-child:nth-last-child(3n + 2) ~ .insightLinkCard:nth-last-child(-n + 2),
+          .insightPage .insightLinkCard:first-child:nth-last-child(4),
+          .insightPage .insightLinkCard:first-child:nth-last-child(3n + 4) ~ .insightLinkCard:nth-last-child(-n + 4) {
+            grid-column: span 3;
+          }
+          .insightPage .insightLinkCard:only-child {
+            grid-column: 1 / -1;
+          }
         }
         .insightPage .insightLinkCard {
           display: grid;
